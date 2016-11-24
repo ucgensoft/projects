@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" 
+	template="/pages/Template.xhtml">
+
+	<ui:define name="head">
+
+	</ui:define>
+
+	<ui:define name="body">
+
+		<div class="home-first-screen" style="height: 762.45px;">
+
+			<div class="flex-grow-1 flex-vertical-middle">
+				<div style="margin: auto; background-color: rgba(0, 0, 0, 0.5); border-radius: 10px;">
+					<h1 class="landing-h1">Where will you stay next semester ?</h1>
+					<h3 class="landing-h2">Rent your new home from locals online</h3>
+					<div>
+						<form action="https://letserasmus.com/search" method="post"
+							class="staticForm home--search">
+							<div class="formErrors" style="display: none;"></div>
+							<input id="txtCity"
+								class="geo-autocomplete-city home--search--input form-control"
+								type="text" name="city" placeholder="Where will you go?"
+								data-event="Selected search field" autocomplete="off" />
+							<div id="HomeSearchDates" style="margin-left: 4px">
+								<div class="home-search--dates" data-reactid=".5">
+									<input type="text" class="form-control"
+										placeholder="Start date" value="" readonly=""/> 
+									<input type="text" class="form-control" placeholder="End date" value=""
+										readonly="" style="margin-left: 4px;" />
+									<noscript data-reactid=".5.2"></noscript>
+									<input type="hidden" name="startDate" value="" />
+									<input type="hidden" name="endDate"
+										value="" />
+								</div>
+							</div>
+							<input class="btn-brand home--search--btn" id="btnSearch"
+								type="submit" value="search &amp; book"
+								data-event="Clicked Search button" data-type="button" />
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="landing-numbers"
+				style="background-color: rgba(0, 0, 0, 0.5); border-radius: 10px;">
+				<div>
+					<div class="landing-numbers-h1">100591</div>
+					<div class="landing-numbers-h2">Places to rent</div>
+				</div>
+				<div>
+					<div class="landing-numbers-h1">53</div>
+					<div class="landing-numbers-h2">countries</div>
+				</div>
+				<div>
+					<div class="landing-numbers-h1">482</div>
+					<div class="landing-numbers-h2">cities</div>
+				</div>
+			</div>
+		</div>
+
+	</ui:define>
+
+</ui:composition>

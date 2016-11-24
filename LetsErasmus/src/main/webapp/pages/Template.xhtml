@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:j="http://www.sol.com.tr/callcenter">
+<f:view>
+	<h:head>
+		<title>Lets Erasmus</title>
+		
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+		<meta http-equiv="Expires" content="0" />
+		<meta property="description"
+			content="The international student housing platform for exchange and internship students" />
+		
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		
+		<meta property="fb:app_id" content="410300212483493" />
+		<meta property="og:site_name" content="LetsErasmus" />
+		<meta property="og:type" content="letserasmus:listing" />
+		<meta property="og:url" content="https://www.letserasmus.com/" />
+		<meta property="og:title" content="Lets Erasmus" />
+		<meta property="og:description" content="The international student housing platform for 
+			exchange and internship students" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+		<link rel="icon" href="/LetsErasmus/static/site_icon_32.jpg" />
+		<link rel="stylesheet" type="text/css" href="/LetsErasmus/static/css/main/main.css" />
+		<ui:insert name="head" />
+		
+		<style>
+
+/* Add Zoom Animation */
+.animate {
+    -webkit-animation: animatezoom 0.6s;
+    animation: animatezoom 0.6s
+}
+
+@-webkit-keyframes animatezoom {
+    from {-webkit-transform: scale(0)}
+    to {-webkit-transform: scale(1)}
+}
+    
+@keyframes animatezoom {
+    from {transform: scale(0)}
+    to {transform: scale(1)}
+}
+
+</style>
+	</h:head>
+	<h:body style="background-image: url(/LetsErasmus/static/images/home.jpg); background-position: center center; background-repeat: no-repeat; background-attachment: fixed; background-size: cover; padding-top: 0px; padding-bottom: 0px;">
+		<ui:include src="Header.xhtml"   />
+		<ui:insert name="body" />
+		<ui:include src="Footer.xhtml" />
+
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<script src="/LetsErasmus/static/js/Common.js"></script>
+		
+		<script>
+			var modal = document.getElementById('divModal');
+			modal.style.display = 'none';
+			
+			window.onclick = function(event) {
+			    if (event.target == modal) {
+			        modal.style.display = "none";
+			    }
+			}
+		</script>
+		
+	</h:body>
+</f:view>
+</html>

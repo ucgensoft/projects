@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+	
+	<ui:include src="Login.xhtml" />
+	
+	<header id="top" class="nav-top nav-top__home" style="margin: auto; 
+		background-color: rgba(0, 0, 0, 0.5); border-radius: 10px;">
+		<a href="https://letserasmus.com/" class="nav-top--logo"
+			data-event="Clicked Logo in header" data-type="icon"> 
+			<svg class="svg-logo"> </svg>
+		</a>
+		<nav id="n-l-nav" class="nav-top--right-wrapper">
+			<nav class="nav-top--right">
+				<div class="nav-top--right">
+					<a id="a-register" onclick="openModel('/LetsErasmus/pages/Signup.xhtml', 'divModalContent')"
+						title="Register to book or list a room or pick a tenant" href=""
+						class="nav-top--right--link hidden-sm-down">
+						<span>Sign up</span>
+					</a>
+					<!-- openModel('/LetsErasmus/pages/Login.xhtml', 'divModalContent') -->
+					<a id="a-login" onclick="modal.style.display = ''"
+						title="Login to see new messages and potential tenants" href=""
+						class="nav-top--right--link hidden-sm-down m-r-1">
+						<span > Log in </span>
+					</a>
+				</div>
+				<div class="nav-top--right">
+					<a class="nav-top--list-room-btn"
+						href="https://letserasmus.com/list-your-place" role="button"
+						id="btnSubmitRoom"> 
+						<span class="hidden-sm-down"> List yourplace for free </span> 
+						<span class="hidden-md-up uppercase"> Rent out </span>
+					</a>
+				</div>
+				<select class="nav-top--language">
+					<option selected="" value="en" disabled="">English</option>
+					<option value="fr">Français</option>
+					<option value="de">Deutsch</option>
+					<option value="es">Español</option>
+					<option value="it">Italiano</option>
+					<option value="nl">Nederlands</option>
+					<option value="pt">Português</option>
+				</select>
+			</nav>
+		</nav>
+	</header>
+</ui:composition>

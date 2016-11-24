@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+	<i class="fa fa-close closeModal hidden-sm-up"></i>
+
+	<h:form>
+		<div id="divModal" class="modalWrapper login-form overlay animate">
+			<div id="divModalContent" class="modalWindow">
+				<div class="loginSignupTabs">
+				<a id="tab-login" class="active disabled"
+					href=""
+					data-event="Click bookmark Login" data-type="link"
+					data-page="/login"> 
+					Login 
+				</a> 
+			</div>
+	
+			<div class="formErrors"></div>
+			<a
+				href="https://www.facebook.com/dialog/oauth?client_id=410300212483493&amp;redirect_uri=https%3A%2F%2Fhousinganywhere.com%2Fapi%2Fv1%2Fauth%2Ffacebook%2Fcallback&amp;response_type=code&amp;scope=email&amp;state=https%3A%2F%2Fhousinganywhere.com%2F"
+				class="btn-facebook btn-block center-block m-t-2 m-b-0_5 uppercase"
+				data-event="Clicked Log in with Facebook" data-type="button"
+				data-page="/login"> <i
+				class="fa fa-facebook-square fa-margin-right"></i> Login with
+				Facebook
+			</a>
+			<a
+				href="https://accounts.google.com/o/oauth2/auth?client_id=1001718579642-c4ssbshmbdhle0fb8gfvj2bdt1b3pb34.apps.googleusercontent.com&amp;redirect_uri=https%3A%2F%2Fhousinganywhere.com%2Fapi%2Fv1%2Fauth%2Fgoogle%2Fcallback&amp;response_type=code&amp;scope=profile+email&amp;state=https%3A%2F%2Fhousinganywhere.com%2F"
+				class="btn-google btn-block center-block m-t-0_2 m-b-1 uppercase"
+				data-event="Clicked Sign up with Google" data-type="button"> <i
+				class="fa fa-google m-r-0_3"></i> Log in with Google
+			</a>
+	
+			<div class="separator m-y-1_5">
+				<span class="back-grey">OR</span>
+			</div>
+	
+			<input type="hidden" name="ReturnURL"
+				value="https://housinganywhere.com/">
+			</input>
+	
+			<div class="form-group">
+				<label class="sr-only" for="email">E-mail address</label> 
+				<h:inputText type="email" name="email" id="email" value="#{mainController.user.email}" class="form-control"
+					placeholder="E-mail address" required="" autocomplete="email"> 
+				</h:inputText>
+			</div>
+	
+			<div class="form-group">
+				<label class="sr-only" for="password">Password</label> <input
+					type="password" name="password" id="password" class="form-control"
+					placeholder="Password" heap-ignore="0" required=""
+					data-event="Selected Password" data-type="field" data-page="/login">
+				</input>
+				<p class="text-right small">
+					<a href="/recover-account" data-event="Clicked Forgot password"
+						data-type="link"> Forgot your password?</a>
+				</p>
+			</div>
+	
+			<h:commandButton action="#{mainController.login}" ajax="false" value=" Login and continue "
+				class="btn-brand btn-block">
+			</h:commandButton>
+	
+			<p class="text-center center-block m-y-1">
+				Don't have an account? <a
+					href="/register?return_url=https%3a%2f%2fhousinganywhere.com%2f"
+					class="SignUpLink" data-event="Clicked Not yet registered"
+					data-type="link" data-page="/login">Sign up</a>
+			</p>	
+			</div>
+		</div>
+	</h:form>
+</ui:composition>
