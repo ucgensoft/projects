@@ -1,4 +1,4 @@
-package com.ucgen.letserasmus.web.config;
+package com.ucgen.letserasmus.web.filter;
 
 import java.io.IOException;
 
@@ -9,7 +9,6 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
-
 
 public class SecurityFilter implements Filter {
 
