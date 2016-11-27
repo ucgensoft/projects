@@ -18260,29 +18260,37 @@ table tr.archived td {
 
 @media only screen and (min-width:1921px) and (max-width:2400px) {
 	.home-first-screen {
+		/*
 		background-image:
 			url("/img/landing/housinganywhere-landing-students-2400.jpg")
+		*/
 	}
 }
 
 @media only screen and (min-width:1367px) and (max-width:1920px) {
 	.home-first-screen {
+		/*
 		background-image:
 			url("/img/landing/housinganywhere-landing-students-1920.jpg")
+		*/
 	}
 }
 
 @media only screen and (min-width:768px) and (max-width:1367px) {
 	.home-first-screen {
+		/*
 		background-image:
 			url("/img/landing/housinganywhere-landing-students-1366.jpg")
+		*/
 	}
 }
 
 @media only screen and (min-width:0) and (max-width:414px) {
 	.home-first-screen {
+		/*
 		background-image:
 			url("/img/housinganywhere-landing-students-iphone4.jpg")
+		*/
 	}
 }
 
@@ -18292,15 +18300,19 @@ table tr.archived td {
 		(-webkit-min-device-pixel-ratio:1.3020833333333333) , only screen and
 	(min-width:0) and (max-width:414px) and (min-resolution:125dpi) {
 	.home-first-screen {
+		/*
 		background-image:
 			url("/img/landing/housinganywhere-landing-students-iphone6.jpg")
+		*/
 	}
 }
 
 @media only screen and (min-width:414px) and (max-width:768px) {
 	.home-first-screen {
+		/*
 		background-image:
 			url("/img/housinganywhere-landing-students-iphone5.jpg")
+		*/
 	}
 }
 
@@ -18310,8 +18322,10 @@ table tr.archived td {
 		(-webkit-min-device-pixel-ratio:1.3020833333333333) , only screen and
 	(min-width:414px) and (max-width:768px) and (min-resolution:125dpi) {
 	.home-first-screen {
+		/*
 		background-image:
 			url("/img/landing/housinganywhere-landing-students-ipad.jpg")
+		*/
 	}
 }
 
