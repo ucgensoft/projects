@@ -3,49 +3,61 @@ package com.ucgen.letserasmus.web.view.main;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 
-import com.ucgen.letserasmus.library.comment.service.ICommentService;
-import com.ucgen.letserasmus.library.user.model.User;
+import com.ucgen.letserasmus.library.place.service.IPlaceService;
 import com.ucgen.letserasmus.web.view.BaseController;
 
 @ManagedBean
 public class MainController extends BaseController {
 
-	@ManagedProperty(value="#{commentService}")
-	private ICommentService commentService;
-
-	private User user;
+	private String searchPlace;
+	private String searchStartDate;
+	private String searchEndDate;
 	
-	public ICommentService getCommentService() {
-		return commentService;
-	}
-		
-	public void setCommentService(ICommentService commentService) {
-		this.commentService = commentService;
-	}
+	@ManagedProperty(value="#{placeService}")
+	private IPlaceService placeService;
 	
-	public User getUser() {
-		return user;
+	public String getSearchPlace() {
+		return searchPlace;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setSearchPlace(String searchPlace) {
+		this.searchPlace = searchPlace;
 	}
 
-	public String getMessage() {
-		return "Hello There";
+	public String getSearchStartDate() {
+		return searchStartDate;
+	}
+
+	public void setSearchStartDate(String searchStartDate) {
+		this.searchStartDate = searchStartDate;
+	}
+
+	public String getSearchEndDate() {
+		return searchEndDate;
+	}
+
+	public void setSearchEndDate(String searchEndDate) {
+		this.searchEndDate = searchEndDate;
+	}
+
+	public IPlaceService getPlaceService() {
+		return placeService;
+	}
+
+	public void setPlaceService(IPlaceService placeService) {
+		this.placeService = placeService;
 	}
 	
 	public MainController() {
-		this.user = new User();
+		
 	}
 	
-	public void login() {
+	public void search() {
 		try {
 			System.out.println();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 	}
-	
 	
 }

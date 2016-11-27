@@ -27,7 +27,14 @@
 	
 			<link rel="icon" href="/LetsErasmus/static/site_icon_32.jpg" />
 			<link rel="stylesheet" type="text/css" href="/LetsErasmus/static/css/main/main.css" />
-			<ui:insert name="head" />
+			
+			<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+			<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+			<script src="http://maps.googleapis.com/maps/api/js?libraries=places&amp;key=AIzaSyBPX8f2vL1lLg0tqCWs9lcVWcdtSyNajVI"></script>
+			<script src="/LetsErasmus/static/js/Common.js"></script>
+			<script src="/LetsErasmus/static/js/geocode/jquery.geocomplete.js"></script>
+			<!-- <script src="/LetsErasmus/static/js/vendor.bundle.js"></script> -->
+			<!-- <script src="/LetsErasmus/static/js/app.bundle.js"></script> -->
 			
 			<style>
 				/* Add Zoom Animation */
@@ -47,6 +54,8 @@
 				}
 				
 				</style>
+				
+				<ui:insert name="head" />
 		</h:head>
 		<h:body style="background-image: url(/LetsErasmus/static/images/home.jpg); background-position: center center; background-repeat: no-repeat; background-attachment: fixed; background-size: cover; padding-top: 0px; padding-bottom: 0px;">
 			<ui:include src="Header.xhtml"   />
@@ -58,9 +67,6 @@
 				
 				</div>
 			</div>
-			
-			<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-			<script src="/LetsErasmus/static/js/Common.js"></script>
 			
 			<script>
 				var modal = document.getElementById('divModal');

@@ -6,57 +6,102 @@
 	template="/pages/Template.xhtml">
 
 	<ui:define name="head">
-
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+		
+		<script>
+		
+			$(function(){
+		        $("#txtSearchPlace").geocomplete( { map: ".map_canvas" });
+		        $( "#txtStartDatePicker" ).datepicker({
+		        	  minDate: new Date(),
+		        	  dateFormat : "d MM, y",
+		        	  onSelect : function (selectedDate, cal) { 
+		        		  //$("#txtEndDatePicker").datepicker("option", "minDate", selectedDate);
+		        		  $("#hiddenStartDate").val($.datepicker.formatDate('dd.MM.yyyy', $(this).datepicker( "getDate" )));
+		        		}
+		        });
+		        
+		        //$( "#txtStartDatePicker" ).datepicker( "option", "dateFormat", "d MM, y");
+		        
+		        $( "#txtEndDatePicker" ).datepicker({
+		        	  minDate: new Date(),
+		        	  dateFormat : "d MM, y",
+		        	  onSelect : function (selectedDate, cal) { 
+		        		  //$("#txtStartDatePicker").datepicker("option", "maxDate", selectedDate);
+		        		  $("#hiddenEndDate").val($.datepicker.formatDate('dd.MM.yyyy', $(this).datepicker( "getDate" )));
+		        		}
+		        });
+		        
+		        //$( "#txtEndDatePicker" ).datepicker();
+		        //$( "#txtEndDatePicker" ).datepicker( "option", "dateFormat", "d MM, y");
+		      });
+	
+			function validateSearch() {
+				var place = $("#txtSearchPlace").val();
+				var startDate = $.datepicker.formatDate('d.m.yy', $("#txtStartDatePicker").datepicker("getDate"));
+				var endDate = $.datepicker.formatDate('d.m.yy', $("#txtEndDatePicker").datepicker("getDate"));
+				
+				$("#mainSearchForm\\:hiddenPlace").val(place);
+				$("#mainSearchForm\\:hiddenStartDate").val(startDate);
+				$("#mainSearchForm\\:hiddenEndDate").val(endDate);
+			}
+			
+		</script>
 	</ui:define>
 
 	<ui:define name="body">
-		<div class="home-first-screen" style="height: 762.45px;">
-
-			<div class="flex-grow-1 flex-vertical-middle">
-				<div style="margin: auto; background-color: rgba(0, 0, 0, 0.5); border-radius: 10px;">
-					<h1 class="landing-h1">Where will you stay next semester ?</h1>
-					<h3 class="landing-h2">Rent your new home from locals online</h3>
-					<div class="staticForm home--search">
-						<div class="formErrors" style="display: none;"></div>
-						<input id="txtCity"
-							class="geo-autocomplete-city home--search--input form-control"
-							type="text" name="city" placeholder="Where will you go?"
-							data-event="Selected search field" autocomplete="off" />
-						<div id="HomeSearchDates" style="margin-left: 4px">
-							<div class="home-search--dates" data-reactid=".5">
-								<input type="text" class="form-control"
-									placeholder="Start date" value="" readonly=""/> 
-								<input type="text" class="form-control" placeholder="End date" value=""
-									readonly="" style="margin-left: 4px;" />
-								<noscript data-reactid=".5.2"></noscript>
-								<input type="hidden" name="startDate" value="" />
-								<input type="hidden" name="endDate"
-									value="" />
+		<h:form id="mainSearchForm">
+			<div class="home-first-screen" style="height: 762.45px;">
+	
+				<div class="flex-grow-1 flex-vertical-middle">
+					<div style="margin: auto; background-color: rgba(0, 0, 0, 0.5); border-radius: 10px;">
+						<h1 class="landing-h1">Where will you stay next semester ?</h1>
+						<h3 class="landing-h2">Rent your new home from locals online</h3>
+						<div class="staticForm home--search">
+							<div class="formErrors" style="display: none;"></div>
+							<input id="txtSearchPlace" readonly=""
+								class="geo-autocomplete-city home--search--input form-control"
+								type="text" name="city" placeholder="Where will you go?"
+								data-event="Selected search field" autocomplete="off" />
+							 
+							<div id="HomeSearchDates" style="margin-left: 4px">
+								<div class="home-search--dates">
+									<input type="text" id="txtStartDatePicker" class="form-control"
+										placeholder="Start date" value="" readonly=""/> 
+									<input type="text" id="txtEndDatePicker" class="form-control" 
+										placeholder="End date" value=""
+										readonly="" style="margin-left: 4px;" />
+								</div>
 							</div>
+							
+							<h:inputHidden id="hiddenPlace" type="hidden" value="#{mainController.searchPlace}"/>
+							<h:inputHidden id="hiddenStartDate" type="hidden" value="#{mainController.searchStartDate}"/>
+							<h:inputHidden id="hiddenEndDate" type="hidden" value="#{mainController.searchEndDate}"/>
+							 
+							<h:commandButton class="btn-brand home--search--btn" id="btnSearch"
+								value="search &amp; book" action="#{mainController.search}" ajax="true"
+								onclick="validateSearch();">
+							</h:commandButton>
 						</div>
-						<input class="btn-brand home--search--btn" id="btnSearch"
-							type="submit" value="search &amp; book"
-							data-event="Clicked Search button" data-type="button" />
+					</div>
+				</div>
+				<div class="landing-numbers"
+					style="background-color: rgba(0, 0, 0, 0.5); border-radius: 10px;">
+					<div>
+						<div class="landing-numbers-h1">100591</div>
+						<div class="landing-numbers-h2">Places to rent</div>
+					</div>
+					<div>
+						<div class="landing-numbers-h1">53</div>
+						<div class="landing-numbers-h2">countries</div>
+					</div>
+					<div>
+						<div class="landing-numbers-h1">482</div>
+						<div class="landing-numbers-h2">cities</div>
 					</div>
 				</div>
 			</div>
-			<div class="landing-numbers"
-				style="background-color: rgba(0, 0, 0, 0.5); border-radius: 10px;">
-				<div>
-					<div class="landing-numbers-h1">100591</div>
-					<div class="landing-numbers-h2">Places to rent</div>
-				</div>
-				<div>
-					<div class="landing-numbers-h1">53</div>
-					<div class="landing-numbers-h2">countries</div>
-				</div>
-				<div>
-					<div class="landing-numbers-h1">482</div>
-					<div class="landing-numbers-h2">cities</div>
-				</div>
-			</div>
-		</div>
-
+			<div class="map_canvas"></div>
+		</h:form>
 	</ui:define>
-
 </ui:composition>
