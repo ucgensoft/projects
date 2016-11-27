@@ -41,7 +41,11 @@ var newOperationResult = function (code, description) {
     };
 };
 
-function openModel(url, elementId) {
+function openModal(url, elementId) {
+	ajaxHtml(url, elementId, function() { modal.style.display='block'; });
+}
+
+function ajaxHtml(url, elementId, callbackFunc) {
 	$.ajax({
         url: url,
         data: {
@@ -50,8 +54,9 @@ function openModel(url, elementId) {
         dataType: "html",
         success: function (data) {
             $('#' + elementId).html(data);
-            modal.style.display='block';
-            //document.getElementById('divModal').style.display='block';
+            if (callbackFunc != null) {
+            	callbackFunc();
+            }
         },
         error: function (xhr, status) {
             alert("Sorry, there was a problem!");
