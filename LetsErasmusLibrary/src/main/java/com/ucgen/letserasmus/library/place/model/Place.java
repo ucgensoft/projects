@@ -21,7 +21,7 @@ public class Place {
                 private int bedNumber;
                 private int bedTypeId;
                 private int bathRoomNumber;
-                private int bathRoomNumberType;
+                private int bathRoomType;
                 private int placeMateNumber;
                 private int placeMateGender;
                 private int guestNumber;
@@ -137,11 +137,11 @@ public class Place {
                 public void setBathRoomNumber(int bathRoomNumber) {
                                this.bathRoomNumber = bathRoomNumber;
                 }
-                public int getBathRoomNumberType() {
-                               return bathRoomNumberType;
+                public int getBathRoomType() {
+                               return bathRoomType;
                 }
-                public void setBathRoomNumberType(int bathRoomNumberType) {
-                               this.bathRoomNumberType = bathRoomNumberType;
+                public void setBathRoomType(int bathRoomType) {
+                               this.bathRoomType = bathRoomType;
                 }
                 public int getPlaceMateNumber() {
                                return placeMateNumber;
