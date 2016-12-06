@@ -34,7 +34,7 @@
 
 		<div class="form-group">
 			<label class="sr-only" for="email">E-mail address</label> 
-			<h:inputText type="email" name="email" id="email"
+			<h:inputText type="email" name="email" id="email" value="#{loginController.user.email}" rendered="#{headerController.user != null}"
 				class="form-control" placeholder="E-mail address" required="" autocomplete="email"> 
 			</h:inputText>
 		</div>
@@ -50,7 +50,7 @@
 		</div>
 
 		<h:commandButton action="#{loginController.login}" 
-			ajax="true" value=" Login and continue " class="btn-brand btn-block">
+			ajax="true" value=" Login and continue " class="btn-brand btn-block" >
 		</h:commandButton>
 
 		<p class="text-center center-block m-y-1">

@@ -17,7 +17,7 @@ public class AnnotationConfigInitializer extends AbstractAnnotationConfigDispatc
     }
   
     protected String[] getServletMappings() {
-        return new String[] { "/api/" };
+        return new String[] { "/" };
     }
     
     protected Filter[] getServletFilters() {

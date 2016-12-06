@@ -18,6 +18,7 @@
 		        	  onSelect : function (selectedDate, cal) { 
 		        		  //$("#txtEndDatePicker").datepicker("option", "minDate", selectedDate);
 		        		  $("#hiddenStartDate").val($.datepicker.formatDate('dd.MM.yyyy', $(this).datepicker( "getDate" )));
+		        		  setTimeout(function() { $("#txtEndDatePicker").focus() }, 200);
 		        		}
 		        });
 		        
@@ -46,6 +47,10 @@
 				$("#mainSearchForm\\:hiddenEndDate").val(endDate);
 			}
 			
+			function onPageLoad() {
+				$(body).css("background-image", "url(/LetsErasmus/static/images/home.jpg)");
+			}
+			
 		</script>
 	</ui:define>
 
@@ -67,10 +72,10 @@
 							<div id="HomeSearchDates" style="margin-left: 4px">
 								<div class="home-search--dates">
 									<input type="text" id="txtStartDatePicker" class="form-control"
-										placeholder="Start date" value="" readonly=""/> 
+										placeholder="Start date" value="" readonly="true"/> 
 									<input type="text" id="txtEndDatePicker" class="form-control" 
 										placeholder="End date" value=""
-										readonly="" style="margin-left: 4px;" />
+										readonly="true" style="margin-left: 4px;" />
 								</div>
 							</div>
 							
@@ -103,5 +108,10 @@
 			</div>
 			<div class="map_canvas"></div>
 		</h:form>
+		<script>
+			$(document).ready(function () {
+				$('body').css("background-image", "url(/LetsErasmus/static/images/home.jpg)");
+			});
+		</script>
 	</ui:define>
 </ui:composition>
