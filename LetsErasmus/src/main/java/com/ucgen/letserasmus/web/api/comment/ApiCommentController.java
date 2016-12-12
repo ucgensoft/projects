@@ -18,7 +18,7 @@ import com.ucgen.letserasmus.library.comment.service.ICommentService;
 import com.ucgen.letserasmus.web.api.BaseApiController;
 
 @RestController
-public class CommentController extends BaseApiController {
+public class ApiCommentController extends BaseApiController {
 
 	private ICommentService commentService;
 

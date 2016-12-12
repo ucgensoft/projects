@@ -34,15 +34,24 @@ var EnmOperationResultCode = {
     EXCEPTION : 3
 };
 
-var newOperationResult = function (code, description) {
+var newOperationResult = function (resultCode, resultDesc, resultObj) {
     return {
-        code: code,
-        description: description
+        resultCode: resultCode,
+        resultDesc: resultDesc,
+        resultObj: resultObj,
     };
 };
 
 function openModal(url, elementId) {
 	ajaxHtml(url, elementId, function() { modal.style.display='block'; });
+}
+
+function openWindow (url, isSelf) {
+	if (isSelf) {
+		window.open(url, '_blank');
+	} else {
+		document.location.href = url;
+	}
 }
 
 function ajaxHtml(url, elementId, callbackFunc) {

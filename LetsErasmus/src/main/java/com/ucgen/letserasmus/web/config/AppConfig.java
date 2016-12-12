@@ -22,6 +22,11 @@ public class AppConfig {
 		dataSource.setUsername("root");
 		dataSource.setPassword("admin");
 		
+		/*
+		dataSource.setUrl("jdbc:mysql://89.163.140.58:3306/kemalgul_erasmus");
+		dataSource.setUsername("kemalgul_admin");
+		dataSource.setPassword("kgadmin");
+		*/
 		return dataSource;
 	}
 	

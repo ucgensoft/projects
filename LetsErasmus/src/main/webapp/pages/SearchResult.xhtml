@@ -2,13 +2,110 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html" 
-	template="/pages/Template.xhtml">
+	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
 
 	<ui:define name="head">
 		<link rel="stylesheet" type="text/css"
-			href="/LetsErasmus/static/css/search_results.css" />
+			href="#{webApplication.urlPrefix}/static/css/search_results.css" />
 		<script>
+			
+			var map = null; 
+		
+			function CustomMarker(latlng, map, args) {
+				this.latlng = latlng;
+				this.args = args;
+				this.setMap(map);
+			}
+
+			CustomMarker.prototype = new google.maps.OverlayView();
+
+			CustomMarker.prototype.draw = function() {
+
+				var self = this;
+
+				var div = this.div;
+
+				if (!div) {
+
+					div = document.getElementById('divMarker');
+					
+					if (typeof (this.args.marker_id) !== 'undefined') {
+						div.dataset.marker_id = this.args.marker_id;
+					}
+					
+					var myLatlng = new google.maps.LatLng(-33.866, 151.176);
+					
+					var marker = new google.maps.Marker({
+		                  icon: '/LetsErasmus/static/images/site_icon_32_.jpg',
+						  map: map,
+		                  position: self.latlng
+		                });
+					
+					google.maps.event.addDomListener(div, "click", function(
+							event) {
+						var divInfo = document.getElementById('divPlaceInfoWindow');
+						infowindow.setContent(divInfo.innerHTML);
+	    		        infowindow.open(map, marker);
+						//google.maps.event.trigger(self, "click");
+					});
+
+					var panes = this.getPanes();
+					panes.overlayImage.appendChild(div);
+					this.div = div;
+				}
+
+				var point = this.getProjection().fromLatLngToDivPixel(this.latlng);
+
+				if (point) {
+					div.style.left = (point.x - 21) + 'px';
+					div.style.top = (point.y - 26) + 'px';
+				}
+			};
+			
+			function showInfoWindow() {
+				var divInfo = document.getElementById('divPlaceInfoWindow');
+				infowindow.setContent(divInfo.innerHTML);
+		        infowindow.open(map, this);
+			}
+
+			CustomMarker.prototype.remove = function() {
+				if (this.div) {
+					this.div.parentNode.removeChild(this.div);
+					this.div = null;
+				}
+			};
+
+			CustomMarker.prototype.getPosition = function() {
+				return this.latlng;
+			};
+			
+			var infowindow = null;
+			
+			function initialize() {
+				
+				var myLatlng = new google.maps.LatLng(-33.866, 151.196);
+				var mapOptions = {
+					zoom: 15,
+					center: myLatlng,
+					disableDefaultUI: false
+				}
+				
+				map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
+				
+				infowindow = new google.maps.InfoWindow();
+
+		        var overlay = new CustomMarker(
+					myLatlng, 
+					map,
+					{
+						marker_id: '123'
+					}
+				);
+		        
+			}
+
+			google.maps.event.addDomListener(window, 'load', initialize);
+
 			function showExtendedSearchFields() {
 				document.getElementById("divExtendedSearchFields").style.display = "";
 				document.getElementById("filterToolBarId_Extended").style.display = "";
@@ -27,43 +124,8 @@
 				document.getElementById("divPagination").style.display = "";
 			}
 			
-
-			function initialize() {
-				var centerlatlng = new google.maps.LatLng(53.644638, -2.526855);
-				var myOptions = {
-					zoom: 6,
-					center: centerlatlng,
-					mapTypeId: google.maps.MapTypeId.ROADMAP
-				};
-				var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-
-				var geocoder = new google.maps.Geocoder();
-				geocoder.geocode( {'address': "UNIT B1 BEACON SHOPPING CENTRE, BEDFORD STREET, NORTH SHIELDS NE29 6QF"}, function(results, status) {
-					if (status == google.maps.GeocoderStatus.OK) {
-						var img = null;//"https://dl.dropboxusercontent.com/u/55888592/marker27.png";
-						var info = "Sometext";
-						var infowindow = new google.maps.InfoWindow({
-						});
-						var latlng = results[0].geometry.location;
-						var marker = new google.maps.Marker({
-							icon: img,
-							position: latlng,
-							map: map,
-							content: info
-							});
-						google.maps.event.addListener(marker, "click", function(content) {
-							infowindow.setContent(this.content);
-							infowindow.open(map,this);
-						});
-		                   		marker.setMap(map);
-
-						} else {alert("alert:"+status);
-						}
-					});	
-			}
-			
 		</script>
-		
+
 	</ui:define>
 
 	<ui:define name="body">
@@ -141,64 +203,64 @@
 							</div>
 						</div>
 						<div class="AccomodationFilter u-borderTop" data-reactid="498">
-								<p class="AccomodationFilter-title u-filterLabel"
-									data-reactid="499">Housing Type</p>
-								<div class="AccomodationFilter-element" data-reactid="500">
-									<div class="IconFilter u-textCenter" data-reactid="501">
-										<icon class="IconFilter-icon beicon-shared-flat"
-											data-reactid="502"></icon>
-										<p class="u-filterLabel" data-reactid="503">Shared Flat</p>
-									</div>
-									<div class="IconFilter u-textCenter" data-reactid="504">
-										<icon class="IconFilter-icon beicon-host-family"
-											data-reactid="505"></icon>
-										<p class="u-filterLabel" data-reactid="506">Host Family</p>
-									</div>
-									<div class="IconFilter u-textCenter" data-reactid="507">
-										<icon class="IconFilter-icon beicon-student-hall"
-											data-reactid="508"></icon>
-										<p class="u-filterLabel" data-reactid="509">Student Hall</p>
-									</div>
-									<div class="IconFilter u-textCenter" data-reactid="510">
-										<icon class="IconFilter-icon beicon-complete-apartment"
-											data-reactid="511"></icon>
-										<p class="u-filterLabel" data-reactid="512">Full Apartment</p>
-									</div>
+							<p class="AccomodationFilter-title u-filterLabel"
+								data-reactid="499">Housing Type</p>
+							<div class="AccomodationFilter-element" data-reactid="500">
+								<div class="IconFilter u-textCenter" data-reactid="501">
+									<icon class="IconFilter-icon beicon-shared-flat"
+										data-reactid="502"></icon>
+									<p class="u-filterLabel" data-reactid="503">Shared Flat</p>
+								</div>
+								<div class="IconFilter u-textCenter" data-reactid="504">
+									<icon class="IconFilter-icon beicon-host-family"
+										data-reactid="505"></icon>
+									<p class="u-filterLabel" data-reactid="506">Host Family</p>
+								</div>
+								<div class="IconFilter u-textCenter" data-reactid="507">
+									<icon class="IconFilter-icon beicon-student-hall"
+										data-reactid="508"></icon>
+									<p class="u-filterLabel" data-reactid="509">Student Hall</p>
+								</div>
+								<div class="IconFilter u-textCenter" data-reactid="510">
+									<icon class="IconFilter-icon beicon-complete-apartment"
+										data-reactid="511"></icon>
+									<p class="u-filterLabel" data-reactid="512">Full Apartment</p>
 								</div>
 							</div>
-							<div id="PriceFilterId" class="PriceFilter u-borderTop"
-								data-reactid="513">
-								<div class="PriceFilter-title u-filterLabel" data-reactid="514">Budget</div>
-								<div class="PriceFilter-box" data-reactid="515">
-									<span class="PriceFilter-minValue" data-reactid="516">10</span>
-									<div class="PriceFilter-boxSlider" data-reactid="517">
-										<div style="position: relative;" class="PriceFilter-slider"
-											data-reactid="518">
-											<div class="PriceFilter-bar PriceFilter-bar-0"
-												style="position: absolute; left: 0px; right: 838px;"
-												data-reactid="519"></div>
-											<div class="PriceFilter-bar PriceFilter-bar-1"
-												style="position: absolute; will-change:; left: 0; right: 0;"
-												data-reactid="520"></div>
-											<div class="PriceFilter-bar PriceFilter-bar-2"
-												style="position: absolute; left: 838px; right: 0px;"
-												data-reactid="521"></div>
-											<div class="PriceFilter-handle PriceFilter-handle-0 "
-												style="position: absolute; will-change:; z-index: 1; left: 0px;"
-												data-reactid="522">
-												<div data-reactid="523"></div>
-											</div>
-											<div class="PriceFilter-handle PriceFilter-handle-1 "
-												style="position: absolute; z-index: 2; left: 838px;"
-												data-reactid="524">
-												<div data-reactid="525"></div>
-											</div>
+						</div>
+						<div id="PriceFilterId" class="PriceFilter u-borderTop"
+							data-reactid="513">
+							<div class="PriceFilter-title u-filterLabel" data-reactid="514">Budget</div>
+							<div class="PriceFilter-box" data-reactid="515">
+								<span class="PriceFilter-minValue" data-reactid="516">10</span>
+								<div class="PriceFilter-boxSlider" data-reactid="517">
+									<div style="position: relative;" class="PriceFilter-slider"
+										data-reactid="518">
+										<div class="PriceFilter-bar PriceFilter-bar-0"
+											style="position: absolute; left: 0px; right: 838px;"
+											data-reactid="519"></div>
+										<div class="PriceFilter-bar PriceFilter-bar-1"
+											style="position: absolute; will-change:; left: 0; right: 0;"
+											data-reactid="520"></div>
+										<div class="PriceFilter-bar PriceFilter-bar-2"
+											style="position: absolute; left: 838px; right: 0px;"
+											data-reactid="521"></div>
+										<div class="PriceFilter-handle PriceFilter-handle-0 "
+											style="position: absolute; will-change:; z-index: 1; left: 0px;"
+											data-reactid="522">
+											<div data-reactid="523"></div>
+										</div>
+										<div class="PriceFilter-handle PriceFilter-handle-1 "
+											style="position: absolute; z-index: 2; left: 838px;"
+											data-reactid="524">
+											<div data-reactid="525"></div>
 										</div>
 									</div>
-									<span class="PriceFilter-maxValue" data-reactid="526">5000</span>
 								</div>
+								<span class="PriceFilter-maxValue" data-reactid="526">5000</span>
 							</div>
-						<div id="divExtendedSearchFields" style="display:none">
+						</div>
+						<div id="divExtendedSearchFields" style="display: none">
 							<div class="WholeApartmentFilter u-borderTop">
 								<p class="WholeApartmentFilter-title u-filterLabel">Whole
 									Apartment</p>
@@ -378,8 +440,8 @@
 							</div>
 						</div>
 						<section id="searchResultsId" class="SearchResults"
-							data-reactid="536"> 
-							<article class="ProductCard" itemscope="" itemtype="http://schema.org/SiteNavigationElement">
+							data-reactid="536"> <article class="ProductCard"
+							itemscope="" itemtype="http://schema.org/SiteNavigationElement">
 						<div class="ProductCard-picture" data-reactid="538">
 							<section class="image-gallery" data-reactid="539"> <a
 								href="https://www.beroomers.com/milan-italy/apartments-for-rent/CA000313?checkin=28-12-2016&amp;checkout=31-01-2017"
@@ -413,8 +475,7 @@
 										<div id="favouriteIcon"
 											class="FavouriteItem-icon beicon-heart" data-reactid="555"></div>
 									</div>
-								</div></a> 
-							</section>
+								</div></a> </section>
 							<div class="BoxPrice" itemscope=""
 								itemtype="http://schema.org/Offer" data-reactid="556">
 								<div class="BoxPrice-container" data-reactid="557">
@@ -459,8 +520,7 @@
 								</div>
 							</div>
 						</div>
-						</article> 
-						</section>
+						</article> </section>
 						<div id="divPagination" class="Pagination" data-reactid="817">
 							<a
 								href="https://www.beroomers.com/s?lat=45.4654219&amp;lng=9.1859243&amp;topLeftLat=45.5356889&amp;topLeftLng=9.0651182&amp;bottomRightLat=45.3897787&amp;bottomRightLng=9.2903463&amp;checkin=28-12-2016&amp;checkout=31-01-2017&amp;page=1"
@@ -481,24 +541,105 @@
 						</div>
 					</div>
 					<section id="searchMapId" class="SearchMap" data-reactid="823">
-						<div id="mapa" class="mapa" itemscope=""
-							itemtype="http://schema.org/Map" data-reactid="824"
-							style="position: relative; overflow: hidden;">
-							<div
-								style="height: 100%; width: 100%; position: absolute; background-color: rgb(229, 227, 223);">
-								<div class="gm-style" style="height: 100%; width: 100%;">
-									<div id="map_canvas" style="height: 100%; width: 100%;">
-										
+					<div id="mapa" class="mapa" itemscope=""
+						itemtype="http://schema.org/Map" data-reactid="824"
+						style="position: relative; overflow: hidden;">
+						<div
+							style="height: 100%; width: 100%; position: absolute; background-color: rgb(229, 227, 223);">
+							<div class="gm-style" style="height: 100%; width: 100%;">
+								<div id="map_canvas" style="height: 100%; width: 100%;"></div>
+							</div>
+						</div>
+					</div>
+					</section>
+					<div>
+						<div id="divMarker" style="position: absolute; z-index: 1;">
+							<div data-reactroot="" class="SearchMapMarker">
+								<div class="SearchMapMarker-price">1600€</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="divPlaceInfoWindow">
+				<div style="border-radius: 2px; width: 522px; height: 444px; background-color: rgb(255, 255, 255);">
+						<article data-reactroot=""
+							class="ProductCard ProductCard--infoWindow" itemscope=""
+							itemtype="http://schema.org/SiteNavigationElement">
+							<div class="ProductCard-picture">
+								<section class="image-gallery"> <a
+									href="/barcelona-spain/rooms-for-rent/SF002321?checkin=01-01-2017&amp;checkout=31-01-2017"
+									target="_blank" itemprop="url"><div
+										class="image-gallery-content">
+										<span class="image-gallery-left-nav hideNav"></span><span
+											class="image-gallery-right-nav hideNav"></span>
+										<div>
+											<div class="image-gallery-slides">
+												<div class="image-gallery-slide center">
+													<img
+														src=""
+														role="presentation" itemprop="image" />
+												</div>
+											</div>
+										</div>
+										<div class="ProductCardMainProperties">
+											<div class="ProductCardMainProperties-type">
+												<icon
+													class="ProductCardMainProperties-type-icon center beicon-shared-flat"></icon>
+												<span>shared flat</span>
+											</div>
+											<div class="ProductCardMainProperties-scrollerRoom">
+												<span class="ProductCardMainProperties-scrollerRoom-prev">‹</span><span
+													class="ProductCardMainProperties-scrollerRoom-title">Room
+													1/3</span><span class="ProductCardMainProperties-scrollerRoom-next">›</span>
+											</div>
+										</div>
+										<div class="FavouriteItem">
+											<div id="favouriteIcon"
+												class="FavouriteItem-icon beicon-heart"></div>
+										</div>
+									</div></a></section>
+								<div class="BoxPrice" itemscope=""
+									itemtype="http://schema.org/Offer">
+									<div class="BoxPrice-container">
+										<span itemprop="price" class="BoxPrice-price" content="562">562€</span><span
+											itemprop="priceCurrency" class="BoxPrice-separator">/</span>
+										<div class="BoxPrice-period">room month</div>
+									</div>
+									<div class="BoxPrice-billsIncluded">
+										<span class="BoxPrice-billsIncluded-label">Some Bills
+											Included</span>
 									</div>
 								</div>
 							</div>
-						</div>
-					</section>	
-				</div>
+							<div class="ProductCardExtraInfoLine">
+								<div class="ProductCardExtraInfoLine-distance">
+									<icon class="beicon-pin"></icon>
+									<span class="ProductCardExtraInfoLine-distance--km">13.04
+										km from Barcelona</span>
+								</div>
+								<div class="ProductCardExtraInfoLine-time">
+									<div class="ProductCardExtraInfoLine-time--walk">
+										<div class="ProductCardExtraInfoLine-time-icon beicon-bicycle"></div>
+										<div class="ProductCardExtraInfoLine-time-time">60'</div>
+									</div>
+									<div class="ProductCardExtraInfoLine-time--public">
+										<div class="ProductCardExtraInfoLine-time-icon beicon-bus"></div>
+										<div class="ProductCardExtraInfoLine-time-time">71'</div>
+									</div>
+									<div class="ProductCardExtraInfoLine-time--car">
+										<div class="ProductCardExtraInfoLine-time-icon beicon-walking"></div>
+										<div class="ProductCardExtraInfoLine-time-time">130'</div>
+									</div>
+								</div>
+							</div>
+						</article>
+					</div>
+					</div>
 			</div>
 		</h:form>
 		<script>
-		google.maps.event.addDomListener(window, "load", initialize);
+			google.maps.event.addDomListener(window, "load", initialize);
 		</script>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/controller/search_result_controller.js"></script>
 	</ui:define>
 </ui:composition>

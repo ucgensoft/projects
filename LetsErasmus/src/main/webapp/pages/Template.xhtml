@@ -23,20 +23,23 @@
 			<meta property="og:title" content="Lets Erasmus" />
 			<meta property="og:description" content="The international student housing platform for 
 				exchange and internship students" />
-			<meta property="og:image" content="/LetsErasmus/static/images/optimized_logo.png" />
-			<link rel="shortcut icon" sizes="32x32" href="/LetsErasmus/static/images/site_icon_32.jpg" />
+			<meta property="og:image" content="#{webApplication.urlPrefix}/static/images/optimized_logo.png" />
+			<link rel="shortcut icon" sizes="32x32" href="#{webApplication.urlPrefix}/static/images/site_icon_32.jpg" />
 			<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 	
-			<link rel="icon" href="/LetsErasmus/static/site_icon_32.jpg" />
+			<link rel="icon" href="#{webApplication.urlPrefix}/static/site_icon_32.jpg" />
 			<link rel="stylesheet" type="text/css" href="/LetsErasmus/static/css/main/main.css" />
 			
 			<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 			<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 			<script src="http://maps.googleapis.com/maps/api/js?libraries=places&amp;key=AIzaSyBPX8f2vL1lLg0tqCWs9lcVWcdtSyNajVI"></script>
-			<script src="/LetsErasmus/static/js/Common.js"></script>
-			<script src="/LetsErasmus/static/js/geocode/jquery.geocomplete.js"></script>
-			<!-- <script src="/LetsErasmus/static/js/vendor.bundle.js"></script> -->
-			<!-- <script src="/LetsErasmus/static/js/app.bundle.js"></script> -->
+			
+			<script src="#{webApplication.urlPrefix}/static/js/Common.js"></script>
+			<script src="#{webApplication.urlPrefix}/static/js/geocode/jquery.geocomplete.js"></script>
+			<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+			<script src="#{webApplication.urlPrefix}/static/js/angular/app.js"></script>
+			<script src="#{webApplication.urlPrefix}/static/js/angular/place_service.js"></script>
+			<script src="#{webApplication.urlPrefix}/static/js/angular/user_service.js"></script>
 			
 			<style>
 				/* Add Zoom Animation */
@@ -56,6 +59,9 @@
 				}
 				
 				</style>
+				<script>
+					var webApplicationUrlPrefix = '#{webApplication.urlPrefix}';
+				</script>
 				<ui:insert name="head" />
 		</h:head>
 		<h:body style="background-position: center center; background-repeat: no-repeat; background-attachment: fixed; background-size: cover; padding-top: 0px; padding-bottom: 0px;">
