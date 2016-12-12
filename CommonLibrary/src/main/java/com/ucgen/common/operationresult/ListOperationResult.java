@@ -21,15 +21,11 @@ public class ListOperationResult<T> extends OperationResult {
 	}
 
 	public ListOperationResult() {
-		this(null, null, null);
+		this(null, null);
 	}
 	
 	public ListOperationResult(Integer argResultCode, String argResultDesc) {
-		this(argResultCode, argResultDesc, null);
-	}
-	
-	public ListOperationResult(Integer argResultCode, String argResultDesc, Object argResultObject) {
-		super(argResultCode, argResultDesc, argResultObject);
+		super(argResultCode, argResultDesc);
 	}
 
 }

@@ -4,9 +4,7 @@ package com.ucgen.common.operationresult;
 public class OperationResult {
 
 	private Integer resultCode;
-	private String resultDesc;
-	private Object resultObject;
-	
+	private String resultDesc;	
 	
 	public Integer getResultCode() {
 		return resultCode;
@@ -20,25 +18,14 @@ public class OperationResult {
 	public void setResultDesc(String resultDesc) {
 		this.resultDesc = resultDesc;
 	}
-	public Object getResultObject() {
-		return resultObject;
-	}
-	public void setResultObject(Object resultObject) {
-		this.resultObject = resultObject;
-	}
 	
 	public OperationResult() {
-		this(null, null, null);
+		this(null, null);
 	}
 	
 	public OperationResult (Integer argResultCode, String argResultDesc) {
-		this(argResultCode, argResultDesc, null);
-	}
-	
-	public OperationResult (Integer argResultCode, String argResultDesc, Object argResultObject) {
 		this.resultCode = argResultCode;
 		this.resultDesc = argResultDesc;
-		this.resultObject = argResultObject;
 	}
 	
 	public static boolean isResultSucces(OperationResult operationResult) {
