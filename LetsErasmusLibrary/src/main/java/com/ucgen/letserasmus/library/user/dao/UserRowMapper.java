@@ -8,6 +8,8 @@ import com.ucgen.letserasmus.library.user.model.User;
 
 public class UserRowMapper extends BaseRowMapper<User> {
 
+	public static final String TABLE_NAME = "USER";
+	
 	public static final String COL_EMAIL = "EMAIL";
 	public static final String COL_PASSWORD = "PASSWORD";	
 	public static final String COL_MSISDN = "MSISDN";
@@ -55,10 +57,40 @@ public class UserRowMapper extends BaseRowMapper<User> {
 		return user;
 	}
 
+	public UserRowMapper() {
+		this("U");
+	}
+	
+	public UserRowMapper(String tablePrefix) {
+		super(TABLE_NAME, tablePrefix);
+	}
+	
 	@Override
-	public void fillFieldMaps() {
+	public void fillFieldMaps() {		
 		
-		
+	}
+
+	@Override
+	public void initializeColList() {
+		super.addColumn(COL_CREATED_BY);
+		super.addColumn(COL_CREATED_DATE);
+		super.addColumn(COL_CREATED_DATE_GMT);
+		super.addColumn(COL_EMAIL);
+		super.addColumn(COL_EMAIL_VERIFIED);
+		super.addColumn(COL_FACEBOOK_TOKEN_ID);
+		super.addColumn(COL_FILE_ID);
+		super.addColumn(COL_FIRST_NAME);
+		super.addColumn(COL_IP);
+		super.addColumn(COL_LAST_NAME);
+		super.addColumn(COL_MODIFIED_BY);
+		super.addColumn(COL_MODIFIED_DATE);
+		super.addColumn(COL_MODIFIED_DATE_GMT);
+		super.addColumn(COL_MSISDN);
+		super.addColumn(COL_MSISDN_VERIFIED);
+		super.addColumn(COL_PASSWORD);
+		super.addColumn(COL_STATUS);
+		super.addColumn(COL_USER_ACTIVATION_KEY_EMAIL);
+		super.addColumn(COL_USER_ACTIVATION_KEY_MSISDN);
 	}
 
 }

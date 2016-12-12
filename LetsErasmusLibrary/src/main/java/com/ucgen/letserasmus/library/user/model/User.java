@@ -2,16 +2,19 @@ package com.ucgen.letserasmus.library.user.model;
 
 import java.util.Date;
 
-public class User {
+import com.ucgen.common.model.BaseModel;
+
+public class User extends BaseModel {
+	
 	private Long id;
 	private String email;
 	private String password;
 	private String msisdn;
 	private String firstName;
 	private String lastName;
-	private int status;
-	private int emailVerified;
-	private int msisdnVerified;
+	private Integer status;
+	private Integer emailVerified;
+	private Integer msisdnVerified;
 	private String userActivationKeyEmail;
 	private String userActivationKeyMsisdn;
 	private Long fileId;
@@ -23,10 +26,9 @@ public class User {
 	private String modifiedBy;
 	private Date modifiedDate;
 	private Date modifiedDateGmt;
-	
 	public Long getId() {
 		return id;
-	}	
+	}
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -60,22 +62,22 @@ public class User {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	public int getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
-	public void setStatus(int status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
-	public int getEmailVerified() {
+	public Integer getEmailVerified() {
 		return emailVerified;
 	}
-	public void setEmailVerified(int emailVerified) {
+	public void setEmailVerified(Integer emailVerified) {
 		this.emailVerified = emailVerified;
 	}
-	public int getMsisdnVerified() {
+	public Integer getMsisdnVerified() {
 		return msisdnVerified;
 	}
-	public void setMsisdnVerified(int msisdnVerified) {
+	public void setMsisdnVerified(Integer msisdnVerified) {
 		this.msisdnVerified = msisdnVerified;
 	}
 	public String getUserActivationKeyEmail() {
@@ -143,6 +145,6 @@ public class User {
 	}
 	public void setModifiedDateGmt(Date modifiedDateGmt) {
 		this.modifiedDateGmt = modifiedDateGmt;
-	}	
+	}
 	
 }

@@ -4,9 +4,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.ucgen.common.dao.BaseRowMapper;
+import com.ucgen.common.dao.ForeignKey;
+import com.ucgen.letserasmus.library.location.dao.LocationRowMapper;
+import com.ucgen.letserasmus.library.location.model.Location;
 import com.ucgen.letserasmus.library.place.model.Place;
+import com.ucgen.letserasmus.library.user.dao.UserRowMapper;
 
 public class PlaceRowMapper extends BaseRowMapper<Place> {
+	
+	public static final String TABLE_NAME = "PLACE";
 	
 	public static final String COL_ID = "ID";
 	public static final String COL_HOST_USER_ID = "HOST_USER_ID";	
@@ -16,7 +22,6 @@ public class PlaceRowMapper extends BaseRowMapper<Place> {
 	public static final String COL_DESCRIPTION = "DESCRIPTION";
 	public static final String COL_STATUS = "STATUS";	
 	public static final String COL_LOCATION_ID = "LOCATION_ID";
-	public static final String COL_PHONE = "PHONE";
 	public static final String COL_PRICE = "PRICE";		
 	public static final String COL_BILLS_INCLUDE = "BILLS_INCLUDE";
 	public static final String COL_DEPOSIT_PRICE = "DEPOSIT_PRICE";	
@@ -44,7 +49,30 @@ public class PlaceRowMapper extends BaseRowMapper<Place> {
 	public static final String COL_MODIFIED_DATE = "MODIFIED_DATE";
 	public static final String COL_MODIFIED_DATE_GMT = "MODIFIED_DATE_GMT";
 	
-
+	public static final String FKEY_LOCATION = "LOCATION";
+	public static final String FKEY_USER = "USER";
+	
+	public PlaceRowMapper() {
+		this("P");
+	}
+	
+	public PlaceRowMapper(String tablePrefix) {
+		super(TABLE_NAME, tablePrefix);
+	}
+	
+	public void addFKey(String keyName) {
+		if (FKEY_LOCATION.equals(keyName)) {
+			LocationRowMapper locationRowMapper = new LocationRowMapper("L");
+			ForeignKey<PlaceRowMapper, LocationRowMapper> fKeyLocation = new ForeignKey<PlaceRowMapper, LocationRowMapper>(this, locationRowMapper);
+			fKeyLocation.addFieldPair(COL_LOCATION_ID, LocationRowMapper.COL_ID);
+			this.addFKey(FKEY_LOCATION, fKeyLocation);
+		} if (FKEY_USER.equals(keyName)) {
+			UserRowMapper userRowMapper = new UserRowMapper("L");
+			ForeignKey<PlaceRowMapper, UserRowMapper> fKeyUser = new ForeignKey<PlaceRowMapper, UserRowMapper>(this, userRowMapper);
+			fKeyUser.addFieldPair(COL_HOST_USER_ID, LocationRowMapper.COL_ID);
+			this.addFKey(FKEY_USER, fKeyUser);
+		}
+	}
 	
 	@Override
 	public Place mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -58,7 +86,6 @@ public class PlaceRowMapper extends BaseRowMapper<Place> {
 		place.setDescription(super.getString(rs, COL_DESCRIPTION));
 		place.setStatus(super.getInteger(rs, COL_STATUS));
 		place.setLocationId(super.getLong(rs, COL_LOCATION_ID));
-		place.setPhone(super.getString(rs, COL_PHONE));
 		place.setPrice(super.getBigDecimal(rs, COL_PRICE));
 		place.setBillsInclude(super.getString(rs, COL_BILLS_INCLUDE));
 		place.setDepositPrice(super.getBigDecimal(rs, COL_DEPOSIT_PRICE));
@@ -84,12 +111,57 @@ public class PlaceRowMapper extends BaseRowMapper<Place> {
 		place.setModifiedBy(super.getString(rs, COL_MODIFIED_BY));
 		place.setModifiedDate(super.getTimestamp(rs, COL_MODIFIED_DATE));
 		place.setModifiedDateGmt(super.getTimestamp(rs, COL_MODIFIED_DATE_GMT));		
+	
+		if (this.getfKeyMap().containsKey(FKEY_LOCATION)) {
+			ForeignKey<PlaceRowMapper, LocationRowMapper> fKey = this.getfKeyMap().get(FKEY_LOCATION);
+			Location location = fKey.getDestMapper().mapRow(rs, rowNum);
+			place.setLocation(location);
+		}
+		
 		return place;
 	}
 	@Override
 	public void fillFieldMaps() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void initializeColList() {
+		super.addColumn(COL_AMENTIES);
+		super.addColumn(COL_BATHROOM_NUMBER);
+		super.addColumn(COL_BATHROOM_TYPE);
+		super.addColumn(COL_BED_NUMBER);
+		super.addColumn(COL_BED_TYPE_ID);
+		super.addColumn(COL_BILLS_INCLUDE);
+		super.addColumn(COL_CANCELLATION_POLICY_ID);
+		super.addColumn(COL_CREATED_BY);
+		super.addColumn(COL_CREATED_DATE);
+		super.addColumn(COL_CREATED_DATE_GMT);
+		super.addColumn(COL_CURRENCY_ID);
+		super.addColumn(COL_DEPOSIT_PRICE);
+		super.addColumn(COL_DESCRIPTION);
+		super.addColumn(COL_END_DATE);
+		super.addColumn(COL_GUEST_GENDER);
+		super.addColumn(COL_GUEST_NUMBER);
+		super.addColumn(COL_HOME_TYPE_ID);
+		super.addColumn(COL_HOST_USER_ID);
+		super.addColumn(COL_ID);
+		super.addColumn(COL_LOCATION_ID);
+		super.addColumn(COL_MAXIMUM_STAY);
+		super.addColumn(COL_MINUMUM_STAY);
+		super.addColumn(COL_MODIFIED_BY);
+		super.addColumn(COL_MODIFIED_DATE);
+		super.addColumn(COL_MODIFIED_DATE_GMT);
+		super.addColumn(COL_PLACE_MATE_GENDER);
+		super.addColumn(COL_PLACE_MATE_NUMBER);
+		super.addColumn(COL_PLACE_TYPE_ID);
+		super.addColumn(COL_PRICE);
+		super.addColumn(COL_RULES);
+		super.addColumn(COL_SAFETY_AMENTIES);
+		super.addColumn(COL_START_DATE);
+		super.addColumn(COL_STATUS);
+		super.addColumn(COL_TITLE);
 	}	
 
 }

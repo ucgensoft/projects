@@ -6,8 +6,12 @@ import com.ucgen.letserasmus.library.place.model.Place;
 
 public interface IPlaceDao {
 	
-	ListOperationResult<Place> getPlace(Long id);
+	ValueOperationResult<Place> getPlace(Long id);
+	
 	ValueOperationResult<Integer> insertPlace(Place place);
+	
 	ValueOperationResult<Integer> updatePlace(Place place);
+	
+	ListOperationResult<Place> listPlace(Place place, boolean locationFlag);
 
 }

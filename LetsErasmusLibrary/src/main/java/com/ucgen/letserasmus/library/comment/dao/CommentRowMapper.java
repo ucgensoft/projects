@@ -44,8 +44,10 @@ public class CommentRowMapper extends BaseRowMapper<Comment> {
 
 	@Override
 	public void fillFieldMaps() {
-		
-		
+	}
+
+	@Override
+	public void initializeColList() {
 	}
 
 }

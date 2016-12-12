@@ -2,14 +2,16 @@ package com.ucgen.letserasmus.library.comment.model;
 
 import java.util.Date;
 
-public class Comment {
+import com.ucgen.common.model.BaseModel;
+
+public class Comment extends BaseModel {
 
 	private Long id;
-	private int entityType;
+	private Integer entityType;
 	private Long entityId;
 	private Long authorUserId;
 	private String commentContent;	
-	private int status;
+	private Integer status;
 	private String createdBy;
 	private Date createdDate;
 	private Date createdDateGmt;
@@ -17,10 +19,10 @@ public class Comment {
 	private Date modifiedDate;
 	private Date modifiedDateGmt;
 	
-	public int getEntityType() {
+	public Integer getEntityType() {
 		return entityType;
 	}
-	public void setEntityType(int entityType) {
+	public void setEntityType(Integer entityType) {
 		this.entityType = entityType;
 	}
 	public Long getEntityId() {
@@ -35,10 +37,10 @@ public class Comment {
 	public void setAuthorUserId(Long authorUserId) {
 		this.authorUserId = authorUserId;
 	}
-	public int getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
-	public void setStatus(int status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
 	public String getCreatedBy() {

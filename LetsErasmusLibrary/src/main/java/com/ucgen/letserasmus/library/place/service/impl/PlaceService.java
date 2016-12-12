@@ -12,30 +12,31 @@ import com.ucgen.letserasmus.library.place.service.IPlaceService;
 @Service
 public class PlaceService implements IPlaceService{
 
-	private IPlaceDao iPlaceDao;
-	
-	public IPlaceDao getiPlaceDao() {
-		return iPlaceDao;
-	}
+	private IPlaceDao placeDao;
 
 	@Autowired
-	public void setiPlaceDao(IPlaceDao iPlaceDao) {
-		this.iPlaceDao = iPlaceDao;
+	public void setPlaceDao(IPlaceDao placeDao) {
+		this.placeDao = placeDao;
 	}
 
 	@Override
-	public ListOperationResult<Place> getPlace(Long id) {
-		return this.getiPlaceDao().getPlace(id);
+	public ValueOperationResult<Place> getPlace(Long id) {
+		return this.placeDao.getPlace(id);
 	}
 
 	@Override
 	public ValueOperationResult<Integer> insertPlace(Place place) {
-		return this.getiPlaceDao().insertPlace(place);
+		return this.placeDao.insertPlace(place);
 	}
 
 	@Override
 	public ValueOperationResult<Integer> updatePlace(Place place) {
-		return this.getiPlaceDao().updatePlace(place);
+		return this.placeDao.updatePlace(place);
+	}
+
+	@Override
+	public ListOperationResult<Place> listPlace(Place place, boolean locationFlag) {
+		return this.placeDao.listPlace(place, locationFlag);
 	}
 
 }

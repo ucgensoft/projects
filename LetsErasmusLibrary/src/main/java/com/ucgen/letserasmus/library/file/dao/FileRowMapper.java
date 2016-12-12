@@ -20,8 +20,6 @@ public class FileRowMapper extends BaseRowMapper<File> {
 	public static final String COL_MODIFIED_BY = "MODIFIED_BY";
 	public static final String COL_MODIFIED_DATE = "MODIFIED_DATE";
 	public static final String COL_MODIFIED_DATE_GMT = "MODIFIED_DATE_GMT";	
-	
-	
 
 	@Override
 	public File mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -43,6 +41,12 @@ public class FileRowMapper extends BaseRowMapper<File> {
 
 	@Override
 	public void fillFieldMaps() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void initializeColList() {
 		// TODO Auto-generated method stub
 		
 	}

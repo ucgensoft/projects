@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.ucgen.common.operationresult.EnmResultCode;
 import com.ucgen.common.operationresult.ListOperationResult;
+import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.common.operationresult.ValueOperationResult;
 
 import com.ucgen.letserasmus.library.place.dao.IPlaceDao;
@@ -20,10 +21,13 @@ import com.ucgen.letserasmus.library.place.model.Place;
 @Repository
 public class PlaceDao extends JdbcDaoSupport implements IPlaceDao{
 
-	
-	private static final String GET_PLACE_WITH_ID_SQL = " SELECT `ID`, `HOST_USER_ID`, `PLACE_TYPE_ID`, `HOME_TYPE_ID`, `TITLE`, `DESCRIPTION`, `STATUS`, `LOCATION_ID`, `PHONE`, `PRICE`, `BILLS_INCLUDE`, `DEPOSIT_PRICE`, `CURRENCY_ID`, `BED_NUMBER`, `BED_TYPE_ID`, `BATHROOM_NUMBER`, `BATHROOM_TYPE`, `PLACE_MATE_NUMBER`, `PLACE_MATE_GENDER`, `GUEST_NUMBER`, `GUEST_GENDER`, `RULES`, `AMENTIES`, `SAFETY_AMENTIES`, `MINUMUM_STAY`, `MAXIMUM_STAY`, `START_DATE`, `END_DATE`, `CANCELLATION_POLICY_ID`, `CREATED_BY`, `CREATED_DATE`, `CREATED_DATE_GMT`, `MODIFIED_BY`, `MODIFIED_DATE`, `MODIFIED_DATE_GMT` FROM `PLACE` WHERE `ID`=? ";
-	private static final String INSERT_PLACE_SQL = " INSERT INTO `PLACE`(`HOST_USER_ID`, `PLACE_TYPE_ID`, `HOME_TYPE_ID`, `TITLE`, `DESCRIPTION`, `STATUS`, `LOCATION_ID`, `PHONE`, `PRICE`, `BILLS_INCLUDE`, `DEPOSIT_PRICE`, `CURRENCY_ID`, `BED_NUMBER`, `BED_TYPE_ID`, `BATHROOM_NUMBER`, `BATHROOM_TYPE`, `PLACE_MATE_NUMBER`, `PLACE_MATE_GENDER`, `GUEST_NUMBER`, `GUEST_GENDER`, `RULES`, `AMENTIES`, `SAFETY_AMENTIES`, `MINUMUM_STAY`, `MAXIMUM_STAY`, `START_DATE`, `END_DATE`, `CANCELLATION_POLICY_ID`, `CREATED_BY`, `CREATED_DATE`, `CREATED_DATE_GMT`, `MODIFIED_BY`, `MODIFIED_DATE`, `MODIFIED_DATE_GMT`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
-	private static final String UPDATE_PLACE_SQL = " UPDATE `PLACE` SET `ID`=?,`HOST_USER_ID`=?,`PLACE_TYPE_ID`=?,`HOME_TYPE_ID`=?,`TITLE`=?,`DESCRIPTION`=?,`STATUS`=?,`LOCATION_ID`=?,`PHONE`=?,`PRICE`=?,`BILLS_INCLUDE`=?,`DEPOSIT_PRICE`=?,`CURRENCY_ID`=?,`BED_NUMBER`=?,`BED_TYPE_ID`=?,`BATHROOM_NUMBER`=?,`BATHROOM_TYPE`=?,`PLACE_MATE_NUMBER`=?,`PLACE_MATE_GENDER`=?,`GUEST_NUMBER`=?,`GUEST_GENDER`=?,`RULES`=?,`AMENTIES`=?,`SAFETY_AMENTIES`=?,`MINUMUM_STAY`=?,`MAXIMUM_STAY`=?,`START_DATE`=?,`END_DATE`=?,`CANCELLATION_POLICY_ID`=?,`CREATED_BY`=?,`CREATED_DATE`=?,`CREATED_DATE_GMT`=?,`MODIFIED_BY`=?,`MODIFIED_DATE`=?,`MODIFIED_DATE_GMT`=? WHERE `ID`=? ";
+	private static final String LIST_PLACE_SQL = " SELECT `ID`, `HOST_USER_ID`, `PLACE_TYPE_ID`, `HOME_TYPE_ID`, `TITLE`, `DESCRIPTION`, `STATUS`, `LOCATION_ID`, " 
+			+ " `PRICE`, `BILLS_INCLUDE`, `DEPOSIT_PRICE`, `CURRENCY_ID`, `BED_NUMBER`, `BED_TYPE_ID`, `BATHROOM_NUMBER`, `BATHROOM_TYPE`, " 
+			+ " `PLACE_MATE_NUMBER`, `PLACE_MATE_GENDER`, `GUEST_NUMBER`, `GUEST_GENDER`, `RULES`, `AMENTIES`, `SAFETY_AMENTIES`, `MINUMUM_STAY`, " 
+			+ " `MAXIMUM_STAY`, `START_DATE`, `END_DATE`, `CANCELLATION_POLICY_ID`, L.LATITUDE L_LATITUDE, L.LONGITUDE L_LONGITUDE" 
+			+ " FROM PLACE P, LOCATION L WHERE P.LOCATION_ID = L.ID AND 1=1 ";
+	private static final String INSERT_PLACE_SQL = " INSERT INTO `PLACE`(`HOST_USER_ID`, `PLACE_TYPE_ID`, `HOME_TYPE_ID`, `TITLE`, `DESCRIPTION`, `STATUS`, `LOCATION_ID`, `PRICE`, `BILLS_INCLUDE`, `DEPOSIT_PRICE`, `CURRENCY_ID`, `BED_NUMBER`, `BED_TYPE_ID`, `BATHROOM_NUMBER`, `BATHROOM_TYPE`, `PLACE_MATE_NUMBER`, `PLACE_MATE_GENDER`, `GUEST_NUMBER`, `GUEST_GENDER`, `RULES`, `AMENTIES`, `SAFETY_AMENTIES`, `MINUMUM_STAY`, `MAXIMUM_STAY`, `START_DATE`, `END_DATE`, `CANCELLATION_POLICY_ID`, `CREATED_BY`, `CREATED_DATE`, `CREATED_DATE_GMT`, `MODIFIED_BY`, `MODIFIED_DATE`, `MODIFIED_DATE_GMT`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+	private static final String UPDATE_PLACE_SQL = " UPDATE `PLACE` SET `ID`=?,`HOST_USER_ID`=?,`PLACE_TYPE_ID`=?,`HOME_TYPE_ID`=?,`TITLE`=?,`DESCRIPTION`=?,`STATUS`=?,`LOCATION_ID`=?, `PRICE`=?,`BILLS_INCLUDE`=?,`DEPOSIT_PRICE`=?,`CURRENCY_ID`=?,`BED_NUMBER`=?,`BED_TYPE_ID`=?,`BATHROOM_NUMBER`=?,`BATHROOM_TYPE`=?,`PLACE_MATE_NUMBER`=?,`PLACE_MATE_GENDER`=?,`GUEST_NUMBER`=?,`GUEST_GENDER`=?,`RULES`=?,`AMENTIES`=?,`SAFETY_AMENTIES`=?,`MINUMUM_STAY`=?,`MAXIMUM_STAY`=?,`START_DATE`=?,`END_DATE`=?,`CANCELLATION_POLICY_ID`=?,`CREATED_BY`=?,`CREATED_DATE`=?,`CREATED_DATE_GMT`=?,`MODIFIED_BY`=?,`MODIFIED_DATE`=?,`MODIFIED_DATE_GMT`=? WHERE `ID`=? ";
 	
 	@Autowired
 	public PlaceDao(DataSource dataSource) {
@@ -32,12 +36,23 @@ public class PlaceDao extends JdbcDaoSupport implements IPlaceDao{
 	}	
 	
 	@Override
-	public ListOperationResult<Place> getPlace(Long id) {
-		ListOperationResult<Place> listOperationResult = new ListOperationResult<Place>();
-		List<Place> fileList = super.getJdbcTemplate().query(GET_PLACE_WITH_ID_SQL, new Object[] { id }, new PlaceRowMapper());		
-		listOperationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
-		listOperationResult.setObjectList(fileList);		
-		return listOperationResult;
+	public ValueOperationResult<Place> getPlace(Long id) {
+		ValueOperationResult<Place> operationResult = new ValueOperationResult<Place>();
+		Place place = new Place();
+		place.setId(id);
+		ListOperationResult<Place> listOperationResult = this.listPlace(place, true);
+		
+		operationResult.setResultCode(listOperationResult.getResultCode());
+		operationResult.setResultDesc(listOperationResult.getResultDesc());
+		
+		if (OperationResult.isResultSucces(listOperationResult)) {
+			if (listOperationResult.getObjectList() != null 
+					&& listOperationResult.getObjectList().size() > 0) {
+				operationResult.setResultValue(listOperationResult.getObjectList().get(0));
+			}
+		}
+		
+		return operationResult;
 	}
 
 	@Override
@@ -54,7 +69,6 @@ public class PlaceDao extends JdbcDaoSupport implements IPlaceDao{
 		argList.add(place.getDescription());
 		argList.add(place.getStatus());
 		argList.add(place.getLocationId());
-		argList.add(place.getPhone());
 		argList.add(place.getPrice());
 		argList.add(place.getBillsInclude());
 		argList.add(place.getDepositPrice());		
@@ -101,7 +115,6 @@ public class PlaceDao extends JdbcDaoSupport implements IPlaceDao{
 		argList.add(place.getDescription());
 		argList.add(place.getStatus());
 		argList.add(place.getLocationId());
-		argList.add(place.getPhone());
 		argList.add(place.getPrice());
 		argList.add(place.getBillsInclude());
 		argList.add(place.getDepositPrice());		
@@ -135,6 +148,32 @@ public class PlaceDao extends JdbcDaoSupport implements IPlaceDao{
 		operationResult.setResultValue(updatedRowCount);
 		
 		return operationResult;
+	}
+
+	@Override
+	public ListOperationResult<Place> listPlace(Place place, boolean locationFlag) {
+		ListOperationResult<Place> listOperationResult = new ListOperationResult<Place>();
+		StringBuilder sqlBuilder = new StringBuilder();
+		List<Object> argList = new ArrayList<Object>();
+		
+		PlaceRowMapper placeRowMapper = new PlaceRowMapper();
+		placeRowMapper.addFKey(PlaceRowMapper.FKEY_LOCATION);
+		
+		sqlBuilder.append(placeRowMapper.getSelectSqlWithForeignKeys());
+		
+		if (place != null) {
+			if (place.getId() != null) {
+				sqlBuilder.append(" AND " + placeRowMapper.getColumnName(PlaceRowMapper.COL_ID) + " = ? ");
+				argList.add(place.getId());
+			}
+		}
+		
+		List<Place> fileList = super.getJdbcTemplate().query(sqlBuilder.toString(), argList.toArray(), placeRowMapper);		
+		
+		listOperationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+		listOperationResult.setObjectList(fileList);		
+		
+		return listOperationResult;
 	}
 
 }
