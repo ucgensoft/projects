@@ -10,6 +10,14 @@
 		
 		<script>
 		
+			var email = '#{loginController.user.email}';
+		
+			if (email != '') {
+				alert("Kullanıcı Login olmuş Email: " + email);
+			} else {
+				alert("Lütfen login olun.");
+			}
+			
 			$(function(){
 		        $("#txtSearchPlace").geocomplete( { map: ".map_canvas" });
 		        $( "#txtStartDatePicker" ).datepicker({

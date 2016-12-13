@@ -34,25 +34,18 @@
 
 		<div class="form-group">
 			<label class="sr-only" for="email">E-mail address</label> 
-			<h:inputText type="email" name="email" id="email" value="#{loginController.user.email}" rendered="#{headerController.user != null}"
-				class="form-control" placeholder="E-mail address" required="" autocomplete="email"> 
-			</h:inputText>
+			 <input type="text" id="txtEmail" />
 		</div>
 
-		<div class="form-group">
-			<label class="sr-only" for="password">Password</label> 
-			<h:inputSecret id="txtPassword" class="form-control"
-				placeholder="Password" required="" value="#{ loginController.user.password }"/>
+		<div class="form-group" kemal="test">
+			<label class="sr-only" for="password">Password</label>
+			<input type="password" id="txtPassword" />
 			<p class="text-right small">
 				<a href="/recover-account" data-event="Clicked Forgot password"
 					data-type="link"> Forgot your password?</a>
 			</p>
 		</div>
-
-		<h:commandButton action="#{loginController.login}" 
-			ajax="true" value=" Login and continue " class="btn-brand btn-block" >
-		</h:commandButton>
-
+		<input type="button" id="btnLogin" value=" Login and continue " onclick="login()" />
 		<p class="text-center center-block m-y-1">
 			Don't have an account? 
 			<a href="/pages/register" class="SignUpLink">Sign up</a>

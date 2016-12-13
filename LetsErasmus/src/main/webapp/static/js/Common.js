@@ -34,6 +34,12 @@ var EnmOperationResultCode = {
     EXCEPTION : 3
 };
 
+var OperationResult = {
+        resultCode: 'resultCode',
+        resultDesc: 'resultDesc',
+        resultObj: 'resultObj',
+};
+
 var newOperationResult = function (resultCode, resultDesc, resultObj) {
     return {
         resultCode: resultCode,
@@ -48,9 +54,9 @@ function openModal(url, elementId) {
 
 function openWindow (url, isSelf) {
 	if (isSelf) {
-		window.open(url, '_blank');
-	} else {
 		document.location.href = url;
+	} else {
+		window.open(url, '_blank');
 	}
 }
 
@@ -74,4 +80,35 @@ function ajaxHtml(url, elementId, callbackFunc) {
             
         }
     });
+}
+
+function ajaxJson(url, data, callbackFunc) {
+	$.ajax({
+        url: url,
+        data: data,
+        type: "POST",
+        dataType: "json",
+        success: function (data) {
+            if (callbackFunc != null) {
+            	callbackFunc(data);
+            }
+        },
+        error: function (xhr, status) {
+            alert("Sorry, there was a problem!");
+        },
+        complete: function (xhr, status) {
+            
+        }
+    });
+}
+
+function login() {
+	var email = $('#txtEmail')[0].value;
+	var password = $('#txtPassword')[0].value;
+	var url = webApplicationUrlPrefix + "/api/place/login";
+	var callBackFunc = function(data) {
+		alert(data.resultDesc);
+		openWindow(webApplicationUrlPrefix + "/pages/Main.xhtml", true);
+	}
+	ajaxJson(url, {email: email, password: password}, callBackFunc);
 }
