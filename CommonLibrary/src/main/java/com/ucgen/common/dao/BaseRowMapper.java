@@ -2,6 +2,7 @@ package com.ucgen.common.dao;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -261,6 +262,8 @@ public abstract class BaseRowMapper<T> implements RowMapper<T>{
 					return (Long) value;
 				} else if (value instanceof Integer) {
 					return ((Integer) value).longValue();
+				} else if (value instanceof BigInteger) {
+					return ((BigInteger) value).longValue();
 				} else if (value instanceof BigDecimal) {
 					return ((BigDecimal) value).longValue();
 				} else if (value instanceof String) {
