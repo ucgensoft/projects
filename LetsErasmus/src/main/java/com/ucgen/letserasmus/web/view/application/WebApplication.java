@@ -14,7 +14,7 @@ public class WebApplication {
 	}
 	
 	public WebApplication() {
-		this.urlPrefix = "/LetsErasmus";
+		this.urlPrefix = "http://localhost:8080/LetsErasmus";
 	}
 	
 }

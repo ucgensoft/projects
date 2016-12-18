@@ -7,257 +7,82 @@
 	<ui:define name="head">
 		<link rel="stylesheet" type="text/css"
 			href="#{webApplication.urlPrefix}/static/css/search_results.css" />
-		<script>
-			
-			var map = null; 
-		
-			function CustomMarker(latlng, map, args) {
-				this.latlng = latlng;
-				this.args = args;
-				this.setMap(map);
-			}
-
-			CustomMarker.prototype = new google.maps.OverlayView();
-
-			CustomMarker.prototype.draw = function() {
-
-				var self = this;
-
-				var div = this.div;
-
-				if (!div) {
-
-					div = document.getElementById('divMarker');
-					
-					if (typeof (this.args.marker_id) !== 'undefined') {
-						div.dataset.marker_id = this.args.marker_id;
-					}
-					
-					var myLatlng = new google.maps.LatLng(-33.866, 151.176);
-					
-					var marker = new google.maps.Marker({
-		                  icon: '/LetsErasmus/static/images/site_icon_32_.jpg',
-						  map: map,
-		                  position: self.latlng
-		                });
-					
-					google.maps.event.addDomListener(div, "click", function(
-							event) {
-						var divInfo = document.getElementById('divPlaceInfoWindow');
-						infowindow.setContent(divInfo.innerHTML);
-	    		        infowindow.open(map, marker);
-						//google.maps.event.trigger(self, "click");
-					});
-
-					var panes = this.getPanes();
-					panes.overlayImage.appendChild(div);
-					this.div = div;
-				}
-
-				var point = this.getProjection().fromLatLngToDivPixel(this.latlng);
-
-				if (point) {
-					div.style.left = (point.x - 21) + 'px';
-					div.style.top = (point.y - 26) + 'px';
-				}
-			};
-			
-			function showInfoWindow() {
-				var divInfo = document.getElementById('divPlaceInfoWindow');
-				infowindow.setContent(divInfo.innerHTML);
-		        infowindow.open(map, this);
-			}
-
-			CustomMarker.prototype.remove = function() {
-				if (this.div) {
-					this.div.parentNode.removeChild(this.div);
-					this.div = null;
-				}
-			};
-
-			CustomMarker.prototype.getPosition = function() {
-				return this.latlng;
-			};
-			
-			var infowindow = null;
-			
-			function initialize() {
-				
-				var myLatlng = new google.maps.LatLng(-33.866, 151.196);
-				var mapOptions = {
-					zoom: 15,
-					center: myLatlng,
-					disableDefaultUI: false
-				}
-				
-				map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
-				
-				infowindow = new google.maps.InfoWindow();
-
-		        var overlay = new CustomMarker(
-					myLatlng, 
-					map,
-					{
-						marker_id: '123'
-					}
-				);
-		        
-			}
-
-			google.maps.event.addDomListener(window, 'load', initialize);
-
-			function showExtendedSearchFields() {
-				document.getElementById("divExtendedSearchFields").style.display = "";
-				document.getElementById("filterToolBarId_Extended").style.display = "";
-
-				document.getElementById("filterToolBarId").style.display = "none";
-				document.getElementById("searchResultsId").style.display = "none";
-				document.getElementById("divPagination").style.display = "none";
-			}
-
-			function hideExtendedSearchFields() {
-				document.getElementById("divExtendedSearchFields").style.display = "none";
-				document.getElementById("filterToolBarId_Extended").style.display = "none";
-
-				document.getElementById("filterToolBarId").style.display = "";
-				document.getElementById("searchResultsId").style.display = "";
-				document.getElementById("divPagination").style.display = "";
-			}
-			
-		</script>
-
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
 	</ui:define>
 
 	<ui:define name="body">
 		<h:form id="mainSearchForm">
-			<div id="containerPage" data-lang="en" itemscope=""
-				itemtype="http://schema.org/SearchResultsPage" ng-app="myApp" ng-controller="searchResultCtrl as ctrl">
-				<div class="SearchApp" data-reactroot="" data-reactid="1"
-					data-react-checksum="-867101954">
-					<div id="filterResultId" class="FilterResult" data-reactid="2">
-						<section class="ListFilters" data-reactid="3">
-						<div class="SearchTitle" data-reactid="4">
-							<h1 data-reactid="5">Housing Results in Milan</h1>
+			<div id="containerPage" ng-app="myApp" ng-controller="searchResultCtrl as ctrl">
+				<div class="SearchApp">
+					<div id="filterResultId" class="FilterResult">
+						<section class="ListFilters">
+						<div class="SearchTitle">
+							<h1>Housing Results in {{ctrl.selectedPlaceName}}</h1>
 						</div>
-						<div class="MainFilter" data-reactid="6">
-							<p class="MainFilter-title u-filterLabel" data-reactid="7">Destination</p>
-							<div class="SearchPlaceBox" itemprop="potentialAction"
-								itemscope="" itemtype="http://schema.org/SearchAction"
-								data-reactid="8">
-								<div class="SearchPlaceBox-container" data-reactid="9">
-									<div
-										class="SearchPlaceBoxLabelInside SearchPlaceBox-labelInside"
-										data-reactid="10">
-										<icon class="beicon-town SearchPlaceBox-labelInside-icon"
-											data-reactid="11"></icon>
-										<div class="SearchPlaceBoxLabelInside-label" data-reactid="12">Milan</div>
+						<div class="MainFilter">
+							<p class="MainFilter-title u-filterLabel">Destination</p>
+							<div class="SearchPlaceBox">
+								<div class="SearchPlaceBox-container">
+									<div class="SearchPlaceBoxLabelInside SearchPlaceBox-labelInside">
+										<icon class="beicon-town SearchPlaceBox-labelInside-icon"></icon>
+										<div class="SearchPlaceBoxLabelInside-label" title="{{ctrl.selectedPlaceName}}">{{ctrl.selectedPlaceName}}</div>
 									</div>
-									<input class="SearchPlaceBox-input" role="combobox"
-										aria-expanded="true" value=""
-										placeholder="Search by university or neighborhood"
-										itemprop="query" data-reactid="13" />
+									<input id="txtSearchPlace" class="SearchPlaceBox-input" value=""
+										placeholder="Search by university or neighborhood"/>
 									<div class="SearchPlaceBox-close CloseButton"
-										style="cursor: pointer;" data-reactid="14">×</div>
+											style="cursor: pointer;">×</div>
 								</div>
 							</div>
-							<div class="CheckInOutDouble" data-reactid="15">
-								<div class="DateRangePicker" data-reactid="16">
-									<div class="DateRangePickerInput" data-reactid="17">
-										<div class="DateInput" data-reactid="18">
-											<label class="DateInput__label" for="startDate"
-												data-reactid="19">Check-in</label> <input type="text"
-												class="DateInput__input" id="startDate" name="startDate"
-												value="28-12-2016" placeholder="Check-in" autocomplete="off"
-												maxlength="10" data-reactid="20" />
-											<div
-												class="DateInput__display-text DateInput__display-text--has-input"
-												data-reactid="21">28-12-2016</div>
-										</div>
-										<div class="DateRangePickerInput__arrow" data-reactid="22">
-											<svg viewBox="0 0 1000 1000" data-reactid="23"> <path
-												d="M694.4 242.4l249.1 249.1c11 11 11 21 0 32L694.4 772.7c-5 5-10 7-16 7s-11-2-16-7c-11-11-11-21 0-32l210.1-210.1H67.1c-13 0-23-10-23-23s10-23 23-23h805.4L662.4 274.5c-21-21.1 11-53.1 32-32.1z"
-												data-reactid="24"></path></svg>
-										</div>
-										<div class="DateInput" data-reactid="25">
-											<label class="DateInput__label" for="endDate"
-												data-reactid="26">Check-out</label> <input type="text"
-												class="DateInput__input" id="endDate" name="endDate"
-												value="28-12-2016" placeholder="Check-out"
-												autocomplete="off" maxlength="10" data-reactid="27" />
-											<div
-												class="DateInput__display-text DateInput__display-text--has-input"
-												data-reactid="28">28-12-2016</div>
-										</div>
-										<button type="button"
-											class="DateRangePickerInput__clear-dates" data-reactid="29">
-											<span class="screen-reader-only" data-reactid="30">Clear
-												Dates</span>
-											<svg viewBox="0 0 12 12" data-reactid="31"> <path
-												fill-rule="evenodd"
-												d="M11.53.47a.75.75 0 0 0-1.061 0l-4.47 4.47L1.529.47A.75.75 0 1 0 .468 1.531l4.47 4.47-4.47 4.47a.75.75 0 1 0 1.061 1.061l4.47-4.47 4.47 4.47a.75.75 0 1 0 1.061-1.061l-4.47-4.47 4.47-4.47a.75.75 0 0 0 0-1.061z"
-												data-reactid="32"></path></svg>
-										</button>
-									</div>
+							<div style="height: 30px; margin-top:2px">
+								<div class="DateInput" style="height: 30px;">
+									<input type="text" id="txtStartDatePicker" class="DateInput__input"
+										placeholder="Start date" readonly="true"/> 
+								</div>
+								
+								<div class="DateInput" style="height: 30px;">
+									<input type="text" id="txtEndDatePicker" class="DateInput__input"
+										placeholder="End date" readonly="true"/> 
+								</div>
+							</div>
+							<input type="button" class="FilterToolBar-showExtended u-button" id="btnSearch"
+								value="Search" ng-click="ctrl.search();" style="height: 30px; margin-top: 2px; margin-left: 5px">
+							</input>
 
-								</div>
-							</div>
 						</div>
-						<div class="AccomodationFilter u-borderTop" data-reactid="498">
+						<div class="AccomodationFilter u-borderTop">
 							<p class="AccomodationFilter-title u-filterLabel"
 								data-reactid="499">Housing Type</p>
-							<div class="AccomodationFilter-element" data-reactid="500">
-								<div class="IconFilter u-textCenter" data-reactid="501">
-									<icon class="IconFilter-icon beicon-shared-flat"
-										data-reactid="502"></icon>
-									<p class="u-filterLabel" data-reactid="503">Shared Flat</p>
+							<div class="AccomodationFilter-element">
+								<div class="IconFilter u-textCenter">
+									<icon id="iconPlaceTypeId_1" class="IconFilter-icon beicon-shared-flat"
+										ng-click="ctrl.onFilterElementClick($event, 'IconFilter-icon--enabled'); ctrl.basicSearch();"></icon>
+									<p class="u-filterLabel">Shared Flat</p>
 								</div>
-								<div class="IconFilter u-textCenter" data-reactid="504">
-									<icon class="IconFilter-icon beicon-host-family"
-										data-reactid="505"></icon>
-									<p class="u-filterLabel" data-reactid="506">Host Family</p>
+								<div class="IconFilter u-textCenter">
+									<icon id="iconPlaceTypeId_2" class="IconFilter-icon beicon-host-family"
+										ng-click="ctrl.onFilterElementClick($event, 'IconFilter-icon--enabled'); ctrl.basicSearch();"></icon>
+									<p class="u-filterLabel">Host Family</p>
 								</div>
-								<div class="IconFilter u-textCenter" data-reactid="507">
-									<icon class="IconFilter-icon beicon-student-hall"
-										data-reactid="508"></icon>
-									<p class="u-filterLabel" data-reactid="509">Student Hall</p>
+								<div class="IconFilter u-textCenter">
+									<icon id="iconPlaceTypeId_3" class="IconFilter-icon beicon-student-hall"
+										ng-click="ctrl.onFilterElementClick($event, 'IconFilter-icon--enabled'); ctrl.basicSearch();"></icon>
+									<p class="u-filterLabel">Student Hall</p>
 								</div>
-								<div class="IconFilter u-textCenter" data-reactid="510">
-									<icon class="IconFilter-icon beicon-complete-apartment"
-										data-reactid="511"></icon>
-									<p class="u-filterLabel" data-reactid="512">Full Apartment</p>
+								<div class="IconFilter u-textCenter">
+									<icon id="iconPlaceTypeId_4" class="IconFilter-icon beicon-complete-apartment"
+										ng-click="ctrl.onFilterElementClick($event, 'IconFilter-icon--enabled'); ctrl.basicSearch();"></icon>
+									<p class="u-filterLabel">Full Apartment</p>
 								</div>
 							</div>
 						</div>
-						<div id="PriceFilterId" class="PriceFilter u-borderTop"
-							data-reactid="513">
-							<div class="PriceFilter-title u-filterLabel" data-reactid="514">Budget</div>
-							<div class="PriceFilter-box" data-reactid="515">
-								<span class="PriceFilter-minValue" data-reactid="516">10</span>
-								<div class="PriceFilter-boxSlider" data-reactid="517">
-									<div style="position: relative;" class="PriceFilter-slider"
-										data-reactid="518">
-										<div class="PriceFilter-bar PriceFilter-bar-0"
-											style="position: absolute; left: 0px; right: 838px;"
-											data-reactid="519"></div>
-										<div class="PriceFilter-bar PriceFilter-bar-1"
-											style="position: absolute; will-change:; left: 0; right: 0;"
-											data-reactid="520"></div>
-										<div class="PriceFilter-bar PriceFilter-bar-2"
-											style="position: absolute; left: 838px; right: 0px;"
-											data-reactid="521"></div>
-										<div class="PriceFilter-handle PriceFilter-handle-0 "
-											style="position: absolute; will-change:; z-index: 1; left: 0px;"
-											data-reactid="522">
-											<div data-reactid="523"></div>
-										</div>
-										<div class="PriceFilter-handle PriceFilter-handle-1 "
-											style="position: absolute; z-index: 2; left: 838px;"
-											data-reactid="524">
-											<div data-reactid="525"></div>
-										</div>
-									</div>
+						<div id="PriceFilterId" class="PriceFilter u-borderTop">
+							<div class="PriceFilter-title u-filterLabel">Budget</div>
+							<div class="PriceFilter-box">
+								<span id="spanMinPrice" class="PriceFilter-minValue">0</span>
+								<div id="divPriceSlider" class="PriceFilter-boxSlider">
+									
 								</div>
-								<span class="PriceFilter-maxValue" data-reactid="526">5000</span>
+								<span id="spanMaxPrice" class="PriceFilter-maxValue">500</span>
 							</div>
 						</div>
 						<div id="divExtendedSearchFields" style="display: none">
@@ -268,11 +93,11 @@
 									class="WholeApartmentFilter-element WholeApartmentFilter-element--bedrooms">
 									<icon class="WholeApartmentFilter-element-icon beicon-rooms"></icon>
 									<div class="SelectOptionNumber">
-										<div class="SelectOptionNumber-element">1</div>
-										<div class="SelectOptionNumber-element">2</div>
-										<div class="SelectOptionNumber-element">3</div>
-										<div class="SelectOptionNumber-element">4</div>
-										<div class="SelectOptionNumber-element">5+</div>
+										<div class="SelectOptionNumber-element" ng-click="ctrl.onFilterElementClick($event, 'SelectOptionNumber-element--selected')">1</div>
+										<div class="SelectOptionNumber-element" ng-click="ctrl.onFilterElementClick($event, 'SelectOptionNumber-element--selected')">2</div>
+										<div class="SelectOptionNumber-element" ng-click="ctrl.onFilterElementClick($event, 'SelectOptionNumber-element--selected')">3</div>
+										<div class="SelectOptionNumber-element" ng-click="ctrl.onFilterElementClick($event, 'SelectOptionNumber-element--selected')">4</div>
+										<div class="SelectOptionNumber-element" ng-click="ctrl.onFilterElementClick($event, 'SelectOptionNumber-element--selected')">5+</div>
 									</div>
 									<span class="WholeApartmentFilter-element-title">Bedrooms</span>
 								</div>
@@ -280,9 +105,9 @@
 									class="WholeApartmentFilter-element WholeApartmentFilter-element--bathrooms">
 									<icon class="WholeApartmentFilter-element-icon beicon-shower"></icon>
 									<div class="SelectOptionNumber">
-										<div class="SelectOptionNumber-element">1</div>
-										<div class="SelectOptionNumber-element">2</div>
-										<div class="SelectOptionNumber-element">3+</div>
+										<div class="SelectOptionNumber-element" ng-click="ctrl.onFilterElementClick($event, 'SelectOptionNumber-element--selected')">1</div>
+										<div class="SelectOptionNumber-element" ng-click="ctrl.onFilterElementClick($event, 'SelectOptionNumber-element--selected')">2</div>
+										<div class="SelectOptionNumber-element" ng-click="ctrl.onFilterElementClick($event, 'SelectOptionNumber-element--selected')">3+</div>
 									</div>
 									<span class="WholeApartmentFilter-element-title">Bathrooms</span>
 								</div>
@@ -353,13 +178,13 @@
 									</div>
 									<div class="RoomFilters-element">
 										<div class="IconFilter u-textCenter">
-											<icon class="IconFilter-icon beicon-single-bed"></icon>
+											<icon class="IconFilter-icon beicon-single-bed" ng-click="ctrl.onFilterElementClick($event, 'IconFilter-icon--enabled')"></icon>
 											<p class="u-filterLabel">Single Bed</p>
 										</div>
 									</div>
 									<div class="RoomFilters-element">
 										<div class="IconFilter u-textCenter">
-											<icon class="IconFilter-icon beicon-double-bed"></icon>
+											<icon class="IconFilter-icon beicon-double-bed" ng-click="ctrl.onFilterElementClick($event, 'IconFilter-icon--enabled')"></icon>
 											<p class="u-filterLabel">Double Bed</p>
 										</div>
 									</div>
@@ -423,9 +248,9 @@
 						<div id="filterToolBarId_Extended"
 							class="FilterToolBar u-borderTop FilterToolBar--expanded"
 							data-reactid="532" style="display: none">
-							<button class="FilterToolBar-cancel u-button"
-								onclick="hideExtendedSearchFields();">Cancel</button>
-							<button class="FilterToolBar-apply u-button">Apply</button>
+							<input type="button" class="FilterToolBar-cancel u-button"
+								onclick="hideExtendedSearchFields();" value="Cancel" />
+							<input type="button" class="FilterToolBar-apply u-button" value="Apply" ng-click="ctrl.advancedSearch()"/>
 						</div>
 						<div id="filterToolBarId" class="FilterToolBar u-borderTop"
 							data-reactid="532">
@@ -435,211 +260,111 @@
 								filters</button>
 							<div class="SearchCounter" data-reactid="534">
 								<h2 data-reactid="535">
-									Show <b>7</b> of <b>7</b> rooms available in <strong>Milan</strong>
+									Show <b>7</b> of <b>7</b> rooms available in <strong>{{ctrl.selectedPlaceName}}</strong>
 								</h2>
 							</div>
 						</div>
-						<section id="searchResultsId" class="SearchResults"
-							data-reactid="536"> <article class="ProductCard"
-							itemscope="" itemtype="http://schema.org/SiteNavigationElement">
-						<div class="ProductCard-picture" data-reactid="538">
-							<section class="image-gallery" data-reactid="539"> <a
-								href="https://www.beroomers.com/milan-italy/apartments-for-rent/CA000313?checkin=28-12-2016&amp;checkout=31-01-2017"
-								target="_blank" itemprop="url" data-reactid="540"><div
-									class="image-gallery-content" data-reactid="541">
-									<span class="image-gallery-left-nav hideNav" data-reactid="542"></span><span
-										class="image-gallery-right-nav hideNav" data-reactid="543"></span>
-									<div data-reactid="544">
-										<div class="image-gallery-slides" data-reactid="545">
-											<div class="image-gallery-slide center" data-reactid="546">
-												<img src="" role="presentation" itemprop="image"
-													data-reactid="547" />
+						<section id="searchResultsId" class="SearchResults"> 
+							<article ng-repeat="p in ctrl.placeList" id="articleProduct_{{p.id}}" class="ProductCard"
+								ng-mouseover="ctrl.animateMarker(p.id, true)" ng-mouseleave="ctrl.animateMarker(p.id, false)">
+								<div class="ProductCard-picture">
+									<section class="image-gallery"> 
+										<a href="#{webApplication.urlPrefix}/pages/place/detail" target="_blank">
+											<div
+												class="image-gallery-content">
+												<span class="image-gallery-left-nav hideNav"></span><span
+													class="image-gallery-right-nav hideNav"></span>
+												<div data-reactid="544">
+													<div class="image-gallery-slides">
+														<div class="image-gallery-slide center">
+															<img src="#{webApplication.urlPrefix}/place/images/1/info_window.jpeg" 
+																role="presentation" itemprop="image" />
+														</div>
+													</div>
+												</div>
+												<div class="ProductCardMainProperties">
+													<div class="ProductCardMainProperties-type">
+														<icon class="ProductCardMainProperties-type-icon center beicon-complete-apartment">
+														</icon>
+														<span>{{ctrl.getPlaceTypeDescription(p)}}</span>
+													</div>
+													<div class="ProductCardMainProperties-info">
+														<span class="ProductCardMainProperties-info-title">{{p.description}}</span>
+													</div>
+												</div>
+												<div class="FavouriteItem">
+													<div id="favouriteIcon"
+														class="FavouriteItem-icon beicon-heart"></div>
+												</div>
 											</div>
+										</a> 
+									</section>
+									<div class="BoxPrice" itemscope=""
+										itemtype="http://schema.org/Offer">
+										<div class="BoxPrice-container">
+											<span class="BoxPrice-price">{{ctrl.getPriceText(p)}}</span>
+											<span class="BoxPrice-separator">/</span>
+											<div class="BoxPrice-period">day</div>
+										</div>
+										<div class="BoxPrice-billsIncluded">
+											<span class="BoxPrice-billsIncluded-label">{{ctrl.getBillsDescription(p)}}</span>
 										</div>
 									</div>
-									<div class="ProductCardMainProperties" data-reactid="548">
-										<div class="ProductCardMainProperties-type" data-reactid="549">
-											<icon
-												class="ProductCardMainProperties-type-icon center beicon-complete-apartment"
-												data-reactid="550"></icon>
-											<span data-reactid="551">complete apartment</span>
-										</div>
-										<div class="ProductCardMainProperties-info" data-reactid="552">
-											<span class="ProductCardMainProperties-info-title"
-												itemprop="name" data-reactid="553">Bright complete
-												apartment in Via gioacchino murat, Milan counts with 1
-												bedroom, 1 complete bathroom</span>
-										</div>
+								</div>
+								<div class="ProductCardExtraInfoLine">
+									<div class="ProductCardExtraInfoLine-distance">
+										<icon class="beicon-pin"></icon>
+										<span id="spanPlaceDistance_{{p.id}}" class="ProductCardExtraInfoLine-distance--km">{{p.distance}}</span>
 									</div>
-									<div class="FavouriteItem" data-reactid="554">
-										<div id="favouriteIcon"
-											class="FavouriteItem-icon beicon-heart" data-reactid="555"></div>
+									<div class="ProductCardExtraInfoLine-time">
 									</div>
-								</div></a> </section>
-							<div class="BoxPrice" itemscope=""
-								itemtype="http://schema.org/Offer" data-reactid="556">
-								<div class="BoxPrice-container" data-reactid="557">
-									<span itemprop="price" class="BoxPrice-price" content="1600"
-										data-reactid="558">1600€</span><span itemprop="priceCurrency"
-										class="BoxPrice-separator" data-reactid="559">/</span>
-									<div class="BoxPrice-period" data-reactid="560">month</div>
 								</div>
-								<div class="BoxPrice-billsIncluded" data-reactid="561">
-									<span class="BoxPrice-billsIncluded-label" data-reactid="562">Some
-										Bills Included</span>
-								</div>
-							</div>
-						</div>
-						<div class="ProductCardExtraInfoLine" data-reactid="563">
-							<div class="ProductCardExtraInfoLine-distance" data-reactid="564">
-								<icon class="beicon-pin" data-reactid="565"></icon>
-								<span class="ProductCardExtraInfoLine-distance--km"
-									data-reactid="566">3.61 km from Milan</span>
-							</div>
-							<div class="ProductCardExtraInfoLine-time" data-reactid="567">
-								<div class="ProductCardExtraInfoLine-time--walk"
-									data-reactid="568">
-									<div class="ProductCardExtraInfoLine-time-icon beicon-bicycle"
-										data-reactid="569"></div>
-									<div class="ProductCardExtraInfoLine-time-time"
-										data-reactid="570">17'</div>
-								</div>
-								<div class="ProductCardExtraInfoLine-time--public"
-									data-reactid="571">
-									<div class="ProductCardExtraInfoLine-time-icon beicon-bus"
-										data-reactid="572"></div>
-									<div class="ProductCardExtraInfoLine-time-time"
-										data-reactid="573">20'</div>
-								</div>
-								<div class="ProductCardExtraInfoLine-time--car"
-									data-reactid="574">
-									<div class="ProductCardExtraInfoLine-time-icon beicon-walking"
-										data-reactid="575"></div>
-									<div class="ProductCardExtraInfoLine-time-time"
-										data-reactid="576">36'</div>
-								</div>
-							</div>
-						</div>
-						</article> </section>
+							</article> 
+						</section>
 						<div id="divPagination" class="Pagination" data-reactid="817">
-							<a
-								href="https://www.beroomers.com/s?lat=45.4654219&amp;lng=9.1859243&amp;topLeftLat=45.5356889&amp;topLeftLng=9.0651182&amp;bottomRightLat=45.3897787&amp;bottomRightLng=9.2903463&amp;checkin=28-12-2016&amp;checkout=31-01-2017&amp;page=1"
-								class="Pagination-element Pagination-element--specialButton"
-								data-reactid="818">«</a><a
-								href="https://www.beroomers.com/s?lat=45.4654219&amp;lng=9.1859243&amp;topLeftLat=45.5356889&amp;topLeftLng=9.0651182&amp;bottomRightLat=45.3897787&amp;bottomRightLng=9.2903463&amp;checkin=28-12-2016&amp;checkout=31-01-2017&amp;page=1"
-								class="Pagination-element Pagination-element--specialButton"
-								data-reactid="819">‹</a><a
-								href="https://www.beroomers.com/s?lat=45.4654219&amp;lng=9.1859243&amp;topLeftLat=45.5356889&amp;topLeftLng=9.0651182&amp;bottomRightLat=45.3897787&amp;bottomRightLng=9.2903463&amp;checkin=28-12-2016&amp;checkout=31-01-2017&amp;page=1"
-								class="Pagination-element Pagination-element--selected"
-								data-reactid="820">1</a><a
-								href="https://www.beroomers.com/s?lat=45.4654219&amp;lng=9.1859243&amp;topLeftLat=45.5356889&amp;topLeftLng=9.0651182&amp;bottomRightLat=45.3897787&amp;bottomRightLng=9.2903463&amp;checkin=28-12-2016&amp;checkout=31-01-2017&amp;page=1"
-								class="Pagination-element Pagination-element--specialButton"
-								data-reactid="821">›</a><a
-								href="https://www.beroomers.com/s?lat=45.4654219&amp;lng=9.1859243&amp;topLeftLat=45.5356889&amp;topLeftLng=9.0651182&amp;bottomRightLat=45.3897787&amp;bottomRightLng=9.2903463&amp;checkin=28-12-2016&amp;checkout=31-01-2017&amp;page=1"
-								class="Pagination-element Pagination-element--specialButton"
-								data-reactid="822">»</a>
+							<a href="https://www.beroomers.com/s?lat=45.4654219&amp;lng=9.1859243&amp;topLeftLat=45.5356889&amp;topLeftLng=9.0651182&amp;bottomRightLat=45.3897787&amp;bottomRightLng=9.2903463&amp;checkin=28-12-2016&amp;checkout=31-01-2017&amp;page=1"
+								class="Pagination-element Pagination-element--specialButton">«</a>
+								<a href="https://www.beroomers.com/s?lat=45.4654219&amp;lng=9.1859243&amp;topLeftLat=45.5356889&amp;topLeftLng=9.0651182&amp;bottomRightLat=45.3897787&amp;bottomRightLng=9.2903463&amp;checkin=28-12-2016&amp;checkout=31-01-2017&amp;page=1"
+								class="Pagination-element Pagination-element--specialButton">‹</a>
+								<a href="https://www.beroomers.com/s?lat=45.4654219&amp;lng=9.1859243&amp;topLeftLat=45.5356889&amp;topLeftLng=9.0651182&amp;bottomRightLat=45.3897787&amp;bottomRightLng=9.2903463&amp;checkin=28-12-2016&amp;checkout=31-01-2017&amp;page=1"
+								class="Pagination-element Pagination-element--selected">1</a>
+								<a href="https://www.beroomers.com/s?lat=45.4654219&amp;lng=9.1859243&amp;topLeftLat=45.5356889&amp;topLeftLng=9.0651182&amp;bottomRightLat=45.3897787&amp;bottomRightLng=9.2903463&amp;checkin=28-12-2016&amp;checkout=31-01-2017&amp;page=1"
+								class="Pagination-element Pagination-element--specialButton">›</a>
+								<a href="https://www.beroomers.com/s?lat=45.4654219&amp;lng=9.1859243&amp;topLeftLat=45.5356889&amp;topLeftLng=9.0651182&amp;bottomRightLat=45.3897787&amp;bottomRightLng=9.2903463&amp;checkin=28-12-2016&amp;checkout=31-01-2017&amp;page=1"
+								class="Pagination-element Pagination-element--specialButton">»</a>
 						</div>
 					</div>
-					<section id="searchMapId" class="SearchMap" data-reactid="823">
+					<section id="searchMapId" class="SearchMap">
 					<div id="mapa" class="mapa" itemscope=""
-						itemtype="http://schema.org/Map" data-reactid="824"
-						style="position: relative; overflow: hidden;">
+						itemtype="http://schema.org/Map" style="position: relative; overflow: hidden;">
 						<div
 							style="height: 100%; width: 100%; position: absolute; background-color: rgb(229, 227, 223);">
 							<div class="gm-style" style="height: 100%; width: 100%;">
-								<div id="map_canvas" style="height: 100%; width: 100%;"></div>
+								<div id="divMap" style="height: 100%; width: 100%;"></div>
 							</div>
 						</div>
 					</div>
 					</section>
 					<div>
-						<div id="divMarker" style="position: absolute; z-index: 1;">
-							<div data-reactroot="" class="SearchMapMarker">
-								<div class="SearchMapMarker-price">1600€</div>
+						<div ng-repeat="p in ctrl.placeList" id="divMapMarker_{{p.id}}" style="position: absolute; z-index: 1;">
+							<div class="SearchMapMarker">
+								<div class="SearchMapMarker-price">{{p.price}}€</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div id="divPlaceInfoWindow">
-				<div style="border-radius: 2px; width: 522px; height: 444px; background-color: rgb(255, 255, 255);">
-						<article data-reactroot=""
-							class="ProductCard ProductCard--infoWindow" itemscope=""
-							itemtype="http://schema.org/SiteNavigationElement">
-							<div class="ProductCard-picture">
-								<section class="image-gallery"> <a
-									href="/barcelona-spain/rooms-for-rent/SF002321?checkin=01-01-2017&amp;checkout=31-01-2017"
-									target="_blank" itemprop="url"><div
-										class="image-gallery-content">
-										<span class="image-gallery-left-nav hideNav"></span><span
-											class="image-gallery-right-nav hideNav"></span>
-										<div>
-											<div class="image-gallery-slides">
-												<div class="image-gallery-slide center">
-													<img
-														src=""
-														role="presentation" itemprop="image" />
-												</div>
-											</div>
-										</div>
-										<div class="ProductCardMainProperties">
-											<div class="ProductCardMainProperties-type">
-												<icon
-													class="ProductCardMainProperties-type-icon center beicon-shared-flat"></icon>
-												<span>shared flat</span>
-											</div>
-											<div class="ProductCardMainProperties-scrollerRoom">
-												<span class="ProductCardMainProperties-scrollerRoom-prev">‹</span><span
-													class="ProductCardMainProperties-scrollerRoom-title">Room
-													1/3</span><span class="ProductCardMainProperties-scrollerRoom-next">›</span>
-											</div>
-										</div>
-										<div class="FavouriteItem">
-											<div id="favouriteIcon"
-												class="FavouriteItem-icon beicon-heart"></div>
-										</div>
-									</div></a></section>
-								<div class="BoxPrice" itemscope=""
-									itemtype="http://schema.org/Offer">
-									<div class="BoxPrice-container">
-										<span itemprop="price" class="BoxPrice-price" content="562">562€</span><span
-											itemprop="priceCurrency" class="BoxPrice-separator">/</span>
-										<div class="BoxPrice-period">room month</div>
-									</div>
-									<div class="BoxPrice-billsIncluded">
-										<span class="BoxPrice-billsIncluded-label">Some Bills
-											Included</span>
-									</div>
-								</div>
-							</div>
-							<div class="ProductCardExtraInfoLine">
-								<div class="ProductCardExtraInfoLine-distance">
-									<icon class="beicon-pin"></icon>
-									<span class="ProductCardExtraInfoLine-distance--km">13.04
-										km from Barcelona</span>
-								</div>
-								<div class="ProductCardExtraInfoLine-time">
-									<div class="ProductCardExtraInfoLine-time--walk">
-										<div class="ProductCardExtraInfoLine-time-icon beicon-bicycle"></div>
-										<div class="ProductCardExtraInfoLine-time-time">60'</div>
-									</div>
-									<div class="ProductCardExtraInfoLine-time--public">
-										<div class="ProductCardExtraInfoLine-time-icon beicon-bus"></div>
-										<div class="ProductCardExtraInfoLine-time-time">71'</div>
-									</div>
-									<div class="ProductCardExtraInfoLine-time--car">
-										<div class="ProductCardExtraInfoLine-time-icon beicon-walking"></div>
-										<div class="ProductCardExtraInfoLine-time-time">130'</div>
-									</div>
-								</div>
-							</div>
-						</article>
+				<div id="divPlaceInfoWindow_backup" style="display: none">
+					<div style="border-radius: 2px; width: 522px; height: 444px; background-color: rgb(255, 255, 255);">
+							
 					</div>
-					</div>
+				</div>
 			</div>
 		</h:form>
-		<script>
-			google.maps.event.addDomListener(window, "load", initialize);
-		</script>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/app.js"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/service/common_service.js"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/service/place_service.js"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/service/user_service.js"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/geocode/custom_marker.js"></script>
 		<script src="#{webApplication.urlPrefix}/static/js/angular/controller/search_result_controller.js"></script>
 	</ui:define>
 </ui:composition>

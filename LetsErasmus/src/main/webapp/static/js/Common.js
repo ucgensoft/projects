@@ -13,9 +13,7 @@ var getUriParam = function (paramName) {
             if (paramValuePair.indexOf('=') > -1) {
                 var paramValueArr = paramValuePair.split('=');
                 if (paramValueArr[0].toLowerCase() == paramName.toLowerCase()) {
-                    return paramValueArr[1];
-                } else {
-                    return null;
+                    return decodeURI(paramValueArr[1]);
                 }
             } else {
                 if (paramValuePair.toLowerCase() == paramName.toLowerCase()) {
