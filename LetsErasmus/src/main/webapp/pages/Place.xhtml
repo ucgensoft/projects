@@ -1,0 +1,710 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
+
+	<ui:define name="head">
+		<link rel="stylesheet" type="text/css"
+			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css" />
+		<link rel="stylesheet" type="text/css"
+			href="#{webApplication.urlPrefix}/static/css/list_your_space.css" />
+		<link rel="stylesheet"
+			href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+	</ui:define>
+
+	<ui:define name="body">
+		<h:form id="placeForm">
+			<div id="containerPage" ng-app="myApp"
+				ng-controller="placeCtrl as ctrl">
+				<div class="list-your-space__header">
+					<div>
+						<div class="progress-bar__container">
+							<div class="progress-section progress-bar__placeholder"></div>
+							<div>
+								<span>
+									<div id="divProgress1" class="progress-section progress__bar-section progress-section--first"
+											style="width: 16.666666666666668%; left: 0%; max-width: 100%;"></div>
+									<div id="divProgress2" class="progress-section progress__bar-section"
+										style="width: 16.666666666666668%; left: 16.666666666666668%; max-width: 83.33333333333333%;"></div>
+									<div id="divProgress3" class="progress-section progress__bar-section"
+										style="width: 16.666666666666668%; left: 33.333333333333336%; max-width: 66.66666666666666%;"></div>
+									<div id="divProgress4" class="progress-section progress__bar-section"
+										style="width: 16.666666666666668%; left: 50%; max-width: 50%;"></div>
+									<div id="divProgress5" class="progress-section progress__bar-section"
+										style="width: 16.666666666666668%; left: 66.66666666666667%; max-width: 33.33333333333333%;"></div>
+									<div id="divProgress6" class="progress-section progress__bar-section"
+										style="width: 16.666666666666668%; left: 83.33333333333334%; max-width: 16.666666666666657%;"></div>
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- STEP 1 -->
+				<div id="divStep1">
+					<div class="left-backdrop"></div>
+					<div class="right-backdrop hide-sm bg-white right-backdrop--with-bg"></div>
+					<div class="list-your-space__content">
+						<div class="centered-content clearfix">
+							<div class="main-panel-container no-padding-h bg-white main-panel-outer-half clearfix">
+								<div class="main-panel main-panel-padding main-panel-progress pull-right main-panel-inner-half space-sm-8">
+									<div class="panel--no-border panel-title">
+										<h3 class="no-margin-padding">What kind of place are you listing?</h3>
+									</div>
+									<div>
+										<div>
+											<div class="block-radio-button">
+												<label class="btn btn-block block-radio-button__panel">
+													<div class="row no-margin-h">
+														<i class="pull-left icon icon-with-label icon-gray icon-font-size-20 icon-entire-place"></i>
+														<div class="pull-left text-lead block-radio-button__label">
+															<span>Entire place</span>
+														</div>
+														<div class="pull-right">
+															<input id="rdPlaceTypeEntirePlace" type="radio" 
+																value="entire_home" class="pointer-input" />
+														</div>
+													</div>
+												</label>
+											</div>
+											<div class="block-radio-button">
+												<label class="btn btn-block block-radio-button__panel">
+													<div class="row no-margin-h">
+														<i class="pull-left icon icon-with-label icon-gray icon-font-size-20 icon-private-room"></i>
+														<div class="pull-left text-lead block-radio-button__label">
+															<span>Private room</span>
+														</div>
+														<div class="pull-right">
+															<input id="rdPlaceTypePrivateRoom" type="radio"
+																value="private_room" checked="" class="pointer-input" />
+														</div>
+													</div>
+												</label>
+											</div>
+											<div class="block-radio-button">
+												<label class="btn btn-block block-radio-button__panel">
+													<div class="row no-margin-h">
+														<i class="pull-left icon icon-with-label icon-gray icon-font-size-20 icon-shared-room" />
+														<div class="pull-left text-lead block-radio-button__label">
+															<span>Shared room</span>
+														</div>
+														<div class="pull-right">
+															<input id="rdPlaceTypeSharedRoom" type="radio"
+																value="shared_room" class="pointer-input" />
+														</div>
+													</div>
+												</label>
+											</div>
+										</div>
+										<div class="space-top-4 space-4">
+											<div>
+												<label class="h4 text-gray text-normal">
+													<span>What type of property is this?</span>
+												</label>
+												<div class="select select-block select-jumbo">
+													<select id="cmbHomeType" class="">
+														<option selected="" value="" disabled="">Select One</option>
+														<option value="1">House</option>
+														<option value="2">Apartment</option>
+														<option value="3">Hostel</option>
+													</select>
+												</div>
+											</div>
+										</div>
+										<div class="space-top-4 space-4">
+											<div>
+												<label class="h4 text-gray text-normal">
+													<span>Number of Beds</span>
+												</label>
+												<div>
+													<div class="increment-btn no-padding">
+														<div class="increment-btn btn-group no-padding no-border-bottom-radius">
+															<div class="text-gray btn increment-btn__label increment-jumbo increment-btn__label--with-increment-btns">
+																<div class="increment-btn__border-container-label text-truncated">
+																	<span class="text-muted">
+																		<span id="spanBedNumber">1 bed</span>
+																	</span>
+																</div>
+															</div>
+															<button type="button"
+																class="btn btn-jumbo increment-btn__decrementer"
+																onclick="decreaseCounterElement('spanBedNumber', 1)">
+																<div class="increment-btn__border-container-decrementer"></div>
+															</button>
+															<button type="button"
+																class="btn btn-jumbo increment-btn__incrementer increment-btn__incrementer"
+																onclick="increaseCounterElement('spanBedNumber')">
+															</button>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div>
+												<label class="h4 text-gray text-normal">
+													<span>Number of Bathrooms</span>
+												</label>
+												<div>
+													<div class="increment-btn no-padding">
+														<div class="increment-btn btn-group no-padding no-border-bottom-radius">
+															<div class="text-gray btn increment-btn__label increment-jumbo increment-btn__label--with-increment-btns">
+																<div class="increment-btn__border-container-label text-truncated">
+																	<span class="text-muted">
+																		<span id="spanBathroomNumber">1 Bathroom</span>
+																	</span>
+																</div>
+															</div>
+															<button type="button"
+																class="btn btn-jumbo increment-btn__decrementer"
+																onclick="decreaseCounterElement('spanBathroomNumber', 1)">
+																<div class="increment-btn__border-container-decrementer"></div>
+															</button>
+															<button type="button"
+																class="btn btn-jumbo increment-btn__incrementer increment-btn__incrementer"
+																onclick="increaseCounterElement('spanBathroomNumber')">
+															</button>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="space-top-4 space-4">
+											<div>
+												<label class="h4 text-gray text-normal">
+													<span>Type Of Bathrooms</span>
+												</label>
+												<div class="select select-block select-jumbo">
+													<select id="cmbBathroomType" name="house_type" class="">
+														<option selected="" value="" disabled="">Select One</option>
+														<option value="1">Private</option>
+														<option value="2">Shared</option>
+													</select>
+												</div>
+											</div>
+										</div>
+										
+									</div>
+									
+									<div class="no-margin-padding__sm main-panel-padding main-panel-progress pull-right main-panel-inner-half space-sm-8">
+										<div class="divider hide-sm"></div>
+										<div class="row no-margin-padding__sm">
+											<div class="main-panel__actions no-margin-padding__sm full-width">
+												<div class="btn btn-large btn-progress-next btn-large__next-btn pull-right-md btn-primary"
+													ng-click="ctrl.next(1)" style="float:right">
+													<span>Next</span>
+												</div>
+											</div>
+										</div>
+									</div>							
+								</div>
+							</div>
+							<div class="help-panel-container">
+								<div class="hide-sm help-panel panel">
+									<div class="panel-body">
+										<div class="help-panel__bulb-img space-2"></div>
+										<div class="help-panel__text">
+											<div>
+												<p>
+													<span class="help-panel__title">
+														<span>Entire place</span>
+														<br/>
+													</span>
+													<span>Guests will rent the entire place. Includes in-law units.</span>
+												</p>
+												<p>
+													<span class="help-panel__title">
+														<span>Private room</span>
+														<br />
+													</span>
+													<span>Guests share some spaces but they’ll have their own private room for sleeping.</span>
+												</p>
+												<p>
+													<span class="help-panel__title">
+														<span>Shared room</span>
+														<br/>
+													</span>
+													<span>Guests don’t have a room to themselves.</span>
+												</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			
+				<!-- STEP 2 -->
+				<div id="divStep2">
+					<div class="left-backdrop"></div>
+					<div class="right-backdrop hide-sm bg-white right-backdrop--with-bg"></div>
+					<div class="list-your-space__content">
+						<div class="centered-content clearfix">
+							<div class="main-panel-container no-padding-h bg-white main-panel-outer-half clearfix">
+								<div class="main-panel main-panel-padding main-panel-progress pull-right main-panel-inner-half space-sm-8">
+									<div class="panel--no-border panel-title">
+										<h3 class="no-margin-padding">How many guests can your place accommodate?</h3>
+									</div>
+									
+									<div class="space-top-4 space-4">
+										<div>
+											<div class="increment-btn no-padding">
+												<div class="increment-btn btn-group no-padding">
+													<div class="text-gray btn increment-btn__label increment-jumbo increment-btn__label--with-increment-btns">
+														<div class="increment-btn__border-container-label text-truncated">
+															<span class="text-muted">
+																<span id="spanGuestNumber">1 guest</span>
+															</span>
+														</div>
+													</div>
+													<button type="button"
+														class="btn btn-jumbo increment-btn__decrementer"
+														onclick="decreaseCounterElement('spanGuestNumber', 1)">
+														<div class="increment-btn__border-container-decrementer"></div>
+													</button>
+													<button type="button"
+														class="btn btn-jumbo increment-btn__incrementer increment-btn__incrementer"
+														onclick="increaseCounterElement('spanGuestNumber')">
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="space-top-4 space-4">
+										<div>
+											<label class="h4 text-gray text-normal">
+												<span>Guest Gender</span>
+											</label>
+											<div class="select select-block select-jumbo">
+												<select id="cmbGuestGender" class="">
+													<option selected="" value="" disabled="">Select One</option>
+													<option value="1">Male</option>
+													<option value="2">Female</option>
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="space-top-4 space-4">
+										<div>
+											<label class="h4 text-gray text-normal">
+												<span>Place Mate Number</span>
+											</label>
+											<div class="increment-btn no-padding">
+												<div class="increment-btn btn-group no-padding">
+													<div class="text-gray btn increment-btn__label increment-jumbo increment-btn__label--with-increment-btns">
+														<div class="increment-btn__border-container-label text-truncated">
+															<span class="text-muted">
+																<span id="spanPlaceMateNumber">0 mates</span>
+															</span>
+														</div>
+													</div>
+													<button type="button"
+														class="btn btn-jumbo increment-btn__decrementer"
+														onclick="decreaseCounterElement('spanPlaceMateNumber', 0)">
+														<div class="increment-btn__border-container-decrementer"></div>
+													</button>
+													<button type="button"
+														class="btn btn-jumbo increment-btn__incrementer increment-btn__incrementer"
+														onclick="increaseCounterElement('spanPlaceMateNumber')">
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="space-top-4 space-4">
+										<div>
+											<label class="h4 text-gray text-normal">
+												<span>Place Mate Gender</span>
+											</label>
+											<div class="select select-block select-jumbo">
+												<select id="cmbPlaceMateGender" class="">
+													<option selected="" value="" disabled="">Select One</option>
+													<option value="1">Male</option>
+													<option value="2">Female</option>
+												</select>
+											</div>
+										</div>
+									</div>
+									
+									<div class="no-margin-padding__sm main-panel-padding main-panel-progress pull-right main-panel-inner-half space-sm-8">
+										<div class="divider hide-sm"></div>
+										<div class="row no-margin-padding__sm">
+											<div class="main-panel__actions no-margin-padding__sm full-width">
+												<div class="btn-progress-back link-icon va-container va-container-v pull-left text-gray link--accessibility-outline" 
+													ng-click="ctrl.back(2)">
+													<span class="icon hide-sm"></span>
+													<span class="va-middle">
+														<h5 class="text-normal">
+															<span>Back</span>
+														</h5>
+													</span>
+												</div>
+												<div class="btn btn-large btn-progress-next btn-large__next-btn pull-right-md btn-primary"
+													ng-click="ctrl.next(2)" style="float:right">
+													<span>Next</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="main-panel__actions-wrapper">
+									<div class="centered-content clearfix">
+										<div class="bg-white main-panel-outer-half clearfix">
+											
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="help-panel-container">
+								<div class="hide-sm help-panel panel">
+									<div class="panel-body">
+										<div class="help-panel__bulb-img space-2"></div>
+										<div class="help-panel__text">
+											<p>
+												<span>How many guests can stay comfortably.</span>
+											</p>
+											<p>
+												<span>
+													Place mate is the person you already share your place with (If exist)
+												</span>
+											</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<!-- STEP 3 -->
+				<div id="divStep3">
+					<div class="left-backdrop"></div>
+					<div class="right-backdrop hide-sm bg-white right-backdrop--with-bg"></div>
+					<div class="list-your-space__content">
+						<div class="centered-content clearfix">
+							<div class="main-panel-container no-padding-h bg-white main-panel-outer-half clearfix">
+								<div class="main-panel main-panel-padding main-panel-progress pull-right main-panel-inner-half space-sm-8">
+									<div class="panel--no-border panel-title">
+										<h3 class="no-margin-padding">Let's talk about money :)</h3>
+									</div>
+									<div>
+										<div>
+											<label class="h4 text-gray text-normal">
+												<span>Daily Price</span>
+											</label>
+											<div>
+												<input id="txtDailyPrice" type="number" min="0" class="form-input" 
+													data-validation="length alphanumeric"
+													data-validation-length="min4"></input>
+											</div>
+										</div>
+									</div>
+									<div class="space-top-4 space-4">
+										<div>
+											<label class="h4 text-gray text-normal">
+												<span>Deposit Price</span>
+											</label>
+											<div>
+												<input id="txtDepositPrice" type="number" min="0" class="form-input"></input>
+											</div>
+										</div>
+									</div>
+									<div class="space-top-4 space-4">
+										<div>
+											<label class="h4 text-gray text-normal">
+												<span>Currency</span>
+											</label>
+											<div class="select select-block select-jumbo">
+												<select id="cmbCurrencyId" class="">
+													<option selected="" value="" disabled="">Select One</option>
+													<option value="1">TRL</option>
+													<option value="2">USD</option>
+													<option value="3">EUR</option>
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="space-top-4 space-4">
+										<div class="block-radio-button">
+											<label class="btn btn-block block-radio-button__panel">
+												<div class="row no-margin-h">
+													<div class="pull-left text-lead block-radio-button__label">
+														<span>Bills Included</span>
+													</div>
+													<div class="pull-right">
+														<input id="chbBillsIncluded" type="checkbox"
+															value="entire_home"
+															class="pointer-input" />
+													</div>
+												</div>
+											</label>
+										</div>
+									</div>
+									<div class="space-top-4 space-4">
+										<div>
+											<input type="text" id="txtStartDatePicker" class="form-input"
+												placeholder="Start date" value="" readonly="true" /> 
+										</div>
+									</div>
+									<div class="space-top-4 space-4">
+										<div>
+											<input type="text" id="txtEndDatePicker" class="form-input"
+												placeholder="End date" value="" readonly="true" /> 
+										</div>
+									</div>
+									<div class="no-margin-padding__sm main-panel-padding main-panel-progress pull-right main-panel-inner-half space-sm-8">
+										<div class="divider hide-sm"></div>
+										<div class="row no-margin-padding__sm">
+											<div class="main-panel__actions no-margin-padding__sm full-width">
+												<div class="btn-progress-back link-icon va-container va-container-v pull-left text-gray link--accessibility-outline" 
+													ng-click="ctrl.back(3)">
+													<span class="icon hide-sm"></span>
+													<span class="va-middle">
+														<h5 class="text-normal">
+															<span>Back</span>
+														</h5>
+													</span>
+												</div>
+												<div class="btn btn-large btn-progress-next btn-large__next-btn pull-right-md btn-primary"
+													ng-click="ctrl.next(3)" style="float:right">
+													<span>Next</span>
+												</div>
+											</div>
+										</div>
+									</div>
+									
+								</div>
+							</div>
+							<div class="help-panel-container">
+								<div class="hide-sm help-panel panel">
+									<div class="panel-body">
+										<div class="help-panel__bulb-img space-2"></div>
+										<div class="help-panel__text">
+											<div>
+												<p>
+													<span>If
+														you have a toilet separate from the shower, count it as a
+														0.5 bathroom.</span>
+												</p>
+												<p>
+													<span>Count
+														only the bathrooms guests can use.</span>
+												</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<!-- STEP 4 -->
+				<div id="divStep4">
+					<div class="left-backdrop"></div>
+					<div class="right-backdrop hide-sm bg-white right-backdrop--with-bg"></div>
+					<div class="list-your-space__content">
+						<div class="centered-content clearfix">
+							<div class="main-panel-container no-padding-h bg-white main-panel-outer-half clearfix">
+								<div class="main-panel main-panel-padding main-panel-progress pull-right main-panel-inner-half space-sm-8">
+									<div class="panel--no-border panel-title">
+										<h3 class="no-margin-padding">What amenities do you offer?</h3>
+									</div>
+									<div style="display: inline-block">
+										<div ng-repeat="a in ctrl.amentiesList" class="amenity-item space-5" style="width: 50%; display: inline">
+											<input id="chb_{{a.id}}" type="checkbox"
+												class="col-sm-1" value="4" />
+											<div class="pull-left col-sm-11">
+												<label for="wireless_internet">{{a.text}}</label>
+											</div>
+										</div>
+									</div>
+									<div class="panel--no-border panel-title" style="display: inline-block">
+										<h3 class="no-margin-padding">Safety Amenties</h3>
+									</div>
+									<div style="display: inline-block">
+										<div ng-repeat="a in ctrl.safetyAmentiesList" class="amenity-item space-5" style="width: 50%; display: inline">
+											<input id="chb_{{a.id}}" type="checkbox"
+												class="col-sm-1" value="4" />
+											<div class="pull-left col-sm-11">
+												<label for="wireless_internet">{{a.text}}</label>
+											</div>
+										</div>
+									</div>
+									<div class="panel--no-border panel-title" style="display: inline-block">
+										<h3 class="no-margin-padding">Rules</h3>
+									</div>
+									<div style="display: inline-block">
+										<div ng-repeat="a in ctrl.ruleList" class="amenity-item space-5" style="width: 50%; display: inline">
+											<input id="chb_{{a.id}}" type="checkbox"
+												class="col-sm-1" value="4" />
+											<div class="pull-left col-sm-11">
+												<label for="wireless_internet">{{a.text}}</label>
+											</div>
+										</div>
+									</div>
+									<div class="no-margin-padding__sm main-panel-padding main-panel-progress pull-right main-panel-inner-half space-sm-8">
+										<div class="divider hide-sm"></div>
+										<div class="row no-margin-padding__sm">
+											<div class="main-panel__actions no-margin-padding__sm full-width">
+												<div class="btn-progress-back link-icon va-container va-container-v pull-left text-gray link--accessibility-outline" 
+													ng-click="ctrl.back(4)">
+													<span class="icon hide-sm"></span>
+													<span class="va-middle">
+														<h5 class="text-normal">
+															<span>Back</span>
+														</h5>
+													</span>
+												</div>
+												<div class="btn btn-large btn-progress-next btn-large__next-btn pull-right-md btn-primary"
+													ng-click="ctrl.next(4)" style="float:right">
+													<span>Next</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="help-panel-container">
+								<div class="hide-sm help-panel panel">
+									<div class="panel-body">
+										<div class="help-panel__bulb-img space-2"></div>
+										<div class="help-panel__text">
+											<div>
+												<p data-reactid=".21uegugh5vk.1.4.0.1.0.0.1.0.0">
+													<span data-reactid=".21uegugh5vk.1.4.0.1.0.0.1.0.0.0">Providing
+														the essentials helps guests feel at home in your place.</span>
+												</p>
+												<p data-reactid=".21uegugh5vk.1.4.0.1.0.0.1.0.1">
+													<span data-reactid=".21uegugh5vk.1.4.0.1.0.0.1.0.1.0">Some
+														hosts provide breakfast, or just coffee and tea. None of
+														these things are required, but sometimes they add a nice
+														touch to help guests feel welcome.</span>
+												</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<!-- STEP 5 -->
+				<div id="divStep5">
+					<div class="left-backdrop"></div>
+					<div class="right-backdrop hide-sm bg-white right-backdrop--with-bg"></div>
+					<div class="list-your-space__content">
+						<div class="centered-content clearfix">
+							<div class="main-panel-container no-padding-h bg-white main-panel-outer-half clearfix">
+								<div class="main-panel main-panel-padding main-panel-progress pull-right main-panel-inner-half space-sm-8">
+									<div class="panel--no-border panel-title">
+										<h3 class="no-margin-padding">Where is your place located ?</h3>
+									</div>
+									<div>
+										<input
+											class="input input-block input-jumbo form-input"
+											id="txtSearch" type="text"
+											autocomplete="off" value=""
+											placeholder="Search Your Specific Location" />
+									</div>
+									<div id="divMap" style="width: 500px; height: 300px; margin-top: 10px">
+									
+									</div>
+									<input type="hidden" id="hiddenLocality" />
+									<div class="row">
+										<div class="space-top-2 col-sm-12">
+											<input type="text" id="txtCountry" class="input input-block input-jumbo form-input"
+												placeholder="Country" value=""/>
+										</div>
+										<div class="space-top-2 col-sm-12 col-md-10">
+											<input
+												class="input input-block input-jumbo lys-address-form__input"
+												id="txtCity" name="city" type="text" placeholder="City"
+												value="" />
+										</div>
+									</div>
+									<div class="space-top-2">
+										<input type="text" id="txtStreet" class="input input-block input-jumbo form-input"
+											placeholder="Street" value="" />
+									</div>
+									<div class="row">
+										<div class="space-top-2 col-sm-12">
+											<input
+												class="input input-block input-jumbo lys-address-form__input"
+												id="txtBuildind" name="apt" type="text"
+												value=""
+												placeholder="Apt., suite, building access code" />
+										</div>
+										<div class="space-top-2 col-sm-12 col-md-8">
+											<input
+												class="input input-block input-jumbo lys-address-form__input"
+												id="txtPostalCode" placeholder="Zip Code"
+												type="text" />
+										</div>
+										<div class="space-top-2 col-sm-12 col-md-8" style="display: inline">
+											<input
+												class="input input-block input-jumbo lys-address-form__input"
+												id="txtLatitude" placeholder="Latitude"
+												type="text" />
+										</div>
+										<div class="space-top-2 col-sm-12 col-md-8" style="display: inline">
+											<input
+												class="input input-block input-jumbo"
+												id="txtLongitude" placeholder="Longitude"
+												type="text" />
+										</div>
+										
+										<div class="no-margin-padding__sm main-panel-padding main-panel-progress pull-right main-panel-inner-half space-sm-8">
+											<div class="divider hide-sm"></div>
+											<div class="row no-margin-padding__sm">
+												<div class="main-panel__actions no-margin-padding__sm full-width">
+													<div class="btn-progress-back link-icon va-container va-container-v pull-left text-gray link--accessibility-outline" 
+														ng-click="ctrl.back(5)">
+														<span class="icon hide-sm"></span>
+														<span class="va-middle">
+															<h5 class="text-normal">
+																<span>Back</span>
+															</h5>
+														</span>
+													</div>
+													<div class="btn btn-large btn-progress-next btn-large__next-btn pull-right-md btn-primary"
+														ng-click="ctrl.finish()" style="float:right">
+														<span>Finish</span>
+													</div>
+												</div>
+											</div>
+										</div>
+								</div>
+							</div>
+							<div class="help-panel-container">
+								<div class="hide-sm help-panel panel">
+									<div class="panel-body">
+										<div class="help-panel__bulb-img space-2"></div>
+										<div class="help-panel__text">
+											<div>
+												<p>
+													<span>Your exact address will only be shared with confirmed guests.</span>
+												</p>
+												<div class="tip-address-img"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				</div>
+			</div>			
+		</h:form>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/app.js"></script>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/angular/service/common_service.js"></script>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/angular/service/place_service.js"></script>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/geocode/custom_marker.js"></script>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/angular/controller/place_controller.js"></script>
+	</ui:define>
+</ui:composition>

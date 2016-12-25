@@ -1,4 +1,4 @@
-App.controller('searchResultCtrl', ['$scope', '$controller', 'placeService', 'commonService', function($scope, $controller, placeService, commonService) {
+App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeService', 'commonService', function($scope, $controller, $http, placeService, commonService) {
       var self = this;
       
       var map = null; 
@@ -30,6 +30,10 @@ App.controller('searchResultCtrl', ['$scope', '$controller', 'placeService', 'co
 			map = new google.maps.Map(document.getElementById('divMap'), mapOptions);
 			
 			infoWindow = new google.maps.InfoWindow();
+			
+			google.maps.event.addListener(map, 'click', function() {
+		          //infoWindow.close();
+		        });
 			
 			self.listPlace(self.setPlaceList);
 			
@@ -134,10 +138,8 @@ App.controller('searchResultCtrl', ['$scope', '$controller', 'placeService', 'co
 	    		}
 	    	}
 	    	
-	    	self.listPlaceAjax(null);
-	    	//self.listPlaceAjax(self.setPlaceList);
-	    	//self.setPlaceList(newPlaceList);
 	    	self.placeList = newPlaceList;
+	    	$scope.update();
 	      };
 	      
 	      self.advancedSearch = function() {
@@ -279,7 +281,7 @@ App.controller('searchResultCtrl', ['$scope', '$controller', 'placeService', 'co
 	};
 	
 	self.getHomeTypeDescription = function(place) {
-		if (place.bills_include == 'Y') {
+		if (place.billsInclude == 'Y') {
 			return "Bills Included";
 		} else {
 			return "";
@@ -295,13 +297,7 @@ App.controller('searchResultCtrl', ['$scope', '$controller', 'placeService', 'co
 	};
 	
 	self.getPriceText = function(place) {
-		if (place.currencyId == 1) {
-			return place.price + " TL";
-		} else if (place.currencyId == 2) {
-			return place.price + " $";
-		} else if (place.currencyId == 3) {
-			return place.price + " €";
-		}
+		return place.price + " " + getCurrencySymbol(place.currencyId);
 	};
 	
 	self.deleteMarkers = function () {
@@ -334,7 +330,14 @@ App.controller('searchResultCtrl', ['$scope', '$controller', 'placeService', 'co
 	  		      }
     		  }
     	  }
-      };             	
+      };
+      
+      self.fakeAjaxCall = function() {
+    	  $http.get('/angular/fakerequest').success(function(data) {
+              
+            });
+      };
+      	
 	initialize();
       
   }]);

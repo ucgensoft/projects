@@ -25,13 +25,13 @@ App.factory('placeService', ['$http', '$q', function($http, $q){
 	
 			createPlace : function(place) {
 				var data = {
-					id : place.id
+					place : place
 				};
 				var config = {
 						 params: data,
 						 headers : {'Accept' : 'application/json'}
 						};
-				return $http.get(webApplicationUrlPrefix + '/api/place/create', config)
+				return $http.post(webApplicationUrlPrefix + '/api/place/create', place)
 						.then(
 								function(response) {
 									return response.data;

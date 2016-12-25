@@ -110,3 +110,45 @@ function login() {
 	}
 	ajaxJson(url, {email: email, password: password}, callBackFunc);
 }
+
+function getCurrencySymbol(currencyId) {
+	if (currencyId == 1) {
+		return "₺";
+	} else if (currencyId == 2) {
+		return "$";
+	} else if (currencyId == 3) {
+		return "€";
+	}
+}
+
+function clone(obj){
+    if(obj == null || typeof(obj) != 'object') return obj;
+    var temp = new obj.constructor(); 
+    for(var key in obj) temp[key] = clone(obj[key]);
+    return temp;
+}
+
+function increaseCounterElement(elementId) {
+	var currentText = $('#' + elementId).text();
+	var currentValue = currentText.substring(0, currentText.indexOf(' '));
+	var newValue = parseInt(currentValue) + 1;
+	var newText = newValue + currentText.substring(currentText.indexOf(' '))
+	$('#' + elementId).text(newText);
+}
+
+function decreaseCounterElement(elementId, minValue) {
+	var currentText = $('#' + elementId).text();
+	var currentValue = currentText.substring(0, currentText.indexOf(' '));
+	currentValue = parseInt(currentValue);
+	if (minValue == null || currentValue != minValue) {
+		var newValue = parseInt(currentValue) - 1;
+		var newText = newValue + currentText.substring(currentText.indexOf(' '))
+		$('#' + elementId).text(newText);
+	}
+}
+
+function getCounterElementValue(elementId) {
+	var currentText = $('#' + elementId).text();
+	var currentValue = currentText.substring(0, currentText.indexOf(' '));
+	return parseInt(currentValue);
+}
