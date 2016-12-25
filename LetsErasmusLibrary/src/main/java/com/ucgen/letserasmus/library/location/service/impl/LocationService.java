@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ucgen.common.operationresult.ListOperationResult;
+import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.letserasmus.library.location.dao.ILocationDao;
 import com.ucgen.letserasmus.library.location.model.Location;
 import com.ucgen.letserasmus.library.location.service.ILocationService;
@@ -28,6 +29,11 @@ public class LocationService implements ILocationService {
 	@Override
 	public ListOperationResult<Location> listLocation(List<Long> idList) {
 		return this.locationDao.listLocation(idList);
+	}
+
+	@Override
+	public OperationResult insertLocation(Location location) {
+		return this.locationDao.insertLocation(location);
 	}
 	
 }

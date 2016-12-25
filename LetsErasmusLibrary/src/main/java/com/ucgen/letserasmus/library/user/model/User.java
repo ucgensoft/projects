@@ -20,12 +20,7 @@ public class User extends BaseModel {
 	private Long fileId;
 	private String facebookTokenId;
 	private String ip;
-	private String createdBy;
-	private Date createdDate;
-	private Date createdDateGmt;
-	private String modifiedBy;
-	private Date modifiedDate;
-	private Date modifiedDateGmt;
+
 	public Long getId() {
 		return id;
 	}
@@ -110,41 +105,9 @@ public class User extends BaseModel {
 	public void setIp(String ip) {
 		this.ip = ip;
 	}
-	public String getCreatedBy() {
-		return createdBy;
-	}
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
-	public Date getCreatedDate() {
-		return createdDate;
-	}
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
-	public Date getCreatedDateGmt() {
-		return createdDateGmt;
-	}
-	public void setCreatedDateGmt(Date createdDateGmt) {
-		this.createdDateGmt = createdDateGmt;
-	}
-	public String getModifiedBy() {
-		return modifiedBy;
-	}
-	public void setModifiedBy(String modifiedBy) {
-		this.modifiedBy = modifiedBy;
-	}
-	public Date getModifiedDate() {
-		return modifiedDate;
-	}
-	public void setModifiedDate(Date modifiedDate) {
-		this.modifiedDate = modifiedDate;
-	}
-	public Date getModifiedDateGmt() {
-		return modifiedDateGmt;
-	}
-	public void setModifiedDateGmt(Date modifiedDateGmt) {
-		this.modifiedDateGmt = modifiedDateGmt;
+	
+	public String getFullName() {
+		return String.format("%s %s", this.getFirstName(), this.getLastName());
 	}
 	
 }

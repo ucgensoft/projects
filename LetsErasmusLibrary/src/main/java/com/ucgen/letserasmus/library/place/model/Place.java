@@ -9,6 +9,8 @@ import com.ucgen.letserasmus.library.user.model.User;
 
 public class Place extends BaseModel {
 
+	private static final long serialVersionUID = -4557066892117998451L;
+
 	private Long id;
 	private Long hostUserId;
 	private Integer placeTypeId;
@@ -20,7 +22,7 @@ public class Place extends BaseModel {
 	private BigDecimal price;
 	private String billsInclude;
 	private BigDecimal depositPrice;
-	private Long currencyId;
+	private Integer currencyId;
 	private Integer bedNumber;
 	private Integer bedTypeId;
 	private Integer bathRoomNumber;
@@ -37,13 +39,7 @@ public class Place extends BaseModel {
 	private Date startDate;
 	private Date endDate;
 	private Long cancellationPolicyId;
-	private String createdBy;
-	private Date createdDate;
-	private Date createdDateGmt;
-	private String modifiedBy;
-	private Date modifiedDate;
-	private Date modifiedDateGmt;
-
+	
 	private Location location;
 	private User user;
 	
@@ -113,10 +109,10 @@ public class Place extends BaseModel {
 	public void setDepositPrice(BigDecimal depositPrice) {
 		this.depositPrice = depositPrice;
 	}
-	public Long getCurrencyId() {
+	public Integer getCurrencyId() {
 		return currencyId;
 	}
-	public void setCurrencyId(Long currencyId) {
+	public void setCurrencyId(Integer currencyId) {
 		this.currencyId = currencyId;
 	}
 	public Integer getBedNumber() {
@@ -214,42 +210,6 @@ public class Place extends BaseModel {
 	}
 	public void setCancellationPolicyId(Long cancellationPolicyId) {
 		this.cancellationPolicyId = cancellationPolicyId;
-	}
-	public String getCreatedBy() {
-		return createdBy;
-	}
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
-	public Date getCreatedDate() {
-		return createdDate;
-	}
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
-	public Date getCreatedDateGmt() {
-		return createdDateGmt;
-	}
-	public void setCreatedDateGmt(Date createdDateGmt) {
-		this.createdDateGmt = createdDateGmt;
-	}
-	public String getModifiedBy() {
-		return modifiedBy;
-	}
-	public void setModifiedBy(String modifiedBy) {
-		this.modifiedBy = modifiedBy;
-	}
-	public Date getModifiedDate() {
-		return modifiedDate;
-	}
-	public void setModifiedDate(Date modifiedDate) {
-		this.modifiedDate = modifiedDate;
-	}
-	public Date getModifiedDateGmt() {
-		return modifiedDateGmt;
-	}
-	public void setModifiedDateGmt(Date modifiedDateGmt) {
-		this.modifiedDateGmt = modifiedDateGmt;
 	}
 	public Location getLocation() {
 		return location;

@@ -89,7 +89,7 @@ public class PlaceRowMapper extends BaseRowMapper<Place> {
 		place.setPrice(super.getBigDecimal(rs, COL_PRICE));
 		place.setBillsInclude(super.getString(rs, COL_BILLS_INCLUDE));
 		place.setDepositPrice(super.getBigDecimal(rs, COL_DEPOSIT_PRICE));
-		place.setCurrencyId(super.getLong(rs, COL_CURRENCY_ID));
+		place.setCurrencyId(super.getInteger(rs, COL_CURRENCY_ID));
 		place.setBedNumber(super.getInteger(rs, COL_BED_NUMBER));
 		place.setBedTypeId(super.getInteger(rs, COL_BED_TYPE_ID));
 		place.setBathRoomNumber(super.getInteger(rs, COL_BATHROOM_NUMBER));

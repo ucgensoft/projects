@@ -9,11 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 
+import com.ucgen.common.dao.UtilityDao;
 import com.ucgen.common.operationresult.EnmResultCode;
 import com.ucgen.common.operationresult.ListOperationResult;
 import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.common.operationresult.ValueOperationResult;
-
 import com.ucgen.letserasmus.library.place.dao.IPlaceDao;
 import com.ucgen.letserasmus.library.place.dao.PlaceRowMapper;
 import com.ucgen.letserasmus.library.place.model.Place;
@@ -26,14 +26,22 @@ public class PlaceDao extends JdbcDaoSupport implements IPlaceDao{
 			+ " `PLACE_MATE_NUMBER`, `PLACE_MATE_GENDER`, `GUEST_NUMBER`, `GUEST_GENDER`, `RULES`, `AMENTIES`, `SAFETY_AMENTIES`, `MINUMUM_STAY`, " 
 			+ " `MAXIMUM_STAY`, `START_DATE`, `END_DATE`, `CANCELLATION_POLICY_ID`, L.LATITUDE L_LATITUDE, L.LONGITUDE L_LONGITUDE" 
 			+ " FROM PLACE P, LOCATION L WHERE P.LOCATION_ID = L.ID AND 1=1 ";
+	
 	private static final String INSERT_PLACE_SQL = " INSERT INTO `PLACE`(`HOST_USER_ID`, `PLACE_TYPE_ID`, `HOME_TYPE_ID`, `TITLE`, `DESCRIPTION`, `STATUS`, `LOCATION_ID`, `PRICE`, `BILLS_INCLUDE`, `DEPOSIT_PRICE`, `CURRENCY_ID`, `BED_NUMBER`, `BED_TYPE_ID`, `BATHROOM_NUMBER`, `BATHROOM_TYPE`, `PLACE_MATE_NUMBER`, `PLACE_MATE_GENDER`, `GUEST_NUMBER`, `GUEST_GENDER`, `RULES`, `AMENTIES`, `SAFETY_AMENTIES`, `MINUMUM_STAY`, `MAXIMUM_STAY`, `START_DATE`, `END_DATE`, `CANCELLATION_POLICY_ID`, `CREATED_BY`, `CREATED_DATE`, `CREATED_DATE_GMT`, `MODIFIED_BY`, `MODIFIED_DATE`, `MODIFIED_DATE_GMT`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 	private static final String UPDATE_PLACE_SQL = " UPDATE `PLACE` SET `ID`=?,`HOST_USER_ID`=?,`PLACE_TYPE_ID`=?,`HOME_TYPE_ID`=?,`TITLE`=?,`DESCRIPTION`=?,`STATUS`=?,`LOCATION_ID`=?, `PRICE`=?,`BILLS_INCLUDE`=?,`DEPOSIT_PRICE`=?,`CURRENCY_ID`=?,`BED_NUMBER`=?,`BED_TYPE_ID`=?,`BATHROOM_NUMBER`=?,`BATHROOM_TYPE`=?,`PLACE_MATE_NUMBER`=?,`PLACE_MATE_GENDER`=?,`GUEST_NUMBER`=?,`GUEST_GENDER`=?,`RULES`=?,`AMENTIES`=?,`SAFETY_AMENTIES`=?,`MINUMUM_STAY`=?,`MAXIMUM_STAY`=?,`START_DATE`=?,`END_DATE`=?,`CANCELLATION_POLICY_ID`=?,`CREATED_BY`=?,`CREATED_DATE`=?,`CREATED_DATE_GMT`=?,`MODIFIED_BY`=?,`MODIFIED_DATE`=?,`MODIFIED_DATE_GMT`=? WHERE `ID`=? ";
+	
+	private UtilityDao utilityDao;
 	
 	@Autowired
 	public PlaceDao(DataSource dataSource) {
 		super();
 		super.setDataSource(dataSource);
 	}	
+	
+	@Autowired
+	public void setUtilityDao(UtilityDao utilityDao) {
+		this.utilityDao = utilityDao;
+	}
 	
 	@Override
 	public ValueOperationResult<Place> getPlace(Long id) {
@@ -56,9 +64,9 @@ public class PlaceDao extends JdbcDaoSupport implements IPlaceDao{
 	}
 
 	@Override
-	public ValueOperationResult<Integer> insertPlace(Place place) {
+	public OperationResult insertPlace(Place place) {
 		
-		ValueOperationResult<Integer> operationResult = new ValueOperationResult<Integer>();
+		OperationResult operationResult = new OperationResult();
 		
 		List<Object> argList = new ArrayList<Object>();
 		
@@ -96,10 +104,12 @@ public class PlaceDao extends JdbcDaoSupport implements IPlaceDao{
 		argList.add(place.getModifiedDate());
 		argList.add(place.getModifiedDateGmt());
 		
-		int i = this.getJdbcTemplate().update(INSERT_PLACE_SQL, argList.toArray());
+		this.getJdbcTemplate().update(INSERT_PLACE_SQL, argList.toArray());
+		
+		place.setId(this.utilityDao.getLastIncrementId());
 		
 		operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
-		operationResult.setResultValue(i);				
+						
 		return operationResult;
 	}
 
