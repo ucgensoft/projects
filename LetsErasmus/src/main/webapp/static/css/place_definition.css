@@ -1,0 +1,15 @@
+#photoHolder {
+	border: 5px dashed #ccc;
+	min-height: 400px;
+	min-width: 400px;
+	margin: 20px;
+}
+
+#photoHolder.hover {
+	border: 5px dashed #b6f442;
+}
+
+#divPhotoContainer img {
+	display: inline;
+	margin: 10px;
+}

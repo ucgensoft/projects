@@ -40,3 +40,11 @@ body, .form-control{
 .custom-width {
     width: 80px !important;
 }
+
+.hidden {
+	display: none !important;
+}
+
+.padding-level1 {
+	padding: 5px;
+}

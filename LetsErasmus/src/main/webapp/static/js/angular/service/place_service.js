@@ -61,6 +61,26 @@ App.factory('placeService', ['$http', '$q', function($http, $q){
 									return $q.reject(errResponse);
 								}
 						);
+		},
+		addPhoto : function(formData) {
+			var xhr = new XMLHttpRequest();
+			xhr.open('POST', webApplicationUrlPrefix + '/api/place/addphoto');
+			xhr.onload = function() {
+				//progress.value = progress.innerHTML = 100;
+			};
+
+			/*
+			if (tests.progress) {
+				xhr.upload.onprogress = function(event) {
+					if (event.lengthComputable) {
+						var complete = (event.loaded / event.total
+								* 100 | 0);
+						progress.value = progress.innerHTML = complete;
+					}
+				}
+			}
+			*/
+			xhr.send(formData);
 		}
 	};
 

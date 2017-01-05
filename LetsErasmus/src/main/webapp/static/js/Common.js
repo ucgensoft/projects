@@ -152,3 +152,34 @@ function getCounterElementValue(elementId) {
 	var currentValue = currentText.substring(0, currentText.indexOf(' '));
 	return parseInt(currentValue);
 }
+
+function showMessage(type, title, message) {
+	$.msgBox({
+		  title: title,
+		  content: message,
+		  type: type,
+		  buttons: [{ value: "Ok" }]
+		  });
+}
+
+function showConfirm(title, message, callBackFunc) {
+	$.msgBox({
+		title : title,
+		content : message,
+		type : "confirm",
+		buttons : [ {
+			value : "Yes"
+		}, {
+			value : "No"
+		}, {
+			value : "Cancel"
+		} ],
+		success : function(result) {
+			if (result == "Yes") {
+				callBackFunc(true);
+			} else if (result == "No") {
+				callBackFunc(false);
+			}
+		}
+	});
+}

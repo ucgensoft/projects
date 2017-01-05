@@ -26,10 +26,6 @@
 	}
 }
 
-body.body--has-sidebar .nav-top {
-	padding-left: .2rem
-}
-
 @media ( min-width :34em) {
 	body.body--has-sidebar .nav-top {
 		padding-left: 0

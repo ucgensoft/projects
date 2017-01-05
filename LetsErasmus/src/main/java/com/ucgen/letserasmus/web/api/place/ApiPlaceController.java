@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -138,22 +140,18 @@ public class ApiPlaceController extends BaseApiController {
 		}
 		return new ResponseEntity<ListOperationResult<Place>>(listResult, httpStatus);
     }
-	
-	@RequestMapping(value = "/api/place/login", method = RequestMethod.POST)
-    public ResponseEntity<OperationResult> login(@RequestParam Map<String, String> requestParams, HttpSession session) {
+		
+	@RequestMapping(value = "/api/place/addphoto", method = RequestMethod.POST)
+    public ResponseEntity<ListOperationResult<Place>> addPhoto(@RequestParam("file") MultipartFile file, 
+    		@RequestParam Map<String, String> requestParams) {
 		HttpStatus httpStatus = null;
-		OperationResult operationResult = new OperationResult();
-		operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
-		operationResult.setResultDesc("Login iþlemi baþarýlý.");
-		
-		if (OperationResult.isResultSucces(operationResult)) {
-			User user = new User();
-			user.setEmail(requestParams.get("email"));
-			session.setAttribute("USER", user);
+		ListOperationResult<Place> listResult = this.placeService.listPlace(null, true);
+		if (OperationResult.isResultSucces(listResult)) {
+			httpStatus = HttpStatus.OK;
+		} else {
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
-		
-		httpStatus = HttpStatus.OK;
-		return new ResponseEntity<OperationResult>(operationResult, httpStatus);
+		return new ResponseEntity<ListOperationResult<Place>>(listResult, httpStatus);
     }
 	
 }

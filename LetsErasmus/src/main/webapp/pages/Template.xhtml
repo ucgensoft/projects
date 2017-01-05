@@ -29,14 +29,22 @@
 	
 			<link rel="icon" href="#{webApplication.urlPrefix}/static/images/site_icon_32.jpg" />
 			<link rel="stylesheet" type="text/css" href="#{webApplication.urlPrefix}/static/css/main/main.css" />
+			<link rel="stylesheet" type="text/css" href="#{webApplication.urlPrefix}/static/css/jquery_messagebox.css" />
+			<link rel="stylesheet" type="text/css" href="#{webApplication.urlPrefix}/static/css/nprogress.css" />
 			<!-- 
 			<link rel="stylesheet" type="text/css" href="#{webApplication.urlPrefix}/static/css/main/main.css" />
 			<link rel="stylesheet" type="text/css" href="#{webApplication.urlPrefix}/static/css/header.css" />
 			 -->
-			
-			<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+
+		<script>
+			var webApplicationUrlPrefix = '#{webApplication.urlPrefix}';
+		</script>
+
+		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 			<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 			<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
+			<script src="#{webApplication.urlPrefix}/static/js/jquery/jquery.msgbox.min_0_8_1.js"></script>
+			<script src="#{webApplication.urlPrefix}/static/js/jquery/nprogress.js"></script>
 			
 			<script src="http://maps.googleapis.com/maps/api/js?libraries=places&amp;key=AIzaSyBPX8f2vL1lLg0tqCWs9lcVWcdtSyNajVI"></script>
 			
@@ -62,9 +70,7 @@
 				}
 				
 				</style>
-				<script>
-					var webApplicationUrlPrefix = '#{webApplication.urlPrefix}';
-				</script>
+				
 				<ui:insert name="head" />
 		</h:head>
 		<h:body style="background-position: center center; background-repeat: no-repeat; background-attachment: fixed; background-size: cover; padding-top: 0px; padding-bottom: 0px;">
@@ -79,6 +85,7 @@
 			</div>
 			
 			<script>
+				//showMessage("error", "title", "message");
 				var modal = document.getElementById('divModal');
 				modal.style.display = 'none';
 				

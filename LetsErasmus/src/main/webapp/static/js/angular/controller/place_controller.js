@@ -4,6 +4,26 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', function($
       var marker = null;
       var map = null;
       var autocomplete = null;
+      var fileList = [];
+      
+      var acceptedPhotoTypes = {
+      	  	'image/png' : true,
+      	  	'image/jpeg' : true,
+      	  	'image/gif' : true
+      	  };
+      
+      var tests = {
+      	  	filereader : typeof FileReader != 'undefined',
+      	  	dnd : 'draggable' in document.createElement('span'),
+      	  	formdata : !!window.FormData,
+      	  	progress : "upload" in new XMLHttpRequest
+      	  };
+
+     var support = {
+      	  	filereader : document.getElementById('filereader'),
+      	  	formdata : document.getElementById('formdata'),
+      	  	progress : document.getElementById('progress')
+      	  };
       
       self.amentiesList = [
         {id: 'washing_machine', text: 'Washing Machine'},
@@ -35,12 +55,15 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', function($
       
       
       self.initialize = function() {
+    	  //$("#divStep1").css("display", "none");
     	  $("#divStep2").css("display", "none");
     	  $("#divStep3").css("display", "none");
     	  $("#divStep4").css("display", "none");
     	  $("#divStep5").css("display", "none");
     	  $("#divStep6").css("display", "none");
     	  $("#divStep7").css("display", "none");
+    	  
+    	  self.initPhotoTab();
     	  
     	  $("#txtStartDatePicker").datepicker(
 			{
@@ -81,10 +104,76 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', function($
 		    autocomplete.addListener('place_changed', function(event, result) {
 		    	self.onPlaceChange(event, result);
 		    });
-      }
+      };
       
       self.onMarkerMove = function() {
     	    
+      };
+      
+      self.initPhotoTab = function() {
+    	  var holder = document.getElementById('photoHolder');
+    	  var fileupload = document.getElementById('filePhoto');
+
+    	  fileupload.onchange = function() {
+    	  	readfiles(this.files);
+    	  };
+
+    	  previewfile = function(file) {
+    	  	if (tests.filereader === true) {
+    	  		if (acceptedPhotoTypes[file.type] === true) {
+    	  			fileList.push(file);
+    	  			var reader = new FileReader();
+        	  		reader.onload = function(event) {
+        	  			var image = new Image();
+        	  			image.src = event.target.result;
+        	  			image.width = 200;
+        	  			divPhotoContainer.appendChild(image);
+        	  		};
+        	  		
+        	  		reader.readAsDataURL(file);
+    	  		} else {
+    	  			// File type not supported
+    	  		}
+    	  	} else {
+    	  		//fileReader not supported
+    	  	}
+    	  };
+
+    	  readfiles = function(files) {
+    	  	var formData = tests.formdata ? new FormData() : null;
+    	  	for (var i = 0; i < files.length; i++) {
+    	  		if (tests.formdata)
+    	  			formData.append('file', files[i]);
+    	  		previewfile(files[i]);
+    	  	}
+
+    	  	formData.append('fileName', 'Test');
+    	  	
+    	  	if (tests.formdata) {
+    	  		placeService.addPhoto(formData);
+    	  	}
+    	  };
+
+    	  holder.ondragover = function() {
+    	  	$(holder).addClass('hover')
+    	  	return false;
+    	  };
+
+    	  holder.ondragleave = function() {
+    	  	$(holder).removeClass('hover')
+    	  	return false;
+    	  };
+
+    	  holder.ondragend = function() {
+    	  	$(holder).removeClass('hover')
+    	  	return false;
+    	  };
+
+    	  holder.ondrop = function(e) {
+    	  	$(holder).removeClass('hover')
+    	  	e.preventDefault();
+    	  	readfiles(e.dataTransfer.files);
+    	  }  
       };
       
       self.onPlaceChange = function (event, result) {
@@ -159,19 +248,108 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', function($
 	    	//self.selectedLat = result.geometry.location.lat();
 	    	//self.selectedLng = result.geometry.location.lng();
 	    };
-      
-      self.next = function(step) {
-    	  var currentStep = step;
-    	  var nextStep = step + 1;
-    	  if ($("#divStep" + nextStep).length > 0) {
-    		  $("#divStep" + currentStep).css("display", "none");
-    		  $("#divStep" + nextStep).css("display", "");
-    	  }
-    	  if (step == 4) {
-    		  if (map == null) {
-    			  self.initializeMap();
+	    
+	  self.validate = function(step) {
+		  var isValid = true;
+		  
+		  if (step == null || step == 1) {
+    		  if ($("#rdPlaceTypeEntirePlace")[0].checked == false 
+        			  && $("#rdPlaceTypePrivateRoom")[0].checked == false
+        			  && $("#rdPlaceTypeSharedRoom")[0].checked == false) {
+    			  isValid = false;
+        	  } else if ($("#cmbHomeType")[0].selectedIndex == 0) {
+        		  isValid = false;
+        	  } else if (getCounterElementValue('spanBedNumber') == 0) {
+        		  isValid = false;
+        	  } else if (getCounterElementValue('spanBathroomNumber') > 0 
+        			  && $('#cmbBathroomType')[0].selectedIndex == 0) {
+        		  isValid = false;
+        	  }
+    	  } 
+		  
+		  if (step == null || step == 2) {
+    		  if (getCounterElementValue('spanGuestNumber') == 0 
+    				  || $("#cmbGuestGender")[0].selectedIndex == 0) {
+    			  isValid = false;
+    		  } else if ((getCounterElementValue('spanPlaceMateNumber') > 0 
+    				  && $("#cmbPlaceMateGender")[0].selectedIndex == 0) 
+    				  || (getCounterElementValue('spanPlaceMateNumber') == 0 
+    	    				  && $("#cmbPlaceMateGender")[0].selectedIndex != 0)) {
+    			  isValid = false;
+    		  }
+    	  } 
+		  
+		  if (step == null || step == 3) {
+    		  if ($("#txtDailyPrice").val() == '' 
+    			  || $("#txtDailyPrice").val() == '0') {
+    			  isValid = false;
+    		  } else if ($("#cmbCurrencyId")[0].selectedIndex == 0) {
+    			  isValid = false;
+    		  } else if ($("#txtStartDatePicker").datepicker("getDate") == ''
+    			  || $("#txtEndDatePicker").datepicker("getDate") == '') {
+    			  isValid = false;
+    		  }
+    	  } 
+		  
+		  if (step == null || step == 4) {
+    		  
+    	  } 
+		  
+		  if (step == null || step == 5) {
+    		  if ($("#txtLatitude").val() == '' 
+    			  || $("#txtLongitude").val() == ''
+    			  || $("#txtCountry").val() == ''
+    			  || $("#txtCity").val() == ''
+    			  || $("#txtStreet").val() == '') {
+    			  isValid = false;
+    		  }
+    	  } 
+		  
+		  if (step == null || step == 6) {
+    		  if (fileList.length == 0) {
+    			  isValid = false;
+    		  }
+    	  } 
+		  
+		  if (step == null || step == 7) {
+    		  if ($('#txtTitle').val() == '' 
+    			  || $('#txtDescription').val() == '') {
+    			  isValid = false;
     		  }
     	  }
+		  
+		  return isValid;
+	  };
+      
+      self.next = function(step) {
+    	  var isValid = self.validate(step);
+    	  
+    	  if (isValid) {
+    		  $('#divProgress' + step).addClass('progress-section--completed');
+    		  NProgress.settings.trickleRate = 0.2;
+    		  NProgress.start();
+    		  
+        	  setTimeout(function() { 
+	      			NProgress.set(1); 
+	      			NProgress.remove(); 
+	      		}, 2000);
+    		  
+    		  var currentStep = step;
+        	  var nextStep = step + 1;
+        	  if ($("#divStep" + nextStep).length > 0) {
+        		  $("#divStep" + currentStep).css("display", "none");
+        		  $("#divStep" + nextStep).css("display", "");
+        	  }
+        	  if (step == 4) {
+        		  if (map == null) {
+        			  self.initializeMap();
+        		  }
+        	  }  
+    	  } else {
+    		  //showMessage("alert", "Warning", "Please fill necessary fields!");
+    		  $.prompt("Please fill necessary fields!");
+    		  return false;
+    	  }  
       };
       
       self.back = function(step) {
@@ -195,7 +373,7 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', function($
     	  newPlace.homeType = $("#cmbHomeType").val();
     	  newPlace.bedNumber = getCounterElementValue('spanBedNumber');
     	  newPlace.bathroomNumber = getCounterElementValue('spanBathroomNumber');
-    	  newPlace.bathroomType = getCounterElementValue('cmbBathroomType');
+    	  newPlace.bathroomType = $('#cmbBathroomType').val();
     	  
     	  newPlace.guestNumber = getCounterElementValue('spanGuestNumber');
     	  newPlace.guestGender = $("#cmbGuestGender").val();
@@ -209,7 +387,7 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', function($
     		  newPlace.depositPrice = $("#txtDepositPrice").val();
     	  }
     	  newPlace.currencyId = $("#cmbCurrencyId").val();
-    	  newPlace.billsIncluded = ($("#rdPlaceTypeSharedRoom")[0].checked ? 1 : 0);
+    	  newPlace.billsIncluded = ($("#chbBillsIncluded")[0].checked ? 1 : 0);
     	  newPlace.startDate = $.datepicker.formatDate('d.m.yy', $("#txtStartDatePicker").datepicker("getDate"));
     	  newPlace.endDate = $.datepicker.formatDate('d.m.yy', $("#txtEndDatePicker").datepicker("getDate"));
     	  
