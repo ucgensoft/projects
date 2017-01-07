@@ -22,4 +22,21 @@ public class StringUtil {
 	    return pad + s;
 	}
 	
+	public static String append(String oldString, String appendText, String separator) {
+		if (oldString == null) {
+			return appendText;
+		} else {
+			return oldString + separator + appendText;
+		}
+	}
+	
+	public static void append(StringBuilder oldStringBuilder, String appendText, String separator) {
+		if (oldStringBuilder.length() == 0) {
+			oldStringBuilder.append(appendText);
+		} else {
+			oldStringBuilder.append(separator);
+			oldStringBuilder.append(appendText);
+		}
+	}
+	
 }
