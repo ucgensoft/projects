@@ -2,7 +2,7 @@ package com.ucgen.letserasmus.library.location.model;
 
 import java.math.BigDecimal;
 
-import com.ucgen.common.model.BaseModel;
+import com.ucgen.letserasmus.library.common.model.BaseModel;
 
 public class Location extends BaseModel {
 

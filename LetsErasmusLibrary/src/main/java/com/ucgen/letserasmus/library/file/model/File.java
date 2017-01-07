@@ -1,20 +1,19 @@
 package com.ucgen.letserasmus.library.file.model;
 
-import java.util.Date;
+import com.ucgen.letserasmus.library.common.model.BaseModel;
+import com.ucgen.letserasmus.library.file.enumeration.EnmFileType;
 
-public class File {
+public class File extends BaseModel {
+
+	private static final long serialVersionUID = -2166580530245686052L;
 
 	private Long id;
 	private String fileName;
-	private int fileType;
-	private int entityType;
+	private String fileSuffix;
+	private Long fileSize;
+	private Integer fileType;
+	private Integer entityType;
 	private Long entityId;
-	private String createdBy;
-	private Date createdDate;
-	private Date createdDateGmt;
-	private String modifiedBy;
-	private Date modifiedDate;
-	private Date modifiedDateGmt;
 	
 	public Long getId() {
 		return id;
@@ -28,16 +27,27 @@ public class File {
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
-	public int getFileType() {
+	public String getFileSuffix() {
+		if (this.fileSuffix == null) {
+			if (this.fileType != null) {
+				this.fileSuffix = EnmFileType.getFileType(this.fileType).getFileSuffix();
+			}
+		}
+		return fileSuffix;
+	}
+	public void setFileSuffix(String fileSuffix) {
+		this.fileSuffix = fileSuffix;
+	}
+	public Integer getFileType() {
 		return fileType;
 	}
-	public void setFileType(int fileType) {
+	public void setFileType(Integer fileType) {
 		this.fileType = fileType;
 	}
-	public int getEntityType() {
+	public Integer getEntityType() {
 		return entityType;
 	}
-	public void setEntityType(int entityType) {
+	public void setEntityType(Integer entityType) {
 		this.entityType = entityType;
 	}
 	public Long getEntityId() {
@@ -46,43 +56,11 @@ public class File {
 	public void setEntityId(Long entityId) {
 		this.entityId = entityId;
 	}
-	public String getCreatedBy() {
-		return createdBy;
+	public Long getFileSize() {
+		return fileSize;
 	}
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
+	public void setFileSize(Long fileSize) {
+		this.fileSize = fileSize;
 	}
-	public Date getCreatedDate() {
-		return createdDate;
-	}
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
-	public Date getCreatedDateGmt() {
-		return createdDateGmt;
-	}
-	public void setCreatedDateGmt(Date createdDateGmt) {
-		this.createdDateGmt = createdDateGmt;
-	}
-	public String getModifiedBy() {
-		return modifiedBy;
-	}
-	public void setModifiedBy(String modifiedBy) {
-		this.modifiedBy = modifiedBy;
-	}
-	public Date getModifiedDate() {
-		return modifiedDate;
-	}
-	public void setModifiedDate(Date modifiedDate) {
-		this.modifiedDate = modifiedDate;
-	}
-	public Date getModifiedDateGmt() {
-		return modifiedDateGmt;
-	}
-	public void setModifiedDateGmt(Date modifiedDateGmt) {
-		this.modifiedDateGmt = modifiedDateGmt;
-	}
-	
-	
 	
 }

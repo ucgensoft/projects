@@ -7,6 +7,7 @@ public enum EnmPlaceStatus {
 	DEACTIVE(2);
 	
 	private Integer value;
+	
 	public Integer getValue() {
 		return this.value;
 	}

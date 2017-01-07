@@ -2,7 +2,7 @@ package com.ucgen.letserasmus.library.comment.model;
 
 import java.util.Date;
 
-import com.ucgen.common.model.BaseModel;
+import com.ucgen.letserasmus.library.common.model.BaseModel;
 
 public class Comment extends BaseModel {
 

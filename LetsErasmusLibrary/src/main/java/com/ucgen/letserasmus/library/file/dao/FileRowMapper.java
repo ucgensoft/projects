@@ -9,9 +9,12 @@ import com.ucgen.letserasmus.library.file.model.File;
 
 public class FileRowMapper extends BaseRowMapper<File> {
 	
+	public static final String TABLE_NAME = "FILE";
+	
 	public static final String COL_ID = "ID";
 	public static final String COL_FILE_NAME = "FILE_NAME";	
 	public static final String COL_FILE_TYPE = "FILE_TYPE";
+	public static final String COL_FILE_SIZE = "FILE_SIZE";
 	public static final String COL_ENTITY_TYPE = "ENTITY_TYPE";
 	public static final String COL_ENTITY_ID = "ENTITY_ID";
 	public static final String COL_CREATED_BY = "CREATED_BY";
@@ -21,6 +24,14 @@ public class FileRowMapper extends BaseRowMapper<File> {
 	public static final String COL_MODIFIED_DATE = "MODIFIED_DATE";
 	public static final String COL_MODIFIED_DATE_GMT = "MODIFIED_DATE_GMT";	
 
+	public FileRowMapper() {
+		this("F");
+	}
+	
+	public FileRowMapper(String tablePrefix) {
+		super(TABLE_NAME, tablePrefix);
+	}
+	
 	@Override
 	public File mapRow(ResultSet rs, int rowNum) throws SQLException {
 		super.initializeColSet(rs);
@@ -28,6 +39,7 @@ public class FileRowMapper extends BaseRowMapper<File> {
 		file.setId(super.getLong(rs, COL_ID));
 		file.setFileName(super.getString(rs, COL_FILE_NAME));
 		file.setFileType(super.getInteger(rs, COL_FILE_TYPE));
+		file.setFileSize(super.getLong(rs, COL_FILE_SIZE));
 		file.setEntityType(super.getInteger(rs, COL_ENTITY_TYPE));
 		file.setEntityId(super.getLong(rs, COL_ENTITY_ID));
 		file.setCreatedBy(super.getString(rs, COL_CREATED_BY));		
@@ -47,8 +59,12 @@ public class FileRowMapper extends BaseRowMapper<File> {
 
 	@Override
 	public void initializeColList() {
-		// TODO Auto-generated method stub
-		
+		super.addColumn(COL_ID);
+		super.addColumn(COL_FILE_NAME);
+		super.addColumn(COL_FILE_TYPE);
+		super.addColumn(COL_FILE_SIZE);
+		super.addColumn(COL_ENTITY_TYPE);
+		super.addColumn(COL_ENTITY_ID);
 	}
 
 }

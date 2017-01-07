@@ -5,6 +5,8 @@ import java.sql.SQLException;
 
 import com.ucgen.common.dao.BaseRowMapper;
 import com.ucgen.common.dao.ForeignKey;
+import com.ucgen.letserasmus.library.file.dao.FileRowMapper;
+import com.ucgen.letserasmus.library.file.model.File;
 import com.ucgen.letserasmus.library.location.dao.LocationRowMapper;
 import com.ucgen.letserasmus.library.location.model.Location;
 import com.ucgen.letserasmus.library.place.model.Place;
@@ -37,11 +39,12 @@ public class PlaceRowMapper extends BaseRowMapper<Place> {
 	public static final String COL_RULES = "RULES";
 	public static final String COL_AMENTIES = "AMENTIES";	
 	public static final String COL_SAFETY_AMENTIES = "SAFETY_AMENTIES";
-	public static final String COL_MINUMUM_STAY = "MINUMUM_STAY";
+	public static final String COL_MINIMUM_STAY = "MINIMUM_STAY";
 	public static final String COL_MAXIMUM_STAY = "MAXIMUM_STAY";		
 	public static final String COL_START_DATE = "START_DATE";
 	public static final String COL_END_DATE = "END_DATE";	
 	public static final String COL_CANCELLATION_POLICY_ID = "CANCELLATION_POLICY_ID";	
+	public static final String COL_COVER_PHOTO_ID = "COVER_PHOTO_ID";
 	public static final String COL_CREATED_BY = "CREATED_BY";
 	public static final String COL_CREATED_DATE = "CREATED_DATE";
 	public static final String COL_CREATED_DATE_GMT = "CREATED_DATE_GMT";
@@ -51,6 +54,7 @@ public class PlaceRowMapper extends BaseRowMapper<Place> {
 	
 	public static final String FKEY_LOCATION = "LOCATION";
 	public static final String FKEY_USER = "USER";
+	public static final String FKEY_FILE = "FILE";
 	
 	public PlaceRowMapper() {
 		this("P");
@@ -66,11 +70,20 @@ public class PlaceRowMapper extends BaseRowMapper<Place> {
 			ForeignKey<PlaceRowMapper, LocationRowMapper> fKeyLocation = new ForeignKey<PlaceRowMapper, LocationRowMapper>(this, locationRowMapper);
 			fKeyLocation.addFieldPair(COL_LOCATION_ID, LocationRowMapper.COL_ID);
 			this.addFKey(FKEY_LOCATION, fKeyLocation);
-		} if (FKEY_USER.equals(keyName)) {
+		} 
+		
+		if (FKEY_USER.equals(keyName)) {
 			UserRowMapper userRowMapper = new UserRowMapper("L");
 			ForeignKey<PlaceRowMapper, UserRowMapper> fKeyUser = new ForeignKey<PlaceRowMapper, UserRowMapper>(this, userRowMapper);
 			fKeyUser.addFieldPair(COL_HOST_USER_ID, LocationRowMapper.COL_ID);
 			this.addFKey(FKEY_USER, fKeyUser);
+		}
+		
+		if (FKEY_FILE.equals(keyName)) {
+			FileRowMapper fileRowMapper = new FileRowMapper("F");
+			ForeignKey<PlaceRowMapper, FileRowMapper> fKeyFile = new ForeignKey<PlaceRowMapper, FileRowMapper>(this, fileRowMapper);
+			fKeyFile.addFieldPair(COL_ID, FileRowMapper.COL_ENTITY_ID);
+			this.addFKey(FKEY_FILE, fKeyFile);
 		}
 	}
 	
@@ -101,10 +114,11 @@ public class PlaceRowMapper extends BaseRowMapper<Place> {
 		place.setRules(super.getString(rs, COL_RULES));
 		place.setAmenties(super.getString(rs, COL_AMENTIES));
 		place.setSafetyAmenties(super.getString(rs, COL_SAFETY_AMENTIES));
-		place.setMinumumStay(super.getInteger(rs, COL_MINUMUM_STAY));
+		place.setMinimumStay(super.getInteger(rs, COL_MINIMUM_STAY));
 		place.setMaximumStay(super.getInteger(rs, COL_MAXIMUM_STAY));
 		place.setStartDate(super.getTimestamp(rs, COL_START_DATE));
 		place.setEndDate(super.getTimestamp(rs, COL_END_DATE));
+		place.setCoverPhotoId(super.getLong(rs, COL_COVER_PHOTO_ID));
 		place.setCreatedBy(super.getString(rs, COL_CREATED_BY));		
 		place.setCreatedDate(super.getTimestamp(rs, COL_CREATED_DATE));
 		place.setCreatedDateGmt(super.getTimestamp(rs, COL_CREATED_DATE_GMT));		
@@ -116,6 +130,12 @@ public class PlaceRowMapper extends BaseRowMapper<Place> {
 			ForeignKey<PlaceRowMapper, LocationRowMapper> fKey = this.getfKeyMap().get(FKEY_LOCATION);
 			Location location = fKey.getDestMapper().mapRow(rs, rowNum);
 			place.setLocation(location);
+		}
+		
+		if (this.getfKeyMap().containsKey(FKEY_FILE)) {
+			ForeignKey<PlaceRowMapper, FileRowMapper> fKey = this.getfKeyMap().get(FKEY_FILE);
+			File photo = fKey.getDestMapper().mapRow(rs, rowNum);
+			place.setCoverPhoto(photo);
 		}
 		
 		return place;
@@ -149,7 +169,7 @@ public class PlaceRowMapper extends BaseRowMapper<Place> {
 		super.addColumn(COL_ID);
 		super.addColumn(COL_LOCATION_ID);
 		super.addColumn(COL_MAXIMUM_STAY);
-		super.addColumn(COL_MINUMUM_STAY);
+		super.addColumn(COL_MINIMUM_STAY);
 		super.addColumn(COL_MODIFIED_BY);
 		super.addColumn(COL_MODIFIED_DATE);
 		super.addColumn(COL_MODIFIED_DATE_GMT);
@@ -162,6 +182,7 @@ public class PlaceRowMapper extends BaseRowMapper<Place> {
 		super.addColumn(COL_START_DATE);
 		super.addColumn(COL_STATUS);
 		super.addColumn(COL_TITLE);
+		super.addColumn(COL_COVER_PHOTO_ID);
 	}	
 
 }

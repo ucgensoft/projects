@@ -1,9 +1,13 @@
 package com.ucgen.letserasmus.library.place.model;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-import com.ucgen.common.model.BaseModel;
+import com.ucgen.letserasmus.library.common.model.BaseModel;
+import com.ucgen.letserasmus.library.file.model.File;
+import com.ucgen.letserasmus.library.file.model.Photo;
 import com.ucgen.letserasmus.library.location.model.Location;
 import com.ucgen.letserasmus.library.user.model.User;
 
@@ -34,14 +38,17 @@ public class Place extends BaseModel {
 	private String rules;
 	private String amenties;
 	private String safetyAmenties;
-	private Integer minumumStay;
+	private Integer minimumStay;
 	private Integer maximumStay;
 	private Date startDate;
 	private Date endDate;
 	private Long cancellationPolicyId;
+	private Long coverPhotoId;
 	
 	private Location location;
 	private User user;
+	private File coverPhoto;
+	private List<Photo> photoList;
 	
 	public Long getId() {
 		return id;
@@ -181,11 +188,11 @@ public class Place extends BaseModel {
 	public void setSafetyAmenties(String safetyAmenties) {
 		this.safetyAmenties = safetyAmenties;
 	}
-	public Integer getMinumumStay() {
-		return minumumStay;
+	public Integer getMinimumStay() {
+		return minimumStay;
 	}
-	public void setMinumumStay(Integer minumumStay) {
-		this.minumumStay = minumumStay;
+	public void setMinimumStay(Integer minimumStay) {
+		this.minimumStay = minimumStay;
 	}
 	public Integer getMaximumStay() {
 		return maximumStay;
@@ -211,6 +218,12 @@ public class Place extends BaseModel {
 	public void setCancellationPolicyId(Long cancellationPolicyId) {
 		this.cancellationPolicyId = cancellationPolicyId;
 	}
+	public Long getCoverPhotoId() {
+		return coverPhotoId;
+	}
+	public void setCoverPhotoId(Long coverPhotoId) {
+		this.coverPhotoId = coverPhotoId;
+	}
 	public Location getLocation() {
 		return location;
 	}
@@ -223,5 +236,22 @@ public class Place extends BaseModel {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
+	public File getCoverPhoto() {
+		return coverPhoto;
+	}
+	public void setCoverPhoto(File coverPhoto) {
+		this.coverPhoto = coverPhoto;
+	}
+	public List<Photo> getPhotoList() {
+		return photoList;
+	}
+	public void setPhotoList(List<Photo> photoList) {
+		this.photoList = photoList;
+	}
+	public void addPhoto(Photo photo) {
+		if (this.photoList == null) {
+			this.photoList = new ArrayList<Photo>();
+		}
+		this.photoList.add(photo);
+	}
 }

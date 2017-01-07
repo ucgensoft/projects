@@ -8,6 +8,8 @@ import com.ucgen.common.exception.operation.OperationResultException;
 import com.ucgen.common.operationresult.ListOperationResult;
 import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.common.operationresult.ValueOperationResult;
+import com.ucgen.letserasmus.library.file.model.Photo;
+import com.ucgen.letserasmus.library.file.service.IFileService;
 import com.ucgen.letserasmus.library.location.service.ILocationService;
 import com.ucgen.letserasmus.library.place.dao.IPlaceDao;
 import com.ucgen.letserasmus.library.place.model.Place;
@@ -18,7 +20,8 @@ public class PlaceService implements IPlaceService{
 
 	private ILocationService locationService;
 	private IPlaceDao placeDao;
-
+	private IFileService fileService;
+	
 	@Autowired
 	public void setPlaceDao(IPlaceDao placeDao) {
 		this.placeDao = placeDao;
@@ -27,6 +30,11 @@ public class PlaceService implements IPlaceService{
 	@Autowired
 	public void setLocationService(ILocationService locationService) {
 		this.locationService = locationService;
+	}
+	
+	@Autowired
+	public void setFileService(IFileService fileService) {
+		this.fileService = fileService;
 	}
 
 	@Override
@@ -49,6 +57,24 @@ public class PlaceService implements IPlaceService{
 		
 		OperationResult createPlaceResult = this.placeDao.insertPlace(place);
 		if (OperationResult.isResultSucces(createPlaceResult)) {
+			if (place.getPhotoList().size() > 0) {
+				for (int i = 0; i < place.getPhotoList().size(); i++) {
+					Photo photo = place.getPhotoList().get(i);
+					photo.setEntityId(place.getId());
+					OperationResult insertPhotoResult = fileService.insertFile(photo);
+					if (OperationResult.isResultSucces(insertPhotoResult)) {
+						if (i == 0) {
+							place.setCoverPhotoId(photo.getId());
+						}
+					} else {
+						insertPhotoResult.setResultDesc("Photo record not be insert. Error: " + insertPhotoResult.getResultDesc());
+						throw new OperationResultException(insertPhotoResult);
+					}
+				}
+			}
+			
+			this.placeDao.updatePlace(place);
+			
 			return createPlaceResult;
 		} else {
 			createPlaceResult.setResultDesc("Listing could not be created. Error: " + createPlaceResult.getResultDesc());
