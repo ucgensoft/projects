@@ -7,24 +7,23 @@
 	<h:form>
 		<header id="top" class="nav-top nav-top__home" style="margin: auto; 
 			background-color: rgba(0, 0, 0, 0.5); border-radius: 10px;">
-			<a href="https://letserasmus.com/" class="nav-top--logo"
-				data-event="Clicked Logo in header" data-type="icon"> 
-				<svg class="svg-logo"> </svg>
+			<a href="#{webApplication.urlPrefix}" class="nav-top--logo"> 
+				<img id="imgSiteIcon" src="#{webApplication.urlPrefix}/static/images/optimized_logo.png"></img>
 			</a>
 			<nav id="n-l-nav" class="nav-top--right-wrapper">
 				<nav class="nav-top--right">
 					<div class="nav-top--right">
-						<a id="become-a-host" onclick="openWindow('/LetsErasmus/pages/Place.xhtml', true)"
+						<a id="become-a-host" onclick="openWindow('#{webApplication.urlPrefix}/pages/Place.xhtml', true)"
 							title="Open your place to guests" href=""
 							class="nav-top--right--link hidden-sm-down">
 							<span>Become a Host</span>
 						</a>
-						<a id="a-register" onclick="openModal('/LetsErasmus/pages/Signup.xhtml', 'divModalContent')"
+						<a id="a-register" onclick="openModal('#{webApplication.urlPrefix}/pages/Signup.xhtml', 'divModalContent')"
 							title="Register to book or list a room or pick a tenant" href=""
 							class="nav-top--right--link hidden-sm-down">
 							<span>Sign up</span>
 						</a>
-						<a id="a-login" onclick="openModal('/LetsErasmus/pages/Login.xhtml', 'divModalContent')"
+						<a id="a-login" onclick="openModal('#{webApplication.urlPrefix}/pages/Login.xhtml', 'divModalContent')"
 							title="Login to see new messages and potential tenants" href=""
 							class="nav-top--right--link hidden-sm-down m-r-1">
 							<span > Log in </span>
@@ -32,7 +31,7 @@
 					</div>
 					<div class="nav-top--right">
 						<a class="nav-top--list-room-btn"
-							href="https://letserasmus.com/list-your-place" role="button"
+							href="#{webApplication.urlPrefix}/list-your-place" role="button"
 							id="btnSubmitRoom"> 
 							<span class="hidden-sm-down"> List yourplace for free </span> 
 							<span class="hidden-md-up uppercase"> Rent out </span>

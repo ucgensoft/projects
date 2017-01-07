@@ -3909,7 +3909,7 @@ a.underline:hover {
 	clear: both
 }
 
-.form-column-row, .row, .similar-rooms {
+.form-column-row, .similar-rooms {
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: -moz-flex;

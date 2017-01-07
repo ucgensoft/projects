@@ -153,12 +153,19 @@ function getCounterElementValue(elementId) {
 	return parseInt(currentValue);
 }
 
-function showMessage(type, title, message) {
+function showMessage(type, title, message, callBackFunc) {
 	$.msgBox({
 		  title: title,
 		  content: message,
 		  type: type,
-		  buttons: [{ value: "Ok" }]
+		  buttons: [{ value: "Ok" }],
+		  success : function (result) {
+			  if (result == 'Ok') {
+				  if (callBackFunc) {
+					  callBackFunc();
+				  }
+			  }
+		  }
 		  });
 }
 
@@ -182,4 +189,9 @@ function showConfirm(title, message, callBackFunc) {
 			}
 		}
 	});
+}
+
+function generateRandomValue(minValue, maxValue) {
+	var range = maxValue - minValue + 1;
+	return Math.floor(Math.random() * range) + minValue;
 }

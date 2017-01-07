@@ -38,6 +38,7 @@
 
 		<script>
 			var webApplicationUrlPrefix = '#{webApplication.urlPrefix}';
+			var rootPlaceImageFolder = '#{webApplication.urlPrefix}' + '/place/images/';
 		</script>
 
 		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -75,6 +76,7 @@
 		</h:head>
 		<h:body style="background-position: center center; background-repeat: no-repeat; background-attachment: fixed; background-size: cover; padding-top: 0px; padding-bottom: 0px;">
 			<ui:include src="Header.xhtml"   />
+			<div id="divAjaxProgressBar"></div>
 			<ui:insert name="body" />
 			<ui:include src="Footer.xhtml" />
 			

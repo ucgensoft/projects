@@ -1,10 +1,10 @@
-App.controller('placeCtrl', ['$scope', '$controller', 'placeService', function($scope, $controller, placeService) {
+App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonService', function($scope, $controller, placeService, commonService) {
       var self = this;
       
       var marker = null;
       var map = null;
       var autocomplete = null;
-      var fileList = [];
+      self.photoList = [];
       
       var acceptedPhotoTypes = {
       	  	'image/png' : true,
@@ -119,17 +119,24 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', function($
     	  };
 
     	  previewfile = function(file) {
-    	  	if (tests.filereader === true) {
+    	  	if (file != null && tests.filereader === true) {
     	  		if (acceptedPhotoTypes[file.type] === true) {
-    	  			fileList.push(file);
     	  			var reader = new FileReader();
         	  		reader.onload = function(event) {
+        	  			/*
         	  			var image = new Image();
         	  			image.src = event.target.result;
         	  			image.width = 200;
         	  			divPhotoContainer.appendChild(image);
+        	  			*/
+        	  			var photoId = generateRandomValue(1, 1000000);
+        	  			self.photoList.push({ 'photoId':photoId, 'file': file, 'src': event.target.result});
+        	  			commonService.fakeAjaxCall();
+        	  			NProgress.done(true);
+        	  			fileupload.value = '';
         	  		};
         	  		
+        	  		NProgress.start(2000, 10);
         	  		reader.readAsDataURL(file);
     	  		} else {
     	  			// File type not supported
@@ -142,16 +149,18 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', function($
     	  readfiles = function(files) {
     	  	var formData = tests.formdata ? new FormData() : null;
     	  	for (var i = 0; i < files.length; i++) {
-    	  		if (tests.formdata)
+    	  		if (tests.formdata) {
     	  			formData.append('file', files[i]);
+    	  		}
     	  		previewfile(files[i]);
     	  	}
-
+    	  	/*
     	  	formData.append('fileName', 'Test');
     	  	
     	  	if (tests.formdata) {
     	  		placeService.addPhoto(formData);
     	  	}
+    	  	*/
     	  };
 
     	  holder.ondragover = function() {
@@ -175,6 +184,16 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', function($
     	  	readfiles(e.dataTransfer.files);
     	  }  
       };
+      
+      self.removePhoto = function(photoId) {
+    	  for (var i = 0; i < self.photoList.length; i++) {
+    		  if (self.photoList[i].photoId == photoId) {
+    			  self.photoList.splice(i, 1);
+    			  break;
+    		  }
+    	  }
+    	  commonService.fakeAjaxCall();
+      }
       
       self.onPlaceChange = function (event, result) {
 	        var place = autocomplete.getPlace();
@@ -306,7 +325,7 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', function($
     	  } 
 		  
 		  if (step == null || step == 6) {
-    		  if (fileList.length == 0) {
+    		  if (self.photoList.length == 0) {
     			  isValid = false;
     		  }
     	  } 
@@ -326,28 +345,25 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', function($
     	  
     	  if (isValid) {
     		  $('#divProgress' + step).addClass('progress-section--completed');
-    		  NProgress.settings.trickleRate = 0.2;
-    		  NProgress.start();
     		  
-        	  setTimeout(function() { 
-	      			NProgress.set(1); 
-	      			NProgress.remove(); 
-	      		}, 2000);
-    		  
-    		  var currentStep = step;
-        	  var nextStep = step + 1;
-        	  if ($("#divStep" + nextStep).length > 0) {
-        		  $("#divStep" + currentStep).css("display", "none");
-        		  $("#divStep" + nextStep).css("display", "");
-        	  }
-        	  if (step == 4) {
-        		  if (map == null) {
-        			  self.initializeMap();
-        		  }
-        	  }  
+    		  if (step == 7) {
+    			  self.savePlace();
+    		  } else {
+    			  var currentStep = step;
+            	  var nextStep = step + 1;
+            	  if ($("#divStep" + nextStep).length > 0) {
+            		  $("#divStep" + currentStep).css("display", "none");
+            		  $("#divStep" + nextStep).css("display", "");
+            	  }
+            	  if (step == 4) {
+            		  if (map == null) {
+            			  self.initializeMap();
+            		  }
+            	  }   
+    		  }
     	  } else {
-    		  //showMessage("alert", "Warning", "Please fill necessary fields!");
-    		  $.prompt("Please fill necessary fields!");
+    		  //showMessage("alert", "Warning", "Please fill required fields!");
+    		  $.prompt("Please fill required fields!");
     		  return false;
     	  }  
       };
@@ -361,7 +377,7 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', function($
     	  }
       };
       
-      self.finish = function() {
+      self.savePlace = function() {
     	  var newPlace = {};
     	  if ($("#rdPlaceTypeEntirePlace")[0].checked) {
     		  newPlace.placeType = 1;
@@ -390,6 +406,8 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', function($
     	  newPlace.billsIncluded = ($("#chbBillsIncluded")[0].checked ? 1 : 0);
     	  newPlace.startDate = $.datepicker.formatDate('d.m.yy', $("#txtStartDatePicker").datepicker("getDate"));
     	  newPlace.endDate = $.datepicker.formatDate('d.m.yy', $("#txtEndDatePicker").datepicker("getDate"));
+    	  newPlace.minimumStaty = $("#txtMinStay").val();
+    	  newPlace.maximumStaty = $("#txtMaxStay").val();
     	  
     	  var amenties = '';
     	  for (var i = 0; i < self.amentiesList.length; i++) {
@@ -429,7 +447,6 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', function($
     	  
     	  newPlace.rules = rules;
     	  
-    	  
     	  newPlace.location = {};
     	  newPlace.location.locality = $("#hiddenLocality").val();
     	  newPlace.location.country = $("#txtCountry").val();
@@ -440,8 +457,35 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', function($
     	  newPlace.location.latitude = $("#txtLatitude").val();
     	  newPlace.location.longitude = $("#txtLongitude").val();
     	  
-    	  placeService.createPlace(newPlace);
+    	  newPlace.title = $("#txtTitle").val()
+    	  newPlace.description = $("#txtDescription").val()
     	  
+    	  /*
+    	  var formData = tests.formdata ? new FormData() : null;
+		  	for (var i = 0; i < self.photoList.length; i++) {
+		  		formData.append('file', self.photoList[i].file);
+		  	}
+      	  formData.append('place', angular.toJson(newPlace));
+    	  */
+      	  NProgress.start(4000, 10);
+    	  placeService.savePlace(newPlace, self.photoList).then(
+			function(operationResult) {
+				NProgress.done(true); 
+				if (operationResult.resultCode == EnmOperationResultCode.SUCCESS) {
+					NProgress.done(true); 
+					if (operationResult.resultCode == EnmOperationResultCode.SUCCESS) {
+						alert('Congradulations! Your place is saved successfully!');	
+						//document.location.href = webApplicationUrlPrefix + '/pages/Main.xhtml';
+					} else {
+						alert('Operation could not be completed. Please try again later!');
+					}
+				} else {
+					alert('Operation could not be completed. Please try again later!');
+				}
+			}, function(errResponse) {
+				NProgress.done(true);
+				alert('Operation could not be completed. Please try again later!');
+			});    	  
       };
       
       self.initialize();

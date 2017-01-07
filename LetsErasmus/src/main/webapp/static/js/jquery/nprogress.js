@@ -25,7 +25,7 @@
     speed: 200,
     trickle: true,
     trickleRate: 0.02,
-    trickleSpeed: 800,
+    trickleSpeed: 500,
     showSpinner: true,
     template: '<div class="bar" role="bar"><div class="peg"></div></div><div class="spinner" role="spinner"><div class="spinner-icon"></div></div>'
   };
@@ -106,7 +106,14 @@
    *     NProgress.start();
    *
    */
-  NProgress.start = function() {
+  NProgress.start = function(estimatedTotalTime, trickleCount) {
+	  if (estimatedTotalTime && trickleCount) {
+		  NProgress.settings.trickleRate =  trickleCount / estimatedTotalTime;
+		  NProgress.settings.trickleSpeed = estimatedTotalTime / trickleCount;
+	  } else {
+		  NProgress.settings.trickleRate = 0.2;
+		  NProgress.settings.trickleSpeed = 500;
+	  }
     if (!NProgress.status) NProgress.set(0);
 
     var work = function() {
@@ -185,7 +192,7 @@
     if (!Settings.showSpinner)
       $el.find('[role="spinner"]').remove();
 
-    $el.appendTo(document.body);
+    $el.appendTo($('#divAjaxProgressBar'));
 
     return $el;
   };

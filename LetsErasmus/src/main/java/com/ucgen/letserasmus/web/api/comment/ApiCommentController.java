@@ -45,4 +45,11 @@ public class ApiCommentController extends BaseApiController {
 		return new ResponseEntity<List<Comment>>(commentList, httpStatus);
     }
 	
+	@RequestMapping(value = "/api/fakerequest", method = RequestMethod.GET)
+    public ResponseEntity<String> fakeRequest() {
+		HttpStatus httpStatus = null;
+		httpStatus = HttpStatus.OK;
+		return new ResponseEntity<String>("", httpStatus);
+    }
+	
 }

@@ -1,5 +1,6 @@
 package com.ucgen.letserasmus.web.api.place;
 
+import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -10,13 +11,11 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -24,7 +23,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ucgen.common.operationresult.EnmResultCode;
 import com.ucgen.common.operationresult.ListOperationResult;
 import com.ucgen.common.operationresult.OperationResult;
+import com.ucgen.common.util.CommonUtil;
 import com.ucgen.common.util.DateUtil;
+import com.ucgen.common.util.ImageUtil;
+import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
+import com.ucgen.letserasmus.library.file.enumeration.EnmFileType;
+import com.ucgen.letserasmus.library.file.model.Photo;
 import com.ucgen.letserasmus.library.location.model.Location;
 import com.ucgen.letserasmus.library.place.enumeration.EnmPlaceStatus;
 import com.ucgen.letserasmus.library.place.model.Place;
@@ -43,7 +47,7 @@ public class ApiPlaceController extends BaseApiController {
 	}
 	
 	@RequestMapping(value = "/api/place/create", method = RequestMethod.POST)
-    public ResponseEntity<OperationResult> createPlace(@RequestBody String place, HttpSession session) throws JsonParseException, JsonMappingException, IOException, ParseException {
+    public ResponseEntity<OperationResult> createPlace(@RequestParam("photoList") MultipartFile[] photoList, @RequestParam("place") String place, HttpSession session) throws JsonParseException, JsonMappingException, IOException, ParseException {
 		HttpStatus httpStatus = null;
 		OperationResult operationResult = new OperationResult();
 		
@@ -88,6 +92,23 @@ public class ApiPlaceController extends BaseApiController {
 			if (placeMap.get("endDate") != null && !placeMap.get("endDate").toString().isEmpty()) {
 				newPlace.setEndDate(DateUtil.valueOf(placeMap.get("endDate").toString(), DateUtil.SHORT_DATE_FORMAT));
 			}
+			
+			if (placeMap.get("minimumStay") != null) {
+				newPlace.setMinimumStay(this.getInteger(placeMap.get("minimumStay")));
+			}
+			
+			if (placeMap.get("maximumStay") != null) {
+				newPlace.setMaximumStay(this.getInteger(placeMap.get("maximumStay")));
+			}
+			
+			if (placeMap.get("title") != null) {
+				newPlace.setTitle(placeMap.get("title").toString());
+			}
+			
+			if (placeMap.get("description") != null) {
+				newPlace.setDescription(placeMap.get("description").toString());
+			}
+			
 			newPlace.setStatus(EnmPlaceStatus.INITIAL.getValue());
 			
 			Location newLocation = new Location();
@@ -114,13 +135,45 @@ public class ApiPlaceController extends BaseApiController {
 			
 			newPlace.setLocation(newLocation);
 			
+			if (photoList != null && photoList.length > 0) {
+				for (MultipartFile multipartFile : photoList) {
+					String fileSuffix = multipartFile.getContentType().split("/")[1];
+					String fileName = multipartFile.getOriginalFilename().split("\\.")[0];
+					Photo photo = new Photo();
+					photo.setFileName(fileName);
+					photo.setFileSize(multipartFile.getSize());
+					photo.setEntityType(EnmEntityType.PLACE.getValue());
+					photo.setCreatedBy(createdBy);
+					photo.setFileType(EnmFileType.getFileTypeWithSuffix(fileSuffix).getValue());
+					
+					newPlace.addPhoto(photo);
+				}
+			}
+			
 			OperationResult createResult = this.placeService.insertPlace(newPlace);
 			
-			if (OperationResult.isResultSucces(createResult)) {
-				httpStatus = HttpStatus.OK;
-			} else {
-				httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			try {
+				String rootPhotoFolder = "D:\\Personal\\Development\\startup\\workspace\\projects\\LetsErasmus\\src\\main\\webapp\\place\\images\\";
+				String placePhotoFolder = rootPhotoFolder + newPlace.getId(); 
+				(new File(placePhotoFolder)).mkdirs();
+				for (int i = 0; i < photoList.length; i++) {
+					MultipartFile multiPartFile = photoList[i];
+					Photo photo = newPlace.getPhotoList().get(i);
+					String tmpPhotoPath = placePhotoFolder + File.separatorChar + photo.getId() + "." + EnmFileType.getFileType(photo.getFileType());
+					String smallPhotoPath = placePhotoFolder + File.separatorChar + photo.getId() + "_small." + EnmFileType.getFileType(photo.getFileType()).getFileSuffix();
+					String largePhotoPath = placePhotoFolder + File.separatorChar + photo.getId() + "_large." + EnmFileType.getFileType(photo.getFileType()).getFileSuffix();
+					File tmpFile = new File(tmpPhotoPath);
+					multiPartFile.transferTo(tmpFile);
+					ImageUtil.resizeImage(tmpFile, largePhotoPath, 800, 800);
+					ImageUtil.resizeImage(tmpFile, smallPhotoPath, 500, 300);
+					tmpFile.delete();
+				}
+			} catch (Exception e) {
+				System.out.println(CommonUtil.getExceptionMessage(e));
 			}
+			
+			operationResult = createResult;
+			httpStatus = HttpStatus.OK;			
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
 			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
@@ -142,8 +195,8 @@ public class ApiPlaceController extends BaseApiController {
     }
 		
 	@RequestMapping(value = "/api/place/addphoto", method = RequestMethod.POST)
-    public ResponseEntity<ListOperationResult<Place>> addPhoto(@RequestParam("file") MultipartFile file, 
-    		@RequestParam Map<String, String> requestParams) {
+    public ResponseEntity<ListOperationResult<Place>> addPhoto(@RequestParam("photolist") MultipartFile[] file, 
+    		@RequestParam("placeId") Integer placeId) {
 		HttpStatus httpStatus = null;
 		ListOperationResult<Place> listResult = this.placeService.listPlace(null, true);
 		if (OperationResult.isResultSucces(listResult)) {

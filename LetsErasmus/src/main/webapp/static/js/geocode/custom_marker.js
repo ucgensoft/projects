@@ -13,7 +13,7 @@ CustomMarker.prototype.draw = function() {
 
 	var div = this.div;
 
-	if (!div) {
+	if (div == null) {
 
 		div = document.getElementById(self.args.marker_element_id);
 
@@ -24,8 +24,7 @@ CustomMarker.prototype.draw = function() {
 		});
 		self.marker = hiddenMarker;
 		google.maps.event.addDomListener(div, "click", function(event) {
-			var divInfo = document.getElementById('articleProduct_' + 1);
-			//var divWindow = document.getElementById('divPlaceInfoWindow');
+			var divInfo = document.getElementById('articleProduct_' + self.args.marker_id);
 			self.args.infoWindow.setContent(divInfo.outerHTML);
 			self.args.infoWindow.open(self.map, hiddenMarker);
 		});
@@ -45,7 +44,9 @@ CustomMarker.prototype.draw = function() {
 
 CustomMarker.prototype.remove = function() {
 	if (this.div) {
-		this.div.parentNode.removeChild(this.div);
+		var panes = this.getPanes();
+		panes.overlayImage.removeChild(div);
+		//this.div.parentNode.removeChild(this.div);
 		this.div = null;
 	}
 };

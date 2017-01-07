@@ -66,7 +66,7 @@
 														<div class="pull-left text-lead block-radio-button__label">
 															<span>Entire place</span>
 														</div>
-														<div class="pull-right">
+														<div class="floatRight">
 															<input id="rdPlaceTypeEntirePlace" type="radio" 
 																value="entire_home" class="pointer-input" />
 														</div>
@@ -190,7 +190,7 @@
 										
 									</div>
 									
-									<div class="no-margin-padding__sm main-panel-padding main-panel-progress pull-right main-panel-inner-half space-sm-8">
+									<div class="space-top-4 no-margin-padding__sm main-panel-padding main-panel-progress pull-right main-panel-inner-half space-sm-8">
 										<div class="divider hide-sm"></div>
 										<div class="row no-margin-padding__sm">
 											<div class="main-panel__actions no-margin-padding__sm full-width">
@@ -331,7 +331,7 @@
 										</div>
 									</div>
 									
-									<div class="no-margin-padding__sm main-panel-padding main-panel-progress pull-right main-panel-inner-half space-sm-8">
+									<div class="space-top-4 no-margin-padding__sm main-panel-padding main-panel-progress pull-right main-panel-inner-half space-sm-8">
 										<div class="divider hide-sm"></div>
 										<div class="row no-margin-padding__sm">
 											<div class="main-panel__actions no-margin-padding__sm full-width">
@@ -404,7 +404,7 @@
 											</div>
 										</div>
 									</div>
-									<div class="space-top-4 space-4">
+									<div class="space-top-2">
 										<div>
 											<label class="h4 text-gray text-normal">
 												<span>Deposit Price</span>
@@ -414,7 +414,7 @@
 											</div>
 										</div>
 									</div>
-									<div class="space-top-4 space-4">
+									<div class="space-top-2">
 										<div>
 											<label class="h4 text-gray text-normal">
 												<span>Currency</span>
@@ -429,7 +429,7 @@
 											</div>
 										</div>
 									</div>
-									<div class="space-top-4 space-4">
+									<div class="space-top-4">
 										<div class="block-radio-button">
 											<label class="btn btn-block block-radio-button__panel">
 												<div class="row no-margin-h">
@@ -445,19 +445,35 @@
 											</label>
 										</div>
 									</div>
-									<div class="space-top-4 space-4">
-										<div>
-											<input type="text" id="txtStartDatePicker" class="form-input"
-												placeholder="Start date" value="" readonly="true" /> 
+									<div class="row space-top-4">
+										<div class="col-sm-12 col-md-10">
+											<div>
+												<input type="text" id="txtStartDatePicker" class="form-input"
+													placeholder="Start date" value="" readonly="true" /> 
+											</div>
+										</div>
+										<div class="col-sm-12 col-md-10">
+											<div>
+												<input type="text" id="txtEndDatePicker" class="form-input"
+													placeholder="End date" value="" readonly="true" /> 
+											</div>
 										</div>
 									</div>
-									<div class="space-top-4 space-4">
-										<div>
-											<input type="text" id="txtEndDatePicker" class="form-input"
-												placeholder="End date" value="" readonly="true" /> 
+									<div class="row space-top-4">
+										<div class="col-sm-12 col-md-10">
+											<div>
+												 <input id="txtMinStay" type="number" min="0" class="form-input"
+												 	placeholder="Minimum Stay"></input>
+											</div>
+										</div>
+										<div class="col-sm-12 col-md-10">
+											<div>
+												<input id="txtMaxStay" type="number" min="0" class="form-input"
+													placeholder="Maximum Stay"></input>
+											</div>
 										</div>
 									</div>
-									<div class="no-margin-padding__sm main-panel-padding main-panel-progress pull-right main-panel-inner-half space-sm-8">
+									<div class="space-top-4 no-margin-padding__sm main-panel-padding main-panel-progress pull-right main-panel-inner-half space-sm-8">
 										<div class="divider hide-sm"></div>
 										<div class="row no-margin-padding__sm">
 											<div class="main-panel__actions no-margin-padding__sm full-width">
@@ -548,7 +564,7 @@
 											</div>
 										</div>
 									</div>
-									<div class="no-margin-padding__sm main-panel-padding main-panel-progress pull-right main-panel-inner-half space-sm-8">
+									<div class="space-top-4 no-margin-padding__sm main-panel-padding main-panel-progress pull-right main-panel-inner-half space-sm-8">
 										<div class="divider hide-sm"></div>
 										<div class="row no-margin-padding__sm">
 											<div class="main-panel__actions no-margin-padding__sm full-width">
@@ -660,7 +676,7 @@
 												type="text" />
 										</div>
 										
-										<div class="no-margin-padding__sm main-panel-padding main-panel-progress pull-right main-panel-inner-half space-sm-8">
+										<div class="space-top-4 no-margin-padding__sm main-panel-padding main-panel-progress pull-right main-panel-inner-half space-sm-8">
 											<div class="divider hide-sm"></div>
 											<div class="row no-margin-padding__sm">
 												<div class="main-panel__actions no-margin-padding__sm full-width">
@@ -730,19 +746,19 @@
 												</div>
 											</div>
 
-											<div class="col-sm-12 space-top-5 photos-item__preview-card">
+											<div ng-repeat="p in ctrl.photoList" class="col-sm-12 photos-item__preview-card">
 												<div class="photos-list__item">
-													<div class="panel-image" data-confirm="false">
+													<div class="panel-image">
 														<img class="hide" role="presentation"
 															src="" />
-														<div class="photo-preview__title-badge">
+														<div class="photo-preview__title-badge {{ctrl.photoList.indexOf(p) == 0 ? '' : 'hidden'}}" >
 															<span class="text-cover-photo text-large text-normal">
 																<span>Cover photo</span>
 															</span>
 															<div class="icon__title-photo-badge icon--with-margin pull-right">
 															</div>
 														</div>
-														<div class="photo-preview__btns not-always-show">
+														<div class="photo-preview__btns not-always-show" ng-click="ctrl.removePhoto(p.photoId)">
 															<div
 																class="btn photo-preview__btn photo-preview__delete-btn">
 																<div
@@ -754,7 +770,7 @@
 															style="height: 179.33333333333334px;">
 															<div class="media-cover text-center img-with-border">
 																<img class="img-responsive-height img-preview-1483265761528"
-																	src="" />
+																	src="{{p.src}}" />
 															</div>
 														</div>
 													</div>
@@ -771,7 +787,7 @@
 										</div>
 									</div>	
 									
-									<div class="no-margin-padding__sm main-panel-padding main-panel-progress pull-right main-panel-inner-half space-sm-8">
+									<div class="space-top-4 no-margin-padding__sm main-panel-padding main-panel-progress pull-right main-panel-inner-half space-sm-8">
 										<div class="divider hide-sm"></div>
 										<div class="row no-margin-padding__sm">
 											<div class="main-panel__actions no-margin-padding__sm full-width">
@@ -845,7 +861,7 @@
 											</div>
 										</div>
 									</div>
-									<div class="no-margin-padding__sm main-panel-padding main-panel-progress pull-right main-panel-inner-half space-sm-8">
+									<div class="space-top-4 no-margin-padding__sm main-panel-padding main-panel-progress pull-right main-panel-inner-half space-sm-8">
 										<div class="divider hide-sm"></div>
 										<div class="row no-margin-padding__sm">
 											<div class="main-panel__actions no-margin-padding__sm full-width">
@@ -859,7 +875,7 @@
 													</span>
 												</div>
 												<div class="btn btn-large btn-progress-next btn-large__next-btn pull-right-md btn-primary"
-													ng-click="ctrl.finish()" style="float:right">
+													ng-click="ctrl.next(7)" style="float:right">
 													<span>Finish</span>
 												</div>
 											</div>

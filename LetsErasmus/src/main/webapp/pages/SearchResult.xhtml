@@ -273,14 +273,14 @@
 								<div class="ProductCard-picture">
 									<section class="image-gallery"> 
 										<a href="#{webApplication.urlPrefix}/pages/place/detail" target="_blank">
-											<div
+											<div id="divImageGalleryContent_{{p.id}}"
 												class="image-gallery-content">
 												<span class="image-gallery-left-nav hideNav"></span><span
 													class="image-gallery-right-nav hideNav"></span>
 												<div data-reactid="544">
 													<div class="image-gallery-slides">
 														<div class="image-gallery-slide center">
-															<img src="#{webApplication.urlPrefix}/place/images/1/info_window.jpeg" 
+															<img src="#{webApplication.rootPlaceImagePath}/{{p.id}}/{{p.coverPhoto.id}}_small.{{p.coverPhoto.fileSuffix}}" 
 																role="presentation" itemprop="image" />
 														</div>
 													</div>
@@ -348,7 +348,7 @@
 						</div>
 					</div>
 					</section>
-					<div>
+					<div style="display: none">
 						<div ng-repeat="p in ctrl.placeList" id="divMapMarker_{{p.id}}" style="position: absolute; z-index: 1;">
 							<div class="SearchMapMarker">
 								<div class="SearchMapMarker-price">{{p.price}}€</div>
@@ -356,10 +356,8 @@
 						</div>
 					</div>
 				</div>
-				<div id="divPlaceInfoWindow_backup" style="display: none">
-					<div style="border-radius: 2px; width: 522px; height: 444px; background-color: rgb(255, 255, 255);">
-							
-					</div>
+				<div id="divPlaceInfoWindow">
+					
 				</div>
 			</div>
 		</h:form>

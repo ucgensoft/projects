@@ -138,8 +138,10 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
 	    		}
 	    	}
 	    	
+	    	//self.placeList = newPlaceList;
+	    	//$scope.update();
 	    	self.placeList = newPlaceList;
-	    	$scope.update();
+	    	commonService.fakeAjaxCall(self.refreshMap);
 	      };
 	      
 	      self.advancedSearch = function() {
@@ -182,24 +184,27 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
 	  self.setPlaceList = function(list) {
 		  self.placeList = list;
 		  setTimeout(function() {
-			  self.deleteMarkers();
-			  map.customMarkerMap = [];
-			  for(var i = 0; i < self.placeList.length; i++) {
-				  var place = self.placeList[i];
-				  var myLatlng = new google.maps.LatLng(place.location.latitude, place.location.longitude);
-				  var overlay = new CustomMarker(
-							myLatlng, 
-							map,
-							{
-								marker_id: place.id,
-								marker_element_id : "divMapMarker_" + place.id,
-								infoWindow: infoWindow
-							}
-						);
-				  map.customMarkerMap.push(overlay);
-				  self.calculateDistance(myLatlng, self.selectedLocation, place);
-			  }
+			  self.refreshMap();
 		  }, 500);
+	  };
+	  
+	  self.refreshMap = function() {
+		  map.customMarkerMap = [];
+		  for(var i = 0; i < self.placeList.length; i++) {
+			  var place = self.placeList[i];
+			  var myLatlng = new google.maps.LatLng(place.location.latitude, place.location.longitude);
+			  var overlay = new CustomMarker(
+						myLatlng, 
+						map,
+						{
+							marker_id: place.id,
+							marker_element_id : "divMapMarker_" + place.id,
+							infoWindow: infoWindow
+						}
+					);
+			  map.customMarkerMap.push(overlay);
+			  self.calculateDistance(myLatlng, self.selectedLocation, place);
+		  }
 	  };
 	  
 	  self.listPlace = function(fn) {
@@ -207,17 +212,6 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
               .then(function(operationResult) {
             	  		originalPlaceList = operationResult.objectList;
             	  		self.setPlaceList(operationResult.objectList)
-              		},
-					function(errResponse){
-						console.error('Error while fetching Portfolio');
-					}
-  			      );
-      };
-      
-      self.listPlaceAjax = function(fn) {
-    	  placeService.listPlace()
-              .then(function(operationResult) {
-            	  		
               		},
 					function(errResponse){
 						console.error('Error while fetching Portfolio');
@@ -330,12 +324,6 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
 	  		      }
     		  }
     	  }
-      };
-      
-      self.fakeAjaxCall = function() {
-    	  $http.get('/angular/fakerequest').success(function(data) {
-              
-            });
       };
       	
 	initialize();
