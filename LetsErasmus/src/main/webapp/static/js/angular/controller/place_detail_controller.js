@@ -475,7 +475,7 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
 					NProgress.done(true); 
 					if (operationResult.resultCode == EnmOperationResultCode.SUCCESS) {
 						alert('Congradulations! Your place is saved successfully!');	
-						document.location.href = webApplicationUrlPrefix + '/pages/Main.xhtml';
+						//document.location.href = webApplicationUrlPrefix + '/pages/Main.xhtml';
 					} else {
 						alert('Operation could not be completed. Please try again later!');
 					}

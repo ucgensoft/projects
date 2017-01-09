@@ -182,7 +182,7 @@ public class ApiPlaceController extends BaseApiController {
 		return new ResponseEntity<OperationResult>(operationResult, httpStatus);
     }
 	
-	@RequestMapping(value = "/api/place/list", method = RequestMethod.GET)
+	@RequestMapping(value = "/api/place/list", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public ResponseEntity<ListOperationResult<Place>> listPlace(@RequestParam Map<String, String> requestParams) {
 		HttpStatus httpStatus = null;
 		ListOperationResult<Place> listResult = this.placeService.listPlace(null, true);

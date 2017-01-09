@@ -1,0 +1,1260 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
+
+	<ui:define name="head">
+		<link rel="stylesheet" type="text/css"
+			href="#{webApplication.urlPrefix}/static/css/place_detail.css" />
+		<link rel="stylesheet" type="text/css"
+			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css" />
+		<link rel="stylesheet"
+			href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+			
+	</ui:define>
+
+	<ui:define name="body">
+		<h:form id="placeForm">
+			<div id="containerPage" ng-app="myApp"
+				ng-controller="placeCtrl as ctrl">
+				
+				<div id="room" itemscope="" itemtype="http://schema.org/Product">
+
+					<div>
+						<div>
+							<div id="photos" class="with-photos with-modal">
+								<span class="cover-photo"> 
+									<img class="hide" alt=""
+										width="0"
+										src="https://a2.muscache.com/im/pictures/77611903/98619657_original.jpg?aki_policy=large"
+										srcset="https://a2.muscache.com/im/pictures/77611903/98619657_original.jpg?aki_policy=large 639w,https://a2.muscache.com/im/pictures/77611903/98619657_original.jpg?aki_policy=xx_large 1440w" />
+									<span class="cover-img-container" />
+									<div class="cover-img"
+										style="background-image: url(https://a2.muscache.com/im/pictures/77611903/98619657_original.jpg?aki_policy=xx_large);">
+										<div
+											class="link-reset panel-overlay-bottom-left panel-overlay-label panel-overlay-listing-label show-sm">
+											<div>
+												<span class="h3 text-contrast price-amount"> <span>155₺</span></span>
+												<span class="listing-price__per-night hide-sm"><span>Per
+														Night</span></span>
+											</div>
+										</div>
+									</div>
+								</span>
+								<div class="slideshow-inline-preload hide">
+									<img class="carousel-image img-responsive-height"
+										src="https://a1.muscache.com/im/pictures/77612643/73c3dca5_original.jpg?aki_policy=x_large"
+										alt="The building" /> 
+									<img
+										class="carousel-image img-responsive-height"
+										src="https://a2.muscache.com/im/pictures/96e6ccc4-77ec-4d0e-9474-6eabb3d1ab0f.jpg?aki_policy=x_large"
+										alt="" />
+								</div>
+								<div class="hero__view-photos">
+									<button type="button" class="btn">
+										<span>View Photos</span>
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="">
+						<div id="summary" class="panel room-section ">
+							<div class="page-container-responsive">
+								<div class="row">
+									<div class="col-lg-8">
+										<div class="row hide-md">
+											<div>
+												<div>
+													<noscript></noscript>
+													<div class="container_9a0kzr">
+														<div>
+															<div class="innerContainer_bwt19t">
+																<div>
+																	<div class="tabs_1evuybf">
+																		<button
+																			class="text_1aunhvg-o_O-tab_wurtoe-o_O-tab_selected_1i7fvde">
+																			<span class="wrapper_p7pvqu"><span>Overview</span><span
+																				class="tab_selectedLabel_nw4j64-o_O-tab_selectedLabelSelected_2yjt4u"
+																				aria-hidden="true"><span>Overview</span></span></span>
+																		</button>
+																		<button class="text_1aunhvg-o_O-tab_wurtoe">
+																			<span class="wrapper_p7pvqu"><span>Reviews</span><span
+																				class="tab_selectedLabel_nw4j64" aria-hidden="true"><span>Reviews</span></span></span>
+																		</button>
+																		<button class="text_1aunhvg-o_O-tab_wurtoe">
+																			<span class="wrapper_p7pvqu"><span>The
+																					Host</span><span class="tab_selectedLabel_nw4j64"
+																				aria-hidden="true"><span>The Host</span></span></span>
+																		</button>
+																		<button class="text_1aunhvg-o_O-tab_wurtoe">
+																			<span class="wrapper_p7pvqu"><span>Location</span><span
+																				class="tab_selectedLabel_nw4j64" aria-hidden="true"><span>Location</span></span></span>
+																		</button>
+																	</div>
+																	<div></div>
+																</div>
+															</div>
+														</div>
+														<div></div>
+														<div></div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-12">
+												<style></style>
+												<div>
+													<div class="summary-component">
+														<div class="space-4 space-top-4">
+															<div class="row">
+																<div class="col-md-3 space-sm-4 text-center space-sm-2">
+																	<div class="media-photo-badge">
+																		<a
+																			href="https://www.airbnb.com/rooms/13738469?s=Q8-G3TeD#host-profile"
+																			rel="nofollow" class="media-photo media-round"> <img
+																			alt="User Profile Image" class="host-profile-image"
+																			height="115" width="115"
+																			src="./Duomo room with private bathroom &amp; daily breakfast - Apartments for Rent in Milano_files/59f781e3-b907-4b02-aa58-f8ec96360dd1.jpg"
+																			title="Francesco" />
+																		</a> <img
+																			src="./Duomo room with private bathroom &amp; daily breakfast - Apartments for Rent in Milano_files/superhost_photo_badge-a38e6a7d2afe0e01146ce910da3915f5.png"
+																			class="superhost-photo-badge superhost-photo-badge"
+																			alt="" />
+																	</div>
+																</div>
+																<div class="col-md-9">
+																	<h1 itemprop="name"
+																		class="overflow h3 space-1 text-center-sm"
+																		id="listing_name">Duomo room with private
+																		bathroom &amp; daily breakfast</h1>
+																	<span class="hide" itemscope=""
+																		itemtype="http://schema.org/BreadcrumbList"><span
+																		itemprop="itemListElement" itemscope=""
+																		itemtype="http://schema.org/ListItem"><a
+																			itemprop="item" href="https://www.airbnb.com/s/Italy"><span
+																				itemprop="name">Italy</span></a></span><span
+																		itemprop="itemListElement" itemscope=""
+																		itemtype="http://schema.org/ListItem"><a
+																			itemprop="item"
+																			href="https://www.airbnb.com/s/Lombardia--Italy"><span
+																				itemprop="name">Lombardia</span></a></span><span
+																		itemprop="itemListElement" itemscope=""
+																		itemtype="http://schema.org/ListItem"><a
+																			itemprop="item"
+																			href="https://www.airbnb.com/s/Milano--Italy"><span
+																				itemprop="name">Milano</span></a></span></span>
+																	<div id="display-address"
+																		class="space-2 text-muted text-center-sm">
+																		<a
+																			href="https://www.airbnb.com/rooms/13738469?s=Q8-G3TeD#neighborhood"
+																			class="link-reset">Milano, Lombardia, Italy</a><span>
+																			&nbsp; </span><a
+																			href="https://www.airbnb.com/rooms/13738469?s=Q8-G3TeD#reviews"
+																			class="link-reset show-inline-block hide-sm"><div
+																				class="star-rating-wrapper" itemscope=""
+																				itemprop="aggregateRating"
+																				itemtype="http://schema.org/AggregateRating"
+																				aria-label="Average 5 out of 5 stars from 79 guest reviews">
+																				<div class="star-rating" itemprop="ratingValue"
+																					content="5">
+																					<div class="foreground" aria-hidden="true">
+																						<span><span><i
+																								class="icon-star icon icon-babu star-rating-icons"></i><span>
+																							</span></span><span><i
+																								class="icon-star icon icon-babu star-rating-icons"></i><span>
+																							</span></span><span><i
+																								class="icon-star icon icon-babu star-rating-icons"></i><span>
+																							</span></span><span><i
+																								class="icon-star icon icon-babu star-rating-icons"></i><span>
+																							</span></span><span><i
+																								class="icon-star icon icon-babu star-rating-icons"></i><span>
+																							</span></span></span>
+																					</div>
+																					<div class="background" aria-hidden="true">
+																						<span><span><i
+																								class="icon-star icon icon-light-gray star-rating-icons"></i><span>
+																							</span></span><span><i
+																								class="icon-star icon icon-light-gray star-rating-icons"></i><span>
+																							</span></span><span><i
+																								class="icon-star icon icon-light-gray star-rating-icons"></i><span>
+																							</span></span><span><i
+																								class="icon-star icon icon-light-gray star-rating-icons"></i><span>
+																							</span></span><span><i
+																								class="icon-star icon icon-light-gray star-rating-icons"></i><span>
+																							</span></span></span>
+																					</div>
+																				</div>
+																				<span> </span><span class="h6"><small><span><span>79</span><span
+																							itemprop="reviewCount" content="79"></span></span></small></span>
+																			</div></a>
+																	</div>
+																	<div class="row row-condensed text-muted text-center">
+																		<div class="col-sm-3">
+																			<i class="icon icon-private-room icon-size-2"
+																				aria-hidden="true"></i>
+																		</div>
+																		<div class="col-sm-3">
+																			<i class="icon icon-group icon-size-2"
+																				aria-hidden="true"></i>
+																		</div>
+																		<div class="col-sm-3">
+																			<i class="icon icon-rooms icon-size-2"
+																				aria-hidden="true"></i>
+																		</div>
+																		<div class="col-sm-3">
+																			<i class="icon icon-double-bed icon-size-2"
+																				aria-hidden="true"></i>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<div class="row">
+																<div class="col-md-3 text-muted text-center hide-sm">
+																	<a
+																		href="https://www.airbnb.com/rooms/13738469?s=Q8-G3TeD#host-profile"
+																		class="link-reset text-wrap">Francesco</a>
+																</div>
+																<div class="col-md-9">
+																	<div class="row row-condensed text-muted text-center">
+																		<div class="col-sm-3">Private room</div>
+																		<div class="col-sm-3">3 Guests</div>
+																		<div class="col-sm-3">1 Bedroom</div>
+																		<div class="col-sm-3">2 Beds</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-12">
+												<style></style>
+												<div>
+													<noscript></noscript>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-4">
+										<div
+											class="mobile-bookit-btn-container js-bookit-btn-container panel-btn-sm panel-btn-fixed-sm hide-md hide-lg">
+											<button
+												class="btn btn-primary btn-block btn-large js-book-it-sm-trigger">
+												<span class="book-it__btn-text hide"> Request to Book
+												</span> <span class="book-it__btn-text--contact-host hide">
+													Contact Host </span> <span class="book-it__btn-text--instant">
+													<i class="icon icon-beach h4"></i> Book
+												</span> <span class="book-it__btn-text--check-availability hide">
+													Check Availability </span>
+											</button>
+										</div>
+										<span class="tooltip tooltip-top-middle" role="tooltip"
+											aria-hidden="true">
+											<div class="js-monthly-breakdown"></div>
+										</span> <span id="cleaning-fee-tip"
+											class="tooltip tooltip-top-middle" role="tooltip"
+											aria-hidden="true">
+											<p class="panel-body">One-time fee charged by host to
+												cover the cost of cleaning their space</p>
+										</span> <span id="service-fee-tip" class="tooltip tooltip-top-middle"
+											role="tooltip" aria-hidden="true">
+											<p class="panel-body fee-no-vat-tooltip">This helps us
+												run our platform and offer services like 24/7 support on
+												your trip.</p>
+											<p class="panel-body hide fee-vat-tooltip">This helps us
+												run our platform and offer services like 24/7 support on
+												your trip. It includes VAT.</p>
+										</span>
+										<div id="tax-descriptions-tip"
+											class="tooltip tooltip-top-middle" role="tooltip"></div>
+										<div class="modal" role="dialog" aria-hidden="true"
+											id="book-it-sm-modal">
+											<div class="modal-table">
+												<div class="modal-cell">
+													<div class="modal-content">
+														<div class="panel-header">
+															<a
+																href="https://www.airbnb.com/rooms/13738469?s=Q8-G3TeD#"
+																class="modal-close"> × <span
+																class="screen-reader-only">Close</span>
+															</a> Book
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="book-it js-book-it book-it--inNewStickyExperiment">
+											<div
+												class="book-it__container js-book-it-container book-it__container--inNewStickyExperiment"
+												style="top: 0px;">
+												<div>
+													<div>
+														<div class="">
+															<div itemprop="offers" itemscope=""
+																itemtype="http://schema.org/Offer"
+																class="book-it__price book-it__price--inNewStickyExperiment"
+																style="height: 50px;">
+																<div class="row"
+																	aria-labelledby="book-it-price-string book-it-rate-type ib-tooltip-title">
+																	<div class="col-sm-8">
+																		<div class="book-it__price-amount text-special">
+																			<span id="book-it-price-string"><span
+																				class="h3"><span>138₺</span></span></span><span><i
+																				class="icon icon-instant-book icon-beach h4 book-it__instant-book-price-icon"
+																				aria-labelledby="ib-tooltip-title"
+																				aria-describedby="ib-tooltip-description"></i>
+																				<noscript></noscript></span>
+																		</div>
+																	</div>
+																	<div class="col-sm-4">
+																		<div
+																			class="book-it__payment-period-container pull-right">
+																			<div class="book-it__payment-period"
+																				id="book-it-rate-type">
+																				<span>Per Night</span>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<form method="post"
+																action="https://www.airbnb.com/payments/book?s=Q8-G3TeD&amp;hosting_id=13738469">
+																<div class="panel book-it-panel">
+																	<div class="panel-body panel-light">
+																		<div class="row row-condensed space-3">
+																			<div class="col-md-12">
+																				<div class="row row-condensed">
+																					<div class="col-sm-6">
+																						<label class="book-it__label"
+																							for="datespan-checkin">Check In</label> <input
+																							id="datespan-checkin" type="text" name="checkin"
+																							aria-describedby="datespan-checkin-description"
+																							class="checkin ui-datepicker-target"
+																							placeholder="mm/dd/yyyy" /> <span
+																							class="screen-reader-only"
+																							id="datespan-checkin-description"
+																							aria-hidden="true">Enter your check in
+																							date in the format mm/dd/yyyy</span>
+																					</div>
+																					<div class="col-sm-6">
+																						<label class="book-it__label"
+																							for="datespan-checkout">Check Out</label> <input
+																							id="datespan-checkout" type="text"
+																							name="checkout"
+																							aria-describedby="datespan-checkout-description"
+																							class="checkout ui-datepicker-target"
+																							placeholder="mm/dd/yyyy" />
+																					</div>
+																					<span class="screen-reader-only"
+																						id="datespan-checkout-description"
+																						aria-hidden="true">Enter your check out
+																						date in the format mm/dd/yyyy</span>
+																				</div>
+																			</div>
+																			<div class="col-md-12 space-top-3">
+																				<div class="GuestPickerContainer">
+																					<label for="number_of_guests_13738469"
+																						class="book-it__label"><span>Guests</span></label>
+																					<div class="GuestPickerTrigger">
+																						<button class="GuestPickerTrigger__button"
+																							type="button">
+																							<div class="guest-label">
+																								<span
+																									class="guest-label__text guest-label__text-guests"><span>1
+																										guest</span></span>
+																							</div>
+																							<div class="dropdown-icon">
+																								<svg viewBox="0 0 18 18"
+																									style="fill: currentColor; height: 12px; width: 12px; display: block;">
+																								<path
+																									d="M16.291 4.295a1 1 0 1 1 1.414 1.415l-8 7.995a1 1 0 0 1-1.414 0l-8-7.995a1 1 0 1 1 1.414-1.415l7.293 7.29 7.293-7.29z"></path></svg>
+																							</div>
+																						</button>
+																						<div>
+																							<div class="GuestPicker hide">
+																								<div>
+																									<div class="GuestPickerRow row row-condensed">
+																										<div class="col-sm-8 GuestPickerRow__label">
+																											<strong aria-live="polite">1 adult</strong>
+																										</div>
+																										<div class="col-sm-4 increment-btn-container">
+																											<div class="increment-btn">
+																												<button class="btn btn-decrement"
+																													disabled=""
+																													aria-label="Decrement number of adults">
+																													<i class="icon icon-minus"></i>
+																												</button>
+																												<button class="btn btn-increment"
+																													aria-label="Increment number of adults">
+																													<i class="icon icon-add"></i>
+																												</button>
+																											</div>
+																										</div>
+																									</div>
+																									<div class="GuestPickerRow row row-condensed">
+																										<div class="col-sm-8 GuestPickerRow__label">
+																											<strong aria-live="polite">0
+																												children</strong>
+																											<div class="pull-right text-muted text-small">Ages
+																												2 - 12</div>
+																										</div>
+																										<div class="col-sm-4 increment-btn-container">
+																											<div class="increment-btn">
+																												<button class="btn btn-decrement"
+																													disabled=""
+																													aria-label="Decrement number of children">
+																													<i class="icon icon-minus"></i>
+																												</button>
+																												<button class="btn btn-increment"
+																													aria-label="Increment number of children">
+																													<i class="icon icon-add"></i>
+																												</button>
+																											</div>
+																										</div>
+																									</div>
+																									<div class="GuestPickerRow row row-condensed">
+																										<div class="col-sm-8 GuestPickerRow__label">
+																											<strong aria-live="polite">0 infants</strong>
+																											<div class="pull-right text-muted text-small">Under
+																												2</div>
+																										</div>
+																										<div class="col-sm-4 increment-btn-container">
+																											<div class="increment-btn">
+																												<button class="btn btn-decrement"
+																													disabled=""
+																													aria-label="Decrement number of infants">
+																													<i class="icon icon-minus"></i>
+																												</button>
+																												<button class="btn btn-increment"
+																													aria-label="Increment number of infants">
+																													<i class="icon icon-add"></i>
+																												</button>
+																											</div>
+																										</div>
+																									</div>
+																									<div
+																										class="GuestPickerFooter text-muted text-small">
+																										<div class="row row-condensed">
+																											<div class="col-sm-9">
+																												<span class="GuestPickerFooter__note"><span>3
+																														guests maximum</span><span
+																													class="screen-reader-only"
+																													aria-live="assertive"></span></span>
+																											</div>
+																											<div
+																												class="col-sm-3 text-right GuestPickerFooter__close">
+																												<button class="btn-link" type="button">
+																													<span>close</span>
+																												</button>
+																											</div>
+																										</div>
+																									</div>
+																								</div>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																		<noscript></noscript>
+																		<div class="">
+																			<button type="submit"
+																				class="btn btn-primary btn-large btn-block">
+																				<span>Book</span>
+																			</button>
+																			<div
+																				class="bookit-message__container text-center text-muted">
+																				<small><span>You won’t be charged yet</span></small>
+																			</div>
+																		</div>
+																		<div class="hide">
+																			<button type="button"
+																				class="btn btn-primary btn-large btn-small btn-block">
+																				<span>Contact host</span>
+																			</button>
+																			<div>
+																				<noscript></noscript>
+																			</div>
+																		</div>
+																		<div
+																			class="book-it__message-container js-book-it-message recent_views">
+																			<hr aria-hidden="true" />
+																			<div class="listing-desirability">
+																				<div
+																					class="icon-background-container icon-clock-background">
+																					<div class="book-it__message-text">
+																						<strong>This home is on people’s minds.</strong>
+																						<div class="media space-top-1">It’s been
+																							viewed 1976 times in the past week.</div>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</form>
+														</div>
+													</div>
+												</div>
+												<div>
+													<noscript></noscript>
+												</div>
+												<div>
+													<noscript></noscript>
+												</div>
+												<div
+													class="panel wishlist-panel space-top-6 space-md-3 hide-sm">
+													<div class="panel-body panel-light">
+														<div class="wishlist-wrapper hide-sm">
+															<div class="rich-toggle wish_list_button not_saved"
+																title="Saved 2165 times">
+																<input type="checkbox" name="wishlist-button"
+																	id="wishlist-button" /> <label for="wishlist-button"
+																	class="btn btn-block btn-large wishlist-button-label wishlist-button-label-margin">
+																	<span class="rich-toggle-checked"> <i
+																		class="icon icon-heart icon-rausch"></i> <span
+																		class="wishlist-button--control wishlist-button--detailed">
+																			Saved to Wish List </span>
+																</span> <span class="rich-toggle-unchecked"> <i
+																		class="icon icon-heart-alt icon-light-gray"></i> <span
+																		class="wishlist-button--control wishlist-button--detailed">
+																			Save to Wish List </span>
+																</span>
+																</label>
+																<div
+																	class="wishlist-button--detailed wishlist-button-subtitle text-center text-muted">
+																	<small> <span
+																		class="wishlist-button-subtitle-text"> 2165
+																			travelers saved this place </span>
+																	</small>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div id="box-social-share-widget-container"
+														class="boxed-icons show-lg">
+														<div
+															class="social-share-widget p3-box-share-widget p3-share-widget">
+															<span class="share-title" style="display: none;">
+																Share: </span>
+															<div class="share-triggers btn-group">
+																<a
+																	class="share-btn link-icon text-center btn btn-width-control"
+																	rel="nofollow" title="Email"
+																	href="https://www.airbnb.com/rooms/13738469?s=Q8-G3TeD#">
+																	<span class="screen-reader-only">Email</span> <i
+																	class="icon icon-envelope social-icon-size"></i> Email
+																</a> <span
+																	class="more-btn btn btn-width-control control-button-height">
+																	··· <span class="more-btn-dots-prefix">More</span>
+																</span>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="other-actions text-center space-top-3 space-3">
+													<div>
+														<div>
+															<div class="flag-widget">
+																<a
+																	href="https://www.airbnb.com/rooms/13738469?s=Q8-G3TeD#"
+																	class="link-reset" title="Report this listing"><i
+																	class="icon icon-flag h4"></i><span> </span><span>Report
+																		this listing</span></a>
+															</div>
+															<noscript></noscript>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<style></style>
+						<div>
+							<div>
+								<div id="details" class="details-section webkit-render-fix">
+									<div class="page-container-responsive">
+										<div class="row">
+											<div class="col-lg-8 js-details-column">
+												<div style="margin-top: 48px; margin-bottom: 32px;">
+													<div class="panel">
+														<div class="root_1ctjl5w">
+															<div class="panel-body">
+																<div class="iconContainer_1f5o2au-o_O-piggyIcon_qgsggv">
+																	<div class="messageBody_1o34bja">
+																		<div>
+																			<strong><span><span>100%
+																						refundable</span></span></strong>
+																		</div>
+																		<div>
+																			<span><span>Cancel up to 7 days before
+																					your trip and get a full refund, including service
+																					fees.</span></span>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="space-top-8 space-8">
+													<h4 class="space-4 text-center-sm">
+														<span>About this listing</span>
+													</h4>
+													<div>
+														<p>
+															<span>Experience sleeping in the Duomo room with a
+																cozy blooming balcony, private bathroom, daily breakfast
+																&amp; friendly hospitality ! Your bathroom is for your
+																exclusive use alone (my girlfriend and I have a separate
+																one) and shampoo+conditioner, shower gel, and bath
+																towels are provided. A hair dryer is available for your
+																use also </span> <br /> <span>Wireless air-speed
+																internet, a large desk and a small tv complete the room</span>
+															<br /> <span>The apartment is on third floor
+																without elevator, we will be happy to help you with your
+																luggage :) </span>
+														</p>
+													</div>
+													<div class="row row-condensed">
+														<div class="contact-host-div col-12">
+															<div>
+																<button class="btn-link btn-link--bold" type="button">
+																	<span>Contact host</span>
+																</button>
+																<div>
+																	<noscript></noscript>
+																</div>
+															</div>
+														</div>
+													</div>
+													<hr />
+													<div class="row">
+														<div class="col-md-3 text-muted">
+															<div>
+																<span>The space</span>
+															</div>
+														</div>
+														<div class="col-md-9">
+															<div class="row">
+																<div class="col-md-6">
+																	<div>
+																		<span>Accommodates:</span><span> </span><strong>3</strong>
+																	</div>
+																	<div>
+																		<span>Bathrooms:</span><span> </span><strong>2</strong><span>
+																		</span><strong>(Private bathroom)</strong>
+																	</div>
+																	<div>
+																		<span>Bedrooms:</span><span> </span><strong>1</strong>
+																	</div>
+																	<div>
+																		<span>Beds:</span><span> </span><strong>2</strong>
+																	</div>
+																</div>
+																<div class="col-md-6">
+																	<div>
+																		<span>Check In:</span><span> </span><strong>Anytime
+																			after 2PM</strong>
+																	</div>
+																	<div>
+																		<span>Check Out:</span><span> </span><strong>10AM</strong>
+																	</div>
+																	<div>
+																		<a href="https://www.airbnb.com/s/Milano--Italy"
+																			class="link-reset"><span>Property type:</span><span>
+																		</span><strong>Apartment</strong></a>
+																	</div>
+																	<div>
+																		<span>Room type:</span><span> </span><strong>Private
+																			room</strong>
+																	</div>
+																</div>
+															</div>
+															<div class="row">
+																<div class="col-md-6">
+																	<strong><a
+																		href="https://www.airbnb.com/rooms/13738469?s=Q8-G3TeD#house-rules"
+																		class="react-house-rules-trigger"><span>House
+																				Rules</span></a></strong>
+																</div>
+															</div>
+														</div>
+													</div>
+													<hr class="" />
+													<div class="row amenities">
+														<div class="col-md-3 text-muted">
+															<div>
+																<span>Amenities</span>
+															</div>
+														</div>
+														<div class="col-md-9 expandable">
+															<div class="expandable-content-summary">
+																<div class="row">
+																	<div class="col-sm-6">
+																		<div>
+																			<div class="space-1">
+																				<span aria-hidden="true"><i
+																					class="icon h3 icon-tv"></i><span>&nbsp;&nbsp;&nbsp;</span></span><span>TV</span>
+																			</div>
+																		</div>
+																		<div>
+																			<div class="space-1">
+																				<span aria-hidden="true"><i
+																					class="icon h3 icon-essentials"></i><span>&nbsp;&nbsp;&nbsp;</span></span><span><span>Essentials</span>
+																					<noscript></noscript></span>
+																			</div>
+																		</div>
+																		<button
+																			class="expandable-trigger-more btn-link btn-link--bold"
+																			type="button">
+																			<span>+ More</span>
+																		</button>
+																	</div>
+																	<div class="col-sm-6">
+																		<div>
+																			<div class="space-1">
+																				<span aria-hidden="true"><i
+																					class="icon h3 icon-shampoo"></i><span>&nbsp;&nbsp;&nbsp;</span></span><span>Shampoo</span>
+																			</div>
+																		</div>
+																		<div>
+																			<div class="space-1">
+																				<span aria-hidden="true"><i
+																					class="icon h3 icon-heating"></i><span>&nbsp;&nbsp;&nbsp;</span></span><span><span>Heating</span>
+																					<noscript></noscript></span>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<div class="expandable-content expandable-content-full">
+																<div class="row">
+																	<div class="col-sm-6">
+																		<div>
+																			<div class="space-1 text-muted">
+																				<span><del aria-hidden="true">Kitchen</del>
+																					<noscript></noscript></span>
+																			</div>
+																		</div>
+																		<div>
+																			<div class="space-1 text-muted">
+																				<del aria-hidden="true">Internet</del>
+																			</div>
+																		</div>
+																		<div>
+																			<div class="space-1">
+																				<span aria-hidden="true"><i
+																					class="icon h3 icon-tv"></i><span>&nbsp;&nbsp;&nbsp;</span></span><strong>TV</strong>
+																			</div>
+																		</div>
+																		<div>
+																			<div class="space-1">
+																				<span aria-hidden="true"><i
+																					class="icon h3 icon-essentials"></i><span>&nbsp;&nbsp;&nbsp;</span></span><span><strong>Essentials</strong>
+																					<noscript></noscript></span>
+																			</div>
+																		</div>
+																		<div>
+																			<div class="space-1">
+																				<span aria-hidden="true"><i
+																					class="icon h3 icon-shampoo"></i><span>&nbsp;&nbsp;&nbsp;</span></span><strong>Shampoo</strong>
+																			</div>
+																		</div>
+																		<div>
+																			<div class="space-1">
+																				<span aria-hidden="true"><i
+																					class="icon h3 icon-heating"></i><span>&nbsp;&nbsp;&nbsp;</span></span><span><strong>Heating</strong>
+																					<noscript></noscript></span>
+																			</div>
+																		</div>
+																		<div>
+																			<div class="space-1">
+																				<span aria-hidden="true"><i
+																					class="icon h3 icon-air-conditioning"></i><span>&nbsp;&nbsp;&nbsp;</span></span><strong>Air
+																					conditioning</strong>
+																			</div>
+																		</div>
+																		<div>
+																			<div class="space-1 text-muted">
+																				<span><del aria-hidden="true">Washer</del>
+																					<noscript></noscript></span>
+																			</div>
+																		</div>
+																		<div>
+																			<div class="space-1 text-muted">
+																				<span><del aria-hidden="true">Dryer</del>
+																					<noscript></noscript></span>
+																			</div>
+																		</div>
+																		<div>
+																			<div class="space-1 text-muted">
+																				<del aria-hidden="true">Free parking on
+																					premises</del>
+																			</div>
+																		</div>
+																		<div>
+																			<div class="space-1">
+																				<span aria-hidden="true"><i
+																					class="icon h3 icon-wifi"></i><span>&nbsp;&nbsp;&nbsp;</span></span><span><strong>Wireless
+																						Internet</strong>
+																					<noscript></noscript></span>
+																			</div>
+																		</div>
+																		<div>
+																			<div class="space-1">
+																				<span aria-hidden="true"><i
+																					class="icon h3 icon-desktop"></i><span>&nbsp;&nbsp;&nbsp;</span></span><strong>Cable
+																					TV</strong>
+																			</div>
+																		</div>
+																		<div>
+																			<div class="space-1">
+																				<span aria-hidden="true"><i
+																					class="icon h3 icon-cup"></i><span>&nbsp;&nbsp;&nbsp;</span></span><span><strong>Breakfast</strong>
+																					<noscript></noscript></span>
+																			</div>
+																		</div>
+																		<div>
+																			<div class="space-1 text-muted">
+																				<del aria-hidden="true">Pets allowed</del>
+																			</div>
+																		</div>
+																		<div>
+																			<div class="space-1">
+																				<span aria-hidden="true"><i
+																					class="icon h3 icon-family"></i><span>&nbsp;&nbsp;&nbsp;</span></span><strong><a
+																					href="https://www.airbnb.com/s/milano--italy?amenity=family-friendly"
+																					class="link-reset">Family/kid friendly</a></strong>
+																			</div>
+																		</div>
+																		<div>
+																			<div class="space-1 text-muted">
+																				<span><del aria-hidden="true">Suitable
+																						for events</del>
+																					<noscript></noscript></span>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-sm-6">
+																		<div>
+																			<div class="space-1">
+																				<span aria-hidden="true"><i
+																					class="icon h3 icon-smoking"></i><span>&nbsp;&nbsp;&nbsp;</span></span><strong>Smoking
+																					allowed</strong>
+																			</div>
+																		</div>
+																		<div>
+																			<div class="space-1 text-muted">
+																				<span><del aria-hidden="true">Wheelchair
+																						accessible</del>
+																					<noscript></noscript></span>
+																			</div>
+																		</div>
+																		<div>
+																			<div class="space-1 text-muted">
+																				<del aria-hidden="true">Elevator in building</del>
+																			</div>
+																		</div>
+																		<div>
+																			<div class="space-1 text-muted">
+																				<del aria-hidden="true">Indoor fireplace</del>
+																			</div>
+																		</div>
+																		<div>
+																			<div class="space-1">
+																				<span aria-hidden="true"><i
+																					class="icon h3 icon-intercom"></i><span>&nbsp;&nbsp;&nbsp;</span></span><strong>Buzzer/wireless
+																					intercom</strong>
+																			</div>
+																		</div>
+																		<div>
+																			<div class="space-1 text-muted">
+																				<del aria-hidden="true">Doorman</del>
+																			</div>
+																		</div>
+																		<div>
+																			<div class="space-1 text-muted">
+																				<span><del aria-hidden="true">Pool</del>
+																					<noscript></noscript></span>
+																			</div>
+																		</div>
+																		<div>
+																			<div class="space-1 text-muted">
+																				<del aria-hidden="true">Hot tub</del>
+																			</div>
+																		</div>
+																		<div>
+																			<div class="space-1 text-muted">
+																				<span><del aria-hidden="true">Gym</del>
+																					<noscript></noscript></span>
+																			</div>
+																		</div>
+																		<div>
+																			<div class="space-1 text-muted">
+																				<span><del aria-hidden="true">24-hour
+																						check-in</del>
+																					<noscript></noscript></span>
+																			</div>
+																		</div>
+																		<div>
+																			<div class="space-1">
+																				<span aria-hidden="true"><i
+																					class="icon h3 icon-hangers"></i><span>&nbsp;&nbsp;&nbsp;</span></span><strong>Hangers</strong>
+																			</div>
+																		</div>
+																		<div>
+																			<div class="space-1 text-muted">
+																				<del aria-hidden="true">Iron</del>
+																			</div>
+																		</div>
+																		<div>
+																			<div class="space-1">
+																				<span aria-hidden="true"><i
+																					class="icon h3 icon-hair-dryer"></i><span>&nbsp;&nbsp;&nbsp;</span></span><strong>Hair
+																					dryer</strong>
+																			</div>
+																		</div>
+																		<div>
+																			<div class="space-1">
+																				<span aria-hidden="true"><i
+																					class="icon h3 icon-laptop"></i><span>&nbsp;&nbsp;&nbsp;</span></span><span><strong>Laptop
+																						friendly workspace</strong>
+																					<noscript></noscript></span>
+																			</div>
+																		</div>
+																		<div>
+																			<div class="space-1 text-muted">
+																				<del aria-hidden="true">Private living room</del>
+																			</div>
+																		</div>
+																		<div>
+																			<div class="space-1 text-muted">
+																				<del aria-hidden="true">Private entrance</del>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+													<hr class="" />
+													<div class="row">
+														<div class="col-md-3 text-muted">
+															<div>
+																<span>Prices</span>
+															</div>
+														</div>
+														<div class="col-md-9">
+															<div>
+																<div class="row">
+																	<div class="col-md-6">
+																		<div>
+																			<span>Extra people:</span><span> </span><strong>43
+																				₺ / night after the first guest</strong>
+																		</div>
+																	</div>
+																	<div class="col-md-6"></div>
+																</div>
+															</div>
+														</div>
+													</div>
+													<hr class="" />
+													<div class="row description" id="description">
+														<div class="col-md-3 text-muted">
+															<div>
+																<span>Description</span>
+															</div>
+														</div>
+														<div class="col-md-9">
+															<div>
+																<p>
+																	<strong><span>Sleeping arrangements</span></strong>
+																</p>
+																<div class="space-6 space-top-2">
+																	<div class="row space-4">
+																		<div class="col-sm-6">
+																			<div class="bedroom-config-icon-container">
+																				<i
+																					class="icon icon-size-2 bedroom-config-icon icon-queen-bed"></i><i
+																					class="icon icon-size-2 bedroom-config-icon icon-sofa-bed"></i>
+																			</div>
+																			<div>
+																				<strong>Bedroom 1</strong>
+																			</div>
+																			<div class="text-muted">1 queen bed, 1 sofa bed</div>
+																		</div>
+																		<div class="col-sm-6">
+																			<div class="bedroom-config-icon-container">
+																				<i
+																					class="icon icon-size-2 bedroom-config-icon icon-couch"></i>
+																			</div>
+																			<div>
+																				<strong>Common spaces</strong>
+																			</div>
+																			<div class="text-muted">1 couch</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+													<hr class="" />
+													<div class="row react-house-rules" id="house-rules">
+														<div class="col-md-3">
+															<div class="text-muted">
+																<span>House Rules</span>
+															</div>
+														</div>
+														<div class="col-md-9">
+															<div>
+																<div>
+																	<div class="structured_house_rules">
+																		<div class="row col-sm-12">
+																			<span>Not suitable for pets</span>
+																		</div>
+																		<div class="row col-sm-12 space-top-1">
+																			<span>No parties or events</span>
+																		</div>
+																		<div class="row col-sm-12 space-top-1">
+																			<span>May not be safe or suitable for infants
+																				(Under 2 years)</span>
+																		</div>
+																		<div class="row col-sm-12 space-top-1">
+																			<span>Check-in is after 2PM</span>
+																		</div>
+																		<div class="row">
+																			<div class="col-sm-2">
+																				<hr class="structured_house_rules__hr" />
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+													<hr class="" />
+													<div class="row">
+														<div class="col-md-3 text-muted">
+															<div style="margin-bottom: 16px;">
+																<span>Cancellations</span>
+															</div>
+														</div>
+														<div class="col-md-9">
+															<p>
+																<span> </span><span><span>This host has a
+																</span><span><strong class=""><span>Moderate
+																				Cancellation Policy</span></strong></span></span><span> </span>
+															</p>
+															<p>
+																<span> </span><span>Cancel up to 7 days before
+																	your trip and get a full refund. Cancel within 7 days
+																	of the trip and get a 50% refund of the nightly rate,
+																	as well as a full refund of fees.</span><span> </span>
+															</p>
+															<div>
+																<a
+																	href="https://www.airbnb.com/home/updated_cancellation_policies#moderate"
+																	target="_blank" rel="noopener"><strong><span>
+																	</span><span>View details</span><span> </span></strong></a>
+															</div>
+														</div>
+													</div>
+													<hr class="" />
+													<div class="row">
+														<div class="col-md-3 text-muted">
+															<div>
+																<span>Safety features</span>
+															</div>
+														</div>
+														<div class="col-md-9">
+															<div>
+																<div class="row">
+																	<div class="col-md-6 col-sm-6">
+																		<div>
+																			<div>
+																				<div class="space-1">
+																					<span>Lock on bedroom door</span>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-md-6 col-sm-6"></div>
+																</div>
+															</div>
+														</div>
+													</div>
+													<hr class="" />
+													<div class="row">
+														<div class="col-md-3 text-muted">
+															<div>
+																<span>Availability</span>
+															</div>
+														</div>
+														<div class="col-md-9">
+															<div class="row">
+																<div class="col-md-6">
+																	<strong>1 night</strong> minimum stay
+																</div>
+																<div class="col-md-6">
+																	<a class="view-calendar"
+																		href="https://www.airbnb.com/rooms/13738469?s=Q8-G3TeD#"><strong><span>View
+																				calendar</span></strong></a>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div id="host-profile" class="webkit-render-fix">
+									<div class="page-container-responsive space-top-8 space-8">
+										<div class="row">
+											<div class="col-lg-8">
+												<div>
+													<h4 class="space-2 text-center-sm">
+														<span>Your Host</span>
+													</h4>
+													<hr class="space-4 space-top-2" />
+												</div>
+												<div class="row">
+													<div class="col-md-3 text-center">
+														<div class="media-photo-badge">
+															<a href="https://www.airbnb.com/users/show/39933518"
+																rel="nofollow" class="media-photo media-round"> <img
+																alt="Francesco" class="media-photo media-round"
+																height="90" width="90"
+																src="./Duomo room with private bathroom &amp; daily breakfast - Apartments for Rent in Milano_files/59f781e3-b907-4b02-aa58-f8ec96360dd1.jpg"
+																title="Francesco" />
+															</a> <img
+																src="./Duomo room with private bathroom &amp; daily breakfast - Apartments for Rent in Milano_files/superhost_photo_badge-a38e6a7d2afe0e01146ce910da3915f5.png"
+																class="superhost-photo-badge" alt="" />
+														</div>
+													</div>
+													<div class="col-md-9">
+														<h3 class="space-1">
+															<a class="link-reset"
+																href="https://www.airbnb.com/users/show/39933518"
+																rel="nofollow">Francesco</a>
+														</h3>
+														<div class="row row-condensed space-2">
+															<div class="col-md-12 text-muted">
+																<span>Milan, Italy</span><span> · </span><span>Joined
+																	in July 2015</span>
+															</div>
+														</div>
+														<div class="react-expandable">
+															<div class="expandable-content expandable-content-long">
+																<div>
+																	<p>
+																		<span>Hi there! </span><br /> <span> </span><br /> <span>I
+																			am a neapolitan living in Milan with his girlfriend
+																			Myriam. We both love to travel and since we have been
+																			together we visited almost all Europe, so next step
+																			will be discovering other continents! </span><br /> <span>
+																		</span><br /> <span>Francesco </span><br /> <span> </span><br />
+																	</p>
+																</div>
+																<div class="expandable-indicator"></div>
+															</div>
+															<span class="react-expandable-trigger-more"><button
+																	class="btn-link btn-link--bold" type="button">
+																	<span>+ More</span>
+																</button></span>
+														</div>
+														<div class="row row-condensed space-2">
+															<div class="col-md-6">
+																<span><span>Response rate:</span><span> </span><strong>100%</strong><small
+																	class="response-details text-muted hide"><span>(</span><span>past
+																			30 days</span><span>)</span></small></span>
+																<div>
+																	<span>Response time:</span><span> </span><strong>within
+																		an hour</strong>
+																</div>
+															</div>
+														</div>
+														<div class="space-top-3">
+															<div class="badge-container space-4">
+																<a class="link-reset" target="_blank"
+																	rel="noopener noreferrer nofollow"
+																	href="https://www.airbnb.com/users/show/39933518#reviews"><div
+																		class="text-center text-wrap">
+																		<div class="badge-pill h3">
+																			<span class="badge-pill-count">83</span>
+																		</div>
+																		<br class="show-sm" />
+																		<div class="va-middle show-inline-block">
+																			<span class="badge-pill-label">Reviews</span>
+																		</div>
+																	</div></a>
+															</div>
+															<div class="badge-container space-4">
+																<div>
+																	<a class="link-reset" target="_blank"
+																		rel="noopener noreferrer nofollow">
+																		<div class="text-center text-wrap"
+																			id="verified-id-icon">
+																			<img alt="Verified"
+																				src="./Duomo room with private bathroom &amp; daily breakfast - Apartments for Rent in Milano_files/verified_badge-6ee370f5ca86a52ed6198fac858ac1f4.png"
+																				width="32" height="32" /> <br class="show-sm" />
+																			<div class="va-middle show-inline-block">
+																				<span class="badge-pill-label">Verified</span>
+																			</div>
+																		</div>
+																	</a>
+																	<noscript></noscript>
+																</div>
+															</div>
+														</div>
+														<div class="">
+															<button type="button" class="btn btn-primary btn-small">
+																<span>Contact host</span>
+															</button>
+															<div>
+																<noscript></noscript>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div id="host-profile" class="webkit-render-fix">
+									<div class="page-container-responsive space-top-8 space-8">
+										<div class="row">
+											<div class="col-lg-8">
+												<div>
+													<h4 class="space-2 text-center-sm">
+														<span>Location</span>
+													</h4>
+													<hr class="space-4 space-top-2" />
+												</div>
+												
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</h:form>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/app.js"></script>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/angular/service/common_service.js"></script>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/angular/service/place_service.js"></script>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/angular/controller/place_detail_controller.js"></script>
+	</ui:define>
+</ui:composition>
