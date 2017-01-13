@@ -8,7 +8,6 @@ App.controller('mainCtrl', ['$scope', '$controller', function($scope, $controlle
       self.isSearchValid = false;
 
       self.initialize = function() {
-    	  $('body').css("background-image", "url(" + webApplicationUrlPrefix + "/static/images/home.jpg)");
     	  $(function() {
     	      	$("#txtSearchPlace").geocomplete().bind("geocode:result",
     	      			function(event, result) {
