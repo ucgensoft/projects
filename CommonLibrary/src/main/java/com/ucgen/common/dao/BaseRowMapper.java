@@ -311,5 +311,9 @@ public abstract class BaseRowMapper<T> implements RowMapper<T>{
 	public String getColumnName(String colName) {
 		return (this.shortTableName == null ? "" : this.shortTableName + "_") + colName;
 	}
+	
+	public String getCriteriaColumnName(String colName) {
+		return (this.shortTableName == null ? "" : this.shortTableName + ".") + colName;
+	}
 
 }

@@ -2,6 +2,23 @@
 
 App.factory('placeService', ['$http', '$q', function($http, $q) {
 			return {
+				getPlace : function(placeId) {
+					var data = {
+						placeId : placeId
+					};
+					var config = {
+						params : data,
+						headers : {
+							'Accept' : 'application/json'
+						}
+					};
+					return $http.get(webApplicationUrlPrefix + '/api/place/get', config).then(function(response) {
+								return response.data;
+							}, function(errResponse) {
+								console.error('Error while getting places');
+								return $q.reject(errResponse);
+							});
+				},
 				listPlace : function() {
 					var data = {
 

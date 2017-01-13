@@ -12,38 +12,54 @@
 		<link rel="stylesheet"
 			href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
 			
+		<style>
+	        .jssora02l, .jssora02r {
+	            display: block;
+	            position: absolute;
+	            /* size of arrow element */
+	            width: 55px;
+	            height: 55px;
+	            cursor: pointer;
+	            background: url('/LetsErasmus/static/images/image_slider_arrow.png') no-repeat;
+	            overflow: hidden;
+	        }
+	        .jssora02l { background-position: -3px -33px; }
+	        .jssora02r { background-position: -63px -33px; }
+	        .jssora02l:hover { background-position: -123px -33px; }
+	        .jssora02r:hover { background-position: -183px -33px; }
+	        .jssora02l.jssora02ldn { background-position: -3px -33px; }
+	        .jssora02r.jssora02rdn { background-position: -63px -33px; }
+	        .jssora02l.jssora02lds { background-position: -3px -33px; opacity: .3; pointer-events: none; }
+	        .jssora02r.jssora02rds { background-position: -63px -33px; opacity: .3; pointer-events: none; }
+	        
+	        .selectedTab {
+	        	color: #008489 !important;
+	        }
+	        
+	    </style>
+			
 	</ui:define>
 
 	<ui:define name="body">
 		<h:form id="placeForm">
 			<div id="containerPage" ng-app="myApp"
-				ng-controller="placeCtrl as ctrl">
+				ng-controller="placeDetailCtrl as ctrl">
 				
 				<div id="room" itemscope="" itemtype="http://schema.org/Product">
 
 					<div>
 						<div>
-							<div id="photos" class="with-photos with-modal">
+							<div id="photos" class="with-photos with-modal" style="max-height: 610px">
 								<span class="cover-photo"> 
 									<span class="cover-img-container">
 										<div class="cover-img">
-											<div style="width: 70%; margin-left: 15%; height: 100%; background-image: url(https://a2.muscache.com/im/pictures/77611903/98619657_original.jpg?aki_policy=xx_large);">
-												<div class="link-reset panel-overlay-bottom-left panel-overlay-label panel-overlay-listing-label show-sm">
-													<div>
-														<span class="h3 text-contrast price-amount"> <span>155₺</span></span>
-														<span class="listing-price__per-night hide-sm"><span>Per
-																Night</span></span>
-													</div>
-												</div>
+											<div style="position: absolute; top:0; left:0; bottom:0; right:0; margin:auto; width:100%; max-width: 1000px; height: 100%; max-height: 600px; background-image: url(https://a2.muscache.com/im/pictures/77611903/98619657_original.jpg?aki_policy=xx_large);">
+												<span class="jssora02l" style="top:50%;left:8px;"></span>
+       											<span class="jssora02r" style="top:50%;right:8px;"></span>
 											</div>
 										</div>
 									</span>
 								</span>
-								<div class="hero__view-photos" style="margin-left: 15%">
-									<button type="button" class="btn">
-										<span>View Photos</span>
-									</button>
-								</div>
 							</div>
 						</div>
 					</div>
@@ -61,24 +77,27 @@
 															<div class="innerContainer_bwt19t">
 																<div>
 																	<div class="tabs_1evuybf">
-																		<button
-																			class="text_1aunhvg-o_O-tab_wurtoe-o_O-tab_selected_1i7fvde">
-																			<span class="wrapper_p7pvqu"><span>Overview</span><span
-																				class="tab_selectedLabel_nw4j64-o_O-tab_selectedLabelSelected_2yjt4u"
-																				aria-hidden="true"><span>Overview</span></span></span>
+																		<button id="btnTab1" type="button" class="text_1aunhvg-o_O-tab_wurtoe-o_O-tab_selected_1i7fvde"
+																			ng-click="ctrl.onTabChange(1);">
+																			<span class="wrapper_p7pvqu"><span id="spanTabText1" class="selectedTab">Overview</span></span>
 																		</button>
-																		<button class="text_1aunhvg-o_O-tab_wurtoe">
-																			<span class="wrapper_p7pvqu"><span>Reviews</span><span
-																				class="tab_selectedLabel_nw4j64" aria-hidden="true"><span>Reviews</span></span></span>
+																		<button id="btnTab2" type="button" class="text_1aunhvg-o_O-tab_wurtoe"
+																			ng-click="ctrl.onTabChange(2);">
+																			<span class="wrapper_p7pvqu">
+																				<span id="spanTabText2">The Host</span>
+																			</span>
 																		</button>
-																		<button class="text_1aunhvg-o_O-tab_wurtoe">
-																			<span class="wrapper_p7pvqu"><span>The
-																					Host</span><span class="tab_selectedLabel_nw4j64"
-																				aria-hidden="true"><span>The Host</span></span></span>
+																		<button id="btnTab2" type="button" class="text_1aunhvg-o_O-tab_wurtoe"
+																			ng-click="ctrl.onTabChange(3)">
+																			<span class="wrapper_p7pvqu">
+																				<span id="spanTabText3">Location</span>
+																			</span>
 																		</button>
-																		<button class="text_1aunhvg-o_O-tab_wurtoe">
-																			<span class="wrapper_p7pvqu"><span>Location</span><span
-																				class="tab_selectedLabel_nw4j64" aria-hidden="true"><span>Location</span></span></span>
+																		<button id="btnTab2" type="button" class="text_1aunhvg-o_O-tab_wurtoe"
+																			ng-click="ctrl.onTabChange(4)">
+																			<span class="wrapper_p7pvqu">
+																				<span id="spanTabText4">Reviews</span>
+																			</span>
 																		</button>
 																	</div>
 																	<div></div>
@@ -91,7 +110,7 @@
 												</div>
 											</div>
 										</div>
-										<div class="row">
+										<div id="divPlaceSummary" class="row">
 											<div class="col-sm-12">
 												<style></style>
 												<div>
@@ -114,31 +133,18 @@
 																	</div>
 																</div>
 																<div class="col-md-9">
-																	<h1 itemprop="name"
-																		class="overflow h3 space-1 text-center-sm"
-																		id="listing_name">Duomo room with private
-																		bathroom &amp; daily breakfast</h1>
-																	<span class="hide" itemscope=""
-																		itemtype="http://schema.org/BreadcrumbList"><span
-																		itemprop="itemListElement" itemscope=""
-																		itemtype="http://schema.org/ListItem"><a
-																			itemprop="item" href="https://www.airbnb.com/s/Italy"><span
-																				itemprop="name">Italy</span></a></span><span
-																		itemprop="itemListElement" itemscope=""
-																		itemtype="http://schema.org/ListItem"><a
-																			itemprop="item"
-																			href="https://www.airbnb.com/s/Lombardia--Italy"><span
-																				itemprop="name">Lombardia</span></a></span><span
-																		itemprop="itemListElement" itemscope=""
-																		itemtype="http://schema.org/ListItem"><a
-																			itemprop="item"
-																			href="https://www.airbnb.com/s/Milano--Italy"><span
-																				itemprop="name">Milano</span></a></span></span>
+																	<h1 class="overflow h3 space-1 text-center-sm"
+																		id="listing_name">{{ctrl.place.title}}</h1>
+																	<span class="hide">
+																		<span><a><span>Italy</span></a>
+																		</span><span><a><span>Lombardia</span></a>
+																		</span><span><a><span>Milano</span></a></span>
+																	</span>
 																	<div id="display-address"
 																		class="space-2 text-muted text-center-sm">
 																		<a
 																			href="https://www.airbnb.com/rooms/13738469?s=Q8-G3TeD#neighborhood"
-																			class="link-reset">Milano, Lombardia, Italy</a><span>
+																			class="link-reset">{{ ctrl.getLocationText() }}</a><span>
 																			&nbsp; </span><a
 																			href="https://www.airbnb.com/rooms/13738469?s=Q8-G3TeD#reviews"
 																			class="link-reset show-inline-block hide-sm"><div
@@ -207,10 +213,10 @@
 																</div>
 																<div class="col-md-9">
 																	<div class="row row-condensed text-muted text-center">
-																		<div class="col-sm-3">Private room</div>
-																		<div class="col-sm-3">3 Guests</div>
+																		<div class="col-sm-3">{{ ctrl.getPlaceTypeDescription() }}</div>
+																		<div class="col-sm-3">{{ ctrl.place.guestNumber }} Guests</div>
 																		<div class="col-sm-3">1 Bedroom</div>
-																		<div class="col-sm-3">2 Beds</div>
+																		<div class="col-sm-3">{{ ctrl.place.bedNumber }} Beds</div>
 																	</div>
 																</div>
 															</div>
@@ -274,26 +280,21 @@
 												</div>
 											</div>
 										</div>
-										<div class="book-it js-book-it book-it--inNewStickyExperiment">
+										<div style="margin-top: 0px" class="book-it js-book-it book-it--inNewStickyExperiment">
 											<div
 												class="book-it__container js-book-it-container book-it__container--inNewStickyExperiment"
 												style="top: 0px;">
 												<div>
 													<div>
 														<div class="">
-															<div itemprop="offers" itemscope=""
-																itemtype="http://schema.org/Offer"
-																class="book-it__price book-it__price--inNewStickyExperiment"
+															<div class="book-it__price book-it__price--inNewStickyExperiment"
 																style="height: 50px;">
-																<div class="row"
-																	aria-labelledby="book-it-price-string book-it-rate-type ib-tooltip-title">
+																<div class="row">
 																	<div class="col-sm-8">
 																		<div class="book-it__price-amount text-special">
 																			<span id="book-it-price-string"><span
-																				class="h3"><span>138₺</span></span></span><span><i
-																				class="icon icon-instant-book icon-beach h4 book-it__instant-book-price-icon"
-																				aria-labelledby="ib-tooltip-title"
-																				aria-describedby="ib-tooltip-description"></i>
+																				class="h3"><span>{{ ctrl.getPriceText() }}</span></span></span><span><i
+																				class="icon icon-instant-book icon-beach h4 book-it__instant-book-price-icon"></i>
 																				<noscript></noscript></span>
 																		</div>
 																	</div>
@@ -316,12 +317,13 @@
 																			<div class="col-md-12">
 																				<div class="row row-condensed">
 																					<div class="col-sm-6">
-																						<label class="book-it__label"
-																							for="datespan-checkin">Check In</label> <input
-																							id="datespan-checkin" type="text" name="checkin"
+																						<label class="book-it__label">Check In</label> 
+																						<input
+																							id="txtStartDatePicker" type="text" name="checkin"
 																							aria-describedby="datespan-checkin-description"
 																							class="checkin ui-datepicker-target"
-																							placeholder="mm/dd/yyyy" /> <span
+																							placeholder="mm/dd/yyyy" /> 
+																						<span
 																							class="screen-reader-only"
 																							id="datespan-checkin-description"
 																							aria-hidden="true">Enter your check in
@@ -329,8 +331,9 @@
 																					</div>
 																					<div class="col-sm-6">
 																						<label class="book-it__label"
-																							for="datespan-checkout">Check Out</label> <input
-																							id="datespan-checkout" type="text"
+																							for="datespan-checkout">Check Out</label> 
+																						<input
+																							id="txtEndDatePicker" type="text"
 																							name="checkout"
 																							aria-describedby="datespan-checkout-description"
 																							class="checkout ui-datepicker-target"
@@ -512,13 +515,6 @@
 																			Save to Wish List </span>
 																</span>
 																</label>
-																<div
-																	class="wishlist-button--detailed wishlist-button-subtitle text-center text-muted">
-																	<small> <span
-																		class="wishlist-button-subtitle-text"> 2165
-																			travelers saved this place </span>
-																	</small>
-																</div>
 															</div>
 														</div>
 													</div>
@@ -535,10 +531,7 @@
 																	href="https://www.airbnb.com/rooms/13738469?s=Q8-G3TeD#">
 																	<span class="screen-reader-only">Email</span> <i
 																	class="icon icon-envelope social-icon-size"></i> Email
-																</a> <span
-																	class="more-btn btn btn-width-control control-button-height">
-																	··· <span class="more-btn-dots-prefix">More</span>
-																</span>
+																</a>
 															</div>
 														</div>
 													</div>
@@ -597,17 +590,7 @@
 													</h4>
 													<div>
 														<p>
-															<span>Experience sleeping in the Duomo room with a
-																cozy blooming balcony, private bathroom, daily breakfast
-																&amp; friendly hospitality ! Your bathroom is for your
-																exclusive use alone (my girlfriend and I have a separate
-																one) and shampoo+conditioner, shower gel, and bath
-																towels are provided. A hair dryer is available for your
-																use also </span> <br /> <span>Wireless air-speed
-																internet, a large desk and a small tv complete the room</span>
-															<br /> <span>The apartment is on third floor
-																without elevator, we will be happy to help you with your
-																luggage :) </span>
+															<span>{{ ctrl.place.description }}</span>
 														</p>
 													</div>
 													<div class="row row-condensed">
@@ -657,7 +640,7 @@
 																	<div>
 																		<a href="https://www.airbnb.com/s/Milano--Italy"
 																			class="link-reset"><span>Property type:</span><span>
-																		</span><strong>Apartment</strong></a>
+																		</span><strong>{{ ctrl.getHomeTypeDescription() }}</strong></a>
 																	</div>
 																	<div>
 																		<span>Room type:</span><span> </span><strong>Private
@@ -669,8 +652,7 @@
 																<div class="col-md-6">
 																	<strong><a
 																		href="https://www.airbnb.com/rooms/13738469?s=Q8-G3TeD#house-rules"
-																		class="react-house-rules-trigger"><span>House
-																				Rules</span></a></strong>
+																		class="react-house-rules-trigger"><span>House Rules</span></a></strong>
 																</div>
 															</div>
 														</div>
@@ -1103,7 +1085,7 @@
 										</div>
 									</div>
 								</div>
-								<div id="host-profile" class="webkit-render-fix">
+								<div id="divHostPorfile" class="webkit-render-fix">
 									<div class="page-container-responsive space-top-8 space-8">
 										<div class="row">
 											<div class="col-lg-8">
@@ -1216,13 +1198,30 @@
 										</div>
 									</div>
 								</div>
-								<div id="host-profile" class="webkit-render-fix">
+								<div id="divLocation" class="webkit-render-fix">
 									<div class="page-container-responsive space-top-8 space-8">
 										<div class="row">
 											<div class="col-lg-8">
 												<div>
 													<h4 class="space-2 text-center-sm">
 														<span>Location</span>
+													</h4>
+													<hr class="space-4 space-top-2" />
+												</div>
+												<div style="width: 100%; height: 400px">
+													<div id="divMap" style="height: 100%; width: 100%;"></div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div id="divReviews" class="webkit-render-fix">
+									<div class="page-container-responsive space-top-8 space-8">
+										<div class="row">
+											<div class="col-lg-8">
+												<div>
+													<h4 class="space-2 text-center-sm">
+														<span>Reviews</span>
 													</h4>
 													<hr class="space-4 space-top-2" />
 												</div>

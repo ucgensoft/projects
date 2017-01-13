@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ucgen.common.operationresult.EnmResultCode;
 import com.ucgen.common.operationresult.ListOperationResult;
 import com.ucgen.common.operationresult.OperationResult;
+import com.ucgen.common.operationresult.ValueOperationResult;
 import com.ucgen.common.util.CommonUtil;
 import com.ucgen.common.util.DateUtil;
 import com.ucgen.common.util.ImageUtil;
@@ -180,6 +181,12 @@ public class ApiPlaceController extends BaseApiController {
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<OperationResult>(operationResult, httpStatus);
+    }
+	
+	@RequestMapping(value = "/api/place/get", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public ResponseEntity<ValueOperationResult<Place>> getPlace(@RequestParam("placeId") Long placeId) {
+		ValueOperationResult<Place> getResult = this.placeService.getPlace(placeId);
+		return new ResponseEntity<ValueOperationResult<Place>>(getResult, HttpStatus.OK);
     }
 	
 	@RequestMapping(value = "/api/place/list", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
