@@ -274,14 +274,6 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
 		}
 	};
 	
-	self.getHomeTypeDescription = function(place) {
-		if (place.billsInclude == 'Y') {
-			return "Bills Included";
-		} else {
-			return "";
-		}
-	};
-	
 	self.getBillsDescription = function(place) {
 		if (place.bills_include == 'Y') {
 			return "Bills Included";

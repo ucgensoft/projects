@@ -190,7 +190,7 @@ public class PlaceDao extends JdbcDaoSupport implements IPlaceDao{
 		
 		if (place != null) {
 			if (place.getId() != null) {
-				sqlBuilder.append(" AND " + placeRowMapper.getColumnName(PlaceRowMapper.COL_ID) + " = ? ");
+				sqlBuilder.append(" AND " + placeRowMapper.getCriteriaColumnName(PlaceRowMapper.COL_ID) + " = ? ");
 				argList.add(place.getId());
 			}
 		}
