@@ -242,7 +242,7 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
 	        $("#txtLatitude").val(place.geometry.location.lat);
 	        $("#txtLongitude").val(place.geometry.location.lng);
 	        
-	        //Location details
+	        //Location details test
 	        
 	        for (var i = 0; i < place.address_components.length; i++) {
 	            if(place.address_components[i].types[0] == 'postal_code'){
