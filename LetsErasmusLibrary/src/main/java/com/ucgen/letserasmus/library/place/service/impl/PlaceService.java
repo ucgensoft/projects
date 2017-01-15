@@ -8,7 +8,8 @@ import com.ucgen.common.exception.operation.OperationResultException;
 import com.ucgen.common.operationresult.ListOperationResult;
 import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.common.operationresult.ValueOperationResult;
-import com.ucgen.letserasmus.library.file.model.Photo;
+import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
+import com.ucgen.letserasmus.library.file.model.File;
 import com.ucgen.letserasmus.library.file.service.IFileService;
 import com.ucgen.letserasmus.library.location.service.ILocationService;
 import com.ucgen.letserasmus.library.place.dao.IPlaceDao;
@@ -39,7 +40,22 @@ public class PlaceService implements IPlaceService{
 
 	@Override
 	public ValueOperationResult<Place> getPlace(Long id) {
-		return this.placeDao.getPlace(id);
+		ValueOperationResult<Place> getResult = this.placeDao.getPlace(id);
+		if (OperationResult.isResultSucces(getResult)) {
+			File file = new File();
+			file.setEntityType(EnmEntityType.PLACE.getValue());
+			file.setEntityId(getResult.getResultValue().getId());
+			
+			ListOperationResult<File> fileListResult = this.fileService.listFile(file);
+			if (OperationResult.isResultSucces(fileListResult)) {
+				getResult.getResultValue().setPhotoList(fileListResult.getObjectList());
+			} else {
+				getResult = new ValueOperationResult<Place>();
+				getResult.setResultCode(fileListResult.getResultCode());
+				getResult.setResultDesc("Photo list query failed.");
+			}
+		}
+		return getResult;
 	}
 
 	@Override
@@ -59,7 +75,7 @@ public class PlaceService implements IPlaceService{
 		if (OperationResult.isResultSucces(createPlaceResult)) {
 			if (place.getPhotoList().size() > 0) {
 				for (int i = 0; i < place.getPhotoList().size(); i++) {
-					Photo photo = place.getPhotoList().get(i);
+					File photo = place.getPhotoList().get(i);
 					photo.setEntityId(place.getId());
 					OperationResult insertPhotoResult = fileService.insertFile(photo);
 					if (OperationResult.isResultSucces(insertPhotoResult)) {

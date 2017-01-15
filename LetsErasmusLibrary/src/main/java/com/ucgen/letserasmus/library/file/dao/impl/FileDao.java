@@ -68,6 +68,7 @@ public class FileDao extends JdbcDaoSupport implements IFileDao {
 		}
 		
 		List<File> fileList = super.getJdbcTemplate().query(sqlBuilder.toString(), argList.toArray(), new FileRowMapper());		
+		
 		listOperationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 		listOperationResult.setObjectList(fileList);
 		

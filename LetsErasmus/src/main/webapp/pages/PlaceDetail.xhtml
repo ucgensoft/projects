@@ -36,6 +36,10 @@
 	        	color: #008489 !important;
 	        }
 	        
+	        .overline {
+	        	
+	        }
+	        
 	    </style>
 			
 	</ui:define>
@@ -53,9 +57,11 @@
 								<span class="cover-photo"> 
 									<span class="cover-img-container">
 										<div class="cover-img">
-											<div style="position: absolute; top:0; left:0; bottom:0; right:0; margin:auto; width:100%; max-width: 1000px; height: 100%; max-height: 600px; background-image: url(https://a2.muscache.com/im/pictures/77611903/98619657_original.jpg?aki_policy=xx_large);">
-												<span class="jssora02l" style="top:50%;left:8px;"></span>
-       											<span class="jssora02r" style="top:50%;right:8px;"></span>
+											<div id="divPhotoSlider" style="position: absolute; top:0; left:0; bottom:0; right:0; margin:auto; width:100%; max-width: 1000px; 
+												height: 100%; max-height: 600px; background-size: cover;">
+												<input type="hidden" id="hiddenPhotoIndexMainSlider" value="0" />
+												<span ng-click="ctrl.changePhoto(-1)" ng-if="ctrl.place.photoList.length > 1" class="jssora02l" style="top:50%;left:8px;"></span>
+       											<span ng-click="ctrl.changePhoto(1)" ng-if="ctrl.place.photoList.length > 1" class="jssora02r" style="top:50%;right:8px;"></span>
 											</div>
 										</div>
 									</span>
@@ -120,14 +126,14 @@
 																<div class="col-md-3 space-sm-4 text-center space-sm-2">
 																	<div class="media-photo-badge">
 																		<a
-																			href="https://www.airbnb.com/rooms/13738469?s=Q8-G3TeD#host-profile"
+																			href=""
 																			rel="nofollow" class="media-photo media-round"> <img
 																			alt="User Profile Image" class="host-profile-image"
 																			height="115" width="115"
-																			src="./Duomo room with private bathroom &amp; daily breakfast - Apartments for Rent in Milano_files/59f781e3-b907-4b02-aa58-f8ec96360dd1.jpg"
+																			src=""
 																			title="Francesco" />
 																		</a> <img
-																			src="./Duomo room with private bathroom &amp; daily breakfast - Apartments for Rent in Milano_files/superhost_photo_badge-a38e6a7d2afe0e01146ce910da3915f5.png"
+																			src=""
 																			class="superhost-photo-badge superhost-photo-badge"
 																			alt="" />
 																	</div>
@@ -195,10 +201,6 @@
 																				aria-hidden="true"></i>
 																		</div>
 																		<div class="col-sm-3">
-																			<i class="icon icon-rooms icon-size-2"
-																				aria-hidden="true"></i>
-																		</div>
-																		<div class="col-sm-3">
 																			<i class="icon icon-double-bed icon-size-2"
 																				aria-hidden="true"></i>
 																		</div>
@@ -215,7 +217,6 @@
 																	<div class="row row-condensed text-muted text-center">
 																		<div class="col-sm-3">{{ ctrl.getPlaceTypeDescription() }}</div>
 																		<div class="col-sm-3">{{ ctrl.place.guestNumber }} Guests</div>
-																		<div class="col-sm-3">1 Bedroom</div>
 																		<div class="col-sm-3">{{ ctrl.place.bedNumber }} Beds</div>
 																	</div>
 																</div>
@@ -292,10 +293,11 @@
 																<div class="row">
 																	<div class="col-sm-8">
 																		<div class="book-it__price-amount text-special">
-																			<span id="book-it-price-string"><span
-																				class="h3"><span>{{ ctrl.getPriceText() }}</span></span></span><span><i
-																				class="icon icon-instant-book icon-beach h4 book-it__instant-book-price-icon"></i>
-																				<noscript></noscript></span>
+																			<span id="book-it-price-string">
+																				<span class="h3">
+																					<span>{{ ctrl.getPriceText() }}</span>
+																				</span>
+																			</span>
 																		</div>
 																	</div>
 																	<div class="col-sm-4">
@@ -303,7 +305,7 @@
 																			class="book-it__payment-period-container pull-right">
 																			<div class="book-it__payment-period"
 																				id="book-it-rate-type">
-																				<span>Per Night</span>
+																				<span>Per Month</span>
 																			</div>
 																		</div>
 																	</div>
@@ -364,88 +366,6 @@
 																									d="M16.291 4.295a1 1 0 1 1 1.414 1.415l-8 7.995a1 1 0 0 1-1.414 0l-8-7.995a1 1 0 1 1 1.414-1.415l7.293 7.29 7.293-7.29z"></path></svg>
 																							</div>
 																						</button>
-																						<div>
-																							<div class="GuestPicker hide">
-																								<div>
-																									<div class="GuestPickerRow row row-condensed">
-																										<div class="col-sm-8 GuestPickerRow__label">
-																											<strong aria-live="polite">1 adult</strong>
-																										</div>
-																										<div class="col-sm-4 increment-btn-container">
-																											<div class="increment-btn">
-																												<button class="btn btn-decrement"
-																													disabled=""
-																													aria-label="Decrement number of adults">
-																													<i class="icon icon-minus"></i>
-																												</button>
-																												<button class="btn btn-increment"
-																													aria-label="Increment number of adults">
-																													<i class="icon icon-add"></i>
-																												</button>
-																											</div>
-																										</div>
-																									</div>
-																									<div class="GuestPickerRow row row-condensed">
-																										<div class="col-sm-8 GuestPickerRow__label">
-																											<strong aria-live="polite">0
-																												children</strong>
-																											<div class="pull-right text-muted text-small">Ages
-																												2 - 12</div>
-																										</div>
-																										<div class="col-sm-4 increment-btn-container">
-																											<div class="increment-btn">
-																												<button class="btn btn-decrement"
-																													disabled=""
-																													aria-label="Decrement number of children">
-																													<i class="icon icon-minus"></i>
-																												</button>
-																												<button class="btn btn-increment"
-																													aria-label="Increment number of children">
-																													<i class="icon icon-add"></i>
-																												</button>
-																											</div>
-																										</div>
-																									</div>
-																									<div class="GuestPickerRow row row-condensed">
-																										<div class="col-sm-8 GuestPickerRow__label">
-																											<strong aria-live="polite">0 infants</strong>
-																											<div class="pull-right text-muted text-small">Under
-																												2</div>
-																										</div>
-																										<div class="col-sm-4 increment-btn-container">
-																											<div class="increment-btn">
-																												<button class="btn btn-decrement"
-																													disabled=""
-																													aria-label="Decrement number of infants">
-																													<i class="icon icon-minus"></i>
-																												</button>
-																												<button class="btn btn-increment"
-																													aria-label="Increment number of infants">
-																													<i class="icon icon-add"></i>
-																												</button>
-																											</div>
-																										</div>
-																									</div>
-																									<div
-																										class="GuestPickerFooter text-muted text-small">
-																										<div class="row row-condensed">
-																											<div class="col-sm-9">
-																												<span class="GuestPickerFooter__note"><span>3
-																														guests maximum</span><span
-																													class="screen-reader-only"
-																													aria-live="assertive"></span></span>
-																											</div>
-																											<div
-																												class="col-sm-3 text-right GuestPickerFooter__close">
-																												<button class="btn-link" type="button">
-																													<span>close</span>
-																												</button>
-																											</div>
-																										</div>
-																									</div>
-																								</div>
-																							</div>
-																						</div>
 																					</div>
 																				</div>
 																			</div>
@@ -563,7 +483,7 @@
 									<div class="page-container-responsive">
 										<div class="row">
 											<div class="col-lg-8 js-details-column">
-												<div style="margin-top: 48px; margin-bottom: 32px;">
+												<div style="margin-top: 20px; margin-bottom: 10px;">
 													<div class="panel">
 														<div class="root_1ctjl5w">
 															<div class="panel-body">
@@ -616,43 +536,22 @@
 															<div class="row">
 																<div class="col-md-6">
 																	<div>
-																		<span>Accommodates:</span><span> </span><strong>3</strong>
+																		<span>Accommodates: </span><span> </span><strong>{{ ctrl.place.guestNumber }}</strong>
 																	</div>
 																	<div>
-																		<span>Bathrooms:</span><span> </span><strong>2</strong><span>
-																		</span><strong>(Private bathroom)</strong>
+																		<span>Bathrooms: </span><span> </span><strong>{{ ctrl.place.bathRoomNumber }}</strong><span>
+																		</span><strong>({{ (ctrl.place.bathRoomType == 1 ? 'Private' : 'Shared') }} bathroom)</strong>
 																	</div>
 																	<div>
-																		<span>Bedrooms:</span><span> </span><strong>1</strong>
-																	</div>
-																	<div>
-																		<span>Beds:</span><span> </span><strong>2</strong>
+																		<span>Beds: </span><span> </span><strong>2</strong>
 																	</div>
 																</div>
 																<div class="col-md-6">
-																	<div>
-																		<span>Check In:</span><span> </span><strong>Anytime
-																			after 2PM</strong>
-																	</div>
-																	<div>
-																		<span>Check Out:</span><span> </span><strong>10AM</strong>
-																	</div>
 																	<div>
 																		<a href="https://www.airbnb.com/s/Milano--Italy"
-																			class="link-reset"><span>Property type:</span><span>
+																			class="link-reset"><span>Property type: </span><span>
 																		</span><strong>{{ ctrl.getHomeTypeDescription() }}</strong></a>
 																	</div>
-																	<div>
-																		<span>Room type:</span><span> </span><strong>Private
-																			room</strong>
-																	</div>
-																</div>
-															</div>
-															<div class="row">
-																<div class="col-md-6">
-																	<strong><a
-																		href="https://www.airbnb.com/rooms/13738469?s=Q8-G3TeD#house-rules"
-																		class="react-house-rules-trigger"><span>House Rules</span></a></strong>
 																</div>
 															</div>
 														</div>
@@ -661,314 +560,26 @@
 													<div class="row amenities">
 														<div class="col-md-3 text-muted">
 															<div>
-																<span>Amenities</span>
+																<span>Amenties</span>
 															</div>
 														</div>
 														<div class="col-md-9 expandable">
 															<div class="expandable-content-summary">
 																<div class="row">
-																	<div class="col-sm-6">
+																	<div ng-repeat="a in ctrl.amentiesList" class="col-sm-6">
 																		<div>
-																			<div class="space-1">
-																				<span aria-hidden="true"><i
-																					class="icon h3 icon-tv"></i><span>&nbsp;&nbsp;&nbsp;</span></span><span>TV</span>
+																			<div ng-if="ctrl.hasAmenty(a.enumKey) == true" class="space-1">
+																				<span aria-hidden="true">
+																					<i class="icon h3 {{ a.iconStyle }}"></i>
+																					<span>&nbsp;&nbsp;&nbsp;</span>
+																				</span>
+																				<span>{{ a.uiLabel }}</span>
 																			</div>
-																		</div>
-																		<div>
-																			<div class="space-1">
-																				<span aria-hidden="true"><i
-																					class="icon h3 icon-essentials"></i><span>&nbsp;&nbsp;&nbsp;</span></span><span><span>Essentials</span>
-																					<noscript></noscript></span>
+																			<div ng-if="ctrl.hasAmenty(a.enumKey) == false" class="space-1 text-muted">
+																				<span>
+																					<del aria-hidden="true">{{ a.uiLabel }}</del>
+																				</span>
 																			</div>
-																		</div>
-																		<button
-																			class="expandable-trigger-more btn-link btn-link--bold"
-																			type="button">
-																			<span>+ More</span>
-																		</button>
-																	</div>
-																	<div class="col-sm-6">
-																		<div>
-																			<div class="space-1">
-																				<span aria-hidden="true"><i
-																					class="icon h3 icon-shampoo"></i><span>&nbsp;&nbsp;&nbsp;</span></span><span>Shampoo</span>
-																			</div>
-																		</div>
-																		<div>
-																			<div class="space-1">
-																				<span aria-hidden="true"><i
-																					class="icon h3 icon-heating"></i><span>&nbsp;&nbsp;&nbsp;</span></span><span><span>Heating</span>
-																					<noscript></noscript></span>
-																			</div>
-																		</div>
-																	</div>
-																</div>
-															</div>
-															<div class="expandable-content expandable-content-full">
-																<div class="row">
-																	<div class="col-sm-6">
-																		<div>
-																			<div class="space-1 text-muted">
-																				<span><del aria-hidden="true">Kitchen</del>
-																					<noscript></noscript></span>
-																			</div>
-																		</div>
-																		<div>
-																			<div class="space-1 text-muted">
-																				<del aria-hidden="true">Internet</del>
-																			</div>
-																		</div>
-																		<div>
-																			<div class="space-1">
-																				<span aria-hidden="true"><i
-																					class="icon h3 icon-tv"></i><span>&nbsp;&nbsp;&nbsp;</span></span><strong>TV</strong>
-																			</div>
-																		</div>
-																		<div>
-																			<div class="space-1">
-																				<span aria-hidden="true"><i
-																					class="icon h3 icon-essentials"></i><span>&nbsp;&nbsp;&nbsp;</span></span><span><strong>Essentials</strong>
-																					<noscript></noscript></span>
-																			</div>
-																		</div>
-																		<div>
-																			<div class="space-1">
-																				<span aria-hidden="true"><i
-																					class="icon h3 icon-shampoo"></i><span>&nbsp;&nbsp;&nbsp;</span></span><strong>Shampoo</strong>
-																			</div>
-																		</div>
-																		<div>
-																			<div class="space-1">
-																				<span aria-hidden="true"><i
-																					class="icon h3 icon-heating"></i><span>&nbsp;&nbsp;&nbsp;</span></span><span><strong>Heating</strong>
-																					<noscript></noscript></span>
-																			</div>
-																		</div>
-																		<div>
-																			<div class="space-1">
-																				<span aria-hidden="true"><i
-																					class="icon h3 icon-air-conditioning"></i><span>&nbsp;&nbsp;&nbsp;</span></span><strong>Air
-																					conditioning</strong>
-																			</div>
-																		</div>
-																		<div>
-																			<div class="space-1 text-muted">
-																				<span><del aria-hidden="true">Washer</del>
-																					<noscript></noscript></span>
-																			</div>
-																		</div>
-																		<div>
-																			<div class="space-1 text-muted">
-																				<span><del aria-hidden="true">Dryer</del>
-																					<noscript></noscript></span>
-																			</div>
-																		</div>
-																		<div>
-																			<div class="space-1 text-muted">
-																				<del aria-hidden="true">Free parking on
-																					premises</del>
-																			</div>
-																		</div>
-																		<div>
-																			<div class="space-1">
-																				<span aria-hidden="true"><i
-																					class="icon h3 icon-wifi"></i><span>&nbsp;&nbsp;&nbsp;</span></span><span><strong>Wireless
-																						Internet</strong>
-																					<noscript></noscript></span>
-																			</div>
-																		</div>
-																		<div>
-																			<div class="space-1">
-																				<span aria-hidden="true"><i
-																					class="icon h3 icon-desktop"></i><span>&nbsp;&nbsp;&nbsp;</span></span><strong>Cable
-																					TV</strong>
-																			</div>
-																		</div>
-																		<div>
-																			<div class="space-1">
-																				<span aria-hidden="true"><i
-																					class="icon h3 icon-cup"></i><span>&nbsp;&nbsp;&nbsp;</span></span><span><strong>Breakfast</strong>
-																					<noscript></noscript></span>
-																			</div>
-																		</div>
-																		<div>
-																			<div class="space-1 text-muted">
-																				<del aria-hidden="true">Pets allowed</del>
-																			</div>
-																		</div>
-																		<div>
-																			<div class="space-1">
-																				<span aria-hidden="true"><i
-																					class="icon h3 icon-family"></i><span>&nbsp;&nbsp;&nbsp;</span></span><strong><a
-																					href="https://www.airbnb.com/s/milano--italy?amenity=family-friendly"
-																					class="link-reset">Family/kid friendly</a></strong>
-																			</div>
-																		</div>
-																		<div>
-																			<div class="space-1 text-muted">
-																				<span><del aria-hidden="true">Suitable
-																						for events</del>
-																					<noscript></noscript></span>
-																			</div>
-																		</div>
-																	</div>
-																	<div class="col-sm-6">
-																		<div>
-																			<div class="space-1">
-																				<span aria-hidden="true"><i
-																					class="icon h3 icon-smoking"></i><span>&nbsp;&nbsp;&nbsp;</span></span><strong>Smoking
-																					allowed</strong>
-																			</div>
-																		</div>
-																		<div>
-																			<div class="space-1 text-muted">
-																				<span><del aria-hidden="true">Wheelchair
-																						accessible</del>
-																					<noscript></noscript></span>
-																			</div>
-																		</div>
-																		<div>
-																			<div class="space-1 text-muted">
-																				<del aria-hidden="true">Elevator in building</del>
-																			</div>
-																		</div>
-																		<div>
-																			<div class="space-1 text-muted">
-																				<del aria-hidden="true">Indoor fireplace</del>
-																			</div>
-																		</div>
-																		<div>
-																			<div class="space-1">
-																				<span aria-hidden="true"><i
-																					class="icon h3 icon-intercom"></i><span>&nbsp;&nbsp;&nbsp;</span></span><strong>Buzzer/wireless
-																					intercom</strong>
-																			</div>
-																		</div>
-																		<div>
-																			<div class="space-1 text-muted">
-																				<del aria-hidden="true">Doorman</del>
-																			</div>
-																		</div>
-																		<div>
-																			<div class="space-1 text-muted">
-																				<span><del aria-hidden="true">Pool</del>
-																					<noscript></noscript></span>
-																			</div>
-																		</div>
-																		<div>
-																			<div class="space-1 text-muted">
-																				<del aria-hidden="true">Hot tub</del>
-																			</div>
-																		</div>
-																		<div>
-																			<div class="space-1 text-muted">
-																				<span><del aria-hidden="true">Gym</del>
-																					<noscript></noscript></span>
-																			</div>
-																		</div>
-																		<div>
-																			<div class="space-1 text-muted">
-																				<span><del aria-hidden="true">24-hour
-																						check-in</del>
-																					<noscript></noscript></span>
-																			</div>
-																		</div>
-																		<div>
-																			<div class="space-1">
-																				<span aria-hidden="true"><i
-																					class="icon h3 icon-hangers"></i><span>&nbsp;&nbsp;&nbsp;</span></span><strong>Hangers</strong>
-																			</div>
-																		</div>
-																		<div>
-																			<div class="space-1 text-muted">
-																				<del aria-hidden="true">Iron</del>
-																			</div>
-																		</div>
-																		<div>
-																			<div class="space-1">
-																				<span aria-hidden="true"><i
-																					class="icon h3 icon-hair-dryer"></i><span>&nbsp;&nbsp;&nbsp;</span></span><strong>Hair
-																					dryer</strong>
-																			</div>
-																		</div>
-																		<div>
-																			<div class="space-1">
-																				<span aria-hidden="true"><i
-																					class="icon h3 icon-laptop"></i><span>&nbsp;&nbsp;&nbsp;</span></span><span><strong>Laptop
-																						friendly workspace</strong>
-																					<noscript></noscript></span>
-																			</div>
-																		</div>
-																		<div>
-																			<div class="space-1 text-muted">
-																				<del aria-hidden="true">Private living room</del>
-																			</div>
-																		</div>
-																		<div>
-																			<div class="space-1 text-muted">
-																				<del aria-hidden="true">Private entrance</del>
-																			</div>
-																		</div>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</div>
-													<hr class="" />
-													<div class="row">
-														<div class="col-md-3 text-muted">
-															<div>
-																<span>Prices</span>
-															</div>
-														</div>
-														<div class="col-md-9">
-															<div>
-																<div class="row">
-																	<div class="col-md-6">
-																		<div>
-																			<span>Extra people:</span><span> </span><strong>43
-																				₺ / night after the first guest</strong>
-																		</div>
-																	</div>
-																	<div class="col-md-6"></div>
-																</div>
-															</div>
-														</div>
-													</div>
-													<hr class="" />
-													<div class="row description" id="description">
-														<div class="col-md-3 text-muted">
-															<div>
-																<span>Description</span>
-															</div>
-														</div>
-														<div class="col-md-9">
-															<div>
-																<p>
-																	<strong><span>Sleeping arrangements</span></strong>
-																</p>
-																<div class="space-6 space-top-2">
-																	<div class="row space-4">
-																		<div class="col-sm-6">
-																			<div class="bedroom-config-icon-container">
-																				<i
-																					class="icon icon-size-2 bedroom-config-icon icon-queen-bed"></i><i
-																					class="icon icon-size-2 bedroom-config-icon icon-sofa-bed"></i>
-																			</div>
-																			<div>
-																				<strong>Bedroom 1</strong>
-																			</div>
-																			<div class="text-muted">1 queen bed, 1 sofa bed</div>
-																		</div>
-																		<div class="col-sm-6">
-																			<div class="bedroom-config-icon-container">
-																				<i
-																					class="icon icon-size-2 bedroom-config-icon icon-couch"></i>
-																			</div>
-																			<div>
-																				<strong>Common spaces</strong>
-																			</div>
-																			<div class="text-muted">1 couch</div>
 																		</div>
 																	</div>
 																</div>
@@ -986,22 +597,18 @@
 															<div>
 																<div>
 																	<div class="structured_house_rules">
-																		<div class="row col-sm-12">
-																			<span>Not suitable for pets</span>
-																		</div>
-																		<div class="row col-sm-12 space-top-1">
-																			<span>No parties or events</span>
-																		</div>
-																		<div class="row col-sm-12 space-top-1">
-																			<span>May not be safe or suitable for infants
-																				(Under 2 years)</span>
-																		</div>
-																		<div class="row col-sm-12 space-top-1">
-																			<span>Check-in is after 2PM</span>
-																		</div>
-																		<div class="row">
-																			<div class="col-sm-2">
-																				<hr class="structured_house_rules__hr" />
+																		<div ng-repeat="a in ctrl.ruleList" class="col-md-6 col-sm-6">
+																			<div>
+																				<div>
+																					<div ng-if="ctrl.hasRule(a.enumKey) == true" class="space-1">
+																						<span>{{ a.uiLabel }}</span>
+																					</div>
+																					<div ng-if="ctrl.hasRule(a.enumKey) == false" class="space-1 text-muted">
+																						<span>
+																							<del aria-hidden="true">{{ a.uiLabel }}</del>
+																						</span>
+																					</div>
+																				</div>
 																			</div>
 																		</div>
 																	</div>
@@ -1046,16 +653,20 @@
 														<div class="col-md-9">
 															<div>
 																<div class="row">
-																	<div class="col-md-6 col-sm-6">
+																	<div ng-repeat="a in ctrl.safetyAmentiesList" class="col-md-6 col-sm-6">
 																		<div>
 																			<div>
-																				<div class="space-1">
-																					<span>Lock on bedroom door</span>
+																				<div ng-if="ctrl.hasSafetyAmenty(a.enumKey) == true" class="space-1">
+																					<span>{{ a.uiLabel }}</span>
+																				</div>
+																				<div ng-if="ctrl.hasSafetyAmenty(a.enumKey) == false" class="space-1 text-muted">
+																					<span>
+																						<del aria-hidden="true">{{ a.uiLabel }}</del>
+																					</span>
 																				</div>
 																			</div>
 																		</div>
 																	</div>
-																	<div class="col-md-6 col-sm-6"></div>
 																</div>
 															</div>
 														</div>
@@ -1070,12 +681,17 @@
 														<div class="col-md-9">
 															<div class="row">
 																<div class="col-md-6">
-																	<strong>1 night</strong> minimum stay
+																	<strong>{{ ctrl.place.minimumStay }} night</strong> minimum stay
 																</div>
 																<div class="col-md-6">
 																	<a class="view-calendar"
 																		href="https://www.airbnb.com/rooms/13738469?s=Q8-G3TeD#"><strong><span>View
 																				calendar</span></strong></a>
+																</div>
+															</div>
+															<div class="row space-top-2">
+																<div class="col-md-6">
+																	<strong>{{ ctrl.place.maximumStay }} night</strong> maximum stay
 																</div>
 															</div>
 														</div>
@@ -1086,7 +702,7 @@
 									</div>
 								</div>
 								<div id="divHostPorfile" class="webkit-render-fix">
-									<div class="page-container-responsive space-top-8 space-8">
+									<div class="page-container-responsive space-top-2 space-8">
 										<div class="row">
 											<div class="col-lg-8">
 												<div>
@@ -1102,17 +718,17 @@
 																rel="nofollow" class="media-photo media-round"> <img
 																alt="Francesco" class="media-photo media-round"
 																height="90" width="90"
-																src="./Duomo room with private bathroom &amp; daily breakfast - Apartments for Rent in Milano_files/59f781e3-b907-4b02-aa58-f8ec96360dd1.jpg"
+																src=""
 																title="Francesco" />
 															</a> <img
-																src="./Duomo room with private bathroom &amp; daily breakfast - Apartments for Rent in Milano_files/superhost_photo_badge-a38e6a7d2afe0e01146ce910da3915f5.png"
+																src=""
 																class="superhost-photo-badge" alt="" />
 														</div>
 													</div>
 													<div class="col-md-9">
 														<h3 class="space-1">
 															<a class="link-reset"
-																href="https://www.airbnb.com/users/show/39933518"
+																href=""
 																rel="nofollow">Francesco</a>
 														</h3>
 														<div class="row row-condensed space-2">
@@ -1173,7 +789,7 @@
 																		<div class="text-center text-wrap"
 																			id="verified-id-icon">
 																			<img alt="Verified"
-																				src="./Duomo room with private bathroom &amp; daily breakfast - Apartments for Rent in Milano_files/verified_badge-6ee370f5ca86a52ed6198fac858ac1f4.png"
+																				src=""
 																				width="32" height="32" /> <br class="show-sm" />
 																			<div class="va-middle show-inline-block">
 																				<span class="badge-pill-label">Verified</span>
@@ -1241,6 +857,8 @@
 			src="#{webApplication.urlPrefix}/static/js/angular/service/common_service.js"></script>
 		<script
 			src="#{webApplication.urlPrefix}/static/js/angular/service/place_service.js"></script>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/angular/service/enumeration_service.js"></script>
 		<script
 			src="#{webApplication.urlPrefix}/static/js/angular/controller/place_detail_controller.js"></script>
 	</ui:define>

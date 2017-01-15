@@ -1,10 +1,14 @@
-App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonService', function($scope, $controller, placeService, commonService) {
+App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonService', 'enumerationService', 
+                             function($scope, $controller, placeService, commonService, enumerationService) {
       var self = this;
       
       var marker = null;
       var map = null;
       var autocomplete = null;
       self.photoList = [];
+      self.amentiesList = [];
+      self.safetyAmentiesList = [];
+      self.ruleList = [];
       
       var acceptedPhotoTypes = {
       	  	'image/png' : true,
@@ -25,6 +29,7 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
       	  	progress : document.getElementById('progress')
       	  };
       
+     /*
       self.amentiesList = [
         {id: 'washing_machine', text: 'Washing Machine'},
         {id: 'dishwasher', text: 'Dishwasher'},
@@ -47,14 +52,25 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
                            {id: 'carbon_monoxide_detector', text: 'Carbon Monoxide Detector'},
                            {id: 'fire_extinguisher', text: 'Fire Extinguisher'}
                          ];
+      
       self.ruleList = [
                                  {id: 'pets', text: 'Suitable For Pets'},
                                  {id: 'smoke', text: 'Smoke Allowed'},
                                  {id: 'event_party', text: 'Events Or Parties Allowed'}
                                ];
-      
-      
+      */
+     
       self.initialize = function() {
+    	  enumerationService.listEnumeration(null).then(function(operationResult) {
+  	  			self.amentiesList = operationResult.resultValue["place_amenty"];
+  	  			self.safetyAmentiesList = operationResult.resultValue["place_safety_amenty"];
+  	  			self.ruleList = operationResult.resultValue["place_rule"];
+    		},
+			function(errResponse){
+				console.error('Error while fetching Enumerations');
+			}
+	      );
+    	  
     	  //$("#divStep1").css("display", "none");
     	  $("#divStep2").css("display", "none");
     	  $("#divStep3").css("display", "none");
@@ -406,17 +422,17 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     	  newPlace.billsIncluded = ($("#chbBillsIncluded")[0].checked ? 1 : 0);
     	  newPlace.startDate = $.datepicker.formatDate('d.m.yy', $("#txtStartDatePicker").datepicker("getDate"));
     	  newPlace.endDate = $.datepicker.formatDate('d.m.yy', $("#txtEndDatePicker").datepicker("getDate"));
-    	  newPlace.minimumStaty = $("#txtMinStay").val();
-    	  newPlace.maximumStaty = $("#txtMaxStay").val();
+    	  newPlace.minimumStay = $("#txtMinStay").val();
+    	  newPlace.maximumStay = $("#txtMaxStay").val();
     	  
     	  var amenties = '';
     	  for (var i = 0; i < self.amentiesList.length; i++) {
     		  var itemAmenties = self.amentiesList[i];
-    		  if ($('#chb_' + itemAmenties.id)[0].checked) {
+    		  if ($('#chb_' + itemAmenties.enumKey)[0].checked) {
     			  if (amenties != '') {
     				  amenties = amenties + ",";
     			  }
-    			  amenties = amenties + "'" + itemAmenties.id + "'";
+    			  amenties = amenties + "'" + itemAmenties.enumKey + "'";
     		  }
     	  }
     	  newPlace.amenties = amenties;
@@ -424,11 +440,11 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     	  var safetyAmenties = '';
     	  for (var i = 0; i < self.safetyAmentiesList.length; i++) {
     		  var itemAmenties = self.safetyAmentiesList[i];
-    		  if ($('#chb_' + itemAmenties.id)[0].checked) {
+    		  if ($('#chb_' + itemAmenties.enumKey)[0].checked) {
     			  if (safetyAmenties != '') {
     				  safetyAmenties = safetyAmenties + ",";
     			  }
-    			  safetyAmenties = safetyAmenties + "'" + itemAmenties.id + "'";
+    			  safetyAmenties = safetyAmenties + "'" + itemAmenties.enumKey + "'";
     		  }
     	  }
     	  
@@ -437,11 +453,11 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     	  var rules = '';
     	  for (var i = 0; i < self.ruleList.length; i++) {
     		  var rule = self.ruleList[i];
-    		  if ($('#chb_' + rule.id)[0].checked) {
+    		  if ($('#chb_' + rule.enumKey)[0].checked) {
     			  if (rules != '') {
     				  rules = rules + ",";
     			  }
-    			  rules = rules + "'" + rule.id + "'";
+    			  rules = rules + "'" + rule.enumKey + "'";
     		  }
     	  }
     	  

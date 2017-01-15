@@ -395,7 +395,7 @@
 									<div>
 										<div>
 											<label class="h4 text-gray text-normal">
-												<span>Daily Price</span>
+												<span>Monthly Price</span>
 											</label>
 											<div>
 												<input id="txtDailyPrice" type="number" min="0" class="form-input" 
@@ -533,10 +533,10 @@
 									</div>
 									<div style="display: inline-block">
 										<div ng-repeat="a in ctrl.amentiesList" class="amenity-item space-5" style="width: 50%; display: inline">
-											<input id="chb_{{a.id}}" type="checkbox"
+											<input id="chb_{{a.enumKey}}" type="checkbox"
 												class="col-sm-1" value="4" />
 											<div class="pull-left col-sm-11">
-												<label for="wireless_internet">{{a.text}}</label>
+												<label>{{a.uiLabel}}</label>
 											</div>
 										</div>
 									</div>
@@ -545,10 +545,10 @@
 									</div>
 									<div style="display: inline-block">
 										<div ng-repeat="a in ctrl.safetyAmentiesList" class="amenity-item space-5" style="width: 50%; display: inline">
-											<input id="chb_{{a.id}}" type="checkbox"
+											<input id="chb_{{a.enumKey}}" type="checkbox"
 												class="col-sm-1" value="4" />
 											<div class="pull-left col-sm-11">
-												<label for="wireless_internet">{{a.text}}</label>
+												<label for="wireless_internet">{{a.uiLabel}}</label>
 											</div>
 										</div>
 									</div>
@@ -557,10 +557,10 @@
 									</div>
 									<div style="display: inline-block">
 										<div ng-repeat="a in ctrl.ruleList" class="amenity-item space-5" style="width: 50%; display: inline">
-											<input id="chb_{{a.id}}" type="checkbox"
+											<input id="chb_{{a.enumKey}}" type="checkbox"
 												class="col-sm-1" value="4" />
 											<div class="pull-left col-sm-11">
-												<label for="wireless_internet">{{a.text}}</label>
+												<label for="wireless_internet">{{a.uiLabel}}</label>
 											</div>
 										</div>
 									</div>
@@ -910,6 +910,8 @@
 			src="#{webApplication.urlPrefix}/static/js/angular/service/common_service.js"></script>
 		<script
 			src="#{webApplication.urlPrefix}/static/js/angular/service/place_service.js"></script>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/angular/service/enumeration_service.js"></script>
 		<script
 			src="#{webApplication.urlPrefix}/static/js/geocode/custom_marker.js"></script>
 		<script

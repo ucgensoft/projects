@@ -25,7 +25,7 @@ public class FileRowMapper extends BaseRowMapper<File> {
 	public static final String COL_MODIFIED_DATE_GMT = "MODIFIED_DATE_GMT";	
 
 	public FileRowMapper() {
-		this("F");
+		this(null);
 	}
 	
 	public FileRowMapper(String tablePrefix) {
@@ -36,6 +36,7 @@ public class FileRowMapper extends BaseRowMapper<File> {
 	public File mapRow(ResultSet rs, int rowNum) throws SQLException {
 		super.initializeColSet(rs);
 		File file = new File();		
+		
 		file.setId(super.getLong(rs, COL_ID));
 		file.setFileName(super.getString(rs, COL_FILE_NAME));
 		file.setFileType(super.getInteger(rs, COL_FILE_TYPE));
@@ -48,6 +49,7 @@ public class FileRowMapper extends BaseRowMapper<File> {
 		file.setModifiedBy(super.getString(rs, COL_MODIFIED_BY));
 		file.setModifiedDate(super.getTimestamp(rs, COL_MODIFIED_DATE));
 		file.setModifiedDateGmt(super.getTimestamp(rs, COL_MODIFIED_DATE_GMT));		
+		
 		return file;
 	}
 

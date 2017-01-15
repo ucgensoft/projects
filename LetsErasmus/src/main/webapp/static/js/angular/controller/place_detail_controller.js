@@ -1,40 +1,16 @@
-App.controller('placeDetailCtrl', ['$scope', '$controller', 'placeService', 'commonService', function($scope, $controller, placeService, commonService) {
+App.controller('placeDetailCtrl', ['$scope', '$controller', 'placeService', 'commonService', 'enumerationService', 
+                                   function($scope, $controller, placeService, commonService, enumerationService) {
       var self = this;
       
       var marker = null;
       var map = null;
       var autocomplete = null;
       self.place = null;
+      self.amentiesList = [];
+      self.safetyAmentiesList = [];
+      self.ruleList = [];
+      var mainSliderId = "MainSlider";
                   
-      self.amentiesList = [
-        {id: 'washing_machine', text: 'Washing Machine'},
-        {id: 'dishwasher', text: 'Dishwasher'},
-        {id: 'fridge', text: 'Fridge'},
-        {id: 'kitchen_supplies', text: 'Kitchen Supplies'},
-        {id: 'closet_drawer', text: 'Closet/Drawer'},
-        {id: 'tv', text: 'TV'},
-        {id: 'heat', text: 'Heat'},
-        {id: 'air_condition', text: 'Air Conditioning'},
-        {id: 'iron', text: 'Iron'},
-        {id: 'hair_dryer', text: 'Hair Dryer'},
-        {id: 'bed_sheet', text: 'Bed Sheet'},
-        {id: 'pillow', text: 'Pillow'},
-        {id: 'towel', text: 'Towel'},
-      ];
-      
-      self.safetyAmentiesList = [
-                           {id: 'lock_on_bed_door', text: 'Lock on Bedroom Door'},
-                           {id: 'smoke_detector', text: 'Smoke Detector'},
-                           {id: 'carbon_monoxide_detector', text: 'Carbon Monoxide Detector'},
-                           {id: 'fire_extinguisher', text: 'Fire Extinguisher'}
-                         ];
-      self.ruleList = [
-                                 {id: 'pets', text: 'Suitable For Pets'},
-                                 {id: 'smoke', text: 'Smoke Allowed'},
-                                 {id: 'event_party', text: 'Events Or Parties Allowed'}
-                               ];
-      
-      
       self.initialize = function() {
     	  var placeId = getUriParam('placeId');
     	  if (placeId == null || placeId == "") {
@@ -68,9 +44,112 @@ App.controller('placeDetailCtrl', ['$scope', '$controller', 'placeService', 'com
     	  }
       };
       
+      self.getCurrentPhotoIndex = function(sliderKey) {
+    	  return $('#hiddenPhotoIndex' + sliderKey).val();
+      };
+      
       self.displayPlaceDetails = function(place) {
     	  self.place = place;
+    	  
+    	  if (self.place.coverPhoto != null) {
+    		  var photoIndex = 0;
+	      		for(var i = 0; i < self.place.photoList.length; i++) {
+	      			var photo = self.place.photoList[i];
+	      			if (photo.id == self.place.coverPhotoId) {
+	      				photoIndex = i;
+	      				break;
+	      			}
+	      		}
+	      		$('#hiddenPhotoIndexMainSlider').val(photoIndex);
+	      		self.displayCurrentPhoto();
+    	  }
+    	  
+    	  self.place.amentyMap = {};
+    	  if (self.place.amenties != null && self.place.amenties != '') {
+    		  var amentyList = self.place.amenties.split(',');
+    		  for (var i = 0; i < amentyList.length; i++) {
+    			  var strAmenty = amentyList[i];
+    			  self.place.amentyMap[strAmenty] = 1;
+    		  }
+    	  }
+    	  
+    	  self.place.safetyAmentyMap = {};
+    	  if (self.place.safetyAmenties != null && self.place.safetyAmenties != '') {
+    		  var safetyAmentyList = self.place.safetyAmenties.split(',');
+    		  for (var i = 0; i < safetyAmentyList.length; i++) {
+    			  var strSafetyAmenty = safetyAmentyList[i];
+    			  self.place.safetyAmentyMap[strSafetyAmenty] = 1;
+    		  }
+    	  }
+    	  
+    	  self.place.ruleMap = {};
+    	  if (self.place.rules != null && self.place.rules != '') {
+    		  var ruleList = self.place.rules.split(',');
+    		  for (var i = 0; i < ruleList.length; i++) {
+    			  var strRule = ruleList[i];
+    			  self.place.ruleMap[strRule] = 1;
+    		  }
+    	  }
+    	  
+    	  enumerationService.listEnumeration(null).then(function(operationResult) {
+	  			self.amentiesList = operationResult.resultValue["place_amenty"];
+	  			self.safetyAmentiesList = operationResult.resultValue["place_safety_amenty"];
+	  			self.ruleList = operationResult.resultValue["place_rule"];
+	  		},
+				function(errResponse){
+					console.error('Error while fetching Enumerations');
+				}
+		      );
+    	  
     	  self.initializeMap();
+      };
+      
+      self.hasAmenty = function(amentyKey) {
+    	  if (self.place.amentyMap[amentyKey] == 1) {
+    		  return true;
+    	  } else {
+    		  return false;
+    	  }
+      };
+      
+      self.hasSafetyAmenty = function(safetyAmentyKey) {
+    	  if (self.place.safetyAmentyMap[safetyAmentyKey] == 1) {
+    		  return true;
+    	  } else {
+    		  return false;
+    	  }
+      };
+      
+      self.hasRule = function(ruleKey) {
+    	  if (self.place.ruleMap[ruleKey] == 1) {
+    		  return true;
+    	  } else {
+    		  return false;
+    	  }
+      };
+      
+      self.changePhoto = function(step) {
+    	  if (self.place.photoList.length > 1) {
+    		  var currentPhotoIndex = self.getCurrentPhotoIndex(mainSliderId);
+        	  if (currentPhotoIndex != "") {
+        		  var intCurrentIndex = parseInt(currentPhotoIndex) + step;
+        		  if (intCurrentIndex == self.place.photoList.length) {
+        			  intCurrentIndex = 0;
+        		  } else if (intCurrentIndex < 0) {
+        			  intCurrentIndex = (self.place.photoList.length - 1);
+        		  }
+        		  $('#hiddenPhotoIndexMainSlider').val(intCurrentIndex);
+        		  self.displayCurrentPhoto();
+        	  }
+    	  }
+      };
+      
+      self.displayCurrentPhoto = function() {
+    	  var intCurrentIndex = parseInt($('#hiddenPhotoIndexMainSlider').val());
+    	  var currentPhoto = self.place.photoList[intCurrentIndex];
+    	  var photoName = currentPhoto.id + "_large." + currentPhoto.fileSuffix;;
+  		  var photoUrl = webApplicationUrlPrefix + "/place/images/" + self.place.id + "/" + photoName;
+  		  $("#divPhotoSlider").css('background-image', 'url(' + photoUrl + ')');
       };
       
       self.initializeMap = function() {
@@ -150,7 +229,7 @@ App.controller('placeDetailCtrl', ['$scope', '$controller', 'placeService', 'com
 			} else if (self.place.placeTypeId == 2) {
 				return "Shared Room";
 			} else if (self.place.placeTypeId == 3) {
-				return "Rivate Room";
+				return "Private Room";
 			}
 		  } else {
 			  return "";

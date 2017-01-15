@@ -63,14 +63,14 @@ public class ApiPlaceController extends BaseApiController {
 			
 			newPlace.setPlaceTypeId(this.getInteger(placeMap.get("placeType")));
 			newPlace.setHomeTypeId(this.getInteger(placeMap.get("homeType")));
-			newPlace.setBathRoomNumber(this.getInteger(placeMap.get("batchroomNumber")));
 			newPlace.setAmenties(placeMap.get("amenties").toString());
 			newPlace.setSafetyAmenties(placeMap.get("safetyAmenties").toString());
 			newPlace.setRules(placeMap.get("rules").toString());
-			newPlace.setBathRoomNumber(this.getInteger(placeMap.get("batchroomNumber")));
-			newPlace.setBathRoomType(this.getInteger(placeMap.get("batchroomType")));
+			newPlace.setBathRoomNumber(this.getInteger(placeMap.get("bathroomNumber")));
+			newPlace.setBathRoomType(this.getInteger(placeMap.get("bathroomType")));
 			newPlace.setBedNumber(this.getInteger(placeMap.get("bedNumber")));
 			newPlace.setGuestNumber(this.getInteger(placeMap.get("guestNumber")));
+			newPlace.setGuestGender(this.getInteger(placeMap.get("guestGender")));
 			
 			if (placeMap.get("placeMateNumber") != null && !placeMap.get("placeMateNumber").equals("0")) {
 				newPlace.setPlaceMateNumber(this.getInteger(placeMap.get("placeMateNumber")));
@@ -159,7 +159,7 @@ public class ApiPlaceController extends BaseApiController {
 				(new File(placePhotoFolder)).mkdirs();
 				for (int i = 0; i < photoList.length; i++) {
 					MultipartFile multiPartFile = photoList[i];
-					Photo photo = newPlace.getPhotoList().get(i);
+					com.ucgen.letserasmus.library.file.model.File photo = newPlace.getPhotoList().get(i);
 					String tmpPhotoPath = placePhotoFolder + File.separatorChar + photo.getId() + "." + EnmFileType.getFileType(photo.getFileType());
 					String smallPhotoPath = placePhotoFolder + File.separatorChar + photo.getId() + "_small." + EnmFileType.getFileType(photo.getFileType()).getFileSuffix();
 					String largePhotoPath = placePhotoFolder + File.separatorChar + photo.getId() + "_large." + EnmFileType.getFileType(photo.getFileType()).getFileSuffix();

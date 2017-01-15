@@ -126,6 +126,18 @@ public class PlaceRowMapper extends BaseRowMapper<Place> {
 		place.setModifiedDate(super.getTimestamp(rs, COL_MODIFIED_DATE));
 		place.setModifiedDateGmt(super.getTimestamp(rs, COL_MODIFIED_DATE_GMT));		
 	
+		if (place.getAmenties() != null) {
+			place.setAmenties(place.getAmenties().replaceAll("'", ""));
+		}
+		
+		if (place.getSafetyAmenties() != null) {
+			place.setSafetyAmenties(place.getSafetyAmenties().replaceAll("'", ""));
+		}
+		
+		if (place.getRules() != null) {
+			place.setRules(place.getRules().replaceAll("'", ""));
+		}
+		
 		if (this.getfKeyMap().containsKey(FKEY_LOCATION)) {
 			ForeignKey<PlaceRowMapper, LocationRowMapper> fKey = this.getfKeyMap().get(FKEY_LOCATION);
 			Location location = fKey.getDestMapper().mapRow(rs, rowNum);
