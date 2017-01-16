@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
+
+	<ui:define name="head">
+		<link rel="stylesheet" type="text/css"
+			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css" />
+	</ui:define>
+
+	<ui:define name="body">
+		<main id="site-content" role="main"> <ui:include
+			src="DashboardHeader.html" />
+		<div class="page-container-responsive space-top-4 space-4">
+			<div class="row">
+				<ui:include src="ProfileLeft.html" />
+				<div class="col-md-9">
+
+					<div id="dashboard-content">
+						<div class="alert alert-success" style="display: none;">We
+							have resent a confirmation email. Please check your inbox.</div>
+						<div class="alert alert-error" style="display: none;">Unable
+							to send a confirmation email. Please try again later.</div>
+
+						<div class="panel verified-container">
+							<div class="panel-header">Your verified info</div>
+							<div class="panel-body">
+								<ul class="list-layout edit-verifications-list">
+									<li
+										class="edit-verifications-list-item clearfix email verified">
+										<h4>Email address</h4>
+										<p class="description">
+											You have confirmed your email: <b>anil_cengiz@outlook.com</b>.
+											A confirmed email is important to allow us to securely
+											communicate with you.
+
+										</p>
+									</li>
+									<li
+										class="edit-verifications-list-item clearfix phone verified">
+										<h4>Phone number</h4>
+
+										<p class="description">Your number is only shared with
+											another Airbnb member once you have a confirmed booking.</p>
+
+
+
+									</li>
+									<li
+										class="edit-verifications-list-item clearfix facebook verified">
+										<h4>Facebook</h4>
+										<div class="row">
+											<div class="col-7">
+												<p class="description verification-text-description">
+													Sign in with Facebook and discover your trusted connections
+													to hosts and guests all over the world.</p>
+											</div>
+
+											<div class="col-5">
+												<div class="disconnect-button-container">
+													<a
+														href="https://www.airbnb.com/oauth/delete?service=facebook"
+														class="btn gray" data-method="post" rel="nofollow">Disconnect</a>
+													&nbsp;&nbsp;&nbsp;&nbsp; <i
+														class="icon icon-question icon-question-sign"
+														data-behavior="tooltip" rel="tooltip" style="font-size:"
+														aria-label="You can always reconnect later."></i>
+												</div>
+											</div>
+										</div>
+
+									</li>
+									<li
+										class="edit-verifications-list-item clearfix linkedin verified">
+										<h4>LinkedIn</h4>
+										<div class="row">
+											<div class="col-7">
+												<p class="description verification-text-description">
+													Create a link to your professional life by connecting your
+													Airbnb and LinkedIn accounts.</p>
+											</div>
+											<div class="col-5">
+												<div class="disconnect-button-container">
+													<a
+														href="https://www.airbnb.com/oauth/delete?service=linked_in_v2"
+														class="btn gray" data-method="post" rel="nofollow">Disconnect</a>
+													&nbsp;&nbsp;&nbsp;&nbsp; <i
+														class="icon icon-question icon-question-sign"
+														data-behavior="tooltip" rel="tooltip" style="font-size:"
+														aria-label="You can always reconnect later."></i>
+												</div>
+											</div>
+										</div>
+
+									</li>
+								</ul>
+							</div>
+						</div>
+
+						<div class="panel space-top-4 unverified-container">
+							<div class="panel-header">Not yet verified</div>
+							<div class="panel-body">
+								<ul class="list-layout edit-verifications-list">
+									<li class="google unverified space-4 clearfix">
+										<h4>Google</h4>
+										<div class="row">
+											<div class="col-7">
+												<p class="description verification-text-description">
+													Connect your Airbnb account to your Google account for
+													simplicity and ease.</p>
+											</div>
+											<div class="col-5">
+												<div class="connect-button">
+													<form accept-charset="UTF-8"
+														action="https://www.airbnb.com/oauth_connect?service=google"
+														method="post">
+														<div style="margin: 0; padding: 0; display: inline">
+															<input name="utf8" type="hidden" value="✓" /> <input
+																name="authenticity_token" type="hidden" value="null" />
+														</div>
+														<button class="btn btn-block large" name="button"
+															type="submit">Connect</button>
+													</form>
+												</div>
+											</div>
+										</div>
+
+									</li>
+									<li class="amex unverified space-4 clearfix">
+										<h4>American Express®</h4>
+										<div class="row">
+											<div class="col-7">
+												<p class="description verification-text-description">Log
+													in with Amex to verify you’re a Card Member on your Airbnb
+													profile. Your Card will also be added to your account.</p>
+											</div>
+
+											<div class="col-5">
+												<div id="amex-verification-container"
+													class="btn large btn-block">
+													<div id="amex-express-checkout">
+														<div id="amex-button-text" class="btn large btn-block">
+															Connect</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+									</li>
+								</ul>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+			</div>
+		</div>
+		</main>
+	</ui:define>
+</ui:composition>
