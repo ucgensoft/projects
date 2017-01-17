@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
+
+	<ui:define name="head">
+		<link rel="stylesheet" type="text/css"
+			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css" />
+	</ui:define>
+
+	<ui:define name="body">
+		<main id="site-content" role="main"> <ui:include
+			src="DashboardHeader.html" />
+		<div class="page-container-responsive space-top-4 space-4">
+			<div class="row">
+				<ui:include src="ProfileLeftMenu.html" />
+				<div class="col-md-9">
+					<div id="payout_setup" class="">
+						<div class="panel space-4">
+							<div class="panel-header">Payout Methods</div>
+							<div id="payout_intro" class="panel-body">
+								<div class="row text-center space-2">
+									<i class="icon icon-money-deposit icon-size-2 icon-light-gray"></i>
+								</div>
+								<div class="row text-center">
+									<strong> To get paid, you need to set up a payout
+										method </strong>
+								</div>
+								<div class="row text-center">
+									Airbnb releases payouts about 24 hours after a guest’s
+									scheduled check-in time.<br/>The time it takes for the
+										funds to appear in your account depends on your payout method.
+										<a target="_blank" href="/help/article/425">Learn more</a>
+								</div>
+								<div class="row text-center space-top-4">
+									<div class="row space-2">
+										<a
+											href="https://www.airbnb.com/users/payout_preferences/54995441/new"
+											class="btn btn-primary">Add Payout Method</a>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div id="payout_new_select" class="add_payout_section"
+							style="display: none;"></div>
+						<div id="payout_edit" class="add_payout_section"
+							style="display: none;"></div>
+					</div>
+					<div id="taxes"></div>
+					<div id="select-default-payout-modal"></div>
+				</div>
+			</div>
+		</div>
+		</main>
+	</ui:define>
+</ui:composition>

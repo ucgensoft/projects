@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
+
+	<ui:define name="head">
+		<link rel="stylesheet" type="text/css"
+			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css" />
+	</ui:define>
+
+	<ui:define name="body">
+		<main id="site-content" role="main"> <ui:include
+			src="DashboardHeader.html" />
+		<div class="page-container-responsive space-top-4 space-4">
+			<div class="row">
+				<ui:include src="ProfileLeftMenu.html" />
+				<div class="col-md-9">
+
+
+					<section class="panel">
+					<div class="panel-header">Payment Methods</div>
+					<div id="icons-panel" class="panel-body">
+						<div class="row space-3">
+							<div id="payment-image-46001909"
+								class="col-4 space-2 space-top-2">
+								<div class="panel panel-image payment-image">
+									<div>
+										<div class="panel-overlay-top-left text-lead">
+											<div>XXXXXXXXXXXX2015</div>
+											<div>01 / 2018</div>
+										</div>
+										<div class="panel-overlay-bottom-left text-lead">
+											<a href="#" data-id="46001909" class="setting-default">
+												Set Default </a>
+											<div>
+												<a href="#" data-id="46001909" class="delete"> Remove </a>
+											</div>
+										</div>
+										<div class="panel-overlay-bottom-right">
+											<div class="payment-logo master"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-4 space-2 space-top-2">
+								<div id="modal-trigger-add" class="panel payment-image">
+									<div class="row row-table row-full-height">
+										<div class="col-12 col-middle text-center text-lead">
+											<div class="space-3 space-top-3">
+												<i class="icon icon-add icon-size-2"> </i>
+											</div>
+											<div class="space-1" id="add_payment_method">Add
+												Payment Method</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div id="add-payment-modal">
+								<div data-reactroot="">
+									<!-- react-empty: 2 -->
+								</div>
+							</div>
+
+							<div id="remove-modal" class="modal" role="dialog"
+								aria-hidden="true">
+								<div class="modal-table">
+									<div class="modal-cell">
+										<div class="modal-content">
+											<div class="panel-header">Remove Payment Method</div>
+											<div class="panel-body">Are you sure you want to remove
+												this payment method?</div>
+											<div class="panel-footer">
+												<button class="btn" data-behavior="modal-close">
+													Cancel</button>
+												<button id="remove-button" data-behavior="modal-close"
+													class="btn btn-primary">Remove Payment Method</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-12">
+								Remember: Airbnb will never ask you to wire money. <a
+									href="/help/article/209" target="_blank">Learn more</a>.
+							</div>
+						</div>
+
+					</div>
+					</section>
+
+
+
+					<section class="panel space-top-4">
+					<h3 class="panel-header">
+						<a name="gift-card-balance"
+							style="text-decoration: none; color: #484848; font-size: 15px; font-weight: 500">
+							Airbnb Gift Card </a>
+					</h3>
+					<div class="panel-body">
+						<h4>
+							Airbnb gift card balance: <span class="text-muted">€0</span>
+						</h4>
+						<p class="text-muted">The credit balance from gift cards will
+							be automatically applied when you book a trip.</p>
+						<form accept-charset="UTF-8" action="/gift/claim"
+							data-hook="gift-credit-form" method="post">
+							<div style="margin: 0; padding: 0; display: inline">
+								<input name="utf8" type="hidden" value="✓"/>
+								<input
+									name="authenticity_token" type="hidden"
+									value="V4$.airbnb.com$1C3OXH12jYc$f1vNHCrCgx7MHVrY9hoCqlHI6_WR-HweNnIDpbK1DPw=" />
+							</div>
+							<fieldset>
+								<div id="codeRow" class="row space-top-4 space-2">
+									<div class="col-md-5 space-2">
+										<input id="code" name="code"
+											placeholder="Enter Airbnb gift card code" type="text" />
+									</div>
+									<div class="col-md-7 space-2">
+										<button class="btn btn-primary">Apply to Account</button>
+									</div>
+								</div>
+								<div id="pinRow" class="row space-top-0 space-2 hide">
+									<div class="col-md-5 space-2">
+										<input id="pin" name="pin" placeholder="Enter pin code"
+											type="text" />
+									</div>
+								</div>
+							</fieldset>
+						</form>
+						<div class="row">
+							<div class="col-md-3">
+								<a href="/help/article/981">Airbnb gift cards help</a>
+							</div>
+						</div>
+
+						<div id="gift-credit-details" class="space-top-2 hide">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>From</th>
+										<th>Details</th>
+										<th>Balance</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					</section>
+
+
+
+				</div>
+			</div>
+		</div>
+		</main>
+	</ui:define>
+</ui:composition>
