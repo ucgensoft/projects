@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
+
+	<ui:define name="head">
+		<link rel="stylesheet" type="text/css"
+			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css" />
+	</ui:define>
+
+	<ui:define name="body">
+		<main id="site-content" role="main"> <ui:include
+			src="DashboardHeader.html" />
+		<div class="page-container-responsive space-top-4 space-4">
+			<div class="row">
+				<ui:include src="ListingLeftMenu.html" />
+				<div class="col-md-9">
+					<div class="your-listings-flash-container"></div>
+
+
+					<form accept-charset="UTF-8"
+						action="/users/update_reservation_requirements/54995441"
+						method="post">
+						<div style="margin: 0; padding: 0; display: inline">
+							<input name="utf8" type="hidden" value="✓" />
+							<input
+								name="authenticity_token" type="hidden"
+								value="V4$.airbnb.com$1C3OXH12jYc$f1vNHCrCgx7MHVrY9hoCqlHI6_WR-HweNnIDpbK1DPw=" />
+						</div>
+						<div class="panel">
+							<div class="panel-header">Verified ID</div>
+							<div class="panel-body">
+
+								<input id="id" name="id" type="hidden" value="54995441" />
+
+
+									<p>
+										Your guests will need to verify their ID before booking with
+										you. <a href="/help/article/450" target="_blank"> Learn
+											More </a>
+									</p> <label for="user_preference_require_guest_checkpoint">
+										<input name="user_preference[require_guest_checkpoint]"
+										type="hidden" value="0" />
+										<input
+											id="user_preference_require_guest_checkpoint"
+											name="user_preference[require_guest_checkpoint]"
+											type="checkbox" value="1" /> Require guests to go
+												through verification 
+								</label>
+							</div>
+							<div class="panel-body">
+								<input class="btn btn-primary" name="commit" type="submit"
+									value="Save Reservation Requirements" />
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		</main>
+	</ui:define>
+</ui:composition>

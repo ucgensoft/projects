@@ -1,0 +1,300 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
+
+	<ui:define name="head">
+		<link rel="stylesheet" type="text/css"
+			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css" />
+	</ui:define>
+
+	<ui:define name="body">
+		<main id="site-content" role="main"> <ui:include
+			src="DashboardHeader.html" />
+		<div class="page-container-responsive space-4">
+			<div id="your-trips-app-container">
+				<div data-reactroot="">
+					<div>
+						<div class="panel-additional-gap"></div>
+						<div class="row no-trips">
+							<div class="col-lg-12 col-md-12 col-sm-12">
+								<div class="panel panel-your-trips space-top-4">
+									<div class="panel-body panel-body-your-trips">
+										<div class="meta">
+											<div class="title show-lg">Choose your next adventure</div>
+											<div class="space-top-2 content">Give your friends €18
+												to try Airbnb and you will also get €18 in travel credit
+												when they take their first trip.</div>
+											<div
+												class="space-top-5 btn btn-large btn-primary btn-invite-friends">
+												<a href="/invite?r=43"><div class="text-white invite">Invite
+														Friends for Travel Credit</div></a>
+											</div>
+										</div>
+										<div class="pin no-trips-img"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div>
+						<div class="space-top-8 space-4">
+							<h2>
+								<span>Past Trips</span>
+							</h2>
+						</div>
+						<div class="past-trips">
+							<div class="show-lg show-sm">
+								<div class="row">
+									<div class="col-lg-4 col-md-6 col-sm-12">
+										<div class="panel panel-your-trips">
+											<div
+												class="panel-body panel-body-your-trips panel-body-one-trip">
+												<div class="meta meta-one-trip">
+													<!-- react-empty: 26 -->
+													<div class="details show-check-in-out-time">
+														<div class="schedule">
+															<div class="space-3">
+																<div class="city">Brighton</div>
+															</div>
+															<div>
+																<span>May 26 - 29, 2016</span><span><span>
+																		· </span><span>1 guest</span></span>
+																<div class="space-top-1">
+																	<a href="/rooms/11638970"><div
+																			class="listing-name text-dark-gray">Small
+																			Double room with private shower 150m to Sea</div></a>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div class="actions-wrap actions-your-trips">
+														<div class="actions actions-your-trips">
+															<div class="row row-your-trip">
+																<div class="space-2">
+																	<div class="star-rating-wrapper"
+																		aria-label="Average 5 out of 5 stars">
+																		<div class="star-rating" content="5">
+																			<div class="foreground" aria-hidden="true">
+																				<span><span><i
+																						class="icon-star icon icon-babu icon-star-big"></i>
+																					<!-- react-text: 49 --> <!-- /react-text --></span><span><i
+																						class="icon-star icon icon-babu icon-star-big"></i>
+																					<!-- react-text: 52 --> <!-- /react-text --></span><span><i
+																						class="icon-star icon icon-babu icon-star-big"></i>
+																					<!-- react-text: 55 --> <!-- /react-text --></span><span><i
+																						class="icon-star icon icon-babu icon-star-big"></i>
+																					<!-- react-text: 58 --> <!-- /react-text --></span><span><i
+																						class="icon-star icon icon-babu icon-star-big"></i>
+																					<!-- react-text: 61 --> <!-- /react-text --></span></span>
+																			</div>
+																			<div class="background" aria-hidden="true">
+																				<span><span><i
+																						class="icon-star icon icon-light-gray icon-star-big"></i>
+																					<!-- react-text: 66 --> <!-- /react-text --></span><span><i
+																						class="icon-star icon icon-light-gray icon-star-big"></i>
+																					<!-- react-text: 69 --> <!-- /react-text --></span><span><i
+																						class="icon-star icon icon-light-gray icon-star-big"></i>
+																					<!-- react-text: 72 --> <!-- /react-text --></span><span><i
+																						class="icon-star icon icon-light-gray icon-star-big"></i>
+																					<!-- react-text: 75 --> <!-- /react-text --></span><span><i
+																						class="icon-star icon icon-light-gray icon-star-big"></i>
+																					<!-- react-text: 78 --> <!-- /react-text --></span></span>
+																			</div>
+																		</div>
+																		<!-- react-text: 79 -->
+																		<!-- /react-text -->
+																		<span class="h6 hide"><small><span></span></small></span>
+																	</div>
+																	<div class="space-top-1">
+																		<a href="/users/reviews/54995441"
+																			class="button-steel text-dark-gray action-text"><span>Read
+																				Your Review</span></a>
+																	</div>
+																</div>
+																<div
+																	class="col-lg-4 col-md-12 col-sm-12 action your-trips-lower-row">
+																	<div class="your-trips-lower-row-column">
+																		<div class="action-link-item">
+																			<i class="icon  h3"></i>
+																		</div>
+																		<div class="action-link-item">
+																			<a class="button-steel text-dark-gray action-text"
+																				href="/reservation/itinerary?code=2PRP5Q">See
+																				Trip Details</a>
+																		</div>
+																	</div>
+																</div>
+																<div
+																	class="col-lg-4 col-md-12 col-sm-12 action your-trips-lower-row">
+																	<div class="your-trips-lower-row-column">
+																		<div class="action-link-item">
+																			<i class="icon  h3"></i>
+																		</div>
+																		<div class="action-link-item">
+																			<a class="button-steel text-dark-gray action-text"
+																				href="/reservation/receipt?code=2PRP5Q">View
+																				Receipt</a>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="pin">
+													<a href="/rooms/11638970"><div
+															class="listing-image-container media-cover-dark"
+															style="background-image: url(&quot;https://a0.muscache.com/im/pictures/b0fdf10d-1068-464e-907f-7dfd772f49bb.jpg?aki_policy=large&quot;);"></div></a>
+													<div class="text-center">
+														<a href="/users/show/49647695"
+															class="media-photo img-round card-profile-picture card-profile-picture-large">
+														<img
+															alt="Paul" height="50" width="50"
+															src="https://a0.muscache.com/im/pictures/23125c1e-389c-4e70-b13f-93c198e89ac9.jpg?aki_policy=profile_small"
+															title="Paul" /></a>
+														<div class="host-name">Paul</div>
+														<div class="action">
+															<a href="/reservation/itinerary?code=2PRP5Q"
+																class="space-top-2 btn btn-contrast btn-large btn-semi-transparent btn-contrast-itinerary itinerary itinerary-action">View
+																Itinerary</a>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="show-md">
+								<div class="row">
+									<div class="col-lg-4 col-md-6 col-sm-12">
+										<div class="panel panel-your-trips">
+											<div
+												class="panel-body panel-body-your-trips panel-body-one-trip">
+												<div class="meta meta-one-trip">
+													<!-- react-empty: 113 -->
+													<div class="details show-check-in-out-time">
+														<div class="schedule">
+															<div class="space-3">
+																<div class="city">Brighton</div>
+															</div>
+															<div>
+																<span>May 26 - 29, 2016</span><span><span>
+																		· </span><span>1 guest</span></span>
+																<div class="space-top-1">
+																	<a href="/rooms/11638970"><div
+																			class="listing-name text-dark-gray">Small
+																			Double room with private shower 150m to Sea</div></a>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div class="actions-wrap actions-your-trips">
+														<div class="actions actions-your-trips">
+															<div class="row row-your-trip">
+																<div class="space-2">
+																	<div class="star-rating-wrapper"
+																		aria-label="Average 5 out of 5 stars">
+																		<div class="star-rating" content="5">
+																			<div class="foreground" aria-hidden="true">
+																				<span><span><i
+																						class="icon-star icon icon-babu icon-star-big"></i>
+																					<!-- react-text: 136 --> <!-- /react-text --></span><span><i
+																						class="icon-star icon icon-babu icon-star-big"></i>
+																					<!-- react-text: 139 --> <!-- /react-text --></span><span><i
+																						class="icon-star icon icon-babu icon-star-big"></i>
+																					<!-- react-text: 142 --> <!-- /react-text --></span><span><i
+																						class="icon-star icon icon-babu icon-star-big"></i>
+																					<!-- react-text: 145 --> <!-- /react-text --></span><span><i
+																						class="icon-star icon icon-babu icon-star-big"></i>
+																					<!-- react-text: 148 --> <!-- /react-text --></span></span>
+																			</div>
+																			<div class="background" aria-hidden="true">
+																				<span><span><i
+																						class="icon-star icon icon-light-gray icon-star-big"></i>
+																					<!-- react-text: 153 --> <!-- /react-text --></span><span><i
+																						class="icon-star icon icon-light-gray icon-star-big"></i>
+																					<!-- react-text: 156 --> <!-- /react-text --></span><span><i
+																						class="icon-star icon icon-light-gray icon-star-big"></i>
+																					<!-- react-text: 159 --> <!-- /react-text --></span><span><i
+																						class="icon-star icon icon-light-gray icon-star-big"></i>
+																					<!-- react-text: 162 --> <!-- /react-text --></span><span><i
+																						class="icon-star icon icon-light-gray icon-star-big"></i>
+																					<!-- react-text: 165 --> <!-- /react-text --></span></span>
+																			</div>
+																		</div>
+																		<!-- react-text: 166 -->
+																		<!-- /react-text -->
+																		<span class="h6 hide"><small><span></span></small></span>
+																	</div>
+																	<div class="space-top-1">
+																		<a href="/users/reviews/54995441"
+																			class="button-steel text-dark-gray action-text"><span>Read
+																				Your Review</span></a>
+																	</div>
+																</div>
+																<div
+																	class="col-lg-4 col-md-12 col-sm-12 action your-trips-lower-row">
+																	<div class="your-trips-lower-row-column">
+																		<div class="action-link-item">
+																			<i class="icon  h3"></i>
+																		</div>
+																		<div class="action-link-item">
+																			<a class="button-steel text-dark-gray action-text"
+																				href="/reservation/itinerary?code=2PRP5Q">See
+																				Trip Details</a>
+																		</div>
+																	</div>
+																</div>
+																<div
+																	class="col-lg-4 col-md-12 col-sm-12 action your-trips-lower-row">
+																	<div class="your-trips-lower-row-column">
+																		<div class="action-link-item">
+																			<i class="icon  h3"></i>
+																		</div>
+																		<div class="action-link-item">
+																			<a class="button-steel text-dark-gray action-text"
+																				href="/reservation/receipt?code=2PRP5Q">View
+																				Receipt</a>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="pin">
+													<a href="/rooms/11638970"><div
+															class="listing-image-container media-cover-dark"
+															style="background-image: url(&quot;https://a0.muscache.com/im/pictures/b0fdf10d-1068-464e-907f-7dfd772f49bb.jpg?aki_policy=large&quot;);"></div></a>
+													<div class="text-center">
+														<a href="/users/show/49647695"
+															class="media-photo img-round card-profile-picture card-profile-picture-large">
+														<img
+															alt="Paul" height="50" width="50"
+															src="https://a0.muscache.com/im/pictures/23125c1e-389c-4e70-b13f-93c198e89ac9.jpg?aki_policy=profile_small"
+															title="Paul" /></a>
+														<div class="host-name">Paul</div>
+														<div class="action">
+															<a href="/reservation/itinerary?code=2PRP5Q"
+																class="space-top-2 btn btn-contrast btn-large btn-semi-transparent btn-contrast-itinerary itinerary itinerary-action">View
+																Itinerary</a>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		</main>
+	</ui:define>
+</ui:composition>
