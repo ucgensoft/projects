@@ -1,0 +1,204 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
+
+	<ui:define name="head">
+		<link rel="stylesheet" type="text/css"
+			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css" />
+	</ui:define>
+
+	<ui:define name="body">
+		<main id="site-content" role="main"> <ui:include
+			src="DashboardHeader.html" />
+		<div>
+			<div id="inbox-container"
+				class="page-container-responsive page-container-inbox space-7 space-top-7"
+				data-reactroot="" data-reactid="1" data-react-checksum="-564970599">
+				<div class="row inbox-nav" data-reactid="2">
+					<div class="col-sm-12" data-reactid="3">
+						<div class="row" data-reactid="4">
+							<div class="col-sm-12 col-md-5 space-1" data-reactid="5">
+								<div class="select select-large inbox-dropdown" data-reactid="6">
+									<select data-reactid="7"><option selected=""
+											value="all" data-reactid="8">All Messages (2)</option>
+										<option value="starred" data-reactid="9">Starred (0)</option>
+										<option value="unread" data-reactid="10">Unread (0)</option>
+										<option value="reservations" data-reactid="11">Reservations
+											(2)</option>
+										<option value="pending_requests" data-reactid="12">Pending
+											Requests (0)</option>
+										<option value="hidden" data-reactid="13">Archived (0)</option></select>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="" data-reactid="14">
+					<div class="panel" data-reactid="15">
+						<ul class="list-layout" data-reactid="16">
+							<li class="panel-body thread" data-reactid="17"><div
+									class="row" data-reactid="18">
+									<div class="col-sm-9 col-md-3 thread-author" data-reactid="19">
+										<div class="row row-table" data-reactid="20">
+											<div class="thread-avatar col-md-5" data-reactid="21">
+												<a class=""
+													href="https://www.airbnb.com/users/show/49647695"
+													data-reactid="22">
+												<img
+													src="./Inbox - Airbnb_files/23125c1e-389c-4e70-b13f-93c198e89ac9.jpg"
+													alt="Paul" height="50" width="50"
+													class="media-round media-photo" data-reactid="23" /></a>
+											</div>
+											<div class="col-sm-7 thread-name text-truncate"
+												data-reactid="24">
+												<div data-reactid="25">Paul</div>
+												<time class="thread-date" data-reactid="26">05/29/2016</time>
+											</div>
+										</div>
+									</div>
+									<a href="#{webApplication.urlPrefix}/pages/dashboard/Conversation.xhtml"
+										class="thread-link link-reset text-muted" data-reactid="27"><div
+											class="col-sm-7 col-md-5 col-lg-6 thread-body"
+											data-reactid="28">
+											<span class="thread-subject" data-reactid="29">Thank
+												you Anil. It was very nice to meet you. Enjoy the rest of t…</span>
+											<div class="thread__listing text-muted show-lg"
+												data-reactid="30">
+												<!-- react-text: 31 -->
+												Lower Rock Gardens, Brighton
+												<!-- /react-text -->
+												<!-- react-text: 32 -->
+												(May 26 - 29, 2016)
+												<!-- /react-text -->
+											</div>
+										</div></a>
+									<div class="col-sm-7 col-md-4 col-lg-3 thread-label"
+										data-reactid="33">
+										<div class="row" data-reactid="34">
+											<div class="col-sm-12 col-md-6" data-reactid="35">
+												<span data-reactid="36"><span
+													class="thread-status label label-green label-success thread-status--has-tooltip"
+													id="thread-203385476-status" data-reactid="37">Accepted</span>
+												<!-- react-empty: 38 --></span>
+												<div class="hide-sm" data-reactid="39">378 ₺</div>
+											</div>
+											<div class="col-sm-6 options hide-sm" data-reactid="40">
+												<ul class="thread-actions list-unstyled" data-reactid="41">
+													<li class="space-1" data-reactid="42"><div
+															class="thread-action thread-action-star"
+															data-reactid="43">
+															<button class="btn-link btn-link--icon link-icon"
+																data-reactid="44">
+																<i class="icon icon-star-alt icon-gray"
+																	data-reactid="45"></i>
+																<!-- react-text: 46 -->
+																<!-- /react-text -->
+																<span class="link-icon__text" data-reactid="47"><span
+																	data-reactid="48">Star</span></span>
+															</button>
+														</div></li>
+													<li data-reactid="49"><div
+															class="thread-action thread-action-archive"
+															data-reactid="50">
+															<button class="btn-link btn-link--icon link-icon"
+																data-reactid="51">
+																<i class="icon icon-archive icon-gray" data-reactid="52"></i>
+																<!-- react-text: 53 -->
+																<!-- /react-text -->
+																<span class="link-icon__text" data-reactid="54"><span
+																	data-reactid="55">Archive</span></span>
+															</button>
+														</div></li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</div></li>
+							<li class="panel-body thread" data-reactid="56"><div
+									class="row" data-reactid="57">
+									<div class="col-sm-9 col-md-3 thread-author" data-reactid="58">
+										<div class="row row-table" data-reactid="59">
+											<div class="thread-avatar col-md-5" data-reactid="60">
+												<a class="" href="https://www.airbnb.com/users/show/1924872"
+													data-reactid="61">
+												<img
+													src="./Inbox - Airbnb_files/fd659e49-81aa-4461-a5af-8d04ac38c9a6.jpg"
+													alt="Stef" height="50" width="50"
+													class="media-round media-photo" data-reactid="62" /></a>
+											</div>
+											<div class="col-sm-7 thread-name text-truncate"
+												data-reactid="63">
+												<div data-reactid="64">Stef</div>
+												<time class="thread-date" data-reactid="65">05/24/2016</time>
+											</div>
+										</div>
+									</div>
+									<a href="#{webApplication.urlPrefix}/pages/dashboard/Conversation.xhtml"
+										class="thread-link link-reset text-muted" data-reactid="66"><div
+											class="col-sm-7 col-md-5 col-lg-6 thread-body"
+											data-reactid="67">
+											<span class="thread-subject" data-reactid="68">Okay
+												thank you very much. I arranged somewhere else. Regards,
+												Ani…</span>
+											<div class="thread__listing text-muted show-lg"
+												data-reactid="69">
+												<!-- react-text: 70 -->
+												Shanklin Road, Brighton
+												<!-- /react-text -->
+												<!-- react-text: 71 -->
+												(May 26 - 29, 2016)
+												<!-- /react-text -->
+											</div>
+										</div></a>
+									<div class="col-sm-7 col-md-4 col-lg-3 thread-label"
+										data-reactid="72">
+										<div class="row" data-reactid="73">
+											<div class="col-sm-12 col-md-6" data-reactid="74">
+												<span data-reactid="75"><span
+													class="thread-status label label-warning thread-status--has-tooltip"
+													id="thread-203370521-status" data-reactid="76">Declined</span>
+												<!-- react-empty: 77 --></span>
+												<div class="hide-sm" data-reactid="78">621 ₺</div>
+											</div>
+											<div class="col-sm-6 options hide-sm" data-reactid="79">
+												<ul class="thread-actions list-unstyled" data-reactid="80">
+													<li class="space-1" data-reactid="81"><div
+															class="thread-action thread-action-star"
+															data-reactid="82">
+															<button class="btn-link btn-link--icon link-icon"
+																data-reactid="83">
+																<i class="icon icon-star-alt icon-gray"
+																	data-reactid="84"></i>
+																<!-- react-text: 85 -->
+																<!-- /react-text -->
+																<span class="link-icon__text" data-reactid="86"><span
+																	data-reactid="87">Star</span></span>
+															</button>
+														</div></li>
+													<li data-reactid="88"><div
+															class="thread-action thread-action-archive"
+															data-reactid="89">
+															<button class="btn-link btn-link--icon link-icon"
+																data-reactid="90">
+																<i class="icon icon-archive icon-gray" data-reactid="91"></i>
+																<!-- react-text: 92 -->
+																<!-- /react-text -->
+																<span class="link-icon__text" data-reactid="93"><span
+																	data-reactid="94">Archive</span></span>
+															</button>
+														</div></li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</div></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		</main>
+	</ui:define>
+</ui:composition>

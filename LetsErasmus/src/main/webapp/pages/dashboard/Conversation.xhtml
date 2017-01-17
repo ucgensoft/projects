@@ -1,0 +1,549 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
+
+	<ui:define name="head">
+		<link rel="stylesheet" type="text/css"
+			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css" />
+	</ui:define>
+
+	<ui:define name="body">
+		<main id="site-content" role="main"> <ui:include
+			src="DashboardHeader.html" />
+		<div class="page-container page-container-responsive space-top-4">
+
+
+
+			<div class="row">
+				<div class="col-md-7 col-md-push-5 messaging-thread-main">
+					<div id="message_friction_react" class="thread-list-item"></div>
+
+					<div
+						class="js-messaging-react-container messaging-thread-container">
+						<div data-reactroot="">
+							<div class="row row-condensed space-6 send-message-box"
+								id="post_message_box">
+								<!-- react-empty: 3 -->
+								<div class="col-sm-12 col-md-9 col-lg-10">
+									<div
+										class="panel panel-quote panel-quote-flush panel-quote-right panel-quote-right__white">
+										<form>
+											<div class="panel-body text-left text-medium-gray">
+												<textarea class="send-message-textarea" placeholder=""
+													rows="3" style="height: 80px;"></textarea>
+											</div>
+											<div class="panel-body panel-dark">
+												<div class="va-container va-container-v va-container-h">
+													<div class="va-middle">
+														<span>
+															<!-- react-empty: 13 -->
+														</span>
+													</div>
+													<div class="text-right">
+														<button class="btn">
+															<span>Send Message</span>
+														</button>
+													</div>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+								<div class="col-md-3 col-lg-2 hide-sm text-right">
+									<div class="media-photo media-round">
+										<img
+											src="https://a0.muscache.com/im/pictures/2fbedaff-e37d-4f85-a3f4-1659d22d07ab.jpg?aki_policy=profile_medium"
+											width="70" height="70" />
+									</div>
+								</div>
+							</div>
+							<div id="thread-list">
+								<div>
+									<div class="inline-status safety-tip space-6">
+										<div class="horizontal-rule-text space-1 text-branding">
+											<span class="horizontal-rule-wrapper"><i
+												class="icon icon-flag h4"></i><span>Safety Tip</span></span>
+										</div>
+										<p class="text-center text-muted">
+											<span>
+												<!-- react-text: 29 -->For your safety and protection, only
+												communicate and pay directly through Airbnb. Visit our <!-- /react-text -->
+												<span><a class="link-reset link-bold-line"
+													href="/help/article/209">
+														<!-- react-text: 32 -->Help Center<!-- /react-text -->
+												</a></span>
+											<!-- react-text: 33 --> to learn more about the benefits of
+												booking through Airbnb.<!-- /react-text -->
+											</span>
+										</p>
+									</div>
+									<div>
+										<div class="row row-condensed space-6 post">
+											<div class="col-sm-2 col-md-3 col-lg-2 text-left">
+												<div class="media-photo media-round">
+													<img class="user-profile-photo"
+														src="https://a0.muscache.com/im/pictures/23125c1e-389c-4e70-b13f-93c198e89ac9.jpg?aki_policy=profile_x_medium"
+														width="70" height="70" />
+												</div>
+											</div>
+											<div class="col-sm-10 col-md-9 col-lg-10">
+												<div
+													class="panel-quote-flush panel-quote panel panel-quote-left">
+													<div class="panel-body">
+														<div>
+															<div>
+																<div class="pull-right">
+																	<div class="flag-widget">
+																		<a href="#" class="link-reset"
+																			title="Report this message"
+																			data-prevent-default="true"><i
+																			class="icon icon-flag h4"></i>
+																		<!-- react-text: 48 --> <!-- /react-text --></a>
+																	</div>
+																</div>
+															</div>
+														</div>
+														<div>
+															<span class="message-text">Thank you Anil. It was
+																very nice to meet you. Enjoy the rest of the weekend
+																Kind regards Paul.</span>
+														</div>
+														<div class="space-top-2 text-muted row row-condensed">
+															<div class="col-sm-8">
+																<span class="time">May 29, 2016</span><span
+																	class="exact-time hide">Sun May 29 2016 14:01:40
+																	GMT+0300 (Turkey Standard Time)</span>
+																<!-- react-text: 55 -->
+																<!-- /react-text -->
+															</div>
+															<div class="col-sm-4"></div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div>
+									<div>
+										<div class="row row-condensed space-6 post">
+											<div class="col-sm-10 col-md-9 col-lg-10">
+												<div
+													class="panel-quote-flush panel-quote panel panel-quote-right">
+													<div class="panel-body panel-dark">
+														<div>
+															<span class="message-text">Good morning Paul,
+																Everything was perfect, thanks a lot. I left early so as
+																you told keys are in the room. Kind regards Anil</span>
+														</div>
+														<div class="space-top-2 text-muted row row-condensed">
+															<div class="col-sm-8">
+																<span class="time">May 29, 2016</span><span
+																	class="exact-time hide">Sun May 29 2016 12:31:11
+																	GMT+0300 (Turkey Standard Time)</span>
+																<!-- react-text: 69 -->
+																<!-- /react-text -->
+															</div>
+															<div class="col-sm-4"></div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-2 col-md-3 col-lg-2 text-right">
+												<div class="media-photo media-round">
+													<img class="user-profile-photo"
+														src="https://a0.muscache.com/im/pictures/2fbedaff-e37d-4f85-a3f4-1659d22d07ab.jpg?aki_policy=profile_medium"
+														width="70" height="70" />
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div>
+									<div>
+										<div class="row row-condensed space-6 post">
+											<div class="col-sm-2 col-md-3 col-lg-2 text-left">
+												<div class="media-photo media-round">
+													<img class="user-profile-photo"
+														src="https://a0.muscache.com/im/pictures/23125c1e-389c-4e70-b13f-93c198e89ac9.jpg?aki_policy=profile_x_medium"
+														width="70" height="70" />
+												</div>
+											</div>
+											<div class="col-sm-10 col-md-9 col-lg-10">
+												<div
+													class="panel-quote-flush panel-quote panel panel-quote-left">
+													<div class="panel-body">
+														<div>
+															<div>
+																<div class="pull-right">
+																	<div class="flag-widget">
+																		<a href="#" class="link-reset"
+																			title="Report this message"
+																			data-prevent-default="true"><i
+																			class="icon icon-flag h4"></i>
+																		<!-- react-text: 89 --> <!-- /react-text --></a>
+																	</div>
+																</div>
+															</div>
+														</div>
+														<div>
+															<span class="message-text">Good Morning Anil I
+																hope everything was okay with the room and you have
+																enjoyed your stay. Checkout time is 12, I will be
+																arriving at the house around 11.30 but if you need to go
+																before I get there please just leave the keys in the
+																room. Thank you for staying with us. Kind regards Paul.</span>
+														</div>
+														<div class="space-top-2 text-muted row row-condensed">
+															<div class="col-sm-8">
+																<span class="time">May 29, 2016</span><span
+																	class="exact-time hide">Sun May 29 2016 11:56:00
+																	GMT+0300 (Turkey Standard Time)</span>
+																<!-- react-text: 96 -->
+																<!-- /react-text -->
+															</div>
+															<div class="col-sm-4"></div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div>
+									<div>
+										<div class="row row-condensed space-6 post">
+											<div class="col-sm-10 col-md-9 col-lg-10">
+												<div
+													class="panel-quote-flush panel-quote panel panel-quote-right">
+													<div class="panel-body panel-dark">
+														<div>
+															<span class="message-text">Okay Paul, thank you.
+																See you tomorrow then. Anil</span>
+														</div>
+														<div class="space-top-2 text-muted row row-condensed">
+															<div class="col-sm-8">
+																<span class="time">May 25, 2016</span><span
+																	class="exact-time hide">Wed May 25 2016 11:17:31
+																	GMT+0300 (Turkey Standard Time)</span>
+																<!-- react-text: 110 -->
+																<!-- /react-text -->
+															</div>
+															<div class="col-sm-4"></div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-2 col-md-3 col-lg-2 text-right">
+												<div class="media-photo media-round">
+													<img class="user-profile-photo"
+														src="https://a0.muscache.com/im/pictures/2fbedaff-e37d-4f85-a3f4-1659d22d07ab.jpg?aki_policy=profile_medium"
+														width="70" height="70" />
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div>
+									<div>
+										<div class="row row-condensed space-6 post">
+											<div class="col-sm-2 col-md-3 col-lg-2 text-left">
+												<div class="media-photo media-round">
+													<img class="user-profile-photo"
+														src="https://a0.muscache.com/im/pictures/23125c1e-389c-4e70-b13f-93c198e89ac9.jpg?aki_policy=profile_x_medium"
+														width="70" height="70" />
+												</div>
+											</div>
+											<div class="col-sm-10 col-md-9 col-lg-10">
+												<div
+													class="panel-quote-flush panel-quote panel panel-quote-left">
+													<div class="panel-body">
+														<div>
+															<div>
+																<div class="pull-right">
+																	<div class="flag-widget">
+																		<a href="#" class="link-reset"
+																			title="Report this message"
+																			data-prevent-default="true"><i
+																			class="icon icon-flag h4"></i>
+																		<!-- react-text: 130 --> <!-- /react-text --></a>
+																	</div>
+																</div>
+															</div>
+														</div>
+														<div>
+															<span class="message-text">Hi Anil. Yes that would
+																be perfect. Come to the house when you arrive to check
+																in. Kind regards Paul.</span>
+														</div>
+														<div class="space-top-2 text-muted row row-condensed">
+															<div class="col-sm-8">
+																<span class="time">May 25, 2016</span><span
+																	class="exact-time hide">Wed May 25 2016 11:16:23
+																	GMT+0300 (Turkey Standard Time)</span>
+																<!-- react-text: 137 -->
+																<!-- /react-text -->
+															</div>
+															<div class="col-sm-4"></div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div>
+									<div>
+										<div class="row row-condensed space-6 post">
+											<div class="col-sm-10 col-md-9 col-lg-10">
+												<div
+													class="panel-quote-flush panel-quote panel panel-quote-right">
+													<div class="panel-body panel-dark">
+														<div>
+															<span class="message-text">Good Morning Paul, How
+																are you? I will be in Brighton(coach stariın) tomorrow
+																at 15:30. Do we meet at the house? Kind regards, Anil</span>
+														</div>
+														<div class="space-top-2 text-muted row row-condensed">
+															<div class="col-sm-8">
+																<span class="time">May 25, 2016</span><span
+																	class="exact-time hide">Wed May 25 2016 11:10:18
+																	GMT+0300 (Turkey Standard Time)</span>
+																<!-- react-text: 151 -->
+																<!-- /react-text -->
+															</div>
+															<div class="col-sm-4"></div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-2 col-md-3 col-lg-2 text-right">
+												<div class="media-photo media-round">
+													<img class="user-profile-photo"
+														src="https://a0.muscache.com/im/pictures/2fbedaff-e37d-4f85-a3f4-1659d22d07ab.jpg?aki_policy=profile_medium"
+														width="70" height="70" />
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div>
+									<div>
+										<div class="row row-condensed space-6 post">
+											<div class="col-sm-10 col-md-9 col-lg-10">
+												<div
+													class="panel-quote-flush panel-quote panel panel-quote-right">
+													<div class="panel-body panel-dark">
+														<div>
+															<span class="message-text">Hi Paul, Thank you for
+																quick notification. Kind regards, Anil</span>
+														</div>
+														<div class="space-top-2 text-muted row row-condensed">
+															<div class="col-sm-8">
+																<span class="time">May 24, 2016</span><span
+																	class="exact-time hide">Tue May 24 2016 02:24:10
+																	GMT+0300 (Turkey Standard Time)</span>
+																<!-- react-text: 168 -->
+																<!-- /react-text -->
+															</div>
+															<div class="col-sm-4"></div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-2 col-md-3 col-lg-2 text-right">
+												<div class="media-photo media-round">
+													<img class="user-profile-photo"
+														src="https://a0.muscache.com/im/pictures/2fbedaff-e37d-4f85-a3f4-1659d22d07ab.jpg?aki_policy=profile_medium"
+														width="70" height="70" />
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div>
+									<div>
+										<div class="row row-condensed space-6 post">
+											<div class="col-sm-2 col-md-3 col-lg-2 text-left">
+												<div class="media-photo media-round">
+													<img class="user-profile-photo"
+														src="https://a0.muscache.com/im/pictures/23125c1e-389c-4e70-b13f-93c198e89ac9.jpg?aki_policy=profile_x_medium"
+														width="70" height="70" />
+												</div>
+											</div>
+											<div class="col-sm-10 col-md-9 col-lg-10">
+												<div
+													class="panel-quote-flush panel-quote panel panel-quote-left">
+													<div class="panel-body">
+														<div>
+															<div>
+																<div class="pull-right">
+																	<div class="flag-widget">
+																		<a href="#" class="link-reset"
+																			title="Report this message"
+																			data-prevent-default="true"><i
+																			class="icon icon-flag h4"></i>
+																		<!-- react-text: 188 --> <!-- /react-text --></a>
+																	</div>
+																</div>
+															</div>
+														</div>
+														<div>
+															<span class="message-text">Hi Anil. Thank you for
+																your reservation. I am happy to be your host for your
+																visit to Brighton. I will be in contact again to make
+																arrangements for arrival. Kind regards Paul.</span>
+														</div>
+														<div class="space-top-2 text-muted row row-condensed">
+															<div class="col-sm-8">
+																<span class="time">May 24, 2016</span><span
+																	class="exact-time hide">Tue May 24 2016 02:21:52
+																	GMT+0300 (Turkey Standard Time)</span>
+																<!-- react-text: 195 -->
+																<!-- /react-text -->
+															</div>
+															<div class="col-sm-4"></div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="inline-status text-branding space-6">
+									<div class="horizontal-rule-text">
+										<span class="horizontal-rule-wrapper"><span>
+												<!-- react-text: 201 -->Reservation confirmed <!-- /react-text -->
+												<span>05/24/2016</span>
+										</span></span>
+									</div>
+								</div>
+								<div class="inline-status text-branding space-6">
+									<div class="horizontal-rule-text">
+										<span class="horizontal-rule-wrapper"><span>
+												<!-- react-text: 207 -->Inquiry sent <!-- /react-text -->
+												<span>05/24/2016</span>
+										</span></span>
+									</div>
+								</div>
+								<div>
+									<div>
+										<div class="row row-condensed space-6 post">
+											<div class="col-sm-10 col-md-9 col-lg-10">
+												<div
+													class="panel-quote-flush panel-quote panel panel-quote-right">
+													<div class="panel-body panel-dark">
+														<div>
+															<span class="message-text">Hi Paul, I am in London
+																for 3 days, than planning to visit Brighton for 3 days
+																more. The places looks perfect and close to Brighton,
+																Coach Station. Regards, Anil</span>
+														</div>
+														<div class="space-top-2 text-muted row row-condensed">
+															<div class="col-sm-8">
+																<span class="time">May 24, 2016</span><span
+																	class="exact-time hide">Tue May 24 2016 02:18:41
+																	GMT+0300 (Turkey Standard Time)</span>
+																<!-- react-text: 221 -->
+																<!-- /react-text -->
+															</div>
+															<div class="col-sm-4"></div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-2 col-md-3 col-lg-2 text-right">
+												<div class="media-photo media-round">
+													<img class="user-profile-photo"
+														src="https://a0.muscache.com/im/pictures/2fbedaff-e37d-4f85-a3f4-1659d22d07ab.jpg?aki_policy=profile_medium"
+														width="70" height="70" />
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div
+					class="col-md-4 col-md-pull-7 bg-white qt-sidebar-redesign space-4 ">
+
+
+					<form accept-charset="UTF-8"
+						action="/messaging/qt_reply_v2/203385476" method="post">
+						<div style="margin: 0; padding: 0; display: inline">
+							<input name="utf8" type="hidden" value="✓" />
+							<input
+								name="authenticity_token" type="hidden"
+								value="V4$.airbnb.com$sgN0ENugdNc$9HyXsH5IfW18gyhMaW07F9aDRtCjeTgswx_qysUjY7c=" />
+						</div>
+
+						<div class="js-sidebar-mini-profile-react-container">
+							<div data-reactroot="">
+								<div role="tooltip" aria-hidden="true"
+									data-trigger="#verified-id-icon" data-sticky="true"
+									class="tooltip tooltip-bottom-middle tooltip-panel-light tooltip-panel-collapse fade"
+									id="verifications-tooltip">
+									<div class="panel-header panel-header-gray">Verified ID</div>
+									<div class="panel-padding panel-body">
+										<p>
+											<span>Paul has successfully provided identification.</span>
+										</p>
+										<p>
+											<a href="/help/article/450"><span>Learn more
+													&amp;raquo;</span></a>
+										</p>
+									</div>
+								</div>
+								<div class="mini-profile mt-sidebar-container media text-center">
+									<div class="">
+										<div class="panel-image">
+											<div class="verified-badge-aligner-single-host">
+												<a href="/users/show/49647695"
+													class="media-photo media-round">
+												<img
+													src="https://a0.muscache.com/im/pictures/23125c1e-389c-4e70-b13f-93c198e89ac9.jpg?aki_policy=profile_x_medium"
+													width="150" height="150" alt="Paul" /></a>
+												<div
+													class="va-container verified-overlay-bottom-right-single-host">
+													<span
+														class="va-middle media-photo media-round verified-badge-large">
+													<img
+														src="https://a0.muscache.com/airbnb/static/badges/verified_badge-6ee370f5ca86a52ed6198fac858ac1f4.png"
+														width="27" height="27" /></span>
+													<!-- react-text: 19 -->
+													&nbsp;
+													<!-- /react-text -->
+													<span class="va-middle text-emphasis-gray"><span>Verified</span></span>
+												</div>
+											</div>
+										</div>
+										<div class="space-top-3">
+											<div class="h4">
+												<a href="/users/show/49647695" class="text-normal">Paul</a>
+											</div>
+											<div class="space-top-1">
+												<span class="text-medium-gray">GB</span><br/><span
+													class="text-medium-gray"><span>5
+															verifications</span><span>&nbsp;•&nbsp;</span><span>326
+															reviews</span></span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+
+					</form>
+				</div>
+			</div>
+		</div>
+		</main>
+	</ui:define>
+</ui:composition>
