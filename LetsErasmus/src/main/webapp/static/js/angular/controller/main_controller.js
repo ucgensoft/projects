@@ -6,7 +6,7 @@ App.controller('mainCtrl', ['$scope', '$controller', function($scope, $controlle
       var selectedLng = null;
 
       self.isSearchValid = false;
-/*test*/
+
       self.initialize = function() {
     	  $(function() {
     	      	$("#txtSearchPlace").geocomplete().bind("geocode:result",

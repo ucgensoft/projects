@@ -59,6 +59,15 @@ function openWindow (url, isSelf) {
 }
 
 function ajaxHtml(url, elementId, callbackFunc) {
+	getHtml(url, function(html) {
+		$('#' + elementId).html(html);
+        if (callbackFunc != null) {
+        	callbackFunc();
+        }
+	});	
+}
+
+function getHtml(url, callbackFunc) {
 	$.ajax({
         url: url,
         data: {
@@ -66,9 +75,8 @@ function ajaxHtml(url, elementId, callbackFunc) {
         type: "GET",
         dataType: "html",
         success: function (data) {
-            $('#' + elementId).html(data);
             if (callbackFunc != null) {
-            	callbackFunc();
+            	callbackFunc(data);
             }
         },
         error: function (xhr, status) {
@@ -98,17 +106,6 @@ function ajaxJson(url, data, callbackFunc) {
             
         }
     });
-}
-
-function login() {
-	var email = $('#txtEmail')[0].value;
-	var password = $('#txtPassword')[0].value;
-	var url = webApplicationUrlPrefix + "/api/place/login";
-	var callBackFunc = function(data) {
-		alert(data.resultDesc);
-		openWindow(webApplicationUrlPrefix + "/pages/Main.xhtml", true);
-	}
-	ajaxJson(url, {email: email, password: password}, callBackFunc);
 }
 
 function getCurrencySymbol(currencyId) {
@@ -153,45 +150,64 @@ function getCounterElementValue(elementId) {
 	return parseInt(currentValue);
 }
 
-function showMessage(type, title, message, callBackFunc) {
-	$.msgBox({
-		  title: title,
-		  content: message,
-		  type: type,
-		  buttons: [{ value: "Ok" }],
-		  success : function (result) {
-			  if (result == 'Ok') {
-				  if (callBackFunc) {
-					  callBackFunc();
-				  }
-			  }
-		  }
-		  });
-}
-
-function showConfirm(title, message, callBackFunc) {
-	$.msgBox({
-		title : title,
-		content : message,
-		type : "confirm",
-		buttons : [ {
-			value : "Yes"
-		}, {
-			value : "No"
-		}, {
-			value : "Cancel"
-		} ],
-		success : function(result) {
-			if (result == "Yes") {
-				callBackFunc(true);
-			} else if (result == "No") {
-				callBackFunc(false);
-			}
-		}
-	});
-}
-
 function generateRandomValue(minValue, maxValue) {
 	var range = maxValue - minValue + 1;
 	return Math.floor(Math.random() * range) + minValue;
 }
+
+var DialogUtil = {
+		
+	MESSAGE_TYPE : {
+		INFO : 1,
+		WARNING : 2,
+		ERROR : 3
+	},
+		
+	showMessage : function(type, title, message, callBackFunc) {
+		$.msgBox({
+			  title: title,
+			  content: message,
+			  type: type,
+			  buttons: [{ value: "Ok" }],
+			  success : function (result) {
+				  if (result == 'Ok') {
+					  if (callBackFunc) {
+						  callBackFunc();
+					  }
+				  }
+			  }
+			  });
+	},
+
+	showConfirm : function(title, message, callBackFunc) {
+		$.msgBox({
+			title : title,
+			content : message,
+			type : "confirm",
+			buttons : [ {
+				value : "Yes"
+			}, {
+				value : "No"
+			}, {
+				value : "Cancel"
+			} ],
+			success : function(result) {
+				if (result == "Yes") {
+					callBackFunc(true);
+				} else if (result == "No") {
+					callBackFunc(false);
+				}
+			}
+		});
+	}
+};
+
+var StringUtil = {
+	trim: function(value) {
+		if (value != null) {
+			return value.trim();
+		} else {
+			return null;
+		}
+	}
+};

@@ -4,10 +4,18 @@ import java.math.BigDecimal;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
 import com.ucgen.letserasmus.library.user.model.User;
 
 public abstract class BaseApiController {
 
+	public HttpSession getSession() {
+		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+		return attr.getRequest().getSession();
+	}
+	
 	public User getSessionUser(HttpSession session) {
 		Object user = session.getAttribute("appUser");
 		if (user != null && user instanceof User) {

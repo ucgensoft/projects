@@ -1,11 +1,11 @@
 package com.ucgen.letserasmus.library.user.model;
 
-import java.util.Date;
-
 import com.ucgen.letserasmus.library.common.model.BaseModel;
 
 public class User extends BaseModel {
 	
+	private static final long serialVersionUID = -1886945765194866601L;
+
 	private Long id;
 	private String email;
 	private String password;

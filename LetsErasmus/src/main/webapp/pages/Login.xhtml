@@ -34,21 +34,24 @@
 
 		<div class="form-group">
 			<label class="sr-only" for="email">E-mail address</label> 
-			 <input type="text" id="txtEmail" />
+			 <input type="text" id="txtEmail" 
+			 	placeholder='E-mail address' required="required" />
 		</div>
 
 		<div class="form-group" kemal="test">
 			<label class="sr-only" for="password">Password</label>
-			<input type="password" id="txtPassword" />
+			<input type="password" id="txtPassword" 
+				placeholder='Password' required="required" />
 			<p class="text-right small">
 				<a href="/recover-account" data-event="Clicked Forgot password"
-					data-type="link"> Forgot your password?</a>
+					data-type="link">Forgot your password?</a>
 			</p>
 		</div>
-		<input type="button" id="btnLogin" value=" Login and continue " onclick="login()" />
+		<input type="button" id="btnLogin" value=" Login and continue " 
+			onclick="login()" />
 		<p class="text-center center-block m-y-1">
 			Don't have an account? 
-			<a href="/pages/register" class="SignUpLink">Sign up</a>
+			<a onclick="openSignUpWindow()" href="#" class="SignUpLink">Sign up</a>
 		</p>	
 	</h:form>
 </ui:composition>

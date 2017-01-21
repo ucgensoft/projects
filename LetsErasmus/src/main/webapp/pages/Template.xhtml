@@ -54,6 +54,11 @@
 			<script src="#{webApplication.urlPrefix}/static/js/geocode/jquery.geocomplete.js"></script>
 			<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
 			
+			<script src="#{webApplication.urlPrefix}/static/js/angular/app.js"></script>
+			<script src="#{webApplication.urlPrefix}/static/js/angular/service/common_service.js"></script>
+			<script src="#{webApplication.urlPrefix}/static/js/angular/service/user_service.js"></script>
+			<script src="#{webApplication.urlPrefix}/static/js/angular/controller/header_controller.js"></script>
+			
 			<style>
 				/* Add Zoom Animation */
 				.animate {
@@ -75,30 +80,37 @@
 				
 				<ui:insert name="head" />
 		</h:head>
-		<h:body style="background-position: center center; background-repeat: no-repeat; background-attachment: fixed; background-size: cover; padding-top: 0px; padding-bottom: 0px;">
-			<ui:include src="Header.xhtml"   />
-			<div id="divAjaxProgressBar"></div>
-			<ui:insert name="body" />
-			<ui:include src="Footer.xhtml" />
-			
-			<div id="divModal" class="modalWrapper login-form overlay animate">
-				<div id="divModalContent" class="modalWindow">
-				
+		<h:body style="background-position: center center; background-repeat: no-repeat; background-attachment: fixed; background-size: cover; 
+				padding-top: 0px; padding-bottom: 0px;">
+			<div ng-app="myApp">
+				<div id="divPageHeader" ng-controller="headerCtrl as ctrl">
+					<ui:include src="Header.xhtml"   />
+					<div id="divModal" class="modalWrapper login-form overlay animate">
+						<div id="divModalContent" class="modalWindow">
+							
+						</div>
+					</div>
 				</div>
-			</div>
-			
-			<script>
-				//showMessage("error", "title", "message");
-				var modal = document.getElementById('divModal');
-				modal.style.display = 'none';
+				<div id="divAjaxProgressBar"></div>
+				<div id="divBody"  ng-controller="#{webApplication.ngController} as ctrl">
+					<ui:insert name="body" />
+				</div>
+				<ui:include src="Footer.xhtml" />
 				
-				window.onclick = function(event) {
-				    if (event.target == modal) {
-				        modal.style.display = "none";
-				    }
-				}
-			</script>
-			
+				<script>
+					//showMessage("error", "title", "message");
+					var modal = document.getElementById('divModal');
+					if(document.getElementById('divModalContent').children.length == 0) {
+						modal.style.display = 'none';
+					}
+					
+					window.onclick = function(event) {
+					    if (event.target == modal) {
+					        modal.style.display = "none";
+					    }
+					}
+				</script>
+			</div>
 		</h:body>
 	</f:view>
 </html>

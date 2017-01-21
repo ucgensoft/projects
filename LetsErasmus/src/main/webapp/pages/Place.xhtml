@@ -19,8 +19,7 @@
 
 	<ui:define name="body">
 		<h:form id="placeForm">
-			<div id="containerPage" ng-app="myApp"
-				ng-controller="placeCtrl as ctrl">
+			<div id="containerPage">
 				<div class="list-your-space__header" style="position: relative; z-index:0;">
 					<div>
 						<div class="progress-bar__container">
@@ -905,9 +904,6 @@
 				</div>
 			</div>			
 		</h:form>
-		<script src="#{webApplication.urlPrefix}/static/js/angular/app.js"></script>
-		<script
-			src="#{webApplication.urlPrefix}/static/js/angular/service/common_service.js"></script>
 		<script
 			src="#{webApplication.urlPrefix}/static/js/angular/service/place_service.js"></script>
 		<script

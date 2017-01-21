@@ -3,88 +3,70 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html">
+	
+		<i class="fa fa-close closeModal hidden-sm-up"></i>
 
-	<i class="fa fa-close closeModal hidden-sm-up"></i>
-
-	<div class="loginSignupTabs">
-		<a
-			id="tab-register" class="active disabled"
-			href="/register"
-			data-event="Clicked Sign up tab" data-type="link">
-			Sign Up 
-		</a>
-	</div>
-
-	<form method="POST" action="/register" class="blessed-form">
+		<div class="loginSignupTabs">
+			<a
+				id="tab-register" class="active disabled"
+				href="#{webApplication.urlPrefix}/api/register">
+				Sign Up 
+			</a>
+		</div>
+	
 		<input type="hidden" name="csrf_token"
 			value="L87zanEz17XTxxjHchySUYvXvbyQbr9X/glDL8e68OoxMpIn0x7fWKlanI1AhdLwuDmqebI80AxRZW2yDrGJNQ==">
 		</input>
 		<a
 			href="https://www.facebook.com/dialog/oauth?client_id=410300212483493&amp;redirect_uri=https%3A%2F%2Fhousinganywhere.com%2Fapi%2Fv1%2Fauth%2Ffacebook%2Fcallback&amp;response_type=code&amp;scope=email&amp;state=https%3A%2F%2Fhousinganywhere.com%2F"
-			class="btn-facebook btn-block center-block m-t-2 m-b-0_5 uppercase"
-			data-event="Clicked Sign up with Facebook" data-type="button"> <i
-			class="fa fa-facebook-square m-r-0_3"></i> Sign up with Facebook
+			class="btn-facebook btn-block center-block m-t-2 m-b-0_5 uppercase"> 
+			<i class="fa fa-facebook-square m-r-0_3"></i> Sign up with Facebook
 		</a>
-		<a
-			href="https://accounts.google.com/o/oauth2/auth?client_id=1001718579642-c4ssbshmbdhle0fb8gfvj2bdt1b3pb34.apps.googleusercontent.com&amp;redirect_uri=https%3A%2F%2Fhousinganywhere.com%2Fapi%2Fv1%2Fauth%2Fgoogle%2Fcallback&amp;response_type=code&amp;scope=profile&#43;email&amp;state=https%3A%2F%2Fhousinganywhere.com%2F"
-			class="btn-google btn-block center-block m-t-0_2 m-b-1 uppercase"
-			data-event="Clicked Sign up with Google" data-type="button"> <i
-			class="fa fa-google m-r-0_3"></i> Sign up with Google
+		<a href="https://accounts.google.com/o/oauth2/auth?client_id=1001718579642-c4ssbshmbdhle0fb8gfvj2bdt1b3pb34.apps.googleusercontent.com&amp;redirect_uri=https%3A%2F%2Fhousinganywhere.com%2Fapi%2Fv1%2Fauth%2Fgoogle%2Fcallback&amp;response_type=code&amp;scope=profile&#43;email&amp;state=https%3A%2F%2Fhousinganywhere.com%2F"
+			class="btn-google btn-block center-block m-t-0_2 m-b-1 uppercase"> 
+			<i class="fa fa-google m-r-0_3"></i> Sign up with Google
 		</a>
-
+	
 		<div class="separator m-y-1_5">
 			<span class="back-grey">OR</span>
 		</div>
-
+	
 		<div class="formErrors"></div>
-
+	
 		<input type="hidden" name="ReturnURL"
-			value="https://housinganywhere.com/"> </input>
+			value="#{webApplication.urlPrefix}"> </input>
 		<div class="form-group">
 			<label class="sr-only" for="name">First name *</label> 
-			<input
-				class="form-control" type="text" name="firstName" id="firstName"
-				placeholder='First name' data-event="Selected First Name"
-				data-type="field" autocomplete="given-first-name"/>
+			<input id="txtFirstName" class="form-control" type="text"
+				placeholder='First name' autocomplete="given-first-name"/>
 		</div>
-
+	
 		<div class="form-group">
-			<label class="sr-only" for="name">Last name *</label> <input
-				class="form-control" type="text" name="lastName" id="lastName"
-				placeholder='Last name' data-event="Selected Last Name"
-				data-type="field" autocomplete="given-last-name" required="required" />
+			<label class="sr-only">Last name *</label> 
+			<input id="txtLastName" class="form-control" type="text"
+				placeholder='Last name' autocomplete="given-last-name" required="required" />
 		</div>
-
+	
 		<div class="form-group">
 			<label class="sr-only" for="email">E-mail address *</label> 
-			<input
-				class="form-control" type="email" value="" name="email" id="email"
-				placeholder='E-mail address' required="required" data-event="Selected Email"
-				data-type="field" autocomplete="email" />
+			<input id="txtEmail" class="form-control" type="email"
+				placeholder='E-mail address' required="required" autocomplete="email" />
 			<div class="help-block">Please enter your e-mail address.</div>
 		</div>
-
+	
 		<div class="form-group">
 			<label class="sr-only" for="password">Choose a password *</label> 
-			<input
-				class="form-control" type="password" value="" name="password"
-				id="password" placeholder='Choose a password' heap-ignore="0"
-				required="required" data-event="Selected Choose password" data-type="field">
+			<input id="txtPassword" class="form-control" type="password" 
+				placeholder='Choose a password' required="required">
 			</input>
-			<div class="help-block">Please pick a secure password, of at
-				least 8 characters.</div>
+			<div class="help-block">Please pick a secure password, of at least 8 characters.</div>
 		</div>
-
-		<input type="submit" value='Sign up' class="btn-brand btn-block"
-			data-event="Clicked Sign up" data-type="button" />
-
-	</form>
-
-	<p class="text-center center-block m-y-1">
-		<a href="/login?next=https%3a%2f%2fhousinganywhere.com%2f"
-			data-event="Clicked Already have an account" data-type="link"
-			class="SignInLink"> Already have an account? Click here </a>
-	</p>
-
-
+	
+		<input id="btnSignup" type="button" onclick="signup()" value='Sign up' class="btn-brand btn-block" />
+	
+		<p class="text-center center-block m-y-1">
+			<a href="#" onclick="openLoginWindow()"
+				class="SignInLink"> Already have an account? Click here </a>
+		</p>	
+	
 </ui:composition>

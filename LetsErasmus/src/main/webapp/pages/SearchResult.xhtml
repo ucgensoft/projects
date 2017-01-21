@@ -15,7 +15,7 @@
 
 	<ui:define name="body">
 		<h:form id="mainSearchForm">
-			<div id="containerPage" ng-app="myApp" ng-controller="searchResultCtrl as ctrl">
+			<div id="containerPage">
 				<div class="SearchApp">
 					<div id="filterResultId" class="FilterResult">
 						<section class="ListFilters">
@@ -361,10 +361,7 @@
 				</div>
 			</div>
 		</h:form>
-		<script src="#{webApplication.urlPrefix}/static/js/angular/app.js"></script>
-		<script src="#{webApplication.urlPrefix}/static/js/angular/service/common_service.js"></script>
 		<script src="#{webApplication.urlPrefix}/static/js/angular/service/place_service.js"></script>
-		<script src="#{webApplication.urlPrefix}/static/js/angular/service/user_service.js"></script>
 		<script src="#{webApplication.urlPrefix}/static/js/geocode/custom_marker.js"></script>
 		<script src="#{webApplication.urlPrefix}/static/js/angular/controller/search_result_controller.js"></script>
 	</ui:define>

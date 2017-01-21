@@ -82,7 +82,7 @@ public class PlaceRowMapper extends BaseRowMapper<Place> {
 		if (FKEY_FILE.equals(keyName)) {
 			FileRowMapper fileRowMapper = new FileRowMapper("F");
 			ForeignKey<PlaceRowMapper, FileRowMapper> fKeyFile = new ForeignKey<PlaceRowMapper, FileRowMapper>(this, fileRowMapper);
-			fKeyFile.addFieldPair(COL_ID, FileRowMapper.COL_ENTITY_ID);
+			fKeyFile.addFieldPair(COL_COVER_PHOTO_ID, FileRowMapper.COL_ID);
 			this.addFKey(FKEY_FILE, fKeyFile);
 		}
 	}

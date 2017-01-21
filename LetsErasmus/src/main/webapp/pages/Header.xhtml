@@ -6,45 +6,73 @@
 
 	<h:form>
 		<header id="top" class="nav-top nav-top__home"
-			style="margin: auto; 
+			style="margin: auto;
 			background-color: rgba(0, 0, 0, 0.5);">
 		<a href="#{webApplication.urlPrefix}" class="nav-top--logo"> <img
 			id="imgSiteIcon"
 			src="#{webApplication.urlPrefix}/static/images/optimized_logo.png"></img>
-		</a> 
-		<nav id="n-l-nav" class="nav-top--right-wrapper"> 
-			<nav class="nav-top--right">
-				<div class="nav-top--right">
-					<a class="nav-top--list-room-btn"
-						href="#{webApplication.urlPrefix}/pages/Place.xhtml" role="button"
-						id="btnSubmitRoom"> <span class="hidden-sm-down">Become a Host</span> 
-						<span class="hidden-md-up uppercase">Become a Host</span>
+		</a> <nav id="n-l-nav" class="nav-top--right-wrapper"> <nav
+			class="nav-top--right">
+		<div class="nav-top--right">
+			<ui:fragment
+				rendered="#{webApplication.getSessionAttribute('user') != null}">
+				<div class="dropdown--wrapper">
+					<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.xhtml" rel="" title="View messages and potential tenants"
+						class="nav-top--right--link nav-top--right--link__dropdown">
+						<div class="nav-top--avatar" title="Go to your dashboard">
+							<div class="avatar--img"
+								style="background-size: cover; width: 100%; height: 100%; background-image: url(https://housinganywhere.com/images/hauser/165406/e8cd29cc-dd47-11e6-a2ea-42010af00004.jpg);">
+							</div>
+						</div>
+						<div class="nav-top--username">#{webApplication.user.fullName}</div>
 					</a>
 				</div>
-				<div class="nav-top--right">
-					<a id="become-a-host"
-						onclick="openWindow('#{webApplication.urlPrefix}/pages/dashboard/EditUser.xhtml', true)"
-						title="Manage your profile and account settings" href=""
-						class="nav-top--right--link hidden-sm-down"> <span>Dashboard</span>
-					</a> 
-					<a id="become-a-host"
-						onclick="openWindow('#{webApplication.urlPrefix}/pages/Place.xhtml', true)"
-						title="Open your place to guests" href=""
-						class="nav-top--right--link hidden-sm-down"> <span>Help</span>
-					</a> 
-					<a id="a-register"
-						onclick="openModal('#{webApplication.urlPrefix}/pages/Signup.xhtml', 'divModalContent')"
-						title="Register to book or list a room or pick a tenant" href=""
-						class="nav-top--right--link hidden-sm-down"> <span>Sign up</span>
-					</a> 
-					<a id="a-login"
-						onclick="openModal('#{webApplication.urlPrefix}/pages/Login.xhtml', 'divModalContent')"
-						title="Login to see new messages and potential tenants" href=""
-						class="nav-top--right--link hidden-sm-down m-r-1"> <span>Log in </span>
-					</a>
-				</div>
-			</nav> 
-		</nav> 
-		</header>
+			</ui:fragment>
+			<div>
+				<a class="nav-top--list-room-btn"
+					href="#{webApplication.urlPrefix}/pages/Place.xhtml" role="button"
+					id="btnSubmitRoom"> 
+					<span class="hidden-sm-down">Become a Host</span> 
+				</a>
+			</div>
+			<ui:fragment
+				rendered="#{webApplication.getSessionAttribute('user') != null}">
+				<a id="become-a-host"
+					onclick="openWindow('#{webApplication.urlPrefix}/pages/dashboard/EditUser.xhtml', true)"
+					title="Manage your profile and account settings" href=""
+					class="nav-top--right--link hidden-sm-down"> <span>Dashboard</span>
+				</a>
+			</ui:fragment>
+
+			<a id="become-a-host"
+				onclick="openWindow('#{webApplication.urlPrefix}/pages/Place.xhtml', true)"
+				title="Open your place to guests" href=""
+				class="nav-top--right--link hidden-sm-down"> <span>Help</span>
+			</a>
+			<ui:fragment
+				rendered="#{webApplication.getSessionAttribute('user') == null}">
+				<a id="a-register" ng-click="ctrl.openSignUpWindow()"
+					title="Register to book or list a room or pick a tenant" href=""
+					class="nav-top--right--link hidden-sm-down"> <span>Sign up</span>
+				</a>
+			</ui:fragment>
+			<ui:fragment
+				rendered="#{webApplication.getSessionAttribute('user') == null}">
+				<a id="a-login"
+					ng-click="ctrl.openLoginWindow()"
+					title="Login to see new messages and potential tenants" href=""
+					class="nav-top--right--link hidden-sm-down m-r-1"> <span>Log in </span>
+				</a>
+			</ui:fragment>
+			<ui:fragment
+				rendered="#{webApplication.getSessionAttribute('user') != null}">
+				<a id="a-login"
+					ng-click="ctrl.logout()"
+					title="Login to see new messages and potential tenants" href=""
+					class="nav-top--right--link hidden-sm-down m-r-1"> <span>Log Out</span>
+				</a>
+			</ui:fragment>
+		</div>
+		</nav> </nav> </header>
 	</h:form>
 </ui:composition>

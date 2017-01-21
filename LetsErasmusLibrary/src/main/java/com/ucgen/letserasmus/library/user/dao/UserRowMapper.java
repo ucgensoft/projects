@@ -58,7 +58,7 @@ public class UserRowMapper extends BaseRowMapper<User> {
 	}
 
 	public UserRowMapper() {
-		this("U");
+		this(null);
 	}
 	
 	public UserRowMapper(String tablePrefix) {

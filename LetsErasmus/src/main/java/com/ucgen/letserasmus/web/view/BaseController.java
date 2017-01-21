@@ -26,6 +26,15 @@ public abstract class BaseController {
 			return null;
 		}
 	}
+	
+	public Object getSessionAttribute(String attributeName) {
+		HttpSession session = this.getSession();
+		if (session != null) {
+			return session.getAttribute(attributeName);
+		} else {
+			return null;
+		}
+	}
 
 	public HttpServletRequest getRequest() {
 		Object request = FacesContext.getCurrentInstance().getExternalContext().getRequest();
