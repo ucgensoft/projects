@@ -2,6 +2,7 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', funct
       var self = this;
       self.html = '';
       var auth2 = null;
+      var facebookLoginResponse = null;
       
       self.initialize = function() {
 		  gapi.load('auth2', function() {
@@ -13,6 +14,10 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', funct
     	      });
     	    });
 		  
+		  FB.init({
+			    appId: facebookId,
+			    version: 'v2.7' // or v2.1, v2.2, v2.3, ...
+			  });
 	 };
       
       self.attachGoogleSignin = function (elementId) {
@@ -89,6 +94,50 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', funct
     		  openModal();  
     	  });
       };
+      
+      self.loginWithFacebook = function() {
+    		FB.getLoginStatus(self.facebookLoginCallback);
+    	}
+
+      self.facebookLoginCallback = function(response) {
+    		if (response.status == 'connected') {
+    			facebookTokenId = response.authResponse.accessToken;
+    			FB.api('/me', {fields: 'email, id, cover,name,first_name,last_name,age_range,link,gender' 
+    				+ ',locale,picture,timezone,updated_time,verified'}, function(resp) {
+    				
+    				var email = resp.email;
+		        	var firstName = resp.first_name;
+		        	var lastName = resp.last_name;
+		        	var gender = null;
+		        	var facebookId = resp.id;
+		        	var loginType = EnmLoginType.FACEBOOK;
+		        	var profileImageUrl = resp.picture.data.url;
+		        	
+		        	if (resp.gender) {
+		        		if (resp.gender.toUpperCase() == 'MALE') {
+		        			gender = 'M';
+		        		} else if (resp.gender.toUpperCase() == 'FEMALE') {
+		        			gender = 'F';
+		        		}
+		        	}
+		        	
+		        	var user = {
+		        			firstName : firstName,
+		        			lastName : lastName,
+		        			email : email,
+		        			gender : gender,
+		        			facebookId : facebookId,
+		        			facebookTokenId : facebookTokenId,
+		        			profileImageUrl : profileImageUrl,
+		        			loginType : loginType
+		        	};
+		        	self.signup(user);
+    				
+    				});
+    		} else {
+    			FB.login(self.facebookLoginCallback, {scope: 'public_profile, email'});
+    		}
+    	}
       
       self.signupWithLocalAccount = function() {
     	  
@@ -184,6 +233,11 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', funct
 								setTimeout(function() {
 									location.href = webApplicationUrlPrefix + "/pages/Main.xhtml";
 								}, 500);
+							} else if (loginType == EnmLoginType.FACEBOOK) {
+								$('#frameGoogleLogout').attr('src', 'https://www.facebook.com/logout.php?next='+ urlEncodedUrlPrefix + '&access_token=' + facebookTokenId);
+								setTimeout(function() {
+									location.href = webApplicationUrlPrefix + "/pages/Main.xhtml";
+								}, 500);
 							} else {
 								location.href = webApplicationUrlPrefix + "/pages/Main.xhtml";
 							}
@@ -221,4 +275,9 @@ function signup() {
 function login() {
 	var scope = angular.element( $('#divPageHeader') ).scope();
 	scope.ctrl.loginWithLocalAccount();
+}
+
+function loginWithFacebook() {
+	var scope = angular.element( $('#divPageHeader') ).scope();
+	scope.ctrl.loginWithFacebook();
 }

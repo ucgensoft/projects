@@ -31,7 +31,7 @@ public class UserRowMapper extends BaseRowMapper<User> {
 	public static final String COL_MODIFIED_DATE = "MODIFIED_DATE";
 	public static final String COL_MODIFIED_DATE_GMT = "MODIFIED_DATE_GMT";
 	public static final String COL_GOOGLE_ID = "GOOGLE_ID";
-
+	public static final String COL_FACEBOOK_ID = "FACEBOOK_ID";
 
 	@Override
 	public User mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -58,6 +58,8 @@ public class UserRowMapper extends BaseRowMapper<User> {
 		user.setModifiedDate(super.getTimestamp(rs, COL_MODIFIED_DATE));
 		user.setModifiedDateGmt(super.getTimestamp(rs, COL_MODIFIED_DATE_GMT));		
 		user.setGoogleId(super.getString(rs, COL_GOOGLE_ID));
+		user.setFacebookId(super.getString(rs, COL_FACEBOOK_ID));
+		
 		return user;
 	}
 
@@ -96,6 +98,8 @@ public class UserRowMapper extends BaseRowMapper<User> {
 		super.addColumn(COL_USER_ACTIVATION_KEY_EMAIL);
 		super.addColumn(COL_USER_ACTIVATION_KEY_MSISDN);
 		super.addColumn(COL_GENDER);
+		super.addColumn(COL_FACEBOOK_ID);
+		super.addColumn(COL_GOOGLE_ID);
 	}
 
 }

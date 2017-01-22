@@ -41,6 +41,8 @@ public class ApiUserController extends BaseApiController {
 					operationResult = this.signupWithLocalAccount(user, session);	
 				} else if (loginType == EnmLoginType.GOOGLE) {
 					operationResult = this.signupWithGoogleAccount(user, session);
+				} else if (loginType == EnmLoginType.FACEBOOK) {
+					operationResult = this.signupWithFacebookAccount(user, session);
 				}
 			} else {
 				operationResult.setResultCode(EnmResultCode.WARNING.getValue());
@@ -65,8 +67,10 @@ public class ApiUserController extends BaseApiController {
 			if (loginType != null) {
 				if (loginType == EnmLoginType.LOCAL_ACCOUNT) {
 					operationResult = this.loginWithLocalAccount(user, session);	
-				} else if (loginType == EnmLoginType.LOCAL_ACCOUNT) {
+				} else if (loginType == EnmLoginType.GOOGLE) {
 					operationResult = this.loginWithGoogleAccount(user, session);
+				} else if (loginType == EnmLoginType.FACEBOOK) {
+					operationResult = this.loginWithFacebookAccount(user, session);
 				}
 			} else {
 				operationResult.setResultCode(EnmResultCode.WARNING.getValue());
@@ -154,6 +158,33 @@ public class ApiUserController extends BaseApiController {
 		}
 		return operationResult;
     }
+    
+    private OperationResult loginWithFacebookAccount(User user, HttpSession session) {
+		OperationResult operationResult = new OperationResult();
+		try {
+			if (user != null && user.getEmail() != null && user.getPassword() != null) {
+				User dbUser = new User();
+				dbUser.setEmail(user.getEmail());
+				dbUser.setPassword(user.getPassword());
+				dbUser = this.userService.getUser(dbUser);
+				
+				if(dbUser != null) {
+					operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+					this.processLogin(session, dbUser, EnmLoginType.GOOGLE);
+				} else {
+					operationResult.setResultCode(EnmResultCode.WARNING.getValue());
+					operationResult.setResultDesc("Email or password is incorrect.");
+				}
+			} else {
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc("Email and password fields are mandatory.");
+			}
+		} catch (Exception e) {
+			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
+			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+		}
+		return operationResult;
+    }
 	
     public OperationResult signupWithLocalAccount(User user, HttpSession session) {
 		OperationResult operationResult = new OperationResult();
@@ -210,6 +241,46 @@ public class ApiUserController extends BaseApiController {
 					}
 				} else {
 					dbUser.setLoginType(EnmLoginType.GOOGLE.getId());
+					dbUser.setProfileImageUrl(user.getProfileImageUrl());
+					this.processLogin(session, dbUser, EnmLoginType.GOOGLE);
+					operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+				}	
+			} else {
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc("googleId and email parameters are mandatory!");
+			}
+		} catch (Exception e) {
+			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
+			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+		}
+		return operationResult;
+    }
+    
+    public OperationResult signupWithFacebookAccount(User user, HttpSession session) {
+		OperationResult operationResult = new OperationResult();
+		
+		try {
+			if (user.getFacebookId() != null && user.getEmail() != null) {
+				User dbUser = new User();
+				dbUser.setEmail(user.getEmail());
+				dbUser.setFacebookId(user.getFacebookId());
+				dbUser = this.userService.getUser(dbUser);
+				
+				if(dbUser == null) {
+					user.setEmailVerified(EnmBoolStatus.NO.getId());
+					user.setMsisdnVerified(EnmBoolStatus.NO.getId());
+					user.setStatus(EnmUserStatus.ACTIVE.getValue());
+					OperationResult createUserResult = this.userService.insertUser(user);
+					
+					if (OperationResult.isResultSucces(createUserResult)) {
+						operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+						this.processLogin(session, user, EnmLoginType.LOCAL_ACCOUNT);
+					} else {
+						operationResult = createUserResult;
+					}
+				} else {
+					dbUser.setLoginType(EnmLoginType.FACEBOOK.getId());
+					dbUser.setFacebookTokenId(user.getFacebookTokenId());
 					dbUser.setProfileImageUrl(user.getProfileImageUrl());
 					this.processLogin(session, dbUser, EnmLoginType.GOOGLE);
 					operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());

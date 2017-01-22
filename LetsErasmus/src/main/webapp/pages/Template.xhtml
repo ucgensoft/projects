@@ -42,7 +42,11 @@
 			var webApplicationUrlPrefix = '#{webApplication.urlPrefix}';
 			var rootPlaceImageFolder = '#{webApplication.urlPrefix}' + '/place/images/';
 			var googleId = '#{webApplication.googleId}';
+			var facebookId = '#{webApplication.facebookId}';
 			var loginType = '#{webApplication.loginType}';
+			var facebookTokenId = '#{webApplication.facebookTokenId}';
+			var urlEncodedUrlPrefix = '#{webApplication.encodedUrlPrefix}';
+			
 		</script>
 
 		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -54,6 +58,8 @@
 			<script src="http://maps.googleapis.com/maps/api/js?libraries=places&amp;key=AIzaSyBPX8f2vL1lLg0tqCWs9lcVWcdtSyNajVI"></script>
 			<script src="https://apis.google.com/js/client.js" async="true" defer="true"></script>
 			<script src="https://apis.google.com/js/platform.js" async="true" defer="true"></script>
+			
+			<script src="http://connect.facebook.net/en_US/sdk.js"></script>
 			
 			<script src="#{webApplication.urlPrefix}/static/js/Common.js"></script>
 			<script src="#{webApplication.urlPrefix}/static/js/geocode/jquery.geocomplete.js"></script>

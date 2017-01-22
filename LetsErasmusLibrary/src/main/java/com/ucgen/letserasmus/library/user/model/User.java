@@ -23,6 +23,7 @@ public class User extends BaseModel {
 	private String facebookTokenId;
 	private String ip;
 	private String googleId;
+	private String facebookId;
 	
 	private String profileImageUrl;
 	
@@ -136,6 +137,12 @@ public class User extends BaseModel {
 	}
 	public void setProfileImageUrl(String profileImageUrl) {
 		this.profileImageUrl = profileImageUrl;
+	}
+	public String getFacebookId() {
+		return facebookId;
+	}
+	public void setFacebookId(String facebookId) {
+		this.facebookId = facebookId;
 	}
 	public String getFullName() {
 		String fullName = "";

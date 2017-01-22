@@ -22,7 +22,7 @@ public class UserDao extends JdbcDaoSupport implements IUserDao {
 
 	private static final String GET_USER_SQL = " SELECT * FROM USER WHERE 1 = 1 ";
 	
-	private static final String INSERT_USER_SQL = " INSERT INTO USER(EMAIL, PASSWORD, MSISDN, FIRST_NAME, LAST_NAME, GENDER,  STATUS, EMAIL_VERIFIED, MSISDN_VERIFIED, USER_ACTIVATION_KEY_EMAIL, USER_ACTIVATION_KEY_MSISDN, PROFILE_PHOTO_ID, FACEBOOK_TOKEN_ID, IP, CREATED_BY, CREATED_DATE, CREATED_DATE_GMT, MODIFIED_BY, MODIFIED_DATE, MODIFIED_DATE_GMT, GOOGLE_ID) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?, ?) ";
+	private static final String INSERT_USER_SQL = " INSERT INTO USER(EMAIL, PASSWORD, MSISDN, FIRST_NAME, LAST_NAME, GENDER,  STATUS, EMAIL_VERIFIED, MSISDN_VERIFIED, USER_ACTIVATION_KEY_EMAIL, USER_ACTIVATION_KEY_MSISDN, PROFILE_PHOTO_ID, FACEBOOK_TOKEN_ID, IP, CREATED_BY, CREATED_DATE, CREATED_DATE_GMT, MODIFIED_BY, MODIFIED_DATE, MODIFIED_DATE_GMT, GOOGLE_ID, FACEBOOK_ID) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 	
 	private static final String UPDATE_USER_SQL = " UPDATE USER SET EMAIL=?,PASSWORD=?,MSISDN=?,FIRST_NAME=?,LAST_NAME=?,GENDER=?,STATUS=?,EMAIL_VERIFIED=?,MSISDN_VERIFIED=?,USER_ACTIVATION_KEY_EMAIL=?,USER_ACTIVATION_KEY_MSISDN=?,PROFILE_PHOTO_ID=?,FACEBOOK_TOKEN_ID=?,IP=?,CREATED_BY=?,CREATED_DATE=?,CREATED_DATE_GMT=?,MODIFIED_BY=?,MODIFIED_DATE=?,MODIFIED_DATE_GMT=? WHERE ID = ? ";
 	
@@ -62,6 +62,11 @@ public class UserDao extends JdbcDaoSupport implements IUserDao {
 		if (user.getGoogleId() != null) {
 			sqlBuilder.append(" AND GOOGLE_ID = ?");
 			argList.add(user.getGoogleId());
+		}
+		
+		if (user.getFacebookId() != null) {
+			sqlBuilder.append(" AND FACEBOOK_ID = ?");
+			argList.add(user.getFacebookId());
 		}
 		
 		List<User> userList = super.getJdbcTemplate().query(sqlBuilder.toString(), argList.toArray(), new UserRowMapper());		
@@ -134,6 +139,7 @@ public class UserDao extends JdbcDaoSupport implements IUserDao {
 		argList.add(user.getModifiedDate());
 		argList.add(user.getModifiedDateGmt());
 		argList.add(user.getGoogleId());
+		argList.add(user.getFacebookId());
 		
 		int i = this.getJdbcTemplate().update(INSERT_USER_SQL, argList.toArray());
 		

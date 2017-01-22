@@ -1,5 +1,8 @@
 package com.ucgen.letserasmus.web.view.application;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -12,16 +15,37 @@ public class WebApplication extends BaseController {
 
 	public static final String SESSION_USER = "user";
 	
+	public static final String FB_APP_ID = "305890206479305";
+	public static final String FB_APP_SECRET = "f1f5ad76a1b8ae942346b575e3c96ede";
+	public static final String REDIRECT_URI = "http://localhost:8080/FLogin/fbhome";
+
 	private String urlPrefix;
 	private String rootPlaceImagePath;
 	private String rootProfileImagePath;
+	
+	public String getFacebookId() {
+		return FB_APP_ID;
+	}
+	
+	public String getFbAuthUrl() {
+		String fbLoginUrl = "";
+		try {
+			fbLoginUrl = "http://www.facebook.com/dialog/oauth?" + "client_id="
+					+ FB_APP_ID + "&redirect_uri="
+					+ URLEncoder.encode(REDIRECT_URI, "UTF-8")
+					+ "&scope=email";
+		} catch (UnsupportedEncodingException e) {
+			//TODO : logging
+		}
+		return fbLoginUrl;
+	}
 	
 	public String getUrlPrefix() {
 		return urlPrefix;
 	}
 	
-	public String getEncodedUrlPrefix() {
-		return "https://accounts.google.com/o/oauth2/v2/auth?scope=email%20profile&state=%2Fprofile&redirect_uri=http%3A%2F%2Flocalhost:8080%2FLetsErasmus&response_type=token&client_id=413623045258-hedcnepko6ovo8ruid4nbea4nk20osm8.apps.googleusercontent.com";
+	public String getEncodedUrlPrefix() throws UnsupportedEncodingException {
+		return URLEncoder.encode(this.urlPrefix, "UTF-8");
 	}
 	
 	public String getRootPlaceImagePath() {
@@ -82,6 +106,15 @@ public class WebApplication extends BaseController {
 			loginType = user.getLoginType().toString();
 		}
 		return loginType;
+	}
+	
+	public String getFacebookTokenId() {
+		String facebookTokenId = "";
+		User user = (User) super.getSessionAttribute(SESSION_USER); 
+		if (user != null && user.getFacebookTokenId() != null) {
+			facebookTokenId = user.getFacebookTokenId();
+		}
+		return facebookTokenId;
 	}
 	
 }
