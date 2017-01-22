@@ -1,6 +1,62 @@
 App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', function($scope, userService, sce, compile) {
       var self = this;
       self.html = '';
+      var auth2 = null;
+      
+      self.initialize = function() {
+		  gapi.load('auth2', function() {
+    	      auth2 = gapi.auth2.init({
+    	        client_id: googleId,
+    	        cookiepolicy: 'single_host_origin',
+    	        // Request scopes in addition to 'profile' and 'email'
+    	        //scope: 'additional_scope'
+    	      });
+    	    });
+		  
+	 };
+      
+      self.attachGoogleSignin = function (elementId) {
+    	  var element = $('#' + elementId)[0];
+  	      auth2.attachClickHandler(element, {},
+  	        function(googleUser) {
+	  	    	gapi.client.load('plus', 'v1', function () {
+		            var request = gapi.client.plus.people.get({
+		                'userId': 'me'
+		            });
+		            request.execute(function (resp) {
+		            	var email = resp.emails[0].value;
+			        	var firstName = resp.name.givenName;
+			        	var lastName = resp.name.familyName;
+			        	var gender = null;
+			        	var googleId = resp.id;
+			        	var loginType = EnmLoginType.GOOGLE;
+			        	var profileImageUrl = resp.image.url;
+			        	
+			        	if (resp.gender) {
+			        		if (resp.gender.toUpperCase() == 'MALE') {
+			        			gender = 'M';
+			        		} else if (resp.gender.toUpperCase() == 'FEMALE') {
+			        			gender = 'F';
+			        		}
+			        	}
+			        	
+			        	var user = {
+			        			firstName : firstName,
+			        			lastName : lastName,
+			        			email : email,
+			        			gender : gender,
+			        			googleId : googleId,
+			        			profileImageUrl : profileImageUrl,
+			        			loginType : loginType
+			        	};
+			        	self.signup(user);
+		        });
+	        });
+  	    	  
+  	        }, function(error) {
+  	          alert(JSON.stringify(error, undefined, 2));
+  	        });
+  	  }
       
       self.openSignUpWindow = function() {
     	  /*
@@ -13,6 +69,7 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', funct
     	  //compile(htmlcontent.contents())($scope);
     	  
     	  ajaxHtml(webApplicationUrlPrefix + '/pages/Signup.xhtml', 'divModalContent', function() {
+    		  self.attachGoogleSignin('linkGoogleSignin');
     		  openModal();  
     	  });
     	  /*
@@ -28,11 +85,12 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', funct
       
       self.openLoginWindow = function() {
     	  ajaxHtml(webApplicationUrlPrefix + '/pages/Login.xhtml', 'divModalContent', function() {
+    		  self.attachGoogleSignin('linkGoogleSignin');
     		  openModal();  
     	  });
       };
       
-      self.signup = function() {
+      self.signupWithLocalAccount = function() {
     	  
   		var userFirstName = StringUtil.trim($("#txtFirstName").val());
   		var userLastName = StringUtil.trim($("#txtLastName").val());
@@ -46,31 +104,37 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', funct
   				firstName : userFirstName,
   				lastName : userLastName,
   				email : email,
-  				password : password
+  				password : password,
+  				loginType : EnmLoginType.LOCAL_ACCOUNT
   			};
-  			NProgress.start(2000, 10);
-  			userService.createUser(user).then(
-  					function(operationResult) {
-  						NProgress.done(true); 
-  						if (operationResult.resultCode == EnmOperationResultCode.SUCCESS) {
-  							NProgress.done(true); 
-  							if (operationResult.resultCode == EnmOperationResultCode.SUCCESS) {
-  								location.reload();
-  							} else {
-  								alert('Operation could not be completed. Please try again later!');
-  							}
-  						} else {
-  							alert('Operation could not be completed. Please try again later!');
-  						}
-  					}, function(errResponse) {
-  						NProgress.done(true);
-  						alert('Operation could not be completed. Please try again later!');
-  					}); 
+  			self.signup(user);
   		}
   		
   	};
   	
-  	self.login = function() {
+  	self.signup = function(user) {
+  	  
+		NProgress.start(2000, 10);
+		userService.createUser(user).then(
+				function(operationResult) {
+					NProgress.done(true); 
+					if (operationResult.resultCode == EnmOperationResultCode.SUCCESS) {
+						NProgress.done(true); 
+						if (operationResult.resultCode == EnmOperationResultCode.SUCCESS) {
+							location.reload();
+						} else {
+							alert('Operation could not be completed. Please try again later!');
+						}
+					} else {
+						alert('Operation could not be completed. Please try again later!');
+					}
+				}, function(errResponse) {
+					NProgress.done(true);
+					alert('Operation could not be completed. Please try again later!');
+				});
+  	};
+  	
+  	self.loginWithLocalAccount = function() {
   		var email = StringUtil.trim($("#txtEmail").val());
   		var password = StringUtil.trim($("#txtPassword").val());
   		
@@ -79,27 +143,32 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', funct
   		} else {
   			var user = {
   				email : email,
-  				password : password
+  				password : password,
+  				loginType : EnmLoginType.LOCAL_ACCOUNT
   			};
-  			NProgress.start(2000, 10);
-  			userService.login(user).then(
-  					function(operationResult) {
-  						NProgress.done(true); 
-  						if (operationResult.resultCode == EnmOperationResultCode.SUCCESS) {
-  							NProgress.done(true); 
-  							if (operationResult.resultCode == EnmOperationResultCode.SUCCESS) {
-  								location.reload();
-  							} else {
-  								alert('Operation could not be completed. Please try again later!');
-  							}
-  						} else {
-  							alert('Operation could not be completed. Please try again later!');
-  						}
-  					}, function(errResponse) {
-  						NProgress.done(true);
-  						alert('Operation could not be completed. Please try again later!');
-  					}); 
+  			self.login(user);
   		}
+  	};
+  	
+  	self.login = function(user) {
+  		NProgress.start(2000, 10);
+		userService.login(user).then(
+				function(operationResult) {
+					NProgress.done(true); 
+					if (operationResult.resultCode == EnmOperationResultCode.SUCCESS) {
+						NProgress.done(true); 
+						if (operationResult.resultCode == EnmOperationResultCode.SUCCESS) {
+							location.reload();
+						} else {
+							alert('Operation could not be completed. Please try again later!');
+						}
+					} else {
+						alert('Operation could not be completed. Please try again later!');
+					}
+				}, function(errResponse) {
+					NProgress.done(true);
+					alert('Operation could not be completed. Please try again later!');
+				}); 
   	};
   	
   	self.logout = function() {
@@ -110,7 +179,14 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', funct
 					if (operationResult.resultCode == EnmOperationResultCode.SUCCESS) {
 						NProgress.done(true); 
 						if (operationResult.resultCode == EnmOperationResultCode.SUCCESS) {
-							location.href = webApplicationUrlPrefix + "/pages/Main.xhtml";
+							if (loginType == EnmLoginType.GOOGLE) {
+								$('#frameGoogleLogout').attr('src', 'https://accounts.google.com/logout');
+								setTimeout(function() {
+									location.href = webApplicationUrlPrefix + "/pages/Main.xhtml";
+								}, 500);
+							} else {
+								location.href = webApplicationUrlPrefix + "/pages/Main.xhtml";
+							}
 						} else {
 							alert('Operation could not be completed!');
 						}
@@ -122,12 +198,8 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', funct
 					alert('Operation could not be completed!');
 				}); 
   	};
-      
-	  self.initialize = function() {
-		  
-	  };
-      
-      self.initialize();
+  	  
+     self.initialize();
       
   }]);
 
@@ -143,10 +215,10 @@ function openLoginWindow() {
 
 function signup() {
 	var scope = angular.element( $('#divPageHeader') ).scope();
-	scope.ctrl.signup();
+	scope.ctrl.signupWithLocalAccount();
 }
 
 function login() {
 	var scope = angular.element( $('#divPageHeader') ).scope();
-	scope.ctrl.login();
+	scope.ctrl.loginWithLocalAccount();
 }

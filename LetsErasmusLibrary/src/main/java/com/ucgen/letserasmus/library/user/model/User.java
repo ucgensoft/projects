@@ -1,5 +1,6 @@
 package com.ucgen.letserasmus.library.user.model;
 
+import com.ucgen.common.util.StringUtil;
 import com.ucgen.letserasmus.library.common.model.BaseModel;
 
 public class User extends BaseModel {
@@ -12,14 +13,20 @@ public class User extends BaseModel {
 	private String msisdn;
 	private String firstName;
 	private String lastName;
+	private String gender;
 	private Integer status;
-	private Integer emailVerified;
-	private Integer msisdnVerified;
+	private String emailVerified;
+	private String msisdnVerified;
 	private String userActivationKeyEmail;
 	private String userActivationKeyMsisdn;
-	private Long fileId;
+	private Long profilePhotoId;
 	private String facebookTokenId;
 	private String ip;
+	private String googleId;
+	
+	private String profileImageUrl;
+	
+	private Integer loginType;
 
 	public Long getId() {
 		return id;
@@ -63,18 +70,6 @@ public class User extends BaseModel {
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
-	public Integer getEmailVerified() {
-		return emailVerified;
-	}
-	public void setEmailVerified(Integer emailVerified) {
-		this.emailVerified = emailVerified;
-	}
-	public Integer getMsisdnVerified() {
-		return msisdnVerified;
-	}
-	public void setMsisdnVerified(Integer msisdnVerified) {
-		this.msisdnVerified = msisdnVerified;
-	}
 	public String getUserActivationKeyEmail() {
 		return userActivationKeyEmail;
 	}
@@ -86,12 +81,6 @@ public class User extends BaseModel {
 	}
 	public void setUserActivationKeyMsisdn(String userActivationKeyMsisdn) {
 		this.userActivationKeyMsisdn = userActivationKeyMsisdn;
-	}
-	public Long getFileId() {
-		return fileId;
-	}
-	public void setFileId(Long fileId) {
-		this.fileId = fileId;
 	}
 	public String getFacebookTokenId() {
 		return facebookTokenId;
@@ -106,8 +95,53 @@ public class User extends BaseModel {
 		this.ip = ip;
 	}
 	
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	public String getEmailVerified() {
+		return emailVerified;
+	}
+	public void setEmailVerified(String emailVerified) {
+		this.emailVerified = emailVerified;
+	}
+	public String getMsisdnVerified() {
+		return msisdnVerified;
+	}
+	public void setMsisdnVerified(String msisdnVerified) {
+		this.msisdnVerified = msisdnVerified;
+	}
+	public Long getProfilePhotoId() {
+		return profilePhotoId;
+	}
+	public void setProfilePhotoId(Long profilePhotoId) {
+		this.profilePhotoId = profilePhotoId;
+	}
+	public Integer getLoginType() {
+		return loginType;
+	}
+	public void setLoginType(Integer loginType) {
+		this.loginType = loginType;
+	}
+	public String getGoogleId() {
+		return googleId;
+	}
+	public void setGoogleId(String googleId) {
+		this.googleId = googleId;
+	}
+	public String getProfileImageUrl() {
+		return profileImageUrl;
+	}
+	public void setProfileImageUrl(String profileImageUrl) {
+		this.profileImageUrl = profileImageUrl;
+	}
 	public String getFullName() {
-		return String.format("%s %s", this.getFirstName(), this.getLastName());
+		String fullName = "";
+		fullName = StringUtil.append(fullName, this.firstName, " ");
+		fullName = StringUtil.append(fullName, this.lastName, " ");
+		return fullName;
 	}
 	
 }

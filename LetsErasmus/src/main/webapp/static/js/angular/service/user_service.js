@@ -4,12 +4,6 @@ App.factory('userService', ['$http', '$q', function($http, $q){
 
 	return {
 		createUser : function(user) {
-			var formData = new FormData();
-			formData.append('user', angular.toJson(user));
-			
-			var data = {
-				user : angular.toJson(user)	
-			};
 			var config = {
 				headers : {
 					'Accept' : 'application/json'

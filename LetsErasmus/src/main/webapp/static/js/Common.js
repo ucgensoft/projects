@@ -38,6 +38,12 @@ var OperationResult = {
         resultObj: 'resultObj',
 };
 
+var EnmLoginType = {
+		LOCAL_ACCOUNT : 1,
+		GOOGLE : 2,
+		FACEBOOK : 3
+};
+
 var newOperationResult = function (resultCode, resultDesc, resultObj) {
     return {
         resultCode: resultCode,

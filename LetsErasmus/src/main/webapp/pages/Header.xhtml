@@ -13,6 +13,7 @@
 			src="#{webApplication.urlPrefix}/static/images/optimized_logo.png"></img>
 		</a> <nav id="n-l-nav" class="nav-top--right-wrapper"> <nav
 			class="nav-top--right">
+		<div style="display:none"><div id="gSignIn"></div></div>	
 		<div class="nav-top--right">
 			<ui:fragment
 				rendered="#{webApplication.getSessionAttribute('user') != null}">
@@ -21,7 +22,8 @@
 						class="nav-top--right--link nav-top--right--link__dropdown">
 						<div class="nav-top--avatar" title="Go to your dashboard">
 							<div class="avatar--img"
-								style="background-size: cover; width: 100%; height: 100%; background-image: url(https://housinganywhere.com/images/hauser/165406/e8cd29cc-dd47-11e6-a2ea-42010af00004.jpg);">
+								style="background-size: cover; width: 100%; height: 100%; 
+								background-image: url(#{webApplication.userProfilePhotoUrl});">
 							</div>
 						</div>
 						<div class="nav-top--username">#{webApplication.user.fullName}</div>

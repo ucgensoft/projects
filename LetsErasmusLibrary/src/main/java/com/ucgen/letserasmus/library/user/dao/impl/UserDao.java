@@ -20,9 +20,11 @@ import com.ucgen.letserasmus.library.user.model.User;
 @Repository
 public class UserDao extends JdbcDaoSupport implements IUserDao {
 
-	private static final String GET_USER_SQL = " SELECT * FROM `USER` WHERE 1 = 1 ";
-	private static final String INSERT_USER_SQL = " INSERT INTO `USER`(`EMAIL`, `PASSWORD`, `MSISDN`, `FIRST_NAME`, `LAST_NAME`, `STATUS`, `EMAIL_VERIFIED`, `MSISDN_VERIFIED`, `USER_ACTIVATION_KEY_EMAIL`, `USER_ACTIVATION_KEY_MSISDN`, `FILE_ID`, `FACEBOOK_TOKEN_ID`, `IP`, `CREATED_BY`, `CREATED_DATE`, `CREATED_DATE_GMT`, `MODIFIED_BY`, `MODIFIED_DATE`, `MODIFIED_DATE_GMT`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
-	private static final String UPDATE_USER_SQL = " UPDATE `USER` SET `EMAIL`=?,`PASSWORD`=?,`MSISDN`=?,`FIRST_NAME`=?,`LAST_NAME`=?,`STATUS`=?,`EMAIL_VERIFIED`=?,`MSISDN_VERIFIED`=?,`USER_ACTIVATION_KEY_EMAIL`=?,`USER_ACTIVATION_KEY_MSISDN`=?,`FILE_ID`=?,`FACEBOOK_TOKEN_ID`=?,`IP`=?,`CREATED_BY`=?,`CREATED_DATE`=?,`CREATED_DATE_GMT`=?,`MODIFIED_BY`=?,`MODIFIED_DATE`=?,`MODIFIED_DATE_GMT`=? WHERE `ID` = ? ";
+	private static final String GET_USER_SQL = " SELECT * FROM USER WHERE 1 = 1 ";
+	
+	private static final String INSERT_USER_SQL = " INSERT INTO USER(EMAIL, PASSWORD, MSISDN, FIRST_NAME, LAST_NAME, GENDER,  STATUS, EMAIL_VERIFIED, MSISDN_VERIFIED, USER_ACTIVATION_KEY_EMAIL, USER_ACTIVATION_KEY_MSISDN, PROFILE_PHOTO_ID, FACEBOOK_TOKEN_ID, IP, CREATED_BY, CREATED_DATE, CREATED_DATE_GMT, MODIFIED_BY, MODIFIED_DATE, MODIFIED_DATE_GMT, GOOGLE_ID) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?, ?) ";
+	
+	private static final String UPDATE_USER_SQL = " UPDATE USER SET EMAIL=?,PASSWORD=?,MSISDN=?,FIRST_NAME=?,LAST_NAME=?,GENDER=?,STATUS=?,EMAIL_VERIFIED=?,MSISDN_VERIFIED=?,USER_ACTIVATION_KEY_EMAIL=?,USER_ACTIVATION_KEY_MSISDN=?,PROFILE_PHOTO_ID=?,FACEBOOK_TOKEN_ID=?,IP=?,CREATED_BY=?,CREATED_DATE=?,CREATED_DATE_GMT=?,MODIFIED_BY=?,MODIFIED_DATE=?,MODIFIED_DATE_GMT=? WHERE ID = ? ";
 	
 	private UtilityDao utilityDao;
 	
@@ -57,6 +59,11 @@ public class UserDao extends JdbcDaoSupport implements IUserDao {
 			argList.add(user.getPassword());
 		}
 		
+		if (user.getGoogleId() != null) {
+			sqlBuilder.append(" AND GOOGLE_ID = ?");
+			argList.add(user.getGoogleId());
+		}
+		
 		List<User> userList = super.getJdbcTemplate().query(sqlBuilder.toString(), argList.toArray(), new UserRowMapper());		
 		
 		if (userList != null && userList.size() > 0) {
@@ -75,12 +82,13 @@ public class UserDao extends JdbcDaoSupport implements IUserDao {
 		argList.add(user.getMsisdn());
 		argList.add(user.getFirstName());
 		argList.add(user.getLastName());
+		argList.add(user.getGender());
 		argList.add(user.getStatus());
 		argList.add(user.getEmailVerified());
 		argList.add(user.getMsisdnVerified());
 		argList.add(user.getUserActivationKeyEmail());
 		argList.add(user.getUserActivationKeyMsisdn());		
-		argList.add(user.getFileId());
+		argList.add(user.getProfilePhotoId());
 		argList.add(user.getFacebookTokenId());
 		argList.add(user.getIp());
 		argList.add(user.getCreatedBy());
@@ -110,12 +118,13 @@ public class UserDao extends JdbcDaoSupport implements IUserDao {
 		argList.add(user.getMsisdn());
 		argList.add(user.getFirstName());
 		argList.add(user.getLastName());
+		argList.add(user.getGender());
 		argList.add(user.getStatus());
 		argList.add(user.getEmailVerified());
 		argList.add(user.getMsisdnVerified());
 		argList.add(user.getUserActivationKeyEmail());
 		argList.add(user.getUserActivationKeyMsisdn());		
-		argList.add(user.getFileId());
+		argList.add(user.getProfilePhotoId());
 		argList.add(user.getFacebookTokenId());
 		argList.add(user.getIp());
 		argList.add(user.getCreatedBy());
@@ -124,7 +133,7 @@ public class UserDao extends JdbcDaoSupport implements IUserDao {
 		argList.add(user.getModifiedBy());
 		argList.add(user.getModifiedDate());
 		argList.add(user.getModifiedDateGmt());
-		
+		argList.add(user.getGoogleId());
 		
 		int i = this.getJdbcTemplate().update(INSERT_USER_SQL, argList.toArray());
 		

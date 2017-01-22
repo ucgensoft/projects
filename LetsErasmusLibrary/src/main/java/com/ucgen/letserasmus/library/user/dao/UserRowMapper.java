@@ -15,12 +15,13 @@ public class UserRowMapper extends BaseRowMapper<User> {
 	public static final String COL_MSISDN = "MSISDN";
 	public static final String COL_FIRST_NAME = "FIRST_NAME";
 	public static final String COL_LAST_NAME = "LAST_NAME";
+	public static final String COL_GENDER = "GENDER";
 	public static final String COL_STATUS = "STATUS";	
 	public static final String COL_EMAIL_VERIFIED = "EMAIL_VERIFIED";
 	public static final String COL_MSISDN_VERIFIED = "MSISDN_VERIFIED";
 	public static final String COL_USER_ACTIVATION_KEY_EMAIL = "USER_ACTIVATION_KEY_EMAIL";
 	public static final String COL_USER_ACTIVATION_KEY_MSISDN = "USER_ACTIVATION_KEY_MSISDN";
-	public static final String COL_FILE_ID = "USER_FILE_ID";
+	public static final String COL_PROFILE_PHOTO_ID = "PROFILE_PHOTO_ID";
 	public static final String COL_FACEBOOK_TOKEN_ID = "FACEBOOK_TOKEN_ID";
 	public static final String COL_IP = "IP";	
 	public static final String COL_CREATED_BY = "CREATED_BY";
@@ -29,6 +30,7 @@ public class UserRowMapper extends BaseRowMapper<User> {
 	public static final String COL_MODIFIED_BY = "MODIFIED_BY";
 	public static final String COL_MODIFIED_DATE = "MODIFIED_DATE";
 	public static final String COL_MODIFIED_DATE_GMT = "MODIFIED_DATE_GMT";
+	public static final String COL_GOOGLE_ID = "GOOGLE_ID";
 
 
 	@Override
@@ -40,12 +42,13 @@ public class UserRowMapper extends BaseRowMapper<User> {
 		user.setMsisdn(super.getString(rs, COL_MSISDN));
 		user.setFirstName(super.getString(rs, COL_FIRST_NAME));
 		user.setLastName(super.getString(rs, COL_LAST_NAME));
+		user.setGender(super.getString(rs, COL_GENDER));
 		user.setStatus(super.getInteger(rs, COL_STATUS));
-		user.setEmailVerified(super.getInteger(rs, COL_EMAIL_VERIFIED));
-		user.setMsisdnVerified(super.getInteger(rs, COL_MSISDN_VERIFIED));
+		user.setEmailVerified(super.getString(rs, COL_EMAIL_VERIFIED));
+		user.setMsisdnVerified(super.getString(rs, COL_MSISDN_VERIFIED));
 		user.setUserActivationKeyEmail(super.getString(rs, COL_USER_ACTIVATION_KEY_EMAIL));
 		user.setUserActivationKeyMsisdn(super.getString(rs, COL_USER_ACTIVATION_KEY_MSISDN));
-		user.setFileId(super.getLong(rs, COL_FILE_ID));
+		user.setProfilePhotoId(super.getLong(rs, COL_PROFILE_PHOTO_ID));
 		user.setFacebookTokenId(super.getString(rs, COL_FACEBOOK_TOKEN_ID));
 		user.setIp(super.getString(rs, COL_IP));
 		user.setCreatedBy(super.getString(rs, COL_CREATED_BY));		
@@ -54,6 +57,7 @@ public class UserRowMapper extends BaseRowMapper<User> {
 		user.setModifiedBy(super.getString(rs, COL_MODIFIED_BY));
 		user.setModifiedDate(super.getTimestamp(rs, COL_MODIFIED_DATE));
 		user.setModifiedDateGmt(super.getTimestamp(rs, COL_MODIFIED_DATE_GMT));		
+		user.setGoogleId(super.getString(rs, COL_GOOGLE_ID));
 		return user;
 	}
 
@@ -78,7 +82,7 @@ public class UserRowMapper extends BaseRowMapper<User> {
 		super.addColumn(COL_EMAIL);
 		super.addColumn(COL_EMAIL_VERIFIED);
 		super.addColumn(COL_FACEBOOK_TOKEN_ID);
-		super.addColumn(COL_FILE_ID);
+		super.addColumn(COL_PROFILE_PHOTO_ID);
 		super.addColumn(COL_FIRST_NAME);
 		super.addColumn(COL_IP);
 		super.addColumn(COL_LAST_NAME);
@@ -91,6 +95,7 @@ public class UserRowMapper extends BaseRowMapper<User> {
 		super.addColumn(COL_STATUS);
 		super.addColumn(COL_USER_ACTIVATION_KEY_EMAIL);
 		super.addColumn(COL_USER_ACTIVATION_KEY_MSISDN);
+		super.addColumn(COL_GENDER);
 	}
 
 }
