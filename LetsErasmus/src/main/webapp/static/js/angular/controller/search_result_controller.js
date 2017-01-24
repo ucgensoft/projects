@@ -207,11 +207,51 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
 		  }
 	  };
 	  
+	  self.changePhoto = function(place, step) {
+		  if (place.photoList != null) {
+			  self.applyPhotoChange(place, step);
+		  } else {
+			  self.listPhoto(place.id, function(photoList) {
+				  place.photoList = photoList;
+				  self.applyPhotoChange(place, step);
+			  });
+		  }
+      };
+      
+      self.applyPhotoChange = function(place, step) {
+    	  var currentPhotoIndex = $('#hiddenPlaceSliderPhotoIndex_' + place.id).val();
+    	  if (currentPhotoIndex != "") {
+    		  var intCurrentIndex = parseInt(currentPhotoIndex) + step;
+    		  if (intCurrentIndex == place.photoList.length) {
+    			  intCurrentIndex = 0;
+    		  } else if (intCurrentIndex < 0) {
+    			  intCurrentIndex = (place.photoList.length - 1);
+    		  }
+    		  $('#hiddenPlaceSliderPhotoIndex_' + place.id).val(intCurrentIndex);
+    		  
+        	  var currentPhoto = place.photoList[intCurrentIndex];
+        	  var photoName = currentPhoto.id + "_large." + currentPhoto.fileSuffix;;
+      		  var photoUrl = webApplicationUrlPrefix + "/place/images/" + place.id + "/" + photoName;
+      		  $("#imgPlaceSlider_" + place.id).attr('src', photoUrl);
+    	  }
+      }
+	  
 	  self.listPlace = function(fn) {
     	  placeService.listPlace()
               .then(function(operationResult) {
             	  		originalPlaceList = operationResult.objectList;
             	  		self.setPlaceList(operationResult.objectList)
+              		},
+					function(errResponse){
+						console.error('Error while fetching Portfolio');
+					}
+  			      );
+      };
+      
+      self.listPhoto = function(placeId, fn) {
+    	  placeService.listPhoto(placeId)
+              .then(function(operationResult) {
+            	  		fn(operationResult.objectList)
               		},
 					function(errResponse){
 						console.error('Error while fetching Portfolio');

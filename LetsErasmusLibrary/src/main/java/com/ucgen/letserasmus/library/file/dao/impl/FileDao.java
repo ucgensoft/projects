@@ -67,6 +67,8 @@ public class FileDao extends JdbcDaoSupport implements IFileDao {
 			argList.add(file.getId());
 		}
 		
+		sqlBuilder.append(" ORDER BY ID");
+		
 		List<File> fileList = super.getJdbcTemplate().query(sqlBuilder.toString(), argList.toArray(), new FileRowMapper());		
 		
 		listOperationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
