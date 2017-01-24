@@ -77,7 +77,7 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
       	    	self.setPriceRange(ui.values[0], ui.values[1]);
       	      }
       	    });
-      	  $(".ui-slider-range").css("background-color", "rgb(255, 133, 79)");
+      	  $(".ui-slider-range").css("background-color", "rgb(3, 169, 244)");
       };
       
       self.setPriceRange = function (selectedMinPrice, selectedMaxPrice) {
