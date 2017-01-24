@@ -807,7 +807,7 @@ p {
 
 .FilterToolBar-apply, .FilterToolBar-cancel, .FilterToolBar-showExtended
 	{
-	font-size: .75rem;
+	font-size: 1rem;
 	margin-right: 1em;
 	margin-bottom: .3em
 }
@@ -1818,7 +1818,7 @@ p {
 	position: relative;
 	text-align: left;
 	line-height: normal;
-	font-size: .875rem
+	font-size: 1rem
 }
 
 .SearchPlaceBox-container {
