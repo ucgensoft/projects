@@ -251,7 +251,7 @@ html {
 
 body {
 	font-family: Circular, "Helvetica Neue", Helvetica, Arial, sans-serif;
-	font-size: 14px;
+	/*font-size: 14px;*/
 	line-height: 1.43;
 	color: #484848;
 	background-color: #fff;
@@ -274,7 +274,7 @@ a {
 
 a:hover, a:focus {
 	color: #008489;
-	text-decoration: underline
+	text-decoration: none
 }
 
 img {
