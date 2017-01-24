@@ -133,7 +133,7 @@ input, textarea, .input-prefix, .input-suffix {
 }
 
 .nav-top--form--input:focus, .nav-top--language:focus {
-	border-color: #00af9e;
+	border-color: #0275a8;
 	outline: none;
 }
 
@@ -245,11 +245,11 @@ input, textarea, .input-prefix, .input-suffix {
 }
 
 .has-success .nav-top--form--input, .has-success .nav-top--language {
-	border-color: #00af9e;
+	border-color: #0275a8;
 }
 
 .has-warning .nav-top--form--input, .has-warning .nav-top--language {
-	border-color: #ff8127;
+	border-color: #03a9f4;
 }
 
 .has-error .nav-top--form--input, .has-error .nav-top--language {
@@ -343,8 +343,8 @@ input, textarea, .input-prefix, .input-suffix {
 .open>.aircall-button.nav-top--list-room-btn, .open>.btn-brand.nav-top--list-room-btn
 	{
 	color: #fff;
-	background-color: #f36500;
-	border-color: #e96100;
+	background-color: #0275a8;
+	border-color: #0275a8;
 }
 
 .open>.aircall-button.nav-top--list-room-btn, .open>.btn-brand.nav-top--list-room-btn
@@ -394,8 +394,8 @@ input, textarea, .input-prefix, .input-suffix {
 	fieldset[disabled] .focus.nav-top--list-room-btn, 
 	fieldset[disabled] .nav-top--list-room-btn:focus, fieldset[disabled] .nav-top--list-room-btn:hover
 	{
-	background-color: #00af9e;
-	border-color: #00af9e;
+	background-color: #0275a8;
+	border-color: #0275a8;
 }
 
 .open>.btn-white.nav-top--list-room-btn {
@@ -419,7 +419,7 @@ input, textarea, .input-prefix, .input-suffix {
 }
 
 .open>.btn-white-orange.nav-top--list-room-btn {
-	color: #ff8127;
+	color: #03a9f4;
 	background-color: #e6e6e6;
 	border-color: #e0e0e0;
 }
@@ -430,7 +430,7 @@ input, textarea, .input-prefix, .input-suffix {
 
 .open>.btn-white-green.nav-top--list-room-btn, .open>.btn-white-mint.nav-top--list-room-btn
 	{
-	color: #00af9e;
+	color: #0275a8;
 	background-color: #e6e6e6;
 	border-color: #e0e0e0;
 }
@@ -510,7 +510,7 @@ input, textarea, .input-prefix, .input-suffix {
 .open>.btn-mint-outline.nav-top--list-room-btn {
 	color: #fff;
 	background-color: #00c9b5;
-	border-color: #00af9e;
+	border-color: #0275a8;
 }
 
 .btn-loading.nav-top--list-room-btn {
@@ -876,7 +876,7 @@ body.body--has-sidebar .nav-top {
 
 .nav-top--right--link.active, .nav-top--right--link:active,
 	.nav-top--right--link:focus, .nav-top--right--link:hover {
-	border-bottom: 3px solid #00af9e;
+	border-bottom: 3px solid #0275a8;
 }
 
 .nav-top--alert-count {
@@ -891,7 +891,7 @@ body.body--has-sidebar .nav-top {
 	font-weight: 600;
 	line-height: 1rem;
 	text-align: center;
-	background-color: #ff8127;
+	background-color: #03a9f4;
 	border-radius: .5rem;
 }
 
@@ -958,7 +958,7 @@ body.body--has-sidebar .nav-top {
 }
 
 .dropdown--block:hover ~.nav-top--right--link__dropdown {
-	border-bottom: 3px solid #00af9e;
+	border-bottom: 3px solid #0275a8;
 }
 
 @media ( max-width :47.9em) {
@@ -985,6 +985,7 @@ a , a:focus, a:hover {
 }
 
 a {
+	color: #008489;
 	background-color: transparent;
 	cursor: pointer;
 }
@@ -1187,13 +1188,13 @@ a {
 .contact-us--social-icons .fa.active, .contact-us--social-icons .fa:active,
 	.contact-us--social-icons .fa:focus, .contact-us--social-icons .fa:hover
 	{
-	color: #00af9e
+	color: #0275a8
 }
 
 .contact-us--social-icons .fa.active, .contact-us--social-icons .fa:active,
 	.contact-us--social-icons .fa:focus, .contact-us--social-icons .fa:hover
 	{
-	color: #00af9e
+	color: #0275a8
 }
 
 .fa-facebook-square:before {
@@ -1482,16 +1483,16 @@ separator-vertical span.back-grey,.separator span.back-grey{
 
 .btn-brand {
 	color: #fff;
-	background-color: #ff8127;
-	border-color: #ff8127
+	background-color: #03a9f4;
+	border-color: #03a9f4
 }
 
 
 .btn-brand.active, .btn-brand.focus, .btn-brand:active,
 	.btn-brand:focus, .btn-brand:hover,.open>.btn-brand.dropdown-toggle{
 	color: #fff;
-	background-color: #f36500;
-	border-color: #e96100
+	background-color: #0275a8;
+	border-color: #0275a8
 }
 
  .btn-brand.active,
@@ -1504,8 +1505,8 @@ separator-vertical span.back-grey,.separator span.back-grey{
 	.btn-brand.disabled:hover, .btn-brand:disabled.focus, .btn-brand:disabled:focus,
 	.btn-brand:disabled:hover,fieldset[disabled] .btn-brand.focus,
 	fieldset[disabled] .btn-brand:focus, fieldset[disabled] .btn-brand:hover{
-	background-color: #ff8127;
-	border-color: #ff8127
+	background-color: #03a9f4;
+	border-color: #03a9f4
 }
 	
 .btn-loading.btn-brand{
@@ -1558,6 +1559,25 @@ form.horizontalForm .form-group input[type=date], form.horizontalForm .form-grou
 	top: 0
 }
 
+.text-center {
+	text-align: center
+}
+
+.form-control{
+	display: block;
+	width: 100%;
+	padding: .375rem .75rem;
+	font-size: 1rem;
+	line-height: 1.5;
+	color: #515e6d;
+	background-color: #fff;
+	background-image: none;
+	border: 1px solid #c9d7df;
+	border-radius: .2rem;
+	-webkit-transition: border-color .15s ease-in-out;
+	transition: border-color .15s ease-in-out
+}
+
 .sr-only {
 	position: absolute;
 	width: 1px;
@@ -1591,12 +1611,12 @@ form.horizontalForm .form-group input[type=date], form.horizontalForm .form-grou
  
  
 .has-success .help-block {
-	color: #00af9e
+	color: #0275a8
 }
 
 
 .has-warning .help-block {
-	color: #ff8127
+	color: #03a9f4
 }
 
 .has-error .help-block{
