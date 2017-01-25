@@ -32,13 +32,13 @@
 
 		<div class="form-group">
 			<label class="sr-only" for="email">E-mail address</label> 
-			 <input type="text" id="txtEmail" 
+			 <input type="email" id="txtEmail" class="form-control"
 			 	placeholder='E-mail address' required="required" />
 		</div>
 
 		<div class="form-group" kemal="test">
 			<label class="sr-only" for="password">Password</label>
-			<input type="password" id="txtPassword" 
+			<input type="password" class="form-control"  id="txtPassword" 
 				placeholder='Password' required="required" />
 			<p class="text-right small">
 				<a href="/recover-account" data-event="Clicked Forgot password"
@@ -46,7 +46,8 @@
 			</p>
 		</div>
 		<input type="button" id="btnLogin" value=" Login and continue " 
-			onclick="login()" />
+			onclick="login()" class="btn-brand btn-block"/>
+						
 		<p class="text-center center-block m-y-1">
 			Don't have an account? 
 			<a onclick="openSignUpWindow()" href="#" class="SignUpLink">Sign up</a>

@@ -1,10 +1,10 @@
 body, #mainWrapper {
-	height: 70%;
+	height: 100%;
 }
 
-body, .form-control{
+/*body,.form-control{
 	font-size:12px!important;
-}
+}*/
 
 .floatRight{
 	float:right;

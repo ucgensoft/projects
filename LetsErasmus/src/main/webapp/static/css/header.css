@@ -1,3 +1,73 @@
+@font-face {
+	font-family: Circular;
+	src:
+		url("https://a0.muscache.com/airbnb/static/airbnb-o2/fonts/Circular_Air-Book-1601bfce1c9652eb33ea807d817a30dd.eot");
+	src:
+		url("https://a0.muscache.com/airbnb/static/airbnb-o2/fonts/Circular_Air-Book-1601bfce1c9652eb33ea807d817a30dd.eot?#")
+		format("eot"),
+		url("https://a0.muscache.com/airbnb/static/airbnb-o2/fonts/Circular_Air-Book-f016908d84431f0566776240dc8652fc.woff2")
+		format("woff2"),
+		url("https://a2.muscache.com/airbnb/static/airbnb-o2/fonts/Circular_Air-Book-a81fe8415c30ad3049cfb08d3623587d.woff")
+		format("woff"),
+		url("https://a2.muscache.com/airbnb/static/airbnb-o2/fonts/Circular_Air-Book-43e1d462e585f16e90b5d27423fc5d8b.svg")
+		format("svg");
+	font-weight: normal;
+	font-style: normal
+}
+
+@font-face {
+	font-family: Circular;
+	src:
+		url("https://a0.muscache.com/airbnb/static/airbnb-o2/fonts/Circular_Air-Book_Italic-35e1cf57d93dc4eb3db11cc2448cb91f.eot");
+	src:
+		url("https://a0.muscache.com/airbnb/static/airbnb-o2/fonts/Circular_Air-Book_Italic-35e1cf57d93dc4eb3db11cc2448cb91f.eot?#")
+		format("eot"),
+		url("https://a2.muscache.com/airbnb/static/airbnb-o2/fonts/Circular_Air-Book_Italic-4909b413294f9048153d6dee23438b24.woff2")
+		format("woff2"),
+		url("https://a1.muscache.com/airbnb/static/airbnb-o2/fonts/Circular_Air-Book_Italic-1db902f5b85bbb0964e2994434edbe16.woff")
+		format("woff"),
+		url("https://a0.muscache.com/airbnb/static/airbnb-o2/fonts/Circular_Air-Book_Italic-0d9eb203b260869dc2470ae35162fc1e.svg")
+		format("svg");
+	font-weight: normal;
+	font-style: italic
+}
+
+
+@font-face {
+	font-family: Circular;
+	src:
+		url("https://a2.muscache.com/airbnb/static/airbnb-o2/fonts/Circular_Air-Bold-44d43ca7b4c3bf5364285df6282fbe52.eot");
+	src:
+		url("https://a2.muscache.com/airbnb/static/airbnb-o2/fonts/Circular_Air-Bold-44d43ca7b4c3bf5364285df6282fbe52.eot?#")
+		format("eot"),
+		url("https://a1.muscache.com/airbnb/static/airbnb-o2/fonts/Circular_Air-Bold-c6b068854263ae24ccc36a2b944d7017.woff2")
+		format("woff2"),
+		url("https://a0.muscache.com/airbnb/static/airbnb-o2/fonts/Circular_Air-Bold-0dba9a8cc666f696e92eff76a5d753f1.woff")
+		format("woff"),
+		url("https://a2.muscache.com/airbnb/static/airbnb-o2/fonts/Circular_Air-Bold-9ae13155a0bad6697556e3713a89795b.svg")
+		format("svg");
+	font-weight: 700;
+	font-style: normal
+}
+
+@font-face {
+	font-family: Circular;
+	src:
+		url("https://a0.muscache.com/airbnb/static/airbnb-o2/fonts/Circular_Air-Light-c4695b2827a2478e391c155781777f66.eot");
+	src:
+		url("https://a0.muscache.com/airbnb/static/airbnb-o2/fonts/Circular_Air-Light-c4695b2827a2478e391c155781777f66.eot?#")
+		format("eot"),
+		url("https://a0.muscache.com/airbnb/static/airbnb-o2/fonts/Circular_Air-Light-328fc4c742a91de3477978911e384410.woff2")
+		format("woff2"),
+		url("https://a1.muscache.com/airbnb/static/airbnb-o2/fonts/Circular_Air-Light-f76c67e53b97895a8f31fc8f0246ab7f.woff")
+		format("woff"),
+		url("https://a2.muscache.com/airbnb/static/airbnb-o2/fonts/Circular_Air-Light-d1ee89419dc527be163d0151af5b087e.svg")
+		format("svg");
+	font-weight: 200;
+	font-style: normal
+}
+
+
 #imgSiteIcon {
 	margin-left: 10px;
 	width: 161px;
@@ -31,10 +101,15 @@ body {
 }
 
 body {
+	font-family: Circular, "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size: 1rem;
 	line-height: 1.5;
 	color: #515e6d;
 	background-color: #fff;
+}
+
+input, textarea, .input-prefix, .input-suffix {
+	font-family: Circular, "Helvetica Neue", Helvetica, Arial, sans-serif
 }
 
 .uppercase {
@@ -58,7 +133,7 @@ body {
 }
 
 .nav-top--form--input:focus, .nav-top--language:focus {
-	border-color: #00af9e;
+	border-color: #0275a8;
 	outline: none;
 }
 
@@ -170,11 +245,11 @@ body {
 }
 
 .has-success .nav-top--form--input, .has-success .nav-top--language {
-	border-color: #00af9e;
+	border-color: #0275a8;
 }
 
 .has-warning .nav-top--form--input, .has-warning .nav-top--language {
-	border-color: #ff8127;
+	border-color: #03a9f4;
 }
 
 .has-error .nav-top--form--input, .has-error .nav-top--language {
@@ -268,8 +343,8 @@ body {
 .open>.aircall-button.nav-top--list-room-btn, .open>.btn-brand.nav-top--list-room-btn
 	{
 	color: #fff;
-	background-color: #f36500;
-	border-color: #e96100;
+	background-color: #0275a8;
+	border-color: #0275a8;
 }
 
 .open>.aircall-button.nav-top--list-room-btn, .open>.btn-brand.nav-top--list-room-btn
@@ -319,8 +394,8 @@ body {
 	fieldset[disabled] .focus.nav-top--list-room-btn, 
 	fieldset[disabled] .nav-top--list-room-btn:focus, fieldset[disabled] .nav-top--list-room-btn:hover
 	{
-	background-color: #00af9e;
-	border-color: #00af9e;
+	background-color: #0275a8;
+	border-color: #0275a8;
 }
 
 .open>.btn-white.nav-top--list-room-btn {
@@ -344,7 +419,7 @@ body {
 }
 
 .open>.btn-white-orange.nav-top--list-room-btn {
-	color: #ff8127;
+	color: #03a9f4;
 	background-color: #e6e6e6;
 	border-color: #e0e0e0;
 }
@@ -355,7 +430,7 @@ body {
 
 .open>.btn-white-green.nav-top--list-room-btn, .open>.btn-white-mint.nav-top--list-room-btn
 	{
-	color: #00af9e;
+	color: #0275a8;
 	background-color: #e6e6e6;
 	border-color: #e0e0e0;
 }
@@ -435,7 +510,7 @@ body {
 .open>.btn-mint-outline.nav-top--list-room-btn {
 	color: #fff;
 	background-color: #00c9b5;
-	border-color: #00af9e;
+	border-color: #0275a8;
 }
 
 .btn-loading.nav-top--list-room-btn {
@@ -801,7 +876,7 @@ body.body--has-sidebar .nav-top {
 
 .nav-top--right--link.active, .nav-top--right--link:active,
 	.nav-top--right--link:focus, .nav-top--right--link:hover {
-	border-bottom: 3px solid #00af9e;
+	border-bottom: 3px solid #0275a8;
 }
 
 .nav-top--alert-count {
@@ -816,7 +891,7 @@ body.body--has-sidebar .nav-top {
 	font-weight: 600;
 	line-height: 1rem;
 	text-align: center;
-	background-color: #ff8127;
+	background-color: #03a9f4;
 	border-radius: .5rem;
 }
 
@@ -883,7 +958,7 @@ body.body--has-sidebar .nav-top {
 }
 
 .dropdown--block:hover ~.nav-top--right--link__dropdown {
-	border-bottom: 3px solid #00af9e;
+	border-bottom: 3px solid #0275a8;
 }
 
 @media ( max-width :47.9em) {
@@ -910,6 +985,7 @@ a , a:focus, a:hover {
 }
 
 a {
+	color: #008489;
 	background-color: transparent;
 	cursor: pointer;
 }
@@ -1112,13 +1188,13 @@ a {
 .contact-us--social-icons .fa.active, .contact-us--social-icons .fa:active,
 	.contact-us--social-icons .fa:focus, .contact-us--social-icons .fa:hover
 	{
-	color: #00af9e
+	color: #0275a8
 }
 
 .contact-us--social-icons .fa.active, .contact-us--social-icons .fa:active,
 	.contact-us--social-icons .fa:focus, .contact-us--social-icons .fa:hover
 	{
-	color: #00af9e
+	color: #0275a8
 }
 
 .fa-facebook-square:before {
@@ -1407,16 +1483,16 @@ separator-vertical span.back-grey,.separator span.back-grey{
 
 .btn-brand {
 	color: #fff;
-	background-color: #ff8127;
-	border-color: #ff8127
+	background-color: #03a9f4;
+	border-color: #03a9f4
 }
 
 
 .btn-brand.active, .btn-brand.focus, .btn-brand:active,
 	.btn-brand:focus, .btn-brand:hover,.open>.btn-brand.dropdown-toggle{
 	color: #fff;
-	background-color: #f36500;
-	border-color: #e96100
+	background-color: #0275a8;
+	border-color: #0275a8
 }
 
  .btn-brand.active,
@@ -1429,8 +1505,8 @@ separator-vertical span.back-grey,.separator span.back-grey{
 	.btn-brand.disabled:hover, .btn-brand:disabled.focus, .btn-brand:disabled:focus,
 	.btn-brand:disabled:hover,fieldset[disabled] .btn-brand.focus,
 	fieldset[disabled] .btn-brand:focus, fieldset[disabled] .btn-brand:hover{
-	background-color: #ff8127;
-	border-color: #ff8127
+	background-color: #03a9f4;
+	border-color: #03a9f4
 }
 	
 .btn-loading.btn-brand{
@@ -1483,6 +1559,25 @@ form.horizontalForm .form-group input[type=date], form.horizontalForm .form-grou
 	top: 0
 }
 
+.text-center {
+	text-align: center
+}
+
+.form-control{
+	display: block;
+	width: 100%;
+	padding: .375rem .75rem;
+	font-size: 1rem;
+	line-height: 1.5;
+	color: #515e6d;
+	background-color: #fff;
+	background-image: none;
+	border: 1px solid #c9d7df;
+	border-radius: .2rem;
+	-webkit-transition: border-color .15s ease-in-out;
+	transition: border-color .15s ease-in-out
+}
+
 .sr-only {
 	position: absolute;
 	width: 1px;
@@ -1516,12 +1611,12 @@ form.horizontalForm .form-group input[type=date], form.horizontalForm .form-grou
  
  
 .has-success .help-block {
-	color: #00af9e
+	color: #0275a8
 }
 
 
 .has-warning .help-block {
-	color: #ff8127
+	color: #03a9f4
 }
 
 .has-error .help-block{

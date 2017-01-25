@@ -251,7 +251,7 @@ html {
 
 body {
 	font-family: Circular, "Helvetica Neue", Helvetica, Arial, sans-serif;
-	font-size: 14px;
+	/*font-size: 14px;*/
 	line-height: 1.43;
 	color: #484848;
 	background-color: #fff;
@@ -274,7 +274,7 @@ a {
 
 a:hover, a:focus {
 	color: #008489;
-	text-decoration: underline
+	text-decoration: none
 }
 
 img {
@@ -3264,7 +3264,7 @@ input:-ms--placeholder, textarea:-ms--placeholder, .input-prefix:-ms--placeholde
 	border-color: #484848
 }
 
-.invalid[type="text"], .invalid[type="password"], .invalid[type="search"],
+/*.invalid[type="text"], .invalid[type="password"], .invalid[type="search"],
 	.invalid[type="email"], .invalid[type="url"], .invalid[type="number"],
 	.invalid[type="tel"], textarea.invalid, select.invalid, input.invalid[type="radio"],
 	input.invalid[type="checkbox"], [type="text"]:invalid, [type="password"]:invalid,
@@ -3274,6 +3274,7 @@ input:-ms--placeholder, textarea:-ms--placeholder, .input-prefix:-ms--placeholde
 	border-color: #ffb400;
 	background-color: #fff8e5
 }
+*/
 
 .valid[type="text"], .valid[type="password"], .valid[type="search"],
 	.valid[type="email"], .valid[type="url"], .valid[type="number"], .valid[type="tel"],

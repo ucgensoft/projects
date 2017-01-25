@@ -96,7 +96,7 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', funct
       };
       
       self.loginWithFacebook = function() {
-    		FB.getLoginStatus(self.facebookLoginCallback);
+    	  FB.login(self.facebookLoginCallback, {scope: 'public_profile, email'});
     	}
 
       self.facebookLoginCallback = function(response) {
