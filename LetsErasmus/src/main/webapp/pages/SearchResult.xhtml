@@ -295,18 +295,20 @@
 												class="image-gallery-content">
 												<span class="image-gallery-left-nav hideNav"></span><span
 													class="image-gallery-right-nav hideNav"></span>
-												<div data-reactid="544">
-													<div class="image-gallery-slides">
-														<div class="image-gallery-slide center"
-															style="">
-															<img id="imgPlaceSlider_{{p.id}}" src="#{webApplication.rootPlaceImagePath}/{{p.id}}/{{p.coverPhoto.id}}_small.{{p.coverPhoto.fileSuffix}}" 
-																role="presentation" itemprop="image" />
-															<input type="hidden" id="hiddenPlaceSliderPhotoIndex_{{p.id}}" value="0" />
-															<span ng-click="ctrl.changePhoto(p, -1)" class="jssora02l" style="top:45%;left:8px;"></span>
-			       											<span ng-click="ctrl.changePhoto(p, 1)" class="jssora02r" style="top:45%;right:8px;"></span>
+												<a href="#{webApplication.urlPrefix}/pages/PlaceDetail.xhtml?placeId={{p.id}}" target="_blank">
+													<div>
+														<div class="image-gallery-slides">
+															<div class="image-gallery-slide center"
+																style="">
+																<img id="imgPlaceSlider_{{p.id}}" src="#{webApplication.rootPlaceImagePath}/{{p.id}}/{{p.coverPhoto.id}}_small.{{p.coverPhoto.fileSuffix}}" 
+																	role="presentation" itemprop="image" />
+																<input type="hidden" id="hiddenPlaceSliderPhotoIndex_{{p.id}}" value="0" />
+																<span ng-click="ctrl.changePhoto(p, -1)" class="jssora02l" style="top:45%;left:8px;"></span>
+				       											<span ng-click="ctrl.changePhoto(p, 1)" class="jssora02r" style="top:45%;right:8px;"></span>
+															</div>
 														</div>
 													</div>
-												</div>
+												</a>
 												<div class="ProductCardMainProperties">
 													<div class="ProductCardMainProperties-type">
 														<icon class="ProductCardMainProperties-type-icon center beicon-complete-apartment">
