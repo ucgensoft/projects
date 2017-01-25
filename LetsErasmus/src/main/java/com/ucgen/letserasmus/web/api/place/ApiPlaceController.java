@@ -30,6 +30,7 @@ import com.ucgen.common.util.ImageUtil;
 import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
 import com.ucgen.letserasmus.library.file.enumeration.EnmFileType;
 import com.ucgen.letserasmus.library.file.model.Photo;
+import com.ucgen.letserasmus.library.file.service.IFileService;
 import com.ucgen.letserasmus.library.location.model.Location;
 import com.ucgen.letserasmus.library.place.enumeration.EnmPlaceStatus;
 import com.ucgen.letserasmus.library.place.model.Place;
@@ -42,9 +43,16 @@ public class ApiPlaceController extends BaseApiController {
 
 	private IPlaceService placeService;
 	
+	private IFileService fileService;
+	
 	@Autowired
 	public void setPlaceService(IPlaceService placeService) {
 		this.placeService = placeService;
+	}
+	
+	@Autowired
+	public void setFileService(IFileService fileService) {
+		this.fileService = fileService;
 	}
 	
 	@RequestMapping(value = "/api/place/create", method = RequestMethod.POST)
@@ -212,6 +220,24 @@ public class ApiPlaceController extends BaseApiController {
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<ListOperationResult<Place>>(listResult, httpStatus);
+    }
+	
+	@RequestMapping(value = "/api/place/listphoto", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public ResponseEntity<ListOperationResult<com.ucgen.letserasmus.library.file.model.File>> listPhoto(@RequestParam Map<String, String> requestParams) {
+		HttpStatus httpStatus = null;
+		String strPlaceId = requestParams.get("placeId");
+		com.ucgen.letserasmus.library.file.model.File file = new com.ucgen.letserasmus.library.file.model.File();
+		file.setEntityType(EnmEntityType.PLACE.getValue());
+		file.setEntityId(Long.valueOf(strPlaceId));
+		
+		ListOperationResult<com.ucgen.letserasmus.library.file.model.File> listResult = this.fileService.listFile(file);
+		
+		if (OperationResult.isResultSucces(listResult)) {
+			httpStatus = HttpStatus.OK;
+		} else {
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<ListOperationResult<com.ucgen.letserasmus.library.file.model.File>>(listResult, httpStatus);
     }
 	
 }

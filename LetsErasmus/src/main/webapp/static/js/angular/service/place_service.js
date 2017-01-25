@@ -62,6 +62,26 @@ App.factory('placeService', ['$http', '$q', function($http, $q) {
 					});
 				},
 
+				listPhoto : function(placeId) {
+					var data = {
+						placeId : placeId
+					};
+					var config = {
+						params : data,
+						headers : {
+							'Accept' : 'application/json'
+						}
+					};
+					return $http
+							.get(webApplicationUrlPrefix + '/api/place/listphoto',
+									config).then(function(response) {
+								return response.data;
+							}, function(errResponse) {
+								console.error('Error while fetching places');
+								return $q.reject(errResponse);
+							});
+				},
+				
 				deletePlace : function(place) {
 					var data = {
 						id : place.id

@@ -7,9 +7,29 @@
 	<ui:define name="head">
 		<link rel="stylesheet" type="text/css" href="#{webApplication.urlPrefix}/static/css/search_results.css" />
 		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+		
 		<style>
-			
-		</style>
+	        .jssora02l, .jssora02r {
+	            display: block;
+	            position: absolute;
+	            /* size of arrow element */
+	            width: 55px;
+	            height: 55px;
+	            cursor: pointer;
+	            background: url('/LetsErasmus/static/images/image_slider_arrow.png') no-repeat;
+	            overflow: hidden;
+	        }
+	        .jssora02l { background-position: -3px -33px; }
+	        .jssora02r { background-position: -63px -33px; }
+	        .jssora02l:hover { background-position: -123px -33px; }
+	        .jssora02r:hover { background-position: -183px -33px; }
+	        .jssora02l.jssora02ldn { background-position: -3px -33px; }
+	        .jssora02r.jssora02rdn { background-position: -63px -33px; }
+	        .jssora02l.jssora02lds { background-position: -3px -33px; opacity: .3; pointer-events: none; }
+	        .jssora02r.jssora02rds { background-position: -63px -33px; opacity: .3; pointer-events: none; }
+	        
+	    </style>
+		
 	</ui:define>
 
 	<ui:define name="body">
@@ -271,16 +291,19 @@
 								ng-mouseover="ctrl.animateMarker(p.id, true)" ng-mouseleave="ctrl.animateMarker(p.id, false)">
 								<div class="ProductCard-picture">
 									<section class="image-gallery"> 
-										<a href="#{webApplication.urlPrefix}/pages/PlaceDetail.xhtml?placeId={{p.id}}" target="_blank">
 											<div id="divImageGalleryContent_{{p.id}}"
 												class="image-gallery-content">
 												<span class="image-gallery-left-nav hideNav"></span><span
 													class="image-gallery-right-nav hideNav"></span>
 												<div data-reactid="544">
 													<div class="image-gallery-slides">
-														<div class="image-gallery-slide center">
-															<img src="#{webApplication.rootPlaceImagePath}/{{p.id}}/{{p.coverPhoto.id}}_small.{{p.coverPhoto.fileSuffix}}" 
+														<div class="image-gallery-slide center"
+															style="">
+															<img id="imgPlaceSlider_{{p.id}}" src="#{webApplication.rootPlaceImagePath}/{{p.id}}/{{p.coverPhoto.id}}_small.{{p.coverPhoto.fileSuffix}}" 
 																role="presentation" itemprop="image" />
+															<input type="hidden" id="hiddenPlaceSliderPhotoIndex_{{p.id}}" value="0" />
+															<span ng-click="ctrl.changePhoto(p, -1)" class="jssora02l" style="top:45%;left:8px;"></span>
+			       											<span ng-click="ctrl.changePhoto(p, 1)" class="jssora02r" style="top:45%;right:8px;"></span>
 														</div>
 													</div>
 												</div>
@@ -299,7 +322,6 @@
 														class="FavouriteItem-icon beicon-heart"></div>
 												</div>
 											</div>
-										</a> 
 									</section>
 									<div class="BoxPrice" itemscope=""
 										itemtype="http://schema.org/Offer">
