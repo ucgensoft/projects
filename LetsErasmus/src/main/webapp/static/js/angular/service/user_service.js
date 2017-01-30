@@ -18,6 +18,36 @@ App.factory('userService', ['$http', '$q', function($http, $q){
 					});
 		},
 		
+		updateUser : function(user, profilePhoto) {
+			var profilePhotoFile = (profilePhoto != null ? profilePhoto.file : null);
+			if (profilePhotoFile == null) {
+				var parts = [
+		            new Blob([''], {type: 'text/plain'}), '', new Uint16Array([33])
+		          ];
+	
+				profilePhotoFile = new File(parts, 'dummy', {});
+			}
+			
+			var formData = new FormData();
+			formData.append('user', JSON.stringify(user));
+			formData.append('profilePhoto', profilePhotoFile);					
+			
+			var config = {
+				headers : {
+					'Accept' : 'application/json',
+					'Content-Type' : undefined
+				}
+			};
+			return $http.post(
+					webApplicationUrlPrefix + '/api/user/update',
+					formData, config).then(function(response) {
+				return response.data;
+			}, function(errResponse) {
+				console.error('Error while updating user');
+				return $q.reject(errResponse);
+			});
+		},
+		
 		login : function(user) {
 			var config = {
 				headers : {

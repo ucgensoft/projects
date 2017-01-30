@@ -8,6 +8,7 @@ public class ForeignKey<K extends BaseRowMapper, M extends BaseRowMapper> {
 	private Map<String, String> fieldPairMap;
 	private K sourceMapper;
 	private M destMapper;
+	private EnmJoinType joinType;
 	
 	public Map<String, String> getFieldPairMap() {
 		return fieldPairMap;
@@ -33,9 +34,18 @@ public class ForeignKey<K extends BaseRowMapper, M extends BaseRowMapper> {
 		this.destMapper = destMapper;
 	}
 
-	public ForeignKey(K sourceMapper, M destMapper) {
+	public EnmJoinType getJoinType() {
+		return joinType;
+	}
+
+	public void setJoinType(EnmJoinType joinType) {
+		this.joinType = joinType;
+	}
+
+	public ForeignKey(K sourceMapper, M destMapper, EnmJoinType joinType) {
 		this.sourceMapper = sourceMapper;
 		this.destMapper = destMapper;
+		this.joinType = joinType;
 	}
 	
 	public void addFieldPair(String sourceField, String destField) {

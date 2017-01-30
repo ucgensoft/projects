@@ -2,14 +2,461 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
+	xmlns:h="http://java.sun.com/jsf/html" 
+	template="/pages/Template.xhtml">
 
 	<ui:define name="head">
 		<link rel="stylesheet" type="text/css"
 			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css" />
+		<link rel="stylesheet" type="text/css"
+			href="#{webApplication.urlPrefix}/static/css/edit_profile.css" />
+			
+			
+		<style>
+		
+			#photoHolder {
+				border: 3px dashed #ccc;
+				height: 150px;
+				min-width: 150px;
+			}
+			
+			#photoHolder.hover {
+				border: 5px dashed #b6f442;
+			}
+			
+			#divPhotoContainer img {
+				display: inline;
+				margin: 10px;
+			}
+			
+			.input-file {
+				width: 0.1px;
+				height: 0.1px;
+				opacity: 0;
+				-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+				overflow: hidden;
+				position: absolute;
+				z-index: -1
+			}
+			
+			.photos__uploader--drag .photos__empty-drag-highlight {
+	border: 2px dashed #00a699
+}
+
+@media ( max-width : 743px) {
+	.photo-card__content {
+		position: relative
+	}
+}
+
+.photos-list__item {
+	position: relative;
+	cursor: -webkit-grab;
+	cursor: -moz-grab;
+	cursor: grab
+}
+
+.photos-list__title-canvas {
+	height: 400px;
+	background-color: #f5f5f5;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px
+}
+
+.photos-list__canvas {
+	height: 275px;
+	background-color: #f5f5f5;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px
+}
+
+.photos-list__add-photo {
+	height: 281px;
+	border: 2px dashed #bbb;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px
+}
+
+.photos-list__add-photo:hover {
+	cursor: pointer
+}
+
+.photo-preview__title-badge {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	z-index: 2;
+	border: 0;
+	-webkit-border-radius: 25px;
+	-moz-border-radius: 25px;
+	border-radius: 25px;
+	padding: 5px 15px;
+	background-color: #000000;
+	background-color: rgba(0, 0, 0, 0.58);
+	-webkit-box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.35);
+	-moz-box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.35);
+	box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.35)
+}
+
+.img-responsive-height.photo-preview__cover-img-responsive {
+	height: auto;
+	width: 100%
+}
+
+.icon__title-photo-badge {
+	width: 11px;
+	height: 19px;
+	background-repeat: no-repeat;
+	background-image:
+		url(https://a1.muscache.com/airbnb/static/list_your_space/cover-photo-icon-5d33db4fdfcc6b6aea355901d75dbe09.png);
+	width: 11px;
+	height: 19px
+}
+
+@media ( min--moz-device-pixel-ratio : 1.3) , ( -o-min-device-pixel-ratio : 2.6 /
+		2) , ( -webkit-min-device-pixel-ratio : 1.3) , (
+		min-device-pixel-ratio : 1.3) , ( -o-min-device-pixel-ratio : 13/10) ,
+		( min-resolution : 1.3dppx) {
+	.icon__title-photo-badge {
+		background-image:
+			url(https://a2.muscache.com/airbnb/static/list_your_space/cover-photo-icon@2x-5008fcd7c62b3c3dd0115395c0a49403.png);
+		-webkit-background-size: 11px 19px;
+		-moz-background-size: 11px 19px;
+		-o-background-size: 11px 19px;
+		background-size: 11px 19px
+	}
+}
+
+.icon--with-margin {
+	margin-top: 3px;
+	margin-left: 10px
+}
+
+.photo-preview__error-state {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	background-color: #484848;
+	background-color: rgba(72, 72, 72, 0.9)
+}
+
+.photo-preview__error-delete-btn {
+	border: 2px solid #dce0e0;
+	background-color: transparent;
+	color: #dce0e0
+}
+
+.photo-preview__error-delete-btn:active,
+	.photo-preview__error-delete-btn:hover,
+	.photo-preview__error-delete-btn:focus {
+	background-color: #000000;
+	background-color: rgba(0, 0, 0, 0.1)
+}
+
+.btn.photo-preview__error-delete-btn {
+	color: #dce0e0
+}
+
+.photo-preview__btns {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	z-index: 1
+}
+
+@media ( min-width : 744px) {
+	.photo-preview__btns.not-always-show {
+		/*display: none */
+	}
+}
+
+@media ( min-width : 1128px) {
+	.photo-preview__btns.always-show {
+		/*display: none */
+	}
+}
+
+.photo-preview__btns.photo-preview__btns--show {
+	display: block
+}
+
+.photo-preview__btn {
+	margin-right: 10px;
+	border: 0;
+	-webkit-border-radius: 25px;
+	-moz-border-radius: 25px;
+	border-radius: 25px;
+	background-color: #000000;
+	background-color: rgba(0, 0, 0, 0.58);
+	-webkit-box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.35);
+	-moz-box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.35);
+	box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.35)
+}
+
+.photo-preview__btn:hover {
+	background-color: #000000;
+	background-color: rgba(0, 0, 0, 0.78)
+}
+
+.photo-preview__btn .img__icon-large {
+	opacity: 1;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+	margin-top: 2px
+}
+
+.photo-preview__delete-btn {
+	padding: 7px 10px
+}
+
+.photo-preview__delete-btn.photo-preview__delete--confirm {
+	padding: 5px 10px;
+	background-color: #ff5a5f;
+	background-color: rgba(255, 90, 95, 0.7)
+}
+
+.text-remove-confirm {
+	padding-left: 5px
+}
+
+.text-cover-photo {
+	color: #ffd980
+}
+
+.photo-preview__modal {
+	width: 100%
+}
+
+.photos-list__item:hover .photo-preview__btns {
+	display: block
+}
+
+.photo-preview__caption-textarea {
+	border: 0;
+	font-size: 18px;
+	resize: none;
+	padding-left: 0;
+	outline: none
+}
+
+.input-file {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	overflow: hidden;
+	position: absolute;
+	z-index: -1
+}
+
+.media__placeholder-container {
+	width: 225px;
+	height: 225px;
+	margin: 50px 0;
+	background-image:
+		url(https://a2.muscache.com/airbnb/static/user_pic-225x225-e4a2b25a9526b48aaa125a40809a4571.png)
+}
+
+.photo-image__help-tip-1 {
+	width: 256px;
+	height: 143px;
+	background-repeat: no-repeat;
+	background-image:
+		url(https://a2.muscache.com/airbnb/static/list_your_space/photo-tip-1-c289de1fbd8131501fc53639d279de2d.png);
+	width: 256px;
+	height: 143px
+}
+
+@media ( min--moz-device-pixel-ratio : 1.3) , ( -o-min-device-pixel-ratio : 2.6 /
+		2) , ( -webkit-min-device-pixel-ratio : 1.3) , (
+		min-device-pixel-ratio : 1.3) , ( -o-min-device-pixel-ratio : 13/10) ,
+		( min-resolution : 1.3dppx) {
+	.photo-image__help-tip-1 {
+		background-image:
+			url(https://a2.muscache.com/airbnb/static/list_your_space/photo-tip-1@2x-a8da5b4acc6eb9a68fc21ad026adad66.png);
+		-webkit-background-size: 256px 143px;
+		-moz-background-size: 256px 143px;
+		-o-background-size: 256px 143px;
+		background-size: 256px 143px
+	}
+}
+
+.photo-image__help-tip-2 {
+	width: 268px;
+	height: 167px;
+	background-repeat: no-repeat;
+	background-image:
+		url(https://a1.muscache.com/airbnb/static/list_your_space/photo-tip-2-f31dc954ef02e3291a62df1d8c4f0640.png);
+	width: 268px;
+	height: 167px
+}
+
+@media ( min--moz-device-pixel-ratio : 1.3) , ( -o-min-device-pixel-ratio : 2.6 /
+		2) , ( -webkit-min-device-pixel-ratio : 1.3) , (
+		min-device-pixel-ratio : 1.3) , ( -o-min-device-pixel-ratio : 13/10) ,
+		( min-resolution : 1.3dppx) {
+	.photo-image__help-tip-2 {
+		background-image:
+			url(https://a0.muscache.com/airbnb/static/list_your_space/photo-tip-2@2x-a5834f7615218e214c5c4201f6f2b937.png);
+		-webkit-background-size: 268px 167px;
+		-moz-background-size: 268px 167px;
+		-o-background-size: 268px 167px;
+		background-size: 268px 167px
+	}
+}
+
+.photo-image__help-tip-3 {
+	width: 259px;
+	height: 180px;
+	background-repeat: no-repeat;
+	background-image:
+		url(https://a0.muscache.com/airbnb/static/list_your_space/photo-tip-3-639312ded702c1128853076bf25f228e.png);
+	width: 259px;
+	height: 180px
+}
+
+@media ( min--moz-device-pixel-ratio : 1.3) , ( -o-min-device-pixel-ratio : 2.6 /
+		2) , ( -webkit-min-device-pixel-ratio : 1.3) , (
+		min-device-pixel-ratio : 1.3) , ( -o-min-device-pixel-ratio : 13/10) ,
+		( min-resolution : 1.3dppx) {
+	.photo-image__help-tip-3 {
+		background-image:
+			url(https://a1.muscache.com/airbnb/static/list_your_space/photo-tip-3@2x-62ccd4385cbc861be1a62f8575c54765.png);
+		-webkit-background-size: 259px 180px;
+		-moz-background-size: 259px 180px;
+		-o-background-size: 259px 180px;
+		background-size: 259px 180px
+	}
+}
+
+.photo-image__tip-drag {
+	width: 72px;
+	height: 65px;
+	background-repeat: no-repeat;
+	background-image:
+		url(https://a2.muscache.com/airbnb/static/list_your_space/tip-drag-8c72b156d0dc68fb7f1858b49648bb42.png);
+	width: 72px;
+	height: 65px
+}
+
+@media ( min--moz-device-pixel-ratio : 1.3) , ( -o-min-device-pixel-ratio : 2.6 /
+		2) , ( -webkit-min-device-pixel-ratio : 1.3) , (
+		min-device-pixel-ratio : 1.3) , ( -o-min-device-pixel-ratio : 13/10) ,
+		( min-resolution : 1.3dppx) {
+	.photo-image__tip-drag {
+		background-image:
+			url(https://a1.muscache.com/airbnb/static/list_your_space/tip-drag@2x-2b9553f49d217776e636fec738b3b5a3.png);
+		-webkit-background-size: 72px 65px;
+		-moz-background-size: 72px 65px;
+		-o-background-size: 72px 65px;
+		background-size: 72px 65px
+	}
+}
+
+.img__icon-plus-grey {
+	width: 28px;
+	height: 28px;
+	background-repeat: no-repeat;
+	background-image:
+		url(https://a1.muscache.com/airbnb/static/list_your_space/plus-large-l-grey-06817361303b0edd0f31cf4dbdd47b81.png);
+	width: 28px;
+	height: 28px
+}
+
+@media ( min--moz-device-pixel-ratio : 1.3) , ( -o-min-device-pixel-ratio : 2.6 /
+		2) , ( -webkit-min-device-pixel-ratio : 1.3) , (
+		min-device-pixel-ratio : 1.3) , ( -o-min-device-pixel-ratio : 13/10) ,
+		( min-resolution : 1.3dppx) {
+	.img__icon-plus-grey {
+		background-image:
+			url(https://a2.muscache.com/airbnb/static/list_your_space/plus-large-l-grey@2x-06817361303b0edd0f31cf4dbdd47b81.png);
+		-webkit-background-size: 28px 28px;
+		-moz-background-size: 28px 28px;
+		-o-background-size: 28px 28px;
+		background-size: 28px 28px
+	}
+}
+
+.drop-placeholder {
+	min-height: 1px;
+	border: 3px dashed #bbb;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+	background-color: #f5f5f5;
+	margin-bottom: 45px
+}
+
+.photo-preview__custom-drag-layer {
+	margin-left: 40px;
+	margin-right: 40px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	-webkit-box-shadow: 0 20px 60px rgba(0, 0, 0, 0.13);
+	-moz-box-shadow: 0 20px 60px rgba(0, 0, 0, 0.13);
+	box-shadow: 0 20px 60px rgba(0, 0, 0, 0.13)
+}
+
+.img-with-border {
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	overflow: hidden
+}
+
+.drag-and-drop__custom-drag-layer {
+	position: fixed;
+	pointer-events: none;
+	z-index: 10;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%
+}
+
+#divPhotoPreview {
+	min-width : 100px;
+	max-width : 200px;
+	min-width : 100px;
+	max-height : 300px;
+}
+
+.img__icon-trash-large {
+	opacity: 0.75;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
+	background-repeat: no-repeat;
+	background-image:
+		url(https://a0.muscache.com/airbnb/static/list_your_space/trash-large-41aadf9a357b814bf291f649827567ac.png);
+	width: 15px;
+	height: 18px
+}
+
+@media ( min--moz-device-pixel-ratio : 1.3) , ( -o-min-device-pixel-ratio : 2.6 /
+		2) , ( -webkit-min-device-pixel-ratio : 1.3) , (
+		min-device-pixel-ratio : 1.3) , ( -o-min-device-pixel-ratio : 13/10) ,
+		( min-resolution : 1.3dppx) {
+	.img__icon-trash-large {
+		background-image:
+			url(https://a1.muscache.com/airbnb/static/list_your_space/trash-large@2x-050f4b6a3872965fc844d92ee8fc5ce4.png);
+		-webkit-background-size: 15px 18px;
+		-moz-background-size: 15px 18px;
+		-o-background-size: 15px 18px;
+		background-size: 15px 18px
+	}
+}
+
+		</style>
 	</ui:define>
 
 	<ui:define name="body">
+		<input type="hidden" value="#{webApplication.setActiveOperation(2)}" />
 		<main id="site-content" role="main"> <ui:include
 			src="DashboardHeader.html" />
 		<div class="page-container-responsive space-top-4 space-4">
@@ -17,51 +464,99 @@
 				<ui:include src="ProfileLeftMenu.html" />
 				<div class="col-md-9">
 					<div id="dashboard-content">
-						<div style="margin: 0; padding: 0; display: inline">
-							<input name="utf8" type="hidden" value="✓" /> <input
-								name="authenticity_token" type="hidden" value="null" />
-						</div>
-
 						<div class="panel space-4">
 							<div class="panel-header">Required</div>
 							<div class="panel-body">
 								<div class="row row-condensed space-4">
-									<label class="text-right col-sm-3" for="user_first_name">
+									<label class="text-right col-sm-3">Profile Photo </label>
+									<div class="col-sm-9">
+										<input class="input-file" type="file" id="filePhoto"
+											accept="image/jpg, image/jpeg, image/png, image/gif"
+											multiple="false" />
+										<div id="photoHolder" class="padding-level1 va-container va-container-h va-container-v #{webApplication.user.profilePhotoId != null ? 'hidden' : ''}">
+											<div id="divPhotoContainer" class="va-middle text-center text-gray img__upload-photos-ghosts">
+												<div id="divPhotoUpload">
+													<div class="btn btn-primary btn-large" onclick="$('#filePhoto').click();">
+														<i class="icon icon-upload"></i>
+														<span>Upload Photo</span>
+													</div>
+													<div class="h4 text-normal">
+														<span>or drag it in the dashed area</span>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div id="divPhotoPreview" class="col-sm-12 photos-item__preview-card #{webApplication.user.profilePhotoId == null ? 'hidden' : ''}">
+											<div class="photos-list__item">
+												<div class="panel-image">
+													<div class="photo-preview__btns not-always-show" ng-click="ctrl.removePhoto()">
+														<div class="btn photo-preview__btn photo-preview__delete-btn">
+															<div class="img__icon-trash-large img__icon-large pull-left"></div>
+														</div>
+													</div>
+													<div
+														class="media-photo media-photo-block photos-list__canvas"
+														style="height: 179.33333333333334px;">
+														<div class="media-cover text-center img-with-border">
+															<img id="imgProfilePhoto" class="img-responsive-height img-preview-1483265761528"
+																src="#{webApplication.userProfilePhotoUrl}" />
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								
+								<div class="row row-condensed space-4">
+									<label class="text-right col-sm-3">
 										First Name </label>
 									<div class="col-sm-9">
-
-										<input id="user_first_name" name="user[first_name]" size="30"
-											type="text" value="Anıl" />
+										<input id="txtFirstName" size="30" type="text" value="#{webApplication.user.firstName}" />
 									</div>
 								</div>
 
 								<div class="row row-condensed space-4">
-									<label class="text-right col-sm-3" for="user_last_name">
-										Last Name </label>
+									<label class="text-right col-sm-3">Last Name </label>
 									<div class="col-sm-9">
-
-										<input id="user_last_name" name="user[last_name]" size="30"
-											type="text" value="Cengiz" />
-
+										<input id="txtLastName" size="30" type="text" value="#{webApplication.user.lastName}"/>
 										<div class="text-muted space-top-1">Your public profile
 											only shows your first name. When you request a booking, your
 											host will see your first and last name.</div>
 									</div>
 								</div>
+								
+								<div class="row row-condensed space-4">
+									<label class="text-right col-sm-3">Password</label>
+									<div class="col-sm-9">
+										<input id="txtPassword" size="30" type="password"
+											placeholder="Create a password" 
+											value="#{webApplication.user.password != null ? 'xxxxxx' : ''}"/>
+										<div class="text-muted space-top-1">Prefer a complex password, that contain upper case, lower case and number characters.</div>
+									</div>
+								</div>
+								
+								<div class="row row-condensed space-4">
+									<label class="text-right col-sm-3">Confirm Password</label>
+									<div class="col-sm-9">
+										<input id="txtPasswordConfirm" size="30" type="password" 
+											placeholder="Confirm your password" 
+											value="#{webApplication.user.password != null ? 'xxxxxx' : ''}"/>
+									</div>
+								</div>
 
 								<div class="row row-condensed space-4">
 									<label class="text-right col-sm-3" for="user_sex"> I Am
-										<i class="icon icon-lock icon-ebisu" data-behavior="tooltip"
-										aria-label="Private"></i>
+										<i class="icon icon-lock icon-ebisu" aria-label="Private"></i>
 									</label>
 									<div class="col-sm-9">
 
 										<div class="select">
-											<select id="user_sex" name="user[sex]"><option
-													value="">Gender</option>
-												<option value="Male" selected="selected">Male</option>
-												<option value="Female">Female</option>
-												<option value="Other">Other</option></select>
+											<select id="cmbGender" value="#{webApplication.user.gender}">
+												<option value="" selected="#{webApplication.user.gender == null ? 'selected' : ''}">- Gender -</option>
+												<option value="M" selected="#{webApplication.user.gender == 'M' ? 'selected' : ''}">Male</option>
+												<option value="F" selected="#{webApplication.user.gender == 'F' ? 'selected' : ''}">Female</option>
+												<option value="O" selected="#{webApplication.user.gender == 'O' ? 'selected' : ''}">Other</option></select>
 										</div>
 
 										<div class="text-muted space-top-1">We use this data for
@@ -70,14 +565,12 @@
 								</div>
 
 								<div class="row row-condensed space-4">
-									<label class="text-right col-sm-3" for="user_birthdate">
-										Birth Date <i class="icon icon-lock icon-ebisu"
-										data-behavior="tooltip" aria-label="Private"></i>
+									<label class="text-right col-sm-3">
+										Birth Date <i class="icon icon-lock icon-ebisu" aria-label="Private"></i>
 									</label>
 									<div class="col-sm-9">
-
-										<p class="govt-id-birthdate">11/26/1990</p>
-
+										<input id="hiddenBirthDate" type="hidden" value="#{webApplication.formatDate(webApplication.user.birthDate, 'dd.MM.yyyy')}"/>
+										<input id="txtBirthDatePicker" size="15" type="text" />
 										<div class="text-muted space-top-1">The magical day you
 											were dropped from the sky by a stork. We use this data for
 											analysis and never share it with other users.</div>
@@ -86,232 +579,88 @@
 
 								<div class="row row-condensed space-4">
 									<label class="text-right col-sm-3" for="user_email">
-										Email Address <i class="icon icon-lock icon-ebisu"
-										data-behavior="tooltip" aria-label="Private"></i>
+										Email Address <i class="icon icon-lock icon-ebisu" data-behavior="tooltip" aria-label="Private"></i>
 									</label>
 									<div class="col-sm-9">
 
-										<input id="user_email" name="user[email]" size="30"
-											type="text" value="anil_cengiz@outlook.com" />
+										<input id="txtEmail" size="30" type="text" value="#{webApplication.user.email}" />
 
 										<div class="text-muted space-top-1">
 											We won’t share your private email address with other Airbnb
-											users. <a href="https://www.airbnb.com/help/article/694"
-												target="blank">Learn more</a>.
+											users.<br/>When you change your email, a confirmation mail will be sent.
+											 <a href="" target="blank">Learn more</a>.
 										</div>
 									</div>
 								</div>
 
 								<div class="row row-condensed space-4">
 									<label class="text-right col-sm-3" for="user_phone">
-										Phone Number <i class="icon icon-lock icon-ebisu"
-										data-behavior="tooltip" aria-label="Private"></i>
+										Phone Number <i class="icon icon-lock icon-ebisu" aria-label="Private"></i>
 									</label>
 									<div class="col-sm-9">
-
 										<div class="clearfix" id="phone-number">
 											<div class="phone-numbers-container has-phone-numbers">
-												<div class="phone-numbers-hide-during-verify">
-													<div class="no-phone-numbers">
-														<p>No phone number entered</p>
-													</div>
-													<table class="phone-numbers-table" cellspacing="0"
-														cellpadding="0">
+												<div id="divExistingPhone" class="phone-numbers-hide-during-verify #{webApplication.user.msisdn == null ? 'hidden' : ''}">
+													<table class="phone-numbers-table" cellspacing="0" cellpadding="0">
 														<tbody>
-															<tr class="verified" data-id="37267353"
-																data-number="905322106549" data-country="TR">
+															<tr class="verified">
 																<th class="edit-profile-confirmable-field__label">
 																	+90 *** *** 6549</th>
-																<td><span class="verified"> <i
-																		class="icon icon-ok"></i> Confirmed
-																</span> <span class="unverified"> <a
-																		class="verify button-steel btn gray"
-																		href="https://www.airbnb.com/users/edit#" rel="sms">
-																			Confirm via SMS </a> <a
-																		class="verify button-steel btn gray"
-																		href="https://www.airbnb.com/users/edit#" rel="call">
-																			Confirm via Call </a>
-																</span></td>
-																<td class="remove-container"><a
-																	href="https://www.airbnb.com/phone_numbers/delete/37267353"
-																	data-authenticity-token="V4$.airbnb.com$UW9XKOC69KU$wzUgvqufD0pBNXAo9dZgi_pKzS7oCm_6K9k_gIP04sE="
-																	class="remove" title="Remove"> <i
-																		class="icon icon-remove"></i>
-																</a></td>
+																<td>
+																	<span class="verified #{webApplication.isEqual(webApplication.user.msisdnVerified, 'Y') ? '' : 'hidden'}"> 
+																		<i class="icon icon-ok"></i> Confirmed
+																	</span> 
+																	<span class="#{webApplication.isEqual(webApplication.user.msisdnVerified, 'Y') ? 'hidden' : ''}">
+																		<a class="verify btn btn-primary btn-large" href="">
+																			Confirm via SMS </a> 
+																	</span>
+																</td>
+																<td class="remove-container">
+																	<a href="" class="remove" title="Remove"> 
+																		<i class="icon icon-remove"></i>
+																	</a>
+																</td>
 															</tr>
 														</tbody>
 													</table>
-
-													<a class="add link-icon"
-														href="https://www.airbnb.com/users/edit#"> <i
-														class="icon icon-add"></i> <span class="link-icon__text">
-															Add a phone number </span>
-													</a>
 												</div>
 
 												<div class="phone-number-verify-widget">
-													<p class="pnaw-verification-error"></p>
 													<div class="pnaw-step1">
-														<div class="phone-number-input-widget"
-															id="phone-number-input-widget-19f39a7d">
+														<div class="phone-number-input-widget" id="phone-number-input-widget-19f39a7d">
 															<label for="phone_country">Choose a country:</label>
 															<div class="select">
-																<select id="phone_country" name="phone_country"><option
-																		value="AF" data-prefix="93">Afghanistan</option>
-																	<option value="ZW" data-prefix="263">Zimbabwe</option></select>
+																<select id="phone_country" name="phone_country">
+																	<option value="AF" data-prefix="93">Afghanistan</option>
+																	<option value="ZW">Zimbabwe</option>
+																</select>
 															</div>
 
 															<label for="phone_number">Add a phone number:</label>
 															<div class="pniw-number-container clearfix">
-																<div class="pniw-number-prefix">+90</div>
-																<input type="tel" class="pniw-number" id="phone_number" />
+																<div id="divPhoneCountryCode" class="pniw-number-prefix">+90</div>
+																<input id="txtPhone" type="text" class="pniw-number" />
 															</div>
-															<input type="hidden" data-role="phone_number"
-																name="phone" value="90" /> <input type="hidden"
-																name="user_id" value="54995441" />
 														</div>
 
 														<div class="pnaw-verify-container">
-															<a class="btn btn-primary"
-																href="https://www.airbnb.com/users/edit#" rel="sms">Verify
-																via SMS</a> <a class="btn btn-primary"
-																href="https://www.airbnb.com/users/edit#" rel="call">Verify
-																via Call</a> <a class="cancel" rel="cancel"
-																href="https://www.airbnb.com/users/edit#"
-																style="display: none;">Cancel</a> <a class="why-verify"
-																href="https://www.airbnb.com/help/article/277"
-																target="_blank">Why Verify?</a>
+															<a class="btn btn-primary" href="" rel="sms">Verify via SMS</a>
+															<a class="cancel" rel="cancel" href="" style="display: none;">Cancel</a>
+															<a class="why-verify" href="" target="_blank">Why Verify?</a>
 														</div>
 													</div>
 													<div class="pnaw-step2">
-														<p class="message"></p>
 														<label for="phone_number_verification">Please
-															enter the 4-digit code:</label> <input type="text"
-															pattern="[0-9]*" id="phone_number_verification" />
+															enter the 4-digit code:</label> 
+														<input type="text" pattern="[0-9]*" id="txtPhoneVerificationCode" />
 
 														<div class="pnaw-verify-container">
-															<a class="btn btn-primary"
-																href="https://www.airbnb.com/users/edit#" rel="verify">
-																Verify </a> <a class="cancel" rel="cancel"
-																href="https://www.airbnb.com/users/edit#"> Cancel </a>
+															<a class="btn btn-primary" href="">Verify </a> 
+															<a class="cancel" rel="cancel" href=""> Cancel </a>
 														</div>
-														<p class="cancel-message">If it doesn't arrive, click
-															cancel and try call verification instead.</p>
 													</div>
 												</div>
-
-
-												<div class="phone-number-verify-widget">
-													<p class="pnaw-verification-error"></p>
-													<div class="pnaw-step1">
-														<div class="phone-number-input-widget"
-															id="phone-number-input-widget-956c493e">
-															<label for="phone_country">Choose a country:</label>
-															<div class="select">
-																<select id="phone_country" name="phone_country"><option
-																		value="AF" data-prefix="93">Afghanistan</option>
-																	<option value="AX" data-prefix="358">Åland
-																		Islands</option>
-																	<option value="ZW" data-prefix="263">Zimbabwe</option></select>
-															</div>
-
-															<label for="phone_number">Add a phone number:</label>
-															<div class="pniw-number-container clearfix">
-																<div class="pniw-number-prefix">+90</div>
-																<input type="tel" class="pniw-number" id="phone_number" />
-															</div>
-															<input type="hidden" data-role="phone_number"
-																name="phone" value="90" /> <input type="hidden"
-																name="user_id" value="54995441" />
-														</div>
-
-
-
-														<div class="pnaw-verify-container">
-															<a class="btn btn-primary"
-																href="https://www.airbnb.com/users/edit#" rel="sms">Verify
-																via SMS</a> <a class="btn btn-primary"
-																href="https://www.airbnb.com/users/edit#" rel="call">Verify
-																via Call</a> <a class="cancel" rel="cancel"
-																href="https://www.airbnb.com/users/edit#"
-																style="display: none;">Cancel</a> <a class="why-verify"
-																href="https://www.airbnb.com/help/article/277"
-																target="_blank">Why Verify?</a>
-														</div>
-													</div>
-													<div class="pnaw-step2">
-														<p class="message"></p>
-														<label for="phone_number_verification">Please
-															enter the 4-digit code:</label> <input type="text"
-															pattern="[0-9]*" id="phone_number_verification" />
-
-														<div class="pnaw-verify-container">
-															<a class="btn btn-primary"
-																href="https://www.airbnb.com/users/edit#" rel="verify">
-																Verify </a> <a class="cancel" rel="cancel"
-																href="https://www.airbnb.com/users/edit#"> Cancel </a>
-														</div>
-														<p class="cancel-message">If it doesn't arrive, click
-															cancel and try call verification instead.</p>
-													</div>
-												</div>
-
-
-												<div class="phone-number-replace-widget">
-													<p class="pnaw-verification-error"></p>
-													<div class="pnaw-step1">
-														<div class="phone-number-input-widget"
-															id="phone-number-input-widget-f76f8c41">
-															<label for="phone_country">Choose a country:</label>
-															<div class="select">
-																<select id="phone_country" name="phone_country"><option
-																		value="AF" data-prefix="93">Afghanistan</option>
-																	<option value="ZW" data-prefix="263">Zimbabwe</option></select>
-															</div>
-
-															<label for="phone_number">Add a phone number:</label>
-															<div class="pniw-number-container clearfix">
-																<div class="pniw-number-prefix">+90</div>
-																<input type="tel" class="pniw-number" id="phone_number" />
-															</div>
-															<input type="hidden" data-role="phone_number"
-																name="phone" value="90" /> <input type="hidden"
-																name="user_id" value="54995441" />
-														</div>
-
-
-
-														<div class="pnaw-verify-container">
-															<a class="btn btn-primary"
-																href="https://www.airbnb.com/users/edit#" rel="sms">Verify
-																via SMS</a> <a class="cancel" rel="cancel"
-																href="https://www.airbnb.com/users/edit#"
-																style="display: none;">Cancel</a> <a class="why-verify"
-																href="https://www.airbnb.com/help/article/277"
-																target="_blank">Why Verify?</a>
-														</div>
-													</div>
-													<div class="pnaw-step2">
-														<p class="message"></p>
-														<label for="phone_number_verification">Please
-															enter the 4-digit code:</label> <input type="text"
-															pattern="[0-9]*" id="phone_number_verification" />
-
-														<div class="pnaw-verify-container">
-															<a class="btn btn-primary"
-																href="https://www.airbnb.com/users/edit#" rel="verify"
-																data-old-phone-number="905322106549"> Verify </a> <a
-																class="cancel" rel="cancel"
-																href="https://www.airbnb.com/users/edit#"> Cancel </a>
-														</div>
-														<p class="cancel-message">If it doesn't arrive, click
-															cancel and try again.</p>
-													</div>
-												</div>
-
-
 											</div>
-
 										</div>
 
 										<div class="text-muted space-top-1">This is only shared
@@ -320,117 +669,30 @@
 									</div>
 								</div>
 
-								<div data-hypernova-key="edit_profileidentity_verifiedbundlejs">
-									<div class="row row-condensed space-4" data-reactroot=""
-										data-reactid="1" data-react-checksum="1599553189">
-										<label class="text-right text-wrap col-sm-3" data-reactid="2"><span
-											data-reactid="3">Identification</span>&nbsp; <i
-											class="icon icon-lock icon-ebisu" data-behavior="tooltip"
-											aria-label="[object Object]" data-reactid="5"></i></label>
-										<div class="col-sm-9" data-reactid="6">
-											<div data-reactid="7">
-												<div class="edit-profile-confirmable-field" data-reactid="8">
-													<div class="edit-profile-confirmable-field__label"
-														data-reactid="9">
-														<span class="edit-profile-confirmable-field__text"
-															data-reactid="10"><span data-reactid="11">Government
-																ID</span></span>
-													</div>
-													<div class="edit-profile-confirmable-field__status"
-														data-reactid="12">
-														<span class="edit-profile-confirmable-field__text"
-															data-reactid="13"><div data-reactid="14">
-																<i class="icon icon-ok" data-reactid="15"></i>
-																<!-- react-text: 16 -->
-																&nbsp;
-																<!-- /react-text -->
-																<span data-reactid="17">Confirmed</span>
-															</div> <span class="edit-profile-confirmable-field__remove"
-															data-reactid="18"><button class="btn-link"
-																	type="button" data-reactid="19">
-																	<i class="icon icon-remove" data-reactid="20"></i>
-																</button></span></span>
-													</div>
-												</div>
-											</div>
-											<div class="text-muted space-top-1" data-reactid="22">
-												<div data-reactid="23">
-													<span data-reactid="25">You’ve successfully provided
-														identification. <span data-reactid="27"><a
-															href="http://www.airbnb.com/help/article/1237"
-															data-reactid="28">Learn more. </a></span>
-													</span>
-												</div>
-											</div>
-										</div>
+								<div class="row row-condensed space-4">
+									<label class="text-right col-sm-3" for="user_profile_info_current_city"> Where You Live </label>
+									<div class="col-sm-9">
+										<input id="txtResidenceLocationName" 
+											placeholder="e.g. Istanbul, Barcelona, Rome etc" size="30" type="text" 
+											value="#{webApplication.user.residenceLocationName}" />
 									</div>
 								</div>
 
 								<div class="row row-condensed space-4">
-									<label class="text-right col-sm-3"
-										for="user_profile_info_preferred_language"> Preferred
-										Language </label>
+									<label class="text-right col-sm-3" for="user_profile_info_about"> Describe Yourself </label>
 									<div class="col-sm-9">
 
-										<div class="select">
-											<select id="user_preferred_locale"
-												name="user[preferred_locale]"><option value="id">Bahasa
-													Indonesia</option>
-												<option value="ms">Bahasa Melayu</option>
-											</select>
-										</div>
-
-										<div class="text-muted space-top-1">We'll send you
-											messages in this language.</div>
-									</div>
-								</div>
-
-								<div class="row row-condensed space-4">
-									<label class="text-right col-sm-3"
-										for="user_profile_info_preferred_currency"> Preferred
-										Currency </label>
-									<div class="col-sm-9">
-
-										<div class="select">
-											<select id="user_native_currency"
-												name="user[native_currency]"><option value="AED">AED</option>
-												<option value="ARS">ARS</option>
-												<option value="ZAR">ZAR</option></select>
-										</div>
-
-										<div class="text-muted space-top-1">We’ll show you
-											prices in this currency.</div>
-									</div>
-								</div>
-
-								<div class="row row-condensed space-4">
-									<label class="text-right col-sm-3"
-										for="user_profile_info_current_city"> Where You Live </label>
-									<div class="col-sm-9">
-
-										<input id="user_profile_info_current_city"
-											name="user_profile_info[current_city]"
-											placeholder="e.g. Paris, France / Brooklyn, NY / Chicago, IL"
-											size="30" type="text" value="Istanbul, İstanbul, Turkey" />
-									</div>
-								</div>
-
-								<div class="row row-condensed space-4">
-									<label class="text-right col-sm-3"
-										for="user_profile_info_about"> Describe Yourself </label>
-									<div class="col-sm-9">
-
-										<textarea cols="40" id="user_profile_info_about"
-											name="user_profile_info[about]" rows="5"></textarea>
+										<textarea cols="40" id="txtDescription"
+											rows="5">#{webApplication.user.description}</textarea>
 
 										<div class="text-muted space-top-1">
 											Airbnb is built on relationships. Help other people get to
-											know you.<br /> <br />Tell them about the things you like:
+											know you.<br/> <br/>Tell them about the things you like:
 											What are 5 things you can’t live without? Share your favorite
-											travel destinations, books, movies, shows, music, food.<br />
-											<br />Tell them what it’s like to have you as a guest or
-											host: What’s your style of traveling? Of Airbnb hosting?<br />
-											<br />Tell them about you: Do you have a life motto?
+											travel destinations, books, movies, shows, music, food.<br/>
+											<br/>Tell them what it’s like to have you as a guest or
+											host: What’s your style of traveling? Of Airbnb hosting?<br/>
+											<br/>Tell them about you: Do you have a life motto?
 										</div>
 									</div>
 								</div>
@@ -445,282 +707,41 @@
 									<label class="text-right col-sm-3"
 										for="user_profile_info_university"> School </label>
 									<div class="col-sm-9">
-
-										<input id="user_profile_info_university"
-											name="user_profile_info[university]" size="30" type="text"
-											value="Milli Piyango Anadolu Lisesi, Marmara University" />
+										<input id="txtSchoolName" placeholder="Your school name" size="30" type="text" 
+											value="#{webApplication.user.schoolName}" />
 									</div>
 								</div>
 
 								<div class="row row-condensed space-4">
-									<label class="text-right col-sm-3"
-										for="user_profile_info_employer"> Work </label>
+									<label class="text-right col-sm-3"> Work </label>
 									<div class="col-sm-9">
-
-										<input id="user_profile_info_employer"
-											name="user_profile_info[employer]"
+										<input id="txtJobTitle"
 											placeholder="company name or job title" size="30" type="text"
-											value="" />
+											value="#{webApplication.user.jobTitle}" />
 									</div>
 								</div>
 
 								<div class="row row-condensed space-4">
-									<label class="text-right col-sm-3"
-										for="user_preference_time_zone"> Time Zone </label>
-									<div class="col-sm-9">
-
-										<div class="select">
-											<select id="user_preference_time_zone"
-												name="user_preference[time_zone]"><option value=""></option>
-												<option value="International Date Line West">(GMT-11:00)
-													International Date Line West</option>
-												<option value="Nuku'alofa">(GMT+13:00) Nuku'alofa</option></select>
-										</div>
-
-										<div class="text-muted space-top-1">Your home time zone.</div>
-									</div>
-								</div>
-
-								<div class="row row-condensed space-4">
-									<label class="text-right col-sm-3" for="user_languages">
+									<label class="text-right col-sm-3">
 										Languages </label>
 									<div class="col-sm-9">
-
-
 										<div class="space-top-1"></div>
-										<div class="multiselect languages"
-											data-select_dialog_url="https://www.airbnb.com/users/languages_multiselect">
-											<div class="space-1"></div>
-											<div class="none text-muted space-1">None</div>
-											<a class="link-icon multiselect-add-more"
-												href="https://www.airbnb.com/users/edit#"> <i
-												class="icon icon-add"></i> <span class="link-icon__text">
-													Add More </span>
-											</a> <input id="user_languages" name="user[languages]"
-												type="hidden" value="" /> <span
-												class="template hide multiselect-option" data-key="%KEY%">
-												<span class="btn btn-small space-1"> %VALUE% &nbsp; <small>
-														<a href="https://www.airbnb.com/users/edit#"
-														class="text-normal"> <i class="x icon icon-remove"
-															title="Remove from selection"></i>
-													</a>
-												</small>
-											</span>&nbsp;
-											</span>
-										</div>
-
-
-										<div class="text-muted space-top-1">Add any languages
-											that others can use to speak with you on Airbnb</div>
-									</div>
-								</div>
-
-
-								<div class="row row-condensed space-4">
-									<label class="text-right col-sm-3"
-										for="user_emergency_contact_title"> Emergency contact
-										<i class="icon icon-lock icon-ebisu" data-behavior="tooltip"
-										aria-label="Private"></i>
-									</label>
-									<div class="col-sm-9">
-
-										<div class="space-top-1">
-											<a id="emergency_contact_add"
-												class="emergency_contact_trigger"
-												href="https://www.airbnb.com/users/edit#"> <i
-												class="icon icon-add"></i> Add contact
-											</a>
-										</div>
-
-										<div class="text-muted space-top-1">Give our Customer
-											Experience team a trusted contact we can alert in an urgent
-											situation.</div>
-									</div>
-								</div>
-
-								<div id="emergency_contact_popout" style="display: none">
-									<div class="row row-condensed space-4">
-										<label class="text-right col-sm-3"
-											for="user_emergency_contact_name"> Name </label>
-										<div class="col-sm-9">
-
-											<input id="user_emergency_contact_name"
-												name="user_emergency_contact[name]" size="30" type="text" />
-										</div>
-									</div>
-									<div class="row row-condensed space-4">
-										<label class="text-right col-sm-3"
-											for="user_emergency_contact_phone"> Phone </label>
-										<div class="col-sm-9">
-
-											<input id="user_emergency_contact_phone"
-												name="user_emergency_contact[phone]" size="30" type="text" />
-										</div>
-									</div>
-									<div class="row row-condensed space-4">
-										<label class="text-right col-sm-3"
-											for="user_emergency_contact_email"> Email </label>
-										<div class="col-sm-9">
-
-											<input id="user_emergency_contact_email"
-												name="user_emergency_contact[email]" size="30" type="text" />
-										</div>
-									</div>
-									<div class="row row-condensed space-4">
-										<label class="text-right col-sm-3"
-											for="user_emergency_contact_relationship">
-											Relationship </label>
-										<div class="col-sm-9">
-
-											<input id="user_emergency_contact_relationship"
-												name="user_emergency_contact[relationship]" size="30"
-												type="text" />
-										</div>
-									</div>
-								</div>
-								<div id="host-shipping-address">
-									<div data-reactroot="" class="row row-condensed space-4">
-										<div class="text-right col-sm-3 space-2">
-											Shipping Address <i class="icon icon-lock icon-ebisu"></i>
-										</div>
-										<div class="col-sm-9">
-											<div class="space-top-1">
-												<a id="address_add" href="#" data-prevent-default="true"><i
-													class="icon icon-add"></i><span>Add shipping address
-												</span></a>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div
-									data-hypernova-key="edit_profileguest_identificationsbundlejs">
-									<div class="row row-condensed space-4" data-reactroot=""
-										data-reactid="1" data-react-checksum="-1587713984">
-										<div class="col-sm-3" data-reactid="2">
-											<div class="text-right space-2" data-reactid="3">
-												<span data-reactid="4">Guest Profiles</span> &nbsp; <span
-													data-reactid="6"><i
-													class="icon icon-lock icon-ebisu" data-reactid="7"></i></span>
-											</div>
-										</div>
-										<div class="col-sm-9" data-reactid="9">
-											<div class="" data-reactid="10"></div>
-											<div class="row row-condensed space-1" data-reactid="11">
-												<div class="col-sm-12" data-reactid="12">
-													<button class="btn btn-link" type="button"
-														data-reactid="13">
-														<i class="icon icon-add" data-reactid="14"></i> &nbsp; <span
-															data-reactid="16">Add new guest profile</span>
-													</button>
-												</div>
-											</div>
-											<div class="row row-condensed" data-reactid="17">
-												<div class="col-sm-12" data-reactid="18">
-													<span class="text-muted" data-reactid="19"><span
-														data-reactid="20">This information is only required
-															when you travel to China and will not be shared with your
-															hosts and other guests.</span></span>
-												</div>
-											</div>
+										<input id="txtLanguages"
+											placeholder="Which languages can you speak" size="30" type="text"
+											value="#{webApplication.user.languages}" />
+										<div class="text-muted space-top-1">
+											This information would help your guests in communication with you
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-
-
-						<div id="business-travel" class="panel space-4">
-							<div class="panel-header">Business Travel</div>
-
-							<div class="panel-body">
-								<div data-hypernova-key="business_travelquick_enrollbundlejs">
-									<div class="bt-quick-enroll" data-reactroot="" data-reactid="1"
-										data-react-checksum="-1020319597">
-										<div class="row row-condensed space-1" data-reactid="2">
-											<span style="font-size: 0;" data-reactid="3"></span><label
-												class="text-right col-sm-3" for="new-entry-field"
-												data-reactid="4"><span data-reactid="5">Work
-													Email Address</span><span data-reactid="7"><i
-													class="icon icon-lock icon-ebisu" data-reactid="8"></i></span></label>
-											<div class="col-sm-9" data-reactid="10">
-												<div class="space-1" data-reactid="11">
-													<div class="input-addon hide-btn" data-reactid="12">
-														<input type="text" class="" id="new-entry-field" value=""
-															data-reactid="13" /> <span class="input-suffix with-btn"
-															type="text">
-															<button type="button" class="btn btn-primary"
-																data-reactid="15">
-																<span data-reactid="16">Add</span>
-															</button>
-														</span>
-													</div>
-													<div class="text-muted space-top-1" data-reactid="17">
-														<span data-reactid="18">Add
-															your work email address and get a<span
-															data-reactid="20"><strong data-reactid="21"><span
-																	data-reactid="22"><span data-reactid="23"><span
-																			data-reactid="24">€47</span></span>
-																		credit</span></strong></span>
-															after taking your first Airbnb business trip of
-															<span data-reactid="27"><span data-reactid="28">€70</span></span>
-															or more.
-														</span>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<button type="submit" class="btn btn-primary btn-large">
-							Save</button>
-
-						<div class="modal reauth-modal" role="dialog" aria-hidden="true">
-							<div class="modal-table">
-								<div class="modal-cell">
-									<div class="modal-content signup">
-
-										<div id="reauthenticate_container">
-											<div style="margin: 0; padding: 0; display: inline">
-												<input name="utf8" type="hidden" value="✓" /> <input
-													name="authenticity_token" type="hidden" value="null" />
-											</div>
-											<h3 class="panel-header panel-header-gray">Confirm
-												Password to Continue</h3>
-											<div
-												class="panel-header alert alert-header alert-with-icon alert-danger"
-												hidden="">
-												<i class="icon icon-alert-alt alert-icon"></i> <span
-													class="reauth-error"></span>
-											</div>
-											<div class="panel-padding panel-body">
-												<div class="textInput text-input-container" id="inputEmail">
-
-													<input class="decorative-input" id="confirm_password"
-														name="password" placeholder="Password" type="password" />
-													<div class="clearfix control-group space-top-2 text-right">
-														<a
-															href="https://www.airbnb.com/forgot_password?email=anil_cengiz%40outlook.com"
-															class="forgot-password">Forgot password?</a>
-													</div>
-												</div>
-											</div>
-											<div class="panel-footer">
-												<button type="submit" class="btn btn-primary">
-													Confirm Password</button>
-											</div>
-										</div>
-
-									</div>
-								</div>
-							</div>
-						</div>
+						<button type="button" class="btn btn-primary btn-large" ng-click="ctrl.saveChanges()">Save</button>						
 					</div>
 				</div>
 			</div>
 		</div>
 		</main>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/controller/edituser_controller.js"></script>
 	</ui:define>
 </ui:composition>

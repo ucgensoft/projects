@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.ucgen.common.dao.BaseRowMapper;
+import com.ucgen.common.dao.EnmJoinType;
 import com.ucgen.common.dao.ForeignKey;
 import com.ucgen.letserasmus.library.file.dao.FileRowMapper;
 import com.ucgen.letserasmus.library.file.model.File;
@@ -67,21 +68,21 @@ public class PlaceRowMapper extends BaseRowMapper<Place> {
 	public void addFKey(String keyName) {
 		if (FKEY_LOCATION.equals(keyName)) {
 			LocationRowMapper locationRowMapper = new LocationRowMapper("L");
-			ForeignKey<PlaceRowMapper, LocationRowMapper> fKeyLocation = new ForeignKey<PlaceRowMapper, LocationRowMapper>(this, locationRowMapper);
+			ForeignKey<PlaceRowMapper, LocationRowMapper> fKeyLocation = new ForeignKey<PlaceRowMapper, LocationRowMapper>(this, locationRowMapper, EnmJoinType.LEFT);
 			fKeyLocation.addFieldPair(COL_LOCATION_ID, LocationRowMapper.COL_ID);
 			this.addFKey(FKEY_LOCATION, fKeyLocation);
 		} 
 		
 		if (FKEY_USER.equals(keyName)) {
 			UserRowMapper userRowMapper = new UserRowMapper("L");
-			ForeignKey<PlaceRowMapper, UserRowMapper> fKeyUser = new ForeignKey<PlaceRowMapper, UserRowMapper>(this, userRowMapper);
+			ForeignKey<PlaceRowMapper, UserRowMapper> fKeyUser = new ForeignKey<PlaceRowMapper, UserRowMapper>(this, userRowMapper, EnmJoinType.LEFT);
 			fKeyUser.addFieldPair(COL_HOST_USER_ID, LocationRowMapper.COL_ID);
 			this.addFKey(FKEY_USER, fKeyUser);
 		}
 		
 		if (FKEY_FILE.equals(keyName)) {
 			FileRowMapper fileRowMapper = new FileRowMapper("F");
-			ForeignKey<PlaceRowMapper, FileRowMapper> fKeyFile = new ForeignKey<PlaceRowMapper, FileRowMapper>(this, fileRowMapper);
+			ForeignKey<PlaceRowMapper, FileRowMapper> fKeyFile = new ForeignKey<PlaceRowMapper, FileRowMapper>(this, fileRowMapper, EnmJoinType.LEFT);
 			fKeyFile.addFieldPair(COL_COVER_PHOTO_ID, FileRowMapper.COL_ID);
 			this.addFKey(FKEY_FILE, fKeyFile);
 		}

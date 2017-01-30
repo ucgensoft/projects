@@ -253,7 +253,7 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', funct
 				}); 
   	};
   	  
-     self.initialize();
+     //self.initialize();
       
   }]);
 
@@ -280,4 +280,9 @@ function login() {
 function loginWithFacebook() {
 	var scope = angular.element( $('#divPageHeader') ).scope();
 	scope.ctrl.loginWithFacebook();
+}
+
+function onPageLoadHeader() {
+	var scope = angular.element( $('#divPageHeader') ).scope();
+	scope.ctrl.initialize();
 }

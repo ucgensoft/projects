@@ -16,13 +16,6 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
       	  	'image/gif' : true
       	  };
       
-      var tests = {
-      	  	filereader : typeof FileReader != 'undefined',
-      	  	dnd : 'draggable' in document.createElement('span'),
-      	  	formdata : !!window.FormData,
-      	  	progress : "upload" in new XMLHttpRequest
-      	  };
-
      var support = {
       	  	filereader : document.getElementById('filereader'),
       	  	formdata : document.getElementById('formdata'),

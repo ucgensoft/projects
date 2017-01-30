@@ -1,4 +1,11 @@
 ﻿
+var tests = {
+      	  	filereader : typeof FileReader != 'undefined',
+      	  	dnd : 'draggable' in document.createElement('span'),
+      	  	formdata : !!window.FormData,
+      	  	progress : "upload" in new XMLHttpRequest
+      	  };
+
 var currentUrlParamArr = null;
 var getUriParam = function (paramName) {
     var url = window.location.href;
@@ -170,7 +177,7 @@ var DialogUtil = {
 	},
 		
 	showMessage : function(type, title, message, callBackFunc) {
-		$.msgBox({
+		$.msgbox({
 			  title: title,
 			  content: message,
 			  type: type,
@@ -183,6 +190,7 @@ var DialogUtil = {
 				  }
 			  }
 			  });
+	
 	},
 
 	showConfirm : function(title, message, callBackFunc) {

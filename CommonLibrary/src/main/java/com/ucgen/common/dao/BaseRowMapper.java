@@ -121,13 +121,20 @@ public abstract class BaseRowMapper<T> implements RowMapper<T>{
 			for (int i = 0; i < fKeyColList.size(); i++) {
 				selectBuilder.append("," +  fKey.getDestMapper().shortTableName + "." + fKeyColList.get(i) + " "  + fKey.getDestMapper().getColumnName(fKeyColList.get(i)));
 			}
+			
+			fromBuilder.append(" " + fKey.getJoinType().getSqlString() + " ");
+			
+			fromBuilder.append(fKey.getDestMapper().getTableName() + " " + fKey.getDestMapper().getShortTableName() + " ON ");
+			int counter = 0;
 			for (String fieldPairKey : fKey.getFieldPairMap().keySet()) {
-				whereBuilder.append(" AND ");
-				whereBuilder.append(this.shortTableName + "." + fieldPairKey);
-				whereBuilder.append("=");
-				whereBuilder.append(fKey.getDestMapper().getShortTableName() + "." + fKey.getFieldPairMap().get(fieldPairKey));
+				if (counter > 0) {
+					fromBuilder.append(" AND ");
+				}
+				fromBuilder.append(this.shortTableName + "." + fieldPairKey);
+				fromBuilder.append("=");
+				fromBuilder.append(fKey.getDestMapper().getShortTableName() + "." + fKey.getFieldPairMap().get(fieldPairKey));
+				counter ++;
 			}
-			fromBuilder.append("," + fKey.getDestMapper().getTableName() + " " + fKey.getDestMapper().getShortTableName());
 		}
 		
 		return selectBuilder.toString() + fromBuilder.toString() + whereBuilder.toString();

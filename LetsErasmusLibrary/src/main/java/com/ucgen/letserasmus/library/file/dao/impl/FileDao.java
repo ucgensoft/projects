@@ -27,6 +27,8 @@ public class FileDao extends JdbcDaoSupport implements IFileDao {
 	
 	private static final String UPDATE_FILE_SQL = " UPDATE FILE SET FILE_NAME=?,FILE_TYPE=?,ENTITY_TYPE=?,ENTITY_ID=?,CREATED_BY=?,CREATED_DATE=?,CREATED_DATE_GMT=?,MODIFIED_BY=?,MODIFIED_DATE=?,MODIFIED_DATE_GMT=? WHERE ID=? ";
 	
+	private static final String DELETE_FILE_SQL = " DELETE FROM FILE WHERE ID = ? ";
+	
 	private UtilityDao utilityDao;
 		
 	@Autowired
@@ -122,6 +124,17 @@ public class FileDao extends JdbcDaoSupport implements IFileDao {
 		
 		operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 		operationResult.setResultValue(updatedRowCount);
+		
+		return operationResult;
+	}
+
+	@Override
+	public OperationResult deleteFile(Long id) {
+		OperationResult operationResult = new OperationResult();
+		
+		this.getJdbcTemplate().update(DELETE_FILE_SQL, new Object[] { id });
+		
+		operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 		
 		return operationResult;
 	}

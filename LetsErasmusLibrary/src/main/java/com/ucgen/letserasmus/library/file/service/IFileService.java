@@ -13,4 +13,6 @@ public interface IFileService {
 	
 	ValueOperationResult<Integer> updateFile(File file);
 	
+	OperationResult deleteFile(Long id);
+	
 }
