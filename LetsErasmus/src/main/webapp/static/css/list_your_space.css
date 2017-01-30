@@ -4078,13 +4078,15 @@ input[type=number].phone-number-verification {
 
 @media ( min-width : 744px) {
 	.main-panel-container {
-		padding-bottom: 102px
+		/*padding-bottom: 102px*/
+		padding-bottom: 20px
 	}
 }
 
 @media ( max-width : 743px) {
 	.main-panel-container {
-		padding-bottom: 66px
+		/*padding-bottom: 66px*/
+		padding-bottom: 20px
 	}
 }
 
@@ -5871,9 +5873,9 @@ h3.no-margin-padding {
 	font-size: 18px
 }
 
-.amenity-item input[type="checkbox"] {
+/*.amenity-item input[type="checkbox"] {
 	margin-right: 0
-}
+}*/
 
 .amenity-item label {
 	padding: 0;
@@ -7332,4 +7334,9 @@ keyframes spin-counterclockwise { 0%{
 
 .edit-left-padding {
 	padding-left: 26px
+}
+
+#txtDailyPrice, #txtDepositPrice, #txtStartDatePicker, #txtEndDatePicker, #txtMinStay, #txtMaxStay{
+		margin-top: 0;
+	max-width: 320px
 }
