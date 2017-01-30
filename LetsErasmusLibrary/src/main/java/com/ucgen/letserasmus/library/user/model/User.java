@@ -1,7 +1,10 @@
 package com.ucgen.letserasmus.library.user.model;
 
+import java.util.Date;
+
 import com.ucgen.common.util.StringUtil;
 import com.ucgen.letserasmus.library.common.model.BaseModel;
+import com.ucgen.letserasmus.library.file.model.File;
 
 public class User extends BaseModel {
 	
@@ -24,11 +27,18 @@ public class User extends BaseModel {
 	private String ip;
 	private String googleId;
 	private String facebookId;
+	private String jobTitle;
+	private String schoolName;
+	private Date birthDate;
+	private String description;
+	private String residenceLocationName;
+	private String languages;
+	
+	private File profilePhoto;
 	
 	private String profileImageUrl;
-	
 	private Integer loginType;
-
+	
 	public Long getId() {
 		return id;
 	}
@@ -143,6 +153,48 @@ public class User extends BaseModel {
 	}
 	public void setFacebookId(String facebookId) {
 		this.facebookId = facebookId;
+	}
+	public String getJobTitle() {
+		return jobTitle;
+	}
+	public void setJobTitle(String jobTitle) {
+		this.jobTitle = jobTitle;
+	}
+	public String getSchoolName() {
+		return schoolName;
+	}
+	public void setSchoolName(String schoolName) {
+		this.schoolName = schoolName;
+	}
+	public Date getBirthDate() {
+		return birthDate;
+	}
+	public void setBirthDate(Date birthDate) {
+		this.birthDate = birthDate;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public String getResidenceLocationName() {
+		return residenceLocationName;
+	}
+	public void setResidenceLocationName(String residenceLocationName) {
+		this.residenceLocationName = residenceLocationName;
+	}
+	public String getLanguages() {
+		return languages;
+	}
+	public void setLanguages(String languages) {
+		this.languages = languages;
+	}
+	public File getProfilePhoto() {
+		return profilePhoto;
+	}
+	public void setProfilePhoto(File profilePhoto) {
+		this.profilePhoto = profilePhoto;
 	}
 	public String getFullName() {
 		String fullName = "";

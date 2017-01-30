@@ -1,10 +1,7 @@
+/*
 body, #mainWrapper {
 	height: 100%;
 }
-
-/*body,.form-control{
-	font-size:12px!important;
-}*/
 
 .floatRight{
 	float:right;
@@ -39,10 +36,17 @@ body, #mainWrapper {
     width: 80px !important;
 }
 
+.padding-level1 {
+	padding: 5px;
+}
+*/
+
 .hidden {
 	display: none !important;
 }
 
-.padding-level1 {
-	padding: 5px;
+.ui-datepicker-month, .ui-datepicker-year {
+	display: inline
 }
+
+

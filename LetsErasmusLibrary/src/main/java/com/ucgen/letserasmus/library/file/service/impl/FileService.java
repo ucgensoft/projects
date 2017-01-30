@@ -39,4 +39,9 @@ public class FileService implements IFileService{
 		return this.fileDao.updateFile(file);
 	}
 
+	@Override
+	public OperationResult deleteFile(Long id) {
+		return this.fileDao.deleteFile(id);
+	}
+
 }

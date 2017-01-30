@@ -8,6 +8,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.ucgen.letserasmus.library.user.model.User;
+import com.ucgen.letserasmus.web.view.application.EnmSession;
 
 public abstract class BaseApiController {
 
@@ -17,11 +18,22 @@ public abstract class BaseApiController {
 	}
 	
 	public User getSessionUser(HttpSession session) {
-		Object user = session.getAttribute("appUser");
+		Object user = session.getAttribute(EnmSession.USER.getId());
 		if (user != null && user instanceof User) {
 			return (User) user;
 		} else {
 			return null;
+		}
+	}
+	
+	public boolean setSessionAttribute(String attributeName, Object attributeValue) {
+		HttpSession session = this.getSession();
+		if (session != null) {
+			session.removeAttribute(attributeName);
+			session.setAttribute(attributeName, attributeValue);
+			return true;
+		} else {
+			return false;
 		}
 	}
 	

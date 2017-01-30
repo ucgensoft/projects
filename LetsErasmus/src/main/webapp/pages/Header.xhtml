@@ -17,14 +17,14 @@
 			class="nav-top--right">
 		<div class="nav-top--right">
 			<ui:fragment
-				rendered="#{webApplication.getSessionAttribute('user') != null}">
+				rendered="#{webApplication.user != null}">
 				<div class="dropdown--wrapper">
 					<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.xhtml" rel="" title="View messages and potential tenants"
 						class="nav-top--right--link nav-top--right--link__dropdown">
 						<div class="nav-top--avatar" title="Go to your dashboard">
 							<div class="avatar--img"
 								style="background-size: cover; width: 100%; height: 100%; 
-								background-image: url(#{webApplication.userProfilePhotoUrl});">
+								background-image: url(#{webApplication.userSmallProfilePhotoUrl});">
 							</div>
 						</div>
 						<div class="nav-top--username">#{webApplication.user.fullName}</div>
@@ -39,7 +39,7 @@
 				</a>
 			</div>
 			<ui:fragment
-				rendered="#{webApplication.getSessionAttribute('user') != null}">
+				rendered="#{webApplication.user != null}">
 				<a id="become-a-host"
 					onclick="openWindow('#{webApplication.urlPrefix}/pages/dashboard/EditUser.xhtml', true)"
 					title="Manage your profile and account settings" href=""
@@ -53,14 +53,14 @@
 				class="nav-top--right--link hidden-sm-down"> <span>Help</span>
 			</a>
 			<ui:fragment
-				rendered="#{webApplication.getSessionAttribute('user') == null}">
+				rendered="#{webApplication.user == null}">
 				<a id="a-register" ng-click="ctrl.openSignUpWindow()"
 					title="Register to book or list a room or pick a tenant" href=""
 					class="nav-top--right--link hidden-sm-down"> <span>Sign up</span>
 				</a>
 			</ui:fragment>
 			<ui:fragment
-				rendered="#{webApplication.getSessionAttribute('user') == null}">
+				rendered="#{webApplication.user == null}">
 				<a id="a-login"
 					ng-click="ctrl.openLoginWindow()"
 					title="Login to see new messages and potential tenants" href=""
@@ -68,7 +68,7 @@
 				</a>
 			</ui:fragment>
 			<ui:fragment
-				rendered="#{webApplication.getSessionAttribute('user') != null}">
+				rendered="#{webApplication.user != null}">
 				<a id="a-login"
 					ng-click="ctrl.logout()"
 					title="Login to see new messages and potential tenants" href=""

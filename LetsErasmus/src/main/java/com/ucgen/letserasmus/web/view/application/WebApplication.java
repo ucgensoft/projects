@@ -6,6 +6,8 @@ import java.net.URLEncoder;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 
+import com.ucgen.common.util.FileUtil;
+import com.ucgen.letserasmus.library.file.enumeration.EnmFileType;
 import com.ucgen.letserasmus.library.user.model.User;
 import com.ucgen.letserasmus.web.view.BaseController;
 
@@ -13,8 +15,6 @@ import com.ucgen.letserasmus.web.view.BaseController;
 @ApplicationScoped
 public class WebApplication extends BaseController {
 
-	public static final String SESSION_USER = "user";
-	
 	public static final String FB_APP_ID = "305890206479305";
 	public static final String FB_APP_SECRET = "f1f5ad76a1b8ae942346b575e3c96ede";
 	public static final String REDIRECT_URI = "http://localhost:8080/FLogin/fbhome";
@@ -68,13 +68,15 @@ public class WebApplication extends BaseController {
 			return "placeCtrl";
 		} else if (requestUrl.contains("PAGES/PLACEDETAIL.XHTML")) {
 			return "placeDetailCtrl";
-		} else {
+		} else if (requestUrl.contains("PAGES/DASHBOARD/EDITUSER.XHTML")) {
+			return "editUserCtrl";
+		}else {
 			return "";
 		}
 	}
 	
 	public User getUser() {
-		Object objUser = super.getSessionAttribute("user");
+		Object objUser = super.getSessionAttribute(EnmSession.USER.getId());
 		if (objUser != null) {
 			return (User) objUser;
 		} else {
@@ -91,7 +93,20 @@ public class WebApplication extends BaseController {
 		User user = this.getUser();
 		if (user != null) {
 			if (user.getProfilePhotoId() != null) {
-				photoUrl = this.rootProfileImagePath + "/" + user.getProfilePhotoId() + "/" + user.getProfilePhotoId() + "_profile.png";
+				String smallFileName = AppUtil.getSmallUserPhotoName(user.getId(), user.getProfilePhotoId(), EnmFileType.getFileType(user.getProfilePhoto().getFileType()));
+				photoUrl = FileUtil.concatPath(this.rootProfileImagePath, user.getId().toString(), smallFileName);
+			}
+		}
+		return photoUrl;
+	}
+	
+	public String getUserSmallProfilePhotoUrl() {
+		String photoUrl = null;
+		User user = this.getUser();
+		if (user != null) {
+			if (user.getProfilePhotoId() != null) {
+				String smallFileName = AppUtil.getSmallUserPhotoName(user.getId(), user.getProfilePhotoId(), EnmFileType.getFileType(user.getProfilePhoto().getFileType()));
+				photoUrl = AppUtil.concatPath(this.rootProfileImagePath, user.getId().toString(), smallFileName);
 			} else if (user.getProfileImageUrl() != null) {
 				photoUrl = user.getProfileImageUrl();
 			}
@@ -101,7 +116,7 @@ public class WebApplication extends BaseController {
 	
 	public String getLoginType() {
 		String loginType = "";
-		User user = (User) super.getSessionAttribute(SESSION_USER); 
+		User user = (User) super.getSessionAttribute(EnmSession.USER.getId()); 
 		if (user != null && user.getLoginType() != null) {
 			loginType = user.getLoginType().toString();
 		}
@@ -110,11 +125,19 @@ public class WebApplication extends BaseController {
 	
 	public String getFacebookTokenId() {
 		String facebookTokenId = "";
-		User user = (User) super.getSessionAttribute(SESSION_USER); 
+		User user = (User) super.getSessionAttribute(EnmSession.USER.getId()); 
 		if (user != null && user.getFacebookTokenId() != null) {
 			facebookTokenId = user.getFacebookTokenId();
 		}
 		return facebookTokenId;
+	}
+	
+	public String setActiveOperation(int operationId) {
+		if (super.getSession() != null) {
+			super.getSession().removeAttribute(EnmSession.ACTIVE_OPERATION.getId());;
+			super.getSession().setAttribute(EnmSession.ACTIVE_OPERATION.getId(), EnmOperation.getOperation(operationId));;
+		}
+		return "";
 	}
 	
 }

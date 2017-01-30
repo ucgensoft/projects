@@ -14,4 +14,6 @@ public interface IFileDao {
 	
 	ValueOperationResult<Integer> updateFile(File file);
 	
+	OperationResult deleteFile(Long id);
+	
 }

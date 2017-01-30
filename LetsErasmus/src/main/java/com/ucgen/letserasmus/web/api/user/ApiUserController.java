@@ -1,5 +1,10 @@
 package com.ucgen.letserasmus.web.api.user;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,16 +13,31 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ucgen.common.operationresult.EnmResultCode;
 import com.ucgen.common.operationresult.OperationResult;
+import com.ucgen.common.util.CommonUtil;
+import com.ucgen.common.util.DateUtil;
+import com.ucgen.common.util.FileUtil;
+import com.ucgen.common.util.ImageUtil;
 import com.ucgen.letserasmus.library.common.enumeration.EnmBoolStatus;
+import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
+import com.ucgen.letserasmus.library.file.enumeration.EnmFileType;
+import com.ucgen.letserasmus.library.file.model.Photo;
 import com.ucgen.letserasmus.library.user.enumeration.EnmLoginType;
 import com.ucgen.letserasmus.library.user.enumeration.EnmUserStatus;
 import com.ucgen.letserasmus.library.user.model.User;
 import com.ucgen.letserasmus.library.user.service.IUserService;
 import com.ucgen.letserasmus.web.api.BaseApiController;
+import com.ucgen.letserasmus.web.view.application.AppUtil;
+import com.ucgen.letserasmus.web.view.application.EnmOperation;
+import com.ucgen.letserasmus.web.view.application.EnmSession;
 
 @RestController
 public class ApiUserController extends BaseApiController {
@@ -296,8 +316,111 @@ public class ApiUserController extends BaseApiController {
 		return operationResult;
     }
 	
+    @RequestMapping(value = "/api/user/update", method = RequestMethod.POST)
+    public ResponseEntity<OperationResult> updateUser(@RequestParam("profilePhoto") MultipartFile profilePhoto, @RequestParam("user") String userJson, HttpSession session) throws JsonParseException, JsonMappingException, IOException, ParseException {
+		HttpStatus httpStatus = null;
+		OperationResult operationResult = new OperationResult();
+		boolean profilePhotoChanged = (profilePhoto != null && !profilePhoto.getOriginalFilename().equalsIgnoreCase("dummy"));
+		try {			
+			Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
+			if (activeOperation != null && activeOperation.equals(EnmOperation.UPDATE_USER)) {
+				User sessionUser = super.getSessionUser(session);
+				if (sessionUser != null) {
+					String modifiedBy = sessionUser.getFullName();
+					Long oldProfilePhotoId = sessionUser.getProfilePhotoId();
+					
+					ObjectMapper mapper = new ObjectMapper();
+					
+					Map userMap = mapper.readValue(userJson, Map.class);
+					
+					User user = new User();
+					
+					user.setId(sessionUser.getId());
+					user.setFirstName(this.getString(userMap.get("firstName")));
+					user.setLastName(this.getString(userMap.get("lastName")));
+					user.setGender(this.getString(userMap.get("gender")));
+					user.setPassword(this.getString(userMap.get("password")));
+					user.setEmail(this.getString(userMap.get("email")));
+					user.setResidenceLocationName(this.getString(userMap.get("residenceLocationName")));
+					user.setDescription(this.getString(userMap.get("description")));
+					user.setJobTitle(this.getString(userMap.get("jobTitle")));
+					user.setSchoolName(this.getString(userMap.get("schoolName")));
+					user.setLanguages(this.getString(userMap.get("languages")));
+					user.setMsisdn(this.getString(userMap.get("msisdn")));
+					
+					if (userMap.get("birthDate") != null && !userMap.get("birthDate").toString().isEmpty()) {
+						user.setBirthDate(DateUtil.valueOf(userMap.get("birthDate").toString(), DateUtil.SHORT_DATE_FORMAT));
+					}
+					
+					if (sessionUser.getProfilePhoto() != null) {
+						user.setProfilePhotoId(sessionUser.getProfilePhoto().getId());
+					}
+					
+					if (profilePhotoChanged) {
+						String fileSuffix = profilePhoto.getContentType().split("/")[1];
+						String fileName = profilePhoto.getOriginalFilename().split("\\.")[0];
+						Photo photo = new Photo();
+						photo.setFileName(fileName);
+						photo.setFileSize(profilePhoto.getSize());
+						photo.setEntityType(EnmEntityType.USER.getValue());
+						photo.setEntityId(user.getId());
+						photo.setCreatedBy(modifiedBy);
+						photo.setFileType(EnmFileType.getFileTypeWithSuffix(fileSuffix).getValue());
+						
+						user.setProfilePhoto(photo);
+					}
+					
+					OperationResult createResult = this.userService.updateUser(user);
+					if (OperationResult.isResultSucces(createResult) && profilePhotoChanged) {
+						try {
+							String rootPhotoFolder = "D:\\Personal\\Development\\startup\\workspace\\projects\\LetsErasmus\\src\\main\\webapp\\user\\images\\";
+							String userPhotoFolder = rootPhotoFolder + user.getId(); 
+							(new File(FileUtil.concatPath(userPhotoFolder, "tmp"))).mkdirs();
+							
+							com.ucgen.letserasmus.library.file.model.File photo = user.getProfilePhoto();
+							
+							String tmpPhotoPath = FileUtil.concatPath(userPhotoFolder, "tmp", photo.getId() + "." + EnmFileType.getFileType(photo.getFileType()).getFileSuffix());
+							String newSmallFileName = AppUtil.getSmallUserPhotoName(user.getId(), photo.getId(), EnmFileType.getFileType(photo.getFileType()));
+							String newLargeFileName = newSmallFileName.replace("small", "large");
+							
+							File tmpFile = new File(tmpPhotoPath);
+							profilePhoto.transferTo(tmpFile);
+							
+							if (oldProfilePhotoId != null) {
+								FileUtil.cleanDirectory(userPhotoFolder, false);
+							}
+
+							ImageUtil.resizeImage(tmpFile, FileUtil.concatPath(userPhotoFolder, newLargeFileName ), 400, 700);
+							ImageUtil.resizeImage(tmpFile, FileUtil.concatPath(userPhotoFolder, newSmallFileName ), 300, 300);
+							
+							tmpFile.delete();
+							
+						} catch (Exception e) {
+							System.out.println(CommonUtil.getExceptionMessage(e));
+						}
+					}
+					this.setSessionAttribute(EnmSession.USER.getId(), this.userService.getUser(user));
+					operationResult = createResult;
+				} else {
+					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+					operationResult.setResultDesc("There is no user logged in!");
+				}
+			} else {
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc("You are not authorized for this operation!");
+			}
+			
+			httpStatus = HttpStatus.OK;			
+		} catch (Exception e) {
+			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
+			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<OperationResult>(operationResult, httpStatus);
+    }
+    
 	private void processLogin(HttpSession session, User user, EnmLoginType loginType) {
-		session.setAttribute("user", user);
+		session.setAttribute(EnmSession.USER.getId(), user);
 		session.setAttribute("login_type", loginType.getId());
 	}
 	

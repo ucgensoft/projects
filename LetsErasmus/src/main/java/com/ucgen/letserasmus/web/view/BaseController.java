@@ -1,11 +1,14 @@
 package com.ucgen.letserasmus.web.view;
 
+import java.util.Date;
 import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import com.ucgen.common.util.DateUtil;
 
 
 public abstract class BaseController {
@@ -35,6 +38,17 @@ public abstract class BaseController {
 			return null;
 		}
 	}
+	
+	public boolean setSessionAttribute(String attributeName, Object attributeValue) {
+		HttpSession session = this.getSession();
+		if (session != null) {
+			session.removeAttribute(attributeName);
+			session.setAttribute(attributeName, attributeValue);
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	public HttpServletRequest getRequest() {
 		Object request = FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -43,6 +57,10 @@ public abstract class BaseController {
 		} else {
 			return null;
 		}
+	}
+	
+	public String formatDate(Date date, String format) {
+		return DateUtil.format(date, format);
 	}
 
 	public String getPagingTemplate() {
@@ -55,6 +73,22 @@ public abstract class BaseController {
 	
 	public String getRowsPerPageTemplate() {
 		return ROWS_PER_PAGE;
+	}
+	
+	public boolean isEqual(Object src, Object dest) {
+		if (src != null) {
+			if (dest == null) {
+				return false;
+			} else {
+				return src.equals(dest);
+			}
+		} else {
+			if (dest == null) {
+				return true;
+			} else {
+				return false;
+			}
+		}
 	}
 
 	public static String getRequestParameter(String paramName) {

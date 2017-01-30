@@ -3,7 +3,8 @@ package com.ucgen.letserasmus.library.common.enumeration;
 public enum EnmGender {
 
 	FEMALE("F"),
-	MALE("M");
+	MALE("M"),
+	OTHER("O");
 	
 	private String id;
 	
