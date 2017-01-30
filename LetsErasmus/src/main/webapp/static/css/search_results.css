@@ -2420,10 +2420,6 @@ p {
 	font-family: Airglyphs, sans-serif
 }
 
-.icon-search:before {
-	content: '\f1d0';
-}
-
 .icon-filter:before {
 	content: '\f170';
 	letter-spacing: 10px;
