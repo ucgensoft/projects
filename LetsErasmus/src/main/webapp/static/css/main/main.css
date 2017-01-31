@@ -1,9 +1,9 @@
 .form-control:focus {
-	border-color: #00af9e;
+	border-color: #0275a8;
 	outline: none
 }
 
-.form-control {
+.form-control{
 	display: block;
 	width: 100%;
 	padding: .375rem .75rem;
@@ -94,7 +94,7 @@
 }
 
 .form-control-success {
-	border-color: #00af9e
+	border-color: #0275a8
 }
 
 .form-control-warning {
@@ -133,11 +133,11 @@
 }
 
 .has-success .form-control {
-	border-color: #00af9e
+	border-color: #0275a8
 }
 
 .has-success .form-control-feedback {
-	color: #00af9e
+	color: #0275a8
 }
 
 .has-warning .form-control {
