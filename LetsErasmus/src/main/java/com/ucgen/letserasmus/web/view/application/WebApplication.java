@@ -106,6 +106,10 @@ public class WebApplication extends BaseController {
 		return photoUrl;
 	}
 	
+	public String getSmallPhotoUrl(User user) {
+		return getUserSmallPhotoUrl(user);
+	}
+	
 	public String getLoginType() {
 		String loginType = "";
 		User user = (User) super.getSessionAttribute(EnmSession.USER.getId()); 
