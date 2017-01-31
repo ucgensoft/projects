@@ -186,6 +186,7 @@ public class PlaceDao extends JdbcDaoSupport implements IPlaceDao{
 		PlaceRowMapper placeRowMapper = new PlaceRowMapper();
 		placeRowMapper.addFKey(PlaceRowMapper.FKEY_LOCATION);
 		placeRowMapper.addFKey(PlaceRowMapper.FKEY_FILE);
+		placeRowMapper.addFKey(PlaceRowMapper.FKEY_USER);
 		
 		sqlBuilder.append(placeRowMapper.getSelectSqlWithForeignKeys());
 		

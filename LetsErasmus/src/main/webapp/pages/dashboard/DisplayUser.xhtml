@@ -25,9 +25,9 @@
 										<ul class="slideshow-images">
 											<li class="active media-photo media-photo-block">
 											<img
-												alt="Anıl" class="img-responsive" height="225"
-												src="https://a0.muscache.com/im/pictures/2fbedaff-e37d-4f85-a3f4-1659d22d07ab.jpg?aki_policy=profile_x_medium"
-												title="Anıl" width="225" /></li>
+												alt="#{displayUserController.user.firstName}" class="img-responsive" height="225"
+												src="#{displayUserController.userLargePhotoUrl}"
+												title="#{displayUserController.user.firstName}" width="225" /></li>
 											<li class="media-photo media-photo-block"></li>
 										</ul>
 									</div>
@@ -40,27 +40,18 @@
 							<div class="panel-body">
 								<ul class="list-unstyled space-3">
 									<li class="row row-table space-2">
-										<div class="col-12 col-middle">Government ID</div>
-										<div class="col-3 col-middle">
-											<i class="icon icon-ok h3"></i>
-										</div>
-									</li>
-									<li class="row row-table space-2">
 										<div class="col-12 col-middle">Email address</div>
 										<div class="col-3 col-middle">
-											<i class="icon icon-ok h3"></i>
+											<i class="icon #{displayUserController.user.emailVerified == 'Y' ? 'icon-ok' : 'icon-remove'} h3"></i>
 										</div>
 									</li>
 									<li class="row row-table space-2">
 										<div class="col-12 col-middle">Phone number</div>
 										<div class="col-3 col-middle">
-											<i class="icon icon-ok h3"></i>
+											<i class="icon #{displayUserController.user.msisdnVerified == 'Y' ? 'icon-ok' : 'icon-remove'} h3"></i>
 										</div>
 									</li>
 								</ul>
-	
-								<a href="https://www.airbnb.com/users/edit_verification">
-									Verify more info </a>
 							</div>
 						</div>
 	
@@ -71,13 +62,13 @@
 									<li class="row row-table space-2">
 										<div class="col-12 col-middle">Facebook</div>
 										<div class="col-3 col-middle">
-											<i class="icon icon-ok h3"></i>
+											<i class="icon #{displayUserController.user.facebookId != null ? 'icon-ok' : 'icon-remove'} h3"></i>
 										</div>
 									</li>
 									<li class="row row-table space-2">
-										<div class="col-12 col-middle">LinkedIn</div>
+										<div class="col-12 col-middle">Google</div>
 										<div class="col-3 col-middle">
-											<i class="icon icon-ok h3"></i>
+											<i class="icon #{displayUserController.user.googleId != null ? 'icon-ok' : 'icon-remove'} h3"></i>
 										</div>
 									</li>
 								</ul>
@@ -90,10 +81,9 @@
 							<div class="panel-body">
 								<dl>
 									<dt>School</dt>
-									<dd>Milli Piyango Anadolu Lisesi, Marmara University</dd>
+									<dd>#{displayUserController.user.schoolName}</dd>
 	
-									<dt class="airbnb-symbol-hidden hide space-1">Anıl's Airbnb
-										Symbol</dt>
+									<dt class="airbnb-symbol-hidden hide space-1">#{displayUserController.user.firstName}'s LetsErasmus Symbol</dt>
 									<dd class="airbnb-symbol-hidden hide">
 	
 										<div class="user-profile-symbol" data-user-id="54995441">
@@ -102,13 +92,8 @@
 												data-default-url="https://a0.muscache.com/airbnb/static/profile/symbol-empty-state-d97ee7a003fdab31cfaa9b20bd3a27ff.png"
 												data-base-url="https://create.airbnb.com/"
 												data-src-url="https://create.airbnb.com/54995441/symbol"
-												alt="Anıl" class="img-responsive" />
+												alt="#{displayUserController.user.firstName}" class="img-responsive" />
 										</div>
-	
-										<p>
-											<a href="#" class="airbnb-symbol-link" target="_blank"
-												rel="nofollow"> Visit create.airbnb.com </a> »
-										</p>
 									</dd>
 								</dl>
 							</div>
@@ -125,11 +110,10 @@
 								</div>
 							</div>
 							<div class="col-sm-8 col-md-12 col-lg-12">
-								<h1>Hey, I’m Anıl!</h1>
+								<h1>Hey, I’m #{displayUserController.user.firstName}!</h1>
 								<div class="h5 space-top-2">
-									<a href="/s/Istanbul--Turkey" class="link-reset">Istanbul,
-										Turkey</a> · <span class="text-normal"> Joined in January
-										2016 </span>
+									<a href="/s/Istanbul--Turkey" class="link-reset">#{displayUserController.user.residenceLocationName}</a> · 
+										<span class="text-normal"> Joined in #{displayUserController.formatDate(displayUserController.user.createdDate, 'MMMM yyyy')}</span>
 								</div>
 								<div class="text-muted space-top-2">
 									<div data-hypernova-key="user_flag_controlbundlejs">
@@ -145,12 +129,12 @@
 											<!-- react-empty: 7 -->
 										</div>
 									</div>
-									<script type="application/json"
-										data-hypernova-key="user_flag_controlbundlejs"><!--{"phrases":{"report_this_listing":"Report this listing","report_this_user":"Report this user","report_this_review":"Report this review","flag_instructions":"If so, please choose one of the following reasons and our dedicated Trust and Safety team will look into it.","you_reported_this_listing":"You have reported this listing.","you_reported_this_user":"You have reported this user.","undo_report":"Undo?","modal_close":"Close","report_listing_question":"Do you want to anonymously report this listing?","report_user_question":"Do you want to anonymously report this user?","report_review_question":"Do you want to anonymously report this review?","thank_you":"Thank You!","thank_you_for_reporting_this_listing":"Thanks for taking the time to report this listing.","thank_you_for_reporting_this_user":"Thanks for taking the time to report this user.","your_participation_helps_and_we_appreciate_it":"Your participation helps keep Airbnb a safe and trusted community, and it doesn’t go unnoticed!","please_describe_a_reason":"Please describe a reason","submit":"Submit","learn_more":"Learn more &amp;raquo;","flagged_by_another_user":"Flagged by another user","flag_widget_user_suspicious_bad":"This profile shouldn’t be on Airbnb","flag_widget_user_contact_info":"Attempt to share contact information","flag_widget_user_inappropriate_spam":"Inappropriate content or spam","flag_widget_user_other":"Other","flag_widget_listing_suspicious_bad":"This listing shouldn’t be on Airbnb","flag_widget_listing_not_a_home":"This is not an accommodation","flag_widget_listing_inappropriate_spam":"Inappropriate content or spam","flag_widget_listing_other":"Other","flag_widget_message_transact_offline":"Attempt to pay or communicate outside Airbnb","flag_widget_message_website_solicitation":"Solicitation for another website","flag_widget_message_inappropriate_spam":"Inappropriate content","flag_widget_message_hateful_content":"Discriminatory or hateful content","flag_widget_message_other":"Other","flag_widget_user_suspicious_bad_details":"This profile may belong to a scammer, criminal offender, or exist for other malicious purposes.","flag_widget_user_contact_info_details":"There is an email address, phone number, or website address hidden in this profile.","flag_widget_user_inappropriate_spam_details":"The profile photos or description contain violent, graphic, promotional, or otherwise offensive content.","flag_widget_user_other_details":"None of the above reasons apply.","flag_widget_listing_suspicious_bad_details":"This listing contains false information or may be a fake listing.","flag_widget_listing_not_a_home_details":"This listing is a service, not an actual home.","flag_widget_listing_inappropriate_spam_details":"The photos or description of this listing contain violent, graphic, promotional, or otherwise offensive content.","flag_widget_listing_other_details":"None of the above reasons apply.","flag_widget_message_transact_offline_details":"This person is attempting to share or request contact info before an accepted reservation.","flag_widget_message_website_solicitation_details":"This message links to a website unaffiliated with Airbnb.","flag_widget_message_inappropriate_spam_details":"This message contains violent, graphic, or otherwise offensive content.","flag_widget_message_hateful_content_details":"This message contains discriminatory or hateful content.","flag_widget_message_other_details":"None of the above reasons apply.","flag_widget_thank_you":"Thank You"},"trebuchets":{}}--></script>
 								</div>
-								<div class="edit_profile_container space-3">
-									<a href="/users/edit">Edit Profile</a>
-								</div>
+								<ui:fragment rendered="#{webApplication.user.id == displayUserController.user.id}">
+									<div class="edit_profile_container space-3">
+										<a href="#{webApplication.urlPrefix}/pages/dashboard/EditUser.xhtml">Edit Profile</a>
+									</div>
+								</ui:fragment>
 							</div>
 						</div>
 						<div class="space-top-2">
@@ -188,7 +172,6 @@
 															<span class="badge-pill-label" data-reactid="17">Verified</span>
 														</div>
 											</div></a>
-										<!-- react-empty: 18 -->
 									</div>
 								</div>
 							</div>
@@ -200,11 +183,75 @@
 							</div>
 							<div class="reviews row-space-4" id="reviews">
 								<h2>
-									Reviews <small>(1)</small>
+									Reviews
 								</h2>
 								<div>
 									<div class="reviews_section as_guest space-top-3">
-										<h4 class="space-4">Reviews From Hosts</h4>
+										<h4 class="space-4">Reviews From Guests<small>(1)</small></h4>
+										<div class="reviews">
+											<div class="row text-center-sm" id="review-76962436">
+												<div class="col-md-2 col-sm-12">
+													<div class="avatar-wrapper">
+														<a href="/users/show/49647695" class="text-muted"
+															rel="nofollow">
+															<div class="media-photo media-round space-1">
+																<img alt="Paul" class="lazy"
+																	data-original="https://a0.muscache.com/im/pictures/23125c1e-389c-4e70-b13f-93c198e89ac9.jpg?aki_policy=profile_medium"
+																	height="68"
+																	src="https://a0.muscache.com/im/pictures/23125c1e-389c-4e70-b13f-93c198e89ac9.jpg?aki_policy=profile_medium"
+																	title="Paul" width="68" style="display: inline;" />
+															</div>
+															<div class="text-center profile-name text-wrap">Paul</div>
+														</a> 
+															<span class="show-sm"> 
+																<span class="text-muted date">May 2016</span>
+																<span class="sm-review-date-divider">·</span>
+																<span class="review-flag" data-sm-review-flag-id="76962436"></span>
+															</span>
+													</div>
+												</div>
+												<div class="col-md-10 col-sm-12">
+													<div class="space-2">
+														<div
+															class="comment-container expandable expandable-trigger-more space-2 expanded">
+															<div class="expandable-content">
+																<p>Anil stayed at my place in Brighton. He is a
+																	relaxed, easygoing independent guy and a perfect guest.
+																	Communication was easy and the room as left in good
+																	order. I am happy to recommend him.</p>
+																<div class="expandable-indicator"></div>
+															</div>
+															<a class="expandable-trigger-more text-muted" href="#">
+																<strong>+ More</strong>
+															</a>
+														</div>
+	
+	
+														<span class="text-muted date hide-sm pull-left"> 
+															<span>May 2016 &nbsp;·&nbsp; </span>
+															<span class="review-flag" data-review-flag-id="76962436">
+																<button data-reactroot="" class="btn-link btn-link--icon" type="button">
+																	<span><i class="icon icon-flag"></i>
+																	</span>
+																</button>
+															</span>
+														</span>
+													</div>
+												</div>
+											</div>
+	
+											<div class="row space-2 line-separation">
+												<div class="col-10 col-offset-2">
+													<hr/>
+												</div>
+											</div>
+	
+										</div>
+									</div>
+								</div>
+								<div>
+									<div class="reviews_section as_guest space-top-3">
+										<h4 class="space-4">Reviews From Hosts <small>(1)</small></h4>
 										<div class="reviews">
 											<div class="row text-center-sm" id="review-76962436">
 												<div class="col-md-2 col-sm-12">

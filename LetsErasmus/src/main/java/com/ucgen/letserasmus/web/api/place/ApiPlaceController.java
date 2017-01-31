@@ -69,6 +69,7 @@ public class ApiPlaceController extends BaseApiController {
 			
 			Place newPlace = new Place();
 			
+			newPlace.setHostUserId(super.getSessionUser(session).getId());
 			newPlace.setPlaceTypeId(this.getInteger(placeMap.get("placeType")));
 			newPlace.setHomeTypeId(this.getInteger(placeMap.get("homeType")));
 			newPlace.setAmenties(placeMap.get("amenties").toString());

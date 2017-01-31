@@ -19,12 +19,12 @@
 			<ui:fragment
 				rendered="#{webApplication.user != null}">
 				<div class="dropdown--wrapper">
-					<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.xhtml" rel="" title="View messages and potential tenants"
+					<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.xhtml?userId=#{webApplication.user.id}" rel="" title="View messages and potential tenants"
 						class="nav-top--right--link nav-top--right--link__dropdown">
 						<div class="nav-top--avatar" title="Go to your dashboard">
 							<div class="avatar--img"
 								style="background-size: cover; width: 100%; height: 100%; 
-								background-image: url(#{webApplication.userSmallProfilePhotoUrl});">
+								background-image: url(#{webApplication.userProfilePhotoUrl});">
 							</div>
 						</div>
 						<div class="nav-top--username">#{webApplication.user.fullName}</div>

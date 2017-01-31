@@ -1,5 +1,6 @@
 package com.ucgen.common.util;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -17,6 +18,12 @@ public class DateUtil {
 	public static final String DOT_SEPERATOR = ".";
 	
 	public static final String TIME_ZONE_ISTANBUL = "Europe/Istanbul";
+	
+	private static DateFormat createSimpleDateFormat(String format) {
+		DateFormat dateFormat =  DateFormat.getDateInstance(DateFormat.FULL, new Locale("en-US"));
+		dateFormat.setTimeZone(TimeZone.getTimeZone("Turkey"));
+		return dateFormat;
+	}
 	
 	public static String format(Date date, String format) {
 		if (date != null) {

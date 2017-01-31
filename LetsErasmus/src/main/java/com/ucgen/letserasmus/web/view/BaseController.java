@@ -62,7 +62,7 @@ public abstract class BaseController {
 	public String formatDate(Date date, String format) {
 		return DateUtil.format(date, format);
 	}
-
+	
 	public String getPagingTemplate() {
 		return PAGING_TEMPLATE;
 	}

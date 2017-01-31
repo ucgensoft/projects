@@ -12,6 +12,7 @@ import com.ucgen.letserasmus.library.location.dao.LocationRowMapper;
 import com.ucgen.letserasmus.library.location.model.Location;
 import com.ucgen.letserasmus.library.place.model.Place;
 import com.ucgen.letserasmus.library.user.dao.UserRowMapper;
+import com.ucgen.letserasmus.library.user.model.User;
 
 public class PlaceRowMapper extends BaseRowMapper<Place> {
 	
@@ -74,7 +75,7 @@ public class PlaceRowMapper extends BaseRowMapper<Place> {
 		} 
 		
 		if (FKEY_USER.equals(keyName)) {
-			UserRowMapper userRowMapper = new UserRowMapper("L");
+			UserRowMapper userRowMapper = new UserRowMapper("U");
 			ForeignKey<PlaceRowMapper, UserRowMapper> fKeyUser = new ForeignKey<PlaceRowMapper, UserRowMapper>(this, userRowMapper, EnmJoinType.LEFT);
 			fKeyUser.addFieldPair(COL_HOST_USER_ID, LocationRowMapper.COL_ID);
 			this.addFKey(FKEY_USER, fKeyUser);
@@ -149,6 +150,12 @@ public class PlaceRowMapper extends BaseRowMapper<Place> {
 			ForeignKey<PlaceRowMapper, FileRowMapper> fKey = this.getfKeyMap().get(FKEY_FILE);
 			File photo = fKey.getDestMapper().mapRow(rs, rowNum);
 			place.setCoverPhoto(photo);
+		}
+		
+		if (this.getfKeyMap().containsKey(FKEY_USER)) {
+			ForeignKey<PlaceRowMapper, UserRowMapper> fKey = this.getfKeyMap().get(FKEY_USER);
+			User user = fKey.getDestMapper().mapRow(rs, rowNum);
+			place.setUser(user);
 		}
 		
 		return place;

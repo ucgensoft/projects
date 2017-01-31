@@ -30,12 +30,6 @@ public class UserRowMapper extends BaseRowMapper<User> {
 	public static final String COL_PROFILE_PHOTO_ID = "PROFILE_PHOTO_ID";
 	public static final String COL_FACEBOOK_TOKEN_ID = "FACEBOOK_TOKEN_ID";
 	public static final String COL_IP = "IP";	
-	public static final String COL_CREATED_BY = "CREATED_BY";
-	public static final String COL_CREATED_DATE = "CREATED_DATE";
-	public static final String COL_CREATED_DATE_GMT = "CREATED_DATE_GMT";
-	public static final String COL_MODIFIED_BY = "MODIFIED_BY";
-	public static final String COL_MODIFIED_DATE = "MODIFIED_DATE";
-	public static final String COL_MODIFIED_DATE_GMT = "MODIFIED_DATE_GMT";
 	public static final String COL_GOOGLE_ID = "GOOGLE_ID";
 	public static final String COL_FACEBOOK_ID = "FACEBOOK_ID";
 	public static final String COL_JOB_TITLE = "JOB_TITLE";
@@ -89,8 +83,10 @@ public class UserRowMapper extends BaseRowMapper<User> {
 		user.setDescription(super.getString(rs, COL_DESCRIPTION));
 		user.setResidenceLocationName(super.getString(rs, COL_RESIDENCE_LOCATION_NAME));
 		user.setLanguages(super.getString(rs, COL_LANGUAGES));
+		user.setCreatedDate(super.getTimestamp(rs, COL_CREATED_DATE));
 		
-		if (user.getProfilePhotoId() != null && this.getfKeyMap().containsKey(FKEY_FILE)) {
+		if (user.getProfilePhotoId() != null && 
+				this.getfKeyMap() != null && this.getfKeyMap().containsKey(FKEY_FILE)) {
 			ForeignKey<PlaceRowMapper, FileRowMapper> fKey = this.getfKeyMap().get(FKEY_FILE);
 			File photo = fKey.getDestMapper().mapRow(rs, rowNum);
 			user.setProfilePhoto(photo);

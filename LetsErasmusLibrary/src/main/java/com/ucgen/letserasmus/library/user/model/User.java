@@ -39,6 +39,14 @@ public class User extends BaseModel {
 	private String profileImageUrl;
 	private Integer loginType;
 	
+	public User() {
+		this(null);
+	}
+	
+	public User(Long id) {
+		this.id = id;
+	}
+	
 	public Long getId() {
 		return id;
 	}

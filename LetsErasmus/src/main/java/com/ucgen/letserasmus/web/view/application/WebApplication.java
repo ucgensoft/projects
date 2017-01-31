@@ -19,9 +19,15 @@ public class WebApplication extends BaseController {
 	public static final String FB_APP_SECRET = "f1f5ad76a1b8ae942346b575e3c96ede";
 	public static final String REDIRECT_URI = "http://localhost:8080/FLogin/fbhome";
 
-	private String urlPrefix;
-	private String rootPlaceImagePath;
-	private String rootProfileImagePath;
+	private static String urlPrefix;
+	private static String rootPlaceImagePath;
+	private static String rootProfileImagePath;
+	
+	static {
+		urlPrefix = "http://localhost:8080/LetsErasmus";
+		rootPlaceImagePath = urlPrefix + "/place/images";
+		rootProfileImagePath = urlPrefix + "/user/images/";
+	}
 	
 	public String getFacebookId() {
 		return FB_APP_ID;
@@ -53,9 +59,7 @@ public class WebApplication extends BaseController {
 	}
 
 	public WebApplication() {
-		this.urlPrefix = "http://localhost:8080/LetsErasmus";
-		this.rootPlaceImagePath = this.urlPrefix + "/place/images";
-		this.rootProfileImagePath = this.urlPrefix + "/user/images/";
+		
 	}
 	
 	public String getNgController() {
@@ -94,19 +98,7 @@ public class WebApplication extends BaseController {
 		if (user != null) {
 			if (user.getProfilePhotoId() != null) {
 				String smallFileName = AppUtil.getSmallUserPhotoName(user.getId(), user.getProfilePhotoId(), EnmFileType.getFileType(user.getProfilePhoto().getFileType()));
-				photoUrl = FileUtil.concatPath(this.rootProfileImagePath, user.getId().toString(), smallFileName);
-			}
-		}
-		return photoUrl;
-	}
-	
-	public String getUserSmallProfilePhotoUrl() {
-		String photoUrl = null;
-		User user = this.getUser();
-		if (user != null) {
-			if (user.getProfilePhotoId() != null) {
-				String smallFileName = AppUtil.getSmallUserPhotoName(user.getId(), user.getProfilePhotoId(), EnmFileType.getFileType(user.getProfilePhoto().getFileType()));
-				photoUrl = AppUtil.concatPath(this.rootProfileImagePath, user.getId().toString(), smallFileName);
+				photoUrl = AppUtil.concatPath(rootProfileImagePath, user.getId().toString(), smallFileName);
 			} else if (user.getProfileImageUrl() != null) {
 				photoUrl = user.getProfileImageUrl();
 			}
@@ -138,6 +130,22 @@ public class WebApplication extends BaseController {
 			super.getSession().setAttribute(EnmSession.ACTIVE_OPERATION.getId(), EnmOperation.getOperation(operationId));;
 		}
 		return "";
+	}
+	
+	public static String getUserSmallPhotoUrl(User user) {
+		String photoUrl = null;
+		if (user != null) {
+			if (user.getProfilePhotoId() != null) {
+				String smallFileName = AppUtil.getSmallUserPhotoName(user.getId(), user.getProfilePhotoId(), EnmFileType.getFileType(user.getProfilePhoto().getFileType()));
+				photoUrl = AppUtil.concatPath(rootProfileImagePath, user.getId().toString(), smallFileName);
+			}
+		}
+		return photoUrl;
+	}
+	
+	public static String getUserLargePhotoUrl(User user) {
+		String photoUrl = getUserSmallPhotoUrl(user);
+		return photoUrl.replace("_small_", "_large_");
 	}
 	
 }

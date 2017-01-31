@@ -19,7 +19,7 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', funct
 			    version: 'v2.7' // or v2.1, v2.2, v2.3, ...
 			  });
 	 };
-      
+       
       self.attachGoogleSignin = function (elementId) {
     	  var element = $('#' + elementId)[0];
   	      auth2.attachClickHandler(element, {},

@@ -22,6 +22,13 @@ import com.ucgen.common.exception.operation.UnsupportedException;
 
 public abstract class BaseRowMapper<T> implements RowMapper<T>{
 
+	public static final String COL_CREATED_BY = "CREATED_BY";
+	public static final String COL_CREATED_DATE = "CREATED_DATE";
+	public static final String COL_CREATED_DATE_GMT = "CREATED_DATE_GMT";
+	public static final String COL_MODIFIED_BY = "MODIFIED_BY";
+	public static final String COL_MODIFIED_DATE = "MODIFIED_DATE";
+	public static final String COL_MODIFIED_DATE_GMT = "MODIFIED_DATE_GMT";
+	
 	protected String tableName;
 	protected String shortTableName;
 	private Set<String> selectedColSet;

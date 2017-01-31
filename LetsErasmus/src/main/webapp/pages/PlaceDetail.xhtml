@@ -209,8 +209,8 @@
 															<div class="row">
 																<div class="col-md-3 text-muted text-center hide-sm">
 																	<a
-																		href="https://www.airbnb.com/rooms/13738469?s=Q8-G3TeD#host-profile"
-																		class="link-reset text-wrap">Francesco</a>
+																		href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.xhtml?userId={{ctrl.place.user.id}"
+																		class="link-reset text-wrap">{{ctrl.place.user.fullName}}</a>
 																</div>
 																<div class="col-md-9">
 																	<div class="row row-condensed text-muted text-center">
@@ -713,12 +713,12 @@
 												<div class="row">
 													<div class="col-md-3 text-center">
 														<div class="media-photo-badge">
-															<a href="https://www.airbnb.com/users/show/39933518"
+															<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.xhtml?userId={{ctrl.place.user.id}}"
 																rel="nofollow" class="media-photo media-round"> <img
 																alt="Francesco" class="media-photo media-round"
 																height="90" width="90"
 																src=""
-																title="Francesco" />
+																title="{{ctrl.place.user.fullName}}" />
 															</a> <img
 																src=""
 																class="superhost-photo-badge" alt="" />
@@ -727,25 +727,22 @@
 													<div class="col-md-9">
 														<h3 class="space-1">
 															<a class="link-reset"
-																href=""
-																rel="nofollow">Francesco</a>
+																href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.xhtml?userId={{ctrl.place.user.id}}"
+																rel="nofollow">{{ctrl.place.user.fullName}}</a>
 														</h3>
 														<div class="row row-condensed space-2">
 															<div class="col-md-12 text-muted">
-																<span>Milan, Italy</span><span> · </span><span>Joined
-																	in July 2015</span>
+																<span>{{ctrl.place.user.residenceLocationName}}</span><span> · </span><span>Joined
+																	in {{crtl.place.user.createdDate}}</span>
 															</div>
 														</div>
 														<div class="react-expandable">
 															<div class="expandable-content expandable-content-long">
 																<div>
 																	<p>
-																		<span>Hi there! </span><br /> <span> </span><br /> <span>I
-																			am a neapolitan living in Milan with his girlfriend
-																			Myriam. We both love to travel and since we have been
-																			together we visited almost all Europe, so next step
-																			will be discovering other continents! </span><br /> <span>
-																		</span><br /> <span>Francesco </span><br /> <span> </span><br />
+																		{{ crtl.place.user.description }}
+																		<br /> <span>
+																		</span><br /> <span>{{ crtl.place.user.firstName }}</span><br /> <span> </span><br />
 																	</p>
 																</div>
 																<div class="expandable-indicator"></div>
