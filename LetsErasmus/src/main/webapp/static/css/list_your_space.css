@@ -6,6 +6,10 @@
 	vertical-align: middle
 }
 
+.text-muted{
+	color: #484848 !important;
+}
+
 .input-jumbo.input-stem {
 	height: 45px
 }
@@ -3421,13 +3425,13 @@ input.lys-location__input {
 .no-border-bottom-radius .btn:first-child {
 	-webkit-border-bottom-left-radius: 0;
 	-moz-border-radius-bottomleft: 0;
-	border-bottom-left-radius: 0
+	border-bottom-left-radius: 4px
 }
 
 .no-border-bottom-radius .btn:last-child {
 	-webkit-border-bottom-right-radius: 0;
 	-moz-border-radius-bottomright: 0;
-	border-bottom-right-radius: 0
+	border-bottom-right-radius: 4px
 }
 
 .increment-btn {
@@ -3436,8 +3440,11 @@ input.lys-location__input {
 }
 
 .increment-btn__border-container-label {
-	padding: 12px 20px;
-	height: 52px
+	padding-bottom: 0px;
+    padding-top: 10px;
+    padding-left: 12px;
+    padding-right:20px;
+	height: 45px
 }
 
 .increment-btn__border-container-label span {
@@ -3448,9 +3455,9 @@ input.lys-location__input {
 
 .increment-btn__border-container-decrementer {
 	border-right: 1px solid #dce0e0;
-	height: 52px;
+	height: 45px;
 	width: 58px;
-	margin: 5px 0
+	margin: 0px 0
 }
 
 .increment-compact-btn__border-container-decrementer {
@@ -3466,9 +3473,9 @@ input.lys-location__input {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
 	text-align: left;
 	cursor: default;
-	height: 62px;
+	height: 45px;
 	width: 100%;
-	padding: 5px 0
+	padding: 0px 0
 }
 
 .increment-btn__label:active {
@@ -3569,7 +3576,7 @@ input.lys-location__input {
 	width: 18px;
 	height: 18px;
 	content: "";
-	top: 21px;
+	top: 15px;
 	left: 20px;
 	bottom: 0;
 	right: 0;
@@ -3625,7 +3632,7 @@ input.lys-location__input {
 	width: 18px;
 	height: 2px;
 	content: "";
-	top: 29px;
+	top: 23px;
 	left: 20px;
 	bottom: 0;
 	right: 0;
@@ -3675,7 +3682,7 @@ input.lys-location__input {
 }
 
 .increment-btn__incrementer.btn, .increment-btn__decrementer.btn {
-	height: 62px;
+	height: 45px;
 	width: 58px
 }
 
