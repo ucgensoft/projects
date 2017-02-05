@@ -8,10 +8,12 @@ import com.ucgen.letserasmus.library.location.model.Location;
 
 public interface ILocationDao {
 
-	OperationResult insertLocation(Location location);
+	OperationResult insert(Location location);
 	
-	ListOperationResult<Location> listLocation(Location location);
+	ListOperationResult<Location> list(Location location);
 	
-	ListOperationResult<Location> listLocation(List<Long> idList);
+	ListOperationResult<Location> list(List<Long> idList);
+	
+	OperationResult update(Location location);
 	
 }

@@ -125,8 +125,111 @@ public class PlaceDao extends JdbcDaoSupport implements IPlaceDao{
 		
 		String updateSql = new String(UPDATE_PLACE_SQL);
 		StringBuilder updateFields = new StringBuilder();
+						
+		if (place.getPlaceTypeId() != null) {
+			StringUtil.append(updateFields, "PLACE_TYPE_ID = ?", ",");
+			argList.add(place.getPlaceTypeId());
+		}
 		
-		//SET ID=?,HOST_USER_ID=?,PLACE_TYPE_ID=?,HOME_TYPE_ID=?,TITLE=?,DESCRIPTION=?,STATUS=?,LOCATION_ID=?, PRICE=?,BILLS_INCLUDE=?,DEPOSIT_PRICE=?,CURRENCY_ID=?,BED_NUMBER=?,BED_TYPE_ID=?,BATHROOM_NUMBER=?,BATHROOM_TYPE=?,PLACE_MATE_NUMBER=?,PLACE_MATE_GENDER=?,GUEST_NUMBER=?,GUEST_GENDER=?,RULES=?,AMENTIES=?,SAFETY_AMENTIES=?,MINIMUM_STAY=?,MAXIMUM_STAY=?,START_DATE=?,END_DATE=?,CANCELLATION_POLICY_ID=?,CREATED_BY=?,CREATED_DATE=?,CREATED_DATE_GMT=?,MODIFIED_BY=?,MODIFIED_DATE=?,MODIFIED_DATE_GMT=?
+		if (place.getHomeTypeId() != null) {
+			StringUtil.append(updateFields, "HOME_TYPE_ID = ?", ",");
+			argList.add(place.getHomeTypeId());
+		}
+		
+		if (place.getPrice() != null) {
+			StringUtil.append(updateFields, "PRICE = ?", ",");
+			argList.add(place.getPrice());
+		}
+		
+		if (place.getBillsInclude() != null) {
+			StringUtil.append(updateFields, "BILLS_INCLUDE = ?", ",");
+			argList.add(place.getBillsInclude());
+		}
+		
+		if (place.getDepositPrice() != null) {
+			StringUtil.append(updateFields, "DEPOSIT_PRICE = ?", ",");
+			argList.add(place.getDepositPrice());
+		}
+		
+		if (place.getCurrencyId() != null) {
+			StringUtil.append(updateFields, "CURRENCY_ID = ?", ",");
+			argList.add(place.getCurrencyId());
+		}
+		
+		if (place.getBedNumber() != null) {
+			StringUtil.append(updateFields, "BED_NUMBER = ?", ",");
+			argList.add(place.getBedNumber());
+		}
+		
+		if (place.getBedTypeId() != null) {
+			StringUtil.append(updateFields, "BED_TYPE_ID = ?", ",");
+			argList.add(place.getBedTypeId());
+		}
+		
+		if (place.getBathRoomNumber() != null) {
+			StringUtil.append(updateFields, "BATHROOM_NUMBER = ?", ",");
+			argList.add(place.getBathRoomNumber());
+		}
+		
+		if (place.getBathRoomType() != null) {
+			StringUtil.append(updateFields, "BATHROOM_TYPE = ?", ",");
+			argList.add(place.getBathRoomType());
+		}
+		
+		if (place.getPlaceMateGender() != null) {
+			StringUtil.append(updateFields, "PLACE_MATE_GENDER = ?", ",");
+			argList.add(place.getPlaceMateGender());
+		}
+		
+		if (place.getPlaceMateNumber() != null) {
+			StringUtil.append(updateFields, "PLACE_MATE_NUMBER = ?", ",");
+			argList.add(place.getPlaceMateNumber());
+		}
+		
+		if (place.getGuestGender() != null) {
+			StringUtil.append(updateFields, "GUEST_GENDER = ?", ",");
+			argList.add(place.getGuestGender());
+		}
+		
+		if (place.getGuestNumber() != null) {
+			StringUtil.append(updateFields, "GUEST_NUMBER = ?", ",");
+			argList.add(place.getGuestNumber());
+		}
+		
+		if (place.getAmenties() != null) {
+			StringUtil.append(updateFields, "AMENTIES = ?", ",");
+			argList.add(place.getAmenties());
+		}
+		
+		if (place.getSafetyAmenties() != null) {
+			StringUtil.append(updateFields, "SAFETY_AMENTIES = ?", ",");
+			argList.add(place.getSafetyAmenties());
+		}
+		
+		if (place.getMinimumStay() != null) {
+			StringUtil.append(updateFields, "MINIMUM_STAY = ?", ",");
+			argList.add(place.getMinimumStay());
+		}
+		
+		if (place.getMaximumStay() != null) {
+			StringUtil.append(updateFields, "MAXIMUM_STAY = ?", ",");
+			argList.add(place.getMaximumStay());
+		}
+		
+		if (place.getStartDate() != null) {
+			StringUtil.append(updateFields, "START_DATE = ?", ",");
+			argList.add(place.getStartDate());
+		}
+		
+		if (place.getEndDate() != null) {
+			StringUtil.append(updateFields, "END_DATE = ?", ",");
+			argList.add(place.getEndDate());
+		}
+		
+		if (place.getRules() != null) {
+			StringUtil.append(updateFields, "RULES = ?", ",");
+			argList.add(place.getRules());
+		}
 		
 		if (place.getCoverPhotoId() != null) {
 			StringUtil.append(updateFields, "COVER_PHOTO_ID = ?", ",");
@@ -136,6 +239,16 @@ public class PlaceDao extends JdbcDaoSupport implements IPlaceDao{
 		if (place.getStatus() != null) {
 			StringUtil.append(updateFields, "STATUS = ?", ",");
 			argList.add(place.getStatus());
+		}
+		
+		if (place.getTitle() != null) {
+			StringUtil.append(updateFields, "TITLE = ?", ",");
+			argList.add(place.getTitle());
+		}
+		
+		if (place.getDescription() != null) {
+			StringUtil.append(updateFields, "DESCRIPTION = ?", ",");
+			argList.add(place.getDescription());
 		}
 		
 		if (place.getModifiedBy() != null) {
@@ -149,41 +262,7 @@ public class PlaceDao extends JdbcDaoSupport implements IPlaceDao{
 		}
 		
 		argList.add(place.getId());
-		/*
-		argList.add(place.getHostUserId());
-		argList.add(place.getPlaceTypeId());
-		argList.add(place.getHomeTypeId());
-		argList.add(place.getTitle());
-		argList.add(place.getDescription());
-		argList.add(place.getStatus());
-		argList.add(place.getLocationId());
-		argList.add(place.getPrice());
-		argList.add(place.getBillsInclude());
-		argList.add(place.getDepositPrice());		
-		argList.add(place.getCurrencyId());
-		argList.add(place.getBedNumber());
-		argList.add(place.getBedTypeId());
-		argList.add(place.getBathRoomNumber());
-		argList.add(place.getBathRoomType());
-		argList.add(place.getPlaceMateNumber());
-		argList.add(place.getPlaceMateGender());
-		argList.add(place.getGuestNumber());
-		argList.add(place.getGuestGender());
-		argList.add(place.getRules());
-		argList.add(place.getAmenties());
-		argList.add(place.getSafetyAmenties());
-		argList.add(place.getMinimumStay());
-		argList.add(place.getMaximumStay());
-		argList.add(place.getStartDate());
-		argList.add(place.getEndDate());
-		argList.add(place.getCancellationPolicyId());
-		argList.add(place.getCreatedBy());
-		argList.add(place.getCreatedDate());		
-		argList.add(place.getCreatedDateGmt());
-		argList.add(place.getModifiedBy());
-		argList.add(place.getModifiedDate());
-		argList.add(place.getModifiedDateGmt());
-		*/
+
 		updateSql = updateSql.replace("$1", updateFields);
 		int updatedRowCount =  this.getJdbcTemplate().update(updateSql, argList.toArray() );
 		

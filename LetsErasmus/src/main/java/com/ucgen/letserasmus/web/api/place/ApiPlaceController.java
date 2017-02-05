@@ -86,6 +86,7 @@ public class ApiPlaceController extends BaseApiController {
 			newPlace.setBathRoomNumber(this.getInteger(placeMap.get("bathroomNumber")));
 			newPlace.setBathRoomType(this.getInteger(placeMap.get("bathroomType")));
 			newPlace.setBedNumber(this.getInteger(placeMap.get("bedNumber")));
+			newPlace.setBedTypeId(this.getInteger(placeMap.get("bedTypeId")));
 			newPlace.setGuestNumber(this.getInteger(placeMap.get("guestNumber")));
 			newPlace.setGuestGender(this.getInteger(placeMap.get("guestGender")));
 			
@@ -97,7 +98,9 @@ public class ApiPlaceController extends BaseApiController {
 			newPlace.setPrice(new BigDecimal(placeMap.get("price").toString()));
 			newPlace.setDepositPrice(new BigDecimal(placeMap.get("depositPrice").toString()));
 			newPlace.setCurrencyId(this.getInteger(placeMap.get("currencyId")));
-			if (placeMap.get("billsIncluded").equals("1")) {
+			
+			String billsIncluded = this.getString(placeMap.get("billsIncluded"));
+			if (billsIncluded.equalsIgnoreCase("Y")) {
 				newPlace.setBillsInclude("Y");
 			} else {
 				newPlace.setBillsInclude("N");
@@ -203,9 +206,172 @@ public class ApiPlaceController extends BaseApiController {
 		return new ResponseEntity<OperationResult>(operationResult, httpStatus);
     }
 	
+	@RequestMapping(value = "/api/place/update", method = RequestMethod.POST)
+    public ResponseEntity<OperationResult> updatePlace(@RequestParam("photoList") MultipartFile[] photoList, @RequestParam("place") String place, HttpSession session) throws JsonParseException, JsonMappingException, IOException, ParseException {
+		HttpStatus httpStatus = null;
+		OperationResult operationResult = new OperationResult();
+		
+		try {
+			User user = super.getSessionUser(session);
+			if (user != null) {
+				Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
+				if (activeOperation != null && activeOperation.equals(EnmOperation.EDIT_PLACE)) {
+					Place sessionPlace = (Place) session.getAttribute(EnmSession.ACTIVE_PLACE.getId());
+					
+					String modifiedBy = user.getFullName();
+					Date modifiedDate = new Date();
+					
+					String strPlaceJSON = place;
+					
+					ObjectMapper mapper = new ObjectMapper();
+					
+					Map placeMap = mapper.readValue(strPlaceJSON, Map.class);
+					
+					Place newPlace = new Place();
+					
+					newPlace.setId(sessionPlace.getId());
+					newPlace.setPlaceTypeId(this.getInteger(placeMap.get("placeType")));
+					newPlace.setHomeTypeId(this.getInteger(placeMap.get("homeType")));
+					newPlace.setAmenties(placeMap.get("amenties").toString());
+					newPlace.setSafetyAmenties(placeMap.get("safetyAmenties").toString());
+					newPlace.setRules(placeMap.get("rules").toString());
+					newPlace.setBathRoomNumber(this.getInteger(placeMap.get("bathroomNumber")));
+					newPlace.setBathRoomType(this.getInteger(placeMap.get("bathroomType")));
+					newPlace.setBedNumber(this.getInteger(placeMap.get("bedNumber")));
+					newPlace.setBedTypeId(this.getInteger(placeMap.get("bedTypeId")));
+					newPlace.setGuestNumber(this.getInteger(placeMap.get("guestNumber")));
+					newPlace.setGuestGender(this.getInteger(placeMap.get("guestGender")));
+					
+					if (placeMap.get("placeMateNumber") != null && !placeMap.get("placeMateNumber").equals("0")) {
+						newPlace.setPlaceMateNumber(this.getInteger(placeMap.get("placeMateNumber")));
+						newPlace.setPlaceMateGender(this.getInteger(placeMap.get("placeMateNumber")));
+					}
+					
+					newPlace.setPrice(new BigDecimal(placeMap.get("price").toString()));
+					newPlace.setDepositPrice(new BigDecimal(placeMap.get("depositPrice").toString()));
+					newPlace.setCurrencyId(this.getInteger(placeMap.get("currencyId")));
+					
+					String billsIncluded = this.getString(placeMap.get("billsIncluded"));
+					if (billsIncluded.equalsIgnoreCase("Y")) {
+						newPlace.setBillsInclude("Y");
+					} else {
+						newPlace.setBillsInclude("N");
+					}
+					
+					if (placeMap.get("startDate") != null && !placeMap.get("startDate").toString().isEmpty()) {
+						newPlace.setStartDate(DateUtil.valueOf(placeMap.get("startDate").toString(), DateUtil.SHORT_DATE_FORMAT));
+					}
+					
+					if (placeMap.get("endDate") != null && !placeMap.get("endDate").toString().isEmpty()) {
+						newPlace.setEndDate(DateUtil.valueOf(placeMap.get("endDate").toString(), DateUtil.SHORT_DATE_FORMAT));
+					}
+					
+					if (placeMap.get("minimumStay") != null) {
+						newPlace.setMinimumStay(this.getInteger(placeMap.get("minimumStay")));
+					}
+					
+					if (placeMap.get("maximumStay") != null) {
+						newPlace.setMaximumStay(this.getInteger(placeMap.get("maximumStay")));
+					}
+					
+					if (placeMap.get("title") != null) {
+						newPlace.setTitle(placeMap.get("title").toString());
+					}
+					
+					if (placeMap.get("description") != null) {
+						newPlace.setDescription(placeMap.get("description").toString());
+					}
+					
+					newPlace.setStatus(EnmPlaceStatus.ACTIVE.getValue());
+					
+					Location newLocation = new Location();
+					
+					Map locationMap = (Map) placeMap.get("location");
+					
+					newLocation.setId(sessionPlace.getLocation().getId());
+					newLocation.setCountry(this.getString(locationMap.get("country")));
+					newLocation.setState(this.getString(locationMap.get("city")));
+					newLocation.setStreet(this.getString(locationMap.get("street")));
+					newLocation.setLocality(this.getString(locationMap.get("locality")));
+					newLocation.setPostalCode(this.getString(locationMap.get("postalCode")));
+					newLocation.setUserAddress(this.getString(locationMap.get("userAddress")));
+					newLocation.setLatitude(this.getBigDecimal(locationMap.get("latitude")));
+					newLocation.setLongitude(this.getBigDecimal(locationMap.get("longitude")));
+					
+					newPlace.setModifiedBy(modifiedBy);
+					newPlace.setModifiedDate(modifiedDate);
+					
+					newPlace.setLocation(newLocation);
+					
+					OperationResult createResult = this.placeService.updatePlace(newPlace);
+					
+					/*
+					if (photoList != null && photoList.length > 0) {
+						for (MultipartFile multipartFile : photoList) {
+							String fileSuffix = multipartFile.getContentType().split("/")[1];
+							String fileName = multipartFile.getOriginalFilename().split("\\.")[0];
+							Photo photo = new Photo();
+							photo.setFileName(fileName);
+							photo.setFileSize(multipartFile.getSize());
+							photo.setEntityType(EnmEntityType.PLACE.getValue());
+							photo.setCreatedBy(modifiedBy);
+							photo.setFileType(EnmFileType.getFileTypeWithSuffix(fileSuffix).getValue());
+							photo.setCreatedDate(modifiedDate);
+							
+							newPlace.addPhoto(photo);
+						}
+					}
+					
+					OperationResult createResult = this.placeService.insertPlace(newPlace);
+					
+					try {
+						String rootPhotoFolder = "D:\\Personal\\Development\\startup\\workspace\\projects\\LetsErasmus\\src\\main\\webapp\\place\\images\\";
+						String placePhotoFolder = rootPhotoFolder + newPlace.getId(); 
+						(new File(placePhotoFolder)).mkdirs();
+						for (int i = 0; i < photoList.length; i++) {
+							MultipartFile multiPartFile = photoList[i];
+							com.ucgen.letserasmus.library.file.model.File photo = newPlace.getPhotoList().get(i);
+							String tmpPhotoPath = placePhotoFolder + File.separatorChar + photo.getId() + "." + EnmFileType.getFileType(photo.getFileType());
+							String smallPhotoPath = placePhotoFolder + File.separatorChar + photo.getId() + "_small." + EnmFileType.getFileType(photo.getFileType()).getFileSuffix();
+							String largePhotoPath = placePhotoFolder + File.separatorChar + photo.getId() + "_large." + EnmFileType.getFileType(photo.getFileType()).getFileSuffix();
+							File tmpFile = new File(tmpPhotoPath);
+							multiPartFile.transferTo(tmpFile);
+							ImageUtil.resizeImage(tmpFile, largePhotoPath, 800, 800);
+							ImageUtil.resizeImage(tmpFile, smallPhotoPath, 500, 300);
+							tmpFile.delete();
+						}
+					} catch (Exception e) {
+						System.out.println(CommonUtil.getExceptionMessage(e));
+					}
+					*/
+					operationResult = createResult;
+					httpStatus = HttpStatus.OK;
+				} else {
+					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+					operationResult.setResultDesc("You are not authorized for this operation!");
+				}
+			} else {
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
+			}
+			httpStatus = HttpStatus.OK;			
+		} catch (Exception e) {
+			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
+			operationResult.setResultDesc("Update operation could not be completed. Please try again later!");
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<OperationResult>(operationResult, httpStatus);
+    }
+	
 	@RequestMapping(value = "/api/place/get", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
-    public ResponseEntity<ValueOperationResult<Place>> getPlace(@RequestParam("placeId") Long placeId) {
+    public ResponseEntity<ValueOperationResult<Place>> getPlace(@RequestParam("placeId") Long placeId, HttpSession session) {
+		User user = super.getSessionUser(session);
 		ValueOperationResult<Place> getResult = this.placeService.getPlace(placeId);
+		Place place = getResult.getResultValue();
+		if (place != null && user.getId().equals(place.getHostUserId())) {
+			session.removeAttribute(EnmSession.ACTIVE_PLACE.getId());
+			session.setAttribute(EnmSession.ACTIVE_PLACE.getId(), place);
+		}
 		return new ResponseEntity<ValueOperationResult<Place>>(getResult, HttpStatus.OK);
     }
 	

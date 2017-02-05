@@ -1,4 +1,9 @@
 ﻿
+var EnmPageMode = {
+	CREATE : 1,
+	UPDATE : 2
+};
+
 var EnmPlaceStatus = {
 	ACTIVE : 1,
 	DEACTIVE : 2,
@@ -167,6 +172,13 @@ function getCounterElementValue(elementId) {
 	var currentText = $('#' + elementId).text();
 	var currentValue = currentText.substring(0, currentText.indexOf(' '));
 	return parseInt(currentValue);
+}
+
+function setCounterElementValue(elementId, value) {
+	var currentText = $('#' + elementId).text();
+	var newValue = value;
+	var newText = value + currentText.substring(currentText.indexOf(' '))
+	$('#' + elementId).text(newText);
 }
 
 function generateRandomValue(minValue, maxValue) {

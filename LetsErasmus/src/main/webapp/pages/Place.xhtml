@@ -15,6 +15,7 @@
 	</ui:define>
 
 	<ui:define name="body">
+		<input type="hidden" value="#{webApplication.setActiveOperation(4)}" />
 		<h:form id="placeForm">
 			<div id="containerPage">
 				<div class="list-your-space__header" style="position: relative; z-index:0;">
@@ -528,8 +529,10 @@
 									</div>
 									<div style="display: inline-block">
 										<div ng-repeat="a in ctrl.amentiesList" class="amenity-item space-5" style="width: 50%; display: inline">
-											<input id="chb_{{a.enumKey}}" type="checkbox"
-												class="col-sm-1" value="4" />
+											<input ng-if="ctrl.hasAmenty(a.enumKey) == true" id="chb_{{a.enumKey}}" type="checkbox"
+												class="col-sm-1" checked="checked"/>
+											<input ng-if="ctrl.hasAmenty(a.enumKey) == false" id="chb_{{a.enumKey}}" type="checkbox"
+												class="col-sm-1" value="4"/>
 											<div class="pull-left col-sm-11">
 												<label>{{a.uiLabel}}</label>
 											</div>
@@ -540,8 +543,10 @@
 									</div>
 									<div style="display: inline-block">
 										<div ng-repeat="a in ctrl.safetyAmentiesList" class="amenity-item space-5" style="width: 50%; display: inline">
-											<input id="chb_{{a.enumKey}}" type="checkbox"
-												class="col-sm-1" value="4" />
+											<input ng-if="ctrl.hasSafetyAmenty(a.enumKey) == true" id="chb_{{a.enumKey}}" type="checkbox"
+												class="col-sm-1" checked="checked" />
+											<input ng-if="ctrl.hasSafetyAmenty(a.enumKey) == false" id="chb_{{a.enumKey}}" type="checkbox"
+												class="col-sm-1" />
 											<div class="pull-left col-sm-11">
 												<label for="wireless_internet">{{a.uiLabel}}</label>
 											</div>
@@ -552,10 +557,12 @@
 									</div>
 									<div style="display: inline-block">
 										<div ng-repeat="a in ctrl.ruleList" class="amenity-item space-5" style="width: 50%; display: inline">
-											<input id="chb_{{a.enumKey}}" type="checkbox"
-												class="col-sm-1" value="4" />
+											<input ng-if="ctrl.hasRule(a.enumKey) == true" id="chb_{{a.enumKey}}" type="checkbox"
+												class="col-sm-1" checked="checked" />
+											<input ng-if="ctrl.hasRule(a.enumKey) == false" id="chb_{{a.enumKey}}" type="checkbox"
+												class="col-sm-1" />
 											<div class="pull-left col-sm-11">
-												<label for="wireless_internet">{{a.uiLabel}}</label>
+												<label>{{a.uiLabel}}</label>
 											</div>
 										</div>
 									</div>
@@ -648,7 +655,7 @@
 										<div class="space-top-2 col-sm-12">
 											<input
 												class="input input-block input-jumbo lys-address-form__input"
-												id="txtBuildind" name="apt" type="text"
+												id="txtBuilding" name="apt" type="text"
 												value=""
 												placeholder="Apt., suite, building access code" />
 										</div>

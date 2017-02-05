@@ -69,9 +69,28 @@ App.factory('placeService', ['$http', '$q', function($http, $q) {
 							'Content-Type' : undefined
 						}
 					};
-					return $http.post(
-							webApplicationUrlPrefix + '/api/place/create',
-							formData, config).then(function(response) {
+					return $http.post(webApplicationUrlPrefix + '/api/place/create', formData, config).then(function(response) {
+						return response.data;
+					}, function(errResponse) {
+						console.error('Error while creating place');
+						return $q.reject(errResponse);
+					});
+				},
+				
+				updatePlace : function(place, photoList) {
+					var formData = new FormData();
+					formData.append('place', angular.toJson(place));
+					for (var i = 0; i < photoList.length; i++) {
+						formData.append('photoList', photoList[i].file);
+					}					
+					
+					var config = {
+						headers : {
+							'Accept' : 'application/json',
+							'Content-Type' : undefined
+						}
+					};
+					return $http.post(webApplicationUrlPrefix + '/api/place/update', formData, config).then(function(response) {
 						return response.data;
 					}, function(errResponse) {
 						console.error('Error while creating place');

@@ -12,7 +12,7 @@ public interface IPlaceService {
 	
 	OperationResult insertPlace(Place place) throws OperationResultException ;
 	
-	ValueOperationResult<Integer> updatePlace(Place place);
+	OperationResult updatePlace(Place place) throws OperationResultException;
 	
 	ListOperationResult<Place> listPlace(Place place, boolean locationFlag, boolean photoFlag, boolean userFlag);
 

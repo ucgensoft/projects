@@ -14,6 +14,8 @@ import com.ucgen.common.dao.UtilityDao;
 import com.ucgen.common.operationresult.EnmResultCode;
 import com.ucgen.common.operationresult.ListOperationResult;
 import com.ucgen.common.operationresult.OperationResult;
+import com.ucgen.common.operationresult.ValueOperationResult;
+import com.ucgen.common.util.StringUtil;
 import com.ucgen.letserasmus.library.location.dao.ILocationDao;
 import com.ucgen.letserasmus.library.location.dao.LocationRowMapper;
 import com.ucgen.letserasmus.library.location.model.Location;
@@ -22,10 +24,13 @@ import com.ucgen.letserasmus.library.location.model.Location;
 public class LocationDao extends JdbcDaoSupport implements ILocationDao {
 
 	private static final String LIST_LOCATION_SQL = "SELECT ID, NAME, LATITUDE, LONGITUDE FROM LOCATION WHERE 1=1";
+	
 	private static final String INSERT_LOCATION_SQL = "INSERT INTO `LOCATION`(`USER_ADDRESS`, `NAME`, `LATITUDE`, `LONGITUDE`, "
 			+ " `FORMATTED_ADDRESS`, `LOCATION_TYPE`, `ROUTE`, `STREET_NUMBER`, `POSTAL_CODE`, `LOCALITY`, `SUB_LOCALITY`, `COUNTRY`, "
 			+ " `COUNTRY_CODE`, `STATE`, `REFERANCE`, `URL`, `WEBSITE`, `CREATED_BY`, `CREATED_DATE_GMT`) "
 			+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	
+	private static final String UPDATE_LOCATION_SQL = " UPDATE LOCATION SET $1 WHERE ID=? ";
 	
 	private UtilityDao utilityDao;
 	
@@ -41,12 +46,12 @@ public class LocationDao extends JdbcDaoSupport implements ILocationDao {
 	}
 	
 	@Override
-	public ListOperationResult<Location> listLocation(Location location) {
+	public ListOperationResult<Location> list(Location location) {
 		return null;
 	}
 
 	@Override
-	public ListOperationResult<Location> listLocation(List<Long> idList) {
+	public ListOperationResult<Location> list(List<Long> idList) {
 		StringBuilder sqlBuilder = new StringBuilder(LIST_LOCATION_SQL);
 		List<Object> argList = new ArrayList<Object>();
 		
@@ -66,7 +71,7 @@ public class LocationDao extends JdbcDaoSupport implements ILocationDao {
 	}
 
 	@Override
-	public OperationResult insertLocation(Location location) {
+	public OperationResult insert(Location location) {
 		OperationResult operationResult = new OperationResult();
 		
 		List<Object> argList = new ArrayList<Object>();
@@ -97,6 +102,65 @@ public class LocationDao extends JdbcDaoSupport implements ILocationDao {
 		location.setId(id);
 		
 		operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+		
+		return operationResult;
+	}
+
+	@Override
+	public OperationResult update(Location location) {
+		ValueOperationResult<Integer> operationResult = new ValueOperationResult<Integer>();		
+		List<Object> argList = new ArrayList<Object>();
+		
+		String updateSql = new String(UPDATE_LOCATION_SQL);
+		StringBuilder updateFields = new StringBuilder();
+		
+		if (location.getUserAddress() != null) {
+			StringUtil.append(updateFields, "USER_ADDRESS = ?", ",");
+			argList.add(location.getCountry());
+		}
+		
+		if (location.getName() != null) {
+			StringUtil.append(updateFields, "NAME = ?", ",");
+			argList.add(location.getName());
+		}
+		
+		if (location.getLatitude() != null) {
+			StringUtil.append(updateFields, "LATITUDE = ?", ",");
+			argList.add(location.getLatitude());
+		}
+		
+		if (location.getLongitude() != null) {
+			StringUtil.append(updateFields, "LONGITUDE = ?", ",");
+			argList.add(location.getLongitude());
+		}
+		
+		if (location.getCountry() != null) {
+			StringUtil.append(updateFields, "COUNTRY = ?", ",");
+			argList.add(location.getCountry());
+		}
+		
+		if (location.getState() != null) {
+			StringUtil.append(updateFields, "STATE = ?", ",");
+			argList.add(location.getState());
+		}
+		
+		if (location.getStreet() != null) {
+			StringUtil.append(updateFields, "STREET_NUMBER = ?", ",");
+			argList.add(location.getStreet());
+		}
+		
+		if (location.getLocality() != null) {
+			StringUtil.append(updateFields, "LOCALITY = ?", ",");
+			argList.add(location.getLocality());
+		}
+		
+		argList.add(location.getId());
+
+		updateSql = updateSql.replace("$1", updateFields);
+		int updatedRowCount =  this.getJdbcTemplate().update(updateSql, argList.toArray() );
+		
+		operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+		operationResult.setResultValue(updatedRowCount);
 		
 		return operationResult;
 	}

@@ -62,7 +62,7 @@ public class PlaceService implements IPlaceService{
 	@Transactional(rollbackFor = Exception.class)
 	public OperationResult insertPlace(Place place) throws OperationResultException {
 		if (place.getLocation() != null) {
-			OperationResult createLocationResult = this.locationService.insertLocation(place.getLocation());
+			OperationResult createLocationResult = this.locationService.insert(place.getLocation());
 			if (OperationResult.isResultSucces(createLocationResult)) {
 				place.setLocationId(place.getLocation().getId());
 			} else {
@@ -99,8 +99,19 @@ public class PlaceService implements IPlaceService{
 	}
 
 	@Override
-	public ValueOperationResult<Integer> updatePlace(Place place) {
-		return this.placeDao.updatePlace(place);
+	public OperationResult updatePlace(Place place) throws OperationResultException {
+		if (place.getLocation() != null) {
+			OperationResult updateLocationResult = this.locationService.update(place.getLocation());
+			if (!OperationResult.isResultSucces(updateLocationResult)) {
+				throw new OperationResultException(updateLocationResult);
+			}
+		}
+		OperationResult updatePlaceResult = this.placeDao.updatePlace(place);
+		if (OperationResult.isResultSucces(updatePlaceResult)) {
+			return updatePlaceResult;
+		} else {
+			throw new OperationResultException(updatePlaceResult);
+		}
 	}
 
 	@Override

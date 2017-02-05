@@ -17,6 +17,8 @@ public class LocationRowMapper extends BaseRowMapper<Location> {
 	public static final String COL_STREET = "STREET_NUMBER";
 	public static final String COL_LATITUDE = "LATITUDE";
 	public static final String COL_LONGITUDE = "LONGITUDE";
+	public static final String COL_USER_ADDRESS = "USER_ADDRESS";
+	public static final String COL_POSTAL_CODE = "POSTAL_CODE";
 
 	public LocationRowMapper() {
 		this(null);
@@ -39,6 +41,8 @@ public class LocationRowMapper extends BaseRowMapper<Location> {
 		location.setCountry(super.getString(rs, COL_COUNTRY));
 		location.setState(super.getString(rs, COL_STATE));
 		location.setStreet(super.getString(rs, COL_STREET));
+		location.setUserAddress(super.getString(rs, COL_USER_ADDRESS));
+		location.setPostalCode(super.getString(rs, COL_POSTAL_CODE));
 		
 		return location;
 	}
@@ -58,6 +62,8 @@ public class LocationRowMapper extends BaseRowMapper<Location> {
 		super.addColumn(COL_COUNTRY);
 		super.addColumn(COL_STATE);
 		super.addColumn(COL_STREET);
+		super.addColumn(COL_USER_ADDRESS);
+		super.addColumn(COL_POSTAL_CODE);
 	}
 
 }

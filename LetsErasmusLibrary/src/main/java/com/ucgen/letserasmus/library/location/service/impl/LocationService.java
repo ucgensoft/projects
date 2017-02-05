@@ -22,18 +22,23 @@ public class LocationService implements ILocationService {
 	}
 
 	@Override
-	public ListOperationResult<Location> listLocation(Location location) {
-		return this.locationDao.listLocation(location);
+	public ListOperationResult<Location> list(Location location) {
+		return this.locationDao.list(location);
 	}
 
 	@Override
-	public ListOperationResult<Location> listLocation(List<Long> idList) {
-		return this.locationDao.listLocation(idList);
+	public ListOperationResult<Location> list(List<Long> idList) {
+		return this.locationDao.list(idList);
 	}
 
 	@Override
-	public OperationResult insertLocation(Location location) {
-		return this.locationDao.insertLocation(location);
+	public OperationResult insert(Location location) {
+		return this.locationDao.insert(location);
+	}
+
+	@Override
+	public OperationResult update(Location location) {
+		return this.locationDao.update(location);
 	}
 	
 }

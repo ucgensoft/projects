@@ -2,9 +2,12 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
                              function($scope, $controller, placeService, commonService, enumerationService) {
       var self = this;
       
+      var pageMode = null;
+      
       var marker = null;
       var map = null;
       var autocomplete = null;
+      self.place = null;
       self.photoList = [];
       self.amentiesList = [];
       self.safetyAmentiesList = [];
@@ -21,39 +24,36 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
       	  	formdata : document.getElementById('formdata'),
       	  	progress : document.getElementById('progress')
       	  };
-      
-     /*
-      self.amentiesList = [
-        {id: 'washing_machine', text: 'Washing Machine'},
-        {id: 'dishwasher', text: 'Dishwasher'},
-        {id: 'fridge', text: 'Fridge'},
-        {id: 'kitchen_supplies', text: 'Kitchen Supplies'},
-        {id: 'closet_drawer', text: 'Closet/Drawer'},
-        {id: 'tv', text: 'TV'},
-        {id: 'heat', text: 'Heat'},
-        {id: 'air_condition', text: 'Air Conditioning'},
-        {id: 'iron', text: 'Iron'},
-        {id: 'hair_dryer', text: 'Hair Dryer'},
-        {id: 'bed_sheet', text: 'Bed Sheet'},
-        {id: 'pillow', text: 'Pillow'},
-        {id: 'towel', text: 'Towel'},
-      ];
-      
-      self.safetyAmentiesList = [
-                           {id: 'lock_on_bed_door', text: 'Lock on Bedroom Door'},
-                           {id: 'smoke_detector', text: 'Smoke Detector'},
-                           {id: 'carbon_monoxide_detector', text: 'Carbon Monoxide Detector'},
-                           {id: 'fire_extinguisher', text: 'Fire Extinguisher'}
-                         ];
-      
-      self.ruleList = [
-                                 {id: 'pets', text: 'Suitable For Pets'},
-                                 {id: 'smoke', text: 'Smoke Allowed'},
-                                 {id: 'event_party', text: 'Events Or Parties Allowed'}
-                               ];
-      */
-     
+           
       self.initialize = function() {
+    	  
+    	  $("#txtStartDatePicker").datepicker(
+			{
+				dateFormat : "d MM, y",
+				onSelect : function(selectedDate, cal) {
+					
+				}
+			});
+    	  
+    	  $("#txtEndDatePicker").datepicker(
+			{
+				dateFormat : "d MM, y",
+				onSelect : function(selectedDate, cal) {
+					
+				}
+			});
+    	  
+    	  var placeId = getUriParam('placeId');
+    	  if (placeId != null && placeId != "") {
+    		  placeService.getPlace(placeId).then(function(operationResult) {
+        	  		self.displayPlaceDetails(operationResult.resultValue)
+          		},
+				function(errResponse){
+					console.error('Error while fetching Portfolio');
+				}
+		      );
+    	  }
+    	  
     	  enumerationService.listEnumeration(null).then(function(operationResult) {
   	  			self.amentiesList = operationResult.resultValue["place_amenty"];
   	  			self.safetyAmentiesList = operationResult.resultValue["place_safety_amenty"];
@@ -71,12 +71,79 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     	  $("#divStep5").css("display", "none");
     	  $("#divStep6").css("display", "none");
     	  $("#divStep7").css("display", "none");
-    	  
+    	
     	  self.initPhotoTab();
+      };
+      
+      self.displayPlaceDetails = function(place) {
+    	  self.place = place;
+    	  
+    	  var photoIndex = 0;
+			for(var i = 0; i < self.place.photoList.length; i++) {
+				var photo = self.place.photoList[i];
+				self.photoList.push({ 'photoId': photo.id, 'file': null, 'src': rootPlaceImageFolder + self.place.id + '/' + photo.id + '_small.' + photo.fileSuffix });
+			}
+    	  
+    	  self.place.amentyMap = {};
+    	  if (self.place.amenties != null && self.place.amenties != '') {
+    		  var amentyList = self.place.amenties.split(',');
+    		  for (var i = 0; i < amentyList.length; i++) {
+    			  var strAmenty = amentyList[i];
+    			  self.place.amentyMap[strAmenty] = 1;
+    		  }
+    	  }
+    	  
+    	  self.place.safetyAmentyMap = {};
+    	  if (self.place.safetyAmenties != null && self.place.safetyAmenties != '') {
+    		  var safetyAmentyList = self.place.safetyAmenties.split(',');
+    		  for (var i = 0; i < safetyAmentyList.length; i++) {
+    			  var strSafetyAmenty = safetyAmentyList[i];
+    			  self.place.safetyAmentyMap[strSafetyAmenty] = 1;
+    		  }
+    	  }
+    	  
+    	  self.place.ruleMap = {};
+    	  if (self.place.rules != null && self.place.rules != '') {
+    		  var ruleList = self.place.rules.split(',');
+    		  for (var i = 0; i < ruleList.length; i++) {
+    			  var strRule = ruleList[i];
+    			  self.place.ruleMap[strRule] = 1;
+    		  }
+    	  }
+    	  
+    	  if (self.place.placeTypeId == 1) {
+    		  $("#rdPlaceTypeEntirePlace").attr('checked', 'checked');
+    	  } else if (self.place.placeTypeId == 2) {
+    		  $("#rdPlaceTypePrivateRoom").attr('checked', 'checked');
+    	  } else if (self.place.placeTypeId == 3) {
+    		  $("#rdPlaceTypeSharedRoom").attr('checked', 'checked');
+    	  }
+
+    	  $("#cmbHomeType").val(self.place.homeTypeId);
+    	  setCounterElementValue('spanBedNumber', self.place.bedNumber);
+    	  setCounterElementValue('spanBathroomNumber', self.place.bathRoomNumber);
+    	  $('#cmbBathroomType').val(self.place.bathRoomType)
+    	      	  
+    	  setCounterElementValue('spanGuestNumber', self.place.guestNumber);
+    	  
+    	  $("#cmbGuestGender").val(self.place.guestGender)
+    	  setCounterElementValue('spanPlaceMateNumber', self.place.placeMateNumber);
+    	  if (self.place.placeMateGender) {
+    		  $("#cmbPlaceMateGender").val(self.place.placeMateGender);
+    	  }
+    	      	  
+    	  $("#txtDailyPrice").val(self.place.price);
+    	  $("#txtDepositPrice").val(self.place.depositPrice)
+
+    	  $("#cmbCurrencyId").val(self.place.currencyId);
+    	  if (self.place.billsIncluded == 'Y') {
+    		  $("#chbBillsIncluded").attr('checked', 'checked');
+    	  }
     	  
     	  $("#txtStartDatePicker").datepicker(
 			{
 				minDate : new Date(),
+				defaultDate : new Date(self.place.startDate),
 				dateFormat : "d MM, y",
 				onSelect : function(selectedDate, cal) {
 					
@@ -84,17 +151,82 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
 			});
     	  
     	  $("#txtEndDatePicker").datepicker(
-    				{
-    					minDate : new Date(),
-    					dateFormat : "d MM, y",
-    					onSelect : function(selectedDate, cal) {
-    						
-    					}
-    				});    	  
+			{
+				minDate : new Date(),
+				defaultDate : new Date(self.place.endDate),
+				dateFormat : "d MM, y",
+				onSelect : function(selectedDate, cal) {
+					
+				}
+			});
+    	  
+    	  $("#txtStartDatePicker").datepicker('setDate', new Date(self.place.startDate));
+    	  $("#txtEndDatePicker").datepicker('setDate', new Date(self.place.endDate));
+    	  
+    	  $("#txtMinStay").val(self.place.minimumStay);
+    	  $("#txtMaxStay").val(self.place.maximumStay);
+    	  
+    	  $("#hiddenLocality").val(self.place.location.locality);
+    	  $("#txtCountry").val(self.place.location.country);
+    	  $("#txtCity").val(self.place.location.state);
+    	  $("#txtStreet").val(self.place.location.street);
+    	  $("#txtPostalCode").val(self.place.location.postalCode);
+    	  $("#txtBuilding").val(self.place.location.userAddress);
+    	  $("#txtLatitude").val(self.place.location.latitude);
+    	  $("#txtLongitude").val(self.place.location.longitude);
+    	  $("#txtSearch").val(self.place.location.street);
+    	  
+    	  $("#txtTitle").val(self.place.title);
+    	  $("#txtDescription").val(self.place.description);
+    	  
+      };
+      
+      self.hasAmenty = function(amentyKey) {
+    	  if (self.place != null) {
+    		  if (self.place.amentyMap[amentyKey] == 1) {
+        		  return true;
+        	  } else {
+        		  return false;
+        	  }
+    	  } else {
+    		  return false;
+    	  }
+      };
+      
+      self.hasSafetyAmenty = function(safetyAmentyKey) {
+    	  if (self.place != null) {
+    		  if (self.place.safetyAmentyMap[safetyAmentyKey] == 1) {
+        		  return true;
+        	  } else {
+        		  return false;
+        	  }
+    	  } else {
+    		  return false;
+    	  }
+      };
+      
+      self.hasRule = function(ruleKey) {
+    	  if (self.place != null) {
+    		  if (self.place.ruleMap[ruleKey] == 1) {
+        		  return true;
+        	  } else {
+        		  return false;
+        	  }
+    	  } else {
+    		  return false;
+    	  }
       };
       
       self.initializeMap = function() {
-    	  self.selectedLocation = new google.maps.LatLng(41.0082376, 28.97835889999999);
+    	  var tmpLatitude = 41.0082376;
+    	  var tmpLongitude = 28.97835889999999;
+    	  
+    	  if (self.place != null) {
+    		  tmpLatitude = self.place.location.latitude;
+    		  tmpLongitude = self.place.location.longitude;
+    	  }
+    	  
+    	  self.selectedLocation = new google.maps.LatLng(tmpLatitude, tmpLongitude);
 			
 			var mapOptions = {
 					zoom: 13,
@@ -113,7 +245,23 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
 		    autocomplete.addListener('place_changed', function(event, result) {
 		    	self.onPlaceChange(event, result);
 		    });
-      };
+		    
+		    if (marker == null) {
+	        	marker = new google.maps.Marker({
+			        map: map,
+					draggable: true,
+			        position: self.selectedLocation
+			    });
+	        	
+	        	google.maps.event.addListener(marker, 'dragend', function() {
+		        		$("#txtLatitude").val(marker.getPosition().lat);
+		    	        $("#txtLongitude").val(marker.getPosition().lng);
+		            });
+	  	        }
+	  	        
+	  	        marker.setPosition(self.selectedLocation);
+	  	        marker.setVisible(true);
+	      };
       
       self.onMarkerMove = function() {
     	    
@@ -213,23 +361,7 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
 	  
 	        map.setCenter(place.geometry.location);
 	        map.setZoom(15);
-	        /*
-	        if (place.geometry.viewport) {
-	            map.fitBounds(place.geometry.viewport);
-	        } else {
-	            map.setCenter(place.geometry.location);
-	            map.setZoom(9);
-	        }
-	        */
-	        /*
-	        marker.setIcon(({
-	            url: place.icon,
-	            size: new google.maps.Size(71, 71),
-	            origin: new google.maps.Point(0, 0),
-	            anchor: new google.maps.Point(17, 34),
-	            scaledSize: new google.maps.Size(35, 35)
-	        }));
-	        */
+	        
 	        if (marker == null) {
 	        	marker = new google.maps.Marker({
 			        map: map,
@@ -238,8 +370,6 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
 			    });
 	        	
 	        	google.maps.event.addListener(marker, 'dragend', function() {
-		              // updateMarkerStatus('Drag ended');
-		              //geocodePosition(marker.getPosition());
 		        		$("#txtLatitude").val(marker.getPosition().lat);
 		    	        $("#txtLongitude").val(marker.getPosition().lng);
 		            });
@@ -260,21 +390,10 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
 	                document.getElementById('txtCountry').value = place.address_components[i].long_name;
 	            } else if(place.address_components[i].types[0] == 'administrative_area_level_1'){
 	                document.getElementById('txtCity').value = place.address_components[i].long_name;
-	                //document.getElementById('txtState').value = place.address_components[i].long_name;
 	            } else if(place.address_components[i].types[0] == 'locality'){
 	                document.getElementById('hiddenLocality').value = place.address_components[i].long_name;
-	                //document.getElementById('txtState').value = place.address_components[i].long_name;
 	            }
 	        }
-	        /*
-	        document.getElementById('location').innerHTML = place.formatted_address;
-	        document.getElementById('lat').innerHTML = place.geometry.location.lat();
-	        document.getElementById('lon').innerHTML = place.geometry.location.lng();
-	        */
-    	  
-	    	//self.selectedPlaceName = result.name;
-	    	//self.selectedLat = result.geometry.location.lat();
-	    	//self.selectedLng = result.geometry.location.lng();
 	    };
 	    
 	  self.validate = function(step) {
@@ -368,10 +487,9 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
             		  if (map == null) {
             			  self.initializeMap();
             		  }
-            	  }   
+            	  }
     		  }
     	  } else {
-    		  //showMessage("alert", "Warning", "Please fill required fields!");
     		  $.prompt("Please fill required fields!");
     		  return false;
     	  }  
@@ -462,7 +580,7 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     	  newPlace.location.city = $("#txtCity").val();
     	  newPlace.location.street = $("#txtStreet").val();
     	  newPlace.location.postalCode = $("#txtPostalCode").val();
-    	  newPlace.location.userAddress = $("#txtBuildind").val();
+    	  newPlace.location.userAddress = $("#txtBuilding").val();
     	  newPlace.location.latitude = $("#txtLatitude").val();
     	  newPlace.location.longitude = $("#txtLongitude").val();
     	  
@@ -477,24 +595,45 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
       	  formData.append('place', angular.toJson(newPlace));
     	  */
       	  NProgress.start(4000, 10);
-    	  placeService.savePlace(newPlace, self.photoList).then(
-			function(operationResult) {
-				NProgress.done(true); 
-				if (operationResult.resultCode == EnmOperationResultCode.SUCCESS) {
-					NProgress.done(true); 
-					if (operationResult.resultCode == EnmOperationResultCode.SUCCESS) {
-						alert('Congradulations! Your place is saved successfully!');	
-						document.location.href = webApplicationUrlPrefix + '/pages/Main.xhtml';
-					} else {
-						alert('Operation could not be completed. Please try again later!');
-					}
-				} else {
-					alert('Operation could not be completed. Please try again later!');
-				}
-			}, function(errResponse) {
-				NProgress.done(true);
-				alert('Operation could not be completed. Please try again later!');
-			});    	  
+    	  if (self.place == null) {
+    		  placeService.savePlace(newPlace, self.photoList).then(
+    					function(operationResult) {
+    						NProgress.done(true); 
+    						if (operationResult.resultCode == EnmOperationResultCode.SUCCESS) {
+    							NProgress.done(true); 
+    							if (operationResult.resultCode == EnmOperationResultCode.SUCCESS) {
+    								alert('Congradulations! Your place is saved successfully!');	
+    								document.location.href = webApplicationUrlPrefix + '/pages/dashboard/Listings.xhtml';
+    							} else {
+    								alert('Operation could not be completed. Please try again later!');
+    							}
+    						} else {
+    							alert('Operation could not be completed. Please try again later!');
+    						}
+    					}, function(errResponse) {
+    						NProgress.done(true);
+    						alert('Operation could not be completed. Please try again later!');
+    					});
+    	  } else {
+    		  placeService.updatePlace(newPlace, self.photoList).then(
+    					function(operationResult) {
+    						NProgress.done(true); 
+    						if (operationResult.resultCode == EnmOperationResultCode.SUCCESS) {
+    							NProgress.done(true); 
+    							if (operationResult.resultCode == EnmOperationResultCode.SUCCESS) {
+    								alert('Congradulations! Your place is updated successfully!');	
+    								document.location.href = webApplicationUrlPrefix + '/pages/dashboard/Listings.xhtml';
+    							} else {
+    								alert('Operation could not be completed. Please try again later!');
+    							}
+    						} else {
+    							alert('Operation could not be completed. Please try again later!');
+    						}
+    					}, function(errResponse) {
+    						NProgress.done(true);
+    						alert('Operation could not be completed. Please try again later!');
+    					});
+    	  }    	  
       };
       
       self.initialize();
