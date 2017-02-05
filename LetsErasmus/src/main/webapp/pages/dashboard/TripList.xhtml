@@ -5,8 +5,11 @@
 	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
 
 	<ui:define name="head">
-		<link rel="stylesheet" type="text/css"
-			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css" />
+		<link rel="stylesheet" type="text/css" href="#{webApplication.urlPrefix}/static/css/place/common_o2.css" />
+		
+		<script>
+			var activeDashboardTab = 4;
+		</script>
 	</ui:define>
 
 	<ui:define name="body">
@@ -296,5 +299,6 @@
 
 		</div>
 		</main>
+		<script src="#{webApplication.urlPrefix}/static/js/dashboard.js"></script>
 	</ui:define>
 </ui:composition>

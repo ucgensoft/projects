@@ -123,24 +123,26 @@ public abstract class BaseRowMapper<T> implements RowMapper<T>{
 			selectBuilder.append((i == 0 ? "" : ",") +  this.shortTableName + "." + colList.get(i) + " " + this.getColumnName(colList.get(i)));
 		}
 		
-		for (ForeignKey<BaseRowMapper, BaseRowMapper> fKey : this.getfKeyMap().values()) {
-			List<String> fKeyColList = fKey.getDestMapper().getColList(); 
-			for (int i = 0; i < fKeyColList.size(); i++) {
-				selectBuilder.append("," +  fKey.getDestMapper().shortTableName + "." + fKeyColList.get(i) + " "  + fKey.getDestMapper().getColumnName(fKeyColList.get(i)));
-			}
-			
-			fromBuilder.append(" " + fKey.getJoinType().getSqlString() + " ");
-			
-			fromBuilder.append(fKey.getDestMapper().getTableName() + " " + fKey.getDestMapper().getShortTableName() + " ON ");
-			int counter = 0;
-			for (String fieldPairKey : fKey.getFieldPairMap().keySet()) {
-				if (counter > 0) {
-					fromBuilder.append(" AND ");
+		if (this.getfKeyMap() != null) {
+			for (ForeignKey<BaseRowMapper, BaseRowMapper> fKey : this.getfKeyMap().values()) {
+				List<String> fKeyColList = fKey.getDestMapper().getColList(); 
+				for (int i = 0; i < fKeyColList.size(); i++) {
+					selectBuilder.append("," +  fKey.getDestMapper().shortTableName + "." + fKeyColList.get(i) + " "  + fKey.getDestMapper().getColumnName(fKeyColList.get(i)));
 				}
-				fromBuilder.append(this.shortTableName + "." + fieldPairKey);
-				fromBuilder.append("=");
-				fromBuilder.append(fKey.getDestMapper().getShortTableName() + "." + fKey.getFieldPairMap().get(fieldPairKey));
-				counter ++;
+				
+				fromBuilder.append(" " + fKey.getJoinType().getSqlString() + " ");
+				
+				fromBuilder.append(fKey.getDestMapper().getTableName() + " " + fKey.getDestMapper().getShortTableName() + " ON ");
+				int counter = 0;
+				for (String fieldPairKey : fKey.getFieldPairMap().keySet()) {
+					if (counter > 0) {
+						fromBuilder.append(" AND ");
+					}
+					fromBuilder.append(this.shortTableName + "." + fieldPairKey);
+					fromBuilder.append("=");
+					fromBuilder.append(fKey.getDestMapper().getShortTableName() + "." + fKey.getFieldPairMap().get(fieldPairKey));
+					counter ++;
+				}
 			}
 		}
 		

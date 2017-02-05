@@ -29,9 +29,26 @@ App.factory('placeService', ['$http', '$q', function($http, $q) {
 							'Accept' : 'application/json'
 						}
 					};
-					return $http
-							.get(webApplicationUrlPrefix + '/api/place/list',
+					return $http.get(webApplicationUrlPrefix + '/api/place/list',
 									config).then(function(response) {
+								return response.data;
+							}, function(errResponse) {
+								console.error('Error while fetching places');
+								return $q.reject(errResponse);
+							});
+				},
+				listUserPlaces : function() {
+					var data = {
+							
+					};
+					var config = {
+						params : data,
+						headers : {
+							'Accept' : 'application/json'
+						}
+					};
+					return $http.get(webApplicationUrlPrefix + '/api/place/listuserplace', config).then(
+							function(response) {
 								return response.data;
 							}, function(errResponse) {
 								console.error('Error while fetching places');
@@ -101,48 +118,28 @@ App.factory('placeService', ['$http', '$q', function($http, $q) {
 						return $q.reject(errResponse);
 					});
 				},
-				addPhoto : function(placeId, fileList) {
-					var formData = new FormData();
-					for (var i = 0; i < fileList.length; i++) {
-						formData.append('photolist', self.photoList[i].file);
-					}
-					formData.append("placeId", placeId);
+				
+				changePlaceStatus : function(placeId, status) {
 					
 					var config = {
 						headers : {
 							'Accept' : 'application/json',
-							'Content-Type' : undefined
 						}
 					};
-
-					return $http.post(webApplicationUrlPrefix + '/api/place/create', formData, {
-								headers : {
-									'Content-Type' : undefined
-								}
-							}).then(function(response) {
-						return response.data;
-					}, function(errResponse) {
-						console.error('Error while creating place');
-						return $q.reject(errResponse);
-					});
-				},
-				
-				addPhoto_jq : function(placeId, fileList) {
-					var xhr = new XMLHttpRequest();
-					xhr.open('POST', webApplicationUrlPrefix
-							+ '/api/place/addphoto');
-					xhr.onload = function() {
-						// progress.value = progress.innerHTML = 100;
+					
+					var data = {
+						id : placeId,
+						status : status
 					};
-
-					/*
-					 * if (tests.progress) { xhr.upload.onprogress =
-					 * function(event) { if (event.lengthComputable) { var
-					 * complete = (event.loaded / event.total 100 | 0);
-					 * progress.value = progress.innerHTML = complete; } } }
-					 */
-					xhr.send(formData);
+					
+					return $http.post(webApplicationUrlPrefix + '/api/place/updateplacestatus', data, config).then(function(response) {
+								return response.data;
+							}, function(errResponse) {
+								console.error('Error while updating place status');
+								return $q.reject(errResponse);
+							});
 				}
+				
 			};
 
 		} ]);

@@ -104,8 +104,8 @@ public class PlaceService implements IPlaceService{
 	}
 
 	@Override
-	public ListOperationResult<Place> listPlace(Place place, boolean locationFlag) {
-		return this.placeDao.listPlace(place, locationFlag);
+	public ListOperationResult<Place> listPlace(Place place, boolean locationFlag, boolean photoFlag, boolean userFlag) {
+		return this.placeDao.listPlace(place, locationFlag, photoFlag, userFlag);
 	}
 
 }

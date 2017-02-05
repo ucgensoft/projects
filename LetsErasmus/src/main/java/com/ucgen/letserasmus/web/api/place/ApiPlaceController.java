@@ -4,6 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -11,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,6 +42,8 @@ import com.ucgen.letserasmus.library.place.model.Place;
 import com.ucgen.letserasmus.library.place.service.IPlaceService;
 import com.ucgen.letserasmus.library.user.model.User;
 import com.ucgen.letserasmus.web.api.BaseApiController;
+import com.ucgen.letserasmus.web.view.application.EnmOperation;
+import com.ucgen.letserasmus.web.view.application.EnmSession;
 
 @RestController
 public class ApiPlaceController extends BaseApiController {
@@ -61,6 +68,7 @@ public class ApiPlaceController extends BaseApiController {
 		OperationResult operationResult = new OperationResult();
 		
 		try {
+			Date createdDate = new Date();
 			String strPlaceJSON = place;
 			
 			ObjectMapper mapper = new ObjectMapper();
@@ -119,7 +127,7 @@ public class ApiPlaceController extends BaseApiController {
 				newPlace.setDescription(placeMap.get("description").toString());
 			}
 			
-			newPlace.setStatus(EnmPlaceStatus.INITIAL.getValue());
+			newPlace.setStatus(EnmPlaceStatus.ACTIVE.getValue());
 			
 			Location newLocation = new Location();
 			
@@ -141,7 +149,9 @@ public class ApiPlaceController extends BaseApiController {
 				createdBy = appUser.getFullName();
 			}
 			newPlace.setCreatedBy(createdBy);
+			newPlace.setCreatedDate(createdDate);
 			newLocation.setCreatedBy(createdBy);
+			newLocation.setCreatedDate(createdDate);
 			
 			newPlace.setLocation(newLocation);
 			
@@ -155,6 +165,7 @@ public class ApiPlaceController extends BaseApiController {
 					photo.setEntityType(EnmEntityType.PLACE.getValue());
 					photo.setCreatedBy(createdBy);
 					photo.setFileType(EnmFileType.getFileTypeWithSuffix(fileSuffix).getValue());
+					photo.setCreatedDate(createdDate);
 					
 					newPlace.addPhoto(photo);
 				}
@@ -201,7 +212,7 @@ public class ApiPlaceController extends BaseApiController {
 	@RequestMapping(value = "/api/place/list", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public ResponseEntity<ListOperationResult<Place>> listPlace(@RequestParam Map<String, String> requestParams) {
 		HttpStatus httpStatus = null;
-		ListOperationResult<Place> listResult = this.placeService.listPlace(null, true);
+		ListOperationResult<Place> listResult = this.placeService.listPlace(null, true, true, true);
 		if (OperationResult.isResultSucces(listResult)) {
 			httpStatus = HttpStatus.OK;
 		} else {
@@ -209,12 +220,51 @@ public class ApiPlaceController extends BaseApiController {
 		}
 		return new ResponseEntity<ListOperationResult<Place>>(listResult, httpStatus);
     }
+	
+	@RequestMapping(value = "/api/place/listuserplace", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public ResponseEntity<ValueOperationResult<Map<String, List<Place>>>> listUserPlace(HttpSession session) {
+		ValueOperationResult<Map<String, List<Place>>> operationResult = new ValueOperationResult<Map<String, List<Place>>>();
+		try {
+			User user = super.getSessionUser(session);
+			if (user != null) {
+				Place place = new Place();
+				place.setHostUserId(user.getId());
+				ListOperationResult<Place> listResult = this.placeService.listPlace(place, true, true, false);
+				
+				List<Place> placeList = listResult.getObjectList();
+				Map<String, List<Place>> placeMap = new HashMap<>();
+				List<Place> activeList = new ArrayList<Place>();
+				List<Place> deactiveList = new ArrayList<Place>();
+				if (placeList != null && placeList.size() > 0) {
+					for (Place tmpPlace : placeList) {
+						if (tmpPlace.getStatus().equals(EnmPlaceStatus.ACTIVE.getValue())) {
+							activeList.add(tmpPlace);
+						} else if (tmpPlace.getStatus().equals(EnmPlaceStatus.DEACTIVE.getValue())) {
+							deactiveList.add(tmpPlace);
+						}
+					}
+				}
+				placeMap.put("active", activeList);
+				placeMap.put("deactive", deactiveList);
+				
+				operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+				operationResult.setResultValue(placeMap);
+			} else {
+				operationResult.setResultCode(EnmResultCode.WARNING.getValue());
+				operationResult.setResultDesc("You need to login first.");
+			}
+		} catch (Exception e) {
+			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
+			operationResult.setResultDesc("Place list could not be fetched from database.");
+		}
+		return new ResponseEntity<ValueOperationResult<Map<String, List<Place>>>>(operationResult, HttpStatus.OK);
+    }
 		
 	@RequestMapping(value = "/api/place/addphoto", method = RequestMethod.POST)
     public ResponseEntity<ListOperationResult<Place>> addPhoto(@RequestParam("photolist") MultipartFile[] file, 
     		@RequestParam("placeId") Integer placeId) {
 		HttpStatus httpStatus = null;
-		ListOperationResult<Place> listResult = this.placeService.listPlace(null, true);
+		ListOperationResult<Place> listResult = this.placeService.listPlace(null, true, true, true);
 		if (OperationResult.isResultSucces(listResult)) {
 			httpStatus = HttpStatus.OK;
 		} else {
@@ -239,6 +289,70 @@ public class ApiPlaceController extends BaseApiController {
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<ListOperationResult<com.ucgen.letserasmus.library.file.model.File>>(listResult, httpStatus);
+    }
+	
+	@RequestMapping(value = "/api/place/updateplacestatus", method = RequestMethod.POST)
+    public ResponseEntity<OperationResult> updatePlaceStatus(@RequestBody Place place, HttpSession session) throws JsonParseException, JsonMappingException, IOException, ParseException {
+		HttpStatus httpStatus = null;
+		OperationResult operationResult = new OperationResult();
+		
+		try {
+			Date modifiedDate = new Date();
+			User user = super.getSessionUser(session);
+			if (user != null) {
+				Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
+				if (activeOperation != null && activeOperation.equals(EnmOperation.LIST_USER_PLACE)) {
+					Long placeId = place.getId();
+					Integer newStatus = place.getStatus();
+					if (placeId != null && newStatus != null) {
+						ValueOperationResult<Place> getPlaceResult = this.placeService.getPlace(placeId);
+						if (OperationResult.isResultSucces(getPlaceResult)) {
+							Place dbPlace = getPlaceResult.getResultValue();
+							if (dbPlace != null) {
+								if (dbPlace.getHostUserId().equals(user.getId())) {
+									if (dbPlace.getStatus().equals(EnmPlaceStatus.ACTIVE.getValue()) 
+											|| dbPlace.getStatus().equals(EnmPlaceStatus.DEACTIVE.getValue())) {
+										Place updatedPlace = new Place();
+										updatedPlace.setId(placeId);
+										updatedPlace.setStatus(newStatus);
+										updatedPlace.setModifiedBy(user.getFullName());
+										updatedPlace.setModifiedDate(modifiedDate);
+										
+										operationResult = this.placeService.updatePlace(updatedPlace);
+									} else {
+										operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+										operationResult.setResultDesc("Existing status of place is not suitable for this operation.");
+									}
+								} else {
+									operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+									operationResult.setResultDesc("You are not authorized to edit this listing");
+								}
+							} else {
+								operationResult.setResultCode(EnmResultCode.WARNING.getValue());
+								operationResult.setResultDesc("There is no place definition with this id!");
+							}
+						} else {
+							operationResult = getPlaceResult;
+						}
+					} else {
+						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+						operationResult.setResultDesc("placeId and status parameters are mandatory");
+					}
+				} else {
+					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+					operationResult.setResultDesc("You are not authorized for this operation!");
+				}
+			} else {
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
+			}
+			httpStatus = HttpStatus.OK;			
+		} catch (Exception e) {
+			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
+			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<OperationResult>(operationResult, httpStatus);
     }
 	
 }

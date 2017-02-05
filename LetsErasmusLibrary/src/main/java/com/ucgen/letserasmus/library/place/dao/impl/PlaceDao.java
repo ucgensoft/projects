@@ -52,7 +52,7 @@ public class PlaceDao extends JdbcDaoSupport implements IPlaceDao{
 		ValueOperationResult<Place> operationResult = new ValueOperationResult<Place>();
 		Place place = new Place();
 		place.setId(id);
-		ListOperationResult<Place> listOperationResult = this.listPlace(place, true);
+		ListOperationResult<Place> listOperationResult = this.listPlace(place, true, true, true);
 		
 		operationResult.setResultCode(listOperationResult.getResultCode());
 		operationResult.setResultDesc(listOperationResult.getResultDesc());
@@ -132,6 +132,22 @@ public class PlaceDao extends JdbcDaoSupport implements IPlaceDao{
 			StringUtil.append(updateFields, "COVER_PHOTO_ID = ?", ",");
 			argList.add(place.getCoverPhotoId());
 		}
+		
+		if (place.getStatus() != null) {
+			StringUtil.append(updateFields, "STATUS = ?", ",");
+			argList.add(place.getStatus());
+		}
+		
+		if (place.getModifiedBy() != null) {
+			StringUtil.append(updateFields, "MODIFIED_BY = ?", ",");
+			argList.add(place.getModifiedBy());
+		}
+		
+		if (place.getModifiedDate() != null) {
+			StringUtil.append(updateFields, "MODIFIED_DATE = ?", ",");
+			argList.add(place.getModifiedDate());
+		}
+		
 		argList.add(place.getId());
 		/*
 		argList.add(place.getHostUserId());
@@ -178,15 +194,21 @@ public class PlaceDao extends JdbcDaoSupport implements IPlaceDao{
 	}
 
 	@Override
-	public ListOperationResult<Place> listPlace(Place place, boolean locationFlag) {
+	public ListOperationResult<Place> listPlace(Place place, boolean locationFlag, boolean photoFlag, boolean userFlag) {
 		ListOperationResult<Place> listOperationResult = new ListOperationResult<Place>();
 		StringBuilder sqlBuilder = new StringBuilder();
 		List<Object> argList = new ArrayList<Object>();
 		
 		PlaceRowMapper placeRowMapper = new PlaceRowMapper();
-		placeRowMapper.addFKey(PlaceRowMapper.FKEY_LOCATION);
-		placeRowMapper.addFKey(PlaceRowMapper.FKEY_FILE);
-		placeRowMapper.addFKey(PlaceRowMapper.FKEY_USER);
+		if (locationFlag) {
+			placeRowMapper.addFKey(PlaceRowMapper.FKEY_LOCATION);
+		}
+		if (photoFlag) {
+			placeRowMapper.addFKey(PlaceRowMapper.FKEY_FILE);
+		}
+		if (userFlag) {
+			placeRowMapper.addFKey(PlaceRowMapper.FKEY_USER);
+		}
 		
 		sqlBuilder.append(placeRowMapper.getSelectSqlWithForeignKeys());
 		
@@ -195,10 +217,16 @@ public class PlaceDao extends JdbcDaoSupport implements IPlaceDao{
 				sqlBuilder.append(" AND " + placeRowMapper.getCriteriaColumnName(PlaceRowMapper.COL_ID) + " = ? ");
 				argList.add(place.getId());
 			}
+			if (place.getHostUserId() != null) {
+				sqlBuilder.append(" AND " + placeRowMapper.getCriteriaColumnName(PlaceRowMapper.COL_HOST_USER_ID) + " = ? ");
+				argList.add(place.getHostUserId());
+			}
 		}
 		
-		sqlBuilder.append(" AND " + FileRowMapper.COL_ENTITY_TYPE + " = ? ");
-		argList.add(EnmEntityType.PLACE.getValue());
+		if (photoFlag) {
+			sqlBuilder.append(" AND " + FileRowMapper.COL_ENTITY_TYPE + " = ? ");
+			argList.add(EnmEntityType.PLACE.getValue());
+		}
 		
 		List<Place> fileList = super.getJdbcTemplate().query(sqlBuilder.toString(), argList.toArray(), placeRowMapper);		
 		

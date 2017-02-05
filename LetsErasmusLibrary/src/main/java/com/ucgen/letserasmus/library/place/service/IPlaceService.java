@@ -14,6 +14,6 @@ public interface IPlaceService {
 	
 	ValueOperationResult<Integer> updatePlace(Place place);
 	
-	ListOperationResult<Place> listPlace(Place place, boolean locationFlag);
+	ListOperationResult<Place> listPlace(Place place, boolean locationFlag, boolean photoFlag, boolean userFlag);
 
 }

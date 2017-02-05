@@ -453,6 +453,10 @@
 }
 
 		</style>
+		<script>
+			var activeDashboardTab = 1;
+			var activeLeftMenuLink = 1;
+		</script>
 	</ui:define>
 
 	<ui:define name="body">
@@ -742,6 +746,7 @@
 			</div>
 		</div>
 		</main>
+		<script src="#{webApplication.urlPrefix}/static/js/dashboard.js"></script>
 		<script src="#{webApplication.urlPrefix}/static/js/angular/controller/edituser_controller.js"></script>
 	</ui:define>
 </ui:composition>

@@ -74,7 +74,9 @@ public class WebApplication extends BaseController {
 			return "placeDetailCtrl";
 		} else if (requestUrl.contains("PAGES/DASHBOARD/EDITUSER.XHTML")) {
 			return "editUserCtrl";
-		}else {
+		} else if (requestUrl.contains("PAGES/DASHBOARD/LISTINGS.XHTML")) {
+			return "listingsCtrl";
+		} else {
 			return "";
 		}
 	}

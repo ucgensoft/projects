@@ -54,8 +54,7 @@ App.factory('userService', ['$http', '$q', function($http, $q){
 					'Accept' : 'application/json'
 				}
 			};
-			return $http
-					.post(webApplicationUrlPrefix + '/api/user/login', user, config).then(function(response) {
+			return $http.post(webApplicationUrlPrefix + '/api/user/login', user, config).then(function(response) {
 						return response.data;
 					}, function(errResponse) {
 						console.error('Error while fetching enumerations');

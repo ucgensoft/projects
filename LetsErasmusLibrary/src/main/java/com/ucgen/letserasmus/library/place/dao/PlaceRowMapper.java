@@ -140,22 +140,24 @@ public class PlaceRowMapper extends BaseRowMapper<Place> {
 			place.setRules(place.getRules().replaceAll("'", ""));
 		}
 		
-		if (this.getfKeyMap().containsKey(FKEY_LOCATION)) {
-			ForeignKey<PlaceRowMapper, LocationRowMapper> fKey = this.getfKeyMap().get(FKEY_LOCATION);
-			Location location = fKey.getDestMapper().mapRow(rs, rowNum);
-			place.setLocation(location);
-		}
-		
-		if (this.getfKeyMap().containsKey(FKEY_FILE)) {
-			ForeignKey<PlaceRowMapper, FileRowMapper> fKey = this.getfKeyMap().get(FKEY_FILE);
-			File photo = fKey.getDestMapper().mapRow(rs, rowNum);
-			place.setCoverPhoto(photo);
-		}
-		
-		if (this.getfKeyMap().containsKey(FKEY_USER)) {
-			ForeignKey<PlaceRowMapper, UserRowMapper> fKey = this.getfKeyMap().get(FKEY_USER);
-			User user = fKey.getDestMapper().mapRow(rs, rowNum);
-			place.setUser(user);
+		if (this.getfKeyMap() != null) {
+			if (this.getfKeyMap().containsKey(FKEY_LOCATION)) {
+				ForeignKey<PlaceRowMapper, LocationRowMapper> fKey = this.getfKeyMap().get(FKEY_LOCATION);
+				Location location = fKey.getDestMapper().mapRow(rs, rowNum);
+				place.setLocation(location);
+			}
+			
+			if (this.getfKeyMap().containsKey(FKEY_FILE)) {
+				ForeignKey<PlaceRowMapper, FileRowMapper> fKey = this.getfKeyMap().get(FKEY_FILE);
+				File photo = fKey.getDestMapper().mapRow(rs, rowNum);
+				place.setCoverPhoto(photo);
+			}
+			
+			if (this.getfKeyMap().containsKey(FKEY_USER)) {
+				ForeignKey<PlaceRowMapper, UserRowMapper> fKey = this.getfKeyMap().get(FKEY_USER);
+				User user = fKey.getDestMapper().mapRow(rs, rowNum);
+				place.setUser(user);
+			}
 		}
 		
 		return place;
