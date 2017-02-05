@@ -3,7 +3,9 @@ package com.ucgen.letserasmus.web.view.application;
 public enum EnmOperation {
 
 	CREATE_USER(1),
-	UPDATE_USER(2);
+	UPDATE_USER(2),
+	LIST_USER_PLACE(3),
+	EDIT_PLACE(4);
 	
 	private final int id;
 	

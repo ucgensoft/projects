@@ -1,0 +1,644 @@
+.phone-number-input-widget {
+	float: left
+}
+
+@media ( min-width : 744px) {
+	.phone-number-input-widget {
+		width: 380px
+	}
+}
+
+.phone-number-input-widget select {
+	margin: 0 0 15px
+}
+
+.phone-number-input-widget input {
+	color: #393c3d !important
+}
+
+.phone-number-input-widget label {
+	float: left;
+	margin: 0 10px 0 0 !important;
+	padding: 0 !important;
+	text-align: left !important;
+	min-width: 115px;
+	width: auto !important
+}
+
+.phone-number-input-widget .pniw-number-container .pniw-number-prefix {
+	float: left;
+	line-height: 32px;
+	border: 1px solid #bbb;
+	border-right-width: 0;
+	min-width: 30px;
+	padding: 0 4px;
+	text-align: center;
+	color: #393c3d;
+	-webkit-border-radius: 2px 0 0 2px;
+	-moz-border-radius: 2px 0 0 2px;
+	border-radius: 2px 0 0 2px
+}
+
+.phone-number-input-widget .pniw-number-container input.pniw-number {
+	line-height: 16px;
+	float: left;
+	width: 125px !important;
+	border-color: #bbb;
+	margin: 0;
+	-webkit-border-radius: 0 2px 2px 0;
+	-moz-border-radius: 0 2px 2px 0;
+	border-radius: 0 2px 2px 0;
+	height: auto !important
+}
+
+.phone-number-verify-widget, .phone-number-replace-widget {
+	margin: 10px 0;
+	float: left;
+	clear: both;
+	line-height: 26px;
+	text-align: center;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	border: 1px solid #c3c3c3;
+	padding: 10px;
+	text-align: left;
+	padding: 15px
+}
+
+@media ( min-width : 744px) {
+	.phone-number-verify-widget, .phone-number-replace-widget {
+		width: 380px
+	}
+}
+
+.phone-number-verify-widget strong, .phone-number-replace-widget strong
+	{
+	font-weight: bold
+}
+
+.phone-number-verify-widget .pnaw-verification-error,
+	.phone-number-replace-widget .pnaw-verification-error {
+	display: none;
+	color: #f00;
+	line-height: 1.5 !important;
+	margin-bottom: 5px !important
+}
+
+.phone-number-verify-widget .pnaw-verify-container,
+	.phone-number-replace-widget .pnaw-verify-container {
+	width: 100%;
+	float: left;
+	margin-top: 10px
+}
+
+.phone-number-verify-widget .pnaw-verify-container a.cancel,
+	.phone-number-replace-widget .pnaw-verify-container a.cancel {
+	margin-left: 2px
+}
+
+.phone-number-verify-widget .pnaw-verify-container .why-verify,
+	.phone-number-replace-widget .pnaw-verify-container .why-verify {
+	float: right
+}
+
+.phone-number-verify-widget .pnaw-step2, .phone-number-replace-widget .pnaw-step2
+	{
+	display: none
+}
+
+.phone-number-verify-widget .pnaw-step2 p, .phone-number-replace-widget .pnaw-step2 p
+	{
+	margin-bottom: 5px !important;
+	line-height: 20px
+}
+
+.phone-number-verify-widget .pnaw-step2 label,
+	.phone-number-replace-widget .pnaw-step2 label {
+	margin: 10px 10px 0 0 !important;
+	line-height: 16px;
+	float: left;
+	width: auto !important
+}
+
+.phone-number-verify-widget .pnaw-step2 input,
+	.phone-number-replace-widget .pnaw-step2 input {
+	float: left;
+	margin: 7px 0 0 !important
+}
+
+.phone-number-verify-widget .pnaw-step2 #phone_number_verification,
+	.phone-number-replace-widget .pnaw-step2 #phone_number_verification {
+	width: 60px !important
+}
+
+.phone-number-verify-widget .pnaw-step2 .cancel-message,
+	.phone-number-replace-widget .pnaw-step2 .cancel-message {
+	clear: left;
+	padding-top: 10px
+}
+
+.phone-number-verify-widget .pnaw-step2 .pnaw-verify-container,
+	.phone-number-replace-widget .pnaw-step2 .pnaw-verify-container {
+	float: left;
+	margin-top: 7px
+}
+
+.phone-number-verify-widget.loading .pnaw-verify-container,
+	.phone-number-replace-widget.loading .pnaw-verify-container {
+	background:
+		url(https://a0.muscache.com/airbnb/static/spinner-9ba46576baf7d2debad913a1cede49c4.gif)
+		no-repeat center left
+}
+
+.phone-number-verify-widget.loading .pnaw-verify-container *,
+	.phone-number-replace-widget.loading .pnaw-verify-container * {
+	visibility: hidden
+}
+
+#colorbox .phone-number-verify-widget {
+	padding: 0;
+	margin: 0;
+	background-image: none;
+	border-width: 0;
+	-webkit-box-shadow: 0 0 0 transparent;
+	-moz-box-shadow: 0 0 0 transparent;
+	box-shadow: 0 0 0 transparent
+}
+
+.phone-numbers-container {
+	float: left;
+	margin-bottom: 10px;
+	position: relative;
+	line-height: 38px
+}
+
+.phone-numbers-container table.phone-numbers-table {
+	border: 1px solid #d1d1c9;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px
+}
+
+.phone-numbers-container table.phone-numbers-table th,
+	.phone-numbers-container table.phone-numbers-table td {
+	padding: 0 10px;
+	border-bottom: 1px dotted #d1d1c9
+}
+
+.phone-numbers-container table.phone-numbers-table th {
+	background-color: #f1f1f1;
+	border-right: 1px solid #d1d1c9;
+	color: #393c3d
+}
+
+.phone-numbers-container table.phone-numbers-table td {
+	padding-right: 0;
+	min-width: 214px;
+	line-height: 16px;
+	background-color: #fff
+}
+
+.phone-numbers-container table.phone-numbers-table td:last-child {
+	min-width: 0;
+	padding-left: 0;
+	padding-right: 10px
+}
+
+.phone-numbers-container table.phone-numbers-table tr:first-child th {
+	-webkit-border-radius: 5px 0 0;
+	-moz-border-radius: 5px 0 0;
+	border-radius: 5px 0 0
+}
+
+.phone-numbers-container table.phone-numbers-table tr:first-child td:last-child
+	{
+	-webkit-border-radius: 0 5px 0 0;
+	-moz-border-radius: 0 5px 0 0;
+	border-radius: 0 5px 0 0
+}
+
+.phone-numbers-container table.phone-numbers-table tr:last-child td,
+	.phone-numbers-container table.phone-numbers-table tr:last-child th {
+	border-bottom-width: 0
+}
+
+.phone-numbers-container table.phone-numbers-table tr:last-child th {
+	-webkit-border-radius: 0 0 0 5px;
+	-moz-border-radius: 0 0 0 5px;
+	border-radius: 0 0 0 5px
+}
+
+.phone-numbers-container table.phone-numbers-table tr:last-child td:last-child
+	{
+	-webkit-border-radius: 0 0 5px;
+	-moz-border-radius: 0 0 5px;
+	border-radius: 0 0 5px
+}
+
+.phone-numbers-container table.phone-numbers-table tr:first-child:last-child td,
+	.phone-numbers-container table.phone-numbers-table tr:first-child:last-child th
+	{
+	-webkit-border-radius: 5px 0 0 5px;
+	-moz-border-radius: 5px 0 0 5px;
+	border-radius: 5px 0 0 5px
+}
+
+.phone-numbers-container table.phone-numbers-table span.verified,
+	.phone-numbers-container table.phone-numbers-table span.unverified {
+	margin: 0 10px;
+	display: block
+}
+
+.phone-numbers-container table.phone-numbers-table .verify {
+	margin: 2px 5px 2px 0;
+	display: block;
+	float: left;
+	min-width: 155px
+}
+
+.phone-numbers-container table.phone-numbers-table span.verified {
+	color: #393c3d
+}
+
+.phone-numbers-container table.phone-numbers-table span.verified span.icon
+	{
+	width: 16px;
+	height: 16px;
+	margin-right: 5px;
+	float: left
+}
+
+.phone-numbers-container .no-phone-numbers p {
+	margin: 0 !important
+}
+
+.phone-numbers-container.has-phone-numbers ul.phone-numbers-list {
+	display: block
+}
+
+.phone-numbers-container.has-phone-numbers .no-phone-numbers {
+	display: none
+}
+
+.phone-numbers-container .phone-number-verify-widget {
+	display: none
+}
+
+.phone-numbers-container .phone-number-replace-widget {
+	display: none
+}
+
+.phone-numbers-container.noCancel a.cancel {
+	display: none
+}
+
+@media ( max-width : 743px) {
+	.phone-numbers-container table.phone-numbers-table tr,
+		.phone-numbers-container table.phone-numbers-table td,
+		.phone-numbers-container table.phone-numbers-table th {
+		display: block;
+		width: 100%;
+		line-height: 38px
+	}
+	.phone-numbers-container table.phone-numbers-table tr {
+		position: relative;
+		zoom: 1
+	}
+	.phone-numbers-container table.phone-numbers-table tr:after {
+		content: ".";
+		display: block;
+		height: 0;
+		clear: both;
+		visibility: hidden
+	}
+	.phone-numbers-container table.phone-numbers-table th,
+		.phone-numbers-container table.phone-numbers-table td {
+		border: 0;
+		border-top: 1px solid #d1d1c9
+	}
+	.phone-numbers-container table.phone-numbers-table tr:first-child th {
+		border-top: 0;
+		-webkit-border-radius: 0;
+		-moz-border-radius: 0;
+		border-radius: 0
+	}
+	.phone-numbers-container table.phone-numbers-table .remove-container {
+		position: absolute;
+		width: 17px;
+		top: 50px;
+		right: 5px;
+		line-height: 16px;
+		border: 0
+	}
+	.phone-numbers-container table.phone-numbers-table .verify {
+		margin: 5px 5px 5px 0
+	}
+}
+
+.picture-tile {
+	margin-right: 12.5px;
+	position: relative;
+	cursor: move
+}
+
+.picture-tile img {
+	position: relative
+}
+
+.picture-tile-delete {
+	display: none
+}
+
+.picture-tile:hover .picture-tile-delete, .picture-main[data-picture-id]:hover .picture-tile-delete
+	{
+	display: block
+}
+
+.picture-tile-dragging:hover .picture-tile-delete {
+	display: none
+}
+
+.picture-tile-dragging {
+	opacity: 0.5;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)"
+}
+
+.overlay-btn {
+	position: absolute;
+	top: 2px;
+	right: 2px;
+	width: 24px;
+	height: 24px;
+	background: #000;
+	padding-top: 3px;
+	border: 0;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	opacity: .7;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)"
+}
+
+.overlay-btn .icon {
+	color: #fff;
+	opacity: 1;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"
+}
+
+.overlay-btn:hover {
+	opacity: .9;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)"
+}
+
+#video-container .video {
+	width: 400px;
+	height: 400px
+}
+
+#video-container .video .placeholder-content {
+	display: none
+}
+
+#video-container .video .pending-content {
+	display: none
+}
+
+#video-container .video .error-content {
+	display: none
+}
+
+#video-container .video .placeholder-content h4, #video-container .video .pending-content h4,
+	#video-container .video .error-content h4 {
+	margin: 0 40px
+}
+
+#video-container .video.placeholder #video_profile {
+	display: none
+}
+
+#video-container .video.placeholder .placeholder-content {
+	display: block
+}
+
+#video-container .video.placeholder .pending-content {
+	display: none
+}
+
+#video-container .video.placeholder .error-content {
+	display: none
+}
+
+#video-container .video.placeholder object {
+	display: none
+}
+
+#video-container .video.pending .placeholder-content {
+	display: none
+}
+
+#video-container .video.pending .pending-content {
+	display: block
+}
+
+#video-container .video.pending .error-content {
+	display: none
+}
+
+#video-container .video.pending object {
+	display: none
+}
+
+#video-container .video.error-processing .placeholder-content {
+	display: none
+}
+
+#video-container .video.error-processing .pending-content {
+	display: none
+}
+
+#video-container .video.error-processing .error-content {
+	display: block
+}
+
+#video-container .video.error-processing object {
+	display: none
+}
+
+#video-container .has-video-profile .placeholder-content,
+	#video-container .has-video-profile .pending-content {
+	display: none
+}
+
+#video-container .pending-content h4 {
+	position: relative
+}
+
+#video-container .pending-video-loading {
+	position: absolute;
+	top: 1px;
+	bottom: 1px;
+	right: 14px;
+	left: 14px
+}
+
+#video-container .video-recorder-container {
+	display: none
+}
+
+#video-container #toggle-video-record span {
+	display: none
+}
+
+#video-container #toggle-video-record span.record {
+	display: inline
+}
+
+#video-container .continue-verification-button {
+	display: none
+}
+
+#video-container.recording .video {
+	display: none
+}
+
+#video-container.recording .video-recorder-container {
+	display: block
+}
+
+#video-container.recording #toggle-video-record .record {
+	display: none
+}
+
+#video-container.recording #toggle-video-record .stop-record {
+	display: inline
+}
+
+.user-profile-symbol:hover form {
+	visibility: visible
+}
+
+.remove-user-profile-symbol {
+	visibility: hidden;
+	position: relative;
+	top: -30px;
+	text-align: center
+}
+
+.remove-user-profile-symbol:hover {
+	visibility: visible
+}
+
+@media ( min-width : 744px) {
+	.sesame-credit-modal .modal-content {
+		max-width: 380px
+	}
+}
+
+.sesame-credit-modal .panel-body--narrow {
+	padding: 40px 80px
+}
+
+.sesame-credit-modal .user-info {
+	background-color: #f5f5f5;
+	border: 0
+}
+
+.sesame-credit-modal .cta .btn {
+	padding: 7px 32px
+}
+
+.sesame-credit-modal .spinner {
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	margin-right: 10px;
+	position: relative;
+	top: 8px
+}
+
+.sesame-credit-modal__iframe-step,
+	.sesame-credit-modal__iframe-step-body, .sesame-credit-modal__iframe {
+	height: 100%
+}
+
+.sesame-credit-modal__iframe-step-body {
+	padding: 0
+}
+
+.sesame-credit-modal__iframe {
+	border: 0;
+	min-height: 550px;
+	width: 100%
+}
+
+.edit-profile-confirmable-field {
+	border: 1px solid #c4c4c4;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	line-height: 36px;
+	display: table;
+	position: relative;
+	width: 100%;
+	zoom: 1
+}
+
+.edit-profile-confirmable-field:after {
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden
+}
+
+.edit-profile-confirmable-field__label,
+	.edit-profile-confirmable-field__status {
+	display: table-cell
+}
+
+.edit-profile-confirmable-field__label {
+	background-color: #f5f5f5;
+	border-right: 1px solid #c4c4c4;
+	font-weight: bold;
+	width: 150px
+}
+
+.edit-profile-confirmable-field__remove-container {
+	position: relative
+}
+
+.edit-profile-confirmable-field__remove {
+	display: block;
+	position: absolute;
+	right: 10px;
+	bottom: 10px;
+	line-height: 16px
+}
+
+.edit-profile-confirmable-field__text {
+	display: block;
+	padding: 0 10px
+}
+
+@media ( max-width : 743px) {
+	.edit-profile-confirmable-field, .edit-profile-confirmable-field__label,
+		.edit-profile-confirmable-field__status {
+		display: block;
+		width: 100%
+	}
+	.edit-profile-confirmable-field__label {
+		border-right: 0;
+		border-bottom: 1px solid #c4c4c4
+	}
+}
+
+.reviews-list-item .name {
+	margin: 4px 0;
+	max-width: 68px
+}
+
+.govt-id-birthdate {
+	line-height: 38px;
+	margin-bottom: 0
+}

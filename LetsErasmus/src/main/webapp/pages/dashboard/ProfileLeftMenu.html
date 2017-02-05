@@ -1,18 +1,21 @@
 <div class="col-md-3 space-sm-4">
 	<div class="sidenav">
 		<ul class="sidenav-list">
-			<li><a href="#{webApplication.urlPrefix}/pages/dashboard/EditUser.xhtml"
-				aria-selected="true" class="sidenav-item">Edit Profile</a></li>
-			<li><a
-				href="#{webApplication.urlPrefix}/pages/dashboard/Verification.xhtml"
-				aria-selected="false" class="sidenav-item">Trust and
-					Verification</a></li>
-			<li><a href="#{webApplication.urlPrefix}/pages/dashboard/PaymentMethods.xhtml"
-				aria-selected="false" class="sidenav-item">Payment Methods</a></li>
-			<li><a href="#{webApplication.urlPrefix}/pages/dashboard/ReceivePaymentMethods.xhtml"
-				aria-selected="false" class="sidenav-item">Payment Preferences</a></li>
-			<li><a href="#{webApplication.urlPrefix}/pages/dashboard/Reviews.xhtml"
-				aria-selected="false" class="sidenav-item">Reviews</a></li>
+			<li>
+				<a id="dashboardLeftMenu1" href="#{webApplication.urlPrefix}/pages/dashboard/EditUser.xhtml" aria-selected="false" class="sidenav-item">Edit Profile</a>
+			</li>
+			<li>
+				<a id="dashboardLeftMenu2" href="#{webApplication.urlPrefix}/pages/dashboard/Verification.xhtml" aria-selected="false" class="sidenav-item">Trust and Verification</a>
+			</li>
+			<li>
+				<a id="dashboardLeftMenu3" href="#{webApplication.urlPrefix}/pages/dashboard/PaymentMethods.xhtml" aria-selected="false" class="sidenav-item">Payment Methods</a>
+			</li>
+			<li>
+				<a id="dashboardLeftMenu4" href="#{webApplication.urlPrefix}/pages/dashboard/ReceivePaymentMethods.xhtml" aria-selected="false" class="sidenav-item">Payment Preferences</a>
+			</li>
+			<li>
+				<a id="dashboardLeftMenu5" href="#{webApplication.urlPrefix}/pages/dashboard/Reviews.xhtml" aria-selected="false" class="sidenav-item">Reviews</a>
+			</li>
 		</ul>
 	</div>
 	<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.xhtml?userId=#{webApplication.user.id}"

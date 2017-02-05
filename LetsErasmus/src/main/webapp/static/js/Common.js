@@ -1,4 +1,10 @@
 ﻿
+var EnmPlaceStatus = {
+	ACTIVE : 1,
+	DEACTIVE : 2,
+	DELETED : 3
+};
+
 var tests = {
       	  	filereader : typeof FileReader != 'undefined',
       	  	dnd : 'draggable' in document.createElement('span'),
@@ -225,3 +231,30 @@ var StringUtil = {
 		}
 	}
 };
+
+
+$.extend({ confirm: function (title, message, yesText, noText, yesCallback) {
+    $("<div></div>").dialog( {
+        buttons: [{
+            text: yesText,
+            click: function() {
+                if (yesCallback) {
+                	yesCallback();
+                }
+                $( this ).remove();
+            }
+        },
+        {
+            text: noText,
+            click: function() {
+                $( this ).remove();
+            }
+        }
+        ],
+        close: function (event, ui) { $(this).remove(); },
+        resizable: false,
+        title: title,
+        modal: true
+    }).text(message);
+}
+});

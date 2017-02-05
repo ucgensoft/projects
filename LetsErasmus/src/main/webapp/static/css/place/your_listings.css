@@ -1,0 +1,432 @@
+.toggle-switch {
+	background-color: #767676;
+	border: 1px solid #767676;
+	cursor: pointer;
+	font-size: 28px;
+	height: 36px;
+	width: 72px;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px
+}
+
+.toggle-switch--on {
+	background-color: #ff5a5f;
+	border-color: #ff5a5f
+}
+
+.toggle-switch--on .toggle-switch__button {
+	left: 35px
+}
+
+.toggle-switch--on .toggle-switch__icon {
+	color: #ff5a5f
+}
+
+.toggle-switch__button {
+	background-color: #fff;
+	border: 0;
+	left: 0;
+	outline: none;
+	padding: 0;
+	position: relative;
+	text-align: center;
+	width: 35px;
+	height: 100%;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	-webkit-transition: left 0.2s;
+	-o-transition: left 0.2s;
+	-moz-transition: left 0.2s;
+	transition: left 0.2s
+}
+
+.toggle-switch__icon {
+	color: #767676;
+	position: relative;
+	top: -3px
+}
+
+.toggle-switch--beach.toggle-switch--on {
+	background-color: #ffb400;
+	border-color: #ffb400
+}
+
+.toggle-switch--beach.toggle-switch--on .toggle-switch__icon {
+	color: #ffb400
+}
+
+.responsiveness-warning-banner .responsiveness-warning-banner--icon {
+	margin-top: -10px
+}
+
+.responsiveness-warning-banner .responsiveness-warning-banner--text {
+	margin-left: 50px
+}
+
+.availability-unlisting-modal .modal-content {
+	max-width: 700px;
+	min-height: 550px;
+	position: relative
+}
+
+.availability-unlisting-modal .modal-content.snooze-modal {
+	min-height: 500px
+}
+
+.availability-unlisting-modal .panel-header .js-unlist-back {
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	border-radius: 50%
+}
+
+.availability-unlisting-modal .panel-header .unlist-back-text {
+	font-size: 14px
+}
+
+.availability-unlisting-modal .panel-body {
+	padding: 75px 75px 45px
+}
+
+.availability-unlisting-modal .panel-body .unlist-reason-image {
+	background: transparent
+}
+
+.availability-unlisting-modal .panel-body .unlist-resource-image {
+	background-repeat: no-repeat;
+	background-image:
+		url(https://a0.muscache.com/airbnb/static/manage_listing/availability_dropdown/resources-53244e05b3bb377545ef9b4ddcd66ad2.png);
+	width: 150px;
+	height: 150px
+}
+
+@media ( min--moz-device-pixel-ratio : 1.3) , ( -o-min-device-pixel-ratio : 2.6 /
+		2) , ( -webkit-min-device-pixel-ratio : 1.3) , (
+		min-device-pixel-ratio : 1.3) , ( -o-min-device-pixel-ratio : 13/10) ,
+		( min-resolution : 1.3dppx) {
+	.availability-unlisting-modal .panel-body .unlist-resource-image {
+		background-image:
+			url(https://a0.muscache.com/airbnb/static/manage_listing/availability_dropdown/resources@2x-15ed296c2f607d43cd6e22ca7163ddaf.png);
+		-webkit-background-size: 150px 150px;
+		-moz-background-size: 150px 150px;
+		-o-background-size: 150px 150px;
+		background-size: 150px 150px
+	}
+}
+
+.availability-unlisting-modal .panel-body .unlist-contact-image {
+	background-repeat: no-repeat;
+	background-image:
+		url(https://a0.muscache.com/airbnb/static/manage_listing/availability_dropdown/contact-f1797665354a5ede62f97d0e5eff2182.png);
+	width: 150px;
+	height: 150px
+}
+
+@media ( min--moz-device-pixel-ratio : 1.3) , ( -o-min-device-pixel-ratio : 2.6 /
+		2) , ( -webkit-min-device-pixel-ratio : 1.3) , (
+		min-device-pixel-ratio : 1.3) , ( -o-min-device-pixel-ratio : 13/10) ,
+		( min-resolution : 1.3dppx) {
+	.availability-unlisting-modal .panel-body .unlist-contact-image {
+		background-image:
+			url(https://a0.muscache.com/airbnb/static/manage_listing/availability_dropdown/contact@2x-46b6c09fb2f65b490e7eea4d3b9ba8b6.png);
+		-webkit-background-size: 150px 150px;
+		-moz-background-size: 150px 150px;
+		-o-background-size: 150px 150px;
+		background-size: 150px 150px
+	}
+}
+
+.availability-unlisting-modal .panel-body .unlist-listing-house-image {
+	background-repeat: no-repeat;
+	background-image:
+		url(https://a0.muscache.com/airbnb/static/manage_listing/availability_dropdown/listing-house-b1bd96a08778559d625849b4bbf2d9d0.png);
+	width: 150px;
+	height: 150px
+}
+
+@media ( min--moz-device-pixel-ratio : 1.3) , ( -o-min-device-pixel-ratio : 2.6 /
+		2) , ( -webkit-min-device-pixel-ratio : 1.3) , (
+		min-device-pixel-ratio : 1.3) , ( -o-min-device-pixel-ratio : 13/10) ,
+		( min-resolution : 1.3dppx) {
+	.availability-unlisting-modal .panel-body .unlist-listing-house-image {
+		background-image:
+			url(https://a0.muscache.com/airbnb/static/manage_listing/availability_dropdown/listing-house@2x-dd57f8b6720588166397094cbb94124a.png);
+		-webkit-background-size: 150px 150px;
+		-moz-background-size: 150px 150px;
+		-o-background-size: 150px 150px;
+		background-size: 150px 150px
+	}
+}
+
+.availability-unlisting-modal .panel-body .unlist-break-image {
+	background-repeat: no-repeat;
+	background-image:
+		url(https://a0.muscache.com/airbnb/static/manage_listing/availability_dropdown/break-b96d271dd0b5a1e19720034b73d9fdd6.png);
+	width: 150px;
+	height: 150px
+}
+
+@media ( min--moz-device-pixel-ratio : 1.3) , ( -o-min-device-pixel-ratio : 2.6 /
+		2) , ( -webkit-min-device-pixel-ratio : 1.3) , (
+		min-device-pixel-ratio : 1.3) , ( -o-min-device-pixel-ratio : 13/10) ,
+		( min-resolution : 1.3dppx) {
+	.availability-unlisting-modal .panel-body .unlist-break-image {
+		background-image:
+			url(https://a0.muscache.com/airbnb/static/manage_listing/availability_dropdown/break@2x-08788eedc7ce9783c3d7c8025dba4710.png);
+		-webkit-background-size: 150px 150px;
+		-moz-background-size: 150px 150px;
+		-o-background-size: 150px 150px;
+		background-size: 150px 150px
+	}
+}
+
+.availability-unlisting-modal .panel-body .unlist-hosting-image {
+	background-repeat: no-repeat;
+	background-image:
+		url(https://a0.muscache.com/airbnb/static/manage_listing/availability_dropdown/hosting-0805ab81628df4b19a0dc2fb102ee635.png);
+	width: 150px;
+	height: 150px
+}
+
+@media ( min--moz-device-pixel-ratio : 1.3) , ( -o-min-device-pixel-ratio : 2.6 /
+		2) , ( -webkit-min-device-pixel-ratio : 1.3) , (
+		min-device-pixel-ratio : 1.3) , ( -o-min-device-pixel-ratio : 13/10) ,
+		( min-resolution : 1.3dppx) {
+	.availability-unlisting-modal .panel-body .unlist-hosting-image {
+		background-image:
+			url(https://a0.muscache.com/airbnb/static/manage_listing/availability_dropdown/hosting@2x-8dcaf8b33ff1b71315063ca2dcaebff9.png);
+		-webkit-background-size: 150px 150px;
+		-moz-background-size: 150px 150px;
+		-o-background-size: 150px 150px;
+		background-size: 150px 150px
+	}
+}
+
+.availability-unlisting-modal .panel-body .to-label {
+	margin-left: 5px;
+	margin-right: 5px
+}
+
+.availability-unlisting-modal .panel-body .checkin,
+	.availability-unlisting-modal .panel-body .checkout {
+	width: 120px
+}
+
+.availability-unlisting-modal .panel-body .radio-label {
+	color: #606060
+}
+
+.availability-unlisting-modal .panel-body .radio-label strong {
+	color: #2d2d2d
+}
+
+.availability-unlisting-modal .left-aligned-modal .panel-body {
+	padding-top: 60px
+}
+
+.availability-unlisting-modal .left-aligned-modal .panel-body .unlist-reason-image
+	{
+	float: right
+}
+
+.availability-unlisting-modal .centered-modal .panel-body {
+	padding-top: 45px;
+	padding-left: 120px;
+	padding-right: 120px
+}
+
+.availability-unlisting-modal .inline-block {
+	display: inline-block
+}
+
+.availability-unlisting-modal .unlist-background-image {
+	width: 243px;
+	height: 116px;
+	background: transparent
+		url(https://a0.muscache.com/airbnb/static/manage_listing/availability_dropdown/unlisting-f58042a16e1556bb662394616edf4c6a.png)
+		no-repeat;
+	position: absolute;
+	right: 0;
+	bottom: 0
+}
+
+.availability-unlisting-modal .unlist-footer {
+	position: absolute;
+	width: 100%;
+	bottom: 45px
+}
+
+.availability-unlisting-modal .modal-with-datepicker-open {
+	margin-bottom: 200px
+}
+
+.suspension-banner {
+	margin-bottom: 0
+}
+
+.suspension-banner-block {
+	padding-top: 50px
+}
+
+.suspension-alert {
+	padding-top: 20px;
+	padding-bottom: 20px
+}
+
+.suspension-alert-text {
+	padding: 0 0 0 5px
+}
+
+.ib-toggle {
+	cursor: pointer;
+	margin-right: 18px;
+	padding: 15px 0 5px
+}
+
+.ib-tooltip .panel {
+	border: 0
+}
+
+.active-panel-header, .active-panel-padding {
+	padding-top: 7px;
+	padding-bottom: 7px
+}
+
+.ib-switch-label {
+	font-size: 14px;
+	padding: 14px 20px
+}
+
+.listing .media-photo-block {
+	height: 63px
+}
+
+@media ( min-width : 744px) and (max-width: 1127px) {
+	.listing .media-photo-block {
+		height: 67px
+	}
+}
+
+@media ( max-width : 743px) {
+	.listing .media-photo-block {
+		height: 170px
+	}
+}
+
+.listing .media-photo-block-lg {
+	display: block;
+	height: 185px
+}
+
+@media ( min-width : 744px) and (max-width: 1127px) {
+	.listing .media-photo-block-lg {
+		height: 67px
+	}
+}
+
+@media ( max-width : 743px) {
+	.listing .media-photo-block-lg {
+		height: 170px
+	}
+}
+
+.suspension-container {
+	position: relative
+}
+
+.suspension-overlay {
+	width: 100%;
+	height: 100%
+}
+
+.dot-align-top {
+	vertical-align: top
+}
+
+.progress-bar__lean {
+	height: 5px
+}
+
+.progress-bar__babu {
+	background-color: #00a699
+}
+
+.unlisted-listing-action__toggle-button {
+	display: inline-block;
+	margin-left: 0;
+	margin-right: 13px
+}
+
+.unlisted-listing-action__toggle-button select {
+	height: 36px
+}
+
+.unlisted-listing-action__preview-button {
+	display: inline-block;
+	vertical-align: top;
+	margin-top: 25px
+}
+
+@media ( max-width : 743px) {
+	.unlisted-listing-action__preview-button {
+		margin-top: 10px;
+		display: block
+	}
+}
+
+.ib-toggle i {
+	position: absolute
+}
+
+.icon-remove-listing {
+	cursor: pointer;
+	position: absolute;
+	right: 20px
+}
+
+@media ( max-width : 743px) {
+	.icon-remove-listing {
+		top: 15px
+	}
+}
+
+.listing-deletion__alert-box {
+	height: 224px
+}
+
+@media ( max-width : 743px) {
+	.listing .btn__first-btn {
+		display: block
+	}
+}
+
+@media ( min-width : 744px) {
+	.listing .btn__first-btn {
+		margin-right: 10px
+	}
+}
+
+@media ( max-width : 743px) {
+	.listing .btn__second-btn {
+		display: block;
+		margin-top: 10px;
+		margin-bottom: 10px;
+		margin-left: 0
+	}
+}
+
+@media ( min-width : 744px) {
+	.listing .btn__second-btn {
+		margin-right: 10px
+	}
+}
+
+.alert-block {
+	margin-bottom: 30px
+}
+
+.alert-block .ncp-banner-head {
+	display: block;
+	margin-bottom: -15px
+}
