@@ -49,4 +49,8 @@ body, #mainWrapper {
 	display: inline
 }
 
+.cursor-pointer {
+	cursor : pointer
+}
+
 

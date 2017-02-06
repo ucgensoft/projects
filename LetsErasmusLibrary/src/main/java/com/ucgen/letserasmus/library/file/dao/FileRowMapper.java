@@ -4,10 +4,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.ucgen.common.dao.BaseRowMapper;
-import com.ucgen.letserasmus.library.file.model.File;
+import com.ucgen.letserasmus.library.file.model.FileModel;
 
 
-public class FileRowMapper extends BaseRowMapper<File> {
+public class FileRowMapper extends BaseRowMapper<FileModel> {
 	
 	public static final String TABLE_NAME = "FILE";
 	
@@ -33,9 +33,9 @@ public class FileRowMapper extends BaseRowMapper<File> {
 	}
 	
 	@Override
-	public File mapRow(ResultSet rs, int rowNum) throws SQLException {
+	public FileModel mapRow(ResultSet rs, int rowNum) throws SQLException {
 		super.initializeColSet(rs);
-		File file = new File();		
+		FileModel file = new FileModel();		
 		
 		file.setId(super.getLong(rs, COL_ID));
 		file.setFileName(super.getString(rs, COL_FILE_NAME));

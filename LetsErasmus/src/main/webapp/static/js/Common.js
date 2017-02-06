@@ -54,6 +54,11 @@ var OperationResult = {
         resultCode: 'resultCode',
         resultDesc: 'resultDesc',
         resultObj: 'resultObj',
+        errorCode: 'errorCode'
+};
+
+var EnmErrorCode = {
+        UNAUTHORIZED_OPERATION : 1,
 };
 
 var EnmLoginType = {
@@ -193,7 +198,30 @@ var DialogUtil = {
 		WARNING : 2,
 		ERROR : 3
 	},
-		
+	
+	showInfo : function (title, message, callBackFunc) {
+		// TODO : jquery dialog framework will be used
+		alert(message);
+	},
+	
+	warn : function (title, message, okText, callback) {
+	    $("<div></div>").dialog( {
+	        buttons: [{
+	            text: okText,
+	            click: function() {
+	                if (callback) {
+	                	callback();
+	                }
+	                $( this ).remove();
+	            }
+	        }],
+	        close: function (event, ui) { $(this).remove(); },
+	        resizable: false,
+	        title: title,
+	        modal: true
+	    }).text(message);
+	},
+	
 	showMessage : function(type, title, message, callBackFunc) {
 		$.msgbox({
 			  title: title,
@@ -270,3 +298,23 @@ $.extend({ confirm: function (title, message, yesText, noText, yesCallback) {
     }).text(message);
 }
 });
+
+function handleAjaxError(operationResult) {
+	if (operationResult.errorCode && operationResult.errorCode == EnmErrorCode.UNAUTHORIZED_OPERATION) {
+		location.href = webApplicationUrlPrefix + '/pages/Unauthorized.xhtml';
+	} else {
+		alert('Operation could not be completed. Please try again later!');
+		console.error(operationResult.resultDesc);
+	}
+}
+
+function isResultSuccess(operationResult, handleError) {
+	if (operationResult.resultCode == EnmOperationResultCode.SUCCESS) {
+		return true;
+	} else {
+		if (handleError) {
+			handleAjaxError(operationResult);
+		}
+		return false;
+	}
+}

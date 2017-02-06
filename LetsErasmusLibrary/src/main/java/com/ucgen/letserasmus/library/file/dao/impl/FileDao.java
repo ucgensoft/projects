@@ -16,7 +16,7 @@ import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.common.operationresult.ValueOperationResult;
 import com.ucgen.letserasmus.library.file.dao.FileRowMapper;
 import com.ucgen.letserasmus.library.file.dao.IFileDao;
-import com.ucgen.letserasmus.library.file.model.File;
+import com.ucgen.letserasmus.library.file.model.FileModel;
 
 @Repository
 public class FileDao extends JdbcDaoSupport implements IFileDao {
@@ -43,9 +43,9 @@ public class FileDao extends JdbcDaoSupport implements IFileDao {
 	}	
 	
 	@Override
-	public ListOperationResult<File> listFile(File file) {
+	public ListOperationResult<FileModel> listFile(FileModel file) {
 		
-		ListOperationResult<File> listOperationResult = new ListOperationResult<File>();
+		ListOperationResult<FileModel> listOperationResult = new ListOperationResult<FileModel>();
 		List<Object> argList = new ArrayList<Object>();
 		StringBuilder sqlBuilder = new StringBuilder(LIST_FILE_SQL);
 		
@@ -71,7 +71,7 @@ public class FileDao extends JdbcDaoSupport implements IFileDao {
 		
 		sqlBuilder.append(" ORDER BY ID");
 		
-		List<File> fileList = super.getJdbcTemplate().query(sqlBuilder.toString(), argList.toArray(), new FileRowMapper());		
+		List<FileModel> fileList = super.getJdbcTemplate().query(sqlBuilder.toString(), argList.toArray(), new FileRowMapper());		
 		
 		listOperationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 		listOperationResult.setObjectList(fileList);
@@ -80,7 +80,7 @@ public class FileDao extends JdbcDaoSupport implements IFileDao {
 	}
 
 	@Override
-	public OperationResult insertFile(File file) {
+	public OperationResult insertFile(FileModel file) {
 
 		OperationResult operationResult = new OperationResult();
 		
@@ -105,7 +105,7 @@ public class FileDao extends JdbcDaoSupport implements IFileDao {
 	}
 
 	@Override
-	public ValueOperationResult<Integer> updateFile(File file) 
+	public ValueOperationResult<Integer> updateFile(FileModel file) 
 	{
 		ValueOperationResult<Integer> operationResult = new ValueOperationResult<Integer>();		
 		List<Object> argList = new ArrayList<Object>();

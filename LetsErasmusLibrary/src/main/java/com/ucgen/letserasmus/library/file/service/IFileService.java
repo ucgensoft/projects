@@ -3,15 +3,15 @@ package com.ucgen.letserasmus.library.file.service;
 import com.ucgen.common.operationresult.ListOperationResult;
 import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.common.operationresult.ValueOperationResult;
-import com.ucgen.letserasmus.library.file.model.File;
+import com.ucgen.letserasmus.library.file.model.FileModel;
 
 public interface IFileService {
 
-	ListOperationResult<File> listFile(File file);
+	ListOperationResult<FileModel> listFile(FileModel file);
 	
-	OperationResult insertFile(File file);
+	OperationResult insertFile(FileModel file);
 	
-	ValueOperationResult<Integer> updateFile(File file);
+	ValueOperationResult<Integer> updateFile(FileModel file);
 	
 	OperationResult deleteFile(Long id);
 	

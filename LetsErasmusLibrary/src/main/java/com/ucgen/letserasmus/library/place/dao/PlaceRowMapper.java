@@ -7,7 +7,7 @@ import com.ucgen.common.dao.BaseRowMapper;
 import com.ucgen.common.dao.EnmJoinType;
 import com.ucgen.common.dao.ForeignKey;
 import com.ucgen.letserasmus.library.file.dao.FileRowMapper;
-import com.ucgen.letserasmus.library.file.model.File;
+import com.ucgen.letserasmus.library.file.model.FileModel;
 import com.ucgen.letserasmus.library.location.dao.LocationRowMapper;
 import com.ucgen.letserasmus.library.location.model.Location;
 import com.ucgen.letserasmus.library.place.model.Place;
@@ -149,7 +149,7 @@ public class PlaceRowMapper extends BaseRowMapper<Place> {
 			
 			if (this.getfKeyMap().containsKey(FKEY_FILE)) {
 				ForeignKey<PlaceRowMapper, FileRowMapper> fKey = this.getfKeyMap().get(FKEY_FILE);
-				File photo = fKey.getDestMapper().mapRow(rs, rowNum);
+				FileModel photo = fKey.getDestMapper().mapRow(rs, rowNum);
 				place.setCoverPhoto(photo);
 			}
 			

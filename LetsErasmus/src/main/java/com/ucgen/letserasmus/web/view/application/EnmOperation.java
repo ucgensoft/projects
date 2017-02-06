@@ -5,7 +5,8 @@ public enum EnmOperation {
 	CREATE_USER(1),
 	UPDATE_USER(2),
 	LIST_USER_PLACE(3),
-	EDIT_PLACE(4);
+	EDIT_PLACE(4),
+	CREATE_PLACE(5);
 	
 	private final int id;
 	

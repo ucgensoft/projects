@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ucgen.common.exception.operation.OperationResultException;
 import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.common.operationresult.ValueOperationResult;
-import com.ucgen.letserasmus.library.file.model.File;
+import com.ucgen.letserasmus.library.file.model.FileModel;
 import com.ucgen.letserasmus.library.file.service.IFileService;
 import com.ucgen.letserasmus.library.user.dao.IUserDao;
 import com.ucgen.letserasmus.library.user.model.User;
@@ -48,7 +48,7 @@ public class UserService implements IUserService{
 	@Transactional(rollbackFor = Exception.class)
 	public ValueOperationResult<Integer> updateUser(User user) throws OperationResultException {
 		Long oldProfilePhotoId = user.getProfilePhotoId();
-		File profilePhoto = user.getProfilePhoto();
+		FileModel profilePhoto = user.getProfilePhoto();
 		if (user.getProfilePhoto() != null && user.getProfilePhoto().getId() == null) {
 			OperationResult insertPhotoResult = fileService.insertFile(profilePhoto);
 			if (OperationResult.isResultSucces(insertPhotoResult)) {

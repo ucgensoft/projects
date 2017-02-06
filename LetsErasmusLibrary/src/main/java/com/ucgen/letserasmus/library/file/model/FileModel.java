@@ -1,9 +1,11 @@
 package com.ucgen.letserasmus.library.file.model;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.ucgen.letserasmus.library.common.model.BaseModel;
 import com.ucgen.letserasmus.library.file.enumeration.EnmFileType;
 
-public class File extends BaseModel {
+public class FileModel extends BaseModel {
 
 	private static final long serialVersionUID = -2166580530245686052L;
 
@@ -14,6 +16,8 @@ public class File extends BaseModel {
 	private Integer fileType;
 	private Integer entityType;
 	private Long entityId;
+	
+	private MultipartFile file;
 	
 	public Long getId() {
 		return id;
@@ -61,6 +65,12 @@ public class File extends BaseModel {
 	}
 	public void setFileSize(Long fileSize) {
 		this.fileSize = fileSize;
+	}
+	public MultipartFile getFile() {
+		return file;
+	}
+	public void setFile(MultipartFile file) {
+		this.file = file;
 	}
 	
 }

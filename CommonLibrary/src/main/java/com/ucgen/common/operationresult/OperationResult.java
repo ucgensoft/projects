@@ -4,7 +4,8 @@ package com.ucgen.common.operationresult;
 public class OperationResult {
 
 	private Integer resultCode;
-	private String resultDesc;	
+	private String resultDesc;
+	private Integer errorCode;
 	
 	public Integer getResultCode() {
 		return resultCode;
@@ -18,7 +19,12 @@ public class OperationResult {
 	public void setResultDesc(String resultDesc) {
 		this.resultDesc = resultDesc;
 	}
-	
+	public Integer getErrorCode() {
+		return errorCode;
+	}
+	public void setErrorCode(Integer errorCode) {
+		this.errorCode = errorCode;
+	}
 	public OperationResult() {
 		this(null, null);
 	}

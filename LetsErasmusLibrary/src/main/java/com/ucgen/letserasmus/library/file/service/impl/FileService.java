@@ -7,7 +7,7 @@ import com.ucgen.common.operationresult.ListOperationResult;
 import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.common.operationresult.ValueOperationResult;
 import com.ucgen.letserasmus.library.file.dao.IFileDao;
-import com.ucgen.letserasmus.library.file.model.File;
+import com.ucgen.letserasmus.library.file.model.FileModel;
 import com.ucgen.letserasmus.library.file.service.IFileService;
 
 @Service
@@ -25,17 +25,17 @@ public class FileService implements IFileService{
 	}
 
 	@Override
-	public ListOperationResult<File> listFile(File file) {
+	public ListOperationResult<FileModel> listFile(FileModel file) {
 		return this.fileDao.listFile(file);
 	}
 
 	@Override
-	public OperationResult insertFile(File file) {
+	public OperationResult insertFile(FileModel file) {
 		return this.fileDao.insertFile(file);
 	} 
 
 	@Override
-	public ValueOperationResult<Integer> updateFile(File file) {
+	public ValueOperationResult<Integer> updateFile(FileModel file) {
 		return this.fileDao.updateFile(file);
 	}
 

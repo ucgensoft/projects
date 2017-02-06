@@ -71,7 +71,8 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     	  $("#divStep5").css("display", "none");
     	  $("#divStep6").css("display", "none");
     	  $("#divStep7").css("display", "none");
-    	
+    	  $("#divStep8").css("display", "none");
+    	  
     	  self.initPhotoTab();
       };
       
@@ -286,7 +287,7 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
         	  			image.width = 200;
         	  			divPhotoContainer.appendChild(image);
         	  			*/
-        	  			var photoId = generateRandomValue(1, 1000000);
+        	  			var photoId = generateRandomValue(100, 1000000);
         	  			self.photoList.push({ 'photoId':photoId, 'file': file, 'src': event.target.result});
         	  			commonService.fakeAjaxCall();
         	  			NProgress.done(true);
@@ -304,20 +305,9 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     	  };
 
     	  readfiles = function(files) {
-    	  	var formData = tests.formdata ? new FormData() : null;
     	  	for (var i = 0; i < files.length; i++) {
-    	  		if (tests.formdata) {
-    	  			formData.append('file', files[i]);
-    	  		}
     	  		previewfile(files[i]);
     	  	}
-    	  	/*
-    	  	formData.append('fileName', 'Test');
-    	  	
-    	  	if (tests.formdata) {
-    	  		placeService.addPhoto(formData);
-    	  	}
-    	  	*/
     	  };
 
     	  holder.ondragover = function() {
@@ -474,7 +464,7 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     	  if (isValid) {
     		  $('#divProgress' + step).addClass('progress-section--completed');
     		  
-    		  if (step == 7) {
+    		  if (step == 8) {
     			  self.savePlace();
     		  } else {
     			  var currentStep = step;
@@ -490,7 +480,7 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
             	  }
     		  }
     	  } else {
-    		  $.prompt("Please fill required fields!");
+    		  DialogUtil.warn('Warning', "Please fill required fields!");
     		  return false;
     	  }  
       };
@@ -507,16 +497,16 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
       self.savePlace = function() {
     	  var newPlace = {};
     	  if ($("#rdPlaceTypeEntirePlace")[0].checked) {
-    		  newPlace.placeType = 1;
+    		  newPlace.placeTypeId = 1;
     	  } else if ($("#rdPlaceTypePrivateRoom")[0].checked) {
-    		  newPlace.placeType = 2;
+    		  newPlace.placeTypeId = 2;
     	  } else if ($("#rdPlaceTypeSharedRoom")[0].checked) {
-    		  newPlace.placeType = 3;
+    		  newPlace.placeTypeId = 3;
     	  } 
-    	  newPlace.homeType = $("#cmbHomeType").val();
+    	  newPlace.homeTypeId = $("#cmbHomeType").val();
     	  newPlace.bedNumber = getCounterElementValue('spanBedNumber');
-    	  newPlace.bathroomNumber = getCounterElementValue('spanBathroomNumber');
-    	  newPlace.bathroomType = $('#cmbBathroomType').val();
+    	  newPlace.bathRoomNumber = getCounterElementValue('spanBathroomNumber');
+    	  newPlace.bathRoomType = $('#cmbBathroomType').val();
     	  
     	  newPlace.guestNumber = getCounterElementValue('spanGuestNumber');
     	  newPlace.guestGender = $("#cmbGuestGender").val();
@@ -530,9 +520,11 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     		  newPlace.depositPrice = $("#txtDepositPrice").val();
     	  }
     	  newPlace.currencyId = $("#cmbCurrencyId").val();
-    	  newPlace.billsIncluded = ($("#chbBillsIncluded")[0].checked ? 1 : 0);
-    	  newPlace.startDate = $.datepicker.formatDate('d.m.yy', $("#txtStartDatePicker").datepicker("getDate"));
-    	  newPlace.endDate = $.datepicker.formatDate('d.m.yy', $("#txtEndDatePicker").datepicker("getDate"));
+    	  newPlace.billsInclude = ($("#chbBillsIncluded")[0].checked ? 1 : 0);
+    	  //newPlace.startDate = $.datepicker.formatDate('d.m.yy', $("#txtStartDatePicker").datepicker("getDate"));
+    	  //newPlace.endDate = $.datepicker.formatDate('d.m.yy', $("#txtEndDatePicker").datepicker("getDate"));
+    	  newPlace.startDate = $("#txtStartDatePicker").datepicker("getDate");
+    	  newPlace.endDate = $("#txtEndDatePicker").datepicker("getDate");
     	  newPlace.minimumStay = $("#txtMinStay").val();
     	  newPlace.maximumStay = $("#txtMaxStay").val();
     	  
@@ -577,7 +569,7 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     	  newPlace.location = {};
     	  newPlace.location.locality = $("#hiddenLocality").val();
     	  newPlace.location.country = $("#txtCountry").val();
-    	  newPlace.location.city = $("#txtCity").val();
+    	  newPlace.location.state = $("#txtCity").val();
     	  newPlace.location.street = $("#txtStreet").val();
     	  newPlace.location.postalCode = $("#txtPostalCode").val();
     	  newPlace.location.userAddress = $("#txtBuilding").val();
@@ -587,53 +579,34 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     	  newPlace.title = $("#txtTitle").val()
     	  newPlace.description = $("#txtDescription").val()
     	  
-    	  /*
-    	  var formData = tests.formdata ? new FormData() : null;
-		  	for (var i = 0; i < self.photoList.length; i++) {
-		  		formData.append('file', self.photoList[i].file);
-		  	}
-      	  formData.append('place', angular.toJson(newPlace));
-    	  */
-      	  NProgress.start(4000, 10);
     	  if (self.place == null) {
-    		  placeService.savePlace(newPlace, self.photoList).then(
-    					function(operationResult) {
-    						NProgress.done(true); 
-    						if (operationResult.resultCode == EnmOperationResultCode.SUCCESS) {
-    							NProgress.done(true); 
-    							if (operationResult.resultCode == EnmOperationResultCode.SUCCESS) {
-    								alert('Congradulations! Your place is saved successfully!');	
-    								document.location.href = webApplicationUrlPrefix + '/pages/dashboard/Listings.xhtml';
-    							} else {
-    								alert('Operation could not be completed. Please try again later!');
-    							}
-    						} else {
-    							alert('Operation could not be completed. Please try again later!');
+    		  placeService.savePlace(newPlace, self.photoList,
+    					function(isSuccess) {
+    						if (isSuccess) {
+    							DialogUtil.showInfo('Success', 'Congradulations! Your place is saved successfully!');	
+								document.location.href = webApplicationUrlPrefix + '/pages/dashboard/Listings.xhtml';
     						}
-    					}, function(errResponse) {
-    						NProgress.done(true);
-    						alert('Operation could not be completed. Please try again later!');
-    					});
+    					}
+    		  );
     	  } else {
-    		  placeService.updatePlace(newPlace, self.photoList).then(
-    					function(operationResult) {
-    						NProgress.done(true); 
-    						if (operationResult.resultCode == EnmOperationResultCode.SUCCESS) {
-    							NProgress.done(true); 
-    							if (operationResult.resultCode == EnmOperationResultCode.SUCCESS) {
-    								alert('Congradulations! Your place is updated successfully!');	
-    								document.location.href = webApplicationUrlPrefix + '/pages/dashboard/Listings.xhtml';
-    							} else {
-    								alert('Operation could not be completed. Please try again later!');
-    							}
-    						} else {
-    							alert('Operation could not be completed. Please try again later!');
-    						}
-    					}, function(errResponse) {
-    						NProgress.done(true);
-    						alert('Operation could not be completed. Please try again later!');
-    					});
+    		  placeService.updatePlace(newPlace, self.photoList,
+  					function(isSuccess) {
+  						if (isSuccess) {
+  							DialogUtil.showInfo('Success', 'Congradulations! Your place is updated successfully!');	
+								document.location.href = webApplicationUrlPrefix + '/pages/dashboard/Listings.xhtml';
+  						}
+  					}
+    		  );
     	  }    	  
+      };
+      
+      self.movePhotoUp = function(photoIndex) {
+    	  var prevPhoto = self.photoList[photoIndex-1];
+    	  var currentPhoto = self.photoList[photoIndex];
+    	  
+    	  self.photoList[photoIndex-1] = currentPhoto;
+    	  self.photoList[photoIndex] = prevPhoto;
+    	  $scope.$apply(function() {});
       };
       
       self.initialize();

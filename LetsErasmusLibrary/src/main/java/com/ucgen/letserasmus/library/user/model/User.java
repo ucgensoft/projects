@@ -4,7 +4,7 @@ import java.util.Date;
 
 import com.ucgen.common.util.StringUtil;
 import com.ucgen.letserasmus.library.common.model.BaseModel;
-import com.ucgen.letserasmus.library.file.model.File;
+import com.ucgen.letserasmus.library.file.model.FileModel;
 
 public class User extends BaseModel {
 	
@@ -34,7 +34,7 @@ public class User extends BaseModel {
 	private String residenceLocationName;
 	private String languages;
 	
-	private File profilePhoto;
+	private FileModel profilePhoto;
 	
 	private String profileImageUrl;
 	private Integer loginType;
@@ -198,10 +198,10 @@ public class User extends BaseModel {
 	public void setLanguages(String languages) {
 		this.languages = languages;
 	}
-	public File getProfilePhoto() {
+	public FileModel getProfilePhoto() {
 		return profilePhoto;
 	}
-	public void setProfilePhoto(File profilePhoto) {
+	public void setProfilePhoto(FileModel profilePhoto) {
 		this.profilePhoto = profilePhoto;
 	}
 	public String getFullName() {

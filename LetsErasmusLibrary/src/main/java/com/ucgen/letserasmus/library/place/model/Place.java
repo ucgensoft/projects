@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.ucgen.letserasmus.library.common.model.BaseModel;
-import com.ucgen.letserasmus.library.file.model.File;
+import com.ucgen.letserasmus.library.file.model.FileModel;
 import com.ucgen.letserasmus.library.location.model.Location;
 import com.ucgen.letserasmus.library.user.model.User;
 
@@ -46,8 +46,8 @@ public class Place extends BaseModel {
 	
 	private Location location;
 	private User user;
-	private File coverPhoto;
-	private List<File> photoList;
+	private FileModel coverPhoto;
+	private List<FileModel> photoList;
 	
 	public Long getId() {
 		return id;
@@ -235,21 +235,21 @@ public class Place extends BaseModel {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	public File getCoverPhoto() {
+	public FileModel getCoverPhoto() {
 		return coverPhoto;
 	}
-	public void setCoverPhoto(File coverPhoto) {
+	public void setCoverPhoto(FileModel coverPhoto) {
 		this.coverPhoto = coverPhoto;
 	}
-	public List<File> getPhotoList() {
+	public List<FileModel> getPhotoList() {
 		return photoList;
 	}
-	public void setPhotoList(List<File> photoList) {
+	public void setPhotoList(List<FileModel> photoList) {
 		this.photoList = photoList;
 	}
-	public void addPhoto(File photo) {
+	public void addPhoto(FileModel photo) {
 		if (this.photoList == null) {
-			this.photoList = new ArrayList<File>();
+			this.photoList = new ArrayList<FileModel>();
 		}
 		this.photoList.add(photo);
 	}

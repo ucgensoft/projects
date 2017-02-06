@@ -377,7 +377,7 @@ public class ApiUserController extends BaseApiController {
 							String userPhotoFolder = rootPhotoFolder + user.getId(); 
 							(new File(FileUtil.concatPath(userPhotoFolder, "tmp"))).mkdirs();
 							
-							com.ucgen.letserasmus.library.file.model.File photo = user.getProfilePhoto();
+							com.ucgen.letserasmus.library.file.model.FileModel photo = user.getProfilePhoto();
 							
 							String tmpPhotoPath = FileUtil.concatPath(userPhotoFolder, "tmp", photo.getId() + "." + EnmFileType.getFileType(photo.getFileType()).getFileSuffix());
 							String newSmallFileName = AppUtil.getSmallUserPhotoName(user.getId(), photo.getId(), EnmFileType.getFileType(photo.getFileType()));

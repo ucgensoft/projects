@@ -1,5 +1,7 @@
 package com.ucgen.letserasmus.library.place.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,7 +11,7 @@ import com.ucgen.common.operationresult.ListOperationResult;
 import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.common.operationresult.ValueOperationResult;
 import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
-import com.ucgen.letserasmus.library.file.model.File;
+import com.ucgen.letserasmus.library.file.model.FileModel;
 import com.ucgen.letserasmus.library.file.service.IFileService;
 import com.ucgen.letserasmus.library.location.service.ILocationService;
 import com.ucgen.letserasmus.library.place.dao.IPlaceDao;
@@ -42,11 +44,11 @@ public class PlaceService implements IPlaceService{
 	public ValueOperationResult<Place> getPlace(Long id) {
 		ValueOperationResult<Place> getResult = this.placeDao.getPlace(id);
 		if (OperationResult.isResultSucces(getResult)) {
-			File file = new File();
+			FileModel file = new FileModel();
 			file.setEntityType(EnmEntityType.PLACE.getValue());
 			file.setEntityId(getResult.getResultValue().getId());
 			
-			ListOperationResult<File> fileListResult = this.fileService.listFile(file);
+			ListOperationResult<FileModel> fileListResult = this.fileService.listFile(file);
 			if (OperationResult.isResultSucces(fileListResult)) {
 				getResult.getResultValue().setPhotoList(fileListResult.getObjectList());
 			} else {
@@ -75,7 +77,7 @@ public class PlaceService implements IPlaceService{
 		if (OperationResult.isResultSucces(createPlaceResult)) {
 			if (place.getPhotoList().size() > 0) {
 				for (int i = 0; i < place.getPhotoList().size(); i++) {
-					File photo = place.getPhotoList().get(i);
+					FileModel photo = place.getPhotoList().get(i);
 					photo.setEntityId(place.getId());
 					OperationResult insertPhotoResult = fileService.insertFile(photo);
 					if (OperationResult.isResultSucces(insertPhotoResult)) {
@@ -83,7 +85,7 @@ public class PlaceService implements IPlaceService{
 							place.setCoverPhotoId(photo.getId());
 						}
 					} else {
-						insertPhotoResult.setResultDesc("Photo record not be insert. Error: " + insertPhotoResult.getResultDesc());
+						insertPhotoResult.setResultDesc("Photo record could not be insert. Error: " + insertPhotoResult.getResultDesc());
 						throw new OperationResultException(insertPhotoResult);
 					}
 				}
@@ -99,13 +101,42 @@ public class PlaceService implements IPlaceService{
 	}
 
 	@Override
-	public OperationResult updatePlace(Place place) throws OperationResultException {
+	public OperationResult updatePlace(Place place, FileModel coverPhoto, List<FileModel> newPhotoList, List<Long> deletePhotoList) throws OperationResultException {
 		if (place.getLocation() != null) {
 			OperationResult updateLocationResult = this.locationService.update(place.getLocation());
 			if (!OperationResult.isResultSucces(updateLocationResult)) {
 				throw new OperationResultException(updateLocationResult);
 			}
 		}
+		if (coverPhoto != null) {
+			OperationResult insertPhotoResult = this.fileService.insertFile(coverPhoto);
+			if (OperationResult.isResultSucces(insertPhotoResult)) {
+				place.setCoverPhotoId(coverPhoto.getId());
+			} else {
+				insertPhotoResult.setResultDesc("Photo record could not be insert. Error: " + insertPhotoResult.getResultDesc());
+				throw new OperationResultException(insertPhotoResult);
+			}
+		}
+		if (newPhotoList != null) {
+			for (int i = 0; i < newPhotoList.size(); i++) {
+				FileModel newPhoto = newPhotoList.get(i);
+				OperationResult insertPhotoResult = this.fileService.insertFile(newPhoto);
+				if (!OperationResult.isResultSucces(insertPhotoResult)) {
+					insertPhotoResult.setResultDesc("Photo record could not be insert. Error: " + insertPhotoResult.getResultDesc());
+					throw new OperationResultException(insertPhotoResult);
+				}
+			}
+		}
+		if (deletePhotoList != null) {
+			for (int i = 0; i < deletePhotoList.size(); i++) {
+				OperationResult deletePhotoResult = this.fileService.deleteFile(deletePhotoList.get(i));
+				if (!OperationResult.isResultSucces(deletePhotoResult)) {
+					deletePhotoResult.setResultDesc("Photo record could not be deleted. Error: " + deletePhotoResult.getResultDesc());
+					throw new OperationResultException(deletePhotoResult);
+				}
+			}
+		}
+		
 		OperationResult updatePlaceResult = this.placeDao.updatePlace(place);
 		if (OperationResult.isResultSucces(updatePlaceResult)) {
 			return updatePlaceResult;

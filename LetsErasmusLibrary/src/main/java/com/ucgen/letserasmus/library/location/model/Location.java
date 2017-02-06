@@ -14,8 +14,8 @@ public class Location extends BaseModel {
 	private BigDecimal longitude;
 	private String country;
 	private String countryCode;
-	private String State;
-	private String Street;
+	private String state;
+	private String street;
 	private String postalCode;
 	private String locality;
 	private String subLocality;
@@ -67,10 +67,10 @@ public class Location extends BaseModel {
 		this.country = country;
 	}
 	public String getState() {
-		return State;
+		return state;
 	}
 	public void setState(String state) {
-		State = state;
+		this.state = state;
 	}
 	public String getPostalCode() {
 		return postalCode;
@@ -85,10 +85,10 @@ public class Location extends BaseModel {
 		this.userAddress = userAddress;
 	}
 	public String getStreet() {
-		return Street;
+		return street;
 	}
 	public void setStreet(String street) {
-		Street = street;
+		this.street = street;
 	}
 	public String getFormattedAddress() {
 		return formattedAddress;

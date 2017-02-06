@@ -15,7 +15,7 @@
 	</ui:define>
 
 	<ui:define name="body">
-		<input type="hidden" value="#{webApplication.setActiveOperation(4)}" />
+		<input type="hidden" value="#{(not empty param.placeId ? webApplication.setActiveOperation(4) : webApplication.setActiveOperation(5))}" />
 		<h:form id="placeForm">
 			<div id="containerPage">
 				<div class="list-your-space__header" style="position: relative; z-index:0;">
@@ -751,14 +751,18 @@
 											<div ng-repeat="p in ctrl.photoList" class="col-sm-12 photos-item__preview-card">
 												<div class="photos-list__item">
 													<div class="panel-image">
-														<img class="hide" role="presentation"
-															src="" />
-														<div class="photo-preview__title-badge {{ctrl.photoList.indexOf(p) == 0 ? '' : 'hidden'}}" >
+														<div class="photo-preview__title-badge not-always-show {{ctrl.photoList.indexOf(p) == 0 ? '' : 'hidden'}}" >
 															<span class="text-cover-photo text-large text-normal">
 																<span>Cover photo</span>
 															</span>
 															<div class="icon__title-photo-badge icon--with-margin pull-right">
 															</div>
+														</div>
+														<div class="photo-preview__title-badge cursor-pointer {{ctrl.photoList.indexOf(p) > 0 ? '' : 'hidden'}}" 
+															ng-click="ctrl.movePhotoUp(ctrl.photoList.indexOf(p))">
+															<span class="text-cover-photo text-large text-normal">
+																<span>Move Up</span>
+															</span>
 														</div>
 														<div class="photo-preview__btns not-always-show" ng-click="ctrl.removePhoto(p.photoId)">
 															<div
@@ -878,7 +882,7 @@
 												</div>
 												<div class="btn btn-large btn-progress-next btn-large__next-btn pull-right-md btn-primary"
 													ng-click="ctrl.next(7)" style="float:right">
-													<span>Finish</span>
+													<span>Next</span>
 												</div>
 											</div>
 										</div>
@@ -897,6 +901,89 @@
 														 Keeping it as a brief overview makes it easier for guests to read.</span>
 												</p>
 												<div class="tip-photo-img"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div id="divStep8">
+					<div class="left-backdrop"></div>
+					<div class="right-backdrop hide-sm bg-white right-backdrop--with-bg"></div>
+					<div class="list-your-space__content">
+						<div class="centered-content clearfix">
+							<div class="main-panel-container no-padding-h bg-white main-panel-outer-half clearfix">
+								<div class="main-panel main-panel-padding main-panel-progress pull-right main-panel-inner-half space-sm-8">
+									<div class="panel--no-border panel-title">
+										<h3 class="no-margin-padding">Your local laws and taxes</h3>
+									</div>
+									<span class="lys-local-laws">
+										<p class="text-high-importance">
+											<span>
+												Take a moment to review your local laws. We want
+												to make sure you’ve got everything you need to get off to a
+												great start.
+											</span>
+										</p>
+										<div class="text-low-importance">
+											<span>
+												<p class="law-header-text text-high-importance">
+													<span>
+														Please educate yourself about the laws in your
+														jurisdiction before listing your space.
+													</span>
+												</p>
+												<div class="text-low-importance">
+													<p>
+														<span>Most cities have rules covering homesharing,
+															and the specific codes and ordinances can appear in many
+															places (such as zoning, building, licensing or tax
+															codes). In most places, you must register, get a permit,
+															or obtain a license before you list your property or
+															accept guests. You may also be responsible for collecting
+															and remitting certain taxes. In some places, short-term
+															rentals could be prohibited altogether.</span>
+													</p>
+													<p>
+														<span>
+															Since you are
+															responsible for your own decision to list or book, you
+															should get comfortable with the applicable rules before
+															listing on Airbnb. To get you started, we offer some
+															<span>
+																<a href="/responsible-hosting" target="_blank">helpful resources
+																</a>
+															</span> under “Your City Laws.”
+														</span>
+													</p>
+													<p>
+														<span>By accepting our Terms of Service and listing
+															your space, you certify that you will follow applicable
+															laws and regulations.</span>
+													</p>
+												</div></span>
+										</div>
+									</span>
+									<div class="space-top-4 no-margin-padding__sm main-panel-padding main-panel-progress pull-right main-panel-inner-half space-sm-8">
+										<div class="divider hide-sm"></div>
+										<div class="row no-margin-padding__sm">
+											<div class="main-panel__actions no-margin-padding__sm full-width">
+												<div class="btn-progress-back link-icon va-container va-container-v pull-left text-gray link--accessibility-outline" 
+													ng-click="ctrl.back(8)">
+													<span class="icon hide-sm"></span>
+													<span class="va-middle">
+														<h5 class="text-normal">
+															<span>Back</span>
+														</h5>
+													</span>
+												</div>
+												<div class="btn btn-large btn-progress-next btn-large__next-btn pull-right-md btn-primary"
+													ng-click="ctrl.next(8)" style="float:right">
+													<span>Finish</span>
+												</div>
 											</div>
 										</div>
 									</div>

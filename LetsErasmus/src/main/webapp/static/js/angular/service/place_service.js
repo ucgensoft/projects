@@ -56,11 +56,64 @@ App.factory('placeService', ['$http', '$q', function($http, $q) {
 							});
 				},
 
-				savePlace : function(place, photoList) {
+				savePlace : function(place, photoList, callBack) {
+					NProgress.start(4000, 10);
+					this.savePhoto(photoList).then(
+    					function(operationResult) {
+    						if (isResultSuccess(operationResult, true)) {
+    							
+    							var config = {
+    								headers : {
+    									'Accept' : 'application/json'
+    								}
+    							};
+    							
+    							$http.post(webApplicationUrlPrefix + '/api/place/create', place, config).then(
+    								function(response) {
+	    								NProgress.done(true);
+	    								var isSuccess = false;
+	    								if (isResultSuccess(operationResult, true)) {
+	    									isSuccess = true;
+	    								}
+	    								if (callBack) {
+	    									callBack(isSuccess);
+	    								}
+	    							}, function(errResponse) {
+	    								NProgress.done(true);
+	    								console.error('Error while creating place');
+	    								if (callBack) {
+	    									callBack(false);
+	    								}
+	    							}
+	    						);
+    						} else {
+    							NProgress.done(true);
+    							if (callBack) {
+									callBack(false);
+								}
+    						}
+    					}, function(errResponse) {
+    						NProgress.done(true);
+    						alert('Operation could not be completed. Please try again later!');
+    						if (callBack) {
+								callBack(false);
+							}
+    					});
+				},
+				
+				savePhoto : function(photoList) {
 					var formData = new FormData();
-					formData.append('place', angular.toJson(place));
 					for (var i = 0; i < photoList.length; i++) {
-						formData.append('photoList', photoList[i].file);
+						var placePhoto = photoList[i];
+						if (!placePhoto.file) {
+							var parts = [
+					            new Blob([''], {type: 'text/plain'}), '', new Uint16Array([33])
+					          ];
+				
+							placePhoto.file = new File(parts, 'dummy_' + placePhoto.photoId, {});
+						}
+						
+						formData.append('photoList', placePhoto.file);
 					}					
 					
 					var config = {
@@ -69,7 +122,7 @@ App.factory('placeService', ['$http', '$q', function($http, $q) {
 							'Content-Type' : undefined
 						}
 					};
-					return $http.post(webApplicationUrlPrefix + '/api/place/create', formData, config).then(function(response) {
+					return $http.post(webApplicationUrlPrefix + '/api/place/savephoto', formData, config).then(function(response) {
 						return response.data;
 					}, function(errResponse) {
 						console.error('Error while creating place');
@@ -77,25 +130,49 @@ App.factory('placeService', ['$http', '$q', function($http, $q) {
 					});
 				},
 				
-				updatePlace : function(place, photoList) {
-					var formData = new FormData();
-					formData.append('place', angular.toJson(place));
-					for (var i = 0; i < photoList.length; i++) {
-						formData.append('photoList', photoList[i].file);
-					}					
-					
-					var config = {
-						headers : {
-							'Accept' : 'application/json',
-							'Content-Type' : undefined
-						}
-					};
-					return $http.post(webApplicationUrlPrefix + '/api/place/update', formData, config).then(function(response) {
-						return response.data;
-					}, function(errResponse) {
-						console.error('Error while creating place');
-						return $q.reject(errResponse);
-					});
+				updatePlace : function(place, photoList, callBack) {
+					NProgress.start(4000, 10);
+					this.savePhoto(photoList).then(
+    					function(operationResult) {
+    						if (isResultSuccess(operationResult, true)) {
+    							
+    							var config = {
+    								headers : {
+    									'Accept' : 'application/json'
+    								}
+    							};
+    							
+    							$http.post(webApplicationUrlPrefix + '/api/place/update', place, config).then(
+    								function(response) {
+    									NProgress.done(true);
+	    								var isSuccess = false;
+	    								if (isResultSuccess(response.data, true)) {
+	    									isSuccess = true;
+	    								}
+	    								if (callBack) {
+	    									callBack(isSuccess);
+	    								}
+	    							}, function(errResponse) {
+	    								NProgress.done(true);
+	    								console.error('Error while creating place');
+	    								if (callBack) {
+	    									callBack(false);
+	    								}
+	    							}
+	    						);
+    						} else {
+    							NProgress.done(true);
+    							if (callBack) {
+									callBack(false);
+								}
+    						}
+    					}, function(errResponse) {
+    						NProgress.done(true);
+    						alert('Operation could not be completed. Please try again later!');
+    						if (callBack) {
+								callBack(false);
+							}
+    					});
 				},
 
 				listPhoto : function(placeId) {
