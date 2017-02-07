@@ -279,8 +279,9 @@
 											<div class="select select-block select-jumbo">
 												<select id="cmbGuestGender" class="">
 													<option selected="" value="" disabled="">Select One</option>
-													<option value="1">Male</option>
-													<option value="2">Female</option>
+													<option value="1">No Preference</option>
+													<option value="2">Male</option>
+													<option value="3">Female</option>
 												</select>
 											</div>
 										</div>
@@ -322,6 +323,7 @@
 													<option selected="" value="" disabled="">Select One</option>
 													<option value="1">Male</option>
 													<option value="2">Female</option>
+													<option value="3">Mixed</option>
 												</select>
 											</div>
 										</div>
@@ -364,11 +366,12 @@
 											<p>
 												<span>How many guests can stay comfortably.</span>
 											</p>
-											<p>
-												<span>
-													Place mate is the person you already share your place with (If exist)
-												</span>
-											</p>
+<p>											<span class="help-panel__title">
+														<span>Place Mates</span>
+														<br/>
+													</span>
+													<span>Place mate is the person you already share your place with (If exist).</span>
+												</p>
 										</div>
 									</div>
 								</div>
@@ -442,6 +445,9 @@
 										</div>
 									</div>
 									<div class="row space-top-4">
+										<label class="h4 text-gray text-normal">
+												<span  style="padding-left: 12px">Available Dates</span>
+											</label>
 										<div class="col-sm-12 col-md-10">
 											<div>
 												<input type="text" id="txtStartDatePicker" class="form-input"
@@ -456,6 +462,9 @@
 										</div>
 									</div>
 									<div class="row space-top-4">
+									<label class="h4 text-gray text-normal">
+												<span  style="padding-left: 12px">Stay Duration</span>
+											</label>
 										<div class="col-sm-12 col-md-10">
 											<div>
 												 <input id="txtMinStay" type="number" min="0" class="form-input"
@@ -499,13 +508,25 @@
 										<div class="help-panel__text">
 											<div>
 												<p>
-													<span>If
-														you have a toilet separate from the shower, count it as a
-														0.5 bathroom.</span>
+													<span class="help-panel__title">
+														<span>Deposit Price</span>
+														<br/>
+													</span>
+													<span>Please fill if you require security deposit in cash.</span>
+												</p>
+											<p>
+													<span class="help-panel__title">
+														<span>Bills</span>
+														<br/>
+													</span>
+													<span>Please specify if montly price includes all house bills.</span>
 												</p>
 												<p>
-													<span>Count
-														only the bathrooms guests can use.</span>
+													<span class="help-panel__title">
+														<span>Stay Duration</span>
+														<br/>
+													</span>
+													<span>Minimum stay cannot be lower than 30 days to encourage long-term stays.</span>
 												</p>
 											</div>
 										</div>
@@ -599,8 +620,8 @@
 														the essentials helps guests feel at home in your place.</span>
 												</p>
 												<p data-reactid=".21uegugh5vk.1.4.0.1.0.0.1.0.1">
-													<span data-reactid=".21uegugh5vk.1.4.0.1.0.0.1.0.1.0">Some
-														hosts provide breakfast, or just coffee and tea. None of
+													<span data-reactid=".21uegugh5vk.1.4.0.1.0.0.1.0.1.0">Listings that give more information gets rented 
+													2 times more and visitors spend up to 3 times more time. None of
 														these things are required, but sometimes they add a nice
 														touch to help guests feel welcome.</span>
 												</p>
@@ -823,7 +844,6 @@
 											<div>
 												<p>
 													<span>Many hosts have at least 8 photos. 
-														You can start with just one photo and come back later to add more. 
 														Including photos of all the spaces a guest can use helps guests imagine staying at your place.</span>
 												</p>
 												<div class="tip-photo-img"></div>
