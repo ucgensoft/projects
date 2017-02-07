@@ -789,7 +789,7 @@ pre code {
 	.col-lg-7, .col-8, .col-sm-8, .col-md-8, .col-lg-8, .col-9, .col-sm-9,
 	.col-md-9, .col-lg-9, .col-10, .col-sm-10, .col-md-10, .col-lg-10,
 	.col-11, .col-sm-11, .col-md-11, .col-lg-11, .col-12, .col-sm-12,
-	.col-md-12, .col-lg-12 {
+	.col-md-12, .col-lg-12,.col-sm-11-new {
 	position: relative;
 	min-height: 1px;
 	padding-left: 12px;
@@ -811,7 +811,7 @@ pre code {
 	.row-condensed .col-10, .row-condensed .col-sm-10, .row-condensed .col-md-10,
 	.row-condensed .col-lg-10, .row-condensed .col-11, .row-condensed .col-sm-11,
 	.row-condensed .col-md-11, .row-condensed .col-lg-11, .row-condensed .col-12,
-	.row-condensed .col-sm-12, .row-condensed .col-md-12, .row-condensed .col-lg-12
+	.row-condensed .col-sm-12, .row-condensed .col-md-12, .row-condensed .col-lg-12, .row-condensed .col-sm-11-new
 	{
 	padding-left: 6px;
 	padding-right: 6px
@@ -1219,6 +1219,29 @@ pre code {
 	width: 91.66667%;
 	float: left
 }
+
+.col-sm-11-new {
+	width: 43%;
+	float: left
+}
+@media ( max-width : 742px) {
+.col-sm-11-new {
+	width: 45%;
+	float: left
+}
+}
+
+@media (max-width: 415px){
+.col-sm-11-new {
+    width: 42%;
+    float: left;
+}}
+
+@media (max-width: 320px){
+.col-sm-11-new {
+    width: 41%;
+    float: left;
+}}
 
 .col-sm-offset-11 {
 	margin-left: 91.66667%

@@ -554,7 +554,7 @@
 												class="col-sm-1" checked="checked"/>
 											<input ng-if="ctrl.hasAmenty(a.enumKey) == false" id="chb_{{a.enumKey}}" type="checkbox"
 												class="col-sm-1" value="4"/>
-											<div class="pull-left col-sm-11">
+											<div class="pull-left col-sm-11-new">
 												<label>{{a.uiLabel}}</label>
 											</div>
 										</div>
@@ -657,7 +657,7 @@
 									</div>
 									<input type="hidden" id="hiddenLocality" />
 									<div class="row">
-										<div class="space-top-2 col-sm-12">
+										<div class="space-top-2 col-sm-12 col-md-10">
 											<input type="text" id="txtCountry" class="input input-block input-jumbo form-input"
 												placeholder="Country" value=""/>
 										</div>
@@ -668,12 +668,13 @@
 												value="" />
 										</div>
 									</div>
-									<div class="space-top-2">
+									
+									<div class="row">
+									<div class="space-top-2 col-sm-12 col-md-10">
 										<input type="text" id="txtStreet" class="input input-block input-jumbo form-input"
 											placeholder="Street" value="" />
 									</div>
-									<div class="row">
-										<div class="space-top-2 col-sm-12">
+										<div class="space-top-2 col-sm-12 col-md-10">
 											<input
 												class="input input-block input-jumbo lys-address-form__input"
 												id="txtBuilding" name="apt" type="text"
@@ -686,13 +687,13 @@
 												id="txtPostalCode" placeholder="Zip Code"
 												type="text" />
 										</div>
-										<div class="space-top-2 col-sm-12 col-md-8" style="display: inline">
+										<div class="space-top-2 col-sm-12 col-md-8" style="display: none">
 											<input
 												class="input input-block input-jumbo lys-address-form__input"
 												id="txtLatitude" placeholder="Latitude"
 												type="text" />
 										</div>
-										<div class="space-top-2 col-sm-12 col-md-8" style="display: inline">
+										<div class="space-top-2 col-sm-12 col-md-8" style="display: none">
 											<input
 												class="input input-block input-jumbo"
 												id="txtLongitude" placeholder="Longitude"
