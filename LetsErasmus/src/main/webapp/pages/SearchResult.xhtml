@@ -6,6 +6,7 @@
 
 	<ui:define name="head">
 		<link rel="stylesheet" type="text/css" href="#{webApplication.urlPrefix}/static/css/search_results.css" />
+		<link rel="stylesheet" type="text/css" href="#{webApplication.urlPrefix}/static/css/app.css" />
 		
 		<style>
 	        .jssora02l, .jssora02r {
@@ -77,22 +78,17 @@
 								<div class="IconFilter u-textCenter">
 									<icon id="iconPlaceTypeId_1" class="IconFilter-icon beicon-shared-flat"
 										ng-click="ctrl.onFilterElementClick($event, 'IconFilter-icon--enabled'); ctrl.basicSearch();"></icon>
-									<p class="u-filterLabel">Shared Flat</p>
+									<p >Entire Place</p>
 								</div>
 								<div class="IconFilter u-textCenter">
 									<icon id="iconPlaceTypeId_2" class="IconFilter-icon beicon-host-family"
 										ng-click="ctrl.onFilterElementClick($event, 'IconFilter-icon--enabled'); ctrl.basicSearch();"></icon>
-									<p class="u-filterLabel">Host Family</p>
+									<p>Private Room</p>
 								</div>
 								<div class="IconFilter u-textCenter">
 									<icon id="iconPlaceTypeId_3" class="IconFilter-icon beicon-student-hall"
 										ng-click="ctrl.onFilterElementClick($event, 'IconFilter-icon--enabled'); ctrl.basicSearch();"></icon>
-									<p class="u-filterLabel">Student Hall</p>
-								</div>
-								<div class="IconFilter u-textCenter">
-									<icon id="iconPlaceTypeId_4" class="IconFilter-icon beicon-complete-apartment"
-										ng-click="ctrl.onFilterElementClick($event, 'IconFilter-icon--enabled'); ctrl.basicSearch();"></icon>
-									<p class="u-filterLabel">Full Apartment</p>
+									<p>Shared Room</p>
 								</div>
 							</div>
 						</div>
@@ -106,172 +102,95 @@
 								<span id="spanMaxPrice" class="PriceFilter-maxValue">500</span>
 							</div>
 						</div>
-						<div id="divExtendedSearchFields" style="display: none">
-							<div class="WholeApartmentFilter u-borderTop">
-								<p class="WholeApartmentFilter-title u-filterLabel">Whole
-									Apartment</p>
-								<div
-									class="WholeApartmentFilter-element WholeApartmentFilter-element--bedrooms">
-									<icon class="WholeApartmentFilter-element-icon beicon-rooms"></icon>
-									<div class="SelectOptionNumber">
-										<div class="SelectOptionNumber-element" ng-click="ctrl.onFilterElementClick($event, 'SelectOptionNumber-element--selected')">1</div>
-										<div class="SelectOptionNumber-element" ng-click="ctrl.onFilterElementClick($event, 'SelectOptionNumber-element--selected')">2</div>
-										<div class="SelectOptionNumber-element" ng-click="ctrl.onFilterElementClick($event, 'SelectOptionNumber-element--selected')">3</div>
-										<div class="SelectOptionNumber-element" ng-click="ctrl.onFilterElementClick($event, 'SelectOptionNumber-element--selected')">4</div>
-										<div class="SelectOptionNumber-element" ng-click="ctrl.onFilterElementClick($event, 'SelectOptionNumber-element--selected')">5+</div>
+						<div id="divExtendedSearchFields" style="width: 100%; display: none;">
+							<div class="RoomFilters u-borderTop">
+								<p class="RoomFilters-title u-filterLabel">Guest</p>
+								<div class="filter-element-4">
+									<div>
+										<span>Number</span>
 									</div>
-									<span class="WholeApartmentFilter-element-title">Bedrooms</span>
+									<div class="top-2">
+										<input id="txtGuestNumber" type="number" min="0" class="form-input" placeholder="Guest Number" />
+									</div>
 								</div>
-								<div
-									class="WholeApartmentFilter-element WholeApartmentFilter-element--bathrooms">
-									<icon class="WholeApartmentFilter-element-icon beicon-shower"></icon>
-									<div class="SelectOptionNumber">
-										<div class="SelectOptionNumber-element" ng-click="ctrl.onFilterElementClick($event, 'SelectOptionNumber-element--selected')">1</div>
-										<div class="SelectOptionNumber-element" ng-click="ctrl.onFilterElementClick($event, 'SelectOptionNumber-element--selected')">2</div>
-										<div class="SelectOptionNumber-element" ng-click="ctrl.onFilterElementClick($event, 'SelectOptionNumber-element--selected')">3+</div>
+								<div class="filter-element-4">
+									<div>
+										<span>Gender</span>
 									</div>
-									<span class="WholeApartmentFilter-element-title">Bathrooms</span>
-								</div>
-								<div
-									class="WholeApartmentFilter-element WholeApartmentFilter-element--livingRoom">
-									<input type="checkbox" name="livingRoom" class="u-checkbox"
-										value="on" />
-									<icon class="WholeApartmentFilter-element-icon beicon-salon"></icon>
-									<span class="WholeApartmentFilter-element-title">With
-										living Room</span>
-								</div>
-							</div>
-							<div class="FeaturesFilters  u-borderTop" style="">
-								<p class="FeaturesFilters-title u-filterLabel">Features</p>
-								<div class="FeaturesFilters-element">
-									<div class="AmenityFilterItem">
-										<input type="checkbox" name="wifi-check"
-											class="AmenityFilterItem-checkbox u-checkbox" value="on" /><span
-											class="AmenityFilterItem-text">Wifi</span>
-										<icon class="AmenityFilterItem-icon beicon-wifi"></icon>
-									</div>
-									<div class="AmenityFilterItem">
-										<input type="checkbox" name="air-conditioning-check"
-											class="AmenityFilterItem-checkbox u-checkbox" value="on" /><span
-											class="AmenityFilterItem-text">Air Conditioning</span>
-										<icon class="AmenityFilterItem-icon beicon-air-conditioning"></icon>
-									</div>
-									<div class="AmenityFilterItem">
-										<input type="checkbox" name="tv-check"
-											class="AmenityFilterItem-checkbox u-checkbox" value="on" /><span
-											class="AmenityFilterItem-text">TV</span>
-										<icon class="AmenityFilterItem-icon beicon-tv"></icon>
-									</div>
-									<div class="AmenityFilterItem">
-										<input type="checkbox" name="lift-check"
-											class="AmenityFilterItem-checkbox u-checkbox" value="on" /><span
-											class="AmenityFilterItem-text">Lift</span>
-										<icon class="AmenityFilterItem-icon beicon-lift"></icon>
-									</div>
-									<div class="AmenityFilterItem">
-										<input type="checkbox" name="washing-machine-check"
-											class="AmenityFilterItem-checkbox u-checkbox" value="on" /><span
-											class="AmenityFilterItem-text">Washing Machine</span>
-										<icon class="AmenityFilterItem-icon beicon-washing-machine"></icon>
-									</div>
-									<div class="AmenityFilterItem">
-										<input type="checkbox" name="dish-washer-check"
-											class="AmenityFilterItem-checkbox u-checkbox" value="on" /><span
-											class="AmenityFilterItem-text">Dish Washer</span>
-										<icon class="AmenityFilterItem-icon beicon-dish-washer"></icon>
+									<div class="top-2">
+										<select id="cmbGuestGender" class="">
+											<option selected="" value="-1" disabled="">Select One</option>
+											<option value="M">Male</option>
+											<option value="F">Female</option>
+											<option value="O">Other</option>
+										</select>
 									</div>
 								</div>
 							</div>
 							<div class="RoomFilters u-borderTop">
 								<p class="RoomFilters-title u-filterLabel">Room</p>
-								<div class="RoomFilters-container">
-									<div
-										class="RoomFilters-element RoomFilters-element--numberOfBeds">
-										<div class="u-select-wrapper">
-											<select class="u-select"><option value="0">-
-												</option>
-												<option value="1">1</option>
-												<option value="2">2</option>
-												<option value="3">3</option>
-												<option value="4">4</option></select>
-										</div>
-										<span class="RoomFilters-Element-title">Nº Beds</span>
+								<div class="filter-element-4">
+									<label class="h4 text-gray text-normal">
+										<span>Bathroom Type</span>
+									</label>
+									<div class="u-select-wrapper top-2">
+										<select id="cmbBathroomType">
+											<option selected="" value="-1" disabled="">Select One</option>
+											<option value="1">Private</option>
+											<option value="2">Shared</option>
+										</select>
 									</div>
-									<div class="RoomFilters-element">
-										<div class="IconFilter u-textCenter">
-											<icon class="IconFilter-icon beicon-single-bed" ng-click="ctrl.onFilterElementClick($event, 'IconFilter-icon--enabled')"></icon>
-											<p class="u-filterLabel">Single Bed</p>
-										</div>
+								</div>
+								<div class="filter-element-4">
+									<div>
+										<span>Number Of Beds</span>
 									</div>
-									<div class="RoomFilters-element">
-										<div class="IconFilter u-textCenter">
-											<icon class="IconFilter-icon beicon-double-bed" ng-click="ctrl.onFilterElementClick($event, 'IconFilter-icon--enabled')"></icon>
-											<p class="u-filterLabel">Double Bed</p>
-										</div>
+									<div class="top-2">
+										<input id="txtBedNumber" type="number" min="0" class="form-input" placeholder="Bed Number" />
 									</div>
 								</div>
 							</div>
 							<div class="FeaturesFilters  u-borderTop">
-								<p class="FeaturesFilters-title u-filterLabel">Features</p>
+								<p class="FeaturesFilters-title u-filterLabel">Amenties</p>
 								<div class="FeaturesFilters-element">
-									<div class="AmenityFilterItem">
-										<input type="checkbox" name="en-suite-check"
+									<div ng-repeat="a in ctrl.amentiesList" class="AmenityFilterItem top-2 filter-element-4">
+										<input type="checkbox" id="chb_{{a.enumKey}}"
 											class="AmenityFilterItem-checkbox u-checkbox" value="on" /><span
-											class="AmenityFilterItem-text">En suite</span>
-										<icon class="AmenityFilterItem-icon beicon-en-suite"></icon>
-									</div>
-									<div class="AmenityFilterItem">
-										<input type="checkbox" name="heating-check"
-											class="AmenityFilterItem-checkbox u-checkbox" value="on" /><span
-											class="AmenityFilterItem-text">Heating</span>
-										<icon class="AmenityFilterItem-icon beicon-heating"></icon>
-									</div>
-									<div class="AmenityFilterItem">
-										<input type="checkbox" name="air-conditioning-check"
-											class="AmenityFilterItem-checkbox u-checkbox" value="on" /><span
-											class="AmenityFilterItem-text">Air Conditioning</span>
-										<icon class="AmenityFilterItem-icon beicon-air-conditioning"></icon>
-									</div>
-									<div class="AmenityFilterItem">
-										<input type="checkbox" name="closet-check"
-											class="AmenityFilterItem-checkbox u-checkbox" value="on" /><span
-											class="AmenityFilterItem-text">Closet</span>
-										<icon class="AmenityFilterItem-icon beicon-closet"></icon>
+											class="AmenityFilterItem-text">{{a.uiLabel}}</span>
+										<!--<icon class="AmenityFilterItem-icon"></icon> -->
 									</div>
 								</div>
 							</div>
-							<div class="ConditionsFilters u-borderTop">
-								<p class="ConditionsFilters-title u-filterLabel">Conditions/Rules</p>
-								<div
-									class="ConditionsFilters-element ConditionsFilters-element--allowedGenders">
-									<input type="checkbox" name="allowedGendersCheck"
-										class="u-checkbox" value="on" /><span
-										class="ConditionsFilters-element-title">Females Only</span>
-									<icon class="ConditionsFilters-element-icon beicon-female-only"></icon>
-								</div>
-								<div
-									class="ConditionsFilters-element ConditionsFilters-element--minimumStay">
-									<div class="u-select-wrapper">
-										<select class="u-select"><option value="-1">-
-											</option>
-											<option value="1">1 month</option>
-											<option value="2">2 months</option>
-											<option value="3">3 months</option></select>
+							<div class="FeaturesFilters  u-borderTop">
+								<p class="FeaturesFilters-title u-filterLabel">Safety Amenties</p>
+								<div class="FeaturesFilters-element">
+									<div ng-repeat="r in ctrl.safetyAmentiesList" class="AmenityFilterItem top-2 filter-element-4">
+										<input type="checkbox" id="chb_{{r.enumKey}}"
+											class="AmenityFilterItem-checkbox u-checkbox" value="on" /><span
+											class="AmenityFilterItem-text">{{r.uiLabel}}</span>
+										<!--<icon class="AmenityFilterItem-icon"></icon> -->
 									</div>
-									<span class="ConditionsFilters-element-title">Minium
-										Stay</span>
+								</div>
+							</div>
+							<div class="FeaturesFilters  u-borderTop">
+								<p class="FeaturesFilters-title u-filterLabel">Rules</p>
+								<div class="FeaturesFilters-element">
+									<div ng-repeat="r in ctrl.ruleList" class="AmenityFilterItem top-2 filter-element-4">
+										<input type="checkbox" id="chb_{{r.enumKey}}"
+											class="AmenityFilterItem-checkbox u-checkbox" value="on" /><span
+											class="AmenityFilterItem-text">{{r.uiLabel}}</span>
+										<!--<icon class="AmenityFilterItem-icon"></icon> -->
+									</div>
 								</div>
 							</div>
 						</div>
-						<!-- icon -->
-						<!-- react-empty: 527 --><!-- react-empty: 528 --><!-- react-empty: 529 --><!-- react-empty: 530 --><!-- react-empty: 531 -->
 						</section>
 						<div id="filterToolBarId_Extended"
 							class="FilterToolBar u-borderTop FilterToolBar--expanded"
 							data-reactid="532" style="display: none">
 							<input type="button" class="FilterToolBar-cancel u-button"
 								onclick="hideExtendedSearchFields();" value="Cancel" />
-							<input type="button" class="FilterToolBar-apply u-button" value="Apply" ng-click="ctrl.advancedSearch()"/>
+							<input type="button" class="FilterToolBar-apply u-button" value="Apply" ng-click="ctrl.basicSearch()"/>
 						</div>
 						<div id="filterToolBarId" class="FilterToolBar u-borderTop"
 							data-reactid="532">
@@ -385,6 +304,7 @@
 				</div>
 			</div>
 		</h:form>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/service/enumeration_service.js"></script>
 		<script src="#{webApplication.urlPrefix}/static/js/angular/service/place_service.js"></script>
 		<script src="#{webApplication.urlPrefix}/static/js/geocode/custom_marker.js"></script>
 		<script src="#{webApplication.urlPrefix}/static/js/angular/controller/search_result_controller.js"></script>

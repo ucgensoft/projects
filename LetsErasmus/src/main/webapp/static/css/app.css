@@ -53,4 +53,6 @@ body, #mainWrapper {
 	cursor : pointer
 }
 
-
+.top-2 {
+	margin-top: 6px;	
+}

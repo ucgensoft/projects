@@ -110,9 +110,9 @@ public class PlaceRowMapper extends BaseRowMapper<Place> {
 		place.setBathRoomNumber(super.getInteger(rs, COL_BATHROOM_NUMBER));
 		place.setBathRoomType(super.getInteger(rs, COL_BATHROOM_TYPE));
 		place.setPlaceMateNumber(super.getInteger(rs, COL_PLACE_MATE_NUMBER));
-		place.setPlaceMateGender(super.getInteger(rs, COL_PLACE_MATE_GENDER));
+		place.setPlaceMateGender(super.getString(rs, COL_PLACE_MATE_GENDER));
 		place.setGuestNumber(super.getInteger(rs, COL_GUEST_NUMBER));
-		place.setGuestGender(super.getInteger(rs, COL_GUEST_GENDER));
+		place.setGuestGender(super.getString(rs, COL_GUEST_GENDER));
 		place.setRules(super.getString(rs, COL_RULES));
 		place.setAmenties(super.getString(rs, COL_AMENTIES));
 		place.setSafetyAmenties(super.getString(rs, COL_SAFETY_AMENTIES));

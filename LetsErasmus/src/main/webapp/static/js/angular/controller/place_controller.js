@@ -520,7 +520,7 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     		  newPlace.depositPrice = $("#txtDepositPrice").val();
     	  }
     	  newPlace.currencyId = $("#cmbCurrencyId").val();
-    	  newPlace.billsInclude = ($("#chbBillsIncluded")[0].checked ? 1 : 0);
+    	  newPlace.billsInclude = ($("#chbBillsIncluded")[0].checked ? 'Y' : 'N');
     	  //newPlace.startDate = $.datepicker.formatDate('d.m.yy', $("#txtStartDatePicker").datepicker("getDate"));
     	  //newPlace.endDate = $.datepicker.formatDate('d.m.yy', $("#txtEndDatePicker").datepicker("getDate"));
     	  newPlace.startDate = $("#txtStartDatePicker").datepicker("getDate");

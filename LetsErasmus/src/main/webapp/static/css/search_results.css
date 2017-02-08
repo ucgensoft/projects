@@ -849,7 +849,6 @@ p {
 
 @media only screen and (min-width:680px) {
 	.FeaturesFilters-element {
-		border-top: 1px solid #b9bbb9;
 		-webkit-box-lines: multiple;
 		-moz-box-lines: multiple;
 		-o-box-lines: multiple;
@@ -1725,7 +1724,7 @@ p {
 .RoomFilters-element {
 	margin-bottom: 1em;
 	padding-right: .6em;
-	width: 33%
+	
 }
 
 @media only screen and (min-width:680px) {
@@ -2216,7 +2215,8 @@ p {
 }
 
 .u-filterLabel {
-	color: #777875
+	color: #777875;
+	font-weight: bold;
 }
 
 
@@ -2425,4 +2425,6 @@ p {
 	letter-spacing: 10px;
 }
 
-
+.filter-element-4 {
+	width : 24%;
+}

@@ -31,9 +31,9 @@ public class Place extends BaseModel {
 	private Integer bathRoomNumber;
 	private Integer bathRoomType;
 	private Integer placeMateNumber;
-	private Integer placeMateGender;
+	private String placeMateGender;
 	private Integer guestNumber;
-	private Integer guestGender;
+	private String guestGender;
 	private String rules;
 	private String amenties;
 	private String safetyAmenties;
@@ -151,10 +151,10 @@ public class Place extends BaseModel {
 	public void setPlaceMateNumber(Integer placeMateNumber) {
 		this.placeMateNumber = placeMateNumber;
 	}
-	public Integer getPlaceMateGender() {
+	public String getPlaceMateGender() {
 		return placeMateGender;
 	}
-	public void setPlaceMateGender(Integer placeMateGender) {
+	public void setPlaceMateGender(String placeMateGender) {
 		this.placeMateGender = placeMateGender;
 	}
 	public Integer getGuestNumber() {
@@ -163,10 +163,10 @@ public class Place extends BaseModel {
 	public void setGuestNumber(Integer guestNumber) {
 		this.guestNumber = guestNumber;
 	}
-	public Integer getGuestGender() {
+	public String getGuestGender() {
 		return guestGender;
 	}
-	public void setGuestGender(Integer guestGender) {
+	public void setGuestGender(String guestGender) {
 		this.guestGender = guestGender;
 	}
 	public String getRules() {

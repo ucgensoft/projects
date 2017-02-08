@@ -318,3 +318,9 @@ function isResultSuccess(operationResult, handleError) {
 		return false;
 	}
 }
+
+function refreshAngularScope(scope) {
+	scope.$apply(function() {
+		
+	});
+}

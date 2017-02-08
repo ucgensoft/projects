@@ -1,4 +1,5 @@
-App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeService', 'commonService', function($scope, $controller, $http, placeService, commonService) {
+App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeService', 'commonService', 'enumerationService', 
+                                    function($scope, $controller, $http, placeService, commonService, enumerationService) {
       var self = this;
       
       var map = null; 
@@ -9,6 +10,10 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
       self.selectedPlaceName = null;
       self.minPrice = 0;
       self.maxPrice = 500;
+      
+      self.amentiesList = [];
+      self.safetyAmentiesList = [];
+      self.ruleList = [];
       
       var originalPlaceList = [];
       self.placeList = [];
@@ -78,6 +83,16 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
       	      }
       	    });
       	  $(".ui-slider-range").css("background-color", "rgb(3, 169, 244)");
+      	  
+      	enumerationService.listEnumeration(null).then(function(operationResult) {
+		  			self.amentiesList = operationResult.resultValue["place_amenty"];
+		  			self.safetyAmentiesList = operationResult.resultValue["place_safety_amenty"];
+		  			self.ruleList = operationResult.resultValue["place_rule"];
+			},
+			function(errResponse){
+				console.error('Error while fetching Enumerations');
+			}
+	      );
       };
       
       self.setPriceRange = function (selectedMinPrice, selectedMaxPrice) {
@@ -105,9 +120,9 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
 	    	
 	    	for(var i = 0; i < originalPlaceList.length; i++) {
 	    		var place = originalPlaceList[i];
-	    		var isMatching = false;
-	    		if (place.price >= self.minPrice && place.price <= self.maxPrice) {
-	    			isMatching = true;
+	    		var isMatching = true;
+	    		if (place.price < self.minPrice || place.price > self.maxPrice) {
+	    			isMatching = false;
 	    		}
 	    		
 	    		if (isMatching) {
@@ -115,42 +130,93 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
 		    		for(var x = 1; x < 10; x++) {
 		    			if ($("#iconPlaceTypeId_" + x).length > 0) {
 		    				if($("#iconPlaceTypeId_" + x).hasClass('IconFilter-icon--enabled')) {
-		    					placeTypeSelected = true;
-		    					if (place.placeTypeId == x) {
-		    						isMatching = true;
-		    						break;
-		    					} else {
+		    					if (place.placeTypeId != x) {
 		    						isMatching = false;
+		    						break;
 		    					}
 			    			}
 		    			} else {
 		    				break;
 		    			}
 		    		}
-		    		
-		    		if (!placeTypeSelected) {
-		    			isMatching = true;
-		    		}
 	    		}
-	    			    		
+	    		
+	    		if (isMatching) {
+	    			var guestNumber = $('#txtGuestNumber').val();
+	    			if (guestNumber != '' && parseInt(guestNumber) > place.guestNumber) {
+	    				isMatching = false;
+	    			}
+	    		}
+	    		
+	    		if (isMatching) {
+	    			var guestGender = $('#cmbGuestGender').val();
+	    			if (guestGender != '-1' && guestGender != place.guestGender) {
+	    				isMatching = false;
+	    			}
+	    		}
+	    		
+	    		if (isMatching) {
+	    			var bathroomType = $('#cmbBathroomType').val();
+	    			if (bathroomType != '-1' && parseInt(bathroomType) != place.bathroomType) {
+	    				isMatching = false;
+	    			}
+	    		}
+	    		
+	    		if (isMatching) {
+	    			var bedNumber = $('#txtBedNumber').val();
+	    			if (bedNumber != '' && parseInt(bedNumber) > place.bedNumber) {
+	    				isMatching = false;
+	    			}
+	    		}
+	    		
+	    		if (isMatching) {
+	    			for (var x = 0; x < self.amentiesList.length; x++) {
+			      		  var itemAmenties = self.amentiesList[x];
+			      		  if ($('#chb_' + itemAmenties.enumKey)[0].checked) {
+			      			if (place.amenties == null || place.amenties == '' 
+			      				|| place.amenties.indexOf(itemAmenties.enumKey) < 0) {
+			      				isMatching = false;
+			      				break;
+			      			}
+			      		  }
+			      	  }
+	    		}
+	    		
+	    		if (isMatching) {
+	    			for (var x = 0; x < self.safetyAmentiesList.length; x++) {
+			      		  var itemSafetyAmenties = self.safetyAmentiesList[x];
+			      		  if ($('#chb_' + itemSafetyAmenties.enumKey)[0].checked) {
+			      			if (place.amenties == null || place.amenties == '' 
+			      				|| place.amenties.indexOf(itemSafetyAmenties.enumKey) < 0) {
+			      				isMatching = false;
+			      				break;
+			      			}
+			      		  }
+			      	  }
+	    		}
+	    		
+	    		if (isMatching) {
+	    			for (var x = 0; x < self.ruleList.length; x++) {
+			      		  var itemRule = self.ruleList[x];
+			      		  if ($('#chb_' + itemRule.enumKey)[0].checked) {
+			      			if (place.rules == null || place.rules == '' 
+			      				|| place.rules.indexOf(itemRule.enumKey) < 0) {
+			      				isMatching = false;
+			      				break;
+			      			}
+			      		  }
+			      	  }
+	    		}
+	    		
 	    		if (isMatching) {
 	    			newPlaceList.push(place);
 	    		}
 	    	}
 	    	
-	    	//self.placeList = newPlaceList;
-	    	//$scope.update();
 	    	self.placeList = newPlaceList;
+	    	//refreshAngularScope($scope);
+	    	hideExtendedSearchFields();
 	    	commonService.fakeAjaxCall(self.refreshMap);
-	      };
-	      
-	      self.advancedSearch = function() {
-	    	var newPlaceList = [];
-	    	
-	    	for(var i = 0; i < self.placeList.length; i++) {
-	    		var isMatching = false;
-	    		
-	    	}
 	      };
 
 	      self.validateSearch = function() {
