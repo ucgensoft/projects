@@ -338,7 +338,7 @@ p {
 	-ms-flex-direction: column;
 	flex-direction: column;
 	font-size: .75rem;
-	padding: 2em 0 2em 1em
+	padding: 1em 0 1em 1em
 }
 
 @media only screen and (min-width:680px) {
@@ -402,8 +402,8 @@ p {
 		-webkit-align-self: flex-end;
 		align-self: flex-end;
 		-ms-flex-item-align: end;
-		margin-bottom: 0;
-		padding-bottom: 0
+		/* margin-bottom: 0;
+		padding-bottom: 0*/ 
 	}
 }
 
@@ -786,7 +786,7 @@ p {
 	-o-box-orient: vertical;
 	-ms-flex-direction: column;
 	flex-direction: column;
-	font-size: .75rem;
+	font-size: .80rem;
 	padding: 2em 0 2em 1em
 }
 
@@ -806,9 +806,11 @@ p {
 
 
 .FeaturesFilters-title {
-	padding-bottom: 1em;
+	/*padding-bottom: 1em;*/
 	color: #777875;
-	min-width: 9em
+	min-width: 9em;
+	margin-top: auto;
+    margin-bottom: auto;
 }
 
 .FeaturesFilters-element {
@@ -825,7 +827,9 @@ p {
 
 @media only screen and (min-width:680px) {
 	.FeaturesFilters-title {
-		padding-top: 2em
+		padding-top: 2em;
+		margin-top: auto;
+    	margin-bottom: auto;
 	}
 }
 
@@ -973,6 +977,10 @@ p {
 .IconFilter-icon {
 	display: inline-block;
 	color: #777875
+}
+
+.IconFilter-icon:before {
+	font-family: Airglyphs, sans-serif
 }
 
 
@@ -1354,7 +1362,7 @@ p {
 }
 
 .PriceFilter-title {
-	padding-bottom: 1em;
+	/*padding-bottom: 1em;*/
 	color: #777875;
 	min-width: 9em
 }
@@ -1376,7 +1384,7 @@ p {
 
 @media only screen and (min-width:680px) {
 	.PriceFilter-title {
-		padding-bottom: 0;
+		/*padding-bottom: 0;*/
 		-webkit-align-self: flex-end;
 		align-self: flex-end;
 		-ms-flex-item-align: end
@@ -1398,16 +1406,17 @@ p {
 .PriceFilter-maxValue, .PriceFilter-minValue {
 	display: inline-block;
 	font-size: 1em;
-	min-width: 2.5em
+	min-width: 2.5em;
+	font-weight: bold;
 }
 
 .PriceFilter-minValue {
-	margin-right: .5em;
+	margin-right: 1em;
 	text-align: right
 }
 
 .PriceFilter-maxValue {
-	margin-left: .5em
+	margin-left: 1em
 }
 
 .PriceFilter-boxSlider {
@@ -1676,7 +1685,7 @@ p {
 	-o-box-orient: vertical;
 	-ms-flex-direction: column;
 	flex-direction: column;
-	font-size: .75rem;
+	font-size: .80rem;
 	padding: 2em 0 2em 1em
 }
 
@@ -1695,9 +1704,12 @@ p {
 }
 
 .RoomFilters-title {
-	padding-bottom: 1em;
+	/*padding-bottom: 1em;*/
 	color: #777875;
-	min-width: 9em
+	min-width: 9em;
+	margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 12px;
 }
 
 .RoomFilters-container {
@@ -2014,7 +2026,14 @@ p {
 }
 
 .SearchPlaceBox-labelInside-icon {
-	margin-right: .3em
+	margin-right: .3em;
+	font-style: normal;
+	font-weight: normal;
+	line-height: 1;
+}
+
+.SearchPlaceBox-labelInside-icon:before {
+	font-family: Airglyphs, sans-serif
 }
 
 .SearchPlaceBox-labelInside--open {
@@ -2080,9 +2099,7 @@ p {
 	max-width: 40%
 }
 
-.SearchPlaceBox-labelInside-icon {
-	margin-right: .3em
-}
+
 
 .SearchPlaceBox-labelInside--open {
 	border-bottom-left-radius: 0
@@ -2428,3 +2445,26 @@ p {
 .filter-element-4 {
 	width : 24%;
 }
+
+.icon-entire-place:before {
+	content: '\f165';
+	letter-spacing: 10px;
+}
+
+.icon-private-room:before {
+	content: '\f1c3';
+	letter-spacing: 10px;
+}
+
+.icon-shared-room:before {
+	content: '\f1d5';
+	letter-spacing: 10px;
+}
+
+.icon-location:before {
+	content: '\f1a5';
+}
+
+
+
+

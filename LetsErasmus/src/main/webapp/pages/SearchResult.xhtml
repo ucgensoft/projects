@@ -46,11 +46,11 @@
 							<div class="SearchPlaceBox">
 								<div class="SearchPlaceBox-container">
 									<div class="SearchPlaceBoxLabelInside SearchPlaceBox-labelInside">
-										<icon class="beicon-town SearchPlaceBox-labelInside-icon"></icon>
+										<icon class="icon-location SearchPlaceBox-labelInside-icon"></icon>
 										<div class="SearchPlaceBoxLabelInside-label" title="{{ctrl.selectedPlaceName}}">{{ctrl.selectedPlaceName}}</div>
 									</div>
 									<input id="txtSearchPlace" class="SearchPlaceBox-input" value=""
-										placeholder="Search by university or neighborhood"/>
+										placeholder="Search by university or city"/>
 									<div class="SearchPlaceBox-close CloseButton"
 											style="cursor: pointer;">×</div>
 								</div>
@@ -76,17 +76,17 @@
 								data-reactid="499">Housing Type</p>
 							<div class="AccomodationFilter-element">
 								<div class="IconFilter u-textCenter">
-									<icon id="iconPlaceTypeId_1" class="IconFilter-icon beicon-shared-flat"
+									<icon id="iconPlaceTypeId_1" class="IconFilter-icon icon-entire-place"
 										ng-click="ctrl.onFilterElementClick($event, 'IconFilter-icon--enabled'); ctrl.basicSearch();"></icon>
 									<p >Entire Place</p>
 								</div>
 								<div class="IconFilter u-textCenter">
-									<icon id="iconPlaceTypeId_2" class="IconFilter-icon beicon-host-family"
+									<icon id="iconPlaceTypeId_2" class="IconFilter-icon icon-private-room"
 										ng-click="ctrl.onFilterElementClick($event, 'IconFilter-icon--enabled'); ctrl.basicSearch();"></icon>
 									<p>Private Room</p>
 								</div>
 								<div class="IconFilter u-textCenter">
-									<icon id="iconPlaceTypeId_3" class="IconFilter-icon beicon-student-hall"
+									<icon id="iconPlaceTypeId_3" class="IconFilter-icon icon-shared-room"
 										ng-click="ctrl.onFilterElementClick($event, 'IconFilter-icon--enabled'); ctrl.basicSearch();"></icon>
 									<p>Shared Room</p>
 								</div>
