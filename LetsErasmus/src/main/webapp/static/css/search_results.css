@@ -720,6 +720,20 @@ p {
 	vertical-align: middle
 }
 
+@media only screen and (max-width:320px) {
+	.DateInput{
+		width: 100px;
+	    margin-left: 15px;
+	}
+}
+
+@media only screen and (min-width:321px) and (max-width:768px) {
+	.DateInput{
+		width: 90px;
+	}
+}
+
+
 .CheckInOutDouble .DateInput {
 	font-size: .875rem;
 	padding: 0;
@@ -871,7 +885,8 @@ p {
 	box-sizing: border-box;
 	display: inline-block;
 	overflow-y: scroll;
-	height: 94vh
+	height: 94vh;
+	width:100%;
 }
 
 @media only screen and (min-width:680px) {
@@ -985,12 +1000,12 @@ p {
 
 
 .IconFilter {
-	width: 50%
+	width: auto;
 }
 
 @media only screen and (min-width:680px) {
 	.IconFilter {
-		width: auto
+		width: auto;
 	}
 }
 
@@ -2444,6 +2459,12 @@ p {
 
 .filter-element-4 {
 	width : 24%;
+}
+
+@media only screen and (max-width:414px) {
+	.filter-element-4 {
+		width: 100%;
+	}
 }
 
 .icon-entire-place:before {
