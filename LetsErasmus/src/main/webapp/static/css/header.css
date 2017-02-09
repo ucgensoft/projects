@@ -1631,3 +1631,391 @@ form.horizontalForm .help-block {
 form.horizontalForm .help-block.help-full-width {
 	margin-left: 0
 }
+
+/* Airbnb User drowdown menu için taþýnanlar (Mehmet) */
+
+
+.panel {
+	border: 1px solid #dce0e0;
+	background-color: #fff;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0
+}
+
+
+.panel-header, .panel-body, ul.panel-body>li, ol.panel-body>li,
+	.panel-footer {
+	position: relative;
+	margin: 0;
+	padding: 20px;
+	border-top: 1px solid #dce0e0
+}
+
+.panel-header+.panel-body, .panel-body+.panel-body, ul.panel-body>li+.panel-body,
+	ol.panel-body>li+.panel-body, .panel-footer+.panel-body {
+	border-top: none
+}
+
+.panel-header:first-child, .panel-body:first-child, ul.panel-body>li:first-child,
+	ol.panel-body>li:first-child, .panel-footer:first-child {
+	border-top: 0
+}
+
+ul.panel-condensed>li, ol.panel-condensed>li, .panel-condensed {
+	padding: 14px
+}
+
+.panel-header {
+	color: #484848;
+	font-size: 16px;
+	padding-top: 12px;
+	padding-bottom: 12px;
+	border-bottom: 1px solid #dce0e0
+}
+
+.panel-header-scroll {
+	position: relative
+}
+
+.panel-header-scroll:before {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 4px;
+	-webkit-box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.06);
+	-moz-box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.06);
+	box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.06);
+	clip: rect(4px, auto, 20px, auto)
+}
+
+.panel-image {
+	position: relative
+}
+
+a.panel-image {
+	display: block
+}
+
+.panel-body {
+	position: relative
+}
+
+.panel-body+.panel-body:before {
+	content: "";
+	position: absolute;
+	top: -1px;
+	height: 1px;
+	left: 20px;
+	right: 20px;
+	border-top: 1px solid #dce0e0;
+	border-color: #dce0e0;
+	border-color: rgba(220, 224, 224, 0.5)
+}
+
+.panel-body:first-child:before, .panel-body.panel-dark:before,
+	.panel-body.panel-header:before {
+	display: none
+}
+
+.panel-body>*:first-child {
+	margin-top: 0
+}
+
+.panel-body>*:last-child {
+	margin-bottom: 0
+}
+
+ul.panel-body, ol.panel-body {
+	padding: 0;
+	list-style: none
+}
+
+ul.panel-body>li, ol.panel-body>li {
+	position: relative
+}
+
+ul.panel-body>li+.panel-body:before, ol.panel-body>li+.panel-body:before
+	{
+	content: "";
+	position: absolute;
+	top: -1px;
+	height: 1px;
+	left: 20px;
+	right: 20px;
+	border-top: 1px solid #dce0e0;
+	border-color: #dce0e0;
+	border-color: rgba(220, 224, 224, 0.5)
+}
+
+ul.panel-body>li:first-child:before, ul.panel-body>li.panel-dark:before,
+	ul.panel-body>li.panel-header:before, ol.panel-body>li:first-child:before,
+	ol.panel-body>li.panel-dark:before, ol.panel-body>li.panel-header:before
+	{
+	display: none
+}
+
+ul.panel-body>li>*:first-child, ol.panel-body>li>*:first-child {
+	margin-top: 0
+}
+
+ul.panel-body>li>*:last-child, ol.panel-body>li>*:last-child {
+	margin-bottom: 0
+}
+
+.panel-body-scroll {
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch
+}
+
+.panel-footer {
+	text-align: right
+}
+
+.panel-dark, .panel-header {
+	background-color: #edefed
+}
+
+.panel-light {
+	background-color: #fff
+}
+
+@media ( max-width : 743px) {
+	.panel-header {
+		font-size: 15px
+	}
+}
+
+
+.dropdown-menu {
+	padding: 7.5px 0;
+	min-width: 140px
+}
+
+.dropdown-menu .menu-item {
+	display: block;
+	padding: 7.5px 15px;
+	clear: both;
+	line-height: 18px
+}
+
+.dropdown-menu .menu-item:hover {
+	background-color: #f7f7f7
+}
+
+.dropdown-menu.help-dropdown .loading {
+	height: 50px;
+	text-indent: -9999px
+}
+
+
+#js-header-help-menu .field-guide.help-side-panel {
+	width: 350px
+}
+
+#js-header-help-menu .field-guide.help-side-panel .main-content {
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	overflow-y: auto;
+	padding-bottom: 100px
+}
+
+#js-header-help-menu .field-guide.help-side-panel .search-results,
+	#js-header-help-menu .field-guide.help-side-panel .article-body {
+	height: initial
+}
+
+#js-header-help-menu .field-guide.help-side-panel .search-results.loading,
+	#js-header-help-menu .field-guide.help-side-panel .article-body.loading
+	{
+	height: 200px
+}
+
+#js-header-help-menu .field-guide.help-side-panel .search-results.loading:before,
+	#js-header-help-menu .field-guide.help-side-panel .article-body.loading:before
+	{
+	position: absolute;
+	top: 50%;
+	left: 50%
+}
+
+#js-header-help-menu .field-guide.help-side-panel .search-results .panel-body h4,
+	#js-header-help-menu .field-guide.help-side-panel .article-body .panel-body h4
+	{
+	font-size: 14px
+}
+
+.drop-down-menu {
+	position: absolute;
+	z-index: 3001;
+	top: 61px;
+	left: auto;
+	right: 8px;
+	display: none;
+	min-width: 282px;
+	max-width: 460px;
+	line-height: normal;
+	-webkit-border-radius: 0 0 2px 2px;
+	-moz-border-radius: 0 0 2px 2px;
+	border-radius: 10px;
+	
+}
+
+.drop-down-menu .hover-item {
+	display: block
+}
+
+.drop-down-menu .hover-item:hover .hover-item__content {
+	left: 6px
+}
+
+.drop-down-menu .hover-item__content {
+	position: relative;
+	left: 0;
+	-webkit-transition: left .15s ease-out;
+	-o-transition: left .15s ease-out;
+	-moz-transition: left .15s ease-out;
+	transition: left .15s ease-out
+}
+
+.drop-down-menu .relist-your-space {
+	height: 100px
+}
+
+.drop-down-menu .relist-your-space .listing-image {
+	position: absolute;
+	height: 60px;
+	width: 60px;
+	left: 20px;
+	top: 20px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px
+}
+
+.drop-down-menu .relist-your-space .listing-image.placeholder {
+	background-repeat: no-repeat;
+	background-image:
+		url(https://a0.muscache.com/airbnb/static/header/preview-empty-8d82fdd439ed1faaca8415aa7b5356ba.png);
+	width: 60px;
+	height: 60px
+}
+
+@media ( min--moz-device-pixel-ratio : 1.3) , ( -o-min-device-pixel-ratio : 2.6 /
+		2) , ( -webkit-min-device-pixel-ratio : 1.3) , (
+		min-device-pixel-ratio : 1.3) , ( -o-min-device-pixel-ratio : 13/10) ,
+		( min-resolution : 1.3dppx) {
+	.drop-down-menu .relist-your-space .listing-image.placeholder {
+		background-image:
+			url(https://a0.muscache.com/airbnb/static/header/preview-empty@2x-a1c6c1a66868db30da350d79d21935c4.png);
+		-webkit-background-size: 60px 60px;
+		-moz-background-size: 60px 60px;
+		-o-background-size: 60px 60px;
+		background-size: 60px 60px
+	}
+}
+
+.drop-down-menu .relist-your-space .cta-container {
+	display: table;
+	position: relative;
+	left: 60px;
+	top: 0;
+	min-width: 182px;
+	max-width: 360px;
+	padding-left: 20px;
+	padding-right: 30px;
+	-webkit-transition: margin-left .15s ease-out;
+	-o-transition: margin-left .15s ease-out;
+	-moz-transition: margin-left .15s ease-out;
+	transition: margin-left .15s ease-out
+}
+
+.drop-down-menu .relist-your-space .cta-container .cta-text {
+	margin-left: 0
+}
+
+.drop-down-menu .relist-your-space .cta-container .progress {
+	margin-top: 10px;
+	width: 90%;
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+	border-radius: 7px;
+	border: 0;
+	height: 1em
+}
+
+.drop-down-menu .relist-your-space .cta-container .progress .progress-bar
+	{
+	background-color: #00a699
+}
+
+.drop-down-menu .relist-your-space .cta-container:hover {
+	margin-left: 6px
+}
+
+.drop-down-menu .relist-your-space .cta-container-full {
+	left: -20px;
+	min-width: 282px;
+	max-width: 460px
+}
+
+.drop-down-menu .relist-your-space .close-button {
+	position: absolute;
+	top: 12px;
+	right: 12px
+}
+
+.drop-down-menu .relist-your-space .progress {
+	margin-top: -1px;
+	height: 10px;
+	width: 100%
+}
+
+.drop-down-menu .relist-your-space .listing-name {
+	width: 150px;
+	white-space: nowrap;
+	overflow: hidden;
+	-o-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+	padding-bottom: 0
+}
+
+.drop-down-menu .panel-header {
+	padding: 19px 20px;
+	font-size: 14px
+}
+
+.drop-down-menu .panel-header.no-border {
+	border: 0
+}
+
+.tooltip-top-right:before {
+	content: "";
+	display: inline-block;
+	position: absolute;
+	top: -10px;
+	right: 14px;
+	bottom: auto;
+	border: 10px solid transparent;
+	border-top: 0;
+	border-bottom-color: rgba(0, 0, 0, 0.1)
+}
+
+.tooltip-top-right:after {
+	content: "";
+	display: inline-block;
+	position: absolute;
+	top: -9px;
+	right: 15px;
+	bottom: auto;
+	border: 9px solid transparent;
+	border-top: 0;
+	border-bottom-color: #fff
+}
+
+#divHeaderTabUser:hover .drop-down-menu {
+	display: block;
+} 
+/* END of Airbnb User drowdown menu için taþýnanlar (Mehmet) */
