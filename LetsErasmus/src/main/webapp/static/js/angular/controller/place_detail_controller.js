@@ -227,9 +227,9 @@ App.controller('placeDetailCtrl', ['$scope', '$controller', 'placeService', 'com
 			if (self.place.placeTypeId == 1) {
 				return "Entire Place";
 			} else if (self.place.placeTypeId == 2) {
-				return "Shared Room";
-			} else if (self.place.placeTypeId == 3) {
 				return "Private Room";
+			} else if (self.place.placeTypeId == 3) {
+				return "Shared Room";
 			}
 		  } else {
 			  return "";
