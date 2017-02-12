@@ -10,6 +10,6 @@ public interface IUserDao {
 	
 	OperationResult insertUser(User user);
 	
-	ValueOperationResult<Integer> updateUser(User user);
+	ValueOperationResult<Integer> updateUser(User user, boolean setNull);
 	
 }

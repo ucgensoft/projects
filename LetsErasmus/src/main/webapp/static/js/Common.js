@@ -1,4 +1,9 @@
 ﻿
+var EnmOperation = {
+	CONFIRM_EMAIL : 1,
+	LOGIN : 2
+};
+
 var EnmPageMode = {
 	CREATE : 1,
 	UPDATE : 2
@@ -8,6 +13,34 @@ var EnmPlaceStatus = {
 	ACTIVE : 1,
 	DEACTIVE : 2,
 	DELETED : 3
+};
+
+var EnmOperationResultCode = {
+    SUCCESS: 0,
+    WARNING : 1,
+    ERROR: 2,
+    EXCEPTION : 3
+};
+
+var OperationResult = {
+        resultCode: 'resultCode',
+        resultDesc: 'resultDesc',
+        resultObj: 'resultObj',
+        errorCode: 'errorCode'
+};
+
+var EnmErrorCode = {
+		SYSTEM_ERROR : -2,
+		UNDEFINED_ERROR : -1,
+		UNAUTHORIZED_OPERATION : 1,
+        USER_NOT_FOUND : 2,
+        MSISDN_VERIFICATION_CODE_INCORRECT : 3
+};
+
+var EnmLoginType = {
+		LOCAL_ACCOUNT : 1,
+		GOOGLE : 2,
+		FACEBOOK : 3
 };
 
 var tests = {
@@ -43,28 +76,35 @@ var getUriParam = function (paramName) {
     return null;
 };
 
-var EnmOperationResultCode = {
-    SUCCESS: 0,
-    WARNING : 1,
-    ERROR: 2,
-    EXCEPTION : 3
-};
+var clearUrlParameter = function (url, paramName) {
+	var newUrl = url.substring(0, url.indexOf('?'));
+	if (paramName) {
+		var indexOfParamStart = url.indexOf('?');
+	    if (indexOfParamStart > -1 && (indexOfParamStart + 1) < url.length) {
 
-var OperationResult = {
-        resultCode: 'resultCode',
-        resultDesc: 'resultDesc',
-        resultObj: 'resultObj',
-        errorCode: 'errorCode'
-};
-
-var EnmErrorCode = {
-        UNAUTHORIZED_OPERATION : 1,
-};
-
-var EnmLoginType = {
-		LOCAL_ACCOUNT : 1,
-		GOOGLE : 2,
-		FACEBOOK : 3
+	        var paramPart = url.substring(indexOfParamStart + 1);
+	        var paramList = paramPart.split('&');
+	        
+	        for (i = 0; i < paramList.length; i++) {
+	            var paramValuePair = paramList[i];
+	            var urlParamName = null
+	            if (paramValuePair.indexOf('=') > -1) {
+	                var paramValueArr = paramValuePair.split('=');
+	                urlParamName = paramValueArr[0];
+	            } else {
+	            	urlParamName = paramValuePair;
+	            }
+	            if (newUrl.indexOf('?') < 0) {
+	            	newUrl += '?';
+	            }
+                if (urlParamName.toLowerCase() != paramName.toLowerCase()) {
+                	newUrl += paramValuePair;
+                }	            
+	        }
+	    }
+	} else {
+		return newUrl;
+	}
 };
 
 var newOperationResult = function (resultCode, resultDesc, resultObj) {
@@ -204,7 +244,43 @@ var DialogUtil = {
 		alert(message);
 	},
 	
+	info : function (title, message, okText, callback) {
+	    $("<div></div>").dialog( {
+	        buttons: [{
+	            text: okText,
+	            click: function() {
+	                if (callback) {
+	                	callback();
+	                }
+	                $( this ).remove();
+	            }
+	        }],
+	        close: function (event, ui) { $(this).remove(); },
+	        resizable: false,
+	        title: title,
+	        modal: true
+	    }).text(message);
+	},
+	
 	warn : function (title, message, okText, callback) {
+	    $("<div></div>").dialog( {
+	        buttons: [{
+	            text: okText,
+	            click: function() {
+	                if (callback) {
+	                	callback();
+	                }
+	                $( this ).remove();
+	            }
+	        }],
+	        close: function (event, ui) { $(this).remove(); },
+	        resizable: false,
+	        title: title,
+	        modal: true
+	    }).text(message);
+	},
+	
+	error : function (title, message, okText, callback) {
 	    $("<div></div>").dialog( {
 	        buttons: [{
 	            text: okText,
@@ -300,11 +376,15 @@ $.extend({ confirm: function (title, message, yesText, noText, yesCallback) {
 });
 
 function handleAjaxError(operationResult) {
-	if (operationResult.errorCode && operationResult.errorCode == EnmErrorCode.UNAUTHORIZED_OPERATION) {
-		location.href = webApplicationUrlPrefix + '/pages/Unauthorized.xhtml';
+	if (operationResult.resultCode == EnmOperationResultCode.WARNING) {
+		DialogUtil.warn('Warning', operationResult.resultDesc, 'OK', null);
 	} else {
-		alert('Operation could not be completed. Please try again later!');
 		console.error(operationResult.resultDesc);
+		DialogUtil.error('Error', operationResult.resultDesc, 'OK', function() {
+			if (operationResult.errorCode == EnmErrorCode.UNAUTHORIZED_OPERATION) {
+				location.href = webApplicationUrlPrefix + '/pages/Unauthorized.xhtml';
+			}
+		});
 	}
 }
 

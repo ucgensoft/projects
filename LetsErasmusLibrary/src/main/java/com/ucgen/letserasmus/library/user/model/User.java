@@ -210,5 +210,12 @@ public class User extends BaseModel {
 		fullName = StringUtil.append(fullName, this.lastName, " ");
 		return fullName;
 	}
+	public String getMaskedMsisdn() {
+		if (this.msisdn != null) {
+			return this.msisdn.substring(0, 3) + "*** *** " + this.msisdn.substring(this.msisdn.length() - 4);
+		} else {
+			return null;
+		}
+	}
 	
 }

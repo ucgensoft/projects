@@ -103,7 +103,7 @@
 }
 
 .phone-number-verify-widget .pnaw-step2, .phone-number-replace-widget .pnaw-step2
-	{
+{
 	display: none
 }
 
@@ -389,129 +389,6 @@
 .overlay-btn:hover {
 	opacity: .9;
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)"
-}
-
-#video-container .video {
-	width: 400px;
-	height: 400px
-}
-
-#video-container .video .placeholder-content {
-	display: none
-}
-
-#video-container .video .pending-content {
-	display: none
-}
-
-#video-container .video .error-content {
-	display: none
-}
-
-#video-container .video .placeholder-content h4, #video-container .video .pending-content h4,
-	#video-container .video .error-content h4 {
-	margin: 0 40px
-}
-
-#video-container .video.placeholder #video_profile {
-	display: none
-}
-
-#video-container .video.placeholder .placeholder-content {
-	display: block
-}
-
-#video-container .video.placeholder .pending-content {
-	display: none
-}
-
-#video-container .video.placeholder .error-content {
-	display: none
-}
-
-#video-container .video.placeholder object {
-	display: none
-}
-
-#video-container .video.pending .placeholder-content {
-	display: none
-}
-
-#video-container .video.pending .pending-content {
-	display: block
-}
-
-#video-container .video.pending .error-content {
-	display: none
-}
-
-#video-container .video.pending object {
-	display: none
-}
-
-#video-container .video.error-processing .placeholder-content {
-	display: none
-}
-
-#video-container .video.error-processing .pending-content {
-	display: none
-}
-
-#video-container .video.error-processing .error-content {
-	display: block
-}
-
-#video-container .video.error-processing object {
-	display: none
-}
-
-#video-container .has-video-profile .placeholder-content,
-	#video-container .has-video-profile .pending-content {
-	display: none
-}
-
-#video-container .pending-content h4 {
-	position: relative
-}
-
-#video-container .pending-video-loading {
-	position: absolute;
-	top: 1px;
-	bottom: 1px;
-	right: 14px;
-	left: 14px
-}
-
-#video-container .video-recorder-container {
-	display: none
-}
-
-#video-container #toggle-video-record span {
-	display: none
-}
-
-#video-container #toggle-video-record span.record {
-	display: inline
-}
-
-#video-container .continue-verification-button {
-	display: none
-}
-
-#video-container.recording .video {
-	display: none
-}
-
-#video-container.recording .video-recorder-container {
-	display: block
-}
-
-#video-container.recording #toggle-video-record .record {
-	display: none
-}
-
-#video-container.recording #toggle-video-record .stop-record {
-	display: inline
 }
 
 .user-profile-symbol:hover form {

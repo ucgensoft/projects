@@ -1,4 +1,4 @@
-App.controller('mainCtrl', ['$scope', '$controller', function($scope, $controller) {
+App.controller('mainCtrl', ['$scope', '$controller', 'userService', function($scope, $controller, userService) {
       var self = this;
       
       var selectedPlaceName = null;

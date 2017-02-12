@@ -42,6 +42,10 @@ body, #mainWrapper {
 */
 
 .hidden {
+	display: none;
+}
+
+.hidden-force {
 	display: none !important;
 }
 

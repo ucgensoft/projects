@@ -16,19 +16,6 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
       
       self.initialize = function() {
     	  
-    	  /*
-		  gapi.load('auth2', function() {
-    	      auth2 = gapi.auth2.init({
-    	        client_id: googleId,
-    	        cookiepolicy: 'single_host_origin',
-    	      });
-    	    });
-		  
-		  FB.init({
-			    appId: facebookId,
-			    version: 'v2.7'
-			  });
-		 */
     	  $("#txtResidenceLocationName").geocomplete().bind("geocode:result",
 	      			function(event, result) {
 	      				//self.onPlaceChange(event, result);
@@ -41,7 +28,7 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
 	      	            changeYear: true,
 	      	            yearRange: '-100:-10',
 	      				maxDate : new Date(),
-	      				dateFormat : "d MM, y"
+	      				dateFormat : "dd.mm.yy"
 	      			});
     	  $("#txtBirthDatePicker").datepicker().val(birthDate);
     	  //$('#txtPassword').val(defaultPasswordText);
@@ -115,7 +102,7 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
   			$('#photoHolder').removeClass('hidden');
      };
 	  
-      self.saveChanges = function() {
+     self.saveChanges = function() {
     	  
   		var userFirstName = StringUtil.trim($("#txtFirstName").val());
   		var userLastName = StringUtil.trim($("#txtLastName").val());
@@ -128,21 +115,22 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
   		var schoolName = StringUtil.trim($("#txtSchoolName").val());
   		var jobTitle = StringUtil.trim($("#txtJobTitle").val());
   		var languages = StringUtil.trim($("#txtLanguages").val());
+  		var birthDate = $("#txtBirthDatePicker").datepicker("getDate")
   		
-  		if (gender == '') {
+  		if (gender == '-1') {
   			gender = null;
   		}
   		
-  		if (password != '' && password != defaultPasswordText) {
+  		if (password != defaultPasswordText) {
   			if (passwordConfirm == '') {
-  				$.prompt('Please confirm your password!');
-  				//DialogUtil.showMessage(DialogUtil.MESSAGE_TYPE.WARNING, 'Warning', 'Please confirm your password!');
-  				return;
-  			} else if (password != passwordConfirm) {
-  				$.prompt('Password and confirm passwords do not match!');
-  				//DialogUtil.showMessage(DialogUtil.MESSAGE_TYPE.WARNING, 'Warning', 'Password and confirm passwords do not match!');
-  				return;
-  			}
+	  				DialogUtil.warn('Warning', 'Please confirm your password!', 'OK', null);
+	  				return;
+	  			} else if (password != passwordConfirm) {
+	  				DialogUtil.warn('Warning', 'Password and confirm passwords do not match!', 'OK', null);
+	  				return;
+	  			}	
+  		} else {
+  			password = null;
   		}
   		
   		if (userFirstName == '' || userLastName == '' || email == '') {
@@ -158,31 +146,95 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
   				description : description,
   				schoolName : schoolName,
   				jobTitle : jobTitle,
-  				languages : languages
+  				languages : languages,
+  				birthDate : birthDate
   			};
   			
-  			userService.updateUser(user, self.photo).then(
-				function(operationResult) {
-					NProgress.done(true); 
-					if (operationResult.resultCode == EnmOperationResultCode.SUCCESS) {
-						NProgress.done(true); 
-						if (operationResult.resultCode == EnmOperationResultCode.SUCCESS) {
-							$.prompt("Your profile is updated successfully!");
-							location.reload();
-						} else {
-							alert('Operation could not be completed. Please try again later!');
+  			userService.updateUser(user, self.photo,
+					function(isSuccess) {
+						if (isSuccess) {
+							DialogUtil.info('Success', 'Your profile is updated successfully!', 'OK', function() {
+								location.reload();
+							});
 						}
-					} else {
-						alert('Operation could not be completed. Please try again later!');
 					}
-				}, function(errResponse) {
-					NProgress.done(true);
-					alert('Operation could not be completed. Please try again later!');
-				});
+			  );
   		}
   		
   	};
-  	  	  
+  	  
+  	self.openAddMsisdnPart = function() {
+  		$('#divAddMsisdn').css('display', 'block');
+  		$('#divVerificationContainer').css('display', 'block');
+  		$('#divNoPhoneNumber').css('display', 'none')
+  	};
+  	
+  	self.cancelAddMsisdn = function() {
+  		$('#divVerificationContainer').css('display', 'none');
+  		$('#divAddMsisdn').css('display', 'none');
+  		$('#divNoPhoneNumber').css('display', 'block')
+  	};
+  	
+  	self.removeMsisdn = function() {
+  		userService.removeMsisdn(function(isSuccess) {
+					if (isSuccess) {
+						location.reload();
+					}
+				}
+		  );
+  	};
+  	
+  	self.sendMsisdnVerificationCode = function() {
+  		var phoneNumber = ' ';
+  		if ($('#divNoPhoneNumber').length > 0) {
+  			var prefix = $('#divCountryPrefix')[0].innerText;
+  	  		var msisdn = $('#txtMsisdn').val();
+	  	  	if (prefix == null || prefix == '' || StringUtil.trim(msisdn) == '') {
+	  			DialogUtil.warn('Warning', 'Select a country and type your phone number please!', 'OK', null);
+	  			return;
+	  		} else {
+	  			phoneNumber = prefix + msisdn;
+	  		}
+  		}
+  		userService.sendMsisdnVerificationCode(phoneNumber,
+				function(isSuccess) {
+					if (isSuccess) {
+						$('#divVerificationContainer').css('display', 'block');
+				  		$('#divVerifyMsisdn').css('display', 'block');
+				  		$('#divAddMsisdn').css('display', 'none');
+				  		
+				  		$('#divDisplayMsisdn').css('display', 'none');
+					}
+				}
+		  );
+  	};
+  	
+  	self.verifyMsisdnCode = function() {
+  		var code = $('#txtVerificationCode').val();
+  		if (StringUtil.trim(code) != '') {
+  			userService.verifyMsisdnCode(code,
+  					function(isSuccess) {
+  						if (isSuccess) {
+  							location.reload();
+  						}
+  					}
+  			  );
+  		} else {
+  			DialogUtil.warn('Warning', 'Please type the verification code!', 'OK', null);
+  		}
+  	};
+  	
+  	self.cancelVerifyMsisdn = function() {
+  		if ($('#divNoPhoneNumber').length > 0) {
+  			$('#divAddMsisdn').css('display', 'block');
+  			$('#divVerificationContainer').css('display', 'block');
+  		} else {
+  			$('#divDisplayMsisdn').css('display', 'block');
+  			$('#divVerificationContainer').css('display', 'none');
+  		}
+  		$('#divVerifyMsisdn').css('display', 'none');
+  	};
+  	
     self.initialize();
       
   }]);

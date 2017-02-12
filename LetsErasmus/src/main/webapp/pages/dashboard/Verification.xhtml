@@ -7,6 +7,7 @@
 	<ui:define name="head">
 		<link rel="stylesheet" type="text/css"
 			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css" />
+			<link rel="stylesheet" type="text/css" href="#{webApplication.urlPrefix}/static/css/edit_profile.css" />
 		<script>
 			var activeDashboardTab = 1;
 			var activeLeftMenuLink = 2;
@@ -14,6 +15,7 @@
 	</ui:define>
 
 	<ui:define name="body">
+		<input type="hidden" value="#{webApplication.setActiveOperation(6)}" />
 		<main id="site-content" role="main"> 
 			<ui:include src="DashboardHeader.html" />
 		<div class="page-container-responsive space-top-4 space-4">
@@ -22,7 +24,7 @@
 				<div class="col-md-9">
 
 					<div id="dashboard-content">
-						<div class="alert alert-success" style="display: none;">We
+						<div id="divResendEmailCodeSuccess" class="alert alert-success" style="display: none;">We
 							have resent a confirmation email. Please check your inbox.</div>
 						<div class="alert alert-error" style="display: none;">Unable
 							to send a confirmation email. Please try again later.</div>
@@ -31,28 +33,177 @@
 							<div class="panel-header">Your verified info</div>
 							<div class="panel-body">
 								<ul class="list-layout edit-verifications-list">
-									<li
-										class="edit-verifications-list-item clearfix email verified">
-										<h4>Email address</h4>
-										<p class="description">
-											You have confirmed your email: <b>anil_cengiz@outlook.com</b>.
-											A confirmed email is important to allow us to securely
-											communicate with you.
+									<ui:fragment rendered="#{webApplication.user.emailVerified == 'Y'}">
+										<li class="edit-verifications-list-item clearfix email verified">
+											<h4>Email address</h4>
+											<p class="description">
+												You have confirmed your email: <b> #{webApplication.user.email}</b>.
+												A confirmed email is important to allow us to securely
+												communicate with you.	
+											</p>
+										</li>
+									</ui:fragment>
+									<ui:fragment rendered="#{webApplication.user.msisdnVerified == 'Y'}">
+										<li class="edit-verifications-list-item clearfix phone verified">
+											<h4>Phone number</h4>
+											<p class="description">Your number is only shared with
+												another LetsErasmus member once you have a confirmed booking.</p>
+										</li>
+									</ui:fragment>
+									<ui:fragment rendered="#{webApplication.user.facebookId != null}">
+										<li class="edit-verifications-list-item clearfix facebook verified">
+											<h4>Facebook</h4>
+											<div class="row">
+												<div class="col-7">
+													<p class="description verification-text-description">
+														Sign in with Facebook and discover your trusted connections
+														to hosts and guests all over the world.</p>
+												</div>
+	
+												<div class="col-5">
+													<div class="disconnect-button-container">
+														<a
+															href=""
+															class="btn gray" data-method="post" rel="nofollow">Disconnect</a>
+														&nbsp;&nbsp;&nbsp;&nbsp; <i
+															class="icon icon-question icon-question-sign"
+															data-behavior="tooltip" rel="tooltip" style="font-size:"
+															aria-label="You can always reconnect later."></i>
+													</div>
+												</div>
+											</div>
+	
+										</li>
+									</ui:fragment>
+									<ui:fragment rendered="#{webApplication.user.facebookId != null}">
+										<li class="edit-verifications-list-item clearfix facebook verified">
+											<h4>Google</h4>
+											<div class="row">
+												<div class="col-7">
+													<p class="description verification-text-description">
+														Sign in with Google and discover your trusted connections
+														to hosts and guests all over the world.</p>
+												</div>
+	
+												<div class="col-5">
+													<div class="disconnect-button-container">
+														<a
+															href=""
+															class="btn gray" data-method="post" rel="nofollow">Disconnect</a>
+														&nbsp;&nbsp;&nbsp;&nbsp; <i
+															class="icon icon-question icon-question-sign"
+															data-behavior="tooltip" rel="tooltip" style="font-size:"
+															aria-label="You can always reconnect later."></i>
+													</div>
+												</div>
+											</div>
+	
+										</li>
+									</ui:fragment>
+								</ul>
+							</div>
+						</div>
 
-										</p>
-									</li>
-									<li
-										class="edit-verifications-list-item clearfix phone verified">
-										<h4>Phone number</h4>
-
-										<p class="description">Your number is only shared with
-											another Airbnb member once you have a confirmed booking.</p>
-
-
-
-									</li>
-									<li
-										class="edit-verifications-list-item clearfix facebook verified">
+						<div class="panel space-top-4 unverified-container">
+							<div class="panel-header">Not yet verified</div>
+							<div class="panel-body">
+								<ul class="list-layout edit-verifications-list">
+									<ui:fragment rendered="#{webApplication.user.emailVerified == 'N'}">
+										<li class="email unverified space-4 clearfix">
+											<h4>E-posta adresi</h4>
+											<p class="description">Please verify your email address by clicking the link in the message we just sent to:
+												#{webApplication.user.email} .</p>
+	
+											<p class="description">
+												Can’t find our message? Check your spam folder or <a href="#" class="js-request-email" ng-click="ctrl.sendEmailVerificationCode()">resend the confirmation email</a> .
+											</p>
+	
+										</li>
+									</ui:fragment>
+									<ui:fragment rendered="#{webApplication.user.msisdnVerified == 'N'}">
+										<li class="phone unverified space-4 clearfix">
+											<h4>Phone number</h4>
+											<p class="description">Make it easier to communicate with
+												a verified phone number. We’ll send you a code by SMS or read
+												it to you over the phone. Enter the code below to confirm
+												that you’re the person on the other end.</p>
+	
+											<p class="description">Your number is only shared with
+												another Airbnb member once you have a confirmed booking.</p>
+											
+											<div id="divPhoneNumberContainer" class="phone-numbers-container">
+												<ui:fragment rendered="#{webApplication.user.msisdn == null}">
+													<div id="divNoPhoneNumber" class="phone-numbers-hide-during-verify">
+														<div id="divNoMsisdn" class="no-phone-numbers">
+															<p>No phone number entered</p>
+														</div>
+														<a id="linkAddMsisdn" class="add link-icon" href="" ng-click="ctrl.openAddMsisdnPart()"> 
+															<i class="icon icon-add"></i> 
+															<span class="link-icon__text">Add a phone number </span>
+														</a>
+													</div>
+												</ui:fragment>
+												<ui:fragment rendered="#{webApplication.user.msisdn != null}">
+													<div id="divDisplayMsisdn" class="phone-numbers-hide-during-verify">
+														<table class="phone-numbers-table" cellspacing="0"
+															cellpadding="0">
+															<tbody>
+																<tr class="unverified">
+																	<th class="edit-profile-confirmable-field__label">#{webApplication.user.maskedMsisdn}</th>
+																	<td>
+																		<span class="unverified">
+																			<a class="verify button-steel btn gray" href="#" rel="sms" ng-click="ctrl.sendMsisdnVerificationCode()"> Confirm via SMS </a>
+																		</span>
+																	</td>
+																	<td class="remove-container">
+																		<a class="remove" title="Remove" href="#" rel="sms" ng-click="ctrl.removeMsisdn()">
+																			<i class="icon icon-remove"></i>
+																		</a>
+																	</td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+												</ui:fragment>
+												
+												<div id="divVerificationContainer" class="phone-number-verify-widget">
+													<div id="divAddMsisdn" class="pnaw-step1">
+														<div class="phone-number-input-widget"
+															id="phone-number-input-widget-572762dc">
+															<label for="phone_country">Choose a country:</label>
+															<div class="select">
+																<select id="cmbCountry" name="phone_country">
+																	<option value="AF" prefix="93">Afghanistan</option>
+																	<option value="AX" prefix="358">Åland Islands</option>
+																</select>
+															</div>
+	
+															<label for="phone_number">Add a phone number:</label>
+															<div class="pniw-number-container clearfix">
+																<div id="divCountryPrefix" class="pniw-number-prefix">+90</div>
+																<input id="txtMsisdn" type="tel" class="pniw-number" />
+															</div>
+														</div>
+														<div class="pnaw-verify-container">
+															<a class="btn btn-primary" href="#" rel="sms" ng-click="ctrl.sendMsisdnVerificationCode()">Verify via SMS</a>
+															<a class="cancel" rel="cancel" href="#" ng-click="ctrl.cancelAddMsisdn()">Cancel</a>
+														</div>
+													</div>
+													<div id="divVerifyMsisdn" class="pnaw-step2">
+														<label for="phone_number_verification">Please enter the 4-digit code:</label> 
+														<input id="txtVerificationCode" type="text" pattern="[0-9]*" />
+															<div class="pnaw-verify-container">
+																<a class="btn btn-primary" href="#" rel="verify" ng-click="ctrl.verifyMsisdnCode()">Verify</a>
+																<a class="cancel" rel="cancel" href="#" ng-click="ctrl.cancelVerifyMsisdn()">Cancel </a>
+															</div>
+													</div>
+												</div>
+											</div>										
+	
+										</li>
+									</ui:fragment>
+									
+									<li class="facebook unverified space-4 clearfix">
 										<h4>Facebook</h4>
 										<div class="row">
 											<div class="col-7">
@@ -62,50 +213,13 @@
 											</div>
 
 											<div class="col-5">
-												<div class="disconnect-button-container">
-													<a
-														href="https://www.airbnb.com/oauth/delete?service=facebook"
-														class="btn gray" data-method="post" rel="nofollow">Disconnect</a>
-													&nbsp;&nbsp;&nbsp;&nbsp; <i
-														class="icon icon-question icon-question-sign"
-														data-behavior="tooltip" rel="tooltip" style="font-size:"
-														aria-label="You can always reconnect later."></i>
+												<div class="connect-button">
+													<a href=""
+														class="btn btn-block large facebook-button">Connect</a>
 												</div>
 											</div>
 										</div>
-
 									</li>
-									<li
-										class="edit-verifications-list-item clearfix linkedin verified">
-										<h4>LinkedIn</h4>
-										<div class="row">
-											<div class="col-7">
-												<p class="description verification-text-description">
-													Create a link to your professional life by connecting your
-													Airbnb and LinkedIn accounts.</p>
-											</div>
-											<div class="col-5">
-												<div class="disconnect-button-container">
-													<a
-														href="https://www.airbnb.com/oauth/delete?service=linked_in_v2"
-														class="btn gray" data-method="post" rel="nofollow">Disconnect</a>
-													&nbsp;&nbsp;&nbsp;&nbsp; <i
-														class="icon icon-question icon-question-sign"
-														data-behavior="tooltip" rel="tooltip" style="font-size:"
-														aria-label="You can always reconnect later."></i>
-												</div>
-											</div>
-										</div>
-
-									</li>
-								</ul>
-							</div>
-						</div>
-
-						<div class="panel space-top-4 unverified-container">
-							<div class="panel-header">Not yet verified</div>
-							<div class="panel-body">
-								<ul class="list-layout edit-verifications-list">
 									<li class="google unverified space-4 clearfix">
 										<h4>Google</h4>
 										<div class="row">
@@ -119,38 +233,12 @@
 													<form accept-charset="UTF-8"
 														action="https://www.airbnb.com/oauth_connect?service=google"
 														method="post">
-														<div style="margin: 0; padding: 0; display: inline">
-															<input name="utf8" type="hidden" value="✓" /> <input
-																name="authenticity_token" type="hidden" value="null" />
-														</div>
 														<button class="btn btn-block large" name="button"
 															type="submit">Connect</button>
 													</form>
 												</div>
 											</div>
 										</div>
-
-									</li>
-									<li class="amex unverified space-4 clearfix">
-										<h4>American Express®</h4>
-										<div class="row">
-											<div class="col-7">
-												<p class="description verification-text-description">Log
-													in with Amex to verify you’re a Card Member on your Airbnb
-													profile. Your Card will also be added to your account.</p>
-											</div>
-
-											<div class="col-5">
-												<div id="amex-verification-container"
-													class="btn large btn-block">
-													<div id="amex-express-checkout">
-														<div id="amex-button-text" class="btn large btn-block">
-															Connect</div>
-													</div>
-												</div>
-											</div>
-										</div>
-
 									</li>
 								</ul>
 							</div>
@@ -163,5 +251,6 @@
 		</div>
 		</main>
 		<script src="#{webApplication.urlPrefix}/static/js/dashboard.js"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/controller/verification_controller.js"></script>
 	</ui:define>
 </ui:composition>

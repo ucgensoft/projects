@@ -90,7 +90,7 @@ public class UserDao extends JdbcDaoSupport implements IUserDao {
 	}
 
 	@Override
-	public ValueOperationResult<Integer> updateUser(User user) {
+	public ValueOperationResult<Integer> updateUser(User user, boolean setNull) {
 		ValueOperationResult<Integer> operationResult = new ValueOperationResult<Integer>();
 		List<Object> argList = new ArrayList<Object>();
 		
@@ -117,7 +117,7 @@ public class UserDao extends JdbcDaoSupport implements IUserDao {
 			argList.add(user.getPassword());
 		}
 		
-		if (user.getMsisdn() != null) {
+		if (setNull || user.getMsisdn() != null) {
 			StringUtil.append(updateFields, " MSISDN = ?", ",");
 			argList.add(user.getMsisdn());
 		}

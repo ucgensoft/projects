@@ -11,6 +11,6 @@ public interface IUserService {
 	
 	OperationResult insertUser(User user);
 	
-	ValueOperationResult<Integer> updateUser(User user) throws OperationResultException;
+	ValueOperationResult<Integer> updateUser(User user, boolean setNull) throws OperationResultException;
 
 }

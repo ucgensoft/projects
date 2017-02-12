@@ -47,7 +47,7 @@
 			var loginType = '#{webApplication.loginType}';
 			var facebookTokenId = '#{webApplication.facebookTokenId}';
 			var urlEncodedUrlPrefix = '#{webApplication.encodedUrlPrefix}';
-			
+			var sessionActive = #{(webApplication.user != null ? "true" : "false")};
 		</script>
 
 		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>

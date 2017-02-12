@@ -173,4 +173,27 @@ public class FileUtil {
 		return operationResult;
 	}
 	
+	public static String readFileAsString(String filePath) {
+		
+		StringBuilder fileContentBuilder = new StringBuilder();
+		File file = new File(filePath);
+		FileReader fr = null;
+		BufferedReader br = null;
+		try {
+			fr = new FileReader(file);
+			br = new BufferedReader(fr);
+			String line = br.readLine();
+			
+			while (line != null) {
+				fileContentBuilder.append(line);
+				line = br.readLine();
+			}
+		} catch (Exception e) {
+			return null;
+		} finally {
+			close(br);
+		}
+		return fileContentBuilder.toString();
+	}
+	
 }

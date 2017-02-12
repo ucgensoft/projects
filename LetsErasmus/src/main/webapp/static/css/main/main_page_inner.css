@@ -375,8 +375,7 @@
 	#intercom-container time, #intercom-container tr, #intercom-container tt,
 	#intercom-container u, #intercom-container ul, #intercom-container var,
 	#intercom-container video {
-	font-family: "intercom-font", "Helvetica Neue", Helvetica, Arial,
-		sans-serif;
+	font-family: "intercom-font", "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size-adjust: none;
 	font-size: 100%;
 	font-style: normal;

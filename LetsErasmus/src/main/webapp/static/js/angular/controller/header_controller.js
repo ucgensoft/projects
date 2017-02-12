@@ -18,6 +18,41 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', funct
 			    appId: facebookId,
 			    version: 'v2.7' // or v2.1, v2.2, v2.3, ...
 			  });
+		 
+		  self.checkUrlOperation();
+	 };
+	 
+	 self.checkUrlOperation = function() {
+		 var paramOp = getUriParam("op"); 
+		  
+	   	  if (paramOp != null) {
+	   		  if (paramOp == EnmOperation.CONFIRM_EMAIL) {
+	   			  var id = getUriParam("user");
+	   			  var code = getUriParam("code");
+	   			  if (id != null && id != '' && code != null && code != '') {
+	   				  userService.confirmEmail(id, code).then(
+							function(operationResult) {
+								if (isResultSuccess(operationResult, false)) {
+									DialogUtil.info('Success', 'Congradulations! Your mail is verified successfully!', 'OK', function() {
+										var newUrl = clearUrlParameter(location.href, null);
+										if (sessionActive) {
+											newUrl = clearUrlParameter(location.href, null);
+										} else {
+											newUrl += '?op=' + EnmOperation.LOGIN; 
+										}
+										openWindow(newUrl, true);
+										
+									});
+								}
+							}, function(errResponse) {
+								
+							});
+	   				  sessionActive
+	   			  }
+	       	  } else if (paramOp == EnmOperation.LOGIN) {
+	       		  openLoginWindow();
+	       	  }
+	   	  } 
 	 };
        
       self.attachGoogleSignin = function (elementId) {
@@ -59,7 +94,7 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', funct
 	        });
   	    	  
   	        }, function(error) {
-  	          alert(JSON.stringify(error, undefined, 2));
+  	        	DialogUtil.error('Error', JSON.stringify(error, undefined, 2), 'OK', null);
   	        });
   	  }
       
@@ -172,14 +207,14 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', funct
 						if (operationResult.resultCode == EnmOperationResultCode.SUCCESS) {
 							location.reload();
 						} else {
-							alert('Operation could not be completed. Please try again later!');
+							DialogUtil.error('Error', 'Operation could not be completed. Please try again later!', 'OK', null);
 						}
 					} else {
-						alert('Operation could not be completed. Please try again later!');
+						DialogUtil.error('Error', 'Operation could not be completed. Please try again later!', 'OK', null);
 					}
 				}, function(errResponse) {
 					NProgress.done(true);
-					alert('Operation could not be completed. Please try again later!');
+					DialogUtil.error('Error', 'Operation could not be completed. Please try again later!', 'OK', null);
 				});
   	};
   	
@@ -209,14 +244,14 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', funct
 						if (operationResult.resultCode == EnmOperationResultCode.SUCCESS) {
 							location.reload();
 						} else {
-							alert('Operation could not be completed. Please try again later!');
+							DialogUtil.error('Error', 'Operation could not be completed. Please try again later!', 'OK', null);
 						}
 					} else {
-						alert('Operation could not be completed. Please try again later!');
+						DialogUtil.error('Error', 'Operation could not be completed. Please try again later!', 'OK', null);
 					}
 				}, function(errResponse) {
 					NProgress.done(true);
-					alert('Operation could not be completed. Please try again later!');
+					DialogUtil.error('Error', 'Operation could not be completed. Please try again later!', 'OK', null);
 				}); 
   	};
   	
@@ -242,14 +277,14 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', funct
 								location.href = webApplicationUrlPrefix + "/pages/Main.xhtml";
 							}
 						} else {
-							alert('Operation could not be completed!');
+							DialogUtil.error('Error', 'Operation could not be completed!', 'OK', null);
 						}
 					} else {
-						alert('Operation could not be completed!');
+						DialogUtil.error('Error', 'Operation could not be completed!', 'OK', null);
 					}
 				}, function(errResponse) {
 					NProgress.done(true);
-					alert('Operation could not be completed!');
+					DialogUtil.error('Error', 'Operation could not be completed!', 'OK', null);
 				}); 
   	};
   	  

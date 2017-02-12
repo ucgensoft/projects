@@ -477,7 +477,7 @@
 										<input class="input-file" type="file" id="filePhoto"
 											accept="image/jpg, image/jpeg, image/png, image/gif"
 											multiple="false" />
-										<div id="photoHolder" class="padding-level1 va-container va-container-h va-container-v #{webApplication.user.profilePhotoId != null ? 'hidden' : ''}">
+										<div id="photoHolder" class="padding-level1 va-container va-container-h va-container-v #{webApplication.user.profilePhotoId != null ? 'hidden-force' : ''}">
 											<div id="divPhotoContainer" class="va-middle text-center text-gray img__upload-photos-ghosts">
 												<div id="divPhotoUpload">
 													<div class="btn btn-primary btn-large" onclick="$('#filePhoto').click();">
@@ -557,7 +557,7 @@
 
 										<div class="select">
 											<select id="cmbGender" value="#{webApplication.user.gender}">
-												<option value="" selected="#{webApplication.user.gender == null ? 'selected' : ''}">- Gender -</option>
+												<option value="-1" selected="#{webApplication.user.gender == null ? 'selected' : ''}">- Gender -</option>
 												<option value="M" selected="#{webApplication.user.gender == 'M' ? 'selected' : ''}">Male</option>
 												<option value="F" selected="#{webApplication.user.gender == 'F' ? 'selected' : ''}">Female</option>
 												<option value="O" selected="#{webApplication.user.gender == 'O' ? 'selected' : ''}">Other</option></select>
@@ -568,7 +568,7 @@
 									</div>
 								</div>
 
-								<div class="row row-condensed space-4">
+								<div id="divBirthDate" class="row row-condensed space-4">
 									<label class="text-right col-sm-3">
 										Birth Date <i class="icon icon-lock icon-ebisu" aria-label="Private"></i>
 									</label>
@@ -603,72 +603,84 @@
 									</label>
 									<div class="col-sm-9">
 										<div class="clearfix" id="phone-number">
-											<div class="phone-numbers-container has-phone-numbers">
-												<div id="divExistingPhone" class="phone-numbers-hide-during-verify #{webApplication.user.msisdn == null ? 'hidden' : ''}">
-													<table class="phone-numbers-table" cellspacing="0" cellpadding="0">
-														<tbody>
-															<tr class="verified">
-																<th class="edit-profile-confirmable-field__label">
-																	+90 *** *** 6549</th>
-																<td>
-																	<span class="verified #{webApplication.isEqual(webApplication.user.msisdnVerified, 'Y') ? '' : 'hidden'}"> 
-																		<i class="icon icon-ok"></i> Confirmed
-																	</span> 
-																	<span class="#{webApplication.isEqual(webApplication.user.msisdnVerified, 'Y') ? 'hidden' : ''}">
-																		<a class="verify btn btn-primary btn-large" href="">
-																			Confirm via SMS </a> 
-																	</span>
-																</td>
-																<td class="remove-container">
-																	<a href="" class="remove" title="Remove"> 
-																		<i class="icon icon-remove"></i>
-																	</a>
-																</td>
-															</tr>
-														</tbody>
-													</table>
-												</div>
-
-												<div class="phone-number-verify-widget">
-													<div class="pnaw-step1">
-														<div class="phone-number-input-widget" id="phone-number-input-widget-19f39a7d">
+											<div id="divPhoneNumberContainer" class="phone-numbers-container">
+												<ui:fragment rendered="#{webApplication.user.msisdn == null}">
+													<div id="divNoPhoneNumber" class="phone-numbers-hide-during-verify">
+														<div id="divNoMsisdn" class="no-phone-numbers">
+															<p>No phone number entered</p>
+														</div>
+														<a id="linkAddMsisdn" class="add link-icon" href="" ng-click="ctrl.openAddMsisdnPart()"> 
+															<i class="icon icon-add"></i> 
+															<span class="link-icon__text">Add a phone number </span>
+														</a>
+													</div>
+												</ui:fragment>
+												<ui:fragment rendered="#{webApplication.user.msisdn != null}">
+													<div id="divDisplayMsisdn" class="phone-numbers-hide-during-verify">
+														<table class="phone-numbers-table" cellspacing="0"
+															cellpadding="0">
+															<tbody>
+																<tr class="unverified">
+																	<th class="edit-profile-confirmable-field__label">#{webApplication.user.maskedMsisdn}</th>
+																	<td>
+																		<ui:fragment rendered="#{webApplication.user.msisdnVerified == 'Y'}">
+																			<span class="verified"> 
+																				<i class="icon icon-ok"></i> Confirmed
+																			</span>
+																		</ui:fragment>
+																		<ui:fragment rendered="#{webApplication.user.msisdnVerified == 'N'}">
+																			<span class="unverified">
+																				<a class="verify button-steel btn gray" href="#divBirthDate" rel="sms" ng-click="ctrl.sendMsisdnVerificationCode()"> Confirm via SMS </a>
+																			</span>
+																		</ui:fragment>
+																	</td>
+																	<td class="remove-container">
+																		<a class="remove" title="Remove" href="#divBirthDate" rel="sms" ng-click="ctrl.removeMsisdn()">
+																			<i class="icon icon-remove"></i>
+																		</a>
+																	</td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+												</ui:fragment>
+												
+												<div id="divVerificationContainer" class="phone-number-verify-widget">
+													<div id="divAddMsisdn" class="pnaw-step1">
+														<div class="phone-number-input-widget"
+															id="phone-number-input-widget-572762dc">
 															<label for="phone_country">Choose a country:</label>
 															<div class="select">
-																<select id="phone_country" name="phone_country">
-																	<option value="AF" data-prefix="93">Afghanistan</option>
-																	<option value="ZW">Zimbabwe</option>
+																<select id="cmbCountry" name="phone_country">
+																	<option value="AF" prefix="93">Afghanistan</option>
+																	<option value="AX" prefix="358">Åland Islands</option>
 																</select>
 															</div>
 
 															<label for="phone_number">Add a phone number:</label>
 															<div class="pniw-number-container clearfix">
-																<div id="divPhoneCountryCode" class="pniw-number-prefix">+90</div>
-																<input id="txtPhone" type="text" class="pniw-number" />
+																<div id="divCountryPrefix" class="pniw-number-prefix">+90</div>
+																<input id="txtMsisdn" type="tel" class="pniw-number" />
 															</div>
 														</div>
-
 														<div class="pnaw-verify-container">
-															<a class="btn btn-primary" href="" rel="sms">Verify via SMS</a>
-															<a class="cancel" rel="cancel" href="" style="display: none;">Cancel</a>
-															<a class="why-verify" href="" target="_blank">Why Verify?</a>
+															<a class="btn btn-primary" href="#divBirthDate" rel="sms" ng-click="ctrl.sendMsisdnVerificationCode()">Verify via SMS</a>
+															<a class="cancel" rel="cancel" href="#divBirthDate" ng-click="ctrl.cancelAddMsisdn()">Cancel</a>
 														</div>
 													</div>
-													<div class="pnaw-step2">
-														<label for="phone_number_verification">Please
-															enter the 4-digit code:</label> 
-														<input type="text" pattern="[0-9]*" id="txtPhoneVerificationCode" />
-
-														<div class="pnaw-verify-container">
-															<a class="btn btn-primary" href="">Verify </a> 
-															<a class="cancel" rel="cancel" href=""> Cancel </a>
-														</div>
+													<div id="divVerifyMsisdn" class="pnaw-step2">
+														<label for="phone_number_verification">Please enter the 4-digit code:</label> 
+														<input id="txtVerificationCode" type="text" pattern="[0-9]*" />
+															<div class="pnaw-verify-container">
+																<a class="btn btn-primary" href="#divBirthDate" rel="verify" ng-click="ctrl.verifyMsisdnCode()">Verify</a>
+																<a class="cancel" rel="cancel" href="#divBirthDate" ng-click="ctrl.cancelVerifyMsisdn()">Cancel </a>
+															</div>
 													</div>
 												</div>
 											</div>
 										</div>
-
 										<div class="text-muted space-top-1">This is only shared
-											once you have a confirmed booking with another Airbnb user.
+											once you have a confirmed booking with another LetsErasmus user.
 											This is how we can all get in touch.</div>
 									</div>
 								</div>
@@ -690,19 +702,18 @@
 											rows="5">#{webApplication.user.description}</textarea>
 
 										<div class="text-muted space-top-1">
-											Airbnb is built on relationships. Help other people get to
+											LetsErasmus is built on relationships. Help other people get to
 											know you.<br/> <br/>Tell them about the things you like:
 											What are 5 things you can’t live without? Share your favorite
 											travel destinations, books, movies, shows, music, food.<br/>
 											<br/>Tell them what it’s like to have you as a guest or
-											host: What’s your style of traveling? Of Airbnb hosting?<br/>
+											host: What’s your style of traveling? Of LetsErasmus hosting?<br/>
 											<br/>Tell them about you: Do you have a life motto?
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-
 
 						<div class="panel space-4">
 							<div class="panel-header">Optional</div>

@@ -1003,7 +1003,7 @@ a {
 	width: 100%;
 	height: 100%;
 	position: fixed;
-	z-index: 100;
+	z-index: 40;
 	top: 0;
 	left: 0;
 	background: #000;
@@ -1013,7 +1013,7 @@ a {
 
 .modalWrapper .modalWindow {
 	display: none;
-	z-index: 1200;
+	z-index: 50;
 	position: fixed;
 	width: 100%;
 	max-width: 700px;
@@ -1044,7 +1044,7 @@ a {
 	padding: .7rem;
 	color: #c9d7df;
 	font-size: 1.2rem;
-	z-index: 1050
+	z-index: 50
 }
 
 .modalWindow .closeModal:focus, .modalWindow .closeModal:hover {

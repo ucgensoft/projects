@@ -2,12 +2,13 @@ package com.ucgen.common.util;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.MailParseException;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -17,6 +18,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MailUtil {
+	
+	private final String SYSTEM_EMAIL = "ucgensoft@gmail.com";
+	private final String SYSTEM_EMAIL_PASSWORD = "LetsErasmus";
 	
 	private JavaMailSender mailSender;
 	
@@ -28,7 +32,19 @@ public class MailUtil {
 		this.mailSender = mailSender;
 	}
 	
-	public void sendMail(String content, String from, List<String> toList, List<String> ccList, String subject, File file) throws MailParseException {
+	public void sendMailFromTemplate(String templateFilePath, Map<String, String> paramMap, List<String> toList, List<String> ccList, String subject, File file) throws MailParseException {
+		String verificationEmailContent = FileUtil.readFileAsString(templateFilePath);
+		
+		if (paramMap != null && paramMap.size() >0) {
+			for (Entry<String, String> paramEntry : paramMap.entrySet()) {
+				verificationEmailContent = verificationEmailContent.replaceAll(paramEntry.getKey(), paramEntry.getValue());
+			}
+		}
+		
+		this.sendMail(verificationEmailContent, toList, ccList, subject, file);
+	}
+	
+	public void sendMail(String content, List<String> toList, List<String> ccList, String subject, File file) throws MailParseException {
 
 		initializeMailSender();
 
@@ -36,7 +52,7 @@ public class MailUtil {
 		try {
 			MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
-			helper.setFrom(from);
+			helper.setFrom(SYSTEM_EMAIL);
 			for (String email : toList) {
 				helper.addTo(email);
 			}
@@ -61,9 +77,9 @@ public class MailUtil {
 	}
 	
 	private synchronized void initializeMailSender() {
-		String paramHost = null;
-		String paramPort = null;
-		String paramTimeout = null;
+		String paramHost = "smtp.gmail.com";
+		String paramPort = "587";
+		String paramTimeout = "20000";
 		
 		JavaMailSenderImpl sender = new JavaMailSenderImpl();
 		
@@ -77,6 +93,12 @@ public class MailUtil {
 			props.setProperty("mail.smtp.timeout", "60000");
 		}
 		
+		props.setProperty("mail.smtp.auth", "true");
+		props.setProperty("mail.smtp.starttls.enable", "true");
+        
+		sender.setUsername(SYSTEM_EMAIL);
+		sender.setPassword(SYSTEM_EMAIL_PASSWORD);
+		
 		sender.setJavaMailProperties(props);
 		
 		sender.setHost(paramHost);
@@ -86,6 +108,5 @@ public class MailUtil {
 
 		this.mailSender = sender;
 	}
-	
 
 }

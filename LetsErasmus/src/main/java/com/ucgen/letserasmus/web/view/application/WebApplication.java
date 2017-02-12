@@ -6,7 +6,6 @@ import java.net.URLEncoder;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 
-import com.ucgen.common.util.FileUtil;
 import com.ucgen.letserasmus.library.file.enumeration.EnmFileType;
 import com.ucgen.letserasmus.library.user.model.User;
 import com.ucgen.letserasmus.web.view.BaseController;
@@ -14,48 +13,46 @@ import com.ucgen.letserasmus.web.view.BaseController;
 @ManagedBean
 @ApplicationScoped
 public class WebApplication extends BaseController {
-
+	
 	public static final String FB_APP_ID = "305890206479305";
-	public static final String FB_APP_SECRET = "f1f5ad76a1b8ae942346b575e3c96ede";
-	public static final String REDIRECT_URI = "http://localhost:8080/FLogin/fbhome";
+	
+	public static final String LOCAL_APP_PATH = "D:\\Personal\\Development\\startup\\workspace\\projects\\LetsErasmus\\src\\main\\webapp";
 
 	private static String urlPrefix;
 	private static String rootPlaceImagePath;
 	private static String rootProfileImagePath;
+	private static String emailVerificationUrl;
+	
 	
 	static {
 		urlPrefix = "http://localhost:8080/LetsErasmus";
 		rootPlaceImagePath = urlPrefix + "/place/images";
 		rootProfileImagePath = urlPrefix + "/user/images/";
+		emailVerificationUrl = urlPrefix + "/pages/Main.xhtml?user=#paramUserId#&code=#paramEmailVerificationCode#&op=1";
 	}
 	
 	public String getFacebookId() {
 		return FB_APP_ID;
 	}
-	
-	public String getFbAuthUrl() {
-		String fbLoginUrl = "";
-		try {
-			fbLoginUrl = "http://www.facebook.com/dialog/oauth?" + "client_id="
-					+ FB_APP_ID + "&redirect_uri="
-					+ URLEncoder.encode(REDIRECT_URI, "UTF-8")
-					+ "&scope=email";
-		} catch (UnsupportedEncodingException e) {
-			//TODO : logging
-		}
-		return fbLoginUrl;
-	}
-	
+		
 	public String getUrlPrefix() {
 		return urlPrefix;
 	}
 	
 	public String getEncodedUrlPrefix() throws UnsupportedEncodingException {
-		return URLEncoder.encode(this.urlPrefix, "UTF-8");
+		return URLEncoder.encode(this.getUrlPrefix(), "UTF-8");
 	}
 	
 	public String getRootPlaceImagePath() {
 		return rootPlaceImagePath;
+	}
+
+	public static String getEmailVerificationUrl() {
+		return emailVerificationUrl;
+	}
+
+	public static void setEmailVerificationUrl(String emailVerificationUrl) {
+		WebApplication.emailVerificationUrl = emailVerificationUrl;
 	}
 
 	public WebApplication() {
@@ -76,6 +73,8 @@ public class WebApplication extends BaseController {
 			return "editUserCtrl";
 		} else if (requestUrl.contains("PAGES/DASHBOARD/LISTINGS.XHTML")) {
 			return "listingsCtrl";
+		} else if (requestUrl.contains("PAGES/DASHBOARD/VERIFICATION.XHTML")) {
+			return "verificationCtrl";
 		} else {
 			return "";
 		}
@@ -151,7 +150,10 @@ public class WebApplication extends BaseController {
 	
 	public static String getUserLargePhotoUrl(User user) {
 		String photoUrl = getUserSmallPhotoUrl(user);
-		return photoUrl.replace("_small_", "_large_");
+		if (photoUrl != null) {
+			photoUrl = photoUrl.replace("_small_", "_large_");
+		}
+		return photoUrl;
 	}
 	
 }
