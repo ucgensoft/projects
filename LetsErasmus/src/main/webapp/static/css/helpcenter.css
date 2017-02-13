@@ -205,6 +205,10 @@ table {
 	border-spacing: 0
 }
 
+
+
+
+
 @media print {
 	* {
 		color: #000 !important;
@@ -298,16 +302,6 @@ input, button, select, textarea {
 	line-height: inherit;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale
-}
-
-a {
-	color: #008489;
-	text-decoration: none
-}
-
-a:hover, a:focus {
-	color: #008489;
-	text-decoration: underline
 }
 
 img {
@@ -1228,7 +1222,7 @@ li>.navtree-list {
 	}
 }
 
-.panel {
+.panel-help {
 	border: 1px solid #dce0e0;
 	background-color: #fff;
 	-webkit-border-radius: 0;
@@ -1533,7 +1527,7 @@ button.accordion.active:after, button.accordion.hover:after {
 	display: none;
 }
 
-div.panel {
+div.panel-help {
 	padding: 0 18px;
 	background-color: white;
 	max-height: 0;
@@ -1562,10 +1556,11 @@ div.panel {
 .icon-guide-book:before {
 	content: '\f181';
 		letter-spacing: 10px;
-	
 }
 
-
-.page-container-sm-full {
-	min-height: 100%;
+.icon-search:before{
+		content: '\f1d0';
+		letter-spacing: 10px;
+    color: #000;
+    font-size: 22px;
 }
