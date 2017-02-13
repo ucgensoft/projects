@@ -904,7 +904,7 @@ dd {
 
 @media ( min-width : 744px) {
 	.help-content {
-		min-height: 400px
+		min-height: 400px;
 	}
 }
 
@@ -1116,7 +1116,7 @@ li>.navtree-list {
 }
 
 .page-container {
-	width: 1080px
+	width: 1080px;
 }
 
 .page-container-responsive {
@@ -1563,4 +1563,9 @@ div.panel {
 	content: '\f181';
 		letter-spacing: 10px;
 	
+}
+
+
+.page-container-sm-full {
+	min-height: 100%;
 }

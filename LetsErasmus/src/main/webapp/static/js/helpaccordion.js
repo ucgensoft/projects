@@ -14,7 +14,7 @@ for (i = 0; i < acc.length; i++) {
 };
 
 function showDiv() {
-	   document.getElementById('content').style.display = "block";
+	   document.getElementById('content').style.display = "inline";
 	};
 
 
