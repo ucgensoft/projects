@@ -6,6 +6,8 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
       var facebookLoginResponse = null;
       self.photo = null;
       var defaultPasswordText = "xxxxxx";
+      self.countryList = [];
+      self.dummyModel = null;
       
       
       var acceptedPhotoTypes = {
@@ -36,6 +38,12 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
     	  
     	  self.initPhotoHolder();
     	  
+    	  commonService.listCountry( function(countryList) {
+					if (countryList) {
+						self.countryList = countryList;
+					}
+				}
+		  );
 	 };
 	 
 	 self.initPhotoHolder = function() {
@@ -233,6 +241,10 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
   			$('#divVerificationContainer').css('display', 'none');
   		}
   		$('#divVerifyMsisdn').css('display', 'none');
+  	};
+  	
+  	self.onCountryChange = function(param1) {
+  		$('#divCountryPrefix')[0].innerText= $('#cmbCountry').val();
   	};
   	
     self.initialize();

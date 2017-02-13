@@ -1,9 +1,15 @@
-App.controller('verificationCtrl', ['$scope', 'userService', '$sce', '$compile', 
-                                function($scope, userService,sce, compile) {
+App.controller('verificationCtrl', ['$scope', 'userService', 'commonService', '$sce', '$compile', 
+                                function($scope, userService, commonService, sce, compile) {
       var self = this;
-            
+      self.countryList = [];
+      self.dummyModel = null;
+      
       self.initialize = function() {
-    	  
+    	  commonService.listCountry( function(countryList) {
+				if (countryList) {
+					self.countryList = countryList;
+				}
+			} ); 
 	 };
   	  
   	self.openAddMsisdnPart = function() {
@@ -85,6 +91,10 @@ App.controller('verificationCtrl', ['$scope', 'userService', '$sce', '$compile',
   			$('#divVerificationContainer').css('display', 'none');
   		}
   		$('#divVerifyMsisdn').css('display', 'none');
+  	};
+  	
+  	self.onCountryChange = function(param1) {
+  		$('#divCountryPrefix')[0].innerText= $('#cmbCountry').val();
   	};
   	
     self.initialize();

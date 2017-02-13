@@ -651,15 +651,14 @@
 															id="phone-number-input-widget-572762dc">
 															<label for="phone_country">Choose a country:</label>
 															<div class="select">
-																<select id="cmbCountry" name="phone_country">
-																	<option value="AF" prefix="93">Afghanistan</option>
-																	<option value="AX" prefix="358">Åland Islands</option>
+																<select id="cmbCountry" name="phone_country" ng-model="ctrl.dummyModel" ng-change="ctrl.onCountryChange()">
+																	<option ng-repeat="c in ctrl.countryList" value="+{{c.code}}">{{c.name}}</option>
 																</select>
 															</div>
 
 															<label for="phone_number">Add a phone number:</label>
 															<div class="pniw-number-container clearfix">
-																<div id="divCountryPrefix" class="pniw-number-prefix">+90</div>
+																<div id="divCountryPrefix" class="pniw-number-prefix">-</div>
 																<input id="txtMsisdn" type="tel" class="pniw-number" />
 															</div>
 														</div>
