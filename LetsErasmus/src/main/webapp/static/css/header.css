@@ -2018,4 +2018,7 @@ ul.panel-body>li>*:last-child, ol.panel-body>li>*:last-child {
 #divHeaderTabUser:hover .drop-down-menu {
 	display: block;
 } 
-/* END of Airbnb User drowdown menu için taþýnanlar (Mehmet) */
+
+.link-reset {
+    color: inherit;
+}
