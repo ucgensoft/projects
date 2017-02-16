@@ -83,7 +83,7 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', funct
 			        	var user = {
 			        			firstName : firstName,
 			        			lastName : lastName,
-			        			email : email,
+			        			googleEmail : email,
 			        			gender : gender,
 			        			googleId : googleId,
 			        			profileImageUrl : profileImageUrl,
@@ -159,7 +159,7 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', funct
 		        	var user = {
 		        			firstName : firstName,
 		        			lastName : lastName,
-		        			email : email,
+		        			facebookEmail : email,
 		        			gender : gender,
 		        			facebookId : facebookId,
 		        			facebookTokenId : facebookTokenId,
@@ -197,25 +197,13 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', funct
   	};
   	
   	self.signup = function(user) {
-  	  
-		NProgress.start(2000, 10);
-		userService.createUser(user).then(
-				function(operationResult) {
-					NProgress.done(true); 
-					if (operationResult.resultCode == EnmOperationResultCode.SUCCESS) {
-						NProgress.done(true); 
-						if (operationResult.resultCode == EnmOperationResultCode.SUCCESS) {
-							location.reload();
-						} else {
-							DialogUtil.error('Error', 'Operation could not be completed. Please try again later!', 'OK', null);
-						}
-					} else {
-						DialogUtil.error('Error', 'Operation could not be completed. Please try again later!', 'OK', null);
+  		userService.createUser(user,
+				function(isSuccess) {
+					if (isSuccess) {
+						location.reload();
 					}
-				}, function(errResponse) {
-					NProgress.done(true);
-					DialogUtil.error('Error', 'Operation could not be completed. Please try again later!', 'OK', null);
-				});
+				}
+		  );
   	};
   	
   	self.loginWithLocalAccount = function() {
@@ -223,7 +211,7 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', funct
   		var password = StringUtil.trim($("#txtPassword").val());
   		
   		if (email == '' || password == '') {
-  			DialogUtil.showMessage(DialogUtil.MESSAGE_TYPE.WARNING, 'Warning', 'Please fill mandatory fields!');
+  			DialogUtil.warn('Warning', 'Please fill mandatory fields!', 'OK', null);
   		} else {
   			var user = {
   				email : email,
@@ -235,24 +223,13 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', funct
   	};
   	
   	self.login = function(user) {
-  		NProgress.start(2000, 10);
-		userService.login(user).then(
-				function(operationResult) {
-					NProgress.done(true); 
-					if (operationResult.resultCode == EnmOperationResultCode.SUCCESS) {
-						NProgress.done(true); 
-						if (operationResult.resultCode == EnmOperationResultCode.SUCCESS) {
+  		userService.login(user,
+					function(isSuccess) {
+						if (isSuccess) {
 							location.reload();
-						} else {
-							DialogUtil.error('Error', 'Operation could not be completed. Please try again later!', 'OK', null);
 						}
-					} else {
-						DialogUtil.error('Error', 'Operation could not be completed. Please try again later!', 'OK', null);
 					}
-				}, function(errResponse) {
-					NProgress.done(true);
-					DialogUtil.error('Error', 'Operation could not be completed. Please try again later!', 'OK', null);
-				}); 
+			  );
   	};
   	
   	self.logout = function() {

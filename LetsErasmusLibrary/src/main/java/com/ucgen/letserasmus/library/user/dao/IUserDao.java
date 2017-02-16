@@ -12,4 +12,6 @@ public interface IUserDao {
 	
 	ValueOperationResult<Integer> updateUser(User user, boolean setNull);
 	
+	User getUserForLogin(User user);
+	
 }

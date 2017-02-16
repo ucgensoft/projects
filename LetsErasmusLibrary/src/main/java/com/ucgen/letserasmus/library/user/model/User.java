@@ -33,6 +33,8 @@ public class User extends BaseModel {
 	private String description;
 	private String residenceLocationName;
 	private String languages;
+	private String googleEmail;
+	private String facebookEmail;
 	
 	private FileModel profilePhoto;
 	
@@ -204,6 +206,22 @@ public class User extends BaseModel {
 	public void setProfilePhoto(FileModel profilePhoto) {
 		this.profilePhoto = profilePhoto;
 	}
+	public String getGoogleEmail() {
+		return googleEmail;
+	}
+
+	public void setGoogleEmail(String googleEmail) {
+		this.googleEmail = googleEmail;
+	}
+
+	public String getFacebookEmail() {
+		return facebookEmail;
+	}
+
+	public void setFacebookEmail(String facebookEmail) {
+		this.facebookEmail = facebookEmail;
+	}
+
 	public String getFullName() {
 		String fullName = "";
 		fullName = StringUtil.append(fullName, this.firstName, " ");

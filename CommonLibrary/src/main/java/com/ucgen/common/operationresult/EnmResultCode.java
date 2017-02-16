@@ -2,7 +2,7 @@ package com.ucgen.common.operationresult;
 
 public enum EnmResultCode {
 
-	SUCCESS(0), ERROR(1), WARNING(2), EXCEPTION(3);
+	SUCCESS(0), WARNING(1), ERROR(2), EXCEPTION(3);
 
 	private int value;
 
@@ -15,18 +15,12 @@ public enum EnmResultCode {
 	}
 
 	public static EnmResultCode getResultCode(int argValue) {
-		switch (argValue) {
-		case 0:
-			return EnmResultCode.SUCCESS;
-		case 1:
-			return EnmResultCode.ERROR;
-		case 2:
-			return EnmResultCode.WARNING;
-		case 3:
-			return EnmResultCode.EXCEPTION;
-		default:
-			return null;
+		for (EnmResultCode resultCode : EnmResultCode.values()) {
+			if (resultCode.getValue() == argValue) {
+				return resultCode;
+			}
 		}
+		return null;
 	}
 
 }

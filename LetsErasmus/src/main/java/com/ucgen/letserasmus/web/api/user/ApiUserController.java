@@ -35,6 +35,7 @@ import com.ucgen.common.util.SecurityUtil;
 import com.ucgen.letserasmus.library.common.enumeration.EnmBoolStatus;
 import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
 import com.ucgen.letserasmus.library.common.enumeration.EnmErrorCode;
+import com.ucgen.letserasmus.library.common.enumeration.EnmGender;
 import com.ucgen.letserasmus.library.file.enumeration.EnmFileType;
 import com.ucgen.letserasmus.library.file.model.FileModel;
 import com.ucgen.letserasmus.library.file.model.Photo;
@@ -99,14 +100,8 @@ public class ApiUserController extends BaseApiController {
 		
 		try {
 			EnmLoginType loginType = EnmLoginType.getLoginType(user.getLoginType());
-			if (loginType != null) {
-				if (loginType == EnmLoginType.LOCAL_ACCOUNT) {
-					operationResult = this.loginWithLocalAccount(user, session);	
-				} else if (loginType == EnmLoginType.GOOGLE) {
-					operationResult = this.loginWithGoogleAccount(user, session);
-				} else if (loginType == EnmLoginType.FACEBOOK) {
-					operationResult = this.loginWithFacebookAccount(user, session);
-				}
+			if (loginType != null && loginType == EnmLoginType.LOCAL_ACCOUNT) {
+				operationResult = this.loginWithLocalAccount(user, session);
 			} else {
 				operationResult.setResultCode(EnmResultCode.WARNING.getValue());
 				operationResult.setResultDesc("Login type is not supported!");
@@ -114,7 +109,7 @@ public class ApiUserController extends BaseApiController {
 			httpStatus = HttpStatus.OK;			
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
-			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+			operationResult.setResultDesc("Login operation could not be completed. Please try again later!");
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<OperationResult>(operationResult, httpStatus);
@@ -157,7 +152,7 @@ public class ApiUserController extends BaseApiController {
 					operationResult.setResultDesc("Email or password is incorrect.");
 				}
 			} else {
-				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultCode(EnmResultCode.WARNING.getValue());
 				operationResult.setResultDesc("Email and password fields are mandatory.");
 			}	
 		} catch (Exception e) {
@@ -167,89 +162,70 @@ public class ApiUserController extends BaseApiController {
 		return operationResult;
     }
 	
-    private OperationResult loginWithGoogleAccount(User user, HttpSession session) {
-		OperationResult operationResult = new OperationResult();
-		try {
-			if (user != null && user.getEmail() != null && user.getPassword() != null) {
-				User dbUser = new User();
-				dbUser.setEmail(user.getEmail());
-				dbUser.setPassword(user.getPassword());
-				dbUser = this.userService.getUser(dbUser);
-				
-				if(dbUser != null) {
-					operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
-					this.processLogin(session, dbUser, EnmLoginType.GOOGLE);
-				} else {
-					operationResult.setResultCode(EnmResultCode.WARNING.getValue());
-					operationResult.setResultDesc("Email or password is incorrect.");
-				}
-			} else {
-				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("Email and password fields are mandatory.");
-			}
-		} catch (Exception e) {
-			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
-			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
-		}
-		return operationResult;
-    }
-    
-    private OperationResult loginWithFacebookAccount(User user, HttpSession session) {
-		OperationResult operationResult = new OperationResult();
-		try {
-			if (user != null && user.getEmail() != null && user.getPassword() != null) {
-				User dbUser = new User();
-				dbUser.setEmail(user.getEmail());
-				dbUser.setPassword(user.getPassword());
-				dbUser = this.userService.getUser(dbUser);
-				
-				if(dbUser != null) {
-					operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
-					this.processLogin(session, dbUser, EnmLoginType.GOOGLE);
-				} else {
-					operationResult.setResultCode(EnmResultCode.WARNING.getValue());
-					operationResult.setResultDesc("Email or password is incorrect.");
-				}
-			} else {
-				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("Email and password fields are mandatory.");
-			}
-		} catch (Exception e) {
-			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
-			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
-		}
-		return operationResult;
-    }
-	
-    public OperationResult signupWithLocalAccount(User user, HttpSession session) {
+    public OperationResult signupWithLocalAccount(User uiUser, HttpSession session) {
 		OperationResult operationResult = new OperationResult();
 		
 		try {
-			User dbUser = new User();
-			dbUser.setEmail(user.getEmail());
-			dbUser = this.userService.getUser(dbUser);
-			
-			if(dbUser == null) {
-				String verificationCode = SecurityUtil.generateUUID().replace("-", "");
+			if (uiUser != null && uiUser.getEmail() != null 
+					&& uiUser.getEmail().trim().length() > 0
+					&& uiUser.getPassword() != null
+					&& uiUser.getPassword().trim().length() > 0) {
+				User dbUser = new User();
+				dbUser.setEmail(uiUser.getEmail());
+				dbUser.setPassword(uiUser.getPassword());
 				
-				user.setEmailVerified(EnmBoolStatus.NO.getId());
-				user.setMsisdnVerified(EnmBoolStatus.NO.getId());
-				user.setStatus(EnmUserStatus.ACTIVE.getValue());
-				user.setUserActivationKeyEmail(verificationCode);
-				
-				OperationResult createUserResult = this.userService.insertUser(user);
-				
-				if (OperationResult.isResultSucces(createUserResult)) {
-					operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
-					this.processLogin(session, user, EnmLoginType.LOCAL_ACCOUNT);
-					this.sendWelcomeMail(user);
+				User registeredUser = this.userService.getUser(dbUser);
+				if(registeredUser == null) {
+					dbUser.setPassword(null);
+					dbUser.setGoogleEmail(uiUser.getEmail());
+					dbUser.setFacebookEmail(uiUser.getEmail());
+					
+					registeredUser = this.userService.getUserForLogin(dbUser);
+					if(registeredUser == null) {
+						String verificationCode = SecurityUtil.generateUUID().replace("-", "");
+						dbUser = new User();
+						
+						dbUser.setEmail(uiUser.getEmail());
+						dbUser.setPassword(uiUser.getPassword());
+						dbUser.setFirstName(uiUser.getFirstName());
+						dbUser.setLastName(uiUser.getLastName());
+						
+						dbUser.setEmailVerified(EnmBoolStatus.NO.getId());
+						dbUser.setMsisdnVerified(EnmBoolStatus.NO.getId());
+						dbUser.setStatus(EnmUserStatus.ACTIVE.getValue());
+						dbUser.setUserActivationKeyEmail(verificationCode);
+						
+						OperationResult createUserResult = this.userService.insertUser(dbUser);
+						
+						if (OperationResult.isResultSucces(createUserResult)) {
+							operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+							this.processLogin(session, dbUser, EnmLoginType.LOCAL_ACCOUNT);
+							this.sendWelcomeMail(dbUser, EnmLoginType.LOCAL_ACCOUNT);
+						} else {
+							operationResult = createUserResult;
+						}
+					} else {
+						String message = null;
+						if (registeredUser.getEmail() != null) {
+							message = "Email address or password is incorrect!";
+						} else {
+							if (registeredUser.getGoogleEmail() != null) {
+								message = "This email address is in use and associated with google account. You can use 'Login With Google' option to sign in.";
+							} else {
+								message = "This email address is in use and associated with facebook account. You can use 'Login With Facebook' option to sign in.";
+							}
+						}
+						operationResult.setResultCode(EnmResultCode.WARNING.getValue());
+						operationResult.setResultDesc(message);
+					}
 				} else {
-					operationResult = createUserResult;
+					operationResult.setResultCode(EnmResultCode.WARNING.getValue());
+					operationResult.setResultDesc("This email is in use! If you forgot your password click 'Forgot password' link in login page.");
 				}
 			} else {
 				operationResult.setResultCode(EnmResultCode.WARNING.getValue());
-				operationResult.setResultDesc("This email is in use! If you forgot your password click 'Forgot password' link in login page.");
-			}	
+				operationResult.setResultDesc("Email and password parameters are mandatory!");
+			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
 			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
@@ -257,32 +233,77 @@ public class ApiUserController extends BaseApiController {
 		return operationResult;
     }
 	
-    public OperationResult signupWithGoogleAccount(User user, HttpSession session) {
+    public OperationResult signupWithGoogleAccount(User uiUser, HttpSession session) {
 		OperationResult operationResult = new OperationResult();
 		
 		try {
-			if (user.getGoogleId() != null && user.getEmail() != null) {
+			if (uiUser.getGoogleId() != null && uiUser.getGoogleEmail() != null) {
 				User dbUser = new User();
-				dbUser.setEmail(user.getEmail());
-				dbUser.setGoogleId(user.getGoogleId());
-				dbUser = this.userService.getUser(dbUser);
+				dbUser.setGoogleEmail(uiUser.getGoogleEmail());
+				dbUser.setGoogleId(uiUser.getGoogleId());
 				
-				if(dbUser == null) {
-					user.setEmailVerified(EnmBoolStatus.NO.getId());
-					user.setMsisdnVerified(EnmBoolStatus.NO.getId());
-					user.setStatus(EnmUserStatus.ACTIVE.getValue());
-					OperationResult createUserResult = this.userService.insertUser(user);
+				User registeredUser = this.userService.getUser(dbUser);
+				
+				if(registeredUser == null) {
+					dbUser.setGoogleId(null);
+					dbUser.setEmail(uiUser.getGoogleEmail());
+					dbUser.setGoogleEmail(uiUser.getGoogleEmail());
+					dbUser.setFacebookEmail(uiUser.getGoogleEmail());
 					
-					if (OperationResult.isResultSucces(createUserResult)) {
-						operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
-						this.processLogin(session, user, EnmLoginType.LOCAL_ACCOUNT);
+					registeredUser = this.userService.getUserForLogin(dbUser);
+					if(registeredUser == null) {
+						String verificationCode = SecurityUtil.generateUUID().replace("-", "");
+						
+						dbUser = new User();
+
+						dbUser.setEmail(uiUser.getGoogleEmail());
+						dbUser.setGoogleId(uiUser.getGoogleId());
+						dbUser.setGoogleEmail(uiUser.getGoogleEmail());
+						dbUser.setFirstName(uiUser.getFirstName());
+						dbUser.setLastName(uiUser.getLastName());
+						if (uiUser.getGender() != null) {
+							EnmGender gender = EnmGender.getGender(uiUser.getGender());
+							if (gender != null) {
+								dbUser.setGender(uiUser.getGender());
+							}
+						}
+						
+						dbUser.setProfileImageUrl(uiUser.getProfileImageUrl());
+						dbUser.setLoginType(uiUser.getLoginType());
+						
+						dbUser.setEmailVerified(EnmBoolStatus.NO.getId());
+						dbUser.setMsisdnVerified(EnmBoolStatus.NO.getId());
+						dbUser.setStatus(EnmUserStatus.ACTIVE.getValue());
+						
+						dbUser.setUserActivationKeyEmail(verificationCode);
+						
+						OperationResult createUserResult = this.userService.insertUser(dbUser);
+						
+						if (OperationResult.isResultSucces(createUserResult)) {
+							operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+							this.processLogin(session, dbUser, EnmLoginType.GOOGLE);
+							this.sendWelcomeMail(dbUser, EnmLoginType.GOOGLE);
+						} else {
+							operationResult = createUserResult;
+						}
 					} else {
-						operationResult = createUserResult;
+						String message = null;
+						if (registeredUser.getGoogleEmail() != null) {
+							message = "Email address or google id is incorrect!";
+						} else {
+							if (registeredUser.getEmail() != null) {
+								message = "This email address is in use and associated with a local account. You can login with email and password.";
+							} else {
+								message = "This email address is in use and associated with facebook account. You can use 'Login With Facebook' option to sign in.";
+							}
+						}
+						operationResult.setResultCode(EnmResultCode.WARNING.getValue());
+						operationResult.setResultDesc(message);
 					}
 				} else {
-					dbUser.setLoginType(EnmLoginType.GOOGLE.getId());
-					dbUser.setProfileImageUrl(user.getProfileImageUrl());
-					this.processLogin(session, dbUser, EnmLoginType.GOOGLE);
+					registeredUser.setLoginType(EnmLoginType.GOOGLE.getId());
+					registeredUser.setProfileImageUrl(uiUser.getProfileImageUrl());
+					this.processLogin(session, registeredUser, EnmLoginType.GOOGLE);
 					
 					operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 				}	
@@ -297,38 +318,84 @@ public class ApiUserController extends BaseApiController {
 		return operationResult;
     }
     
-    public OperationResult signupWithFacebookAccount(User user, HttpSession session) {
+    public OperationResult signupWithFacebookAccount(User uiUser, HttpSession session) {
 		OperationResult operationResult = new OperationResult();
 		
 		try {
-			if (user.getFacebookId() != null && user.getEmail() != null) {
+			if (uiUser.getFacebookId() != null && uiUser.getFacebookEmail() != null) {
 				User dbUser = new User();
-				dbUser.setEmail(user.getEmail());
-				dbUser.setFacebookId(user.getFacebookId());
-				dbUser = this.userService.getUser(dbUser);
+				dbUser.setFacebookEmail(uiUser.getFacebookEmail());
+				dbUser.setFacebookId(uiUser.getFacebookId());
 				
-				if(dbUser == null) {
-					user.setEmailVerified(EnmBoolStatus.NO.getId());
-					user.setMsisdnVerified(EnmBoolStatus.NO.getId());
-					user.setStatus(EnmUserStatus.ACTIVE.getValue());
-					OperationResult createUserResult = this.userService.insertUser(user);
+				User registeredUser = this.userService.getUser(dbUser);
+				
+				if(registeredUser == null) {
+					dbUser.setFacebookId(null);
+					dbUser.setEmail(uiUser.getFacebookEmail());
+					dbUser.setGoogleEmail(uiUser.getFacebookEmail());
+					dbUser.setFacebookEmail(uiUser.getFacebookEmail());
 					
-					if (OperationResult.isResultSucces(createUserResult)) {
-						operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
-						this.processLogin(session, user, EnmLoginType.LOCAL_ACCOUNT);
+					registeredUser = this.userService.getUserForLogin(dbUser);
+					
+					if(registeredUser == null) {
+						String verificationCode = SecurityUtil.generateUUID().replace("-", "");
+						dbUser = new User();
+						
+						dbUser.setEmail(uiUser.getFacebookEmail());
+						dbUser.setFacebookId(uiUser.getFacebookId());
+						dbUser.setFacebookTokenId(uiUser.getFacebookTokenId());
+						dbUser.setEmail(uiUser.getFacebookEmail());
+						dbUser.setFirstName(uiUser.getFirstName());
+						dbUser.setLastName(uiUser.getLastName());
+						if (uiUser.getGender() != null) {
+							EnmGender gender = EnmGender.getGender(uiUser.getGender());
+							if (gender != null) {
+								dbUser.setGender(uiUser.getGender());
+							}
+						}
+						
+						dbUser.setProfileImageUrl(uiUser.getProfileImageUrl());
+						dbUser.setLoginType(EnmLoginType.FACEBOOK.getId());
+						
+						dbUser.setEmailVerified(EnmBoolStatus.NO.getId());
+						dbUser.setMsisdnVerified(EnmBoolStatus.NO.getId());
+						dbUser.setStatus(EnmUserStatus.ACTIVE.getValue());
+						
+						dbUser.setUserActivationKeyEmail(verificationCode);
+						
+						OperationResult createUserResult = this.userService.insertUser(dbUser);
+						
+						if (OperationResult.isResultSucces(createUserResult)) {
+							operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+							this.processLogin(session, dbUser, EnmLoginType.FACEBOOK);
+							this.sendWelcomeMail(dbUser, EnmLoginType.FACEBOOK);
+						} else {
+							operationResult = createUserResult;
+						}
 					} else {
-						operationResult = createUserResult;
+						String message = null;
+						if (registeredUser.getFacebookEmail() != null) {
+							message = "Email address or facebook id is incorrect!";
+						} else {
+							if (registeredUser.getEmail() != null) {
+								message = "This email address is in use and associated with a local account. You can login with email and password.";
+							} else {
+								message = "This email address is in use and associated with google account. You can use 'Login With Google' option to sign in.";
+							}
+						}
+						operationResult.setResultCode(EnmResultCode.WARNING.getValue());
+						operationResult.setResultDesc(message);
 					}
 				} else {
-					dbUser.setLoginType(EnmLoginType.FACEBOOK.getId());
-					dbUser.setFacebookTokenId(user.getFacebookTokenId());
-					dbUser.setProfileImageUrl(user.getProfileImageUrl());
-					this.processLogin(session, dbUser, EnmLoginType.GOOGLE);
+					registeredUser.setLoginType(EnmLoginType.FACEBOOK.getId());
+					registeredUser.setProfileImageUrl(uiUser.getProfileImageUrl());
+					this.processLogin(session, registeredUser, EnmLoginType.FACEBOOK);
+					
 					operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
-				}	
+				}
 			} else {
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("googleId and email parameters are mandatory!");
+				operationResult.setResultDesc("facebookId and email parameters are mandatory!");
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
@@ -406,46 +473,49 @@ public class ApiUserController extends BaseApiController {
 						}
 						
 						OperationResult updateResult = this.userService.updateUser(user, false);
-						if (OperationResult.isResultSucces(updateResult) && profilePhotoChanged) {
-							try {
-								if (!sessionUser.getEmail().equals(user.getEmail())) {
-									this.sendEmailVerificationMail(user);
-								}
-								
-								sessionUser = this.userService.getUser(sessionUser);
-								session.removeAttribute(EnmSession.USER.getId());
-								session.setAttribute(EnmSession.USER.getId(), sessionUser);
-								
-								String rootPhotoFolder = "D:\\Personal\\Development\\startup\\workspace\\projects\\LetsErasmus\\src\\main\\webapp\\user\\images\\";
-								String userPhotoFolder = rootPhotoFolder + user.getId(); 
-								
-								FileModel photo = user.getProfilePhoto();
-								
-								String fileName = profilePhoto.getOriginalFilename();
-								
-								String tmpPhotoPath = FileUtil.concatPath(rootPhotoFolder, user.getId().toString(), "tmp", fileName);
-								
-								String newSmallFileName = AppUtil.getSmallUserPhotoName(user.getId(), photo.getId(), EnmFileType.getFileType(photo.getFileType()));
-								String newLargeFileName = newSmallFileName.replace("small", "large");
-								
-								File tmpFile = new File(tmpPhotoPath);
-								
-								if (oldProfilePhotoId != null) {
-									FileUtil.cleanDirectory(userPhotoFolder, false);
-								}
+						if (OperationResult.isResultSucces(updateResult)) {
+							this.processLogin(session, user, EnmLoginType.getLoginType(sessionUser.getLoginType()));
+							if (profilePhotoChanged) {
+								try {
+									if (!sessionUser.getEmail().equals(user.getEmail())) {
+										this.sendEmailVerificationMail(user);
+									}
+									
+									sessionUser = this.userService.getUser(sessionUser);
+									session.removeAttribute(EnmSession.USER.getId());
+									session.setAttribute(EnmSession.USER.getId(), sessionUser);
+									
+									String rootPhotoFolder = "D:\\Personal\\Development\\startup\\workspace\\projects\\LetsErasmus\\src\\main\\webapp\\user\\images\\";
+									String userPhotoFolder = rootPhotoFolder + user.getId(); 
+									
+									FileModel photo = user.getProfilePhoto();
+									
+									String fileName = profilePhoto.getOriginalFilename();
+									
+									String tmpPhotoPath = FileUtil.concatPath(rootPhotoFolder, user.getId().toString(), "tmp", fileName);
+									
+									String newSmallFileName = AppUtil.getSmallUserPhotoName(user.getId(), photo.getId(), EnmFileType.getFileType(photo.getFileType()));
+									String newLargeFileName = newSmallFileName.replace("small", "large");
+									
+									File tmpFile = new File(tmpPhotoPath);
+									
+									if (oldProfilePhotoId != null) {
+										FileUtil.cleanDirectory(userPhotoFolder, false);
+									}
 
-								ImageUtil.resizeImage(tmpFile, FileUtil.concatPath(userPhotoFolder, newLargeFileName ), 400, 700);
-								ImageUtil.resizeImage(tmpFile, FileUtil.concatPath(userPhotoFolder, newSmallFileName ), 300, 300);
-								
-								String tmpFolder = tmpPhotoPath.substring(0, tmpPhotoPath.lastIndexOf(File.pathSeparator));
-								
-								FileUtil.cleanDirectory(tmpFolder, true);
-								
-							} catch (Exception e) {
-								System.out.println(CommonUtil.getExceptionMessage(e));
+									ImageUtil.resizeImage(tmpFile, FileUtil.concatPath(userPhotoFolder, newLargeFileName ), 400, 700);
+									ImageUtil.resizeImage(tmpFile, FileUtil.concatPath(userPhotoFolder, newSmallFileName ), 300, 300);
+									
+									String tmpFolder = tmpPhotoPath.substring(0, tmpPhotoPath.lastIndexOf(File.pathSeparator));
+									
+									FileUtil.cleanDirectory(tmpFolder, true);
+									
+								} catch (Exception e) {
+									System.out.println(CommonUtil.getExceptionMessage(e));
+								}
 							}
 						}
-						operationResult = updateResult;	
+						operationResult = updateResult;
 					} else {
 						operationResult.setResultCode(EnmResultCode.WARNING.getValue());
 						operationResult.setResultDesc("This email is used by another user!");
@@ -743,8 +813,9 @@ public class ApiUserController extends BaseApiController {
     }
     
 	private void processLogin(HttpSession session, User user, EnmLoginType loginType) {
+		user.setLoginType(loginType.getId());
 		session.setAttribute(EnmSession.USER.getId(), user);
-		session.setAttribute("login_type", loginType.getId());
+		session.setAttribute(EnmSession.LOGIN_TYPE.getId(), loginType.getId());
 	}
 	
 	private void sendEmailVerificationMail(User user) throws UnsupportedEncodingException {
@@ -766,11 +837,20 @@ public class ApiUserController extends BaseApiController {
 		this.mailUtil.sendMailFromTemplate(htmlFilePath, paramMap, toList, null, "LetsErasmus Email Verifitcation", null);
 	}
 	
-	private void sendWelcomeMail(User user) throws UnsupportedEncodingException {
+	private void sendWelcomeMail(User user, EnmLoginType loginType) throws UnsupportedEncodingException {
 		String htmlFilePath = FileUtil.concatPath(WebApplication.LOCAL_APP_PATH, "static", "html", "VerifyEmail.html");
+		String email = null;
+		
+		if (loginType == EnmLoginType.LOCAL_ACCOUNT) {
+			email = user.getEmail();
+		} else if (loginType == EnmLoginType.GOOGLE) {
+			email = user.getGoogleEmail();
+		} else if (loginType == EnmLoginType.FACEBOOK) {
+			email = user.getFacebookEmail();
+		}
 		
 		List<String> toList = new ArrayList<String>();
-		toList.add(user.getEmail());
+		toList.add(email);
 		
 		String emailVerificationUrl = WebApplication.getEmailVerificationUrl();
 		emailVerificationUrl = emailVerificationUrl.replaceAll("#paramUserId#", user.getId().toString());

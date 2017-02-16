@@ -71,4 +71,9 @@ public class UserService implements IUserService{
 		}
 	}
 
+	@Override
+	public User getUserForLogin(User user) {
+		return this.userDao.getUserForLogin(user);
+	}
+
 }

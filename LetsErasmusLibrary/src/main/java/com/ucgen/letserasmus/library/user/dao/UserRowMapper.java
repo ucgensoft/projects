@@ -38,6 +38,8 @@ public class UserRowMapper extends BaseRowMapper<User> {
 	public static final String COL_DESCRIPTION = "DESCRIPTION";
 	public static final String COL_RESIDENCE_LOCATION_NAME = "RESIDENCE_LOCATION_NAME";
 	public static final String COL_LANGUAGES = "LANGUAGES";
+	public static final String COL_GOOGLE_EMAIL = "GOOGLE_EMAIL";
+	public static final String COL_FACEBOOK_EMAIL = "FACEBOOK_EMAIL";
 	
 	public static final String FKEY_FILE = "FILE";
 
@@ -84,6 +86,8 @@ public class UserRowMapper extends BaseRowMapper<User> {
 		user.setResidenceLocationName(super.getString(rs, COL_RESIDENCE_LOCATION_NAME));
 		user.setLanguages(super.getString(rs, COL_LANGUAGES));
 		user.setCreatedDate(super.getTimestamp(rs, COL_CREATED_DATE));
+		user.setGoogleEmail(super.getString(rs, COL_GOOGLE_EMAIL));
+		user.setFacebookEmail(super.getString(rs, COL_FACEBOOK_EMAIL));
 		
 		if (user.getProfilePhotoId() != null && 
 				this.getfKeyMap() != null && this.getfKeyMap().containsKey(FKEY_FILE)) {

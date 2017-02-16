@@ -11,14 +11,10 @@ import org.springframework.stereotype.Repository;
 
 import com.ucgen.common.dao.UtilityDao;
 import com.ucgen.common.operationresult.EnmResultCode;
-import com.ucgen.common.operationresult.ListOperationResult;
 import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.common.operationresult.ValueOperationResult;
 import com.ucgen.common.util.StringUtil;
-import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
-import com.ucgen.letserasmus.library.file.dao.FileRowMapper;
 import com.ucgen.letserasmus.library.place.dao.PlaceRowMapper;
-import com.ucgen.letserasmus.library.place.model.Place;
 import com.ucgen.letserasmus.library.user.dao.IUserDao;
 import com.ucgen.letserasmus.library.user.dao.UserRowMapper;
 import com.ucgen.letserasmus.library.user.model.User;
@@ -257,6 +253,32 @@ public class UserDao extends JdbcDaoSupport implements IUserDao {
 		}
 		
 		return operationResult;
+	}
+
+	@Override
+	public User getUserForLogin(User user) {
+		StringBuilder sqlBuilder = new StringBuilder(GET_USER_SQL);
+		List<Object> argList = new ArrayList<>();
+		
+		UserRowMapper userRowMapper = new UserRowMapper();
+				
+		sqlBuilder.append(" AND ((EMAIL = IFNULL(?, EMAIL) AND PASSWORD = IFNULL(?, PASSWORD)) " 
+				+ " OR (GOOGLE_ID = IFNULL(?, GOOGLE_ID) AND GOOGLE_EMAIL = IFNULL(?, GOOGLE_EMAIL)) " 
+				+ " OR (FACEBOOK_ID = IFNULL(?, FACEBOOK_ID) AND FACEBOOK_EMAIL = IFNULL(?, FACEBOOK_EMAIL)))");
+		
+		argList.add(user.getEmail());
+		argList.add(user.getPassword());
+		argList.add(user.getGoogleId());
+		argList.add(user.getGoogleEmail());
+		argList.add(user.getFacebookId());
+		argList.add(user.getFacebookEmail());
+				
+		List<User> userList = super.getJdbcTemplate().query(sqlBuilder.toString(), argList.toArray(), userRowMapper);
+		if (userList != null && userList.size() >0) {
+			return userList.get(0);
+		} else {
+			return null;
+		}
 	}
 
 }

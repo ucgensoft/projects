@@ -129,12 +129,12 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
   			gender = null;
   		}
   		
-  		if (password != defaultPasswordText) {
+  		if (StringUtil.trim(password) != '' && password != defaultPasswordText) {
   			if (passwordConfirm == '') {
 	  				DialogUtil.warn('Warning', 'Please confirm your password!', 'OK', null);
 	  				return;
 	  			} else if (password != passwordConfirm) {
-	  				DialogUtil.warn('Warning', 'Password and confirm passwords do not match!', 'OK', null);
+	  				DialogUtil.warn('Warning', 'Password and confirm password do not match!', 'OK', null);
 	  				return;
 	  			}	
   		} else {

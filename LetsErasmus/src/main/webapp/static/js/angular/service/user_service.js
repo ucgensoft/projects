@@ -3,19 +3,26 @@
 App.factory('userService', ['$http', '$q', function($http, $q){
 
 	return {
-		createUser : function(user) {
+		createUser : function(user, callBack) {
 			var config = {
 				headers : {
 					'Accept' : 'application/json'
 				}
 			};
-			return $http
-					.post(webApplicationUrlPrefix + '/api/user/signup', user, config).then(function(response) {
-						return response.data;
-					}, function(errResponse) {
-						console.error('Error while fetching enumerations');
-						return $q.reject(errResponse);
-					});
+			
+			NProgress.start(3000, 5);
+			return $http.post(webApplicationUrlPrefix + '/api/user/signup', user, config).then(function(response) {
+				NProgress.done(true);
+				var result = isResultSuccess(response.data, true);
+				if (callBack) {
+					callBack(result);
+				}
+			}, function(errResponse) {
+				DialogUtil.error('Error', errResponse, 'OK');
+				if (callBack) {
+					callBack(false);
+				}
+			});
 		},
 		
 		updateUser : function(user, profilePhoto, callBack) {
@@ -92,18 +99,25 @@ App.factory('userService', ['$http', '$q', function($http, $q){
 			});
 		},
 		
-		login : function(user) {
+		login : function(user, callBack) {
 			var config = {
 				headers : {
 					'Accept' : 'application/json'
 				}
 			};
+			NProgress.start(3000, 5);
 			return $http.post(webApplicationUrlPrefix + '/api/user/login', user, config).then(function(response) {
-						return response.data;
-					}, function(errResponse) {
-						console.error('Error while fetching enumerations');
-						return $q.reject(errResponse);
-					});
+				NProgress.done(true);
+				var result = isResultSuccess(response.data, true);
+				if (callBack) {
+					callBack(result);
+				}
+			}, function(errResponse) {
+				DialogUtil.error('Error', errResponse, 'OK');
+				if (callBack) {
+					callBack(false);
+				}
+			});
 		},
 		
 		logout : function() {
