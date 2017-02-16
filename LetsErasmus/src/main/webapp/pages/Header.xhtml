@@ -33,8 +33,7 @@
 				</a>
 			</div>
 			<a id="help-button"
-				onclick="openWindow('#{webApplication.urlPrefix}/pages/help/help.xhtml', true)"
-				 href=""
+				href="#{webApplication.urlPrefix}/pages/help/help.xhtml"
 				class="nav-top--right--link hidden-sm-down"> <span>Help</span>
 			</a>
 			<ui:fragment
@@ -55,7 +54,7 @@
 			<ui:fragment
 				rendered="#{webApplication.user != null}">
 				<div id="divHeaderTabUser" class="dropdown--wrapper">
-					<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.xhtml?userId=#{webApplication.user.id}" rel="" title="View messages and potential tenants"
+					<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.xhtml?userId=#{webApplication.user.id}" rel=""
 						class="nav-top--right--link nav-top--right--link__dropdown">
 						<div class="nav-top--username">#{webApplication.user.firstName}</div>
 						<div style="margin-left: 15px;" class="nav-top--avatar" title="Go to your dashboard">

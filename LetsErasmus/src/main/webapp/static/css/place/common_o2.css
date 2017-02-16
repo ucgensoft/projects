@@ -267,15 +267,15 @@ input, button, select, textarea {
 	-moz-osx-font-smoothing: grayscale
 }
 
-a {
-	color: #008489;
+/*a {
+	color: #03a9f4;
 	text-decoration: none
 }
 
 a:hover, a:focus {
 	color: #008489;
 	text-decoration: none
-}
+}*/
 
 img {
 	vertical-align: middle
@@ -555,7 +555,7 @@ a.text-muted:hover, a.text-muted:focus {
 }
 
 .text-ebisu, .icon-ebisu {
-	color: #ffaa91
+	color: #03a9f4
 }
 
 .text-hackberry, .icon-hackberry {
@@ -1752,9 +1752,9 @@ pre code {
 .panel {
 	border: 1px solid #dce0e0;
 	background-color: #fff;
-	-webkit-border-radius: 0;
+	/*-webkit-border-radius: 0;
 	-moz-border-radius: 0;
-	border-radius: 0
+	border-radius: 0*/
 }
 
 .panel-quote {
