@@ -16,7 +16,7 @@ App.controller('mainCtrl', ['$scope', '$controller', 'userService', function($sc
     	      	$("#txtStartDatePicker").datepicker(
     	      			{
     	      				minDate : new Date(),
-    	      				dateFormat : "d MM, y",
+    	      				dateFormat : "dd.mm.yy",
     	      				onSelect : function(selectedDate, cal) {
     	      					self.validateSearch();
     	      					setTimeout(function() {
@@ -28,7 +28,7 @@ App.controller('mainCtrl', ['$scope', '$controller', 'userService', function($sc
     	      	$("#txtEndDatePicker").datepicker(
     	      			{
     	      				minDate : new Date(),
-    	      				dateFormat : "d MM, y",
+    	      				dateFormat : "dd.mm.yy",
     	      				onSelect : function(selectedDate, cal) {
     	      					self.validateSearch();
     	      				}
@@ -51,10 +51,12 @@ App.controller('mainCtrl', ['$scope', '$controller', 'userService', function($sc
 		var endDate = $.datepicker.formatDate('d.m.yy', $("#txtEndDatePicker")
 					.datepicker("getDate"));
 		
-		openWindow(webApplicationUrlPrefix + '/pages/SearchResult.xhtml?place='
-					+ selectedPlaceName + "&lat=" + selectedLat + "&lng="
-					+ selectedLng + "&startDate=" + startDate + "&endDate="
-					+ endDate, true);
+		openWindow(webApplicationUrlPrefix + '/pages/SearchResult.xhtml' 
+				+ '?' + EnmUriParam.LOCATION + '=' + selectedPlaceName 
+				+ '&' + EnmUriParam.LATITUDE + '=' + selectedLat 
+				+ '&' + EnmUriParam.LONGITUDE + '=' + selectedLng 
+				+ "&" + EnmUriParam.CHECKIN_DATE + "=" + startDate 
+				+ "&" + EnmUriParam.CHECKOUT_DATE + "=" + endDate, true);
       };
 
       self.validateSearch = function() {

@@ -48,6 +48,7 @@
 			var facebookTokenId = '#{webApplication.facebookTokenId}';
 			var urlEncodedUrlPrefix = '#{webApplication.encodedUrlPrefix}';
 			var sessionActive = #{(webApplication.user != null ? "true" : "false")};
+			var placeListingExist = #{(webApplication.user != null &amp;&amp; webApplication.user.placeListingCount > 0 ? "true" : "false")};
 		</script>
 
 		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -108,9 +109,9 @@
 				<div id="divBody"  ng-controller="#{webApplication.ngController} as ctrl">
 					<ui:insert name="body" />
 				</div>
-
-				<ui:include src="Footer.xhtml" />
-			
+				<ui:fragment rendered="#{webApplication.footerVisible}">
+					<ui:include src="Footer.xhtml" />
+				</ui:fragment>
 				<script async="true" defer="true" src="https://apis.google.com/js/client.js" 
 				  onload="onPageLoadHeader();"
 			      onreadystatechange="if (this.readyState === 'complete') { onPageLoadHeader(); }">
@@ -128,6 +129,20 @@
 					        modal.style.display = "none";
 					    }
 					}
+					
+					$(document).ready(function(){
+						$('a[href^="#"]').click(function(e) {
+							if (!e.currentTarget.href.endsWith('#')) {
+								e.preventDefault();
+						        var target = this.hash, $target = $(target);
+						        $('html, body').stop().animate({
+						            'scrollTop': $target.offset().top
+						        }, 500, 'swing', function() {
+						            window.location.hash = target;
+						        });	
+						    }
+					    });
+					});
 				</script>
 			</div>
 		</h:body>

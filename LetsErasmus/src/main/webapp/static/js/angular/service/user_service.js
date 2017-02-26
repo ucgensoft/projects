@@ -156,10 +156,11 @@ App.factory('userService', ['$http', '$q', function($http, $q){
 					});
 		},
 		
-		sendMsisdnVerificationCode : function(msisdn, callBack) {
+		sendMsisdnVerificationCode : function(countryCode, msisdn, callBack) {
 			NProgress.start(4000, 5);
 			var data = {
-				msisdn : msisdn
+				msisdn : msisdn,
+				msisdnCountryCode : countryCode
 			}
 			
 			var config = {
@@ -256,6 +257,34 @@ App.factory('userService', ['$http', '$q', function($http, $q){
 						if (callBack) {
 							callBack(false);
 						}
+					});
+		},
+		
+		isEmailVerified : function(callBack) {
+			var data = {
+			}
+			
+			var config = {
+				params : data,
+				headers : {
+					'Accept' : 'application/json'
+				}
+			};
+			return $http.post(webApplicationUrlPrefix + '/api/user/email/isverified', data, config).then(function(response) {
+						var operationSuccess = isResultSuccess(response.data, false);
+						if (operationSuccess) {
+							var isVerified = response.data.resultValue;
+							if (callBack) {
+								callBack(isVerified);
+							}
+						}
+					}, function(errResponse) {
+						/*
+						DialogUtil.error('Error', errResponse, 'OK');
+						if (callBack) {
+							callBack(false);
+						}
+						*/
 					});
 		}
 	};

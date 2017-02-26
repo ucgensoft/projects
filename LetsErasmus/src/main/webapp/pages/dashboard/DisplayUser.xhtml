@@ -26,7 +26,7 @@
 											<li class="active media-photo media-photo-block">
 											<img
 												alt="#{displayUserController.user.firstName}" class="img-responsive" height="225"
-												src="#{displayUserController.userLargePhotoUrl}"
+												src="#{webApplication.getUserProfilePhotoUrl(displayUserController.user.id, displayUserController.user.profilePhotoId, 'large')}"
 												title="#{displayUserController.user.firstName}" width="225" /></li>
 											<li class="media-photo media-photo-block"></li>
 										</ul>

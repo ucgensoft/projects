@@ -42,6 +42,10 @@
 	        
 	    </style>
 			
+		<script>
+			var guestNumberArr = #{placeDetailController.guestNumberArr};
+		</script>
+			
 	</ui:define>
 
 	<ui:define name="body">
@@ -82,28 +86,36 @@
 															<div class="innerContainer_bwt19t">
 																<div>
 																	<div class="tabs_1evuybf">
-																		<button id="btnTab1" type="button" class="text_1aunhvg-o_O-tab_wurtoe-o_O-tab_selected_1i7fvde"
-																			ng-click="ctrl.onTabChange(1);">
-																			<span class="wrapper_p7pvqu"><span id="spanTabText1" class="selectedTab">Overview</span></span>
-																		</button>
-																		<button id="btnTab2" type="button" class="text_1aunhvg-o_O-tab_wurtoe"
-																			ng-click="ctrl.onTabChange(2);">
-																			<span class="wrapper_p7pvqu">
-																				<span id="spanTabText2">The Host</span>
-																			</span>
-																		</button>
-																		<button id="btnTab2" type="button" class="text_1aunhvg-o_O-tab_wurtoe"
-																			ng-click="ctrl.onTabChange(3)">
-																			<span class="wrapper_p7pvqu">
-																				<span id="spanTabText3">Location</span>
-																			</span>
-																		</button>
-																		<button id="btnTab2" type="button" class="text_1aunhvg-o_O-tab_wurtoe"
-																			ng-click="ctrl.onTabChange(4)">
-																			<span class="wrapper_p7pvqu">
-																				<span id="spanTabText4">Reviews</span>
-																			</span>
-																		</button>
+																		<a href="#divPlaceSummary">
+																			<button id="btnTab1" type="button" class="text_1aunhvg-o_O-tab_wurtoe-o_O-tab_selected_1i7fvde"
+																				ng-click="ctrl.onTabChange(1);">
+																				<span class="wrapper_p7pvqu"><span id="spanTabText1" class="selectedTab">Overview</span></span>
+																			</button>
+																		</a>
+																		<a href="#divHostPorfile">
+																			<button id="btnTab2" type="button" class="text_1aunhvg-o_O-tab_wurtoe"
+																				ng-click="ctrl.onTabChange(2);">
+																				<span class="wrapper_p7pvqu">
+																					<span id="spanTabText2">The Host</span>
+																				</span>
+																			</button>
+																		</a>
+																		<a href="#divLocation">
+																			<button id="btnTab2" type="button" class="text_1aunhvg-o_O-tab_wurtoe"
+																				ng-click="ctrl.onTabChange(3)">
+																				<span class="wrapper_p7pvqu">
+																					<span id="spanTabText3">Location</span>
+																				</span>
+																			</button>
+																		</a>
+																		<a href="#divReviews">
+																			<button id="btnTab2" type="button" class="text_1aunhvg-o_O-tab_wurtoe"
+																				ng-click="ctrl.onTabChange(4)">
+																				<span class="wrapper_p7pvqu">
+																					<span id="spanTabText4">Reviews</span>
+																				</span>
+																			</button>
+																		</a>
 																	</div>
 																	<div></div>
 																</div>
@@ -130,7 +142,7 @@
 																			<img
 																				alt="{{ctrl.place.user.firstName}}" class="host-profile-image"
 																				height="90" width="90"
-																				src="#{webApplication.getUserProfilePhotoUrl()}"
+																				src="#{webApplication.getUserProfilePhotoUrl(placeDetailController.place.hostUserId, placeDetailController.place.user.profilePhotoId,'small')}"
 																				title="{{ctrl.place.user.firstName}}" />
 																		</a> <img
 																			src=""
@@ -324,12 +336,12 @@
 																							id="txtStartDatePicker" type="text" name="checkin"
 																							aria-describedby="datespan-checkin-description"
 																							class="checkin ui-datepicker-target"
-																							placeholder="mm/dd/yyyy" /> 
+																							placeholder="dd.mm.yy" /> 
 																						<span
 																							class="screen-reader-only"
 																							id="datespan-checkin-description"
 																							aria-hidden="true">Enter your check in
-																							date in the format mm/dd/yyyy</span>
+																							date in the format mm.dd.yyyy</span>
 																					</div>
 																					<div class="col-sm-6">
 																						<label class="book-it__label"
@@ -339,41 +351,29 @@
 																							name="checkout"
 																							aria-describedby="datespan-checkout-description"
 																							class="checkout ui-datepicker-target"
-																							placeholder="mm/dd/yyyy" />
+																							placeholder="mm.dd.yyyy" />
 																					</div>
 																					<span class="screen-reader-only"
 																						id="datespan-checkout-description"
 																						aria-hidden="true">Enter your check out
-																						date in the format mm/dd/yyyy</span>
+																						date in the format mm.dd.yyyy</span>
 																				</div>
 																			</div>
 																			<div class="col-md-12 space-top-3">
 																				<div class="GuestPickerContainer">
 																					<label for="number_of_guests_13738469"
 																						class="book-it__label"><span>Guests</span></label>
-																					<div class="GuestPickerTrigger">
-																						<button class="GuestPickerTrigger__button"
-																							type="button">
-																							<div class="guest-label">
-																								<span
-																									class="guest-label__text guest-label__text-guests"><span>1
-																										guest</span></span>
-																							</div>
-																							<div class="dropdown-icon">
-																								<svg viewBox="0 0 18 18"
-																									style="fill: currentColor; height: 12px; width: 12px; display: block;">
-																								<path
-																									d="M16.291 4.295a1 1 0 1 1 1.414 1.415l-8 7.995a1 1 0 0 1-1.414 0l-8-7.995a1 1 0 1 1 1.414-1.415l7.293 7.29 7.293-7.29z"></path></svg>
-																							</div>
-																						</button>
+																					<div class="select">
+																						<select id="cmbGuestNumber">
+																							<option ng-repeat="n in ctrl.guestNumberArr" value="{{n}}">{{n}} Guest{{ n > 1 ? 's' : '' }}</option>
+																						</select>
 																					</div>
 																				</div>
 																			</div>
 																		</div>
-																		<noscript></noscript>
 																		<div class="">
-																			<button type="submit"
-																				class="btn btn-primary btn-large btn-block">
+																			<button type="button"
+																				class="btn btn-primary btn-large btn-block" ng-click="ctrl.onBookBtnClick()">
 																				<span>Book</span>
 																			</button>
 																			<div
@@ -719,7 +719,7 @@
 																<img
 																	alt="{{ctrl.place.user.firstName}}" class="media-photo media-round"
 																	height="90" width="90"
-																	src="#{webApplication.getUserProfilePhotoUrl()}"
+																	src="#{webApplication.getUserProfilePhotoUrl(placeDetailController.place.hostUserId, placeDetailController.place.user.profilePhotoId,'small')}"
 																	title="{{ctrl.place.user.firstName}}" />
 															</a> 
 															<img
@@ -851,11 +851,9 @@
 				</div>
 			</div>
 		</h:form>
-		<script
-			src="#{webApplication.urlPrefix}/static/js/angular/service/place_service.js"></script>
-		<script
-			src="#{webApplication.urlPrefix}/static/js/angular/service/enumeration_service.js"></script>
-		<script
-			src="#{webApplication.urlPrefix}/static/js/angular/controller/place_detail_controller.js"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/service/place_service.js"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/service/enumeration_service.js"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/service/reservation_service.js"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/controller/place_detail_controller.js"></script>
 	</ui:define>
 </ui:composition>

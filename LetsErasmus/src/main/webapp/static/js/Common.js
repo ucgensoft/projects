@@ -1,4 +1,44 @@
 ﻿
+var EnmReservationStatus = {
+	INQUIRY : 0,
+	PENDING : 1,
+	CONFIRMED : 2,
+	DECLINED : 3,
+	EXPIRED : 4,
+	RECALLED : 5,
+	CANCELLED : 6,
+	WAITING_PAYMENT : 7,
+	CLOSED : 8
+};
+
+function getReservationStatusDesc(reservationStatus) {
+	if (reservationStatus == EnmReservationStatus.PENDING) {
+		return 'Pending';
+	} else if (reservationStatus == EnmReservationStatus.CONFIRMED) {
+		return 'Confirmed';
+	} else if (reservationStatus == EnmReservationStatus.DECLINED) {
+		return 'Rejected';
+	} else if (reservationStatus == EnmReservationStatus.EXPIRED) {
+		return 'Expired';
+	} else if (reservationStatus == EnmReservationStatus.RECALLED) {
+		return 'Cancelled';
+	} else if (reservationStatus == EnmReservationStatus.WAITING_PAYMENT) {
+		return 'Waiting For Payment';
+	} else if (reservationStatus == EnmReservationStatus.CLOSED) {
+		return 'Closed';
+	}
+}
+
+var EnmUriParam = {
+	CHECKIN_DATE : 'checkinDate',
+	CHECKOUT_DATE : 'checkoutDate',
+	LATITUDE : 'lat',
+	LONGITUDE : 'lng',
+	LOCATION : 'loc',
+	PLACE_ID : 'placeId',
+	USER_ID : 'userId'
+};
+
 var EnmOperation = {
 	CONFIRM_EMAIL : 1,
 	LOGIN : 2
@@ -22,11 +62,19 @@ var EnmOperationResultCode = {
     EXCEPTION : 3
 };
 
+var EnmEntityType = {
+    USER  : 1,
+	PLACE : 2,
+    EVENT : 3,
+    STAFF : 4
+};
+
 var OperationResult = {
-        resultCode: 'resultCode',
-        resultDesc: 'resultDesc',
-        resultObj: 'resultObj',
-        errorCode: 'errorCode'
+    resultCode: 'resultCode',
+    resultDesc: 'resultDesc',
+    resultObj: 'resultObj',
+    resultValue: 'resultValue',
+    errorCode: 'errorCode'
 };
 
 var EnmErrorCode = {
@@ -298,6 +346,34 @@ var DialogUtil = {
 	    }).text(message);
 	},
 	
+	confirm : function (title, message, callback) {
+	    $("<div></div>").dialog( {
+	        buttons: [{
+	            text: 'Yes',
+	            click: function() {
+	                if (callback) {
+	                	callback(true);
+	                }
+	                $( this ).remove();
+	            }
+	        },
+	        {
+	            text: 'No',
+	            click: function() {
+	                if (callback) {
+	                	callback(false);
+	                }
+	                $( this ).remove();
+	            }
+	        }
+	        ],
+	        close: function (event, ui) { $(this).remove(); },
+	        resizable: false,
+	        title: title,
+	        modal: true
+	    }).text(message);
+	},
+	
 	showMessage : function(type, title, message, callBackFunc) {
 		$.msgbox({
 			  title: title,
@@ -345,6 +421,10 @@ var StringUtil = {
 		} else {
 			return null;
 		}
+	},
+	
+	replaceAll : function(text, oldValue, newValue) {
+		return eval('text.replace(/' + oldValue + '/g, newValue)');
 	}
 };
 
@@ -403,4 +483,10 @@ function refreshAngularScope(scope) {
 	scope.$apply(function() {
 		
 	});
+}
+
+function generateUserProfilePhotoUrl(userId, photoId) {
+	var photoUrl = StringUtil.replaceAll(userSmallProfilePhotoTemplate, '#userId#', userId);
+	photoUrl = StringUtil.replaceAll(photoUrl, '#photoId#', photoId);
+	return photoUrl;
 }

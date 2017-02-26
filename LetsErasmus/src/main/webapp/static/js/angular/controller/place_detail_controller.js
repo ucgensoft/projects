@@ -1,5 +1,5 @@
-App.controller('placeDetailCtrl', ['$scope', '$controller', 'placeService', 'commonService', 'enumerationService', 
-                                   function($scope, $controller, placeService, commonService, enumerationService) {
+App.controller('placeDetailCtrl', ['$scope', '$controller', 'placeService', 'reservationService', 'commonService', 'enumerationService', 
+                                   function($scope, $controller, placeService, reservationService, commonService, enumerationService) {
       var self = this;
       
       var marker = null;
@@ -10,6 +10,7 @@ App.controller('placeDetailCtrl', ['$scope', '$controller', 'placeService', 'com
       self.safetyAmentiesList = [];
       self.ruleList = [];
       var mainSliderId = "MainSlider";
+      self.guestNumberArr = guestNumberArr;
                   
       self.initialize = function() {
     	  var placeId = getUriParam('placeId');
@@ -20,27 +21,37 @@ App.controller('placeDetailCtrl', ['$scope', '$controller', 'placeService', 'com
         	  		self.displayPlaceDetails(operationResult.resultValue)
           		},
 				function(errResponse){
-					console.error('Error while fetching Portfolio');
+					console.error('Error while fetching place detail');
 				}
 		      );
     		  
     		  $("#txtStartDatePicker").datepicker(
 				{
 					minDate : new Date(),
-					dateFormat : "d MM, y",
+					dateFormat : "dd.mm.yy",
+					onSelect : function(selectedDate, cal) {
+						
+					}
+				});
+    		  
+	    	  $("#txtEndDatePicker").datepicker(
+				{
+					minDate : new Date(),
+					dateFormat : "dd.mm.yy",
 					onSelect : function(selectedDate, cal) {
 						
 					}
 				});
 	    	  
-	    	  $("#txtEndDatePicker").datepicker(
-				{
-					minDate : new Date(),
-					dateFormat : "d MM, y",
-					onSelect : function(selectedDate, cal) {
-						
-					}
-				});
+	    	  var checkinDate = getUriParam(EnmUriParam.CHECKIN_DATE);
+        	  var checkoutDate = getUriParam(EnmUriParam.CHECKOUT_DATE);
+        	  
+        	  if (checkinDate != null && checkinDate != '') {
+        		  $("#txtStartDatePicker").datepicker().val(checkinDate);
+        	  }
+        	  if (checkoutDate != null && checkoutDate != '') {
+        		  $("#txtEndDatePicker").datepicker().val(checkoutDate);
+        	  }
     	  }
       };
       
@@ -188,18 +199,6 @@ App.controller('placeDetailCtrl', ['$scope', '$controller', 'placeService', 'com
         		  $("#spanTabText" + i).removeClass('selectedTab');
     		  }
     	  }
-    	  if (tabIndex == 1) {
-    		  document.location.href = "#divPlaceSummary";
-    	  }
-    	  if (tabIndex == 2) {
-    		  document.location.href = "#divHostPorfile";
-    	  }
-    	  if (tabIndex == 3) {
-    		  document.location.href = "#divLocation";
-    	  }
-    	  if (tabIndex == 4) {
-    		  document.location.href = "#divReviews";
-    	  }
       };
       
       self.getPriceText = function() {
@@ -250,6 +249,26 @@ App.controller('placeDetailCtrl', ['$scope', '$controller', 'placeService', 'com
 		 }
 	 };
 	  	
+	 self.onBookBtnClick = function() {
+		 var placeId = self.place.id;
+		 var guestNumber = $('#cmbGuestNumber').val();
+		 var startDate = $("#txtStartDatePicker").datepicker("getDate")
+		 var endDate = $("#txtEndDatePicker").datepicker("getDate")
+		 
+		 var reservation = {
+			 placeId : placeId,
+			 guestNumber : guestNumber,
+			 startDate : startDate,
+			 endDate : endDate
+		 }
+		 
+		 reservationService.startReservation(reservation, function(nextUrl) {
+			 if (nextUrl) {
+				 openWindow(nextUrl, true);
+			 }
+		 });
+	 }
+	 
       self.initialize();
       
   }]);

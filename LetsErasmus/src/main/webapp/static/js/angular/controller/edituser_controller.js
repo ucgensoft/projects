@@ -142,7 +142,7 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
   		}
   		
   		if (userFirstName == '' || userLastName == '' || email == '') {
-  			DialogUtil.showMessage(DialogUtil.MESSAGE_TYPE.WARNING, 'Warning', 'Please fill mandatory fields!');
+  			DialogUtil.warn('Warning', 'Please fill mandatory fields!', 'OK');
   		} else {
   			var user = {
   				firstName : userFirstName,
@@ -193,18 +193,18 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
   	};
   	
   	self.sendMsisdnVerificationCode = function() {
-  		var phoneNumber = ' ';
+  		var prefix = null;
+	  	var msisdn = null;
+  		
   		if ($('#divNoPhoneNumber').length > 0) {
   			var prefix = $('#divCountryPrefix')[0].innerText;
   	  		var msisdn = $('#txtMsisdn').val();
 	  	  	if (prefix == null || prefix == '' || StringUtil.trim(msisdn) == '') {
 	  			DialogUtil.warn('Warning', 'Select a country and type your phone number please!', 'OK', null);
 	  			return;
-	  		} else {
-	  			phoneNumber = prefix + msisdn;
 	  		}
   		}
-  		userService.sendMsisdnVerificationCode(phoneNumber,
+  		userService.sendMsisdnVerificationCode(prefix, msisdn,
 				function(isSuccess) {
 					if (isSuccess) {
 						$('#divVerificationContainer').css('display', 'block');

@@ -19,11 +19,12 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
       self.placeList = [];
 
       initialize = function() {
-    	  	self.selectedPlaceName = getUriParam('place');
-    	  	self.selectedLat = getUriParam('lat');  
-    	  	self.selectedLng = getUriParam('lng');
-	    	var startDate = getUriParam('startDate');
-	    	var endDate = getUriParam('endDate');
+    	  
+    	  	self.selectedPlaceName = getUriParam(EnmUriParam.LOCATION);
+    	  	self.selectedLat = getUriParam(EnmUriParam.LATITUDE);  
+    	  	self.selectedLng = getUriParam(EnmUriParam.LONGITUDE);
+	    	var startDate = getUriParam(EnmUriParam.CHECKIN_DATE);
+	    	var endDate = getUriParam(EnmUriParam.CHECKOUT_DATE);
 		  
 			self.selectedLocation = new google.maps.LatLng(self.selectedLat, self.selectedLng);
 			var mapOptions = {
@@ -50,7 +51,7 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
 			$("#txtStartDatePicker").datepicker(
   			{
   				minDate : new Date(),
-  				dateFormat : "d MM, y",
+  				dateFormat : "dd.mm.yy",
   				onSelect : function(selectedDate, cal) {
   					self.validateSearch();
   					setTimeout(function() {
@@ -64,7 +65,7 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
 	      	$("#txtEndDatePicker").datepicker(
   			{
   				minDate : new Date(),
-  				dateFormat : "d MM, y",
+  				dateFormat : "dd.mm.yy",
   				onSelect : function(selectedDate, cal) {
   					self.validateSearch();
   				}
@@ -82,6 +83,7 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
       	    	self.setPriceRange(ui.values[0], ui.values[1]);
       	      }
       	    });
+      	    
       	  $(".ui-slider-range").css("background-color", "rgb(3, 169, 244)");
       	  
       	enumerationService.listEnumeration(null).then(function(operationResult) {
@@ -106,13 +108,17 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
 		self.search = function() {
 	    	var startDate = $.datepicker.formatDate('d.m.yy', $(
 				"#txtStartDatePicker").datepicker("getDate"));
+	    	
 			var endDate = $.datepicker.formatDate('d.m.yy', $("#txtEndDatePicker")
 						.datepicker("getDate"));
 			
-			openWindow(webApplicationUrlPrefix + '/pages/SearchResult.xhtml?place='
-						+ self.selectedPlaceName + "&lat=" + self.selectedLat + "&lng="
-						+ self.selectedLng + "&startDate=" + startDate + "&endDate="
-						+ endDate, true);
+			openWindow(webApplicationUrlPrefix + '/pages/SearchResult.xhtml' 
+					+ '?' + EnmUriParam.LOCATION + '=' + self.selectedPlaceName 
+					+ '&' + EnmUriParam.LATITUDE + '=' + self.selectedLat 
+					+ '&' + EnmUriParam.LONGITUDE + '=' + self.selectedLng 
+					+ "&" + EnmUriParam.CHECKIN_DATE + "=" + startDate 
+					+ "&" + EnmUriParam.CHECKOUT_DATE + "=" + endDate, true);
+			
 	      };
 	      
 	      self.basicSearch = function() {
@@ -422,6 +428,19 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
 	  		      }
     		  }
     	  }
+      };
+      
+      self.openPlaceDetailWindow = function(placeId) {
+    	  
+    	  var startDate = getUriParam(EnmUriParam.CHECKIN_DATE);
+    	  var endDate = getUriParam(EnmUriParam.CHECKOUT_DATE);
+    	  
+    	  var placeDetailUrl = webApplicationUrlPrefix + '/pages/PlaceDetail.xhtml' 
+    	  	+ '?' + EnmUriParam.PLACE_ID + '=' + placeId
+    	  	+ '&' + EnmUriParam.CHECKIN_DATE + '=' + startDate
+    	  	+ '&' + EnmUriParam.CHECKOUT_DATE + '=' + endDate;
+    	  
+    	  openWindow(placeDetailUrl, false);
       };
       	
 	initialize();
