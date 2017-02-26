@@ -1,19 +1,5 @@
 package com.ucgen.common.concurrency;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
-import org.apache.log4j.Level;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.ucgen.common.concurrency.enumeration.EnmInterruptSource;
-import com.ucgen.common.operationresult.OperationResult;
-import com.ucgen.common.util.FileLogger;
-
 @SuppressWarnings("rawtypes")
 public abstract class BatchProcessManager<T extends BatchTask, K extends BatchWorker> {
 	

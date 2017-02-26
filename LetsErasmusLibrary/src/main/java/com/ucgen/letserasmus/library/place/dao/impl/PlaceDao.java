@@ -304,7 +304,7 @@ public class PlaceDao extends JdbcDaoSupport implements IPlaceDao{
 		
 		if (photoFlag) {
 			sqlBuilder.append(" AND " + FileRowMapper.COL_ENTITY_TYPE + " = ? ");
-			argList.add(EnmEntityType.PLACE.getValue());
+			argList.add(EnmEntityType.PLACE.getId());
 		}
 		
 		List<Place> fileList = super.getJdbcTemplate().query(sqlBuilder.toString(), argList.toArray(), placeRowMapper);		

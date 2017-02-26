@@ -1,10 +1,12 @@
 package com.ucgen.letserasmus.library.user.model;
 
 import java.util.Date;
+import java.util.List;
 
 import com.ucgen.common.util.StringUtil;
 import com.ucgen.letserasmus.library.common.model.BaseModel;
 import com.ucgen.letserasmus.library.file.model.FileModel;
+import com.ucgen.letserasmus.library.place.model.Place;
 
 public class User extends BaseModel {
 	
@@ -14,6 +16,7 @@ public class User extends BaseModel {
 	private String email;
 	private String password;
 	private String msisdn;
+	private String msisdnCountryCode;
 	private String firstName;
 	private String lastName;
 	private String gender;
@@ -37,6 +40,8 @@ public class User extends BaseModel {
 	private String facebookEmail;
 	
 	private FileModel profilePhoto;
+	private List<Place> placeList;
+	private Integer placeListingCount;
 	
 	private String profileImageUrl;
 	private Integer loginType;
@@ -72,6 +77,12 @@ public class User extends BaseModel {
 	}
 	public void setMsisdn(String msisdn) {
 		this.msisdn = msisdn;
+	}
+	public String getMsisdnCountryCode() {
+		return msisdnCountryCode;
+	}
+	public void setMsisdnCountryCode(String msisdnCountryCode) {
+		this.msisdnCountryCode = msisdnCountryCode;
 	}
 	public String getFirstName() {
 		return firstName;
@@ -220,6 +231,22 @@ public class User extends BaseModel {
 
 	public void setFacebookEmail(String facebookEmail) {
 		this.facebookEmail = facebookEmail;
+	}
+
+	public List<Place> getPlaceList() {
+		return placeList;
+	}
+
+	public void setPlaceList(List<Place> placeList) {
+		this.placeList = placeList;
+	}
+
+	public Integer getPlaceListingCount() {
+		return placeListingCount;
+	}
+
+	public void setPlaceListingCount(Integer placeListingCount) {
+		this.placeListingCount = placeListingCount;
 	}
 
 	public String getFullName() {

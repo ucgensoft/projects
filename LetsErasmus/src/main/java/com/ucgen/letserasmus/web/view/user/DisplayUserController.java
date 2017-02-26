@@ -15,9 +15,12 @@ public class DisplayUserController extends BaseController {
 	
 	@ManagedProperty(value="#{userService}")
 	private IUserService userService;
+	
+	@ManagedProperty(value="#{webApplication}")
+	private WebApplication webApplication;
 
 	private User user;
-
+	
 	public void setUserService(IUserService userService) {
 		this.userService = userService;
 		Object objUserId = super.getRequestParameter("userId");
@@ -26,13 +29,16 @@ public class DisplayUserController extends BaseController {
 		}
 	}
 
+	public void setWebApplication(WebApplication webApplication) {
+		this.webApplication = webApplication;
+	}
+
 	public User getUser() {
 		return user;
 	}
-	
+	/*
 	public String getUserLargePhotoUrl() {
-		return WebApplication.getUserLargePhotoUrl(this.getUser());
+		return this.webApplication.getUserLargePhotoUrl(this.getUser());
 	}
-	
-	
+	*/
 }

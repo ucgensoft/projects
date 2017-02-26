@@ -143,6 +143,19 @@ public abstract class BaseRowMapper<T> implements RowMapper<T>{
 					fromBuilder.append(fKey.getDestMapper().getShortTableName() + "." + fKey.getFieldPairMap().get(fieldPairKey));
 					counter ++;
 				}
+				
+				if (fKey.getStaticCriteriaMap() != null) {
+					counter = 0;
+					for (String staticCriteriaField : fKey.getStaticCriteriaMap().keySet()) {
+						if (counter > 0) {
+							fromBuilder.append(" AND ");
+						}
+						fromBuilder.append(this.shortTableName + "." + staticCriteriaField);
+						fromBuilder.append("=");
+						fromBuilder.append(fKey.getFieldPairMap().get(staticCriteriaField).toString());
+						counter ++;
+					}
+				}
 			}
 		}
 		

@@ -6,6 +6,7 @@ import java.util.Map;
 public class ForeignKey<K extends BaseRowMapper, M extends BaseRowMapper> {
 
 	private Map<String, String> fieldPairMap;
+	private Map<String, Object> staticCriteriaMap;
 	private K sourceMapper;
 	private M destMapper;
 	private EnmJoinType joinType;
@@ -16,6 +17,14 @@ public class ForeignKey<K extends BaseRowMapper, M extends BaseRowMapper> {
 
 	public void setFieldPairMap(Map<String, String> fieldPairMap) {
 		this.fieldPairMap = fieldPairMap;
+	}
+
+	public Map<String, Object> getStaticCriteriaMap() {
+		return staticCriteriaMap;
+	}
+
+	public void setStaticCriteriaMap(Map<String, Object> staticCriteriaMap) {
+		this.staticCriteriaMap = staticCriteriaMap;
 	}
 
 	public K getSourceMapper() {
@@ -53,6 +62,13 @@ public class ForeignKey<K extends BaseRowMapper, M extends BaseRowMapper> {
 			this.fieldPairMap = new HashMap<String, String>();
 		}
 		this.fieldPairMap.put(sourceField, destField);
+	}
+	
+	public void addStaticValueCriteria(String sourceField, Object value) {
+		if (this.staticCriteriaMap == null) {
+			this.staticCriteriaMap = new HashMap<String, Object>();
+		}
+		this.staticCriteriaMap.put(sourceField, value);
 	}
 	
 }

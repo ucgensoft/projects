@@ -1,0 +1,755 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" 
+	template="/pages/Template.xhtml">
+	<ui:define name="head">
+		<link rel="stylesheet" type="text/css"
+			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css" />
+		<link rel="stylesheet" type="text/css"
+			href="#{webApplication.urlPrefix}/static/css/reservation.css" />
+		<link rel="stylesheet"
+			href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+		<script>
+		</script>
+		<style>
+.container_1qdkg78 {
+	background-color: #ffffff !important;
+}
+
+.container_1dkwj7e {
+	margin-top: 0px !important;
+	margin-bottom: 0px !important;
+	margin-left: auto !important;
+	margin-right: auto !important;
+	text-align: center !important;
+	position: absolute !important;
+	display: block !important;
+	top: 50% !important;
+	left: 50% !important;
+	transform: translateX(-50%) translateY(-50%) !important;
+	-webkit-transform: translateX(-50%) translateY(-50%) !important;
+	-ms-transform: translateX(-50%) translateY(-50%) !important;
+}
+
+@
+keyframes keyframe_1fr1yn6 { 0%, 80%, 100%{
+	opacity: 0;
+}
+
+30%,50%{
+opacity
+
+
+:
+
+
+1;
+}
+}
+.dot_1yhnfch-o_O-dotDefault_wivayp-o_O-dot1_129bpzm {
+	width: 6px !important;
+	height: 6px !important;
+	margin-right: 4px !important;
+	border-radius: 100% !important;
+	display: inline-block !important;
+	animation-name: keyframe_1fr1yn6 !important;
+	animation-duration: 0.8s !important;
+	animation-iteration-count: infinite !important;
+	animation-timing-function: linear !important;
+	animation-fill-mode: both !important;
+	vertical-align: middle !important;
+	background-color: #00A699 !important;
+	animation-delay: -0.3s !important;
+	-webkit-animation-name: keyframe_1fr1yn6 !important;
+	-webkit-animation-duration: 0.8s !important;
+	-webkit-animation-iteration-count: infinite !important;
+	-webkit-animation-timing-function: linear !important;
+	-webkit-animation-fill-mode: both !important;
+	-webkit-animation-delay: -0.3s !important;
+}
+
+.dot_1yhnfch-o_O-dotDefault_wivayp-o_O-dot2_1si4tia {
+	width: 6px !important;
+	height: 6px !important;
+	margin-right: 4px !important;
+	border-radius: 100% !important;
+	display: inline-block !important;
+	animation-name: keyframe_1fr1yn6 !important;
+	animation-duration: 0.8s !important;
+	animation-iteration-count: infinite !important;
+	animation-timing-function: linear !important;
+	animation-fill-mode: both !important;
+	vertical-align: middle !important;
+	background-color: #00A699 !important;
+	animation-delay: -0.15s !important;
+	-webkit-animation-name: keyframe_1fr1yn6 !important;
+	-webkit-animation-duration: 0.8s !important;
+	-webkit-animation-iteration-count: infinite !important;
+	-webkit-animation-timing-function: linear !important;
+	-webkit-animation-fill-mode: both !important;
+	-webkit-animation-delay: -0.15s !important;
+}
+
+.dot_1yhnfch-o_O-dotDefault_wivayp {
+	width: 6px !important;
+	height: 6px !important;
+	margin-right: 4px !important;
+	border-radius: 100% !important;
+	display: inline-block !important;
+	animation-name: keyframe_1fr1yn6 !important;
+	animation-duration: 0.8s !important;
+	animation-iteration-count: infinite !important;
+	animation-timing-function: linear !important;
+	animation-fill-mode: both !important;
+	vertical-align: middle !important;
+	background-color: #00A699 !important;
+	-webkit-animation-name: keyframe_1fr1yn6 !important;
+	-webkit-animation-duration: 0.8s !important;
+	-webkit-animation-iteration-count: infinite !important;
+	-webkit-animation-timing-function: linear !important;
+	-webkit-animation-fill-mode: both !important;
+}
+
+.containerFallback_1flg7kn-o_O-container_1q3gbws {
+	text-align: justify !important;
+	line-height: 0 !important;
+	display: -moz-box !important;
+	display: -ms-flexbox !important;
+	display: -webkit-box !important;
+	display: -webkit-flex !important;
+	display: flex !important;
+	flex-wrap: wrap !important;
+	align-items: center !important;
+	-webkit-flex-wrap: wrap !important;
+	-ms-flex-wrap: wrap !important;
+	-webkit-align-items: center !important;
+	-webkit-box-lines: multiple !important;
+	-ms-flex-align: center !important;
+	-webkit-box-align: center !important;
+}
+
+.containerFallback_1flg7kn-o_O-container_1q3gbws::after {
+	content: '' !important;
+	display: inline-block !important;
+	vertical-align: top !important;
+	width: 100% !important;
+}
+
+.beforeFallback_1fsenqq-o_O-before_2mcs2o {
+	display: inline-block !important;
+	vertical-align: middle !important;
+	flex-grow: 1 !important;
+	-webkit-flex-grow: 1 !important;
+	-ms-flex-positive: 1 !important;
+}
+
+.text_1chds16-o_O-size_regular_1aunhvg {
+	font-weight: normal !important;
+	color: #484848 !important;
+	font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto,
+		Helvetica Neue, sans-serif !important;
+	margin: 0px !important;
+	word-wrap: break-word !important;
+	font-size: 19px !important;
+	line-height: 24px !important;
+	letter-spacing: undefined !important;
+	padding-top: 0px !important;
+	padding-bottom: 0px !important;
+}
+
+.button_j44uvu-o_O-button_1ndu018-o_O-button_small_plbzx7-o_O-button_light_497fkv
+	{
+	display: inline-block !important;
+	width: 32px !important;
+	height: 32px !important;
+	cursor: pointer !important;
+	border-radius: 16px !important;
+	text-align: center !important;
+	line-height: 1 !important;
+	position: relative !important;
+	border: 2px solid transparent !important;
+	background-color: transparent !important;
+	border-color: #008489 !important;
+	text-color: #008489 !important;
+	border-width: 1px !important;
+}
+
+.button_j44uvu-o_O-button_1ndu018-o_O-button_small_plbzx7-o_O-button_light_497fkv:active
+	{
+	background-color: transparent !important;
+	border-color: #00514A !important;
+}
+
+.button_j44uvu-o_O-button_1ndu018-o_O-button_small_plbzx7-o_O-button_light_497fkv:disabled
+	{
+	background-color: transparent !important;
+	border-color: rgba(0, 132, 137, 0.3) !important;
+	text-color: rgba(0, 132, 137, 0.3) !important;
+}
+
+.icon_11lu7vm-o_O-icon_1vlavj7-o_O-icon_small_1duffsf {
+	display: inline-block !important;
+	font-size: 16px !important;
+	position: absolute !important;
+	top: 50% !important;
+	left: 50% !important;
+	transform: translate(-50%, -50%) !important;
+	color: rgba(0, 132, 137, 0.3) !important;
+	-webkit-transform: translate(-50%, -50%) !important;
+	-ms-transform: translate(-50%, -50%) !important;
+}
+
+.icon_11lu7vm-o_O-icon_1vlavj7-o_O-icon_small_1duffsf:active {
+	color: undefined !important;
+}
+
+.text_1chds16-o_O-size_small_1vrq4z6-o_O-weight_light_1jo1qff {
+	font-weight: 200 !important;
+	color: #484848 !important;
+	font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto,
+		Helvetica Neue, sans-serif !important;
+	margin: 0px !important;
+	word-wrap: break-word !important;
+	font-size: 15px !important;
+	line-height: 18px !important;
+	letter-spacing: 0.2px !important;
+	padding-top: 0px !important;
+	padding-bottom: 0px !important;
+}
+
+.icon_11lu7vm-o_O-icon_1cdv9s2-o_O-icon_small_1duffsf {
+	display: inline-block !important;
+	font-size: 16px !important;
+	position: absolute !important;
+	top: 50% !important;
+	left: 50% !important;
+	transform: translate(-50%, -50%) !important;
+	color: #008489 !important;
+	-webkit-transform: translate(-50%, -50%) !important;
+	-ms-transform: translate(-50%, -50%) !important;
+}
+
+.icon_11lu7vm-o_O-icon_1cdv9s2-o_O-icon_small_1duffsf:active {
+	color: undefined !important;
+}
+
+.component_59vu4c-o_O-component_button_r21s1q {
+	color: #008489 !important;
+	font: inherit !important;
+	font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto,
+		Helvetica Neue, sans-serif !important;
+	text-decoration: none !important;
+	appearance: none !important;
+	background: transparent !important;
+	border: 0px !important;
+	cursor: pointer !important;
+	margin: 0px !important;
+	padding: 0px !important;
+	text-align: left !important;
+	user-select: auto !important;
+	-webkit-appearance: none !important;
+	-moz-appearance: none !important;
+	-webkit-user-select: auto !important;
+	-moz-user-select: auto !important;
+	-ms-user-select: auto !important;
+}
+
+.component_59vu4c-o_O-component_button_r21s1q:hover {
+	text-decoration: underline !important;
+}
+
+.component_59vu4c-o_O-component_button_r21s1q:active {
+	color: #00514A !important;
+	outline: 0px !important;
+}
+
+.container_1a9cc3c-o_O-inline_cm9r68 {
+	cursor: pointer !important;
+	background-color: transparent !important;
+	color: buttontext !important;
+	border: 0px !important;
+	padding: 0px !important;
+	display: inline-block !important;
+}
+
+.container_1a9cc3c-o_O-inline_cm9r68:active {
+	outline: 0px !important;
+}
+
+.container_1a9cc3c-o_O-inline_cm9r68:disabled {
+	opacity: 0.5 !important;
+	cursor: default !important;
+	color: graytext !important;
+}
+
+.container_1qdkg78 {
+	background-color: #ffffff !important;
+}
+
+.container_1dkwj7e {
+	margin-top: 0px !important;
+	margin-bottom: 0px !important;
+	margin-left: auto !important;
+	margin-right: auto !important;
+	text-align: center !important;
+	position: absolute !important;
+	display: block !important;
+	top: 50% !important;
+	left: 50% !important;
+	transform: translateX(-50%) translateY(-50%) !important;
+	-webkit-transform: translateX(-50%) translateY(-50%) !important;
+	-ms-transform: translateX(-50%) translateY(-50%) !important;
+}
+
+@
+keyframes keyframe_1fr1yn6 { 0%, 80%, 100%{
+	opacity: 0;
+}
+
+30%,50%{
+opacity
+
+
+:
+
+
+1;
+}
+}
+.dot_1yhnfch-o_O-dotDefault_wivayp-o_O-dot1_129bpzm {
+	width: 6px !important;
+	height: 6px !important;
+	margin-right: 4px !important;
+	border-radius: 100% !important;
+	display: inline-block !important;
+	animation-name: keyframe_1fr1yn6 !important;
+	animation-duration: 0.8s !important;
+	animation-iteration-count: infinite !important;
+	animation-timing-function: linear !important;
+	animation-fill-mode: both !important;
+	vertical-align: middle !important;
+	background-color: #00A699 !important;
+	animation-delay: -0.3s !important;
+	-webkit-animation-name: keyframe_1fr1yn6 !important;
+	-webkit-animation-duration: 0.8s !important;
+	-webkit-animation-iteration-count: infinite !important;
+	-webkit-animation-timing-function: linear !important;
+	-webkit-animation-fill-mode: both !important;
+	-webkit-animation-delay: -0.3s !important;
+}
+
+.dot_1yhnfch-o_O-dotDefault_wivayp-o_O-dot2_1si4tia {
+	width: 6px !important;
+	height: 6px !important;
+	margin-right: 4px !important;
+	border-radius: 100% !important;
+	display: inline-block !important;
+	animation-name: keyframe_1fr1yn6 !important;
+	animation-duration: 0.8s !important;
+	animation-iteration-count: infinite !important;
+	animation-timing-function: linear !important;
+	animation-fill-mode: both !important;
+	vertical-align: middle !important;
+	background-color: #00A699 !important;
+	animation-delay: -0.15s !important;
+	-webkit-animation-name: keyframe_1fr1yn6 !important;
+	-webkit-animation-duration: 0.8s !important;
+	-webkit-animation-iteration-count: infinite !important;
+	-webkit-animation-timing-function: linear !important;
+	-webkit-animation-fill-mode: both !important;
+	-webkit-animation-delay: -0.15s !important;
+}
+
+.dot_1yhnfch-o_O-dotDefault_wivayp {
+	width: 6px !important;
+	height: 6px !important;
+	margin-right: 4px !important;
+	border-radius: 100% !important;
+	display: inline-block !important;
+	animation-name: keyframe_1fr1yn6 !important;
+	animation-duration: 0.8s !important;
+	animation-iteration-count: infinite !important;
+	animation-timing-function: linear !important;
+	animation-fill-mode: both !important;
+	vertical-align: middle !important;
+	background-color: #00A699 !important;
+	-webkit-animation-name: keyframe_1fr1yn6 !important;
+	-webkit-animation-duration: 0.8s !important;
+	-webkit-animation-iteration-count: infinite !important;
+	-webkit-animation-timing-function: linear !important;
+	-webkit-animation-fill-mode: both !important;
+}
+
+.container_1a9cc3c-o_O-inline_cm9r68 {
+	cursor: pointer !important;
+	background-color: transparent !important;
+	color: buttontext !important;
+	border: 0px !important;
+	padding: 0px !important;
+	display: inline-block !important;
+}
+
+.container_1a9cc3c-o_O-inline_cm9r68:active {
+	outline: 0px !important;
+}
+
+.container_1a9cc3c-o_O-inline_cm9r68:disabled {
+	opacity: 0.5 !important;
+	cursor: default !important;
+	color: graytext !important;
+}
+</style>
+	</ui:define>
+	<ui:define name="body">
+		<input type="hidden" value="#{webApplication.setActiveOperation(9)}" />
+		<main id="site-content" role="main">
+		<div>
+			<span></span>
+		</div>
+		<div id="main-view"
+			class="main-view page-container-responsive     space-top-md-6 space-md-6 space-top-lg-6 space-lg-6">
+			<form action="https://www.airbnb.com/payments/create_booking_v2"
+				method="post" id="checkout-form">
+				<div class="row">
+					<div class="col-sm-12 p4-error-header space-1">
+						<div
+							class="alert alert-with-icon alert-error alert-block hide space-lg-2 space-md-2"
+							id="form-errors">
+							<i class="icon alert-icon icon-alert-alt"></i>
+							<div class="h5 space-1 error-header">Almost done!</div>
+							<ul></ul>
+						</div>
+						<div
+							class="alert alert-with-icon alert-success alert-block hide space-lg-2 space-md-2"
+							id="coupon-success">
+							<i class="icon alert-icon icon-star-circled"></i>
+							<div class="h5 space-1 error-header">A promotion was
+								applied</div>
+							We've applied a promotion to your total trip cost. Now, go! Have
+							fun.
+						</div>
+						<div
+							class="alert alert-with-icon alert-error alert-block hide space-lg-2 space-md-2"
+							id="server-error">
+							<i class="icon alert-icon icon-alert-alt"></i> Unfortunately, a
+							server error prevented your request from being completed. Airbnb
+							may be undergoing maintenance or your connection may have timed
+							out. Please try again.
+						</div>
+						<div
+							class="alert alert-with-icon alert-error alert-block hide space-lg-2 space-md-2"
+							id="verification-error">
+							<i class="icon alert-icon icon-alert-alt"></i> Your card could
+							not be verified. Please try another card. Your card was not
+							charged.
+						</div>
+						<div
+							class="alert alert-with-icon alert-error alert-block hide space-lg-2 space-md-2"
+							id="house-rules-error">
+							<i class="icon alert-icon icon-alert-alt"></i>
+							<div class="h5 space-1 error-header">House Rules and Terms</div>
+							<p>Before booking, agree to the House Rules and Terms.</p>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div
+						class="col-md-5 col-md-push-7 space-lg-2 space-md-2 side-summary-container">
+						<div>
+							<div class="summary-card col-center">
+								<div
+									class="background-cover summary-card__payments-listing-image"
+									style="background-image: url(https://a0.muscache.com/im/pictures/9ef7f979-eae5-4f25-be8d-c93f767de82c.jpg?aki_policy=large);"></div>
+								<div class="pull-right space-3 summary-card__host-profile-photo">
+									<div class="media-photo media-round">
+										<img class="summary-card__host-profile-photo-src"
+											src="./PaymentPage2_files/2fbedaff-e37d-4f85-a3f4-1659d22d07ab.jpg"
+											alt="Anıl" />
+									</div>
+								</div>
+								<div class="panel">
+									<div class="panel-body">
+										<div class="text-muted space-2">
+											<span>Hosted by Anıl</span>
+										</div>
+										<div class="sidebar-text-large">Goztepe cozy place</div>
+										<div class="hide-sm text-muted">
+											<ul class="list-layout summary-card__additional-details-list">
+												<li>Private room</li>
+											</ul>
+											<div>Kadıköy, İstanbul 34720, Turkey</div>
+										</div>
+									</div>
+									<div class="panel-body hide-sm">
+										<div class="row row-condensed">
+											<div class="col-sm-5">
+												<div class="text-muted space-bottom-2">
+													<span>Check-in</span>
+												</div>
+												<!-- react-text: 20 -->
+												Feb 12, 2017
+												<!-- /react-text -->
+											</div>
+											<div class="col-sm-2 summary-card__check-in-icon">
+												<i class="icon icon-chevron-right icon-light-gray"></i>
+											</div>
+											<div class="col-sm-5">
+												<div class="text-muted space-bottom-2">
+													<span>Checkout</span>
+												</div>
+												<!-- react-text: 26 -->
+												Feb 13, 2017
+												<!-- /react-text -->
+											</div>
+										</div>
+									</div>
+									<div class="panel-body hide-sm">
+										<table class="summary-card__billing-table">
+											<tbody>
+												<tr class="price-item">
+													<th class="price-item__header" scope="row">
+														<!-- react-text: 32 -->78 ₺ x 1 night<!-- /react-text -->
+														<span aria-hidden="true">&nbsp;</span>
+													</th>
+													<td class="text-right price-item__price"><div class="">
+															<span>78₺</span>
+														</div></td>
+												</tr>
+												<tr class="price-item">
+													<th class="price-item__header" scope="row">
+														<!-- react-text: 39 -->Service fee<!-- /react-text --> <span
+														aria-hidden="true">&nbsp;</span><span><span><i
+																class="icon icon-question"
+																aria-label="This helps us run our platform and offer services like 24/7 support on your trip."></i>
+																<!-- react-empty: 44 --></span></span>
+													</th>
+													<td class="text-right price-item__price"><div class="">
+															<span>11₺</span>
+														</div></td>
+												</tr>
+												
+											</tbody>
+										</table>
+									</div>
+									<div class="panel-body hide-sm">
+										<button
+											class="sidebar-text-large space-2 summary-card__total-price"
+											tabindex="-1">
+											<table class="summary-card__billing-table">
+												<tbody>
+													<tr class="price-item">
+														<th class="price-item__header" scope="row">
+															<!-- react-text: 59 -->Total<!-- /react-text --> <span
+															aria-hidden="true">&nbsp;</span>
+														</th>
+														<td class="text-right price-item__price"><div
+																class="">
+																<span>89₺</span><sup>TRY</sup>
+															</div></td>
+													</tr>
+												</tbody>
+											</table>
+										</button>
+										<div class="cancellation-policy">
+											<span> <!-- react-text: 67 -->Cancellation policy: <!-- /react-text -->
+												<span><a
+													href="https://www.airbnb.com/home/cancellation_policies#flexible"
+													target="_blank"><span>Flexible</span></a></span>
+											</span>
+										</div>
+										<!-- react-empty: 71 -->
+									</div>
+									<div class="show-sm panel-body text-center">
+										<a><span>View pricing and trip summary</span></a>
+									</div>
+									<input type="hidden" value="1" name="apply_airbnb_credit"
+										id="apply_airbnb_credit" />
+								</div>
+								<noscript></noscript>
+							</div>
+						</div>
+					</div>
+					<div id="content-container"
+						class="summary-card-page-content col-md-7 col-md-pull-5">
+						<div class="accordion-panel">
+							<section> <header
+								class="accordion-header text-lead accordion-header--below-collapsed">
+							<hr class="accordion-header-divider space-top-1 space-3" />
+								<div class="row">
+									<div class="col-md-10 text-left">
+										<div class="h3 pull-left">2. Payment</div>
+									</div>
+									<div class="col-md-2 text-right header-edit-link"></div>
+								</div>
+								<div class="space-2"></div>
+							</header></section>
+							<div id="payment-panel"
+								class="accordion-panel__content accordion-panel-overflow text-lead accordion-panel--expanded">
+								<div id="payment_selectors">
+									<div class="">
+										<div class="row space-4">
+											<div class="col-sm-12">
+												<span>You’ll only be charged if your request is
+													accepted by the host. They’ll have 24 hours to accept or
+													decline.</span>
+											</div>
+										</div>
+										<div>
+											<div class="row space-4">
+												<div class="col-6">
+													<div>
+														<label for="payment-country"><span>Billing
+																country</span></label>
+														<div class="select select-block">
+															<select class="" id="payment-country"
+																name="payment_country">
+																<option value="AF">Afghanistan</option>
+																<option value="AX">Åland Islands</option>
+															</select>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div>
+											<div class="row">
+												<div class="col-sm-12 col-md-6">
+													<label for="payment_type"><span>Payment type</span></label>
+												</div>
+											</div>
+											<div class="row space-4">
+												<div class="col-sm-12 col-md-6">
+													<div>
+														<div class="select select-block">
+															<select class="" id="payment-type" name="payment_type"><option
+																	value="0">Credit Card</option></select>
+														</div>
+													</div>
+												</div>
+												<div class="col-sm-12 col-md-6">
+													<div class="payment-logos">
+														<div class="payment-logo visa inactive"></div>
+														<div class="payment-logo master inactive"></div>
+														<div class="payment-logo american_express inactive"></div>
+														<div class="payment-logo discover inactive"></div>
+														<div class="payment-logo paypal inactive"></div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<section id="payment" class="payment">
+								<div class="payment-section">
+									<div id="payment-methods-content" class="space-4">
+										<div class="payment-method cc" id="payment-method-cc">
+											<div class="payment-method-container">
+												<input type="hidden" name="payment_method_nonce"
+													id="payment_method_nonce" /> 
+												<input type="hidden"
+													name="payment_method_cvv_nonce"
+													id="payment_method_cvv_nonce" /> 
+												<input type="hidden"
+														name="payment_method_cse_payload"
+														id="payment_method_cse_payload" />
+											</div>
+										</div>
+									</div>
+								</div>
+								<input name="payment_method" type="hidden" value="cc" />
+								</section>
+								<style></style>
+								<div>
+									<div class="">
+										<div></div>
+										<div>
+											
+											<div>
+												<div class="row space-4">
+													<div class="col-6">
+														<div>
+															<label for="credit-card-first-name"><span id=""><span>First
+																		name</span></span></label>
+																		<input
+																type="text" class=""
+																aria-describedby="credit-card-first-name-field-error"
+																aria-invalid="false" aria-labelledby=""
+																aria-required="false" id="credit-card-first-name"
+																name="credit_card[first_name]" value="#{webApplication.user.firstName}" />
+																<div
+																	aria-live="polite"
+																	id="credit-card-first-name-field-error"></div>
+														</div>
+													</div>
+													<div class="col-6">
+														<div>
+															<label for="credit-card-last-name"><span id=""><span>Last
+																		name</span></span> </label><input
+																type="text" class=""
+																aria-describedby="credit-card-last-name-field-error"
+																aria-invalid="false" aria-labelledby=""
+																aria-required="false" id="credit-card-last-name"
+																name="credit_card[last_name]" value="#{webApplication.user.lastName}" /><div
+																	aria-live="polite"
+																	id="credit-card-last-name-field-error"></div>
+														</div>
+													</div>
+												</div>
+												<div class="row space-4">
+													<div class="col-4">
+														<div>
+															<label for="credit-card-zip"><span
+																id="credit-card-zip-label-content"><span>Postal
+																		code</span></span><span>&nbsp;*</span></label>
+																		<input type="text" class=""
+																aria-describedby="credit-card-zip-field-error"
+																aria-invalid="false"
+																aria-labelledby="credit-card-zip-label-content"
+																aria-required="true" id="credit-card-zip"
+																name="credit_card[zip]" />
+															<div aria-live="polite"
+																	id="credit-card-zip-field-error"></div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row space-4">
+											<div class="col-sm-12">
+												<button type="button" class="btn btn-primary btn-large" 
+													ng-click="ctrl.onBtnFinishClick()">
+													<span>Finish</span>
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="show-sm space-top-2">
+							<div class="accordion-style-checkout__section">
+								<div>
+									<div>
+										<div class="sidebar-text-large">
+											<div>
+												<span>Total</span> <span>89₺</span>
+											</div>
+										</div>
+										<a
+											href="https://www.airbnb.com/payments/book?checkin=2017-02-12&amp;checkout=2017-02-13&amp;hosting_id=17104855&amp;name=Goztepe%20cozy%20place&amp;number_of_adults=1&amp;number_of_children=0&amp;number_of_guests=1&amp;number_of_infants=0&amp;s=pzfzmuU2&amp;code=4E535B&amp;tab=1#"><span>View
+												pricing and trip summary</span></a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+		</main>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/service/reservation_service.js"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/controller/reservation_controller.js"></script>
+	</ui:define>
+</ui:composition>

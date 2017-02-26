@@ -45,7 +45,7 @@ public class PlaceService implements IPlaceService{
 		ValueOperationResult<Place> getResult = this.placeDao.getPlace(id);
 		if (OperationResult.isResultSucces(getResult)) {
 			FileModel file = new FileModel();
-			file.setEntityType(EnmEntityType.PLACE.getValue());
+			file.setEntityType(EnmEntityType.PLACE.getId());
 			file.setEntityId(getResult.getResultValue().getId());
 			
 			ListOperationResult<FileModel> fileListResult = this.fileService.listFile(file);

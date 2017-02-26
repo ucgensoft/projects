@@ -1,0 +1,1008 @@
+.expandable .expandable-content, .react-expandable .expandable-content {
+	position: relative;
+	height: 7em;
+	overflow: hidden;
+	-webkit-transition: height .2s;
+	-o-transition: height .2s;
+	-moz-transition: height .2s;
+	transition: height .2s
+}
+
+.expandable .expandable-content.expandable-context--inReduceP3FontsizeExperiment,
+	.react-expandable .expandable-content.expandable-context--inReduceP3FontsizeExperiment
+	{
+	height: 88px
+}
+
+.expandable .expandable-content.expandable-content-long,
+	.react-expandable .expandable-content.expandable-content-long {
+	height: 14em
+}
+
+.expandable .expandable-content-full, .react-expandable .expandable-content-full
+	{
+	overflow: hidden;
+	opacity: 0;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	visibility: hidden;
+	position: absolute;
+	z-index: -1;
+	-webkit-transition: height .2s, opacity .2s;
+	-o-transition: height .2s, opacity .2s;
+	-moz-transition: height .2s, opacity .2s;
+	transition: height .2s, opacity .2s
+}
+
+.expandable .expandable-indicator, .react-expandable .expandable-indicator
+	{
+	background: #ffffff;
+	background: rgba(255, 255, 255, 0);
+	background: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255,
+		0)), color-stop(50%, rgba(255, 255, 255, 0.9)),
+		color-stop(50%, rgba(255, 255, 255, 0.9)), to(#fff));
+	background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0) 0%,
+		rgba(255, 255, 255, 0.9) 50%, rgba(255, 255, 255, 0.9) 50%, #fff 100%);
+	background: -moz-linear-gradient(top, rgba(255, 255, 255, 0) 0%,
+		rgba(255, 255, 255, 0.9) 50%, rgba(255, 255, 255, 0.9) 50%, #fff 100%);
+	background: -o-linear-gradient(top, rgba(255, 255, 255, 0) 0%,
+		rgba(255, 255, 255, 0.9) 50%, rgba(255, 255, 255, 0.9) 50%, #fff 100%);
+	background: linear-gradient(top, rgba(255, 255, 255, 0) 0%,
+		rgba(255, 255, 255, 0.9) 50%, rgba(255, 255, 255, 0.9) 50%, #fff 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00ffffff',
+		endColorstr='#ffffffff', GradientType=0)
+}
+
+.expandable.expanded .expandable-indicator, .expandable.expanded .expandable-trigger-more,
+	.expandable.expanded .react-expandable-trigger-more, .expandable.expanded .expandable-content-summary,
+	.react-expandable.expanded .expandable-indicator, .react-expandable.expanded .expandable-trigger-more,
+	.react-expandable.expanded .react-expandable-trigger-more,
+	.react-expandable.expanded .expandable-content-summary {
+	display: none
+}
+
+.expandable.expanded .expandable-content, .expandable.expanded .expandable-content-long,
+	.react-expandable.expanded .expandable-content, .react-expandable.expanded .expandable-content-long
+	{
+	height: auto
+}
+
+.expandable.expanded .expandable-content-full, .react-expandable.expanded .expandable-content-full
+	{
+	opacity: 1;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+	visibility: visible;
+	z-index: auto;
+	position: relative
+}
+
+.responsiveness-warning-banner .responsiveness-warning-banner--icon {
+	margin-top: -10px
+}
+
+.responsiveness-warning-banner .responsiveness-warning-banner--text {
+	margin-left: 50px
+}
+
+.host-app-install-banner .icon-host-app-install {
+	background-repeat: no-repeat;
+	background-image:
+		url(https://a0.muscache.com/airbnb/static/global_supply/phone-illo-440c2f5b7b89b3cb5cfc034082c58256.png);
+	width: 60px;
+	height: 102px;
+	-webkit-background-size: contain;
+	-moz-background-size: contain;
+	-o-background-size: contain;
+	background-size: contain
+}
+
+@media ( min--moz-device-pixel-ratio : 1.3) , ( -o-min-device-pixel-ratio : 2.6 /
+		2) , ( -webkit-min-device-pixel-ratio : 1.3) , (
+		min-device-pixel-ratio : 1.3) , ( -o-min-device-pixel-ratio : 13/10) ,
+		( min-resolution : 1.3dppx) {
+	.host-app-install-banner .icon-host-app-install {
+		background-image:
+			url(https://a0.muscache.com/airbnb/static/global_supply/phone-illo@2x-663a1e16d0d4ebd72ee9bf4a3100f566.png);
+		-webkit-background-size: 60px 102px;
+		-moz-background-size: 60px 102px;
+		-o-background-size: 60px 102px;
+		background-size: 60px 102px
+	}
+}
+
+@media ( min-width : 744px) {
+	.host-app-install-banner .icon-host-app-install {
+		margin-left: 25.5px;
+		margin-top: 6px
+	}
+}
+
+.host-app-install-banner .host-app-install-banner__button {
+	display: inline-block;
+	margin-left: 0
+}
+
+.host-app-install-banner .host-app-install-banner__error-message {
+	font-size: 14px;
+	height: 14px;
+	display: inline-block;
+	padding-left: 14px
+}
+
+@media ( min-width : 744px) {
+	.host-app-install-banner .icon-host-app-install__content {
+		margin-left: 50px
+	}
+}
+
+.panel-quote-flush {
+	margin-left: 0
+}
+
+.panel-quote-flush.panel-quote-right {
+	margin-right: 0
+}
+
+.panel-host-decline-body-first-decline {
+	margin: 20px
+}
+
+.panel-host-decline-body-first-decline>*:last-child {
+	margin-bottom: 0
+}
+
+.panel-host-decline-body {
+	margin: 20px
+}
+
+.flag-control {
+	margin-left: 10px
+}
+
+.flagged {
+	color: orange
+}
+
+.phishing-warning {
+	opacity: 0;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	-webkit-transition: opacity .2s ease-in-out;
+	-o-transition: opacity .2s ease-in-out;
+	-moz-transition: opacity .2s ease-in-out;
+	transition: opacity .2s ease-in-out
+}
+
+.phishing-warning.in {
+	opacity: 1;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"
+}
+
+.education-friction-panel {
+	background-color: #feeeef;
+	color: #82898d
+}
+
+.education-friction-false-positive-highlight {
+	color: #82898d
+}
+
+.education-friction-highlight {
+	background-color: #feeeef;
+	color: #2d2d2d
+}
+
+@media ( max-width : 743px) {
+	.subnav {
+		display: none
+	}
+}
+
+.paid_amenities_form_errors p {
+	font-size: 14px
+}
+
+.charge-paid-amenity-form .paid_amenity_message {
+	height: 62px !important
+}
+
+.paid-amenity-message-header-container .icon-tag-container {
+	padding-right: 20px
+}
+
+.paid-amenity-message-header-container .icon-tag-container .icon-tag {
+	display: block;
+	height: 50px
+}
+
+.paid-amenity-message-header-container .icon-trash-container {
+	margin-top: -0.5em;
+	display: inline-block
+}
+
+.paid-amenity-message-header-container .icon-trash-container .icon-trash:hover
+	{
+	color: #ff5a5f
+}
+
+.paid-amenity-message-header-container>div {
+	margin-bottom: 3px
+}
+
+.paid-amenity-message-header-container>div:last-child {
+	margin-bottom: 0
+}
+
+.paid-amenity-message-header-container .trip-invoice-item-dispute {
+	text-decoration: underline
+}
+
+#conversation_alert_link_divider {
+	display: inline-block;
+	margin-left: 10px;
+	margin-right: 10px;
+	color: #767676
+}
+
+.scrubbed {
+	color: red;
+	font-weight: bold;
+	text-decoration: line-through
+}
+
+.text-medium-gray {
+	color: #9b9b9b
+}
+
+.text-emphasis-gray {
+	color: #6b6b6b
+}
+
+.mt-sidebar-container {
+	padding: 0 50px
+}
+
+.qt-sidebar-redesign {
+	padding: 50px 0;
+	border: 1px solid #dce0e0
+}
+
+.qt-sidebar-redesign .mt-sidebar-container.editing-special-offer {
+	-webkit-box-shadow: 0, 0, 10px, 3px, rgba(0, 0, 0, 0.2);
+	-moz-box-shadow: 0, 0, 10px, 3px, rgba(0, 0, 0, 0.2);
+	box-shadow: 0, 0, 10px, 3px, rgba(0, 0, 0, 0.2);
+	padding-bottom: 20px;
+	padding-top: 5px
+}
+
+.qt-sidebar-redesign .qt-sidebar--deprioritize-profile-photo-header .h4
+	{
+	font-weight: normal
+}
+
+.qt-sidebar-redesign .mini-profile .verified-badge-large {
+	width: 33px;
+	height: 33px;
+	background-color: white
+}
+
+.qt-sidebar-redesign .mini-profile .verified-badge-small {
+	width: 14px;
+	height: 14px;
+	background-color: white;
+	border: 1px solid #fff
+}
+
+.qt-sidebar-redesign .mini-profile .verified-badge-small img {
+	position: absolute
+}
+
+.qt-sidebar-redesign .mini-profile .verified-badge-aligner-single-host {
+	position: relative;
+	height: 150px;
+	width: 150px;
+	margin: 0 auto
+}
+
+.qt-sidebar-redesign .mini-profile .verified-badge-aligner-multiple-hosts
+	{
+	position: relative;
+	height: 120px;
+	width: 120px;
+	margin: 0 auto
+}
+
+.qt-sidebar-redesign .mini-profile .verified-badge-aligner-additional-hosts
+	{
+	position: relative;
+	height: 30px;
+	width: 30px
+}
+
+.qt-sidebar-redesign .mini-profile .verified-badge-aligner-additional-hosts .additional-hosts-img
+	{
+	border: 0
+}
+
+.qt-sidebar-redesign .mini-profile .verified-overlay-bottom-right-single-host
+	{
+	position: absolute;
+	top: 120px;
+	left: 108px
+}
+
+.qt-sidebar-redesign .mini-profile .verified-overlay-bottom-right-multiple-hosts
+	{
+	position: absolute;
+	top: 90px;
+	left: 90px
+}
+
+.qt-sidebar-redesign .mini-profile .verified-overlay-bottom-right-additional-hosts
+	{
+	position: absolute;
+	bottom: -3px;
+	right: -3px
+}
+
+.qt-sidebar-redesign .mini-profile .verified-overlay--deprioritize-profile-photo
+	{
+	top: 34px;
+	left: 52px
+}
+
+.qt-sidebar-redesign .mini-profile .additional-hosts-name {
+	padding-left: 12.5px
+}
+
+.qt-sidebar-redesign .mini-profile .additional-hosts-icon {
+	margin-left: 2px
+}
+
+.qt-sidebar-redesign .mini-profile .sidebar-force-left--deprioritize-profile-photo
+	{
+	margin-left: 0;
+	height: 75px;
+	width: 75px
+}
+
+.qt-sidebar-redesign .mini-profile p {
+	margin-top: 12.5px;
+	margin-bottom: 0
+}
+
+.qt-sidebar-redesign .qt-third-party-booking .user-name {
+	padding-left: 12px
+}
+
+.qt-sidebar-redesign .qt-third-party-booking .inline-block-container {
+	display: inline-block
+}
+
+.qt-sidebar-redesign .qt-third-party-booking .verified-badge-aligner {
+	position: relative;
+	height: 30px;
+	width: 30px
+}
+
+.qt-sidebar-redesign .qt-third-party-booking .verified-badge-aligner img
+	{
+	height: 30px;
+	width: 30px
+}
+
+.qt-sidebar-redesign .qt-third-party-booking .verified-badge-small {
+	width: 14px;
+	height: 14px;
+	background-color: #fff;
+	border: 1px solid #fff
+}
+
+.qt-sidebar-redesign .qt-third-party-booking .verified-badge-small img {
+	position: absolute;
+	height: 12px;
+	width: 12px
+}
+
+.qt-sidebar-redesign .qt-third-party-booking .verified-overlay-bottom-right
+	{
+	position: absolute;
+	top: -3px;
+	right: -3px
+}
+
+.qt-sidebar-redesign .qt-reservation-info .h4 {
+	font-weight: normal;
+	line-height: 1.3em
+}
+
+.qt-sidebar-redesign .qt-payment-info hr {
+	border-top: 2px solid #9b9b9b
+}
+
+.qt-sidebar-redesign .qt-payment-info .h4 {
+	font-weight: normal
+}
+
+.qt-sidebar-redesign .small-calendar {
+	margin-bottom: 30px
+}
+
+.qt-sidebar-redesign .small-calendar .nextMonth {
+	width: 40px
+}
+
+.qt-sidebar-redesign .small-calendar .previousMonth {
+	width: 40px
+}
+
+.qt-sidebar-redesign .responsive-calendar.small .calendarMonthHeader {
+	margin-bottom: 30px
+}
+
+.qt-sidebar-redesign .special-offer-btn-container .btn {
+	padding-left: 10px;
+	padding-right: 10px
+}
+
+.qt-sidebar-redesign .reservation-info-section {
+	margin-right: 25px
+}
+
+.qt-sidebar-redesign .reservation-info-section__clear {
+	clear: both
+}
+
+.qt-sidebar-redesign .checkin-details__chevron {
+	font-size: 1.5em;
+	line-height: 2.5
+}
+
+.qt-sidebar-redesign--deprioritize-profile-photo-top-spacing {
+	padding-top: 28px
+}
+
+.messaging-thread-container .contextual-status {
+	background-color: transparent;
+	border: 1px solid #dce0e0
+}
+
+.messaging-thread-container .contextual-status .messaging-response-timer .icon-time:after
+	{
+	content: '\0000a0'
+}
+
+.messaging-thread-container .contextual-status .messaging-response-timer .countdown
+	{
+	text-transform: lowercase
+}
+
+.messaging-thread-container .contextual-status .pip {
+	margin-top: 20px;
+	margin-bottom: 20px
+}
+
+.messaging-thread-container .contextual-padding {
+	padding-top: 8px;
+	padding-bottom: 14px
+}
+
+.messaging-thread-container .contextual-primary-btn {
+	display: block;
+	padding-left: 1px;
+	padding-right: 1px;
+	width: 100%;
+	white-space: normal
+}
+
+@media ( max-width : 1127px) {
+	.messaging-thread-container .full-width-btn {
+		width: 100%
+	}
+}
+
+.messaging-thread-container .contextual-table>tbody>tr>td {
+	padding: 12px;
+	padding-left: 2px
+}
+
+.messaging-thread-container .contextual-table>tbody>tr:last-child>td {
+	padding-bottom: 4px
+}
+
+.messaging-thread-container .contextual-table>tbody>tr>td:first-child {
+	width: 49%
+}
+
+.messaging-thread-container .inline-offer-table>tbody>tr:last-child>td {
+	border-bottom: 1px solid #dce0e0
+}
+
+.messaging-thread-container .inline-offer-button>tbody>tr>td {
+	padding: 0;
+	vertical-align: middle
+}
+
+.messaging-thread-container .inline-offer-price-panel {
+	min-width: 125px
+}
+
+.messaging-thread-container .contextual-divider {
+	width: 10px;
+	height: auto;
+	display: inline-block
+}
+
+.messaging-thread-container .contextual-icon {
+	font-size: 12px
+}
+
+.messaging-thread-container .strong {
+	font-weight: bold
+}
+
+.messaging-thread-container .banner-status {
+	border: 1px solid #dce0e0
+}
+
+.messaging-thread-container .banner-status .pip {
+	margin-top: 20px;
+	margin-bottom: 20px
+}
+
+.messaging-thread-container .action-status {
+	border: 1px solid #dce0e0
+}
+
+.messaging-thread-container .action-status .messaging-response-timer .icon-time:after
+	{
+	content: '\0000a0'
+}
+
+.messaging-thread-container .action-status .messaging-response-timer .countdown
+	{
+	text-transform: lowercase
+}
+
+.messaging-thread-container .action-status .yrr-tooltip-trigger {
+	color: #767676;
+	font-size: 16px
+}
+
+.messaging-thread-container .action-status .companion-traveler-review {
+	background: #fff7e5;
+	padding: 25px 30px
+}
+
+.messaging-thread-container .action-status .companion-traveler-review .expandable-indicator
+	{
+	background: #fff7e5;
+	background: rgba(255, 247, 229, 0);
+	background: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 247, 229,
+		0)), color-stop(50%, rgba(255, 247, 229, 0.9)),
+		color-stop(50%, rgba(255, 247, 229, 0.9)), to(#fff7e5));
+	background: -webkit-linear-gradient(top, rgba(255, 247, 229, 0) 0%,
+		rgba(255, 247, 229, 0.9) 50%, rgba(255, 247, 229, 0.9) 50%, #fff7e5
+		100%);
+	background: -moz-linear-gradient(top, rgba(255, 247, 229, 0) 0%,
+		rgba(255, 247, 229, 0.9) 50%, rgba(255, 247, 229, 0.9) 50%, #fff7e5
+		100%);
+	background: -o-linear-gradient(top, rgba(255, 247, 229, 0) 0%,
+		rgba(255, 247, 229, 0.9) 50%, rgba(255, 247, 229, 0.9) 50%, #fff7e5
+		100%);
+	background: linear-gradient(top, rgba(255, 247, 229, 0) 0%,
+		rgba(255, 247, 229, 0.9) 50%, rgba(255, 247, 229, 0.9) 50%, #fff7e5
+		100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00fff7e5',
+		endColorstr='#fffff7e5', GradientType=0)
+}
+
+.messaging-thread-container .action-status .companion-traveler-review__header
+	{
+	overflow: hidden;
+	line-height: 32px
+}
+
+.messaging-thread-container .action-status .companion-traveler-review__header-icon
+	{
+	font-size: 28px;
+	font-weight: bold;
+	display: block;
+	margin: 0 10px 0 2px
+}
+
+.messaging-thread-container .action-status .companion-traveler-review__footer
+	{
+	margin: 0
+}
+
+.messaging-thread-container .action-status .companion-traveler-review__footer .review-date
+	{
+	display: block
+}
+
+.messaging-thread-container .action-status .alert {
+	background-color: #edefed;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	text-align: left
+}
+
+.messaging-thread-container .action-status .alert-info {
+	background-color: #c2e4e7
+}
+
+.messaging-thread-container .send-message-box .panel,
+	.messaging-thread-container .message-text {
+	white-space: pre-wrap
+}
+
+.messaging-thread-container .send-message-box .panel-quote,
+	.messaging-thread-container .post .panel-quote {
+	position: relative
+}
+
+.messaging-thread-container .send-message-box .panel-quote:before,
+	.messaging-thread-container .send-message-box .panel-quote:after,
+	.messaging-thread-container .post .panel-quote:before,
+	.messaging-thread-container .post .panel-quote:after {
+	width: 0;
+	height: 0;
+	content: " ";
+	position: absolute;
+	border-style: solid
+}
+
+.messaging-thread-container .send-message-box .panel-quote-left:before,
+	.messaging-thread-container .post .panel-quote-left:before {
+	top: -1px;
+	left: initial;
+	right: 100%;
+	border-width: 0 27px 27px 0;
+	border-color: transparent #dce0e0 transparent transparent
+}
+
+@media ( max-width : 743px) {
+	.messaging-thread-container .send-message-box .panel-quote-left:before,
+		.messaging-thread-container .post .panel-quote-left:before {
+		border-width: 0 14px 14px 0
+	}
+}
+
+.messaging-thread-container .send-message-box .panel-quote-left:after,
+	.messaging-thread-container .post .panel-quote-left:after {
+	top: 0;
+	left: initial;
+	right: 100%;
+	border-width: 0 25px 25px 0;
+	border-color: transparent #fff transparent transparent
+}
+
+@media ( max-width : 743px) {
+	.messaging-thread-container .send-message-box .panel-quote-left:after,
+		.messaging-thread-container .post .panel-quote-left:after {
+		border-width: 0 12px 12px 0
+	}
+}
+
+.messaging-thread-container .send-message-box .panel-quote-right:before,
+	.messaging-thread-container .post .panel-quote-right:before {
+	top: -1px;
+	left: 100%;
+	border-width: 27px 27px 0 0;
+	border-color: #dce0e0 transparent transparent
+}
+
+@media ( max-width : 743px) {
+	.messaging-thread-container .send-message-box .panel-quote-right:before,
+		.messaging-thread-container .post .panel-quote-right:before {
+		border-width: 14px 14px 0 0
+	}
+}
+
+.messaging-thread-container .send-message-box .panel-quote-right:after,
+	.messaging-thread-container .post .panel-quote-right:after {
+	top: 0;
+	left: 100%;
+	border-width: 25px 25px 0 0;
+	border-color: #edefed transparent transparent
+}
+
+@media ( max-width : 743px) {
+	.messaging-thread-container .send-message-box .panel-quote-right:after,
+		.messaging-thread-container .post .panel-quote-right:after {
+		border-width: 12px 12px 0 0
+	}
+}
+
+.messaging-thread-container .send-message-box .panel-quote-right__white:after,
+	.messaging-thread-container .post .panel-quote-right__white:after {
+	border-color: #fff transparent transparent
+}
+
+.messaging-thread-container .send-message-box .media-round,
+	.messaging-thread-container .post .media-round {
+	border-color: #f5f5f5
+}
+
+.messaging-thread-container .send-message-textarea {
+	border: 0
+}
+
+.messaging-thread-container .send-message-textarea.decline-reason {
+	border: 1px solid #c4c4c4
+}
+
+.messaging-thread-container .post .user-profile-photo {
+	width: 70px;
+	height: 70px
+}
+
+@media ( max-width : 743px) {
+	.messaging-thread-container .post .user-profile-photo {
+		width: 35px;
+		height: 35px
+	}
+}
+
+.messaging-thread-container .inline-status .horizontal-rule-text {
+	overflow: hidden;
+	text-align: center
+}
+
+.messaging-thread-container .inline-status .horizontal-rule-text .icon-flag:after
+	{
+	content: '\0000a0'
+}
+
+.messaging-thread-container .inline-status .horizontal-rule-text .horizontal-rule-wrapper
+	{
+	position: relative
+}
+
+.messaging-thread-container .inline-status .horizontal-rule-text .horizontal-rule-wrapper:before,
+	.messaging-thread-container .inline-status .horizontal-rule-text .horizontal-rule-wrapper:after
+	{
+	content: "";
+	position: absolute;
+	border-bottom: 1px solid #dce0e0;
+	width: 500px;
+	top: 50%
+}
+
+.messaging-thread-container .inline-status .horizontal-rule-text .horizontal-rule-wrapper:before
+	{
+	right: 100%;
+	margin-right: 15px
+}
+
+.messaging-thread-container .inline-status .horizontal-rule-text .horizontal-rule-wrapper:after
+	{
+	left: 100%;
+	margin-left: 15px
+}
+
+.messaging-thread-container .safety-tip .link-bold-line {
+	text-decoration: underline;
+	font-weight: bold
+}
+
+.messaging-thread-container .third-party-booking-tip {
+	background-color: #fffcf5
+}
+
+.messaging-thread-container .table-cell-narrow {
+	width: 150px
+}
+
+.messaging-thread-container .strikethrough {
+	text-decoration: line-through
+}
+
+.messaging-thread-container .special-offer-price-panel {
+	background-color: transparent;
+	border: 2px solid #dce0e0;
+	padding-top: 10px;
+	padding-bottom: 20px
+}
+
+.messaging-thread-container .panel.panel-knockout {
+	background-color: transparent
+}
+
+.messaging-thread-container .inquiry-date {
+	display: inline-block;
+	padding: 7px 0 7px 10px;
+	white-space: nowrap;
+	vertical-align: middle;
+	line-height: 1.43
+}
+
+.special-offer-callout-link {
+	text-decoration: underline
+}
+
+.alert .special-offer-close-callout-link {
+	color: inherit
+}
+
+.img--air-defender-logo {
+	background-repeat: no-repeat;
+	background-image:
+		url(https://a0.muscache.com/airbnb/static/risk/air-defender-e1bcc846a430fed8f7afb254bc6c6b9c.png);
+	width: 37px;
+	height: 48px;
+	margin-top: -36px;
+	margin-left: auto;
+	margin-right: auto
+}
+
+@media ( min--moz-device-pixel-ratio : 1.3) , ( -o-min-device-pixel-ratio : 2.6 /
+		2) , ( -webkit-min-device-pixel-ratio : 1.3) , (
+		min-device-pixel-ratio : 1.3) , ( -o-min-device-pixel-ratio : 13/10) ,
+		( min-resolution : 1.3dppx) {
+	.img--air-defender-logo {
+		background-image:
+			url(https://a0.muscache.com/airbnb/static/risk/air-defender@2x-d86f15c61c3011d3642d19d4c916383b.png);
+		-webkit-background-size: 37px 48px;
+		-moz-background-size: 37px 48px;
+		-o-background-size: 37px 48px;
+		background-size: 37px 48px
+	}
+}
+
+.scrubbed-alert {
+	padding-right: 15px;
+	text-align: left;
+	background-color: #feeeef
+}
+
+.scrubbed-content-highlight {
+	font-weight: bold;
+	background-color: #feeeef
+}
+
+.scrubbed-message-button-group {
+	margin-top: -18px
+}
+
+.scrubbed-message-faded {
+	color: #bbb
+}
+
+.host-decline-modal__step-dot {
+	display: inline-block;
+	width: 6px;
+	height: 6px;
+	margin: 0 3px;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	border-radius: 50%
+}
+
+.host-decline-modal__step-dot.selected {
+	background-color: #ff5a5f
+}
+
+.host-decline-modal-footnote--with-profile {
+	height: 60px
+}
+
+.host-decline-modal-footnote--wo-profile {
+	height: 36px
+}
+
+.host-decline-modal .modal-content {
+	width: 610px;
+	max-width: 610px;
+	overflow: visible
+}
+
+.host-decline-message-box {
+	background-color: #fff;
+	position: relative;
+	display: block;
+	border: 1px solid #aaa;
+	z-index: 0
+}
+
+.host-decline-message-box:after, .host-decline-message-box:before {
+	content: '';
+	display: block;
+	position: absolute;
+	left: 100%;
+	width: 0;
+	height: 0;
+	top: 0
+}
+
+.host-decline-message-box:after {
+	border-bottom: 32px solid transparent;
+	border-left: 23px solid #fff;
+	z-index: 1;
+	margin-bottom: -1px;
+	margin-left: -3px
+}
+
+.host-decline-message-box:before {
+	border-bottom: 33px solid transparent;
+	border-left: 24px solid #aaa;
+	z-index: -100;
+	margin-top: -1px;
+	margin-left: -2px
+}
+
+.host-decline-message-box__invalid {
+	background-color: #fff8e5;
+	border: 1px solid #ffb400
+}
+
+.host-decline-message-box__invalid:after {
+	border-left: 23px solid #fff8e5
+}
+
+.host-decline-message-box__invalid:before {
+	border-left: 24px solid #ffb400
+}
+
+.host-decline-message-textarea {
+	border: 0
+}
+
+.btn-host-decline {
+	width: 139px;
+	padding: 7px 10px
+}
+
+.host-decline-modal__calendar-arrow-container {
+	width: 75px;
+	float: left
+}
+
+.host-decline-modal__calendar-container {
+	zoom: 1
+}
+
+.host-decline-modal__calendar-container:after {
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden
+}
+
+.host-decline-modal__calendar-container h4 {
+	font-weight: normal
+}
+
+.host-decline-modal__calendar-cell-container {
+	width: 75px;
+	float: left;
+	font-size: 13px
+}
+
+.host-decline-modal__calendar-cell {
+	width: 75px;
+	height: 66px;
+	border: 1px solid #dce0e0;
+	border-left: 0;
+	padding: 3px 7px
+}
+
+.host-decline-modal__calendar-cell--first {
+	border-left: 1px solid #dce0e0
+}
+
+.host-decline-modal__calendar-cell--next-row {
+	border-top: 0
+}
+
+.host-decline-modal__calendar-cell--blocked {
+	background-color: #edefed
+}
+
+.host-decline-modal-body {
+	min-height: 200px
+}
+
+.host-decline-modal-body-first {
+	min-height: 140px
+}

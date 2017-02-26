@@ -19,6 +19,7 @@
 		<junit.version>4.11</junit.version>
 		<log4j.version>1.2.16</log4j.version>
 		<mail.version>1.5.2</mail.version>
+		<jackson.version>2.5.3</jackson.version>
 	</properties>
 
 	<dependencies>
@@ -113,6 +114,12 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.4</version>
 		</dependency>		
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
 
 	</dependencies>
 

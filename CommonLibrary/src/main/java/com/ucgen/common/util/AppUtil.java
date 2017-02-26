@@ -15,7 +15,6 @@ public class AppUtil {
 	private boolean isSolrbContextLocal;
 	private boolean isBscsContextLocal;
 	private String configPath;
-	private String test;
 	
 	private static AppUtil singleInstance;
 	

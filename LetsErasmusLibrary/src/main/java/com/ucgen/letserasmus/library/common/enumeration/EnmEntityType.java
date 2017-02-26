@@ -6,14 +6,14 @@ public enum EnmEntityType {
 	PLACE(2),
 	EVENT(3);
 	
-	private Integer value;
+	private Integer id;
 	
-	public Integer getValue() {
-		return this.value;
+	public Integer getId() {
+		return this.id;
 	}
 	
-	private EnmEntityType(Integer value) {
-		this.value = value;
+	private EnmEntityType(Integer id) {
+		this.id = id;
 	}
 	
 }

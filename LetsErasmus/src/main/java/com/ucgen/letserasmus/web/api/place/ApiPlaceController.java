@@ -92,7 +92,7 @@ public class ApiPlaceController extends BaseApiController {
 								Photo photo = new Photo();
 								photo.setFileName(fileName);
 								photo.setFileSize(multipartFile.getSize());
-								photo.setEntityType(EnmEntityType.PLACE.getValue());
+								photo.setEntityType(EnmEntityType.PLACE.getId());
 								photo.setCreatedBy(createdBy);
 								photo.setFileType(EnmFileType.getFileTypeWithSuffix(fileSuffix).getValue());
 								photo.setCreatedDate(createdDate);
@@ -206,7 +206,7 @@ public class ApiPlaceController extends BaseApiController {
 									photo.setEntityId(activePlace.getId());
 									photo.setFileName(photoFileName);
 									photo.setFileSize(multipartFile.getSize());
-									photo.setEntityType(EnmEntityType.PLACE.getValue());
+									photo.setEntityType(EnmEntityType.PLACE.getId());
 									photo.setCreatedBy(createdBy);
 									photo.setFileType(EnmFileType.getFileTypeWithSuffix(fileSuffix).getValue());
 									photo.setCreatedDate(createdDate);
@@ -314,7 +314,7 @@ public class ApiPlaceController extends BaseApiController {
 		User user = super.getSessionUser(session);
 		ValueOperationResult<Place> getResult = this.placeService.getPlace(placeId);
 		Place place = getResult.getResultValue();
-		if (place != null && user.getId().equals(place.getHostUserId())) {
+		if (place != null && user != null && user.getId().equals(place.getHostUserId())) {
 			session.removeAttribute(EnmSession.ACTIVE_PLACE.getId());
 			session.setAttribute(EnmSession.ACTIVE_PLACE.getId(), place);
 		}
@@ -424,21 +424,21 @@ public class ApiPlaceController extends BaseApiController {
     }
 	
 	@RequestMapping(value = "/api/place/listphoto", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
-    public ResponseEntity<ListOperationResult<com.ucgen.letserasmus.library.file.model.FileModel>> listPhoto(@RequestParam Map<String, String> requestParams) {
+    public ResponseEntity<ListOperationResult<FileModel>> listPhoto(@RequestParam Map<String, String> requestParams) {
 		HttpStatus httpStatus = null;
 		String strPlaceId = requestParams.get("placeId");
-		com.ucgen.letserasmus.library.file.model.FileModel file = new com.ucgen.letserasmus.library.file.model.FileModel();
-		file.setEntityType(EnmEntityType.PLACE.getValue());
+		FileModel file = new FileModel();
+		file.setEntityType(EnmEntityType.PLACE.getId());
 		file.setEntityId(Long.valueOf(strPlaceId));
 		
-		ListOperationResult<com.ucgen.letserasmus.library.file.model.FileModel> listResult = this.fileService.listFile(file);
+		ListOperationResult<FileModel> listResult = this.fileService.listFile(file);
 		
 		if (OperationResult.isResultSucces(listResult)) {
 			httpStatus = HttpStatus.OK;
 		} else {
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
-		return new ResponseEntity<ListOperationResult<com.ucgen.letserasmus.library.file.model.FileModel>>(listResult, httpStatus);
+		return new ResponseEntity<ListOperationResult<FileModel>>(listResult, httpStatus);
     }
 	
 	@RequestMapping(value = "/api/place/updateplacestatus", method = RequestMethod.POST)
@@ -504,5 +504,6 @@ public class ApiPlaceController extends BaseApiController {
 		}
 		return new ResponseEntity<OperationResult>(operationResult, httpStatus);
     }
+	
 	
 }

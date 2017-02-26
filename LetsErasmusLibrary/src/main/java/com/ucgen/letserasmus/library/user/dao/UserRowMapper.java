@@ -19,6 +19,7 @@ public class UserRowMapper extends BaseRowMapper<User> {
 	public static final String COL_EMAIL = "EMAIL";
 	public static final String COL_PASSWORD = "PASSWORD";	
 	public static final String COL_MSISDN = "MSISDN";
+	public static final String COL_MSISDN_COUNTRY_CODE = "MSISDN_COUNTRY_CODE";
 	public static final String COL_FIRST_NAME = "FIRST_NAME";
 	public static final String COL_LAST_NAME = "LAST_NAME";
 	public static final String COL_GENDER = "GENDER";
@@ -60,6 +61,7 @@ public class UserRowMapper extends BaseRowMapper<User> {
 		user.setEmail(super.getString(rs, COL_EMAIL));
 		user.setPassword(super.getString(rs, COL_PASSWORD));
 		user.setMsisdn(super.getString(rs, COL_MSISDN));
+		user.setMsisdnCountryCode(super.getString(rs, COL_MSISDN_COUNTRY_CODE));
 		user.setFirstName(super.getString(rs, COL_FIRST_NAME));
 		user.setLastName(super.getString(rs, COL_LAST_NAME));
 		user.setGender(super.getString(rs, COL_GENDER));
@@ -128,6 +130,7 @@ public class UserRowMapper extends BaseRowMapper<User> {
 		super.addColumn(COL_MODIFIED_DATE);
 		super.addColumn(COL_MODIFIED_DATE_GMT);
 		super.addColumn(COL_MSISDN);
+		super.addColumn(COL_MSISDN_COUNTRY_CODE);
 		super.addColumn(COL_MSISDN_VERIFIED);
 		super.addColumn(COL_PASSWORD);
 		super.addColumn(COL_STATUS);

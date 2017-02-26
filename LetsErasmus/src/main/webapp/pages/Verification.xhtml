@@ -1,0 +1,197 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" 
+	template="/pages/Template.xhtml">
+
+	<ui:define name="head">
+
+		<link rel="stylesheet" type="text/css"
+			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css" />
+
+		<link rel="stylesheet" type="text/css"
+			href="#{webApplication.urlPrefix}/static/css/reservation.css" />
+		<link rel="stylesheet"
+			href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+
+		<script>
+			var userCountryCode = '#{webApplication.user.msisdnCountryCode}';
+			var userMsisdn = '#{webApplication.user.msisdn}'
+			var userMsisdnVerified = '#{webApplication.user.msisdnVerified}'
+			var emailVerified = '#{webApplication.user.emailVerified}';
+		</script>
+
+	</ui:define>
+
+	<ui:define name="body">
+		<input type="hidden" value="#{webApplication.setActiveOperation(7)}" />
+		<main id="site-content" role="main">
+		<div>
+			<div class="page-container-full bg-white">
+				<div class="account-activation-standalone">
+					<span>
+						<div class="activation-step-panel">
+							<div class="activation-step-panel__header">
+								<div class="space-3">
+									<div class="text-center">
+										<div class="activation-step-marker">
+											<i id="dotMsisdn" 
+												class="dot #{webApplication.user.msisdnVerified == 'Y' ? 'dot-success' : 'dot-light-gray'}"></i>
+										</div>
+										<div class="activation-step-marker">
+											<i id="dotEmail" 
+												class="dot #{webApplication.user.emailVerified == 'Y' ? 'dot-success' : 'dot-light-gray'}"></i>
+										</div>
+										<div class="activation-step-marker">
+											<i id="dotPayment" class="dot 'dot-light-gray'"></i>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="activation-step-panel__wrapper">
+								<div class="activation-step-panel__body">
+									<ui:fragment rendered="#{webApplication.user.msisdnVerified == 'N'}">
+										<div id="divVerifyMsisdn" class="activation-phone-verification-form">
+											<h3 class="space-1">
+												<span>Confirm your phone number</span>
+											</h3>
+											<div class="text-lead space-4">
+												<span>This is so your host can contact you during your
+													trip, and so Airbnb knows how to reach you.</span>
+											</div>
+											<div class="space-4 space-top-4">
+												<div class="activation-icon-container">
+													<div class="activation-icon-wrapper">
+														<i class="icon icon-phone-android icon-size-3 icon-gray"
+															aria-hidden="true"></i>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-center col-sm-12 col-md-11">
+													<div class="space-4">
+														<div class="input-addon">
+															<div class="select input-prefix"
+																style="min-width: 150px; max-width: 150px;">
+																<select title="Phone country code 90"
+																	style="max-width: 100%; font-size: inherit;"
+																	id="cmbCountry" ng-model="ctrl.dummyModel"
+																	value="#{webApplication.user.msisdnCountryCode}">
+																	<option ng-repeat="c in ctrl.countryList"
+																		value="+{{c.code}}">{{c.name}}(+{{c.code}})</option>
+																</select>
+															</div>
+															<input type="tel" id="txtMsisdn" class="input-stem"
+																inputmode="numeric" value="#{webApplication.user.msisdn}" />
+															<label class="screen-reader-only"><span>Phone
+																	Number</span></label>
+														</div>
+													</div>
+													<div class="space-1">
+														<button type="button" class="btn btn-primary btn-large"
+															ng-click="ctrl.sendMsisdnVerificationCode()">
+															<span>Confirm Phone Number</span>
+														</button>
+													</div>
+												</div>
+											</div>
+										</div>
+									</ui:fragment>
+									<ui:fragment rendered="#{webApplication.user.msisdnVerified == 'N'}">
+										<div id="divVerificationCode" class="activation-phone-verification-form hidden">
+											<h3 class="space-1">
+												<span>Enter 4-digit code</span>
+											</h3>
+											<div class="text-lead space-4">
+												<span>We sent an SMS to #{webApplication.user.msisdnCountryCode} #{webApplication.user.msisdn}. Enter the
+													code in that message.</span>
+											</div>
+											<div class="space-4 space-top-4">
+												<div class="activation-icon-container">
+													<div class="activation-icon-wrapper">
+														<i class="icon icon-phone-android icon-size-3 icon-gray"
+															aria-hidden="true"></i>
+													</div>
+												</div>
+											</div>
+											<div class="">
+												<div class="space-top-3 col-sm-4 col-center">
+													<label class="screen-reader-only"><span>Verification code</span></label>
+													<input type="text"
+														id="txtVerificationCode" pattern="[0-9]*"
+														class="text-center input-large" placeholder="code" />
+												</div>
+												<div class="space-top-3">
+														<button type="button" class="btn btn-primary btn-large"
+															ng-click="ctrl.verifyMsisdnCode()">
+															<span>Verify</span>
+														</button>
+													</div>
+												<div>
+													<div class="space-top-3">
+														<button class="btn-link" type="button" ng-click="ctrl.onBtnChangeMsisdnClicked()">
+															<span>Change my number</span>
+														</button>
+													</div>
+													<div class="space-top-1">
+														<button class="btn-link" type="button" ng-click="ctrl.onBtnSendCodeAgain()">
+															<span>Send code again</span>
+														</button>
+													</div>
+												</div>
+											</div>
+										</div>
+									</ui:fragment>
+									<ui:fragment rendered="#{webApplication.user.msisdnVerified == 'Y' and webApplication.user.emailVerified == 'N'}">
+										<div id="divVerifyEmail">
+											<h3 class="space-1">
+												<span>E-postanıza bakın</span>
+											</h3>
+											<div class="text-lead space-4">
+												<div>
+													<span>Size gönderdiğimiz e-postadaki bağlantıya
+														dokunun.</span>
+												</div>
+												<div>
+													<span>E-posta adresinizi onaylamak size seyahat
+														bilgilerini göndermemize yardımcı olur.</span>
+												</div>
+											</div>
+											<div class="space-4 space-top-4">
+												<div class="activation-icon-container">
+													<div class="activation-icon-wrapper">
+														<i class="icon icon-envelope icon-size-3 icon-gray"></i>
+													</div>
+												</div>
+											</div>
+											<div class="space-2">
+												<label class="screen-reader-only"><span>E-posta Adresi</span></label>
+												<input type="email" id="txtEmail"
+													class="text-center" value="#{webApplication.user.email}" />
+											</div>
+											<div>
+												<button type="button"
+													class="btn btn-primary btn-block space-2"
+													ng-click="ctrl.sendEmailVerificationCode()">
+													<span>Yeniden E-posta Gönder</span>
+												</button>
+											</div>
+											<div>
+												<img id="imgLoading" src="http://localhost:8080/LetsErasmus/static/images/ajax-loader.gif" />
+												<img id="imgEmailVerified" class="hidden" src="http://localhost:8080/LetsErasmus/static/images/success.png" />
+											</div>
+										</div>
+									</ui:fragment>
+								</div>
+							</div>
+						</div>
+					</span>
+				</div>
+			</div>
+		</div>
+		</main>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/angular/controller/verification_controller.js"></script>
+	</ui:define>
+</ui:composition>

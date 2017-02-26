@@ -24,7 +24,9 @@ public class UserDao extends JdbcDaoSupport implements IUserDao {
 
 	private static final String GET_USER_SQL = " SELECT * FROM USER WHERE 1 = 1 ";
 	
-	private static final String INSERT_USER_SQL = " INSERT INTO USER(EMAIL, PASSWORD, MSISDN, FIRST_NAME, LAST_NAME, GENDER,  STATUS, EMAIL_VERIFIED, MSISDN_VERIFIED, USER_ACTIVATION_KEY_EMAIL, USER_ACTIVATION_KEY_MSISDN, PROFILE_PHOTO_ID, FACEBOOK_TOKEN_ID, IP, CREATED_BY, CREATED_DATE, CREATED_DATE_GMT, MODIFIED_BY, MODIFIED_DATE, MODIFIED_DATE_GMT, GOOGLE_ID, FACEBOOK_ID) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+	private static final String INSERT_USER_SQL = " INSERT INTO USER(EMAIL, PASSWORD, MSISDN, MSISDN_COUNTRY_CODE, FIRST_NAME, LAST_NAME, " 
+			+ " GENDER,  STATUS, EMAIL_VERIFIED, MSISDN_VERIFIED, USER_ACTIVATION_KEY_EMAIL, USER_ACTIVATION_KEY_MSISDN, PROFILE_PHOTO_ID, " 
+			+ " FACEBOOK_TOKEN_ID, IP, CREATED_BY, CREATED_DATE, CREATED_DATE_GMT, MODIFIED_BY, MODIFIED_DATE, MODIFIED_DATE_GMT, GOOGLE_ID, FACEBOOK_ID) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 	
 	private static final String UPDATE_USER_SQL = " UPDATE USER SET $1 WHERE ID = ? ";
 	
@@ -116,6 +118,11 @@ public class UserDao extends JdbcDaoSupport implements IUserDao {
 		if (setNull || user.getMsisdn() != null) {
 			StringUtil.append(updateFields, " MSISDN = ?", ",");
 			argList.add(user.getMsisdn());
+		}
+		
+		if (setNull || user.getMsisdnCountryCode() != null) {
+			StringUtil.append(updateFields, " MSISDN_COUNTRY_CODE = ?", ",");
+			argList.add(user.getMsisdnCountryCode());
 		}
 		
 		if (user.getGender() != null) {
@@ -222,6 +229,7 @@ public class UserDao extends JdbcDaoSupport implements IUserDao {
 		argList.add(user.getEmail());
 		argList.add(user.getPassword());
 		argList.add(user.getMsisdn());
+		argList.add(user.getMsisdnCountryCode());
 		argList.add(user.getFirstName());
 		argList.add(user.getLastName());
 		argList.add(user.getGender());

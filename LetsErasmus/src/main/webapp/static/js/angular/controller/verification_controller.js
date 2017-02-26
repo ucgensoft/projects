@@ -1,67 +1,69 @@
 App.controller('verificationCtrl', ['$scope', 'userService', 'commonService', '$sce', '$compile', 
                                 function($scope, userService, commonService, sce, compile) {
       var self = this;
+      
       self.countryList = [];
       self.dummyModel = null;
+      var checkEmailTimer = null;
+      
       
       self.initialize = function() {
-    	  commonService.listCountry( function(countryList) {
-				if (countryList) {
-					self.countryList = countryList;
-				}
-			} ); 
-	 };
-  	  
-  	self.openAddMsisdnPart = function() {
-  		$('#divAddMsisdn').css('display', 'block');
-  		$('#divVerificationContainer').css('display', 'block');
-  		$('#divNoPhoneNumber').css('display', 'none')
-  	};
-  	
-  	self.cancelAddMsisdn = function() {
-  		$('#divVerificationContainer').css('display', 'none');
-  		$('#divAddMsisdn').css('display', 'none');
-  		$('#divNoPhoneNumber').css('display', 'block')
-  	};
-  	
-  	self.removeMsisdn = function() {
-  		userService.removeMsisdn(function(isSuccess) {
-					if (isSuccess) {
-						location.reload();
+    	  
+    	  if ($('#divVerifyMsisdn').length > 0) {
+    		  commonService.listCountry( function(countryList) {
+					if (countryList) {
+						self.countryList = countryList;
+						if (userMsisdn != '') {
+							$('#cmbCountry').val(userMsisdn);
+						}
 					}
 				}
-		  );
-  	};
-  	
+    		  );
+    	  }
+    	  
+    	  if ($('#divVerifyMsisdn').length > 0) {
+    		  setTimeout(function() {
+    			  	$('#cmbCountry').val(userCountryCode);
+    			  }, 500);
+    	  }
+    	  
+    	  if ($('#divVerifyEmail').length > 0) {
+    		  checkEmailTimer = setInterval(self.checkEmailVerification, 4000);
+    	  }
+    	      	  
+	 };
+	 
+	 self.checkEmailVerification = function() {
+		 userService.isEmailVerified(
+					function(isSuccess) {
+						if (isSuccess) {
+							clearInterval(checkEmailTimer);
+							$('#imgLoading').addClass('hidden');
+							$('#imgEmailVerified').removeClass('hidden');
+							setTimeout(function() {
+								var url = webApplicationUrlPrefix + '/pages/Reservation.xhtml';
+  	  							openWindow(url, true);
+							}, 1000);
+						}
+					}
+			  );
+	 };
+  	  	  	
   	self.sendMsisdnVerificationCode = function() {
-  		var phoneNumber = ' ';
-  		if ($('#divNoPhoneNumber').length > 0) {
-  			var prefix = $('#divCountryPrefix')[0].innerText;
-  	  		var msisdn = $('#txtMsisdn').val();
-	  	  	if (prefix == null || prefix == '' || StringUtil.trim(msisdn) == '') {
-	  			DialogUtil.warn('Warning', 'Select a country and type your phone number please!', 'OK', null);
-	  			return;
-	  		} else {
-	  			phoneNumber = prefix + msisdn;
-	  		}
+  		
+  		var prefix = $('#cmbCountry').val();
+	  	var msisdn = $('#txtMsisdn').val();
+  	  	
+	  	if (prefix == null || StringUtil.trim(prefix) == '' || StringUtil.trim(msisdn) == '') {
+  			DialogUtil.warn('Warning', 'Select a country and type your phone number please!', 'OK', null);
+  			return;
   		}
-  		userService.sendMsisdnVerificationCode(phoneNumber,
+  	  	
+  		userService.sendMsisdnVerificationCode(prefix, msisdn,
 				function(isSuccess) {
 					if (isSuccess) {
-						$('#divVerificationContainer').css('display', 'block');
-				  		$('#divVerifyMsisdn').css('display', 'block');
-				  		$('#divAddMsisdn').css('display', 'none');
-				  		
-				  		$('#divDisplayMsisdn').css('display', 'none');
-					}
-				}
-		  );
-  	};
-  	
-  	self.sendEmailVerificationCode = function() {
-  		userService.sendEmailVerificationCode(function(isSuccess) {
-					if (isSuccess) {
-						$('#divResendEmailCodeSuccess').css('display', 'block');
+						$('#divVerificationCode').css('display', 'block');
+				  		$('#divVerifyMsisdn').css('display', 'none');
 					}
 				}
 		  );
@@ -73,7 +75,12 @@ App.controller('verificationCtrl', ['$scope', 'userService', 'commonService', '$
   			userService.verifyMsisdnCode(code,
   					function(isSuccess) {
   						if (isSuccess) {
-  							location.reload();
+  							if (emailVerified == 'N') {
+  								location.reload();
+  							} else {
+  								var url = webApplicationUrlPrefix + '/pages/Booking.xhtml';
+  	  							openWindow(url, true);
+  							}
   						}
   					}
   			  );
@@ -82,19 +89,21 @@ App.controller('verificationCtrl', ['$scope', 'userService', 'commonService', '$
   		}
   	};
   	
-  	self.cancelVerifyMsisdn = function() {
-  		if ($('#divNoPhoneNumber').length > 0) {
-  			$('#divAddMsisdn').css('display', 'block');
-  			$('#divVerificationContainer').css('display', 'block');
-  		} else {
-  			$('#divDisplayMsisdn').css('display', 'block');
-  			$('#divVerificationContainer').css('display', 'none');
-  		}
-  		$('#divVerifyMsisdn').css('display', 'none');
+  	self.onBtnChangeMsisdnClicked = function() {
+  		$('#divVerificationCode').css('display', 'none');
+  		$('#divVerifyMsisdn').css('display', 'block');
   	};
   	
-  	self.onCountryChange = function(param1) {
-  		$('#divCountryPrefix')[0].innerText= $('#cmbCountry').val();
+  	self.onBtnSendCodeAgain = function() {
+  		self.sendMsisdnVerificationCode();
+  	};
+  	
+  	self.sendEmailVerificationCode = function() {
+  		userService.sendEmailVerificationCode(function(isSuccess) {
+					if (isSuccess) {
+						DialogUtil.info('Success', 'Verification code is sent to your email address. Please click the verification link in the mail.', 'OK');
+					}
+		});
   	};
   	
     self.initialize();

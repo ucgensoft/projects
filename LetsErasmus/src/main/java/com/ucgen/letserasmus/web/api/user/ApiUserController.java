@@ -25,8 +25,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.ucgen.common.exception.operation.OperationResultException;
 import com.ucgen.common.operationresult.EnmResultCode;
+import com.ucgen.common.operationresult.ListOperationResult;
 import com.ucgen.common.operationresult.OperationResult;
+import com.ucgen.common.operationresult.ValueOperationResult;
 import com.ucgen.common.util.CommonUtil;
 import com.ucgen.common.util.FileUtil;
 import com.ucgen.common.util.ImageUtil;
@@ -39,6 +42,8 @@ import com.ucgen.letserasmus.library.common.enumeration.EnmGender;
 import com.ucgen.letserasmus.library.file.enumeration.EnmFileType;
 import com.ucgen.letserasmus.library.file.model.FileModel;
 import com.ucgen.letserasmus.library.file.model.Photo;
+import com.ucgen.letserasmus.library.place.model.Place;
+import com.ucgen.letserasmus.library.place.service.IPlaceService;
 import com.ucgen.letserasmus.library.user.enumeration.EnmLoginType;
 import com.ucgen.letserasmus.library.user.enumeration.EnmUserStatus;
 import com.ucgen.letserasmus.library.user.model.User;
@@ -54,10 +59,22 @@ public class ApiUserController extends BaseApiController {
 
 	private MailUtil mailUtil;
 	private IUserService userService;
+	private IPlaceService placeService;
+	private WebApplication webApplication;
+	
+	@Autowired
+	public void setWebApplication(WebApplication webApplication) {
+		this.webApplication = webApplication;
+	}
 	
 	@Autowired
 	public void setUserService(IUserService userService) {
 		this.userService = userService;
+	}
+	
+	@Autowired
+	public void setPlaceService(IPlaceService placeService) {
+		this.placeService = placeService;
 	}
 	
 	@Autowired
@@ -464,7 +481,7 @@ public class ApiUserController extends BaseApiController {
 							Photo photo = new Photo();
 							photo.setFileName(fileName);
 							photo.setFileSize(profilePhoto.getSize());
-							photo.setEntityType(EnmEntityType.USER.getValue());
+							photo.setEntityType(EnmEntityType.USER.getId());
 							photo.setEntityId(user.getId());
 							photo.setCreatedBy(modifiedBy);
 							photo.setFileType(EnmFileType.getFileTypeWithSuffix(fileSuffix).getValue());
@@ -608,7 +625,7 @@ public class ApiUserController extends BaseApiController {
 					userId = user.getId().toString();
 				}
 				
-				String rootPhotoFolder = "D:\\Personal\\Development\\startup\\workspace\\projects\\LetsErasmus\\src\\main\\webapp\\user\\images\\";
+				String rootPhotoFolder = this.webApplication.getRootProfilePhotoPath();
 				
 				String userTmpPhotoFolderPath = rootPhotoFolder + userId + File.separatorChar + "tmp";
 				File userTmpPhotoFolder = new File(userTmpPhotoFolderPath);
@@ -642,47 +659,72 @@ public class ApiUserController extends BaseApiController {
     }
     
     @RequestMapping(value = "/api/user/msisdn/sendcode", method = RequestMethod.POST)
-    public ResponseEntity<OperationResult> sendMsisdnVerificationCode(@RequestParam("msisdn") String msisdn, HttpSession session) throws JsonParseException, JsonMappingException, IOException, ParseException {
+    public ResponseEntity<OperationResult> sendMsisdnVerificationCode(@RequestParam("msisdn") String msisdn, @RequestParam("msisdnCountryCode") String msisdnCountryCode, HttpSession session) throws JsonParseException, JsonMappingException, IOException, ParseException {
     	OperationResult operationResult = new OperationResult();
 		try {
 			User user = super.getSessionUser(session);
 			Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
 			if (activeOperation.equals(EnmOperation.UPDATE_USER) 
-					|| activeOperation.equals(EnmOperation.TRUST_AND_VERIFICATION)) {
-				if (msisdn != null || user.getMsisdn() != null) {
-					if (msisdn.trim().length() == 0) {
-						msisdn = user.getMsisdn();
-					}
-					session.removeAttribute(EnmSession.MSISDN_VERIFICATION_CODE.getId());
-					
-					Integer msisdnVerificationCode = new Double(Math.random() * 10000).intValue();
-					
-					User updatedUser = new User();
-					updatedUser.setId(user.getId());
-					updatedUser.setMsisdn(msisdn);
-					updatedUser.setMsisdnVerified(EnmBoolStatus.NO.getId());
-					
-					OperationResult updateResult = this.userService.updateUser(updatedUser, false);
-					if (OperationResult.isResultSucces(updateResult)) {
-						user.setMsisdn(msisdn);
-						user.setMsisdnVerified(EnmBoolStatus.NO.getId());
-						sendVerifyMsisdnMail(user, msisdnVerificationCode);
-						session.setAttribute(EnmSession.MSISDN_VERIFICATION_CODE.getId(), msisdnVerificationCode);
-						operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
-					} else {
+					|| activeOperation.equals(EnmOperation.TRUST_AND_VERIFICATION)
+					|| activeOperation.equals(EnmOperation.VERIFICATION)) {
+				if (EnmBoolStatus.NO.getId().equals(user.getMsisdnVerified())) {
+					if ((msisdn != null && msisdnCountryCode == null) 
+							|| (msisdn == null && msisdnCountryCode != null)) {
 						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 						operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
-						operationResult.setResultDesc("User record could not be updated. Please try again later!");
+						operationResult.setResultDesc("msisdn and country code parameters are required!");
+					} else {
+						boolean msisdnSent = false;
+						if (msisdn != null && msisdnCountryCode != null) {
+							msisdnSent = true;
+						}
+						if (msisdnSent || user.getMsisdn() != null) {
+							
+							session.removeAttribute(EnmSession.MSISDN_VERIFICATION_CODE.getId());
+							
+							if (msisdnSent) {
+								User updatedUser = new User();
+								updatedUser.setId(user.getId());
+								updatedUser.setMsisdn(msisdn);
+								updatedUser.setMsisdnCountryCode(msisdnCountryCode);
+								updatedUser.setMsisdnVerified(EnmBoolStatus.NO.getId());
+								
+								OperationResult updateResult = this.userService.updateUser(updatedUser, false);
+								if (OperationResult.isResultSucces(updateResult)) {
+									
+									user.setMsisdn(msisdn);
+									user.setMsisdnCountryCode(msisdnCountryCode);
+									user.setMsisdnVerified(EnmBoolStatus.NO.getId());
+								} else {
+									operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+									operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
+									operationResult.setResultDesc("User record could not be updated. Please try again later!");
+									throw new OperationResultException(operationResult);
+								}
+							}
+							
+							Integer msisdnVerificationCode = new Double(Math.random() * 10000).intValue();
+							
+							sendVerifyMsisdnMail(user, msisdnVerificationCode);
+							session.setAttribute(EnmSession.MSISDN_VERIFICATION_CODE.getId(), msisdnVerificationCode);
+							operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+						} else {
+							operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+							operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
+							operationResult.setResultDesc("msisdn is required!");
+						}	
 					}
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 					operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
-					operationResult.setResultDesc("msisdn is required!");
+					operationResult.setResultDesc("msisdn is already verified!");
 				}
 			} else {
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 				operationResult.setResultDesc("You are not authorized for this operation!");
 			}
+		} catch (OperationResultException e) {
+			operationResult = e.getOperationResult();
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 			operationResult.setResultDesc("Operation failed because of an unexpected error. Please try again later!");
@@ -697,7 +739,8 @@ public class ApiUserController extends BaseApiController {
 		try {
 			User user = super.getSessionUser(session);
 			Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
-			if (activeOperation.equals(EnmOperation.TRUST_AND_VERIFICATION)) {
+			if (activeOperation.equals(EnmOperation.TRUST_AND_VERIFICATION) 
+					|| activeOperation.equals(EnmOperation.VERIFICATION)) {
 				User updatedUser = new User();
 				updatedUser.setId(user.getId());
 				updatedUser.setEmailVerified(EnmBoolStatus.NO.getId());
@@ -727,13 +770,40 @@ public class ApiUserController extends BaseApiController {
 		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);
     }
     
+    @RequestMapping(value = "/api/user/email/isverified", method = RequestMethod.POST)
+    public ResponseEntity<ValueOperationResult<Boolean>> isEmailVerified(HttpSession session) {
+    	ValueOperationResult<Boolean> operationResult = new ValueOperationResult<Boolean>();
+		try {
+			Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
+			if (activeOperation.equals(EnmOperation.VERIFICATION)) {
+				User user = super.getSessionUser(session);
+				
+				if (user.getEmailVerified().equals(EnmBoolStatus.YES.getId())) {
+					operationResult.setResultValue(true);
+				} else {
+					operationResult.setResultValue(false);
+				}
+				operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+			} else {
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc("You are not authorized for this operation!");
+			}
+		} catch (Exception e) {
+			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+			operationResult.setResultDesc(CommonUtil.getExceptionMessage(e));
+		}
+		
+		return new ResponseEntity<ValueOperationResult<Boolean>>(operationResult, HttpStatus.OK);
+    }
+    
     @RequestMapping(value = "/api/user/msisdn/verify", method = RequestMethod.POST)
-    public ResponseEntity<OperationResult> verifyMsisdnCode(@RequestParam("code") String code, HttpSession session) throws JsonParseException, JsonMappingException, IOException, ParseException {
+    public ResponseEntity<OperationResult> verifyMsisdnCode(@RequestParam("code") String code, HttpSession session) {
     	OperationResult operationResult = new OperationResult();
 		try {
 			Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
 			if (activeOperation.equals(EnmOperation.UPDATE_USER)
-					|| activeOperation.equals(EnmOperation.TRUST_AND_VERIFICATION)) {
+					|| activeOperation.equals(EnmOperation.TRUST_AND_VERIFICATION)
+					|| activeOperation.equals(EnmOperation.VERIFICATION)) {
 				Object sessionCode = session.getAttribute(EnmSession.MSISDN_VERIFICATION_CODE.getId());
 				
 				if (sessionCode != null) {
@@ -777,7 +847,7 @@ public class ApiUserController extends BaseApiController {
     }
     
     @RequestMapping(value = "/api/user/msisdn/remove", method = RequestMethod.POST)
-    public ResponseEntity<OperationResult> removeMsisdn(HttpSession session) throws JsonParseException, JsonMappingException, IOException, ParseException {
+    public ResponseEntity<OperationResult> removeMsisdn(HttpSession session) {
     	OperationResult operationResult = new OperationResult();
 		try {
 			Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
@@ -813,18 +883,27 @@ public class ApiUserController extends BaseApiController {
     }
     
 	private void processLogin(HttpSession session, User user, EnmLoginType loginType) {
+		Place place = new Place();
+		place.setHostUserId(user.getId());
+		ListOperationResult<Place> placeListResult = this.placeService.listPlace(place, false, false, false);
+		user.setPlaceList(placeListResult.getObjectList());
+		if (user.getPlaceList() != null) {
+			user.setPlaceListingCount(user.getPlaceList().size());
+		} else {
+			user.setPlaceListingCount(0);
+		}
 		user.setLoginType(loginType.getId());
 		session.setAttribute(EnmSession.USER.getId(), user);
 		session.setAttribute(EnmSession.LOGIN_TYPE.getId(), loginType.getId());
 	}
-	
+
 	private void sendEmailVerificationMail(User user) throws UnsupportedEncodingException {
 		String htmlFilePath = FileUtil.concatPath(WebApplication.LOCAL_APP_PATH, "static", "html", "VerifyEmail.html");	
 		
 		List<String> toList = new ArrayList<String>();
 		toList.add(user.getEmail());
 		
-		String emailVerificationUrl = WebApplication.getEmailVerificationUrl();
+		String emailVerificationUrl = this.webApplication.getEmailVerificationUrl();
 		emailVerificationUrl = emailVerificationUrl.replaceAll("#paramUserId#", user.getId().toString());
 		emailVerificationUrl = emailVerificationUrl.replaceAll("#paramEmailVerificationCode#", user.getUserActivationKeyEmail());
 		
@@ -852,7 +931,7 @@ public class ApiUserController extends BaseApiController {
 		List<String> toList = new ArrayList<String>();
 		toList.add(email);
 		
-		String emailVerificationUrl = WebApplication.getEmailVerificationUrl();
+		String emailVerificationUrl = this.webApplication.getEmailVerificationUrl();
 		emailVerificationUrl = emailVerificationUrl.replaceAll("#paramUserId#", user.getId().toString());
 		emailVerificationUrl = emailVerificationUrl.replaceAll("#paramEmailVerificationCode#", user.getUserActivationKeyEmail());
 		
@@ -864,7 +943,7 @@ public class ApiUserController extends BaseApiController {
 		paramMap.put("#paramEmailVerificationUrlEncoded#", emailVerificationUrlEncoded);
 		this.mailUtil.sendMailFromTemplate(htmlFilePath, paramMap, toList, null, "LetsErasmus Email Verifitcation", null);
 	}
-	
+		
 	private void sendVerifyMsisdnMail(User user, Integer verificationCode) throws UnsupportedEncodingException {
 		
 		List<String> toList = new ArrayList<String>();
