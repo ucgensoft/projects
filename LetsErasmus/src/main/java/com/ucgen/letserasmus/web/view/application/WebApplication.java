@@ -194,7 +194,7 @@ public class WebApplication extends BaseController {
 	
 	public boolean isFooterVisible() {
 		String requestUrl = super.getRequest().getRequestURL().toString();
-		requestUrl = requestUrl.trim().replace(this.urlPrefix, "");
+		requestUrl = requestUrl.trim().replace(this.urlPrefix, "").toUpperCase();
 		if (requestUrl.contains("PAGES/PLACE.XHTML") 
 				|| requestUrl.contains("PAGES/SEARCHRESULT.XHTML")) {
 			return false;
