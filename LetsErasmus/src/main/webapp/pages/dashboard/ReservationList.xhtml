@@ -7,7 +7,7 @@
 	<ui:define name="head">
 		<link rel="stylesheet" type="text/css"
 			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css" />
-			
+
 		<script>
 			var activeDashboardTab = 3;
 			var activeLeftMenuLink = 2;
@@ -15,24 +15,202 @@
 	</ui:define>
 
 	<ui:define name="body">
-		<main id="site-content" role="main"> 
-			<ui:include src="DashboardHeader.html" />
+		<main id="site-content" role="main"> <ui:include
+			src="DashboardHeader.html" />
 		<div class="page-container-responsive space-top-4 space-4">
 			<div class="row">
 				<ui:include src="ListingLeftMenu.html" />
-				<div class="col-md-9">
-					<div class="your-listings-flash-container"></div>
+				<div class="col-md-9 top-2">
 					<div class="panel">
-						<div class="panel-body">
-							<p>You have no upcoming reservations.</p>
-							<a href="/my_reservations?all=1">View past reservation
-								history</a>
+						<div class="panel-header">
+							<div class="row row-table">
+								<div class="col-md-6 col-middle">Upcoming Reservations</div>
+								<div class="col-md-6 col-middle">
+								</div>
+							</div>
 						</div>
+						<div class="panel-body" ng-if="ctrl.upcomingList.length == 0">
+							<p>You have no upcoming reservations.</p>
+						</div>
+						<ul class="list-unstyled list-layout" ng-if="ctrl.upcomingList.length > 0">
+							<li class="listing panel-body" ng-repeat="r in ctrl.upcomingList">
+								<div class="table-responsive">
+									<table class="table panel-body space-1"
+										style="background-color: white">
+										<tbody>
+											<tr>
+												<th>Status</th>
+												<th>Dates and Location</th>
+												<th>Guest</th>
+												<th>Details</th>
+											</tr>
+											<tr class="reservation">
+												<td>
+													<span class="label label-orange label-warning">{{ctrl.getReservationStatus(r.status)}}</span>
+													<div class="countdown text-lead"></div>
+													<button  class="btn btn-primary btn-small space-top-1 space-2" ng-if="r.status == 1" ng-click="ctrl.openAcceptReservationWindow(r.id)">Accept</button>
+													<button  class="btn btn-primary btn-small space-top-1 space-2" ng-if="r.status == 1" ng-click="ctrl.openDeclineReservationWindow(r.id)">Decline</button>
+													<button  class="btn btn-primary btn-small space-top-1 space-2" ng-if="r.status == 2" ng-click="ctrl.openCancelReservationWindow(r.id)">Cancel</button>
+												</td>
+												<td>{{r.startDate | date:'MMM dd, yyyy'}} - {{r.endDate | date:'MMM dd, yyyy'}} <br/> 
+													<a href="#{webApplication.urlPrefix}/pages/PlaceDetail.xhtml?placeId={{r.placeId}}&amp;checkinDate={{r.startDate | date:'dd.MM.yyyy'}}&amp;checkoutDate={{r.endDate | date:'dd.MM.yyyy'}}" locale="en" target="_blank">{{r.place.title}}</a> 
+													<br/> Bahtlı Sokak No72 <br/> Kadıköy, İstanbul 34720 <br/>
+												</td>
+												<td>
+													<div class="media va-container">
+														<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.xhtml?userId={{r.clientUserId}}"
+															class="pull-left media-photo media-round" target="_blank"> 
+															<img alt="{{r.clientUser.firstName}}" height="50"
+															src="{{ctrl.generateUserProfilePhotoUrl(r.clientUserId, r.clientUser.profilePhotoId, 'small')}}"
+															title="{{r.clientUser.firstName}}" width="50" /></a>
+													</div>
+													<div class="va-top">
+														<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.xhtml?userId={{r.clientUserId}}"
+															class="text-normal" target="_blank">{{r.clientUser.firstName}} {{r.clientUser.lastName}}</a> <br/>
+													</div>
+												</td>
+		
+												<td>{{r.placePrice}} {{ctrl.getCurrencySymbol(r.currencyId)}} total
+													<ul class="list-unstyled">
+														<li>
+															<a target="_blank" href="#{webApplication.urlPrefix}/pages/dashboard/Conversation.xhtml?threadId={{r.messageThreadId}}">Message History</a></li>
+													</ul>
+												</td>
+											</tr>
+		
+										</tbody>
+									</table>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-md-9 space-top-2" ng-if="ctrl.ongoingList.length > 0">
+					<div class="panel">
+						<div class="panel-header">
+							<div class="row row-table">
+								<div class="col-md-6 col-middle">Ongoing Reservations</div>
+								<div class="col-md-6 col-middle">
+								</div>
+							</div>
+						</div>
+						<ul class="list-unstyled list-layout" ng-if="ctrl.ongoingList.length > 0">
+							<li class="listing panel-body" ng-repeat="r in ctrl.ongoingList">
+								<div class="table-responsive">
+									<table class="table panel-body space-1"
+										style="background-color: white">
+										<tbody>
+											<tr>
+												<th>Status</th>
+												<th>Dates and Location</th>
+												<th>Guest</th>
+												<th>Details</th>
+											</tr>
+											<tr class="reservation">
+												<td>
+													<span class="label label-orange label-warning">{{ctrl.getReservationStatus(r.status)}}</span>
+													<div class="countdown text-lead"></div>
+													<button  class="btn btn-primary btn-small space-top-1 space-2" ng-if="r.status == 2">Cancel</button>
+												</td>
+												<td>{{r.startDate | date:'MMM dd, yyyy'}} - {{r.endDate | date:'MMM dd, yyyy'}} <br/> 
+													<a href="#{webApplication.urlPrefix}/pages/PlaceDetail.xhtml?placeId={{r.placeId}}&amp;checkinDate={{r.startDate | date:'dd.MM.yyyy'}}&amp;checkoutDate={{r.endDate | date:'dd.MM.yyyy'}}" locale="en" target="_blank">{{r.place.title}}</a> 
+													<br/> Bahtlı Sokak No72 <br/> Kadıköy, İstanbul 34720 <br/>
+												</td>
+												<td>
+													<div class="media va-container">
+														<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.xhtml?userId={{r.clientUserId}}"
+															class="pull-left media-photo media-round" target="_blank"> 
+															<img alt="{{r.clientUser.firstName}}" height="50"
+															src="{{ctrl.generateUserProfilePhotoUrl(r.clientUserId, r.clientUser.profilePhotoId, 'small')}}"
+															title="{{r.clientUser.firstName}}" width="50" /></a>
+													</div>
+													<div class="va-top">
+														<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.xhtml?userId={{r.clientUserId}}"
+															class="text-normal" target="_blank">{{r.clientUser.firstName}} {{r.clientUser.lastName}}</a> <br/>
+													</div>
+												</td>
+		
+												<td>{{r.placePrice}} {{ctrl.getCurrencySymbol(r.currencyId)}} total
+													<ul class="list-unstyled">
+														<li>
+															<a target="_blank" href="#{webApplication.urlPrefix}/pages/dashboard/Conversation.xhtml?threadId={{r.messageThreadId}}">Message History</a></li>
+													</ul>
+												</td>
+											</tr>
+		
+										</tbody>
+									</table>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-md-9 space-top-2" ng-if="ctrl.oldList.length > 0">
+					<div class="panel">
+						<div class="panel-header">
+							<div class="row row-table">
+								<div class="col-md-6 col-middle">Old Reservations</div>
+								<div class="col-md-6 col-middle">
+								</div>
+							</div>
+						</div>
+						<ul class="list-unstyled list-layout" ng-if="ctrl.oldList.length > 0">
+							<li class="listing panel-body" ng-repeat="r in ctrl.oldList">
+								<div class="table-responsive">
+									<table class="table panel-body space-1"
+										style="background-color: white">
+										<tbody>
+											<tr>
+												<th>Status</th>
+												<th>Dates and Location</th>
+												<th>Guest</th>
+												<th>Details</th>
+											</tr>
+											<tr class="reservation">
+												<td>
+													<span class="label label-orange label-warning">{{ctrl.getReservationStatus(r.status)}}</span>
+													<div class="countdown text-lead"></div>
+												</td>
+												<td>{{r.startDate | date:'MMM dd, yyyy'}} - {{r.endDate | date:'MMM dd, yyyy'}} <br/> 
+													<a href="#{webApplication.urlPrefix}/pages/PlaceDetail.xhtml?placeId={{r.placeId}}&amp;checkinDate={{r.startDate | date:'dd.MM.yyyy'}}&amp;checkoutDate={{r.endDate | date:'dd.MM.yyyy'}}" locale="en" target="_blank">{{r.place.title}}</a> 
+													<br/> Bahtlı Sokak No72 <br/> Kadıköy, İstanbul 34720 <br/>
+												</td>
+												<td>
+													<div class="media va-container">
+														<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.xhtml?userId={{r.clientUserId}}"
+															class="pull-left media-photo media-round" target="_blank"> 
+															<img alt="{{r.clientUser.firstName}}" height="50"
+															src="{{ctrl.generateUserProfilePhotoUrl(r.clientUserId, r.clientUser.profilePhotoId, 'small')}}"
+															title="{{r.clientUser.firstName}}" width="50" /></a>
+													</div>
+													<div class="va-top">
+														<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.xhtml?userId={{r.clientUserId}}"
+															class="text-normal" target="_blank">{{r.clientUser.firstName}} {{r.clientUser.lastName}}</a> <br/>
+													</div>
+												</td>
+		
+												<td>{{r.placePrice}} {{ctrl.getCurrencySymbol(r.currencyId)}} total
+													<ul class="list-unstyled">
+														<li>
+															<a target="_blank" href="#{webApplication.urlPrefix}/pages/dashboard/Conversation.xhtml?threadId={{r.messageThreadId}}">Message History</a></li>
+													</ul>
+												</td>
+											</tr>
+		
+										</tbody>
+									</table>
+								</div>
+							</li>
+						</ul>
 					</div>
 				</div>
 			</div>
 		</div>
+		<div id="divReservationModal" class="clsModal"></div>
 		</main>
 		<script src="#{webApplication.urlPrefix}/static/js/dashboard.js"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/service/reservation_service.js"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/controller/reservation_list_controller.js"></script>
+		
 	</ui:define>
 </ui:composition>

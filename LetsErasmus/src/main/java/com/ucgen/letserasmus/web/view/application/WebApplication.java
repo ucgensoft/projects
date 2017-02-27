@@ -55,6 +55,14 @@ public class WebApplication extends BaseController {
 		return this.rootProfilePhotoPath;
 	}
 
+	public String getProfilePhotoUrlTemplate() {
+		return profilePhotoUrlTemplate;
+	}
+
+	public String getDefaultProfilePhotoUrl() {
+		return defaultProfilePhotoUrl;
+	}
+
 	public WebApplication() {
 		urlPrefix = "http://localhost:8080/LetsErasmus";
 		rootPlaceImageUrl = urlPrefix + "/place/images";
@@ -95,6 +103,8 @@ public class WebApplication extends BaseController {
 				return "messageListCtrl";
 			} else if (requestUrl.contains("PAGES/DASHBOARD/CONVERSATION.XHTML")) {
 				return "conversationCtrl";
+			} else if (requestUrl.contains("PAGES/DASHBOARD/RESERVATIONLIST.XHTML")) {
+				return "reservationListCtrl";
 			} else {
 				return "";
 			}	

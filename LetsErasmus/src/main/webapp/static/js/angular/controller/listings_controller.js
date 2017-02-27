@@ -9,17 +9,12 @@ App.controller('listingsCtrl', ['$scope', '$controller', 'placeService', 'common
       self.deactivePlaceList = [];
                   
       self.initialize = function() {
-    	  placeService.listUserPlaces().then(function(operationResult) {
+    	  placeService.listUserPlaces(function(operationResult) {
     		  		if (operationResult[OperationResult.resultCode] == EnmOperationResultCode.SUCCESS) {
     		  			self.activePlaceList = operationResult.resultValue.active;
     		  			self.deactivePlaceList = operationResult.resultValue.deactive;
-    		  		} else {
-    		  			alert("Error in fetching place list.");
     		  		}
-          		},
-				function(errResponse){
-					console.error('Error while fetching Portfolio');
-				}
+          		}
           );
       };
       

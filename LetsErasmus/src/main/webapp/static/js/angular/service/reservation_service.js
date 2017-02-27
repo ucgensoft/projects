@@ -73,7 +73,31 @@ App.factory('reservationService', ['$http', '$q', function($http, $q){
 					callBack(false);
 				}
 			});
-		}
+		},
+		
+		listReservation : function(callBack) {
+			var data = {
+					
+			};
+			
+			var config = {
+				params : data,
+				headers : {
+					'Accept' : 'application/json'
+				}
+			};
+			
+			NProgress.start(3000, 5);
+			return $http.get(webApplicationUrlPrefix + '/api/reservation/list', config).then(function(response) {
+				NProgress.done(true);
+				var result = isResultSuccess(response.data, true);
+				if (result && callBack) {
+					callBack(response.data.resultValue);
+				}
+			}, function(errResponse) {
+				DialogUtil.error('Error', errResponse, 'OK');
+			});
+		},
 	}
 
 }]);

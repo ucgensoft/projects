@@ -49,6 +49,8 @@
 			var urlEncodedUrlPrefix = '#{webApplication.encodedUrlPrefix}';
 			var sessionActive = #{(webApplication.user != null ? "true" : "false")};
 			var placeListingExist = #{(webApplication.user != null &amp;&amp; webApplication.user.placeListingCount > 0 ? "true" : "false")};
+			var defaultUserProfileImageUrlTemplate = '#{webApplication.defaultProfilePhotoUrl}';
+			var profilePhotoUrlTemplate = '#{webApplication.profilePhotoUrlTemplate}';
 		</script>
 
 		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>

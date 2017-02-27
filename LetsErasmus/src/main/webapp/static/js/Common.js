@@ -485,8 +485,13 @@ function refreshAngularScope(scope) {
 	});
 }
 
-function generateUserProfilePhotoUrl(userId, photoId) {
-	var photoUrl = StringUtil.replaceAll(userSmallProfilePhotoTemplate, '#userId#', userId);
-	photoUrl = StringUtil.replaceAll(photoUrl, '#photoId#', photoId);
-	return photoUrl;
+function generateUserProfilePhotoUrl(userId, photoId, size) {
+	if (userId && photoId) {
+		var photoUrl = StringUtil.replaceAll(profilePhotoUrlTemplate, '#userId#', userId);
+		photoUrl = StringUtil.replaceAll(photoUrl, '#photoId#', photoId);
+		photoUrl = StringUtil.replaceAll(photoUrl, '#size#', size);
+		return photoUrl;
+	} else {
+		return StringUtil.replaceAll(defaultUserProfileImageUrlTemplate, '#size#', size);
+	}
 }
