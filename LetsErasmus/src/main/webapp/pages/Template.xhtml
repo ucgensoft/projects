@@ -124,9 +124,14 @@
 						modal.style.display = 'none';
 					}
 					
+					function closeModal() {
+						modal.style.display = "none";
+						$('.clsModal').css('display', 'none');
+					}
+					
 					window.onclick = function(event) {
-					    if (event.target == modal) {
-					        modal.style.display = "none";
+					    if (event.target == modal || $(event.target).hasClass('modal-cell')) {
+					    	closeModal();
 					    }
 					}
 					

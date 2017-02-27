@@ -1,0 +1,43 @@
+<div class="modal show" role="dialog" id="accept-modal"
+	aria-hidden="false">
+	<div class="modal-table">
+		<div class="modal-cell">
+			<div class="modal-content">
+				<div class="panel-header">Accept this request</div>
+				<div id="accept-modal-alert"
+					class="panel-header alert alert-header alert-with-icon alert-info hide">
+					<i class="icon icon-comment alert-icon"></i> <span
+						id="alert-content"></span>
+				</div>
+				<div class="panel-body">
+					<label for="accept_message"> Type message to
+						guest... </label>
+					<textarea id="txtNewMessage" name="message" rows="10"></textarea>
+					<div class="row">
+						<div class="col-1 space-top-2">
+							<input id="chbTerms" name="tos_confirm" type="checkbox"
+								checked="checked" />
+						</div>
+						<div class="col-11">
+							<label class="label-inline" for="tos_confirm">By
+								checking this box, I agree to the 
+								<br>
+								<a href="https://www.airbnb.com/terms" target="_blank">Host Guarantee Terms and Conditions</a> 
+								<br>
+								<a href="https://www.airbnb.com/terms" target="_blank">Guest Refund Policy Terms</a>
+								, and 
+								<a href="https://www.airbnb.com/terms" target="_blank">Terms of Service</a>.
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="panel-footer">
+					<input type="hidden" name="decision" value="accept" />
+					<input class="btn btn-primary" id="accept_submit" name="commit" 
+						type="button" value="Accept" onclick="acceptReservation()"/>
+					<button class="btn" data-behavior="modal-close" onclick="closeModal()">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

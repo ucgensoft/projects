@@ -60,3 +60,9 @@ body, #mainWrapper {
 .top-2 {
 	margin-top: 6px;	
 }
+
+.clsModal {
+	z-index : 50;
+}
+
+.ui-dialog { z-index: 100000 !important ;}

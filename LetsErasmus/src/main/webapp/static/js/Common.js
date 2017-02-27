@@ -293,7 +293,7 @@ var DialogUtil = {
 	},
 	
 	info : function (title, message, okText, callback) {
-	    $("<div></div>").dialog( {
+	    $("<div style='z-index: 10000'></div>").dialog( {
 	        buttons: [{
 	            text: okText,
 	            click: function() {
@@ -311,7 +311,7 @@ var DialogUtil = {
 	},
 	
 	warn : function (title, message, okText, callback) {
-	    $("<div></div>").dialog( {
+	    $("<div style='z-index: 10000'></div>").dialog( {
 	        buttons: [{
 	            text: okText,
 	            click: function() {

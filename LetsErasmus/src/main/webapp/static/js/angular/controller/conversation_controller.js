@@ -97,42 +97,62 @@ App.controller('conversationCtrl', ['$scope', '$controller', 'messageService', '
   		}
   	};
   	
-  	self.acceptReservation = function() {
-  		DialogUtil.confirm('Confirm', 'Reservation request will be accepted, dou you want to continue?', function(response) {
-  			if (response) {
-  				var reservationId = self.messageThread.reservation.id;
-  		  		var messageText = 'You welcome! :)';
-  		  		var status = EnmReservationStatus.CONFIRMED;
-  		  		reservationService.updateReservation(reservationId, messageText, status,
-  					  function(isSuccess) {
-  						  if (isSuccess) {
-  							  DialogUtil.info('Sucess', 'Congradulations! Reservation request is accepted.', 'OK', function() {
-  								  location.reload();
-  							  });
-  						  }
-  			  		  }
-  			  	  );
-  			}
-  		});
+  	self.openAcceptReservationWindow = function() {
+  		ajaxHtml(webApplicationUrlPrefix + '/static/html/AcceptReservation.html', 'divReservationModal', function() {
+  			$('#divReservationModal').css('display', '');
+    	});
   	};
   	
-  	self.rejectReservation = function() {
-  		DialogUtil.confirm('Confirm', 'Reservation request will be rejected, dou you want to continue?', function(response) {
-  			if (response) {
-  				var reservationId = self.messageThread.reservation.id;
-  		  		var messageText = 'I have a guest at that time';
-  		  		var status = EnmReservationStatus.DECLINED;
-  		  		reservationService.updateReservation(reservationId, messageText, status,
-  					  function(isSuccess) {
-  						  if (isSuccess) {
-  							  DialogUtil.info('Sucess', 'Reservation request is rejected.', 'OK', function() {
-  								  location.reload();
-  							  });
-  						  }
-  			  		  }
-  			  	  );
-  			}
-  		});
+  	self.acceptReservation = function() {
+  		var messageText = StringUtil.trim($('#txtNewMessage').val());
+  		if (messageText != '' && $('#chbTerms').val()) {
+  			DialogUtil.confirm('Confirm', 'Reservation request will be accepted, dou you want to continue?', function(response) {
+  	  			if (response) {
+  	  				var reservationId = self.messageThread.reservation.id;
+  	  		  		var status = EnmReservationStatus.CONFIRMED;
+  	  		  		reservationService.updateReservation(reservationId, messageText, status,
+  	  					  function(isSuccess) {
+  	  						  if (isSuccess) {
+  	  							  DialogUtil.info('Sucess', 'Congradulations! Reservation request is accepted.', 'OK', function() {
+  	  								  location.reload();
+  	  							  });
+  	  						  }
+  	  			  		  }
+  	  			  	  );
+  	  			}
+  	  		});
+  		} else {
+  			DialogUtil.warn('Warning', 'Please type a message to guest and confirm that you have read the terms.', 'OK');
+  		}
+  	};
+  	
+  	self.openDeclineReservationWindow = function() {
+  		ajaxHtml(webApplicationUrlPrefix + '/static/html/DeclineReservation.html', 'divReservationModal', function() {
+  			$('#divReservationModal').css('display', '');
+    	});
+  	};
+  	
+  	self.declineReservation = function() {
+  		var messageText = StringUtil.trim($('#txtNewMessage').val());
+  		if (messageText != '') {
+  			DialogUtil.confirm('Confirm', 'Reservation request will be rejected, dou you want to continue?', function(response) {
+  	  			if (response) {
+  	  				var reservationId = self.messageThread.reservation.id;
+  	  		  		var status = EnmReservationStatus.DECLINED;
+  	  		  		reservationService.updateReservation(reservationId, messageText, status,
+  	  					  function(isSuccess) {
+  	  						  if (isSuccess) {
+  	  							  DialogUtil.info('Sucess', 'Reservation request is rejected.', 'OK', function() {
+  	  								  location.reload();
+  	  							  });
+  	  						  }
+  	  			  		  }
+  	  			  	  );
+  	  			}
+  	  		});
+  		} else {
+  			DialogUtil.warn('Warning', 'Please type a message to guest.', 'OK');
+  		}
   	};
   	
   	self.showReservationBox = function() {
@@ -144,3 +164,13 @@ App.controller('conversationCtrl', ['$scope', '$controller', 'messageService', '
     self.initialize();
       
   }]);
+
+function acceptReservation() {
+	var scope = angular.element( $('#divBody') ).scope();
+	scope.ctrl.acceptReservation();
+}
+
+function declineReservation() {
+	var scope = angular.element( $('#divBody') ).scope();
+	scope.ctrl.declineReservation();
+}

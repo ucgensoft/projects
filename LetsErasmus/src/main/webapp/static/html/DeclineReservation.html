@@ -1,0 +1,20 @@
+<div class="modal show" role="dialog" id="accept-modal"
+	aria-hidden="false">
+	<div class="modal-table">
+		<div class="modal-cell">
+			<div class="modal-content">
+				<div class="panel-header">Decline this request</div>
+				<div class="panel-body">
+					<label for="accept_message">Type message to guest... </label>
+					<textarea id="txtNewMessage" name="message" rows="5"></textarea>
+				</div>
+				<div class="panel-footer">
+					<input type="hidden" name="decision" value="accept" />
+					<input class="btn btn-primary" id="accept_submit" name="commit" 
+						type="button" value="Decline" onclick="declineReservation()"/>
+					<button class="btn" data-behavior="modal-close" onclick="closeModal()">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
