@@ -32,6 +32,7 @@ import com.ucgen.common.util.CommonUtil;
 import com.ucgen.common.util.FileUtil;
 import com.ucgen.common.util.ImageUtil;
 import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
+import com.ucgen.letserasmus.library.common.enumeration.EnmErrorCode;
 import com.ucgen.letserasmus.library.file.enumeration.EnmFileType;
 import com.ucgen.letserasmus.library.file.model.FileModel;
 import com.ucgen.letserasmus.library.file.model.Photo;
@@ -151,6 +152,7 @@ public class ApiPlaceController extends BaseApiController {
 			} else {
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
+				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
 			}
 			httpStatus = HttpStatus.OK;			
 		} catch (Exception e) {
@@ -299,6 +301,7 @@ public class ApiPlaceController extends BaseApiController {
 			} else {
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
+				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
 			}
 			httpStatus = HttpStatus.OK;			
 		} catch (Exception e) {
@@ -363,7 +366,8 @@ public class ApiPlaceController extends BaseApiController {
 				operationResult.setResultValue(placeMap);
 			} else {
 				operationResult.setResultCode(EnmResultCode.WARNING.getValue());
-				operationResult.setResultDesc("You need to login first.");
+				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
+				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
@@ -376,44 +380,51 @@ public class ApiPlaceController extends BaseApiController {
     public ResponseEntity<OperationResult> savePhoto(@RequestParam("photoList") MultipartFile[] fileArr, HttpSession session) {
 		OperationResult operationResult = new OperationResult();
 		try {
-			Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
-			if (activeOperation != null && (activeOperation.equals(EnmOperation.CREATE_PLACE) || activeOperation.equals(EnmOperation.EDIT_PLACE))) {
-				String placeId = null;
-				if (activeOperation.equals(EnmOperation.CREATE_PLACE)) {
-					placeId = "tmp_" + Double.valueOf((Math.random() * 100000000)).longValue();
-					session.removeAttribute(EnmSession.TMP_PHOTO_PLACE_ID.getId());
-					session.setAttribute(EnmSession.TMP_PHOTO_PLACE_ID.getId(), placeId);
-				} else {
-					Place place = (Place) session.getAttribute(EnmSession.ACTIVE_PLACE.getId());
-					placeId = place.getId().toString();
-				}
-				
-				String rootPhotoFolder = "D:\\Personal\\Development\\startup\\workspace\\projects\\LetsErasmus\\src\\main\\webapp\\place\\images\\";
-				
-				String placeTmpPhotoFolderPath = rootPhotoFolder + placeId + File.separatorChar + "tmp";
-				File placeTmpPhotoFolder = new File(placeTmpPhotoFolderPath);
-				if (placeTmpPhotoFolder.exists()) {
-					FileUtils.cleanDirectory(placeTmpPhotoFolder);
-				} else {
-					placeTmpPhotoFolder.mkdirs();	
-				}
-				for (int i = 0; i < fileArr.length; i++) {
-					MultipartFile multipartFile = fileArr[i];
-					String fileName = multipartFile.getOriginalFilename();
-					if (!fileName.toUpperCase().startsWith("DUMMY_")) {
-						String tmpPhotoPath = placeTmpPhotoFolderPath + File.separatorChar + fileName;
-						File tmpFile = new File(tmpPhotoPath);
-						multipartFile.transferTo(tmpFile);
+			User sessionUser = super.getSessionUser(session);
+			if (sessionUser != null) {
+				Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
+				if (activeOperation != null && (activeOperation.equals(EnmOperation.CREATE_PLACE) || activeOperation.equals(EnmOperation.EDIT_PLACE))) {
+					String placeId = null;
+					if (activeOperation.equals(EnmOperation.CREATE_PLACE)) {
+						placeId = "tmp_" + Double.valueOf((Math.random() * 100000000)).longValue();
+						session.removeAttribute(EnmSession.TMP_PHOTO_PLACE_ID.getId());
+						session.setAttribute(EnmSession.TMP_PHOTO_PLACE_ID.getId(), placeId);
+					} else {
+						Place place = (Place) session.getAttribute(EnmSession.ACTIVE_PLACE.getId());
+						placeId = place.getId().toString();
 					}
+					
+					String rootPhotoFolder = "D:\\Personal\\Development\\startup\\workspace\\projects\\LetsErasmus\\src\\main\\webapp\\place\\images\\";
+					
+					String placeTmpPhotoFolderPath = rootPhotoFolder + placeId + File.separatorChar + "tmp";
+					File placeTmpPhotoFolder = new File(placeTmpPhotoFolderPath);
+					if (placeTmpPhotoFolder.exists()) {
+						FileUtils.cleanDirectory(placeTmpPhotoFolder);
+					} else {
+						placeTmpPhotoFolder.mkdirs();	
+					}
+					for (int i = 0; i < fileArr.length; i++) {
+						MultipartFile multipartFile = fileArr[i];
+						String fileName = multipartFile.getOriginalFilename();
+						if (!fileName.toUpperCase().startsWith("DUMMY_")) {
+							String tmpPhotoPath = placeTmpPhotoFolderPath + File.separatorChar + fileName;
+							File tmpFile = new File(tmpPhotoPath);
+							multipartFile.transferTo(tmpFile);
+						}
+					}
+					
+					session.removeAttribute(EnmSession.PLACE_PHOTO_LIST.getId());
+					session.setAttribute(EnmSession.PLACE_PHOTO_LIST.getId(), fileArr);
+					
+					operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+				} else {
+					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+					operationResult.setResultDesc("You are not authorized for this operation!");
 				}
-				
-				session.removeAttribute(EnmSession.PLACE_PHOTO_LIST.getId());
-				session.setAttribute(EnmSession.PLACE_PHOTO_LIST.getId(), fileArr);
-				
-				operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 			} else {
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("You are not authorized for this operation!");
+				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
+				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
@@ -495,6 +506,7 @@ public class ApiPlaceController extends BaseApiController {
 			} else {
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
+				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
 			}
 			httpStatus = HttpStatus.OK;			
 		} catch (Exception e) {

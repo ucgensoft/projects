@@ -539,7 +539,8 @@ public class ApiUserController extends BaseApiController {
 					}
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc("There is no user logged in!");
+					operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
+					operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
 				}
 			} else {
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
@@ -663,65 +664,71 @@ public class ApiUserController extends BaseApiController {
     	OperationResult operationResult = new OperationResult();
 		try {
 			User user = super.getSessionUser(session);
-			Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
-			if (activeOperation.equals(EnmOperation.UPDATE_USER) 
-					|| activeOperation.equals(EnmOperation.TRUST_AND_VERIFICATION)
-					|| activeOperation.equals(EnmOperation.VERIFICATION)) {
-				if (EnmBoolStatus.NO.getId().equals(user.getMsisdnVerified())) {
-					if ((msisdn != null && msisdnCountryCode == null) 
-							|| (msisdn == null && msisdnCountryCode != null)) {
-						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-						operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
-						operationResult.setResultDesc("msisdn and country code parameters are required!");
-					} else {
-						boolean msisdnSent = false;
-						if (msisdn != null && msisdnCountryCode != null) {
-							msisdnSent = true;
-						}
-						if (msisdnSent || user.getMsisdn() != null) {
-							
-							session.removeAttribute(EnmSession.MSISDN_VERIFICATION_CODE.getId());
-							
-							if (msisdnSent) {
-								User updatedUser = new User();
-								updatedUser.setId(user.getId());
-								updatedUser.setMsisdn(msisdn);
-								updatedUser.setMsisdnCountryCode(msisdnCountryCode);
-								updatedUser.setMsisdnVerified(EnmBoolStatus.NO.getId());
-								
-								OperationResult updateResult = this.userService.updateUser(updatedUser, false);
-								if (OperationResult.isResultSucces(updateResult)) {
-									
-									user.setMsisdn(msisdn);
-									user.setMsisdnCountryCode(msisdnCountryCode);
-									user.setMsisdnVerified(EnmBoolStatus.NO.getId());
-								} else {
-									operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-									operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
-									operationResult.setResultDesc("User record could not be updated. Please try again later!");
-									throw new OperationResultException(operationResult);
-								}
-							}
-							
-							Integer msisdnVerificationCode = new Double(Math.random() * 10000).intValue();
-							
-							sendVerifyMsisdnMail(user, msisdnVerificationCode);
-							session.setAttribute(EnmSession.MSISDN_VERIFICATION_CODE.getId(), msisdnVerificationCode);
-							operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
-						} else {
+			if (user != null) {
+				Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
+				if (activeOperation.equals(EnmOperation.UPDATE_USER) 
+						|| activeOperation.equals(EnmOperation.TRUST_AND_VERIFICATION)
+						|| activeOperation.equals(EnmOperation.VERIFICATION)) {
+					if (EnmBoolStatus.NO.getId().equals(user.getMsisdnVerified())) {
+						if ((msisdn != null && msisdnCountryCode == null) 
+								|| (msisdn == null && msisdnCountryCode != null)) {
 							operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 							operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
-							operationResult.setResultDesc("msisdn is required!");
-						}	
+							operationResult.setResultDesc("msisdn and country code parameters are required!");
+						} else {
+							boolean msisdnSent = false;
+							if (msisdn != null && msisdnCountryCode != null) {
+								msisdnSent = true;
+							}
+							if (msisdnSent || user.getMsisdn() != null) {
+								
+								session.removeAttribute(EnmSession.MSISDN_VERIFICATION_CODE.getId());
+								
+								if (msisdnSent) {
+									User updatedUser = new User();
+									updatedUser.setId(user.getId());
+									updatedUser.setMsisdn(msisdn);
+									updatedUser.setMsisdnCountryCode(msisdnCountryCode);
+									updatedUser.setMsisdnVerified(EnmBoolStatus.NO.getId());
+									
+									OperationResult updateResult = this.userService.updateUser(updatedUser, false);
+									if (OperationResult.isResultSucces(updateResult)) {
+										
+										user.setMsisdn(msisdn);
+										user.setMsisdnCountryCode(msisdnCountryCode);
+										user.setMsisdnVerified(EnmBoolStatus.NO.getId());
+									} else {
+										operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+										operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
+										operationResult.setResultDesc("User record could not be updated. Please try again later!");
+										throw new OperationResultException(operationResult);
+									}
+								}
+								
+								Integer msisdnVerificationCode = new Double(Math.random() * 10000).intValue();
+								
+								sendVerifyMsisdnMail(user, msisdnVerificationCode);
+								session.setAttribute(EnmSession.MSISDN_VERIFICATION_CODE.getId(), msisdnVerificationCode);
+								operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+							} else {
+								operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+								operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
+								operationResult.setResultDesc("msisdn is required!");
+							}	
+						}
+					} else {
+						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+						operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
+						operationResult.setResultDesc("msisdn is already verified!");
 					}
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
-					operationResult.setResultDesc("msisdn is already verified!");
+					operationResult.setResultDesc("You are not authorized for this operation!");
 				}
 			} else {
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("You are not authorized for this operation!");
+				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
+				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
 			}
 		} catch (OperationResultException e) {
 			operationResult = e.getOperationResult();
@@ -738,29 +745,35 @@ public class ApiUserController extends BaseApiController {
     	OperationResult operationResult = new OperationResult();
 		try {
 			User user = super.getSessionUser(session);
-			Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
-			if (activeOperation.equals(EnmOperation.TRUST_AND_VERIFICATION) 
-					|| activeOperation.equals(EnmOperation.VERIFICATION)) {
-				User updatedUser = new User();
-				updatedUser.setId(user.getId());
-				updatedUser.setEmailVerified(EnmBoolStatus.NO.getId());
-				updatedUser.setUserActivationKeyEmail(SecurityUtil.generateUUID());
-				
-				OperationResult updateResult = this.userService.updateUser(updatedUser, false);
-				if (OperationResult.isResultSucces(updateResult)) {
-					user.setEmailVerified(updatedUser.getEmailVerified());
-					user.setUserActivationKeyEmail(updatedUser.getUserActivationKeyEmail());
-					this.sendEmailVerificationMail(user);
+			if (user != null) {
+				Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
+				if (activeOperation.equals(EnmOperation.TRUST_AND_VERIFICATION) 
+						|| activeOperation.equals(EnmOperation.VERIFICATION)) {
+					User updatedUser = new User();
+					updatedUser.setId(user.getId());
+					updatedUser.setEmailVerified(EnmBoolStatus.NO.getId());
+					updatedUser.setUserActivationKeyEmail(SecurityUtil.generateUUID());
 					
-					operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+					OperationResult updateResult = this.userService.updateUser(updatedUser, false);
+					if (OperationResult.isResultSucces(updateResult)) {
+						user.setEmailVerified(updatedUser.getEmailVerified());
+						user.setUserActivationKeyEmail(updatedUser.getUserActivationKeyEmail());
+						this.sendEmailVerificationMail(user);
+						
+						operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+					} else {
+						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+						operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
+						operationResult.setResultDesc("User record could not be updated. Please try again later!");
+					}
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
-					operationResult.setResultDesc("User record could not be updated. Please try again later!");
+					operationResult.setResultDesc("You are not authorized for this operation!");
 				}
 			} else {
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("You are not authorized for this operation!");
+				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
+				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
@@ -774,19 +787,25 @@ public class ApiUserController extends BaseApiController {
     public ResponseEntity<ValueOperationResult<Boolean>> isEmailVerified(HttpSession session) {
     	ValueOperationResult<Boolean> operationResult = new ValueOperationResult<Boolean>();
 		try {
-			Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
-			if (activeOperation.equals(EnmOperation.VERIFICATION)) {
-				User user = super.getSessionUser(session);
-				
-				if (user.getEmailVerified().equals(EnmBoolStatus.YES.getId())) {
-					operationResult.setResultValue(true);
+			User user = super.getSessionUser(session);
+			if (user != null) {
+				Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
+				if (activeOperation.equals(EnmOperation.VERIFICATION)) {
+					
+					if (user.getEmailVerified().equals(EnmBoolStatus.YES.getId())) {
+						operationResult.setResultValue(true);
+					} else {
+						operationResult.setResultValue(false);
+					}
+					operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 				} else {
-					operationResult.setResultValue(false);
+					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+					operationResult.setResultDesc("You are not authorized for this operation!");
 				}
-				operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 			} else {
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("You are not authorized for this operation!");
+				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
+				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
@@ -800,43 +819,48 @@ public class ApiUserController extends BaseApiController {
     public ResponseEntity<OperationResult> verifyMsisdnCode(@RequestParam("code") String code, HttpSession session) {
     	OperationResult operationResult = new OperationResult();
 		try {
-			Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
-			if (activeOperation.equals(EnmOperation.UPDATE_USER)
-					|| activeOperation.equals(EnmOperation.TRUST_AND_VERIFICATION)
-					|| activeOperation.equals(EnmOperation.VERIFICATION)) {
-				Object sessionCode = session.getAttribute(EnmSession.MSISDN_VERIFICATION_CODE.getId());
-				
-				if (sessionCode != null) {
-					if (sessionCode.toString().equals(code)) {
-						User user = super.getSessionUser(session);
-						
-						User updatedUser = new User();
-						updatedUser.setId(user.getId());
-						updatedUser.setMsisdnVerified(EnmBoolStatus.YES.getId());
-						
-						OperationResult updateResult = this.userService.updateUser(updatedUser, false);
-						if (OperationResult.isResultSucces(updateResult)) {
-							user.setMsisdnVerified(EnmBoolStatus.YES.getId());
-							operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
-							session.removeAttribute(EnmSession.MSISDN_VERIFICATION_CODE.getId());
+			User user = super.getSessionUser(session);
+			if (user != null) {
+				Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
+				if (activeOperation.equals(EnmOperation.UPDATE_USER)
+						|| activeOperation.equals(EnmOperation.TRUST_AND_VERIFICATION)
+						|| activeOperation.equals(EnmOperation.VERIFICATION)) {
+					Object sessionCode = session.getAttribute(EnmSession.MSISDN_VERIFICATION_CODE.getId());
+					
+					if (sessionCode != null) {
+						if (sessionCode.toString().equals(code)) {
+							User updatedUser = new User();
+							updatedUser.setId(user.getId());
+							updatedUser.setMsisdnVerified(EnmBoolStatus.YES.getId());
+							
+							OperationResult updateResult = this.userService.updateUser(updatedUser, false);
+							if (OperationResult.isResultSucces(updateResult)) {
+								user.setMsisdnVerified(EnmBoolStatus.YES.getId());
+								operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+								session.removeAttribute(EnmSession.MSISDN_VERIFICATION_CODE.getId());
+							} else {
+								operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+								operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
+								operationResult.setResultDesc("User record could not be updated. Please try again later!");
+							}
 						} else {
 							operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 							operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
-							operationResult.setResultDesc("User record could not be updated. Please try again later!");
+							operationResult.setResultDesc("Verification code is incorrect!");
 						}
 					} else {
 						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 						operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
-						operationResult.setResultDesc("Verification code is incorrect!");
+						operationResult.setResultDesc("System is not in msisdn verification state!");
 					}
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
-					operationResult.setResultDesc("System is not in msisdn verification state!");
+					operationResult.setResultDesc("You are not authorized for this operation!");
 				}
 			} else {
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("You are not authorized for this operation!");
+				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
+				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
@@ -850,29 +874,35 @@ public class ApiUserController extends BaseApiController {
     public ResponseEntity<OperationResult> removeMsisdn(HttpSession session) {
     	OperationResult operationResult = new OperationResult();
 		try {
-			Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
-			if (activeOperation.equals(EnmOperation.UPDATE_USER)
-					|| activeOperation.equals(EnmOperation.TRUST_AND_VERIFICATION)) {
-				User user = super.getSessionUser(session);
-				
-				User updatedUser = new User();
-				updatedUser.setId(user.getId());
-				updatedUser.setMsisdn(null);
-				updatedUser.setMsisdnVerified(EnmBoolStatus.NO.getId());
-				
-				OperationResult updateResult = this.userService.updateUser(updatedUser, true);
-				if (OperationResult.isResultSucces(updateResult)) {
-					user.setMsisdnVerified(EnmBoolStatus.NO.getId());
-					user.setMsisdn(null);
-					operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+			User user = this.getSessionUser(session);
+			if (user != null) {
+				Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
+				if (activeOperation.equals(EnmOperation.UPDATE_USER)
+						|| activeOperation.equals(EnmOperation.TRUST_AND_VERIFICATION)) {
+					
+					User updatedUser = new User();
+					updatedUser.setId(user.getId());
+					updatedUser.setMsisdn(null);
+					updatedUser.setMsisdnVerified(EnmBoolStatus.NO.getId());
+					
+					OperationResult updateResult = this.userService.updateUser(updatedUser, true);
+					if (OperationResult.isResultSucces(updateResult)) {
+						user.setMsisdnVerified(EnmBoolStatus.NO.getId());
+						user.setMsisdn(null);
+						operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+					} else {
+						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+						operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
+						operationResult.setResultDesc("User record could not be updated. Please try again later!");
+					}
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
-					operationResult.setResultDesc("User record could not be updated. Please try again later!");
+					operationResult.setResultDesc("You are not authorized for this operation!");
 				}
 			} else {
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("You are not authorized for this operation!");
+				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
+				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.ERROR.getValue());

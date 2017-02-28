@@ -60,11 +60,11 @@ public class ReservationRowMapper extends BaseRowMapper<Reservation> {
 			this.addFKey(FKEY_USER_HOST, fKeyUserHost);
 		} 
 		
-		if (FKEY_USER_HOST.equals(keyName)) {
+		if (FKEY_USER_CLIENT.equals(keyName)) {
 			UserRowMapper userRowMapper = new UserRowMapper("UC");
 			ForeignKey<ReservationRowMapper, UserRowMapper> fKeyUserClient = new ForeignKey<ReservationRowMapper, UserRowMapper>(this, userRowMapper, EnmJoinType.LEFT);
 			fKeyUserClient.addFieldPair(COL_CLIENT_USER_ID, UserRowMapper.COL_ID);
-			this.addFKey(FKEY_USER_HOST, fKeyUserClient);
+			this.addFKey(FKEY_USER_CLIENT, fKeyUserClient);
 		} 
 			
 	}
@@ -89,6 +89,7 @@ public class ReservationRowMapper extends BaseRowMapper<Reservation> {
 		reservation.setStatus(super.getInteger(rs, COL_STATUS));
 		reservation.setCurrencyId(super.getInteger(rs, COL_CURRENCY_ID));
 		reservation.setMessageThreadId(super.getLong(rs, COL_MESSAGE_THREAD_ID));
+		reservation.setGuestNumber(super.getInteger(rs, COL_GUEST_NUMBER));
 		
 		reservation.setCreatedBy(super.getString(rs, COL_CREATED_BY));		
 		reservation.setCreatedDate(super.getTimestamp(rs, COL_CREATED_DATE));
@@ -141,6 +142,7 @@ public class ReservationRowMapper extends BaseRowMapper<Reservation> {
 		super.addColumn(COL_CURRENCY_ID);
 		super.addColumn(COL_STATUS);
 		super.addColumn(COL_MESSAGE_THREAD_ID);
+		super.addColumn(COL_GUEST_NUMBER);
 	}
 	
 }

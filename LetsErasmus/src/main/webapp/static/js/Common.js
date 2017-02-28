@@ -82,7 +82,8 @@ var EnmErrorCode = {
 		UNDEFINED_ERROR : -1,
 		UNAUTHORIZED_OPERATION : 1,
         USER_NOT_FOUND : 2,
-        MSISDN_VERIFICATION_CODE_INCORRECT : 3
+        MSISDN_VERIFICATION_CODE_INCORRECT : 3,
+        USER_NOT_LOGGED_IN : 4
 };
 
 var EnmLoginType = {
@@ -463,6 +464,8 @@ function handleAjaxError(operationResult) {
 		DialogUtil.error('Error', operationResult.resultDesc, 'OK', function() {
 			if (operationResult.errorCode == EnmErrorCode.UNAUTHORIZED_OPERATION) {
 				location.href = webApplicationUrlPrefix + '/pages/Unauthorized.xhtml';
+			} else if(operationResult.errorCode == EnmErrorCode.USER_NOT_LOGGED_IN) {
+				openLoginWindow();
 			}
 		});
 	}

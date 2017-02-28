@@ -24,6 +24,7 @@ import com.ucgen.common.operationresult.ValueOperationResult;
 import com.ucgen.common.util.DateUtil;
 import com.ucgen.letserasmus.library.common.enumeration.EnmBoolStatus;
 import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
+import com.ucgen.letserasmus.library.common.enumeration.EnmErrorCode;
 import com.ucgen.letserasmus.library.message.enumeration.EnmMessageStatus;
 import com.ucgen.letserasmus.library.message.model.Message;
 import com.ucgen.letserasmus.library.message.model.MessageThread;
@@ -67,9 +68,7 @@ public class ApiReservationController extends BaseApiController {
 		
 		try {
 			User user = super.getSessionUser(session);
-			if (user != null) {
-				Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
-				
+			if (user != null) {				
 				if (uiReservation.getPlaceId() != null && uiReservation.getStartDate() != null 
 						&& uiReservation.getEndDate() != null && uiReservation.getGuestNumber() != null) {
 					
@@ -139,6 +138,7 @@ public class ApiReservationController extends BaseApiController {
 			} else {
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
+				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
@@ -200,6 +200,7 @@ public class ApiReservationController extends BaseApiController {
 			} else {
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
+				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
@@ -279,6 +280,7 @@ public class ApiReservationController extends BaseApiController {
 			} else {
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
+				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
@@ -313,6 +315,7 @@ public class ApiReservationController extends BaseApiController {
 			} else {
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
+				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
@@ -343,12 +346,16 @@ public class ApiReservationController extends BaseApiController {
 				
 				if (reservationList != null && reservationList.size() > 0) {
 					for (Reservation tmpReservation : reservationList) {
-						if (DateUtil.truncate(tmpReservation.getStartDate()).getTime() > currentDate.getTime()) {
-							upcomingList.add(tmpReservation);
-						} else if (DateUtil.truncate(tmpReservation.getEndDate()).getTime() < currentDate.getTime()) {
-							oldList.add(tmpReservation);
-						} else {
-							ongoingList.add(tmpReservation);
+						if (EnmReservationStatus.CONFIRMED.getId().equals(tmpReservation.getStatus())
+								|| EnmReservationStatus.CLOSED.getId().equals(tmpReservation.getStatus())
+								|| EnmReservationStatus.WAITING_PAYMENT.getId().equals(tmpReservation.getStatus())) {
+							if (DateUtil.truncate(tmpReservation.getStartDate()).getTime() > currentDate.getTime()) {
+								upcomingList.add(tmpReservation);
+							} else if (DateUtil.truncate(tmpReservation.getEndDate()).getTime() < currentDate.getTime()) {
+								oldList.add(tmpReservation);
+							} else {
+								ongoingList.add(tmpReservation);
+							}
 						}
 					}
 				}
@@ -358,10 +365,61 @@ public class ApiReservationController extends BaseApiController {
 			} else {
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
+				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
 			operationResult.setResultDesc("List reservation could not be completed. Please try again later!");
+		}
+		return new ResponseEntity<ValueOperationResult<Map<String, List<Reservation>>>>(operationResult, HttpStatus.OK);
+    }
+	
+	@RequestMapping(value = "/api/reservation/listtrips", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public ResponseEntity<ValueOperationResult<Map<String, List<Reservation>>>> listTrips(HttpSession session) {
+		ValueOperationResult<Map<String, List<Reservation>>> operationResult = new ValueOperationResult<Map<String, List<Reservation>>>();		
+		try {
+			User user = super.getSessionUser(session);
+			if (user != null) {
+				Date currentDate = DateUtil.truncate(new Date());
+				Reservation reservation = new Reservation();
+				reservation.setClientUserId(user.getId());
+				
+				List<Reservation> reservationList = this.reservationService.list(reservation, true, true, true);
+				
+				Map<String, List<Reservation>> reservationMap = new HashMap<String, List<Reservation>>();
+				List<Reservation> upcomingList = new ArrayList<Reservation>();
+				List<Reservation> ongoingList = new ArrayList<Reservation>();
+				List<Reservation> oldList = new ArrayList<Reservation>();
+				reservationMap.put("upcomingList", upcomingList);
+				reservationMap.put("ongoingList", ongoingList);
+				reservationMap.put("oldList", oldList);
+				
+				if (reservationList != null && reservationList.size() > 0) {
+					for (Reservation tmpReservation : reservationList) {
+						if (EnmReservationStatus.CONFIRMED.getId().equals(tmpReservation.getStatus())
+								|| EnmReservationStatus.CLOSED.getId().equals(tmpReservation.getStatus())
+								|| EnmReservationStatus.WAITING_PAYMENT.getId().equals(tmpReservation.getStatus())) {
+							if (DateUtil.truncate(tmpReservation.getStartDate()).getTime() > currentDate.getTime()) {
+								upcomingList.add(tmpReservation);
+							} else if (DateUtil.truncate(tmpReservation.getEndDate()).getTime() < currentDate.getTime()) {
+								oldList.add(tmpReservation);
+							} else {
+								ongoingList.add(tmpReservation);
+							}
+						}
+					}
+				}
+				
+				operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+				operationResult.setResultValue(reservationMap);
+			} else {
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
+				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
+			}
+		} catch (Exception e) {
+			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
+			operationResult.setResultDesc("List trip could not be completed. Please try again later!");
 		}
 		return new ResponseEntity<ValueOperationResult<Map<String, List<Reservation>>>>(operationResult, HttpStatus.OK);
     }

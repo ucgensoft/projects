@@ -255,18 +255,24 @@ App.controller('placeDetailCtrl', ['$scope', '$controller', 'placeService', 'res
 		 var startDate = $("#txtStartDatePicker").datepicker("getDate")
 		 var endDate = $("#txtEndDatePicker").datepicker("getDate")
 		 
-		 var reservation = {
-			 placeId : placeId,
-			 guestNumber : guestNumber,
-			 startDate : startDate,
-			 endDate : endDate
+		 if (guestNumber != null && guestNumber != '' 
+			 && startDate != null && startDate != ''
+				 && endDate != null && endDate != '') {
+			 var reservation = {
+					 placeId : placeId,
+					 guestNumber : guestNumber,
+					 startDate : startDate,
+					 endDate : endDate
+				 }
+				 
+				 reservationService.startReservation(reservation, function(nextUrl) {
+					 if (nextUrl) {
+						 openWindow(nextUrl, true);
+					 }
+				 });
+		 } else {
+			 DialogUtil.warn('Warning', '\'Guest number\', \'Check In\' and \'Check Out\' are mandatory parameters for booking.');
 		 }
-		 
-		 reservationService.startReservation(reservation, function(nextUrl) {
-			 if (nextUrl) {
-				 openWindow(nextUrl, true);
-			 }
-		 });
 	 }
 	 
       self.initialize();

@@ -6,7 +6,6 @@ import java.net.URLEncoder;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
-import com.ucgen.letserasmus.library.common.enumeration.EnmSize;
 import com.ucgen.letserasmus.library.user.model.User;
 import com.ucgen.letserasmus.web.view.BaseController;
 
@@ -93,7 +92,7 @@ public class WebApplication extends BaseController {
 				return "editUserCtrl";
 			} else if (requestUrl.contains("PAGES/DASHBOARD/LISTINGS.XHTML")) {
 				return "listingsCtrl";
-			} else if (requestUrl.contains("PAGES/DASHBOARD/VERIFICATION.XHTML")) {
+			} else if (requestUrl.contains("PAGES/DASHBOARD/TRUSTANDVERIFICATION.XHTML")) {
 				return "trustAndverificationCtrl";
 			} else if (requestUrl.contains("PAGES/VERIFICATION.XHTML")) {
 				return "verificationCtrl";
@@ -105,6 +104,8 @@ public class WebApplication extends BaseController {
 				return "conversationCtrl";
 			} else if (requestUrl.contains("PAGES/DASHBOARD/RESERVATIONLIST.XHTML")) {
 				return "reservationListCtrl";
+			} else if (requestUrl.contains("PAGES/DASHBOARD/TRIPLIST.XHTML")) {
+				return "tripListCtrl";
 			} else {
 				return "";
 			}	
