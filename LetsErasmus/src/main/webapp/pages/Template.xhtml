@@ -98,7 +98,7 @@
 		<h:body style="background-position: center center; background-repeat: no-repeat; background-attachment: fixed; background-size: cover; 
 				padding-top: 0px; padding-bottom: 0px;">
 			<div ng-app="myApp">
-				<div id="divPageHeader" ng-controller="headerCtrl as ctrl">
+				<div id="divPageHeader" class="clsHeader" ng-controller="headerCtrl as ctrl">
 					<ui:include src="Header.xhtml"   />
 					<div id="divModal" class="modalWrapper login-form overlay animate">
 						<div id="divModalContent" class="modalWindow">
@@ -108,7 +108,7 @@
 					<iframe id="frameGoogleLogout" src="" style="display: none"></iframe>
 				</div>
 				<div id="divAjaxProgressBar"></div>
-				<div id="divBody"  ng-controller="#{webApplication.ngController} as ctrl">
+				<div id="divBody" class="clsContent"  ng-controller="#{webApplication.ngController} as ctrl">
 					<ui:insert name="body" />
 				</div>
 				<ui:fragment rendered="#{webApplication.footerVisible}">
