@@ -6,6 +6,8 @@ import java.net.URLEncoder;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import com.ucgen.common.model.Size;
+import com.ucgen.letserasmus.library.common.enumeration.EnmSize;
 import com.ucgen.letserasmus.library.user.model.User;
 import com.ucgen.letserasmus.web.view.BaseController;
 
@@ -18,13 +20,29 @@ public class WebApplication extends BaseController {
 	public static final String LOCAL_APP_PATH = "D:\\Personal\\Development\\startup\\workspace\\projects\\LetsErasmus\\src\\main\\webapp";
 
 	private String urlPrefix;
-	private String rootPlaceImageUrl;
-	private String rootProfileImageUrl;
+	
 	private String emailVerificationUrl;
-	private String rootProfilePhotoPath;
-	private String profilePhotoUrlTemplate;
-	private String defaultProfilePhotoUrl;
-	private String profilePhotoPathTemplate;
+	
+	private String rootUserPhotoPath;
+	private String rootPlacePhotoPath;
+	
+	private String userPhotoUrlTemplate;
+	private String placePhotoUrlTemplate;
+	private String rootPlaceImageUrl;
+	private String rootUserImageUrl;
+	private String defaultUserPhotoUrl;
+	
+	private String userPhotoNameTemplate;
+	private String placePhotoNameTemplate;
+	
+	private String placePhotoPath;
+	private String userPhotoPath;
+	
+	private Size smallUserPhotoSize;
+	private Size mediumUserPhotoSize;
+	
+	private Size smallPlacePhotoSize;
+	private Size mediumPlacePhotoSize;
 		
 	public String getFacebookId() {
 		return FB_APP_ID;
@@ -50,27 +68,78 @@ public class WebApplication extends BaseController {
 		this.emailVerificationUrl = emailVerificationUrl;
 	}
 	
-	public String getRootProfilePhotoPath() {
-		return this.rootProfilePhotoPath;
+	public String getRootUserPhotoPath() {
+		return this.rootUserPhotoPath;
+	}
+	
+	public String getRootPlacePhotoPath() {
+		return this.rootPlacePhotoPath;
 	}
 
-	public String getProfilePhotoUrlTemplate() {
-		return profilePhotoUrlTemplate;
+	public String getUserPhotoUrlTemplate() {
+		return userPhotoUrlTemplate;
 	}
 
-	public String getDefaultProfilePhotoUrl() {
-		return defaultProfilePhotoUrl;
+	public String getDefaultUserPhotoUrl() {
+		return defaultUserPhotoUrl;
+	}
+
+	public String getRootUserImageUrl() {
+		return rootUserImageUrl;
+	}
+
+	public String getUserPhotoNameTemplate() {
+		return userPhotoNameTemplate;
+	}
+
+	public String getPlacePhotoNameTemplate() {
+		return placePhotoNameTemplate;
+	}
+
+	public Size getSmallUserPhotoSize() {
+		return smallUserPhotoSize;
+	}
+
+	public Size getMediumUserPhotoSize() {
+		return mediumUserPhotoSize;
+	}
+
+	public Size getSmallPlacePhotoSize() {
+		return smallPlacePhotoSize;
+	}
+
+	public Size getMediumPlacePhotoSize() {
+		return mediumPlacePhotoSize;
 	}
 
 	public WebApplication() {
-		urlPrefix = "http://localhost:8080/LetsErasmus";
-		rootPlaceImageUrl = urlPrefix + "/place/images";
-		rootProfileImageUrl = urlPrefix + "/user/images";
-		emailVerificationUrl = urlPrefix + "/pages/Main.xhtml?user=#paramUserId#&code=#paramEmailVerificationCode#&op=1";
-		rootProfilePhotoPath = "D:\\Personal\\Development\\startup\\workspace\\projects\\LetsErasmus\\src\\main\\webapp\\user\\images\\";
 		
-		defaultProfilePhotoUrl = rootProfileImageUrl + "/default_profile_#size#.png";
-		profilePhotoUrlTemplate = rootProfileImageUrl + "/#userId#/user_#userId#_photo_#photoId#_#size#.png";
+		emailVerificationUrl = urlPrefix + "/pages/Main.xhtml?user=#paramUserId#&code=#paramEmailVerificationCode#&op=1";
+		
+		urlPrefix = "http://localhost:8080/LetsErasmus";
+		
+		rootPlaceImageUrl = urlPrefix + "/place/images";
+		rootUserImageUrl = urlPrefix + "/user/images";
+		
+		
+		rootUserPhotoPath = LOCAL_APP_PATH + "\\user\\images\\";
+		rootPlacePhotoPath = LOCAL_APP_PATH + "\\place\\images\\";
+		
+		userPhotoNameTemplate = "user_#userId#_#photoId#_#size#.png";
+		placePhotoNameTemplate = "place_#placeId#_#photoId#_#size#.png";
+		
+		defaultUserPhotoUrl = rootUserImageUrl + "/default_profile_#size#.png";
+		userPhotoUrlTemplate = rootUserImageUrl + "/#userId#/" + userPhotoNameTemplate;
+		placePhotoUrlTemplate = rootPlaceImageUrl + "/#placeId#/" + placePhotoNameTemplate;
+		
+		placePhotoPath = AppUtil.concatPath(rootPlacePhotoPath, "#placeId#", placePhotoNameTemplate);
+		userPhotoPath = AppUtil.concatPath(rootUserPhotoPath, "#userId#", userPhotoNameTemplate);
+		
+		smallUserPhotoSize = new Size(300f, 300f);
+		smallUserPhotoSize = new Size(400f, 700f);
+		
+		smallPlacePhotoSize = new Size(500f, 300f);
+		mediumPlacePhotoSize = new Size(800f, 800f);
 	}
 	
 	public String getNgController() {
@@ -150,40 +219,27 @@ public class WebApplication extends BaseController {
 		}
 		return "";
 	}
-	
-	/*
-	public String getUserSmallPhotoUrl(User user) {
-		String photoUrl = null;
-		if (user != null && user.getProfilePhotoId() != null) {
-			String smallFileName = AppUtil.getSmallUserPhotoName(user.getId(), user.getProfilePhotoId(), EnmFileType.getFileType(user.getProfilePhoto().getFileType()));
-			photoUrl = AppUtil.concatPath(rootProfileImagePath, user.getId().toString(), smallFileName);
-		} else {
-			photoUrl = this.defaultMediumProfilePhotoUrl;
-		}
-		return photoUrl;
+
+	public String getUserPhotoName(Long userId, Long photoId, EnmSize size) {
+		String photoName = this.userPhotoNameTemplate.replace("#userId#", userId.toString());
+		photoName = photoName.replace("#photoId#", photoId.toString());
+		photoName = photoName.replace("#size#", size.getValue());
+		return photoName;
 	}
 	
-	public String getUserLargePhotoUrl(User user) {
-		String photoUrl = null;
-		if (user.getProfilePhotoId() != null) {
-			photoUrl = getUserSmallPhotoUrl(user);
-			if (photoUrl != null) {
-				photoUrl = photoUrl.replace("_small_", "_large_");
-			}
-		} else {
-			photoUrl = this.defaultMediumProfilePhotoUrl;
-		}
-		
-		return photoUrl;
+	public String getPlacePhotoName(Long placeId, Long photoId, EnmSize size) {
+		String photoName = this.placePhotoNameTemplate.replace("#placeId#", placeId.toString());
+		photoName = photoName.replace("#photoId#", photoId.toString());
+		photoName = photoName.replace("#size#", size.getValue());
+		return photoName;
 	}
-	*/
 	
-	public String getActiveUserProfilePhotoUrl(String size) {
+	public String getActiveUserPhotoUrl(String size) {
 		String photoUrl = null;
 		User user = this.getUser();
 		if (user != null) {
 			if (user.getProfilePhotoId() != null) {
-				photoUrl = this.getUserProfilePhotoUrl(user.getId(), user.getProfilePhotoId(), size);
+				photoUrl = this.getUserPhotoUrl(user.getId(), user.getProfilePhotoId(), size);
 			} else if (user.getProfileImageUrl() != null) {
 				photoUrl = user.getProfileImageUrl();
 			}
@@ -191,16 +247,37 @@ public class WebApplication extends BaseController {
 		return photoUrl;
 	}
 	
-	public String getUserProfilePhotoUrl(Long userId, Long photoId, String size) {
+	public String getUserPhotoUrl(Long userId, Long photoId, String size) {
 		String photoUrl = null;
 		if (photoId != null && photoId > 0) {
-			photoUrl = this.profilePhotoUrlTemplate.replace("#userId#", userId.toString());
-			photoUrl = photoUrl.replace("#photoId#", photoId.toString());
+			photoUrl = this.userPhotoUrlTemplate.replaceAll("#userId#", userId.toString());
+			photoUrl = photoUrl.replaceAll("#photoId#", photoId.toString());
 		} else {
-			photoUrl = this.defaultProfilePhotoUrl;
+			photoUrl = this.defaultUserPhotoUrl;
 		}
 		photoUrl = photoUrl.replace("#size#", size);
 		return photoUrl;
+	}
+	
+	public String getUserPhotoPath(Long userId, Long photoId, String size) {
+		String photoPath = this.userPhotoPath.replaceAll("#userId#", userId.toString());
+		photoPath = photoPath.replaceAll("#photoId#", photoId.toString());
+		photoPath = photoPath.replaceAll("#size#", EnmSize.getSize(size).getValue());
+		return photoPath;
+	}
+	
+	public String getPlacePhotoUrl(Long placeId, Long photoId, String size) {
+		String photoPath = this.placePhotoUrlTemplate.replaceAll("#placeId#", placeId.toString());
+		photoPath = photoPath.replaceAll("#photoId#", photoId.toString());
+		photoPath = photoPath.replaceAll("#size#", EnmSize.getSize(size).getValue());
+		return photoPath;
+	}
+	
+	public String getPlacePhotoPath(Long placeId, Long photoId, String size) {
+		String photoPath = this.placePhotoPath.replaceAll("#placeId#", placeId.toString());
+		photoPath = photoPath.replaceAll("#photoId#", photoId.toString());
+		photoPath = photoPath.replaceAll("#size#", EnmSize.getSize(size).getValue());
+		return photoPath;
 	}
 	
 	public boolean isFooterVisible() {

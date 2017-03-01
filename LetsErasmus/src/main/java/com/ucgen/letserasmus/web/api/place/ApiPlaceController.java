@@ -33,6 +33,7 @@ import com.ucgen.common.util.FileUtil;
 import com.ucgen.common.util.ImageUtil;
 import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
 import com.ucgen.letserasmus.library.common.enumeration.EnmErrorCode;
+import com.ucgen.letserasmus.library.common.enumeration.EnmSize;
 import com.ucgen.letserasmus.library.file.enumeration.EnmFileType;
 import com.ucgen.letserasmus.library.file.model.FileModel;
 import com.ucgen.letserasmus.library.file.model.Photo;
@@ -44,13 +45,19 @@ import com.ucgen.letserasmus.library.user.model.User;
 import com.ucgen.letserasmus.web.api.BaseApiController;
 import com.ucgen.letserasmus.web.view.application.EnmOperation;
 import com.ucgen.letserasmus.web.view.application.EnmSession;
+import com.ucgen.letserasmus.web.view.application.WebApplication;
 
 @RestController
 public class ApiPlaceController extends BaseApiController {
 
 	private IPlaceService placeService;
-	
 	private IFileService fileService;
+	private WebApplication webApplication;
+	
+	@Autowired
+	public void setWebApplication(WebApplication webApplication) {
+		this.webApplication = webApplication;
+	}
 	
 	@Autowired
 	public void setPlaceService(IPlaceService placeService) {
@@ -107,7 +114,7 @@ public class ApiPlaceController extends BaseApiController {
 						OperationResult createResult = this.placeService.insertPlace(place);
 						
 						try {
-							String rootPhotoFolder = "D:\\Personal\\Development\\startup\\workspace\\projects\\LetsErasmus\\src\\main\\webapp\\place\\images\\";
+							String rootPhotoFolder = this.webApplication.getRootPlacePhotoPath();
 							String placePhotoFolderPath = rootPhotoFolder + place.getId(); 
 							File placePhotoFolder = new File(placePhotoFolderPath);
 							
@@ -125,13 +132,13 @@ public class ApiPlaceController extends BaseApiController {
 								
 								String tmpPhotoPath = FileUtil.concatPath(rootPhotoFolder, tmpPlaceId, "tmp", fileName);
 								
-								String smallPhotoPath = placePhotoFolderPath + File.separatorChar + photo.getId() + "_small." + EnmFileType.getFileType(photo.getFileType()).getFileSuffix();
-								String largePhotoPath = placePhotoFolderPath + File.separatorChar + photo.getId() + "_large." + EnmFileType.getFileType(photo.getFileType()).getFileSuffix();
-								
+								String smallPhotoPath = this.webApplication.getPlacePhotoPath(place.getId(), photo.getId(), EnmSize.SMALL.getValue());
+								String mediumPhotoPath = this.webApplication.getPlacePhotoPath(place.getId(), photo.getId(), EnmSize.MEDIUM.getValue());
+																
 								File tmpFile = new File(tmpPhotoPath);
 								
-								ImageUtil.resizeImage(tmpFile, largePhotoPath, 800, 800);
-								ImageUtil.resizeImage(tmpFile, smallPhotoPath, 500, 300);
+								ImageUtil.resizeImage(tmpFile, mediumPhotoPath, this.webApplication.getMediumPlacePhotoSize());
+								ImageUtil.resizeImage(tmpFile, smallPhotoPath, this.webApplication.getSmallPlacePhotoSize());
 								tmpFile.delete();
 							}
 							(new File(tmpPhotoDirPath)).delete();
@@ -258,7 +265,7 @@ public class ApiPlaceController extends BaseApiController {
 						
 						if (newPhotoList != null && newPhotoList.size() > 0) {
 							try {
-								String rootPhotoFolder = "D:\\Personal\\Development\\startup\\workspace\\projects\\LetsErasmus\\src\\main\\webapp\\place\\images\\";
+								String rootPhotoFolder = this.webApplication.getRootPlacePhotoPath();
 								String placePhotoFolderPath = rootPhotoFolder + place.getId(); 
 								File placePhotoFolder = new File(placePhotoFolderPath);
 								
@@ -273,13 +280,14 @@ public class ApiPlaceController extends BaseApiController {
 									if (!fileName.toUpperCase().startsWith("DUMMY_")) {
 										String tmpPhotoPath = FileUtil.concatPath(rootPhotoFolder, place.getId().toString(), "tmp", fileName);
 										
-										String smallPhotoPath = placePhotoFolderPath + File.separatorChar + photo.getId() + "_small." + EnmFileType.getFileType(photo.getFileType()).getFileSuffix();
-										String largePhotoPath = placePhotoFolderPath + File.separatorChar + photo.getId() + "_large." + EnmFileType.getFileType(photo.getFileType()).getFileSuffix();
-										
 										File tmpFile = new File(tmpPhotoPath);
 										
-										ImageUtil.resizeImage(tmpFile, largePhotoPath, 800, 800);
-										ImageUtil.resizeImage(tmpFile, smallPhotoPath, 500, 300);
+										String smallPhotoPath = this.webApplication.getPlacePhotoPath(place.getId(), photo.getId(), EnmSize.SMALL.getValue());
+										String mediumPhotoPath = this.webApplication.getPlacePhotoPath(place.getId(), photo.getId(), EnmSize.MEDIUM.getValue());
+										
+										ImageUtil.resizeImage(tmpFile, mediumPhotoPath, this.webApplication.getMediumPlacePhotoSize());
+										ImageUtil.resizeImage(tmpFile, smallPhotoPath, this.webApplication.getSmallPlacePhotoSize());
+										
 										tmpFile.delete();
 									}
 								}
@@ -394,7 +402,7 @@ public class ApiPlaceController extends BaseApiController {
 						placeId = place.getId().toString();
 					}
 					
-					String rootPhotoFolder = "D:\\Personal\\Development\\startup\\workspace\\projects\\LetsErasmus\\src\\main\\webapp\\place\\images\\";
+					String rootPhotoFolder = this.webApplication.getRootPlacePhotoPath();
 					
 					String placeTmpPhotoFolderPath = rootPhotoFolder + placeId + File.separatorChar + "tmp";
 					File placeTmpPhotoFolder = new File(placeTmpPhotoFolderPath);

@@ -8,35 +8,37 @@ import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
+import com.ucgen.common.model.Size;
+
 public class ImageUtil {
 
-	public static void resizeImage(String originalImagePath, String resizedImagePath, float maxWidth, float maxHeight) throws IOException {
+	public static void resizeImage(String originalImagePath, String resizedImagePath, Size size) throws IOException {
 		
 		BufferedImage originalImage = ImageIO.read(new File(originalImagePath));
-		resizeImage(originalImage, resizedImagePath, maxWidth, maxHeight);
+		resizeImage(originalImage, resizedImagePath, size);
 	}
 	
-	public static void resizeImage(InputStream originalFileStream, String resizedImagePath, float maxWidth, float maxHeight) throws IOException {
+	public static void resizeImage(InputStream originalFileStream, String resizedImagePath, Size size) throws IOException {
 		
 		BufferedImage originalImage = ImageIO.read(originalFileStream);
-		resizeImage(originalImage, resizedImagePath, maxWidth, maxHeight);
+		resizeImage(originalImage, resizedImagePath, size);
 	}
 	
-	public static void resizeImage(File originalFile, String resizedImagePath, float maxWidth, float maxHeight) throws IOException {
+	public static void resizeImage(File originalFile, String resizedImagePath, Size size) throws IOException {
 		
 		BufferedImage originalImage = ImageIO.read(originalFile);
-		resizeImage(originalImage, resizedImagePath, maxWidth, maxHeight);
+		resizeImage(originalImage, resizedImagePath, size);
 	}
 	
-	private static void resizeImage(BufferedImage originalImage, String resizedImagePath, float maxWidth, float maxHeight) throws IOException {
+	private static void resizeImage(BufferedImage originalImage, String resizedImagePath, Size size) throws IOException {
 		
 		int type = originalImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
 		
-		Float IMG_NEW_WIDTH = maxWidth;
-		Float IMG_NEW_HEIGHT = maxHeight;
+		Float IMG_NEW_WIDTH = size.getWidth();
+		Float IMG_NEW_HEIGHT = size.getHeight();
 		
-		float widthRate = maxWidth / originalImage.getWidth();
-		float heightRate = maxHeight / originalImage.getHeight();
+		float widthRate = size.getWidth() / originalImage.getWidth();
+		float heightRate = size.getHeight() / originalImage.getHeight();
 		float appliedRate = 0;
 		
 		if (widthRate <= heightRate) {

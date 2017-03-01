@@ -14,4 +14,13 @@ public enum EnmSize {
 		this.value = value;
 	}
 	
+	public static EnmSize getSize(String value) {
+		for (EnmSize enmSize : EnmSize.values()) {
+			if (enmSize.getValue().equalsIgnoreCase(value)) {
+				return enmSize;
+			}
+		}
+		return null;
+	}
+	
 }

@@ -273,7 +273,7 @@ public class ApiMessageController extends BaseApiController {
 		
 		newUiMessageThread.setActiveUserId(activeUser.getId());
 		
-		String clientUserProfilePhotoUrl = this.webApplication.getUserProfilePhotoUrl(clientUser.getId(), clientUser.getProfilePhotoId(), EnmSize.SMALL.getValue());
+		String clientUserProfilePhotoUrl = this.webApplication.getUserPhotoUrl(clientUser.getId(), clientUser.getProfilePhotoId(), EnmSize.SMALL.getValue());
 		String clientUserProfilePhotoUrlMedium = clientUserProfilePhotoUrl.replace("_small_", "_large_");
 		
 		newUiMessageThread.setClientUserId(clientUser.getId());
@@ -281,7 +281,7 @@ public class ApiMessageController extends BaseApiController {
 		newUiMessageThread.setClientUserProfilePhotoUrl(clientUserProfilePhotoUrl);
 		newUiMessageThread.setClientUserProfilePhotoUrlMedium(clientUserProfilePhotoUrlMedium);
 		
-		String hostUserProfilePhotoUrl = this.webApplication.getUserProfilePhotoUrl(hostUser.getId(), hostUser.getProfilePhotoId(), EnmSize.SMALL.getValue());
+		String hostUserProfilePhotoUrl = this.webApplication.getUserPhotoUrl(hostUser.getId(), hostUser.getProfilePhotoId(), EnmSize.SMALL.getValue());
 		String hostUserProfilePhotoUrlMedium = hostUserProfilePhotoUrl.replace("_small_", "_large_");
 		
 		newUiMessageThread.setHostUserId(hostUser.getId());

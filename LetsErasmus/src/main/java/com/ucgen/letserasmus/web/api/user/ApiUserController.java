@@ -39,6 +39,7 @@ import com.ucgen.letserasmus.library.common.enumeration.EnmBoolStatus;
 import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
 import com.ucgen.letserasmus.library.common.enumeration.EnmErrorCode;
 import com.ucgen.letserasmus.library.common.enumeration.EnmGender;
+import com.ucgen.letserasmus.library.common.enumeration.EnmSize;
 import com.ucgen.letserasmus.library.file.enumeration.EnmFileType;
 import com.ucgen.letserasmus.library.file.model.FileModel;
 import com.ucgen.letserasmus.library.file.model.Photo;
@@ -49,7 +50,6 @@ import com.ucgen.letserasmus.library.user.enumeration.EnmUserStatus;
 import com.ucgen.letserasmus.library.user.model.User;
 import com.ucgen.letserasmus.library.user.service.IUserService;
 import com.ucgen.letserasmus.web.api.BaseApiController;
-import com.ucgen.letserasmus.web.view.application.AppUtil;
 import com.ucgen.letserasmus.web.view.application.EnmOperation;
 import com.ucgen.letserasmus.web.view.application.EnmSession;
 import com.ucgen.letserasmus.web.view.application.WebApplication;
@@ -502,7 +502,7 @@ public class ApiUserController extends BaseApiController {
 									session.removeAttribute(EnmSession.USER.getId());
 									session.setAttribute(EnmSession.USER.getId(), sessionUser);
 									
-									String rootPhotoFolder = "D:\\Personal\\Development\\startup\\workspace\\projects\\LetsErasmus\\src\\main\\webapp\\user\\images\\";
+									String rootPhotoFolder = this.webApplication.getRootUserPhotoPath();
 									String userPhotoFolder = rootPhotoFolder + user.getId(); 
 									
 									FileModel photo = user.getProfilePhoto();
@@ -511,8 +511,8 @@ public class ApiUserController extends BaseApiController {
 									
 									String tmpPhotoPath = FileUtil.concatPath(rootPhotoFolder, user.getId().toString(), "tmp", fileName);
 									
-									String newSmallFileName = AppUtil.getSmallUserPhotoName(user.getId(), photo.getId(), EnmFileType.getFileType(photo.getFileType()));
-									String newLargeFileName = newSmallFileName.replace("small", "large");
+									String newSmallFilePath = this.webApplication.getUserPhotoPath(user.getId(), photo.getId(), EnmSize.SMALL.getValue());
+									String newMediumFilePath = this.webApplication.getUserPhotoPath(user.getId(), photo.getId(), EnmSize.MEDIUM.getValue());
 									
 									File tmpFile = new File(tmpPhotoPath);
 									
@@ -520,8 +520,8 @@ public class ApiUserController extends BaseApiController {
 										FileUtil.cleanDirectory(userPhotoFolder, false);
 									}
 
-									ImageUtil.resizeImage(tmpFile, FileUtil.concatPath(userPhotoFolder, newLargeFileName ), 400, 700);
-									ImageUtil.resizeImage(tmpFile, FileUtil.concatPath(userPhotoFolder, newSmallFileName ), 300, 300);
+									ImageUtil.resizeImage(tmpFile, newMediumFilePath, this.webApplication.getMediumUserPhotoSize());
+									ImageUtil.resizeImage(tmpFile, newSmallFilePath, this.webApplication.getSmallUserPhotoSize());
 									
 									String tmpFolder = tmpPhotoPath.substring(0, tmpPhotoPath.lastIndexOf(File.pathSeparator));
 									
@@ -626,7 +626,7 @@ public class ApiUserController extends BaseApiController {
 					userId = user.getId().toString();
 				}
 				
-				String rootPhotoFolder = this.webApplication.getRootProfilePhotoPath();
+				String rootPhotoFolder = this.webApplication.getRootUserPhotoPath();
 				
 				String userTmpPhotoFolderPath = rootPhotoFolder + userId + File.separatorChar + "tmp";
 				File userTmpPhotoFolder = new File(userTmpPhotoFolderPath);
