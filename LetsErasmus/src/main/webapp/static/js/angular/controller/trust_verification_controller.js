@@ -11,7 +11,7 @@ App.controller('trustAndverificationCtrl', ['$scope', 'userService', 'commonServ
 				}
 			} ); 
 	 };
-  	  
+	  
   	self.openAddMsisdnPart = function() {
   		$('#divAddMsisdn').css('display', 'block');
   		$('#divVerificationContainer').css('display', 'block');
@@ -97,6 +97,100 @@ App.controller('trustAndverificationCtrl', ['$scope', 'userService', 'commonServ
   		$('#divCountryPrefix')[0].innerText= $('#cmbCountry').val();
   	};
   	
+  	self.conntectGoogleAccount = function(user) {
+  		if (user) {
+  			if (user.googleEmail != null && user.googleId != null) {
+  				userService.connectGoogleAccount(user,
+  	  					function(isSuccess) {
+  	  						if (isSuccess) {
+  	  							location.reload();
+  	  						}
+  	  					}
+  	  			  );
+  			} else {
+  				DialogUtil.warn('Warning', 'google email and id are mandatory!');
+  			}
+  		}
+  	};
+  	
+  	self.disconnectGoogleAccount = function() {
+  		userService.disconnectGoogleAccount(
+				function(isSuccess) {
+					if (isSuccess) {
+						location.reload();
+					}
+				}
+		  );
+  	};
+  	
+  	self.loginWithFacebook = function() {
+  	  FB.login(self.facebookLoginCallback, {scope: 'public_profile, email'});
+    };
+
+    self.facebookLoginCallback = function(response) {
+  		if (response.status == 'connected') {
+  			facebookTokenId = response.authResponse.accessToken;
+  			FB.api('/me', {fields: 'email, id, cover,name,first_name,last_name,age_range,link,gender' 
+  				+ ',locale,picture,timezone,updated_time,verified'}, function(resp) {
+  				
+  				var email = resp.email;
+		        	var firstName = resp.first_name;
+		        	var lastName = resp.last_name;
+		        	var gender = null;
+		        	var facebookId = resp.id;
+		        	var loginType = EnmLoginType.FACEBOOK;
+		        	var profileImageUrl = resp.picture.data.url;
+		        	
+		        	if (resp.gender) {
+		        		if (resp.gender.toUpperCase() == 'MALE') {
+		        			gender = 'M';
+		        		} else if (resp.gender.toUpperCase() == 'FEMALE') {
+		        			gender = 'F';
+		        		}
+		        	}
+		        	
+		        	var user = {
+		        			firstName : firstName,
+		        			lastName : lastName,
+		        			facebookEmail : email,
+		        			gender : gender,
+		        			facebookId : facebookId,
+		        			facebookTokenId : facebookTokenId,
+		        			profileImageUrl : profileImageUrl,
+		        			loginType : loginType
+		        	};
+		        	userService.connectFacebookAccount(
+		    				function(isSuccess) {
+		    					if (isSuccess) {
+		    						location.reload();
+		    					}
+		    				}
+		    		  );
+  				
+  				});
+  		} else {
+  			FB.login(self.facebookLoginCallback, {scope: 'public_profile, email'});
+  		}
+  	};
+  	
+  	self.disconnectFacebookAccount = function() {
+  		userService.disconnectFacebookAccount(
+				function(isSuccess) {
+					if (isSuccess) {
+						location.reload();
+					}
+				}
+		  );
+  	};
+  	
     self.initialize();
       
   }]);
+
+function onGoogleLibraryLoaded() {
+	if($('#btnConnectGoogleAccount').length > 0) {
+		var bodyScope = angular.element( $('#divBody') ).scope();
+		var headerScope = angular.element( $('#divPageHeader') ).scope();
+		headerScope.ctrl.attachGoogleSignin('btnConnectGoogleAccount', bodyScope.ctrl.conntectGoogleAccount);
+	}
+}

@@ -12,6 +12,10 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', funct
     	        // Request scopes in addition to 'profile' and 'email'
     	        //scope: 'additional_scope'
     	      });
+    	      // some pages use google library in body part.
+    	      if (typeof onGoogleLibraryLoaded == 'function') {
+    	    	  onGoogleLibraryLoaded();
+    	      }
     	    });
 		  
 		  FB.init({
@@ -54,49 +58,6 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', funct
 	       	  }
 	   	  } 
 	 };
-       
-      self.attachGoogleSignin = function (elementId) {
-    	  var element = $('#' + elementId)[0];
-  	      auth2.attachClickHandler(element, {},
-  	        function(googleUser) {
-	  	    	gapi.client.load('plus', 'v1', function () {
-		            var request = gapi.client.plus.people.get({
-		                'userId': 'me'
-		            });
-		            request.execute(function (resp) {
-		            	var email = resp.emails[0].value;
-			        	var firstName = resp.name.givenName;
-			        	var lastName = resp.name.familyName;
-			        	var gender = null;
-			        	var googleId = resp.id;
-			        	var loginType = EnmLoginType.GOOGLE;
-			        	var profileImageUrl = resp.image.url;
-			        	
-			        	if (resp.gender) {
-			        		if (resp.gender.toUpperCase() == 'MALE') {
-			        			gender = 'M';
-			        		} else if (resp.gender.toUpperCase() == 'FEMALE') {
-			        			gender = 'F';
-			        		}
-			        	}
-			        	
-			        	var user = {
-			        			firstName : firstName,
-			        			lastName : lastName,
-			        			googleEmail : email,
-			        			gender : gender,
-			        			googleId : googleId,
-			        			profileImageUrl : profileImageUrl,
-			        			loginType : loginType
-			        	};
-			        	self.signup(user);
-		        });
-	        });
-  	    	  
-  	        }, function(error) {
-  	        	DialogUtil.error('Error', JSON.stringify(error, undefined, 2), 'OK', null);
-  	        });
-  	  }
       
       self.openSignUpWindow = function() {
     	  /*
@@ -109,7 +70,7 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', funct
     	  //compile(htmlcontent.contents())($scope);
     	  
     	  ajaxHtml(webApplicationUrlPrefix + '/pages/Signup.xhtml', 'divModalContent', function() {
-    		  self.attachGoogleSignin('linkGoogleSignin');
+    		  self.attachGoogleSignin('linkGoogleSignin', self.signup);
     		  openModal();  
     	  });
     	  /*
@@ -125,14 +86,14 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', funct
       
       self.openLoginWindow = function() {
     	  ajaxHtml(webApplicationUrlPrefix + '/pages/Login.xhtml', 'divModalContent', function() {
-    		  self.attachGoogleSignin('linkGoogleSignin');
+    		  self.attachGoogleSignin('linkGoogleSignin', self.signup);
     		  openModal();  
     	  });
       };
       
       self.loginWithFacebook = function() {
     	  FB.login(self.facebookLoginCallback, {scope: 'public_profile, email'});
-    	}
+      };
 
       self.facebookLoginCallback = function(response) {
     		if (response.status == 'connected') {
@@ -172,7 +133,7 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', funct
     		} else {
     			FB.login(self.facebookLoginCallback, {scope: 'public_profile, email'});
     		}
-    	}
+    	};
       
       self.signupWithLocalAccount = function() {
     	  
@@ -264,6 +225,49 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', funct
 					DialogUtil.error('Error', 'Operation could not be completed!', 'OK', null);
 				}); 
   	};
+  	  
+  	self.attachGoogleSignin = function(elementId, callBack) {
+  	  var element = $('#' + elementId)[0];
+  	      auth2.attachClickHandler(element, {},
+  	        function(googleUser) {
+  	  	    	gapi.client.load('plus', 'v1', function () {
+  		            var request = gapi.client.plus.people.get({
+  		                'userId': 'me'
+  		            });
+  		            request.execute(function (resp) {
+  		            	var email = resp.emails[0].value;
+  			        	var firstName = resp.name.givenName;
+  			        	var lastName = resp.name.familyName;
+  			        	var gender = null;
+  			        	var googleId = resp.id;
+  			        	var loginType = EnmLoginType.GOOGLE;
+  			        	var profileImageUrl = resp.image.url;
+  			        	
+  			        	if (resp.gender) {
+  			        		if (resp.gender.toUpperCase() == 'MALE') {
+  			        			gender = 'M';
+  			        		} else if (resp.gender.toUpperCase() == 'FEMALE') {
+  			        			gender = 'F';
+  			        		}
+  			        	}
+  			        	
+  			        	var user = {
+  			        			firstName : firstName,
+  			        			lastName : lastName,
+  			        			googleEmail : email,
+  			        			gender : gender,
+  			        			googleId : googleId,
+  			        			profileImageUrl : profileImageUrl,
+  			        			loginType : loginType
+  			        	};
+  			        	callBack(user);
+  		        });
+  	        });
+  	    	  
+  	        }, function(error) {
+  	        	DialogUtil.error('Error', JSON.stringify(error, undefined, 2), 'OK', null);
+  	        });
+  	  };
   	  
      //self.initialize();
       

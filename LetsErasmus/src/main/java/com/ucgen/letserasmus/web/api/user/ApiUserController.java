@@ -491,6 +491,7 @@ public class ApiUserController extends BaseApiController {
 						
 						OperationResult updateResult = this.userService.updateUser(user, false);
 						if (OperationResult.isResultSucces(updateResult)) {
+							user = this.userService.getUser(user);
 							this.processLogin(session, user, EnmLoginType.getLoginType(sessionUser.getLoginType()));
 							if (profilePhotoChanged) {
 								try {
@@ -856,6 +857,210 @@ public class ApiUserController extends BaseApiController {
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 					operationResult.setResultDesc("You are not authorized for this operation!");
+				}
+			} else {
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
+				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
+			}
+		} catch (Exception e) {
+			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+			operationResult.setResultDesc(CommonUtil.getExceptionMessage(e));
+		}
+		
+		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "/api/user/connectgoogle", method = RequestMethod.POST)
+    public ResponseEntity<OperationResult> connectGoogleAccount(@RequestBody User uiUser, HttpSession session) {
+    	OperationResult operationResult = new OperationResult();
+		try {
+			User user = super.getSessionUser(session);
+			if (user != null) {
+				if (uiUser.getGoogleId() != null && uiUser.getGoogleEmail() != null) {
+					User dbUser = new User();
+					dbUser.setGoogleId(uiUser.getGoogleId());
+					
+					User registeredUser = this.userService.getUser(dbUser);
+					
+					if(registeredUser == null) {
+						dbUser.setId(user.getId());
+						dbUser.setGoogleEmail(uiUser.getGoogleEmail());
+						dbUser.setGoogleId(uiUser.getGoogleId());
+						
+						if (user.getFirstName() == null) {
+							dbUser.setFirstName(uiUser.getFirstName());
+						}
+						if (user.getLastName() == null) {
+							dbUser.setLastName(uiUser.getLastName());
+						}
+						if (user.getGender() == null && uiUser.getGender() != null) {
+							EnmGender gender = EnmGender.getGender(uiUser.getGender());
+							if (gender != null) {
+								dbUser.setGender(uiUser.getGender());
+							}
+						}
+						
+						OperationResult updateUserResult = this.userService.updateUser(dbUser, false);
+						
+						if (OperationResult.isResultSucces(updateUserResult)) {
+							operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+							dbUser = this.userService.getUser(dbUser);
+							this.processLogin(session, dbUser, EnmLoginType.getLoginType(user.getLoginType()));
+						} else {
+							operationResult = updateUserResult;
+						}
+					} else {
+						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+						operationResult.setResultDesc("This google account is used by another user!");
+					}	
+				} else {
+					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+					operationResult.setResultDesc("googleId and email parameters are mandatory!");
+				}
+			} else {
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
+				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
+			}
+		} catch (Exception e) {
+			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+			operationResult.setResultDesc(CommonUtil.getExceptionMessage(e));
+		}
+		
+		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "/api/user/disconnectgoogle", method = RequestMethod.POST)
+    public ResponseEntity<OperationResult> disconnectGoogleAccount(HttpSession session) {
+    	OperationResult operationResult = new OperationResult();
+		try {
+			User user = super.getSessionUser(session);
+			if (user != null) {
+				if (user.getGoogleId() != null && user.getGoogleEmail() != null 
+						&& ((user.getEmail() != null && user.getPassword() != null) 
+								|| (user.getFacebookEmail() != null && user.getFacebookId() != null))) {
+					User updatedUser = this.userService.getUser(user);
+					
+					updatedUser.setGoogleEmail(null);
+					updatedUser.setGoogleId(null);
+										
+					OperationResult updateUserResult = this.userService.updateUser(updatedUser, true);
+					
+					if (OperationResult.isResultSucces(updateUserResult)) {
+						user.setGoogleEmail(null);
+						user.setGoogleId(null);
+						operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+					} else {
+						// TODO : log to file
+						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+						operationResult.setResultDesc("User record could not be updated, please try again later!");
+					}	
+				} else {
+					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+					operationResult.setResultDesc("Google is the only account binded to your user record!");
+				}
+			} else {
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
+				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
+			}
+		} catch (Exception e) {
+			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+			operationResult.setResultDesc(CommonUtil.getExceptionMessage(e));
+		}
+		
+		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "/api/user/connectfacebook", method = RequestMethod.POST)
+    public ResponseEntity<OperationResult> connectFacebookAccount(@RequestBody User uiUser, HttpSession session) {
+    	OperationResult operationResult = new OperationResult();
+		try {
+			User user = super.getSessionUser(session);
+			if (user != null) {
+				if (uiUser.getFacebookId() != null && uiUser.getFacebookEmail() != null) {
+					User dbUser = new User();
+					dbUser.setFacebookId(uiUser.getFacebookId());
+					
+					User registeredUser = this.userService.getUser(dbUser);
+					
+					if(registeredUser == null) {
+						dbUser.setId(user.getId());
+						dbUser.setFacebookEmail(uiUser.getFacebookEmail());
+						dbUser.setFacebookId(uiUser.getFacebookId());
+						
+						if (user.getFirstName() == null) {
+							dbUser.setFirstName(uiUser.getFirstName());
+						}
+						if (user.getLastName() == null) {
+							dbUser.setLastName(uiUser.getLastName());
+						}
+						if (user.getGender() == null && uiUser.getGender() != null) {
+							EnmGender gender = EnmGender.getGender(uiUser.getGender());
+							if (gender != null) {
+								dbUser.setGender(uiUser.getGender());
+							}
+						}
+						
+						OperationResult updateUserResult = this.userService.updateUser(dbUser, false);
+						
+						if (OperationResult.isResultSucces(updateUserResult)) {
+							operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+							dbUser = this.userService.getUser(dbUser);
+							this.processLogin(session, dbUser, EnmLoginType.getLoginType(user.getLoginType()));
+						} else {
+							operationResult = updateUserResult;
+						}
+					} else {
+						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+						operationResult.setResultDesc("This google account is used by another user!");
+					}	
+				} else {
+					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+					operationResult.setResultDesc("googleId and email parameters are mandatory!");
+				}
+			} else {
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
+				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
+			}
+		} catch (Exception e) {
+			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+			operationResult.setResultDesc(CommonUtil.getExceptionMessage(e));
+		}
+		
+		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "/api/user/disconnectfacebook", method = RequestMethod.POST)
+    public ResponseEntity<OperationResult> disconnectFacebookAccount(HttpSession session) {
+    	OperationResult operationResult = new OperationResult();
+		try {
+			User user = super.getSessionUser(session);
+			if (user != null) {
+				if (user.getFacebookId() != null && user.getFacebookEmail() != null 
+						&& ((user.getEmail() != null && user.getPassword() != null) 
+								|| (user.getGoogleEmail() != null && user.getGoogleId() != null))) {
+					User updatedUser = this.userService.getUser(user);
+					
+					updatedUser.setFacebookEmail(null);
+					updatedUser.setFacebookId(null);
+										
+					OperationResult updateUserResult = this.userService.updateUser(updatedUser, true);
+					
+					if (OperationResult.isResultSucces(updateUserResult)) {
+						user.setFacebookEmail(null);
+						user.setFacebookId(null);
+						operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+					} else {
+						// TODO : log to file
+						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+						operationResult.setResultDesc("User record could not be updated, please try again later!");
+					}	
+				} else {
+					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+					operationResult.setResultDesc("Google is the only account binded to your user record!");
 				}
 			} else {
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());

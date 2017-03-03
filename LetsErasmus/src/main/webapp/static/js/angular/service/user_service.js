@@ -286,6 +286,82 @@ App.factory('userService', ['$http', '$q', function($http, $q){
 						}
 						*/
 					});
+		},
+		
+		connectGoogleAccount : function(user, callBack) {
+			var config = {
+					headers : {
+						'Accept' : 'application/json'
+					}
+				};
+				
+				NProgress.start(3000, 5);
+				return $http.post(webApplicationUrlPrefix + '/api/user/connectgoogle', user, config).then(function(response) {
+					NProgress.done(true);
+					var result = isResultSuccess(response.data, true);
+					if (callBack) {
+						callBack(result);
+					}
+				}, function(errResponse) {
+					DialogUtil.error('Error', errResponse, 'OK');
+				});
+		},
+		
+		disconnectGoogleAccount : function(callBack) {
+			var config = {
+				headers : {
+					'Accept' : 'application/json'
+				}
+			};
+			
+			NProgress.start(3000, 5);
+			return $http.post(webApplicationUrlPrefix + '/api/user/disconnectgoogle', config).then(function(response) {
+				NProgress.done(true);
+				var result = isResultSuccess(response.data, true);
+				if (callBack) {
+					callBack(result);
+				}
+			}, function(errResponse) {
+				DialogUtil.error('Error', errResponse, 'OK');
+			});
+		},
+		
+		connectFacebookAccount : function(user, callBack) {
+			var config = {
+					headers : {
+						'Accept' : 'application/json'
+					}
+				};
+				
+				NProgress.start(3000, 5);
+				return $http.post(webApplicationUrlPrefix + '/api/user/connectfacebook', user, config).then(function(response) {
+					NProgress.done(true);
+					var result = isResultSuccess(response.data, true);
+					if (callBack) {
+						callBack(result);
+					}
+				}, function(errResponse) {
+					DialogUtil.error('Error', errResponse, 'OK');
+				});
+		},
+		
+		disconnectFacebookAccount : function(callBack) {
+			var config = {
+				headers : {
+					'Accept' : 'application/json'
+				}
+			};
+			
+			NProgress.start(3000, 5);
+			return $http.post(webApplicationUrlPrefix + '/api/user/disconnectfacebook', config).then(function(response) {
+				NProgress.done(true);
+				var result = isResultSuccess(response.data, true);
+				if (callBack) {
+					callBack(result);
+				}
+			}, function(errResponse) {
+				DialogUtil.error('Error', errResponse, 'OK');
+			});
 		}
 	};
 

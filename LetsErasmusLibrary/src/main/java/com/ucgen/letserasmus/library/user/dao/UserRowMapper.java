@@ -146,6 +146,8 @@ public class UserRowMapper extends BaseRowMapper<User> {
 		super.addColumn(COL_RESIDENCE_LOCATION_NAME);
 		super.addColumn(COL_LANGUAGES);
 		super.addColumn(COL_ID);
+		super.addColumn(COL_GOOGLE_EMAIL);
+		super.addColumn(COL_FACEBOOK_EMAIL);
 	}
 
 }

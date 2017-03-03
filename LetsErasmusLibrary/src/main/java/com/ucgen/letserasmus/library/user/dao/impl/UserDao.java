@@ -165,14 +165,24 @@ public class UserDao extends JdbcDaoSupport implements IUserDao {
 			argList.add(user.getUserActivationKeyMsisdn());
 		}
 		
-		if (user.getGoogleId() != null) {
+		if (setNull || user.getGoogleId() != null) {
 			StringUtil.append(updateFields, " GOOGLE_ID = ?", ",");
 			argList.add(user.getGoogleId());
 		}
 		
-		if (user.getFacebookId() != null) {
-			StringUtil.append(updateFields, " FACEBOOK = ?", ",");
+		if (setNull || user.getGoogleEmail() != null) {
+			StringUtil.append(updateFields, " GOOGLE_EMAIL = ?", ",");
+			argList.add(user.getGoogleEmail());
+		}
+		
+		if (setNull || user.getFacebookId() != null) {
+			StringUtil.append(updateFields, " FACEBOOK_ID = ?", ",");
 			argList.add(user.getFacebookId());
+		}
+		
+		if (setNull || user.getFacebookEmail() != null) {
+			StringUtil.append(updateFields, " FACEBOOK_EMAIL = ?", ",");
+			argList.add(user.getFacebookEmail());
 		}
 		
 		if (user.getJobTitle() != null) {
