@@ -456,6 +456,7 @@
 		<script>
 			var activeDashboardTab = 1;
 			var activeLeftMenuLink = 1;
+			var userProfilePhotoId = '#{webApplication.user.profilePhotoId}';
 		</script>
 	</ui:define>
 
@@ -490,7 +491,7 @@
 												</div>
 											</div>
 										</div>
-										<div id="divPhotoPreview" class="col-sm-12 photos-item__preview-card #{webApplication.user.profilePhotoId == null ? 'hidden' : ''}">
+										<div id="divPhotoPreview" class="col-sm-12 photos-item__preview-card #{webApplication.user.profilePhotoId == null ? 'hidden-force' : ''}">
 											<div class="photos-list__item">
 												<div class="panel-image">
 													<div class="photo-preview__btns not-always-show" ng-click="ctrl.removePhoto()">

@@ -46,7 +46,7 @@ public class UserService implements IUserService{
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public ValueOperationResult<Integer> updateUser(User user, boolean setNull) throws OperationResultException {
+	public ValueOperationResult<Integer> updateUser(User user, boolean setNull, Long deleteProfilePhotoId) throws OperationResultException {
 		Long oldProfilePhotoId = user.getProfilePhotoId();
 		FileModel profilePhoto = user.getProfilePhoto();
 		if (user.getProfilePhoto() != null && user.getProfilePhoto().getId() == null) {
@@ -56,6 +56,11 @@ public class UserService implements IUserService{
 			} else {
 				insertPhotoResult.setResultDesc("Photo record not be insert. Error: " + insertPhotoResult.getResultDesc());
 				throw new OperationResultException(insertPhotoResult);
+			}
+		} else if (deleteProfilePhotoId != null) {
+			OperationResult deleteFileResult = this.fileService.deleteFile(deleteProfilePhotoId);
+			if (!OperationResult.isResultSucces(deleteFileResult)) {
+				throw new OperationResultException(deleteFileResult);
 			}
 		}
 		

@@ -72,7 +72,8 @@ App.factory('userService', ['$http', '$q', function($http, $q){
 		
 		savePhoto : function(profilePhoto) {
 			var formData = new FormData();
-			var file = null;
+			var file = profilePhoto.file;
+			/*
 			if (profilePhoto == null || profilePhoto.file == null) {
 				var parts = [
 		            new Blob([''], {type: 'text/plain'}), '', new Uint16Array([33])
@@ -82,6 +83,7 @@ App.factory('userService', ['$http', '$q', function($http, $q){
 			} else {
 				file = profilePhoto.file;
 			}
+			*/
 			
 			formData.append('profilePhoto', file);					
 			

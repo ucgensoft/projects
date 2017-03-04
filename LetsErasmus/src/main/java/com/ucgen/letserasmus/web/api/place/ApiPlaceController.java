@@ -43,6 +43,7 @@ import com.ucgen.letserasmus.library.place.model.Place;
 import com.ucgen.letserasmus.library.place.service.IPlaceService;
 import com.ucgen.letserasmus.library.user.model.User;
 import com.ucgen.letserasmus.web.api.BaseApiController;
+import com.ucgen.letserasmus.web.view.application.AppConstants;
 import com.ucgen.letserasmus.web.view.application.EnmOperation;
 import com.ucgen.letserasmus.web.view.application.EnmSession;
 import com.ucgen.letserasmus.web.view.application.WebApplication;
@@ -157,9 +158,9 @@ public class ApiPlaceController extends BaseApiController {
 					operationResult.setResultDesc("You are not authorized for this operation!");
 				}
 			} else {
-				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
 			}
 			httpStatus = HttpStatus.OK;			
 		} catch (Exception e) {
@@ -307,9 +308,9 @@ public class ApiPlaceController extends BaseApiController {
 					operationResult.setResultDesc("You are not authorized for this operation!");
 				}
 			} else {
-				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
 			}
 			httpStatus = HttpStatus.OK;			
 		} catch (Exception e) {
@@ -373,9 +374,9 @@ public class ApiPlaceController extends BaseApiController {
 				operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 				operationResult.setResultValue(placeMap);
 			} else {
-				operationResult.setResultCode(EnmResultCode.WARNING.getValue());
-				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
@@ -430,9 +431,9 @@ public class ApiPlaceController extends BaseApiController {
 					operationResult.setResultDesc("You are not authorized for this operation!");
 				}
 			} else {
-				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
@@ -512,9 +513,9 @@ public class ApiPlaceController extends BaseApiController {
 					operationResult.setResultDesc("You are not authorized for this operation!");
 				}
 			} else {
-				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
 			}
 			httpStatus = HttpStatus.OK;			
 		} catch (Exception e) {

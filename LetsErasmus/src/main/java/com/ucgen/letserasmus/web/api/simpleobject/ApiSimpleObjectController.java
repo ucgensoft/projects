@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ucgen.common.operationresult.EnmResultCode;
 import com.ucgen.common.operationresult.ListOperationResult;
 import com.ucgen.common.util.CommonUtil;
+import com.ucgen.letserasmus.library.common.enumeration.EnmErrorCode;
 import com.ucgen.letserasmus.library.simpleobject.model.Country;
 import com.ucgen.letserasmus.library.simpleobject.service.ISimpleObjectService;
 import com.ucgen.letserasmus.library.user.model.User;
 import com.ucgen.letserasmus.web.api.BaseApiController;
+import com.ucgen.letserasmus.web.view.application.AppConstants;
 
 @RestController
 public class ApiSimpleObjectController extends BaseApiController {
@@ -39,8 +41,9 @@ public class ApiSimpleObjectController extends BaseApiController {
 				operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 				operationResult.setObjectList(countryList);
 			} else {
+				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("You are not authorized for this operation!");
+				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.ERROR.getValue());

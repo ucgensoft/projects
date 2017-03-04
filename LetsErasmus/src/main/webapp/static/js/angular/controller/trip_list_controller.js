@@ -31,13 +31,20 @@ App.controller('tripListCtrl', ['$scope', '$controller', 'reservationService',
     	});
   	};
   	
+  	self.openCancelReservationWindow = function(reservationId) {
+  		activeReservationId = reservationId;
+  		ajaxHtml(webApplicationUrlPrefix + '/static/html/CancelReservation.html', 'divReservationModal', function() {
+  			$('#divReservationModal').css('display', '');
+    	});
+  	};
+  	
   	self.cancelReservation = function() {
   		var messageText = StringUtil.trim($('#txtNewMessage').val());
-  		if (messageText != '' && $('#chbTerms').val()) {
+  		if (messageText != '') {
   			DialogUtil.confirm('Confirm', 'Reservation request will be cancelled, dou you want to continue?', function(response) {
   	  			if (response) {
   	  				var reservationId = activeReservationId;
-  	  		  		var status = EnmReservationStatus.CONFIRMED;
+  	  		  		var status = EnmReservationStatus.RECALLED;
   	  		  		reservationService.updateReservation(reservationId, messageText, status,
   	  					  function(isSuccess) {
   	  						  if (isSuccess) {
@@ -50,7 +57,7 @@ App.controller('tripListCtrl', ['$scope', '$controller', 'reservationService',
   	  			}
   	  		});
   		} else {
-  			DialogUtil.warn('Warning', 'Please type a message to guest and confirm that you have read the terms.', 'OK');
+  			DialogUtil.warn('Warning', 'Please type a message to guest.', 'OK');
   		}
   	};
   	  	
@@ -76,7 +83,7 @@ App.controller('tripListCtrl', ['$scope', '$controller', 'reservationService',
       
   }]);
 
-function acceptReservation() {
+function cancelReservation() {
 	var scope = angular.element( $('#divBody') ).scope();
-	scope.ctrl.acceptReservation();
+	scope.ctrl.cancelReservation();
 }

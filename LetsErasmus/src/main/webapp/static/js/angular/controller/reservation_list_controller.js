@@ -61,17 +61,47 @@ App.controller('reservationListCtrl', ['$scope', '$controller', 'reservationServ
     	});
   	};
   	
+  	self.openCancelReservationWindow = function(reservationId) {
+  		activeReservationId = reservationId;
+  		ajaxHtml(webApplicationUrlPrefix + '/static/html/CancelReservation.html', 'divReservationModal', function() {
+  			$('#divReservationModal').css('display', '');
+    	});
+  	};
+  	
+  	self.cancelReservation = function() {
+  		var messageText = StringUtil.trim($('#txtNewMessage').val());
+  		if (messageText != '') {
+  			DialogUtil.confirm('Confirm', 'Reservation request will be cancelled, dou you want to continue?', function(response) {
+  	  			if (response) {
+  	  				var reservationId = activeReservationId;
+  	  		  		var status = EnmReservationStatus.CANCELLED;
+  	  		  		reservationService.updateReservation(reservationId, messageText, status,
+  	  					  function(isSuccess) {
+  	  						  if (isSuccess) {
+  	  							  DialogUtil.info('Sucess', 'Reservation request is cancelled.', 'OK', function() {
+  	  								  location.reload();
+  	  							  });
+  	  						  }
+  	  			  		  }
+  	  			  	  );
+  	  			}
+  	  		});
+  		} else {
+  			DialogUtil.warn('Warning', 'Please type a message to guest.', 'OK');
+  		}
+  	};
+  	
   	self.declineReservation = function() {
   		var messageText = StringUtil.trim($('#txtNewMessage').val());
   		if (messageText != '') {
-  			DialogUtil.confirm('Confirm', 'Reservation request will be rejected, dou you want to continue?', function(response) {
+  			DialogUtil.confirm('Confirm', 'Reservation request will be declined, dou you want to continue?', function(response) {
   	  			if (response) {
   	  				var reservationId = activeReservationId;
   	  		  		var status = EnmReservationStatus.DECLINED;
   	  		  		reservationService.updateReservation(reservationId, messageText, status,
   	  					  function(isSuccess) {
   	  						  if (isSuccess) {
-  	  							  DialogUtil.info('Sucess', 'Reservation request is rejected.', 'OK', function() {
+  	  							  DialogUtil.info('Sucess', 'Reservation request is declined.', 'OK', function() {
   	  								  location.reload();
   	  							  });
   	  						  }
@@ -114,4 +144,9 @@ function acceptReservation() {
 function declineReservation() {
 	var scope = angular.element( $('#divBody') ).scope();
 	scope.ctrl.declineReservation();
+}
+
+function cancelReservation() {
+	var scope = angular.element( $('#divBody') ).scope();
+	scope.ctrl.cancelReservation();
 }

@@ -8,7 +8,7 @@ import com.ucgen.letserasmus.library.simpleobject.model.Country;
 
 public class CountryRowMapper extends BaseRowMapper<Country> {
 
-public static final String TABLE_NAME = "ENUMERATION";
+	public static final String TABLE_NAME = "ENUMERATION";
 	
 	public static final String COL_ID = "ID";
 	public static final String COL_NAME = "NAME";

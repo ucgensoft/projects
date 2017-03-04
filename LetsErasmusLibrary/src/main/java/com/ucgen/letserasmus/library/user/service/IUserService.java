@@ -11,7 +11,7 @@ public interface IUserService {
 	
 	OperationResult insertUser(User user);
 	
-	ValueOperationResult<Integer> updateUser(User user, boolean setNull) throws OperationResultException;
+	ValueOperationResult<Integer> updateUser(User user, boolean setNull, Long deleteProfilePhotoId) throws OperationResultException;
 
 	User getUserForLogin(User user);
 	

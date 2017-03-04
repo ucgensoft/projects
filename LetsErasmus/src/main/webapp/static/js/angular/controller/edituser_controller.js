@@ -61,8 +61,8 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
 	       	  		reader.onload = function(event) {
 	       	  			self.photo = { 'file': file, 'src': event.target.result};
 	       	  			$('#imgProfilePhoto').attr('src', self.photo.src);
-	       	  			$('#divPhotoPreview').removeClass('hidden');
-	       	  			$('#photoHolder').addClass('hidden');
+	       	  			$('#divPhotoPreview').removeClass('hidden-force');
+	       	  			$('#photoHolder').addClass('hidden-force');
 	       	  			NProgress.done(true);
 	       	  			fileupload.value = '';
 	       	  		};
@@ -106,8 +106,8 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
      self.removePhoto = function() {
     	 	self.photo = null;
   			$('#imgProfilePhoto').attr('src', '');
-  			$('#divPhotoPreview').addClass('hidden');
-  			$('#photoHolder').removeClass('hidden');
+  			$('#divPhotoPreview').addClass('hidden-force');
+  			$('#photoHolder').removeClass('hidden-force');
      };
 	  
      self.saveChanges = function() {
@@ -158,7 +158,18 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
   				birthDate : birthDate
   			};
   			
-  			userService.updateUser(user, self.photo,
+  			var newUserPhoto = null;
+  			if (self.photo == null) {
+  				if (userProfilePhotoId != '') {
+  					var emptyFile = createEmptyFile('deleted');
+  					newUserPhoto = { 'file': emptyFile, 'src': null};
+  				} else {
+  					var emptyFile = createEmptyFile('dummy');
+  					newUserPhoto = { 'file': emptyFile, 'src': null};
+  				}
+  			}
+  			
+  			userService.updateUser(user, (self.photo != null ? self.photo : newUserPhoto),
 					function(isSuccess) {
 						if (isSuccess) {
 							DialogUtil.info('Success', 'Your profile is updated successfully!', 'OK', function() {

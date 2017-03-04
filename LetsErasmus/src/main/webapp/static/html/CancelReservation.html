@@ -3,15 +3,15 @@
 	<div class="modal-table">
 		<div class="modal-cell">
 			<div class="modal-content">
-				<div class="panel-header">Decline this request</div>
+				<div class="panel-header">Cancel this request</div>
 				<div class="panel-body">
 					<label>Type message to guest... </label>
-					<textarea id="txtNewMessage" rows="5"></textarea>
+					<textarea id="txtNewMessage" name="message" rows="5"></textarea>
 				</div>
 				<div class="panel-footer">
-					<input type="hidden" value="accept" />
+					<input type="hidden" name="decision" value="accept" />
 					<input class="btn btn-primary" 
-						type="button" value="Decline" onclick="declineReservation()"/>
+						type="button" value="Cancel" onclick="cancelReservation()"/>
 					<button class="btn" data-behavior="modal-close" onclick="closeModal()">Close</button>
 				</div>
 			</div>

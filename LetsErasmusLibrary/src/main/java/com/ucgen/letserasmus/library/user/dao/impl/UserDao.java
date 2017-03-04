@@ -155,7 +155,7 @@ public class UserDao extends JdbcDaoSupport implements IUserDao {
 			argList.add(user.getUserActivationKeyMsisdn());
 		}
 		
-		if (user.getProfilePhotoId() != null) {
+		if (setNull || user.getProfilePhotoId() != null) {
 			StringUtil.append(updateFields, " PROFILE_PHOTO_ID = ?", ",");
 			argList.add(user.getProfilePhotoId());
 		}

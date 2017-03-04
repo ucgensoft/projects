@@ -50,6 +50,8 @@ import com.ucgen.letserasmus.library.user.enumeration.EnmUserStatus;
 import com.ucgen.letserasmus.library.user.model.User;
 import com.ucgen.letserasmus.library.user.service.IUserService;
 import com.ucgen.letserasmus.web.api.BaseApiController;
+import com.ucgen.letserasmus.web.view.application.AppConstants;
+import com.ucgen.letserasmus.web.view.application.AppUtil;
 import com.ucgen.letserasmus.web.view.application.EnmOperation;
 import com.ucgen.letserasmus.web.view.application.EnmSession;
 import com.ucgen.letserasmus.web.view.application.WebApplication;
@@ -440,39 +442,60 @@ public class ApiUserController extends BaseApiController {
 						MultipartFile profilePhoto = (MultipartFile) session.getAttribute(EnmSession.USER_PHOTO.getId());
 						session.removeAttribute(EnmSession.USER_PHOTO.getId());
 						
-						boolean profilePhotoChanged = (profilePhoto != null && !profilePhoto.getOriginalFilename().equalsIgnoreCase("dummy"));
+						boolean profilePhotoChanged = false;
+						boolean profilePhotoDeleted = false;
+						
+						if (profilePhoto != null) {
+							if (profilePhoto.getOriginalFilename().equalsIgnoreCase("deleted")) {
+								profilePhotoDeleted = true;
+							} else if (!profilePhoto.getOriginalFilename().equalsIgnoreCase("dummy")) {
+								profilePhotoChanged = true;
+							}
+						}
 						
 						String modifiedBy = sessionUser.getFullName();
 						Long oldProfilePhotoId = sessionUser.getProfilePhotoId();
+						Long deleteProfilePhotoId = null;
 						
-						User user = new User();
+						if (profilePhotoDeleted) {
+							deleteProfilePhotoId = oldProfilePhotoId; 
+						}
 						
-						user.setId(sessionUser.getId());
-						user.setFirstName(uiUser.getFirstName());
-						user.setLastName(uiUser.getLastName());
-						user.setGender(uiUser.getGender());
-						user.setPassword(uiUser.getPassword());
-						user.setEmail(uiUser.getEmail());
+						User user = this.userService.getUser(sessionUser);
+						user.setProfilePhoto(null);
+						
+						if (uiUser.getFirstName() != null && uiUser.getFirstName().trim().length() > 0) {
+							user.setFirstName(uiUser.getFirstName());
+						}
+						if (uiUser.getLastName() != null && uiUser.getLastName().trim().length() > 0) {
+							user.setLastName(uiUser.getLastName());
+						}
+						if (uiUser.getGender() != null && EnmGender.getGender(uiUser.getGender()) != null) {
+							user.setGender(EnmGender.getGender(uiUser.getGender()).getId());
+						}
+						if (uiUser.getPassword() != null && uiUser.getPassword().trim().length() > 0) {
+							user.setPassword(uiUser.getPassword());
+						}
+						if (user.getGoogleId() != null || user.getFacebookId() != null) {
+							user.setEmail(uiUser.getEmail());
+							
+							if (sessionUser.getEmail() == null || !sessionUser.getEmail().equals(user.getEmail())) {
+								String verificationCode = SecurityUtil.generateUUID().replace("-", "");
+								
+								user.setEmailVerified(EnmBoolStatus.NO.getId());
+								user.setUserActivationKeyEmail(verificationCode);
+							}
+						}
 						user.setResidenceLocationName(uiUser.getResidenceLocationName());
 						user.setDescription(uiUser.getDescription());
 						user.setJobTitle(uiUser.getJobTitle());
 						user.setSchoolName(uiUser.getSchoolName());
 						user.setLanguages(uiUser.getLanguages());
-						user.setMsisdn(uiUser.getMsisdn());
+						//user.setMsisdn(uiUser.getMsisdn());
 						user.setBirthDate(uiUser.getBirthDate());
-						
-						if (!sessionUser.getEmail().equals(user.getEmail())) {
-							String verificationCode = SecurityUtil.generateUUID().replace("-", "");
-							
-							user.setEmailVerified(EnmBoolStatus.NO.getId());
-							user.setUserActivationKeyEmail(verificationCode);
-						} else {
-							user.setEmailVerified(null);
-							user.setUserActivationKeyEmail(null);
-						}					
 											
-						if (sessionUser.getProfilePhoto() != null) {
-							user.setProfilePhotoId(sessionUser.getProfilePhoto().getId());
+						if (profilePhotoDeleted) {
+							user.setProfilePhotoId(null);
 						}
 						
 						if (profilePhotoChanged) {
@@ -489,44 +512,42 @@ public class ApiUserController extends BaseApiController {
 							user.setProfilePhoto(photo);
 						}
 						
-						OperationResult updateResult = this.userService.updateUser(user, false);
+						OperationResult updateResult = this.userService.updateUser(user, true, deleteProfilePhotoId);
 						if (OperationResult.isResultSucces(updateResult)) {
 							user = this.userService.getUser(user);
 							this.processLogin(session, user, EnmLoginType.getLoginType(sessionUser.getLoginType()));
-							if (profilePhotoChanged) {
+							if (!sessionUser.getEmail().equals(user.getEmail())) {
+								this.sendEmailVerificationMail(user);
+							}
+							if (profilePhotoDeleted || profilePhotoChanged) {
 								try {
-									if (!sessionUser.getEmail().equals(user.getEmail())) {
-										this.sendEmailVerificationMail(user);
-									}
-									
-									sessionUser = this.userService.getUser(sessionUser);
-									session.removeAttribute(EnmSession.USER.getId());
-									session.setAttribute(EnmSession.USER.getId(), sessionUser);
 									
 									String rootPhotoFolder = this.webApplication.getRootUserPhotoPath();
-									String userPhotoFolder = rootPhotoFolder + user.getId(); 
+									String userPhotoFolder = FileUtil.concatPath(rootPhotoFolder, user.getId().toString()); 
 									
 									FileModel photo = user.getProfilePhoto();
 									
 									String fileName = profilePhoto.getOriginalFilename();
 									
-									String tmpPhotoPath = FileUtil.concatPath(rootPhotoFolder, user.getId().toString(), "tmp", fileName);
-									
-									String newSmallFilePath = this.webApplication.getUserPhotoPath(user.getId(), photo.getId(), EnmSize.SMALL.getValue());
-									String newMediumFilePath = this.webApplication.getUserPhotoPath(user.getId(), photo.getId(), EnmSize.MEDIUM.getValue());
-									
-									File tmpFile = new File(tmpPhotoPath);
-									
 									if (oldProfilePhotoId != null) {
 										FileUtil.cleanDirectory(userPhotoFolder, false);
 									}
+									
+									if (!profilePhotoDeleted) {
+										String tmpPhotoPath = FileUtil.concatPath(rootPhotoFolder, user.getId().toString(), "tmp", fileName);
+										
+										String newSmallFilePath = this.webApplication.getUserPhotoPath(user.getId(), photo.getId(), EnmSize.SMALL.getValue());
+										String newMediumFilePath = this.webApplication.getUserPhotoPath(user.getId(), photo.getId(), EnmSize.MEDIUM.getValue());
+										
+										File tmpFile = new File(tmpPhotoPath);
 
-									ImageUtil.resizeImage(tmpFile, newMediumFilePath, this.webApplication.getMediumUserPhotoSize());
-									ImageUtil.resizeImage(tmpFile, newSmallFilePath, this.webApplication.getSmallUserPhotoSize());
-									
-									String tmpFolder = tmpPhotoPath.substring(0, tmpPhotoPath.lastIndexOf(File.pathSeparator));
-									
-									FileUtil.cleanDirectory(tmpFolder, true);
+										ImageUtil.resizeImage(tmpFile, newMediumFilePath, this.webApplication.getMediumUserPhotoSize());
+										ImageUtil.resizeImage(tmpFile, newSmallFilePath, this.webApplication.getSmallUserPhotoSize());
+										
+										String tmpFolder = tmpPhotoPath.substring(0, tmpPhotoPath.lastIndexOf(File.separator));
+										
+										FileUtil.cleanDirectory(tmpFolder, true);
+									}
 									
 								} catch (Exception e) {
 									System.out.println(CommonUtil.getExceptionMessage(e));
@@ -539,9 +560,9 @@ public class ApiUserController extends BaseApiController {
 						operationResult.setResultDesc("This email is used by another user!");
 					}
 				} else {
-					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
 					operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
+					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+					operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
 				}
 			} else {
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
@@ -574,7 +595,7 @@ public class ApiUserController extends BaseApiController {
 						user.setEmailVerified(EnmBoolStatus.YES.getId());;
 						user.setModifiedBy(modifiedBy);
 						
-						OperationResult createResult = this.userService.updateUser(user, false);
+						OperationResult createResult = this.userService.updateUser(user, false, null);
 						if (OperationResult.isResultSucces(createResult)) {
 							User sessionUser = this.getSessionUser(session);
 							if (sessionUser != null) {
@@ -629,7 +650,7 @@ public class ApiUserController extends BaseApiController {
 				
 				String rootPhotoFolder = this.webApplication.getRootUserPhotoPath();
 				
-				String userTmpPhotoFolderPath = rootPhotoFolder + userId + File.separatorChar + "tmp";
+				String userTmpPhotoFolderPath = FileUtil.concatPath(rootPhotoFolder, userId, "tmp");
 				File userTmpPhotoFolder = new File(userTmpPhotoFolderPath);
 				if (userTmpPhotoFolder.exists()) {
 					FileUtils.cleanDirectory(userTmpPhotoFolder);
@@ -692,7 +713,7 @@ public class ApiUserController extends BaseApiController {
 									updatedUser.setMsisdnCountryCode(msisdnCountryCode);
 									updatedUser.setMsisdnVerified(EnmBoolStatus.NO.getId());
 									
-									OperationResult updateResult = this.userService.updateUser(updatedUser, false);
+									OperationResult updateResult = this.userService.updateUser(updatedUser, false, null);
 									if (OperationResult.isResultSucces(updateResult)) {
 										
 										user.setMsisdn(msisdn);
@@ -727,9 +748,9 @@ public class ApiUserController extends BaseApiController {
 					operationResult.setResultDesc("You are not authorized for this operation!");
 				}
 			} else {
-				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
 			}
 		} catch (OperationResultException e) {
 			operationResult = e.getOperationResult();
@@ -755,7 +776,7 @@ public class ApiUserController extends BaseApiController {
 					updatedUser.setEmailVerified(EnmBoolStatus.NO.getId());
 					updatedUser.setUserActivationKeyEmail(SecurityUtil.generateUUID());
 					
-					OperationResult updateResult = this.userService.updateUser(updatedUser, false);
+					OperationResult updateResult = this.userService.updateUser(updatedUser, false, null);
 					if (OperationResult.isResultSucces(updateResult)) {
 						user.setEmailVerified(updatedUser.getEmailVerified());
 						user.setUserActivationKeyEmail(updatedUser.getUserActivationKeyEmail());
@@ -772,9 +793,9 @@ public class ApiUserController extends BaseApiController {
 					operationResult.setResultDesc("You are not authorized for this operation!");
 				}
 			} else {
-				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
@@ -804,9 +825,9 @@ public class ApiUserController extends BaseApiController {
 					operationResult.setResultDesc("You are not authorized for this operation!");
 				}
 			} else {
-				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
@@ -834,7 +855,7 @@ public class ApiUserController extends BaseApiController {
 							updatedUser.setId(user.getId());
 							updatedUser.setMsisdnVerified(EnmBoolStatus.YES.getId());
 							
-							OperationResult updateResult = this.userService.updateUser(updatedUser, false);
+							OperationResult updateResult = this.userService.updateUser(updatedUser, false, null);
 							if (OperationResult.isResultSucces(updateResult)) {
 								user.setMsisdnVerified(EnmBoolStatus.YES.getId());
 								operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
@@ -859,9 +880,9 @@ public class ApiUserController extends BaseApiController {
 					operationResult.setResultDesc("You are not authorized for this operation!");
 				}
 			} else {
-				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
@@ -901,7 +922,7 @@ public class ApiUserController extends BaseApiController {
 							}
 						}
 						
-						OperationResult updateUserResult = this.userService.updateUser(dbUser, false);
+						OperationResult updateUserResult = this.userService.updateUser(dbUser, false, null);
 						
 						if (OperationResult.isResultSucces(updateUserResult)) {
 							operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
@@ -919,9 +940,9 @@ public class ApiUserController extends BaseApiController {
 					operationResult.setResultDesc("googleId and email parameters are mandatory!");
 				}
 			} else {
-				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
@@ -945,7 +966,7 @@ public class ApiUserController extends BaseApiController {
 					updatedUser.setGoogleEmail(null);
 					updatedUser.setGoogleId(null);
 										
-					OperationResult updateUserResult = this.userService.updateUser(updatedUser, true);
+					OperationResult updateUserResult = this.userService.updateUser(updatedUser, true, null);
 					
 					if (OperationResult.isResultSucces(updateUserResult)) {
 						user.setGoogleEmail(null);
@@ -961,9 +982,9 @@ public class ApiUserController extends BaseApiController {
 					operationResult.setResultDesc("Google is the only account binded to your user record!");
 				}
 			} else {
-				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
@@ -1003,7 +1024,7 @@ public class ApiUserController extends BaseApiController {
 							}
 						}
 						
-						OperationResult updateUserResult = this.userService.updateUser(dbUser, false);
+						OperationResult updateUserResult = this.userService.updateUser(dbUser, false, null);
 						
 						if (OperationResult.isResultSucces(updateUserResult)) {
 							operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
@@ -1021,9 +1042,9 @@ public class ApiUserController extends BaseApiController {
 					operationResult.setResultDesc("googleId and email parameters are mandatory!");
 				}
 			} else {
-				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
@@ -1047,7 +1068,7 @@ public class ApiUserController extends BaseApiController {
 					updatedUser.setFacebookEmail(null);
 					updatedUser.setFacebookId(null);
 										
-					OperationResult updateUserResult = this.userService.updateUser(updatedUser, true);
+					OperationResult updateUserResult = this.userService.updateUser(updatedUser, true, null);
 					
 					if (OperationResult.isResultSucces(updateUserResult)) {
 						user.setFacebookEmail(null);
@@ -1063,9 +1084,9 @@ public class ApiUserController extends BaseApiController {
 					operationResult.setResultDesc("Google is the only account binded to your user record!");
 				}
 			} else {
-				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
@@ -1090,7 +1111,7 @@ public class ApiUserController extends BaseApiController {
 					updatedUser.setMsisdn(null);
 					updatedUser.setMsisdnVerified(EnmBoolStatus.NO.getId());
 					
-					OperationResult updateResult = this.userService.updateUser(updatedUser, true);
+					OperationResult updateResult = this.userService.updateUser(updatedUser, true, null);
 					if (OperationResult.isResultSucces(updateResult)) {
 						user.setMsisdnVerified(EnmBoolStatus.NO.getId());
 						user.setMsisdn(null);
@@ -1105,9 +1126,9 @@ public class ApiUserController extends BaseApiController {
 					operationResult.setResultDesc("You are not authorized for this operation!");
 				}
 			} else {
-				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
@@ -1133,7 +1154,7 @@ public class ApiUserController extends BaseApiController {
 	}
 
 	private void sendEmailVerificationMail(User user) throws UnsupportedEncodingException {
-		String htmlFilePath = FileUtil.concatPath(WebApplication.LOCAL_APP_PATH, "static", "html", "VerifyEmail.html");	
+		String htmlFilePath = FileUtil.concatPath(this.webApplication.getLocalAppPath(), "static", "html", "VerifyEmail.html");	
 		
 		List<String> toList = new ArrayList<String>();
 		toList.add(user.getEmail());
@@ -1152,7 +1173,7 @@ public class ApiUserController extends BaseApiController {
 	}
 	
 	private void sendWelcomeMail(User user, EnmLoginType loginType) throws UnsupportedEncodingException {
-		String htmlFilePath = FileUtil.concatPath(WebApplication.LOCAL_APP_PATH, "static", "html", "VerifyEmail.html");
+		String htmlFilePath = FileUtil.concatPath(this.webApplication.getLocalAppPath(), "static", "html", "VerifyEmail.html");
 		String email = null;
 		
 		if (loginType == EnmLoginType.LOCAL_ACCOUNT) {

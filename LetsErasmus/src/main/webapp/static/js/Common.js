@@ -21,7 +21,9 @@ function getReservationStatusDesc(reservationStatus) {
 	} else if (reservationStatus == EnmReservationStatus.EXPIRED) {
 		return 'Expired';
 	} else if (reservationStatus == EnmReservationStatus.RECALLED) {
-		return 'Cancelled';
+		return 'Cancelled by Guest';
+	} else if (reservationStatus == EnmReservationStatus.CANCELLED) {
+		return 'Cancelled by Host';
 	} else if (reservationStatus == EnmReservationStatus.WAITING_PAYMENT) {
 		return 'Waiting For Payment';
 	} else if (reservationStatus == EnmReservationStatus.CLOSED) {
@@ -460,7 +462,6 @@ function handleAjaxError(operationResult) {
 	if (operationResult.resultCode == EnmOperationResultCode.WARNING) {
 		DialogUtil.warn('Warning', operationResult.resultDesc, 'OK', null);
 	} else {
-		console.error(operationResult.resultDesc);
 		DialogUtil.error('Error', operationResult.resultDesc, 'OK', function() {
 			if (operationResult.errorCode == EnmErrorCode.UNAUTHORIZED_OPERATION) {
 				location.href = webApplicationUrlPrefix + '/pages/Unauthorized.xhtml';
@@ -497,4 +498,12 @@ function generateUserProfilePhotoUrl(userId, photoId, size) {
 	} else {
 		return StringUtil.replaceAll(defaultUserProfileImageUrlTemplate, '#size#', size);
 	}
+}
+
+function createEmptyFile(fileName) {
+	var parts = [
+        new Blob([''], {type: 'text/plain'}), '', new Uint16Array([33])
+      ];
+
+	return new File(parts, fileName, {});
 }

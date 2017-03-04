@@ -22,7 +22,7 @@ public abstract class BaseController {
 	public static final String UI_DECIMAL_LOCALE = "tr-TR";
 
 	public HttpSession getSession() {
-		Object session = FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+		Object session = FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 		if (session != null) {
 			return (HttpSession) session;
 		} else {

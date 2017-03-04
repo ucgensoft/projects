@@ -22,6 +22,7 @@ import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.common.operationresult.ValueOperationResult;
 import com.ucgen.common.util.NumberUtil;
 import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
+import com.ucgen.letserasmus.library.common.enumeration.EnmErrorCode;
 import com.ucgen.letserasmus.library.common.enumeration.EnmSize;
 import com.ucgen.letserasmus.library.message.enumeration.EnmMessageStatus;
 import com.ucgen.letserasmus.library.message.model.Message;
@@ -31,6 +32,7 @@ import com.ucgen.letserasmus.library.reservation.model.Reservation;
 import com.ucgen.letserasmus.library.reservation.service.IReservationService;
 import com.ucgen.letserasmus.library.user.model.User;
 import com.ucgen.letserasmus.web.api.BaseApiController;
+import com.ucgen.letserasmus.web.view.application.AppConstants;
 import com.ucgen.letserasmus.web.view.application.EnmSession;
 import com.ucgen.letserasmus.web.view.application.WebApplication;
 
@@ -75,8 +77,9 @@ public class ApiMessageController extends BaseApiController {
 					operationResult.setResultDesc("Mandatory parameters are missing or invalid!");
 				}	
 			} else {
+				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
+				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
@@ -120,8 +123,9 @@ public class ApiMessageController extends BaseApiController {
 				operationResult.setResultValue(messageThreadMap);
 				operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());;				
 			} else {
+				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
+				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
@@ -168,8 +172,9 @@ public class ApiMessageController extends BaseApiController {
 					operationResult.setResultDesc("Message thread is not found!");
 				}			
 			} else {
+				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
+				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
@@ -233,8 +238,9 @@ public class ApiMessageController extends BaseApiController {
 					operationResult.setResultDesc("Missing mandatory parameters !");
 				}
 			} else {
+				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
+				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());

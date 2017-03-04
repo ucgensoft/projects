@@ -85,10 +85,14 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', funct
       };
       
       self.openLoginWindow = function() {
-    	  ajaxHtml(webApplicationUrlPrefix + '/pages/Login.xhtml', 'divModalContent', function() {
-    		  self.attachGoogleSignin('linkGoogleSignin', self.signup);
-    		  openModal();  
-    	  });
+    	  if (auth2 != null) {
+    		  ajaxHtml(webApplicationUrlPrefix + '/pages/Login.xhtml', 'divModalContent', function() {
+        		  self.attachGoogleSignin('linkGoogleSignin', self.signup);
+        		  openModal();  
+        	  });
+    	  } else {
+    		  setTimeout(self.openLoginWindow, 400);
+    	  }
       };
       
       self.loginWithFacebook = function() {

@@ -26,54 +26,57 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
       	  };
            
       self.initialize = function() {
-    	  
-    	  $("#txtStartDatePicker").datepicker(
-			{
-				dateFormat : "d MM, y",
-				onSelect : function(selectedDate, cal) {
-					
-				}
-			});
-    	  
-    	  $("#txtEndDatePicker").datepicker(
-			{
-				dateFormat : "d MM, y",
-				onSelect : function(selectedDate, cal) {
-					
-				}
-			});
-    	  
-    	  var placeId = getUriParam('placeId');
-    	  if (placeId != null && placeId != "") {
-    		  placeService.getPlace(placeId).then(function(operationResult) {
-        	  		self.displayPlaceDetails(operationResult.resultValue)
-          		},
+    	  if (loginType != '') {
+    		  $("#txtStartDatePicker").datepicker(
+				{
+					dateFormat : "d MM, y",
+					onSelect : function(selectedDate, cal) {
+						
+					}
+				});
+	    	  
+	    	  $("#txtEndDatePicker").datepicker(
+				{
+					dateFormat : "d MM, y",
+					onSelect : function(selectedDate, cal) {
+						
+					}
+				});
+	    	  
+	    	  var placeId = getUriParam('placeId');
+	    	  if (placeId != null && placeId != "") {
+	    		  placeService.getPlace(placeId).then(function(operationResult) {
+	        	  		self.displayPlaceDetails(operationResult.resultValue)
+	          		},
+					function(errResponse){
+						console.error('Error while fetching Portfolio');
+					}
+			      );
+	    	  }
+	    	  
+	    	  enumerationService.listEnumeration(null).then(function(operationResult) {
+	  	  			self.amentiesList = operationResult.resultValue["place_amenty"];
+	  	  			self.safetyAmentiesList = operationResult.resultValue["place_safety_amenty"];
+	  	  			self.ruleList = operationResult.resultValue["place_rule"];
+	    		},
 				function(errResponse){
-					console.error('Error while fetching Portfolio');
+					console.error('Error while fetching Enumerations');
 				}
 		      );
+	    	  
+	    	  //$("#divStep1").css("display", "none");
+	    	  $("#divStep2").css("display", "none");
+	    	  $("#divStep3").css("display", "none");
+	    	  $("#divStep4").css("display", "none");
+	    	  $("#divStep5").css("display", "none");
+	    	  $("#divStep6").css("display", "none");
+	    	  $("#divStep7").css("display", "none");
+	    	  $("#divStep8").css("display", "none");
+	    	  
+	    	  self.initPhotoTab();
+    	  } else {
+    		  openLoginWindow();
     	  }
-    	  
-    	  enumerationService.listEnumeration(null).then(function(operationResult) {
-  	  			self.amentiesList = operationResult.resultValue["place_amenty"];
-  	  			self.safetyAmentiesList = operationResult.resultValue["place_safety_amenty"];
-  	  			self.ruleList = operationResult.resultValue["place_rule"];
-    		},
-			function(errResponse){
-				console.error('Error while fetching Enumerations');
-			}
-	      );
-    	  
-    	  //$("#divStep1").css("display", "none");
-    	  $("#divStep2").css("display", "none");
-    	  $("#divStep3").css("display", "none");
-    	  $("#divStep4").css("display", "none");
-    	  $("#divStep5").css("display", "none");
-    	  $("#divStep6").css("display", "none");
-    	  $("#divStep7").css("display", "none");
-    	  $("#divStep8").css("display", "none");
-    	  
-    	  self.initPhotoTab();
       };
       
       self.displayPlaceDetails = function(place) {
@@ -480,7 +483,7 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
             	  }
     		  }
     	  } else {
-    		  DialogUtil.warn('Warning', "Please fill required fields!");
+    		  DialogUtil.warn('Warning', "Please fill required fields!", 'OK');
     		  return false;
     	  }  
       };

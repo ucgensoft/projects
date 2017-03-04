@@ -28,6 +28,8 @@ import com.ucgen.letserasmus.library.common.enumeration.EnmErrorCode;
 import com.ucgen.letserasmus.library.message.enumeration.EnmMessageStatus;
 import com.ucgen.letserasmus.library.message.model.Message;
 import com.ucgen.letserasmus.library.message.model.MessageThread;
+import com.ucgen.letserasmus.library.parameter.enumeration.EnmParameter;
+import com.ucgen.letserasmus.library.parameter.service.IParameterService;
 import com.ucgen.letserasmus.library.place.model.Place;
 import com.ucgen.letserasmus.library.place.service.IPlaceService;
 import com.ucgen.letserasmus.library.reservation.enumeration.EnmReservationStatus;
@@ -35,6 +37,7 @@ import com.ucgen.letserasmus.library.reservation.model.Reservation;
 import com.ucgen.letserasmus.library.reservation.service.IReservationService;
 import com.ucgen.letserasmus.library.user.model.User;
 import com.ucgen.letserasmus.web.api.BaseApiController;
+import com.ucgen.letserasmus.web.view.application.AppConstants;
 import com.ucgen.letserasmus.web.view.application.EnmOperation;
 import com.ucgen.letserasmus.web.view.application.EnmSession;
 import com.ucgen.letserasmus.web.view.application.WebApplication;
@@ -45,7 +48,12 @@ public class ApiReservationController extends BaseApiController {
 	private IReservationService reservationService;
 	private IPlaceService placeService;
 	private WebApplication webApplication;
+	private IParameterService parameterService;
 	
+	@Autowired
+	public void setParameterService(IParameterService parameterService) {
+		this.parameterService = parameterService;
+	}
 	
 	@Autowired
 	public void setReservationService(IReservationService reservationService) {
@@ -72,8 +80,11 @@ public class ApiReservationController extends BaseApiController {
 				if (uiReservation.getPlaceId() != null && uiReservation.getStartDate() != null 
 						&& uiReservation.getEndDate() != null && uiReservation.getGuestNumber() != null) {
 					
-					BigDecimal serviceFeeRate = new BigDecimal(0.1);
-					BigDecimal commissionFeeRate = new BigDecimal(0.1);
+					String paramServiceFeeRate = this.parameterService.getParameterValue(EnmParameter.PLACE_SERVICE_FEE_RATE.getId());
+					String paramCommissionFeeRate = this.parameterService.getParameterValue(EnmParameter.PLACE_COMMISSION_FEE_RATE.getId());
+					
+					BigDecimal serviceFeeRate = (new BigDecimal(paramServiceFeeRate)).divide(new BigDecimal(100));
+					BigDecimal commissionFeeRate = (new BigDecimal(paramCommissionFeeRate)).divide(new BigDecimal(100));
 					
 					ValueOperationResult<Place> getOperationResult = this.placeService.getPlace(uiReservation.getPlaceId());
 					
@@ -136,9 +147,9 @@ public class ApiReservationController extends BaseApiController {
 					operationResult.setResultDesc("Mandatory parameters are missing!");
 				}	
 			} else {
-				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
@@ -146,7 +157,6 @@ public class ApiReservationController extends BaseApiController {
 		}
 		return new ResponseEntity<ValueOperationResult<String>>(operationResult, HttpStatus.OK);
     }
-	
 	
 	@RequestMapping(value = "/api/reservation/finish", method = RequestMethod.POST)
     public ResponseEntity<OperationResult> finishReservation(@RequestBody UiReservation uiReservation, HttpSession session) {
@@ -198,9 +208,9 @@ public class ApiReservationController extends BaseApiController {
 					operationResult.setResultDesc("You are not authorized for this operation!");
 				}
 			} else {
-				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
@@ -208,7 +218,6 @@ public class ApiReservationController extends BaseApiController {
 		}
 		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);
     }
-	
 	
 	@RequestMapping(value = "/api/reservation/update", method = RequestMethod.POST)
     public ResponseEntity<OperationResult> updateReservation(@RequestBody UiReservation uiReservation, HttpSession session) {
@@ -227,13 +236,38 @@ public class ApiReservationController extends BaseApiController {
 					List<Reservation> dbReservationList = this.reservationService.list(reservation, false, false, false);
 					
 					if (dbReservationList != null && dbReservationList.size() > 0) {
-						if (dbReservationList.get(0).getHostUserId().equals(user.getId())) {
+						reservation = dbReservationList.get(0);
+						boolean isUserAutorized = false;
+						
+						if (uiReservation.getStatus().equals(EnmReservationStatus.DECLINED.getId()) 
+								|| uiReservation.getStatus().equals(EnmReservationStatus.CONFIRMED.getId()) 
+								|| uiReservation.getStatus().equals(EnmReservationStatus.CANCELLED.getId())) {
+							if (reservation.getHostUserId().equals(user.getId())) {
+								isUserAutorized = true;
+							}
+						}
+						
+						if (uiReservation.getStatus().equals(EnmReservationStatus.RECALLED.getId())) {
+							if (reservation.getClientUserId().equals(user.getId())) {
+								isUserAutorized = true;
+							}
+						}
+						
+						if (isUserAutorized) {
 							boolean statusSuitable = false;
 							
-							if (dbReservationList.get(0).getStatus().equals(EnmReservationStatus.PENDING.getId()) 
-									&& (uiReservation.getStatus().equals(EnmReservationStatus.CONFIRMED.getId()) 
-											|| uiReservation.getStatus().equals(EnmReservationStatus.DECLINED.getId()))) {
-								statusSuitable = true;
+							if (uiReservation.getStatus().equals(EnmReservationStatus.CANCELLED.getId()) 
+									|| uiReservation.getStatus().equals(EnmReservationStatus.RECALLED.getId())) {
+								if (dbReservationList.get(0).getStatus().equals(EnmReservationStatus.CONFIRMED.getId())) {
+									statusSuitable = true;
+								}
+							}
+							
+							if (uiReservation.getStatus().equals(EnmReservationStatus.DECLINED.getId()) 
+									|| uiReservation.getStatus().equals(EnmReservationStatus.CONFIRMED.getId())) {
+								if (dbReservationList.get(0).getStatus().equals(EnmReservationStatus.PENDING.getId())) {
+									statusSuitable = true;
+								}
 							}
 							
 							if (statusSuitable) {
@@ -278,9 +312,9 @@ public class ApiReservationController extends BaseApiController {
 					operationResult.setResultDesc("Missing mandatory parameter!");
 				}
 			} else {
-				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
@@ -313,9 +347,9 @@ public class ApiReservationController extends BaseApiController {
 					operationResult.setResultDesc("You are not authorized for this operation!");
 				}
 			} else {
-				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
@@ -363,9 +397,9 @@ public class ApiReservationController extends BaseApiController {
 				operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 				operationResult.setResultValue(reservationMap);
 			} else {
-				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
@@ -413,9 +447,9 @@ public class ApiReservationController extends BaseApiController {
 				operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 				operationResult.setResultValue(reservationMap);
 			} else {
-				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("You are not logged in or session is expired. Please login first.");
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
