@@ -74,7 +74,7 @@ App.controller('reservationListCtrl', ['$scope', '$controller', 'reservationServ
   			DialogUtil.confirm('Confirm', 'Reservation request will be cancelled, dou you want to continue?', function(response) {
   	  			if (response) {
   	  				var reservationId = activeReservationId;
-  	  		  		var status = EnmReservationStatus.CANCELLED;
+  	  		  		var status = EnmReservationStatus.HOST_CANCELLED;
   	  		  		reservationService.updateReservation(reservationId, messageText, status,
   	  					  function(isSuccess) {
   	  						  if (isSuccess) {

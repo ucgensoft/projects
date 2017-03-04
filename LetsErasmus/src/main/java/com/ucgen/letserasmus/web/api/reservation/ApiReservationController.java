@@ -241,13 +241,14 @@ public class ApiReservationController extends BaseApiController {
 						
 						if (uiReservation.getStatus().equals(EnmReservationStatus.DECLINED.getId()) 
 								|| uiReservation.getStatus().equals(EnmReservationStatus.CONFIRMED.getId()) 
-								|| uiReservation.getStatus().equals(EnmReservationStatus.CANCELLED.getId())) {
+								|| uiReservation.getStatus().equals(EnmReservationStatus.HOST_CANCELLED.getId())) {
 							if (reservation.getHostUserId().equals(user.getId())) {
 								isUserAutorized = true;
 							}
 						}
-						
-						if (uiReservation.getStatus().equals(EnmReservationStatus.RECALLED.getId())) {
+												
+						if (uiReservation.getStatus().equals(EnmReservationStatus.RECALLED.getId()) 
+								|| uiReservation.getStatus().equals(EnmReservationStatus.CLIENT_CANCELLED.getId())) {
 							if (reservation.getClientUserId().equals(user.getId())) {
 								isUserAutorized = true;
 							}
@@ -256,15 +257,21 @@ public class ApiReservationController extends BaseApiController {
 						if (isUserAutorized) {
 							boolean statusSuitable = false;
 							
-							if (uiReservation.getStatus().equals(EnmReservationStatus.CANCELLED.getId()) 
-									|| uiReservation.getStatus().equals(EnmReservationStatus.RECALLED.getId())) {
+							if (uiReservation.getStatus().equals(EnmReservationStatus.DECLINED.getId()) 
+									|| uiReservation.getStatus().equals(EnmReservationStatus.CONFIRMED.getId())) {
+								if (dbReservationList.get(0).getStatus().equals(EnmReservationStatus.PENDING.getId())) {
+									statusSuitable = true;
+								}
+							}
+							
+							if (uiReservation.getStatus().equals(EnmReservationStatus.HOST_CANCELLED.getId()) 
+									|| uiReservation.getStatus().equals(EnmReservationStatus.CLIENT_CANCELLED.getId())) {
 								if (dbReservationList.get(0).getStatus().equals(EnmReservationStatus.CONFIRMED.getId())) {
 									statusSuitable = true;
 								}
 							}
 							
-							if (uiReservation.getStatus().equals(EnmReservationStatus.DECLINED.getId()) 
-									|| uiReservation.getStatus().equals(EnmReservationStatus.CONFIRMED.getId())) {
+							if (uiReservation.getStatus().equals(EnmReservationStatus.RECALLED.getId())) {
 								if (dbReservationList.get(0).getStatus().equals(EnmReservationStatus.PENDING.getId())) {
 									statusSuitable = true;
 								}
@@ -380,7 +387,8 @@ public class ApiReservationController extends BaseApiController {
 				
 				if (reservationList != null && reservationList.size() > 0) {
 					for (Reservation tmpReservation : reservationList) {
-						if (EnmReservationStatus.CONFIRMED.getId().equals(tmpReservation.getStatus())
+						if (EnmReservationStatus.PENDING.getId().equals(tmpReservation.getStatus())
+								|| EnmReservationStatus.CONFIRMED.getId().equals(tmpReservation.getStatus())
 								|| EnmReservationStatus.CLOSED.getId().equals(tmpReservation.getStatus())
 								|| EnmReservationStatus.WAITING_PAYMENT.getId().equals(tmpReservation.getStatus())) {
 							if (DateUtil.truncate(tmpReservation.getStartDate()).getTime() > currentDate.getTime()) {
@@ -430,7 +438,8 @@ public class ApiReservationController extends BaseApiController {
 				
 				if (reservationList != null && reservationList.size() > 0) {
 					for (Reservation tmpReservation : reservationList) {
-						if (EnmReservationStatus.CONFIRMED.getId().equals(tmpReservation.getStatus())
+						if (EnmReservationStatus.PENDING.getId().equals(tmpReservation.getStatus())
+								|| EnmReservationStatus.CONFIRMED.getId().equals(tmpReservation.getStatus())
 								|| EnmReservationStatus.CLOSED.getId().equals(tmpReservation.getStatus())
 								|| EnmReservationStatus.WAITING_PAYMENT.getId().equals(tmpReservation.getStatus())) {
 							if (DateUtil.truncate(tmpReservation.getStartDate()).getTime() > currentDate.getTime()) {

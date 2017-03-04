@@ -8,9 +8,10 @@ public enum EnmReservationStatus {
 	DECLINED(3),
 	EXPIRED(4),
 	RECALLED(5),
-	CANCELLED(6),
-	WAITING_PAYMENT(7),
-	CLOSED(8);
+	HOST_CANCELLED(6),
+	CLIENT_CANCELLED(7),
+	WAITING_PAYMENT(8),
+	CLOSED(9);
 	
 	private Integer id;
 	

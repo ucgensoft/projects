@@ -44,7 +44,7 @@ App.controller('tripListCtrl', ['$scope', '$controller', 'reservationService',
   			DialogUtil.confirm('Confirm', 'Reservation request will be cancelled, dou you want to continue?', function(response) {
   	  			if (response) {
   	  				var reservationId = activeReservationId;
-  	  		  		var status = EnmReservationStatus.RECALLED;
+  	  		  		var status = EnmReservationStatus.CLIENT_CANCELLED;
   	  		  		reservationService.updateReservation(reservationId, messageText, status,
   	  					  function(isSuccess) {
   	  						  if (isSuccess) {
@@ -60,11 +60,35 @@ App.controller('tripListCtrl', ['$scope', '$controller', 'reservationService',
   			DialogUtil.warn('Warning', 'Please type a message to guest.', 'OK');
   		}
   	};
-  	  	
-  	self.showReservationBox = function() {
-  		 return self.messageThread != null && self.messageThread.reservation != null 
-  		 	&& self.messageThread.reservation.status == EnmReservationStatus.PENDING 
-  		 	&& self.messageThread.activeUserId == self.messageThread.reservation.hostUserId;
+  	
+  	self.openRecallReservationWindow = function(reservationId) {
+  		activeReservationId = reservationId;
+  		ajaxHtml(webApplicationUrlPrefix + '/static/html/RecallReservation.html', 'divReservationModal', function() {
+  			$('#divReservationModal').css('display', '');
+    	});
+  	};
+  	
+  	self.recallReservation = function() {
+  		var messageText = StringUtil.trim($('#txtNewMessage').val());
+  		if (messageText != '') {
+  			DialogUtil.confirm('Confirm', 'Reservation request will be recalled, dou you want to continue?', function(response) {
+  	  			if (response) {
+  	  				var reservationId = activeReservationId;
+  	  		  		var status = EnmReservationStatus.RECALLED;
+  	  		  		reservationService.updateReservation(reservationId, messageText, status,
+  	  					  function(isSuccess) {
+  	  						  if (isSuccess) {
+  	  							  DialogUtil.info('Sucess', 'Reservation request is recalled.', 'OK', function() {
+  	  								  location.reload();
+  	  							  });
+  	  						  }
+  	  			  		  }
+  	  			  	  );
+  	  			}
+  	  		});
+  		} else {
+  			DialogUtil.warn('Warning', 'Please type a message to guest.', 'OK');
+  		}
   	};
   	
   	self.getReservationStatus = function(status) {
@@ -86,4 +110,9 @@ App.controller('tripListCtrl', ['$scope', '$controller', 'reservationService',
 function cancelReservation() {
 	var scope = angular.element( $('#divBody') ).scope();
 	scope.ctrl.cancelReservation();
+}
+
+function recallReservation() {
+	var scope = angular.element( $('#divBody') ).scope();
+	scope.ctrl.recallReservation();
 }

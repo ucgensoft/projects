@@ -6,9 +6,10 @@ var EnmReservationStatus = {
 	DECLINED : 3,
 	EXPIRED : 4,
 	RECALLED : 5,
-	CANCELLED : 6,
-	WAITING_PAYMENT : 7,
-	CLOSED : 8
+	HOST_CANCELLED : 6,
+	CLIENT_CANCELLED : 7,
+	WAITING_PAYMENT : 8,
+	CLOSED : 9
 };
 
 function getReservationStatusDesc(reservationStatus) {
@@ -21,9 +22,11 @@ function getReservationStatusDesc(reservationStatus) {
 	} else if (reservationStatus == EnmReservationStatus.EXPIRED) {
 		return 'Expired';
 	} else if (reservationStatus == EnmReservationStatus.RECALLED) {
-		return 'Cancelled by Guest';
-	} else if (reservationStatus == EnmReservationStatus.CANCELLED) {
+		return 'Recalled by Guest';
+	} else if (reservationStatus == EnmReservationStatus.HOST_CANCELLED) {
 		return 'Cancelled by Host';
+	} else if (reservationStatus == EnmReservationStatus.CLIENT_CANCELLED) {
+		return 'Cancelled by Guest';
 	} else if (reservationStatus == EnmReservationStatus.WAITING_PAYMENT) {
 		return 'Waiting For Payment';
 	} else if (reservationStatus == EnmReservationStatus.CLOSED) {
