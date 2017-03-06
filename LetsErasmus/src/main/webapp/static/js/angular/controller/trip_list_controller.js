@@ -1,5 +1,5 @@
-App.controller('tripListCtrl', ['$scope', '$controller', 'reservationService', 
-                                function($scope, $controller, reservationService) {
+App.controller('tripListCtrl', ['$scope', '$controller', 'reservationService', 'reviewService',
+                                function($scope, $controller, reservationService, reviewService) {
       var self = this;
       self.upcomingList = [];
       self.ongoingList = [];
@@ -101,7 +101,57 @@ App.controller('tripListCtrl', ['$scope', '$controller', 'reservationService',
   	
   	self.generateUserProfilePhotoUrl = function(userId, photoId, size) {
   		return generateUserProfilePhotoUrl(userId, photoId, size);
-  	}
+  	};
+  	
+  	self.isReviewed = function(reservation) {
+  		if (reservation.reviewList && reservation.reviewList.length > 0) {
+  			for(var i = 0; i < reservation.reviewList.length; i++) {
+  				var review = reservation.reviewList[i];
+  				if (review.userId == reservation.clientUserId) {
+  					return true;
+  				}
+  			}
+  		}
+  		return false;
+  	};
+  	
+  	self.openReviewWindow = function(reservation) {
+  		activeReservationId = reservation.id;
+  		ajaxHtml(webApplicationUrlPrefix + '/static/html/Review.html', 'divReservationModal', function() {
+  			$('#divReservationModal').css('display', '');
+    	});
+  	};
+  	
+  	self.sendReview = function () {
+  		var description = StringUtil.trim($('#txtDescription').val());
+  		var rank = null;
+  		for(var i = 1; i <= 5; i++) {
+  			if ($('#rdRank' + i)[0].checked) {
+  				rank = i;
+  				break;
+  			}
+  		}
+  		if (StringUtil.trim(description) != '' && rank != null) {
+  			var reservationId = activeReservationId;
+  			var review = {
+  					rank : rank,
+  					description : description,
+  					entityType : EnmEntityType.RESERVATION,
+  					entityId : reservationId
+  			}
+	  		reviewService.createReview(review,
+				  function(isSuccess) {
+					  if (isSuccess) {
+						  DialogUtil.info('Sucess', 'Your review is sent succesfully.', 'OK', function() {
+							  location.reload();
+						  });
+					  }
+		  		  }
+		  	  );
+  		} else {
+  			DialogUtil.warn('Warning', 'Please type description and choose a rank!', 'OK');
+  		}
+  	};
   	
     self.initialize();
       
@@ -115,4 +165,9 @@ function cancelReservation() {
 function recallReservation() {
 	var scope = angular.element( $('#divBody') ).scope();
 	scope.ctrl.recallReservation();
+}
+
+function sendReview() {
+	var scope = angular.element( $('#divBody') ).scope();
+	scope.ctrl.sendReview();
 }

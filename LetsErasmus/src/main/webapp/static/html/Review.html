@@ -1,0 +1,63 @@
+<div class="modal show" role="dialog" aria-hidden="false">
+	<div class="modal-table">
+		<div class="modal-cell">
+			<div class="modal-content">
+				<div class="panel-header">Review</div>
+				
+				<div class="panel-body">
+					<label>Rank</label>
+					<div>
+						<input id="rdRank1" name="rank" type="radio" value="1" />
+						<span>
+							<i class="icon-star icon icon-babu star-rating-icons"></i>
+						</span>
+					</div>
+					<div>
+						<input id="rdRank2" name="rank" type="radio" value="2" class="pointer-input" />
+						<span>
+							<i class="icon-star icon icon-babu star-rating-icons"></i>
+							<i class="icon-star icon icon-babu star-rating-icons"></i>
+						</span>
+					</div>
+					<div>
+						<input id="rdRank3" name="rank" type="radio" value="3" class="pointer-input" />
+						<span>
+							<i class="icon-star icon icon-babu star-rating-icons"></i>
+							<i class="icon-star icon icon-babu star-rating-icons"></i>
+							<i class="icon-star icon icon-babu star-rating-icons"></i>
+						</span>
+					</div>
+					<div>
+						<input id="rdRank4" name="rank" type="radio" value="4" class="pointer-input" />
+						<span>
+							<i class="icon-star icon icon-babu star-rating-icons"></i>
+							<i class="icon-star icon icon-babu star-rating-icons"></i>
+							<i class="icon-star icon icon-babu star-rating-icons"></i>
+							<i class="icon-star icon icon-babu star-rating-icons"></i>
+						</span>
+					</div>
+					<div>
+						<input id="rdRank5" name="rank" type="radio" value="5" class="pointer-input" />
+						<span>
+							<i class="icon-star icon icon-babu star-rating-icons"></i>
+							<i class="icon-star icon icon-babu star-rating-icons"></i>
+							<i class="icon-star icon icon-babu star-rating-icons"></i>
+							<i class="icon-star icon icon-babu star-rating-icons"></i>
+							<i class="icon-star icon icon-babu star-rating-icons"></i>
+						</span>
+					</div>
+				</div>
+				
+				<div class="panel-body">
+					<label>Description</label>
+					<textarea id="txtDescription" rows="6"></textarea>
+				</div>
+				<div class="panel-footer">
+					<input class="btn btn-primary" 
+						type="button" value="Review" onclick="sendReview()"/>
+					<button class="btn" data-behavior="modal-close" onclick="closeModal()">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

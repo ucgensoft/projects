@@ -2,10 +2,12 @@ package com.ucgen.letserasmus.library.reservation.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import com.ucgen.letserasmus.library.common.model.BaseModel;
 import com.ucgen.letserasmus.library.message.model.MessageThread;
 import com.ucgen.letserasmus.library.place.model.Place;
+import com.ucgen.letserasmus.library.review.model.Review;
 import com.ucgen.letserasmus.library.user.model.User;
 
 public class Reservation extends BaseModel {
@@ -33,6 +35,7 @@ public class Reservation extends BaseModel {
 	private User clientUser;
 	
 	private MessageThread messageThread;
+	private List<Review> reviewList;
 	
 	public Long getId() {
 		return id;
@@ -147,6 +150,12 @@ public class Reservation extends BaseModel {
 	}
 	public void setMessageThread(MessageThread messageThread) {
 		this.messageThread = messageThread;
+	}
+	public List<Review> getReviewList() {
+		return reviewList;
+	}
+	public void setReviewList(List<Review> reviewList) {
+		this.reviewList = reviewList;
 	}
 	
 }

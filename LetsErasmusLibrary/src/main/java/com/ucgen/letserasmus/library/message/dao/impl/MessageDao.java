@@ -183,7 +183,10 @@ public class MessageDao extends JdbcDaoSupport implements IMessageDao {
 				sqlBuilder.append(" AND " + messageThreadRowMapper.getCriteriaColumnName(MessageThreadRowMapper.COL_ENTITY_TYPE) + " = ? ");
 				argList.add(messageThread.getEntityType());
 			}
-			
+			if (messageThread.getEntityId() != null) {
+				sqlBuilder.append(" AND " + messageThreadRowMapper.getCriteriaColumnName(MessageThreadRowMapper.COL_ENTITY_ID) + " = ? ");
+				argList.add(messageThread.getEntityId());
+			}
 		}
 				
 		List<MessageThread> messageThreadList = super.getJdbcTemplate().query(sqlBuilder.toString(), argList.toArray(), messageThreadRowMapper);		

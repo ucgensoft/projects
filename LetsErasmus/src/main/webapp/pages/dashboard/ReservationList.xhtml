@@ -170,6 +170,7 @@
 												<td>
 													<span class="label label-orange label-warning">{{ctrl.getReservationStatus(r.status)}}</span>
 													<div class="countdown text-lead"></div>
+													<button class="btn btn-primary btn-small space-top-1 space-2" ng-if="ctrl.isReviewed(r) == false" ng-click="ctrl.openReviewWindow(r)">Review Guest</button>
 												</td>
 												<td>{{r.startDate | date:'MMM dd, yyyy'}} - {{r.endDate | date:'MMM dd, yyyy'}} <br/> 
 													<a href="#{webApplication.urlPrefix}/pages/PlaceDetail.xhtml?placeId={{r.placeId}}&amp;checkinDate={{r.startDate | date:'dd.MM.yyyy'}}&amp;checkoutDate={{r.endDate | date:'dd.MM.yyyy'}}" locale="en" target="_blank">{{r.place.title}}</a> 
@@ -210,6 +211,7 @@
 		</main>
 		<script src="#{webApplication.urlPrefix}/static/js/dashboard.js"></script>
 		<script src="#{webApplication.urlPrefix}/static/js/angular/service/reservation_service.js"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/service/review_service.js"></script>
 		<script src="#{webApplication.urlPrefix}/static/js/angular/controller/reservation_list_controller.js"></script>
 		
 	</ui:define>

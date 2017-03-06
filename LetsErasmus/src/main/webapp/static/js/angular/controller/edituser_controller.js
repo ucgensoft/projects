@@ -160,7 +160,7 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
   			
   			var newUserPhoto = null;
   			if (self.photo == null) {
-  				if (userProfilePhotoId != '') {
+  				if (userProfilePhotoId != '' && $('#divPhotoPreview').hasClass('hidden-force')) {
   					var emptyFile = createEmptyFile('deleted');
   					newUserPhoto = { 'file': emptyFile, 'src': null};
   				} else {

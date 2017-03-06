@@ -1,0 +1,218 @@
+package com.ucgen.letserasmus.web.api.review;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.ucgen.common.operationresult.EnmResultCode;
+import com.ucgen.common.operationresult.OperationResult;
+import com.ucgen.common.operationresult.ValueOperationResult;
+import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
+import com.ucgen.letserasmus.library.common.enumeration.EnmErrorCode;
+import com.ucgen.letserasmus.library.common.enumeration.EnmSize;
+import com.ucgen.letserasmus.library.message.model.Message;
+import com.ucgen.letserasmus.library.reservation.model.Reservation;
+import com.ucgen.letserasmus.library.reservation.service.IReservationService;
+import com.ucgen.letserasmus.library.review.model.Review;
+import com.ucgen.letserasmus.library.review.service.IReviewService;
+import com.ucgen.letserasmus.library.user.model.User;
+import com.ucgen.letserasmus.web.api.BaseApiController;
+import com.ucgen.letserasmus.web.view.application.AppConstants;
+import com.ucgen.letserasmus.web.view.application.WebApplication;
+
+@RestController
+public class ApiReviewController extends BaseApiController {
+
+	private IReviewService reviewService;
+	private IReservationService reservationService;
+	private WebApplication webApplication;
+	
+	@Autowired
+	public void setWebApplication(WebApplication webApplication) {
+		this.webApplication = webApplication;
+	}
+
+	@Autowired
+	public void setReviewService(IReviewService reviewService) {
+		this.reviewService = reviewService;
+	}
+	
+	@Autowired
+	public void setReservationService(IReservationService reservationService) {
+		this.reservationService = reservationService;
+	}
+	
+	@RequestMapping(value = "/api/review/listuserreview", method = RequestMethod.GET)
+    public ResponseEntity<ValueOperationResult<Map<String, List<Review>>>> listUserReview(@RequestParam("userId") Long userId, HttpSession session) {
+		ValueOperationResult<Map<String, List<Review>>> operationResult = new ValueOperationResult<Map<String, List<Review>>>();
+		
+		try {
+			if (userId != null) {
+				
+				Review review = new Review();
+				review.setReviewedUserId(userId);
+				review.setEntityType(EnmEntityType.RESERVATION.getId());
+				
+				List<Review> reviewList = this.reviewService.listReview(review, null, true, true, false);
+				
+				Map<String, List<Review>> reviewMap = new HashMap<String, List<Review>>();
+				List<Review> guestReviewList = new ArrayList<Review>();
+				List<Review> hostReviewList = new ArrayList<Review>();
+				reviewMap.put("guestReviewList", guestReviewList);
+				reviewMap.put("hostReviewList", hostReviewList);
+				
+				if (reviewList != null && reviewList.size() > 0) {
+					for (Review tmpReview : reviewList) {
+						User user = tmpReview.getUser();
+						
+						User tmpUser = new User();
+						tmpUser.setId(user.getId());
+						tmpUser.setFirstName(user.getFirstName());
+						
+						String smallProfileUrl = this.webApplication.getUserPhotoUrl(user.getId(), user.getProfilePhotoId(), EnmSize.SMALL.getValue());
+						tmpUser.setProfileImageUrl(smallProfileUrl);
+						
+						tmpReview.setUser(tmpUser);
+						
+						Reservation reservation = (Reservation) tmpReview.getEntity();
+						if (reservation.getHostUserId().equals(userId)) {
+							hostReviewList.add(tmpReview);
+						} else {
+							guestReviewList.add(tmpReview);
+						}
+					}
+				}
+				
+				operationResult.setResultValue(reviewMap);
+				operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+			} else {
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc("Your request could not be completed, becase of missing parameters.");
+			}
+		} catch (Exception e) {
+			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
+			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+		}
+		return new ResponseEntity<ValueOperationResult<Map<String, List<Review>>>>(operationResult, HttpStatus.OK);
+    }
+	
+	@RequestMapping(value = "/api/review/listentityreview", method = RequestMethod.GET)
+    public ResponseEntity<ValueOperationResult<List<Review>>> listEntityReview(@RequestParam("entityType") Integer entityType, 
+    		@RequestParam("entityId") Long entityId, HttpSession session) {
+		ValueOperationResult<List<Review>> operationResult = new ValueOperationResult<List<Review>>();
+		
+		try {
+			if (entityType != null && entityId != null) {
+				
+				Review review = new Review();
+				
+				List<Review> reviewList = this.reviewService.listReview(review, null, false, false, false);
+				
+				operationResult.setResultValue(reviewList);
+				operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());;
+			} else {
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc("Your request could not be completed, becase of missing parameters.");
+			}
+		} catch (Exception e) {
+			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
+			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+		}
+		return new ResponseEntity<ValueOperationResult<List<Review>>>(operationResult, HttpStatus.OK);
+    }
+	
+	@RequestMapping(value = "/api/review/createreview", method = RequestMethod.POST)
+    public ResponseEntity<OperationResult> createReview(@RequestBody Review review, HttpSession session) {
+		ValueOperationResult<Message> operationResult = new ValueOperationResult<Message>();
+		
+		try {
+			User user = super.getSessionUser(session);
+			if (user != null) {
+				EnmEntityType entityType = EnmEntityType.getEntityType(review.getEntityType());
+				if (review.getEntityType() != null && review.getEntityId() != null 
+						&& entityType != null
+						&& entityType.equals(EnmEntityType.RESERVATION)
+						&& review.getRank() != null && !review.getDescription().trim().isEmpty()) {
+					
+					Reservation reservation = new Reservation();
+					reservation.setId(review.getEntityId());
+					
+					List<Reservation> reservationList = this.reservationService.list(reservation, false, false, false);
+					
+					if (reservationList != null && reservationList.size() > 0) {
+						reservation = reservationList.get(0);
+						if (user.getId().equals(reservation.getHostUserId()) 
+								|| user.getId().equals(reservation.getClientUserId())) {
+							
+							Review dbReview = new Review();
+							
+							dbReview.setUserId(user.getId());
+							dbReview.setEntityType(entityType.getId());
+							dbReview.setEntityId(review.getId());
+							
+							List<Review> dbReviewList = this.reviewService.listReview(dbReview, null, false, false, false);
+							
+							if (dbReviewList == null || dbReviewList.size() == 0) {
+								Review newReview = new Review();
+								newReview.setUserId(user.getId());
+								if (user.getId().equals(reservation.getHostUserId())) {
+									newReview.setReviewedUserId(reservation.getClientUserId());
+								} else {
+									newReview.setReviewedUserId(reservation.getHostUserId());
+								}
+								newReview.setEntityType(entityType.getId());
+								newReview.setEntityId(review.getEntityId());
+								newReview.setRank(review.getRank());
+								newReview.setDescription(review.getDescription());
+								newReview.setCreatedBy(user.getFullName());
+								newReview.setCreatedDate(new Date());
+								
+								OperationResult createResult = this.reviewService.insertReview(newReview);
+								if (OperationResult.isResultSucces(createResult)) {
+									operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+								} else {
+									operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+									operationResult.setResultDesc("Your review could not be saved. Please try again later!");
+								}
+							} else {
+								operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+								operationResult.setResultDesc("You have already reviewed this reservation!");
+							}							
+						} else {
+							operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+							operationResult.setResultDesc("Unauthorized operation!");
+						}
+					} else {
+						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+						operationResult.setResultDesc("Entity record is not found!");
+					}
+				} else {
+					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+					operationResult.setResultDesc("Missing mandatory parameters !");
+				}
+			} else {
+				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
+			}
+		} catch (Exception e) {
+			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
+			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+		}
+		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);
+    }
+	
+}

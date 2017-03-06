@@ -1,6 +1,9 @@
 package com.ucgen.letserasmus.web.api.reservation;
 
 import java.util.Date;
+import java.util.List;
+
+import com.ucgen.letserasmus.library.review.model.Review;
 
 public class UiReservation {
 
@@ -13,6 +16,8 @@ public class UiReservation {
 	
 	private String messageText;
 
+	List<Review> reviewList;
+	
 	public Long getId() {
 		return id;
 	}
@@ -67,6 +72,14 @@ public class UiReservation {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public List<Review> getReviewList() {
+		return reviewList;
+	}
+
+	public void setReviewList(List<Review> reviewList) {
+		this.reviewList = reviewList;
 	}
 	
 }

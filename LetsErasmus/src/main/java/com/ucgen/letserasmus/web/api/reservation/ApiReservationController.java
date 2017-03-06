@@ -35,6 +35,8 @@ import com.ucgen.letserasmus.library.place.service.IPlaceService;
 import com.ucgen.letserasmus.library.reservation.enumeration.EnmReservationStatus;
 import com.ucgen.letserasmus.library.reservation.model.Reservation;
 import com.ucgen.letserasmus.library.reservation.service.IReservationService;
+import com.ucgen.letserasmus.library.review.model.Review;
+import com.ucgen.letserasmus.library.review.service.IReviewService;
 import com.ucgen.letserasmus.library.user.model.User;
 import com.ucgen.letserasmus.web.api.BaseApiController;
 import com.ucgen.letserasmus.web.view.application.AppConstants;
@@ -49,7 +51,13 @@ public class ApiReservationController extends BaseApiController {
 	private IPlaceService placeService;
 	private WebApplication webApplication;
 	private IParameterService parameterService;
+	private IReviewService reviewService;
 	
+	@Autowired
+	public void setReviewService(IReviewService reviewService) {
+		this.reviewService = reviewService;
+	}
+
 	@Autowired
 	public void setParameterService(IParameterService parameterService) {
 		this.parameterService = parameterService;
@@ -391,6 +399,14 @@ public class ApiReservationController extends BaseApiController {
 								|| EnmReservationStatus.CONFIRMED.getId().equals(tmpReservation.getStatus())
 								|| EnmReservationStatus.CLOSED.getId().equals(tmpReservation.getStatus())
 								|| EnmReservationStatus.WAITING_PAYMENT.getId().equals(tmpReservation.getStatus())) {
+							Review review = new Review();
+				
+							review.setEntityType(EnmEntityType.RESERVATION.getId());
+							review.setEntityId(tmpReservation.getId());
+							
+							List<Review> reviewList = this.reviewService.listReview(review, null, false, false, false);
+							tmpReservation.setReviewList(reviewList);
+							
 							if (DateUtil.truncate(tmpReservation.getStartDate()).getTime() > currentDate.getTime()) {
 								upcomingList.add(tmpReservation);
 							} else if (DateUtil.truncate(tmpReservation.getEndDate()).getTime() < currentDate.getTime()) {
@@ -442,6 +458,14 @@ public class ApiReservationController extends BaseApiController {
 								|| EnmReservationStatus.CONFIRMED.getId().equals(tmpReservation.getStatus())
 								|| EnmReservationStatus.CLOSED.getId().equals(tmpReservation.getStatus())
 								|| EnmReservationStatus.WAITING_PAYMENT.getId().equals(tmpReservation.getStatus())) {
+
+							Review review = new Review();
+							review.setEntityType(EnmEntityType.RESERVATION.getId());
+							review.setEntityId(tmpReservation.getId());
+							
+							List<Review> reviewList = this.reviewService.listReview(review, null, false, false, false);
+							tmpReservation.setReviewList(reviewList);
+							
 							if (DateUtil.truncate(tmpReservation.getStartDate()).getTime() > currentDate.getTime()) {
 								upcomingList.add(tmpReservation);
 							} else if (DateUtil.truncate(tmpReservation.getEndDate()).getTime() < currentDate.getTime()) {

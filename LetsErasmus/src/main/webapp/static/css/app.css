@@ -78,3 +78,7 @@ body, #mainWrapper {
   margin-top: 56px;
   z-index:1;
 }
+
+.clsInline {
+	display : inline
+}

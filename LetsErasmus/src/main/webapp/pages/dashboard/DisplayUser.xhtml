@@ -113,7 +113,7 @@
 								<h1>Hey, I’m #{displayUserController.user.firstName}!</h1>
 								<div class="h5 space-top-2">
 									<a href="/s/Istanbul--Turkey" class="link-reset">#{displayUserController.user.residenceLocationName}</a> · 
-										<span class="text-normal"> Joined in #{displayUserController.formatDate(displayUserController.user.createdDate, 'MMMM yyyy')}</span>
+									<span class="text-normal"> Joined in #{displayUserController.formatDate(displayUserController.user.createdDate, 'MMMM yyyy')}</span>
 								</div>
 								<div class="text-muted space-top-2">
 									<div data-hypernova-key="user_flag_controlbundlejs">
@@ -123,10 +123,8 @@
 												<a href="#" class="link-reset" title="Report this user"
 													data-prevent-default="true" data-reactid="3"><i
 													class="icon icon-flag h4" data-reactid="4"></i>
-												<!-- react-text: 5 --> <!-- /react-text -->
 													<span data-reactid="6">Report this user</span></a>
 											</div>
-											<!-- react-empty: 7 -->
 										</div>
 									</div>
 								</div>
@@ -147,10 +145,10 @@
 								<div class="badge-container space-top-4" data-reactid="2">
 									<a class="link-reset" target="_blank"
 										rel="noopener noreferrer nofollow"
-										href="/users/show/54995441#reviews" data-reactid="3"><div
+										href="#reviews" data-reactid="3"><div
 											class="text-center text-wrap" data-reactid="4">
 											<div class="badge-pill h3" data-reactid="5">
-												<span class="badge-pill-count" data-reactid="6">1</span>
+												<span class="badge-pill-count" data-reactid="6">{{ctrl.reviewCount}}</span>
 											</div>
 											<br class="show-sm"/><div
 													class="va-middle show-inline-block" data-reactid="8">
@@ -178,121 +176,53 @@
 						</div>
 	
 						<div class="social_connections_and_reviews">
-							<div class="report_review_modal_container">
-								<!-- react-empty: 1 -->
-							</div>
 							<div class="reviews row-space-4" id="reviews">
 								<h2>
 									Reviews
 								</h2>
-								<div>
-									<div class="reviews_section as_guest space-top-3">
-										<h4 class="space-4">Reviews From Guests<small>(1)</small></h4>
-										<div class="reviews">
+								<div ng-repeat="g in ctrl.reviewGroupList">
+									<div class="reviews_section as_guest space-top-3 {{g.reviewList.length == 0 ? 'hidden-force' : ''}}">
+										<h4 class="space-4">{{g.groupTitle}}<small> ({{g.reviewList.length}})</small></h4>
+										<div ng-repeat="r in g.reviewList" class="reviews">
 											<div class="row text-center-sm" id="review-76962436">
 												<div class="col-md-2 col-sm-12">
 													<div class="avatar-wrapper">
-														<a href="/users/show/49647695" class="text-muted"
-															rel="nofollow">
+														<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.xhtml?userId={{r.user.id}}" class="text-muted"
+															rel="nofollow" target="_blank">
 															<div class="media-photo media-round space-1">
-																<img alt="Paul" class="lazy"
-																	data-original="https://a0.muscache.com/im/pictures/23125c1e-389c-4e70-b13f-93c198e89ac9.jpg?aki_policy=profile_medium"
+																<img alt="{{r.user.firstName}}" class="lazy"
+																	data-original="{{r.user.profileImageUrl}}"
 																	height="68"
-																	src="https://a0.muscache.com/im/pictures/23125c1e-389c-4e70-b13f-93c198e89ac9.jpg?aki_policy=profile_medium"
-																	title="Paul" width="68" style="display: inline;" />
+																	src="{{r.user.profileImageUrl}}"
+																	title="{{r.user.firstName}}" width="68" style="display: inline;" />
 															</div>
-															<div class="text-center profile-name text-wrap">Paul</div>
+															<div class="text-center profile-name text-wrap">{{r.user.firstName}}</div>
 														</a> 
-															<span class="show-sm"> 
-																<span class="text-muted date">May 2016</span>
-																<span class="sm-review-date-divider">·</span>
-																<span class="review-flag" data-sm-review-flag-id="76962436"></span>
-															</span>
-													</div>
-												</div>
-												<div class="col-md-10 col-sm-12">
-													<div class="space-2">
-														<div
-															class="comment-container expandable expandable-trigger-more space-2 expanded">
-															<div class="expandable-content">
-																<p>Anil stayed at my place in Brighton. He is a
-																	relaxed, easygoing independent guy and a perfect guest.
-																	Communication was easy and the room as left in good
-																	order. I am happy to recommend him.</p>
-																<div class="expandable-indicator"></div>
-															</div>
-															<a class="expandable-trigger-more text-muted" href="#">
-																<strong>+ More</strong>
-															</a>
-														</div>
-	
-	
-														<span class="text-muted date hide-sm pull-left"> 
-															<span>May 2016 &nbsp;·&nbsp; </span>
-															<span class="review-flag" data-review-flag-id="76962436">
-																<button data-reactroot="" class="btn-link btn-link--icon" type="button">
-																	<span><i class="icon icon-flag"></i>
-																	</span>
-																</button>
-															</span>
+														<span class="show-sm"> 
+															<span class="text-muted date">{{r.createdDate | date:'MMMM dd, yyyy'}}</span>
+															<span class="sm-review-date-divider">·</span>
+															<span class="review-flag" data-sm-review-flag-id="76962436"></span>
 														</span>
 													</div>
 												</div>
-											</div>
-	
-											<div class="row space-2 line-separation">
-												<div class="col-10 col-offset-2">
-													<hr/>
-												</div>
-											</div>
-	
-										</div>
-									</div>
-								</div>
-								<div>
-									<div class="reviews_section as_guest space-top-3">
-										<h4 class="space-4">Reviews From Hosts <small>(1)</small></h4>
-										<div class="reviews">
-											<div class="row text-center-sm" id="review-76962436">
-												<div class="col-md-2 col-sm-12">
-													<div class="avatar-wrapper">
-														<a href="/users/show/49647695" class="text-muted"
-															rel="nofollow">
-															<div class="media-photo media-round space-1">
-																<img alt="Paul" class="lazy"
-																	data-original="https://a0.muscache.com/im/pictures/23125c1e-389c-4e70-b13f-93c198e89ac9.jpg?aki_policy=profile_medium"
-																	height="68"
-																	src="https://a0.muscache.com/im/pictures/23125c1e-389c-4e70-b13f-93c198e89ac9.jpg?aki_policy=profile_medium"
-																	title="Paul" width="68" style="display: inline;" />
-															</div>
-															<div class="text-center profile-name text-wrap">Paul</div>
-														</a> 
-															<span class="show-sm"> 
-																<span class="text-muted date">May 2016</span>
-																<span class="sm-review-date-divider">·</span>
-																<span class="review-flag" data-sm-review-flag-id="76962436"></span>
-															</span>
-													</div>
-												</div>
 												<div class="col-md-10 col-sm-12">
 													<div class="space-2">
 														<div
 															class="comment-container expandable expandable-trigger-more space-2 expanded">
 															<div class="expandable-content">
-																<p>Anil stayed at my place in Brighton. He is a
-																	relaxed, easygoing independent guy and a perfect guest.
-																	Communication was easy and the room as left in good
-																	order. I am happy to recommend him.</p>
+																<p>{{r.description}}</p>
 																<div class="expandable-indicator"></div>
 															</div>
+															<!--
 															<a class="expandable-trigger-more text-muted" href="#">
 																<strong>+ More</strong>
 															</a>
+															 -->
 														</div>
 	
 	
 														<span class="text-muted date hide-sm pull-left"> 
-															<span>May 2016 &nbsp;·&nbsp; </span>
+															<span>{{r.createdDate | date:'MMMM dd, yyyy'}} &nbsp;·&nbsp; </span>
 															<span class="review-flag" data-review-flag-id="76962436">
 																<button data-reactroot="" class="btn-link btn-link--icon" type="button">
 																	<span><i class="icon icon-flag"></i>
@@ -323,6 +253,7 @@
 
 		</main>
 		<script src="#{webApplication.urlPrefix}/static/js/angular/service/place_service.js"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/service/review_service.js"></script>
 		<script src="#{webApplication.urlPrefix}/static/js/angular/controller/display_user_controller.js"></script>
 	</ui:define>
 </ui:composition>

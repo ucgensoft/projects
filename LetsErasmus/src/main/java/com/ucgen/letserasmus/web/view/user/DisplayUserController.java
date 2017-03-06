@@ -23,10 +23,6 @@ public class DisplayUserController extends BaseController {
 	
 	public void setUserService(IUserService userService) {
 		this.userService = userService;
-		Object objUserId = super.getRequestParameter("userId");
-		if (objUserId != null && NumberUtils.isDigits(objUserId.toString())) {
-			user = this.userService.getUser(new User(Long.parseLong(objUserId.toString())));
-		}
 	}
 
 	public void setWebApplication(WebApplication webApplication) {
@@ -34,6 +30,12 @@ public class DisplayUserController extends BaseController {
 	}
 
 	public User getUser() {
+		if (user == null) {
+			Object objUserId = super.getRequestParameter("userId");
+			if (objUserId != null && NumberUtils.isDigits(objUserId.toString())) {
+				user = this.userService.getUser(new User(Long.parseLong(objUserId.toString())));
+			}
+		}
 		return user;
 	}
 	/*

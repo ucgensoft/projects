@@ -145,15 +145,15 @@ public abstract class BaseRowMapper<T> implements RowMapper<T>{
 				}
 				
 				if (fKey.getStaticCriteriaMap() != null) {
-					counter = 0;
+					int counter2 = 0;
 					for (String staticCriteriaField : fKey.getStaticCriteriaMap().keySet()) {
-						if (counter > 0) {
+						if (counter > 0 || counter2 > 0) {
 							fromBuilder.append(" AND ");
 						}
 						fromBuilder.append(this.shortTableName + "." + staticCriteriaField);
 						fromBuilder.append("=");
-						fromBuilder.append(fKey.getFieldPairMap().get(staticCriteriaField).toString());
-						counter ++;
+						fromBuilder.append(fKey.getStaticCriteriaMap().get(staticCriteriaField).toString());
+						counter2 ++;
 					}
 				}
 			}
