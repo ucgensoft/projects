@@ -153,11 +153,6 @@
 																<div class="col-md-9">
 																	<h1 class="overflow h3 space-1 text-center-sm"
 																		id="listing_name">{{ctrl.place.title}}</h1>
-																	<span class="hide">
-																		<span><a><span>Italy</span></a>
-																		</span><span><a><span>Lombardia</span></a>
-																		</span><span><a><span>Milano</span></a></span>
-																	</span>
 																	<div id="display-address"
 																		class="space-2 text-muted text-center-sm">
 																		<a
@@ -211,8 +206,15 @@
 																							</span></span></span>
 																					</div>
 																				</div>
-																				<span> </span><span class="h6"><small><span><span>79</span><span
-																							itemprop="reviewCount" content="79"></span></span></small></span>
+																				<span> </span>
+																				<span class="h6">
+																					<small>
+																						<span>
+																							<span>79</span>
+																							<span itemprop="reviewCount" content="79"></span>
+																						</span>
+																					</small>
+																				</span>
 																			</div></a>
 																	</div>
 																	<div class="row row-condensed text-muted text-center">
@@ -235,7 +237,7 @@
 																<div class="col-md-3 text-muted text-center hide-sm">
 																	<a
 																		href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.xhtml?userId={{ctrl.place.user.id}"
-																		class="link-reset text-wrap">{{ctrl.place.user.fullName}}</a>
+																		class="link-reset text-wrap">{{ctrl.place.user.firstName}}</a>
 																</div>
 																<div class="col-md-9">
 																	<div class="row row-condensed text-muted text-center">
@@ -262,12 +264,9 @@
 											class="mobile-bookit-btn-container js-bookit-btn-container panel-btn-sm panel-btn-fixed-sm hide-md hide-lg">
 											<button
 												class="btn btn-primary btn-block btn-large js-book-it-sm-trigger">
-												<span class="book-it__btn-text hide"> Request to Book
-												</span> <span class="book-it__btn-text--contact-host hide">
-													Contact Host </span> <span class="book-it__btn-text--instant">
-													<i class="icon icon-beach h4"></i> Book
-												</span> <span class="book-it__btn-text--check-availability hide">
-													Check Availability </span>
+												<span class="book-it__btn-text hide"> Request to Book</span>
+												<span class="book-it__btn-text--contact-host hide">Contact Host </span>
+												<span class="book-it__btn-text--instant"><i class="icon icon-beach h4"></i> Book</span>
 											</button>
 										</div>
 										<span class="tooltip tooltip-top-middle" role="tooltip"
@@ -289,22 +288,6 @@
 										</span>
 										<div id="tax-descriptions-tip"
 											class="tooltip tooltip-top-middle" role="tooltip"></div>
-										<div class="modal" role="dialog" aria-hidden="true"
-											id="book-it-sm-modal">
-											<div class="modal-table">
-												<div class="modal-cell">
-													<div class="modal-content">
-														<div class="panel-header">
-															<a
-																href="https://www.airbnb.com/rooms/13738469?s=Q8-G3TeD#"
-																class="modal-close"> × <span
-																class="screen-reader-only">Close</span>
-															</a> Book
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
 										<div style="margin-top: 0px" class="book-it js-book-it book-it--inNewStickyExperiment">
 											<div
 												class="book-it__container js-book-it-container book-it__container--inNewStickyExperiment"
@@ -315,7 +298,7 @@
 															<div class="book-it__price book-it__price--inNewStickyExperiment"
 																style="height: 50px;">
 																<div class="row">
-																	<div class="col-sm-8">
+																	<div class="col-sm-6">
 																		<div class="book-it__price-amount text-special">
 																			<span id="book-it-price-string">
 																				<span class="h3">
@@ -324,101 +307,96 @@
 																			</span>
 																		</div>
 																	</div>
-																	<div class="col-sm-4">
-																		<div
-																			class="book-it__payment-period-container pull-right">
-																			<div class="book-it__payment-period"
-																				id="book-it-rate-type">
+																	<div class="col-sm-6">
+																		<div class="book-it__payment-period-container pull-right">
+																			<div class="book-it__payment-period" id="book-it-rate-type">
 																				<span>Per Month</span>
 																			</div>
 																		</div>
 																	</div>
 																</div>
 															</div>
-															<form method="post"
-																action="https://www.airbnb.com/payments/book?s=Q8-G3TeD&amp;hosting_id=13738469">
-																<div class="panel book-it-panel">
-																	<div class="panel-body panel-light">
-																		<div class="row row-condensed space-3">
-																			<div class="col-md-12">
-																				<div class="row row-condensed">
-																					<div class="col-sm-6">
-																						<label class="book-it__label">Check In</label> 
-																						<input
-																							id="txtStartDatePicker" type="text" name="checkin"
-																							aria-describedby="datespan-checkin-description"
-																							class="checkin ui-datepicker-target"
-																							placeholder="dd.mm.yy" /> 
-																						<span
-																							class="screen-reader-only"
-																							id="datespan-checkin-description"
-																							aria-hidden="true">Enter your check in
-																							date in the format mm.dd.yyyy</span>
-																					</div>
-																					<div class="col-sm-6">
-																						<label class="book-it__label"
-																							for="datespan-checkout">Check Out</label> 
-																						<input
-																							id="txtEndDatePicker" type="text"
-																							name="checkout"
-																							aria-describedby="datespan-checkout-description"
-																							class="checkout ui-datepicker-target"
-																							placeholder="mm.dd.yyyy" />
-																					</div>
-																					<span class="screen-reader-only"
-																						id="datespan-checkout-description"
-																						aria-hidden="true">Enter your check out
+															<div class="panel book-it-panel">
+																<div class="panel-body panel-light">
+																	<div class="row row-condensed space-3">
+																		<div class="col-md-12">
+																			<div class="row row-condensed">
+																				<div class="col-sm-6">
+																					<label class="book-it__label">Check In</label> 
+																					<input
+																						id="txtStartDatePicker" type="text" name="checkin"
+																						aria-describedby="datespan-checkin-description"
+																						class="checkin ui-datepicker-target"
+																						placeholder="dd.mm.yy" /> 
+																					<span
+																						class="screen-reader-only"
+																						id="datespan-checkin-description"
+																						aria-hidden="true">Enter your check in
 																						date in the format mm.dd.yyyy</span>
 																				</div>
+																				<div class="col-sm-6">
+																					<label class="book-it__label"
+																						for="datespan-checkout">Check Out</label> 
+																					<input
+																						id="txtEndDatePicker" type="text"
+																						name="checkout"
+																						aria-describedby="datespan-checkout-description"
+																						class="checkout ui-datepicker-target"
+																						placeholder="mm.dd.yyyy" />
+																				</div>
+																				<span class="screen-reader-only"
+																					id="datespan-checkout-description"
+																					aria-hidden="true">Enter your check out
+																					date in the format mm.dd.yyyy</span>
 																			</div>
-																			<div class="col-md-12 space-top-3">
-																				<div class="GuestPickerContainer">
-																					<label for="number_of_guests_13738469"
-																						class="book-it__label"><span>Guests</span></label>
-																					<div class="select">
-																						<select id="cmbGuestNumber">
-																							<option ng-repeat="n in ctrl.guestNumberArr" value="{{n}}">{{n}} Guest{{ n > 1 ? 's' : '' }}</option>
-																						</select>
-																					</div>
+																		</div>
+																		<div class="col-md-12 space-top-3">
+																			<div class="GuestPickerContainer">
+																				<label for="number_of_guests_13738469"
+																					class="book-it__label"><span>Guests</span></label>
+																				<div class="select">
+																					<select id="cmbGuestNumber">
+																						<option ng-repeat="n in ctrl.guestNumberArr" value="{{n}}">{{n}} Guest{{ n > 1 ? 's' : '' }}</option>
+																					</select>
 																				</div>
 																			</div>
 																		</div>
-																		<div class="">
-																			<button type="button"
-																				class="btn btn-primary btn-large btn-block" ng-click="ctrl.onBookBtnClick()">
-																				<span>Book</span>
-																			</button>
-																			<div
-																				class="bookit-message__container text-center text-muted">
-																				<small><span>You won’t be charged yet</span></small>
-																			</div>
-																		</div>
-																		<div class="hide">
-																			<button type="button"
-																				class="btn btn-primary btn-large btn-small btn-block">
-																				<span>Contact host</span>
-																			</button>
-																			<div>
-																				<noscript></noscript>
-																			</div>
-																		</div>
+																	</div>
+																	<div class="">
+																		<button type="button"
+																			class="btn btn-primary btn-large btn-block" ng-click="ctrl.onBookBtnClick()">
+																			<span>Book</span>
+																		</button>
 																		<div
-																			class="book-it__message-container js-book-it-message recent_views">
-																			<hr aria-hidden="true" />
-																			<div class="listing-desirability">
-																				<div
-																					class="icon-background-container icon-clock-background">
-																					<div class="book-it__message-text">
-																						<strong>This home is on people’s minds.</strong>
-																						<div class="media space-top-1">It’s been
-																							viewed 1976 times in the past week.</div>
-																					</div>
+																			class="bookit-message__container text-center text-muted">
+																			<small><span>You won’t be charged yet</span></small>
+																		</div>
+																	</div>
+																	<div class="hide">
+																		<button type="button"
+																			class="btn btn-primary btn-large btn-small btn-block">
+																			<span>Contact host</span>
+																		</button>
+																		<div>
+																			<noscript></noscript>
+																		</div>
+																	</div>
+																	<div
+																		class="book-it__message-container js-book-it-message recent_views">
+																		<hr aria-hidden="true" />
+																		<div class="listing-desirability">
+																			<div
+																				class="icon-background-container icon-clock-background">
+																				<div class="book-it__message-text">
+																					<strong>This home is on people’s minds.</strong>
+																					<div class="media space-top-1">It’s been
+																						viewed 1976 times in the past week.</div>
 																				</div>
 																			</div>
 																		</div>
 																	</div>
 																</div>
-															</form>
+															</div>
 														</div>
 													</div>
 												</div>
@@ -435,17 +413,19 @@
 															<div class="rich-toggle wish_list_button not_saved"
 																title="Saved 2165 times">
 																<input type="checkbox" name="wishlist-button"
-																	id="wishlist-button" /> <label for="wishlist-button"
+																	id="wishlist-button" /> 
+																<label for="wishlist-button"
 																	class="btn btn-block btn-large wishlist-button-label wishlist-button-label-margin">
-																	<span class="rich-toggle-checked"> <i
-																		class="icon icon-heart icon-rausch"></i> <span
-																		class="wishlist-button--control wishlist-button--detailed">
-																			Saved to Wish List </span>
-																</span> <span class="rich-toggle-unchecked"> <i
-																		class="icon icon-heart-alt icon-light-gray"></i> <span
-																		class="wishlist-button--control wishlist-button--detailed">
-																			Save to Wish List </span>
-																</span>
+																	<span id="spanRemoveFavorite"  class="{{(ctrl.isPlaceFavorite() ? '' : 'hidden-force')}}"
+																		ng-click="ctrl.onFavoriteIconClicked()">
+																		<i class="icon icon-heart icon-light-gray" style="color: #03a9f4;"></i> 
+																		<span class="wishlist-button--control wishlist-button--detailed">Remove From Wish List</span>
+																	</span> 
+																	<span id="spanAddFavorite" class="{{(ctrl.isPlaceFavorite() ? 'hidden-force' : '')}}" 
+																		ng-click="ctrl.onFavoriteIconClicked()"> 
+																		<i class="icon icon-heart icon-light-gray"></i> 
+																		<span class="wishlist-button--control wishlist-button--detailed">Save to Wish List</span>
+																	</span>
 																</label>
 															</div>
 														</div>
@@ -696,9 +676,7 @@
 																	<strong>{{ ctrl.place.minimumStay }} night</strong> minimum stay
 																</div>
 																<div class="col-md-6">
-																	<a class="view-calendar"
-																		href="https://www.airbnb.com/rooms/13738469?s=Q8-G3TeD#"><strong><span>View
-																				calendar</span></strong></a>
+																	
 																</div>
 															</div>
 															<div class="row space-top-2">
@@ -743,40 +721,25 @@
 														<h3 class="space-1">
 															<a class="link-reset"
 																href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.xhtml?userId={{ctrl.place.user.id}}"
-																rel="nofollow">{{ctrl.place.user.fullName}}</a>
+																rel="nofollow">{{ctrl.place.user.firstName}}</a>
 														</h3>
 														<div class="row row-condensed space-2">
 															<div class="col-md-12 text-muted">
 																<span>{{ctrl.place.user.residenceLocationName}}</span><span> · </span><span>Joined
-																	in {{crtl.place.user.createdDate}}</span>
+																	in {{ctrl.place.user.createdDate | date:'MMMM dd, yyyy'}}</span>
 															</div>
 														</div>
-														<div class="react-expandable">
-															<div class="expandable-content expandable-content-long">
-																<div>
-																	<p>
-																		{{ crtl.place.user.description }}
-																		<br /> <span>
-																		</span><br /> <span>{{ crtl.place.user.firstName }}</span><br /> <span> </span><br />
-																	</p>
-																</div>
-																<div class="expandable-indicator"></div>
-															</div>
-															<span class="react-expandable-trigger-more"><button
-																	class="btn-link btn-link--bold" type="button">
-																	<span>+ More</span>
-																</button></span>
-														</div>
-														<div class="row row-condensed space-2">
-															<div class="col-md-6">
-																<span><span>Response rate:</span><span> </span><strong>100%</strong><small
-																	class="response-details text-muted hide"><span>(</span><span>past
-																			30 days</span><span>)</span></small></span>
-																<div>
-																	<span>Response time:</span><span> </span><strong>within
-																		an hour</strong>
-																</div>
-															</div>
+														<div>
+															<p>
+																{{ crtl.place.user.description }}
+																<br /> 
+																<span></span>
+																<br /> 
+																<span>{{ crtl.place.user.firstName }}</span>
+																<br /> 
+																<span> </span>
+																<br />
+															</p>
 														</div>
 														<div class="space-top-3">
 															<div class="badge-container space-4">
@@ -800,7 +763,7 @@
 																		<div class="text-center text-wrap"
 																			id="verified-id-icon">
 																			<img alt="Verified"
-																				src=""
+																				src="#{webApplication.urlPrefix}/static/images/verified.png"
 																				width="32" height="32" /> <br class="show-sm" />
 																			<div class="va-middle show-inline-block">
 																				<span class="badge-pill-label">Verified</span>
@@ -815,9 +778,6 @@
 															<button type="button" class="btn btn-primary btn-small">
 																<span>Contact host</span>
 															</button>
-															<div>
-																<noscript></noscript>
-															</div>
 														</div>
 													</div>
 												</div>
@@ -852,7 +812,49 @@
 													</h4>
 													<hr class="space-4 space-top-2" />
 												</div>
-												
+												<div  ng-repeat="r in ctrl.place.reviewList">
+													<div class="row review">
+														<div class="col-md-3 text-center space-2">
+															<div class="media-photo-badge">
+																<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.xhtml?userId={{r.user.id}}" 
+																	rel="nofollow" class="media-photo media-round">
+																	<img alt="User Profile Image" height="67" width="67"
+																		data-pin-nopin="true" src="{{r.user.profileImageUrl}}"
+																		title="{{r.user.firstName}}" />
+																	</a>
+															</div>
+															<div class="name">
+																<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.xhtml?userId={{r.user.id}}"
+																	class="text-muted link-reset" target="_blank"
+																	rel="nofollow">{{r.user.firstName}}</a>
+															</div>
+														</div>
+														<div class="col-md-9">
+															<div class="space-2">
+																<div class="review-text">
+																	<div class="react-expandable expanded">
+																		<div class="expandable-content">
+																			<p>{{r.description}}</p>
+																		</div>
+																	</div>
+																</div>
+																<div class="text-muted review-subtext space-top-2">
+																	<div class="va-container va-container-h va-container-v">
+																		<div class="va-middle">
+																			<span class="date" style="display: inline-block;">{{r.createdDate | date:'MMMM dd, yyyy'}}</span>
+																			<span class="review-flag" data-sm-review-flag-id="76962436"></span>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+														<div class="row space-2">
+															<div class="col-md-9 col-md-push-3">
+																<hr />
+															</div>
+														</div>
+													</div>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -866,6 +868,7 @@
 		<script src="#{webApplication.urlPrefix}/static/js/angular/service/place_service.js"></script>
 		<script src="#{webApplication.urlPrefix}/static/js/angular/service/enumeration_service.js"></script>
 		<script src="#{webApplication.urlPrefix}/static/js/angular/service/reservation_service.js"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/service/review_service.js"></script>
 		<script src="#{webApplication.urlPrefix}/static/js/angular/controller/place_detail_controller.js"></script>
 	</ui:define>
 </ui:composition>

@@ -104,15 +104,11 @@ App.controller('tripListCtrl', ['$scope', '$controller', 'reservationService', '
   	};
   	
   	self.isReviewed = function(reservation) {
-  		if (reservation.reviewList && reservation.reviewList.length > 0) {
-  			for(var i = 0; i < reservation.reviewList.length; i++) {
-  				var review = reservation.reviewList[i];
-  				if (review.userId == reservation.clientUserId) {
-  					return true;
-  				}
-  			}
+  		if (reservation.clientReviewId != null) {
+  			return true;
+  		} else {
+  			return false;
   		}
-  		return false;
   	};
   	
   	self.openReviewWindow = function(reservation) {

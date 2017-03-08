@@ -29,6 +29,8 @@ public class Reservation extends BaseModel {
 	private Integer currencyId;
 	private Integer status;
 	private Long messageThreadId;
+	private Long clientReviewId;
+	private Long hostReviewId;
 	
 	private Place place;
 	private User hostUser;
@@ -126,6 +128,18 @@ public class Reservation extends BaseModel {
 	}
 	public void setMessageThreadId(Long messageThreadId) {
 		this.messageThreadId = messageThreadId;
+	}
+	public Long getClientReviewId() {
+		return clientReviewId;
+	}
+	public void setClientReviewId(Long clientReviewId) {
+		this.clientReviewId = clientReviewId;
+	}
+	public Long getHostReviewId() {
+		return hostReviewId;
+	}
+	public void setHostReviewId(Long hostReviewId) {
+		this.hostReviewId = hostReviewId;
 	}
 	public Place getPlace() {
 		return place;

@@ -51,6 +51,8 @@
 			var placeListingExist = #{(webApplication.user != null &amp;&amp; webApplication.user.placeListingCount > 0 ? "true" : "false")};
 			var defaultUserProfileImageUrlTemplate = '#{webApplication.defaultUserPhotoUrl}';
 			var profilePhotoUrlTemplate = '#{webApplication.userPhotoUrlTemplate}';
+			var placePhotoUrlTemplate = '#{webApplication.placePhotoUrlTemplate}';
+			var userFavoriteMap = {};
 		</script>
 
 		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -70,6 +72,7 @@
 			<script src="#{webApplication.urlPrefix}/static/js/angular/app.js"></script>
 			<script src="#{webApplication.urlPrefix}/static/js/angular/service/common_service.js"></script>
 			<script src="#{webApplication.urlPrefix}/static/js/angular/service/user_service.js"></script>
+			<script src="#{webApplication.urlPrefix}/static/js/angular/service/favorite_service.js"></script>
 			<script src="#{webApplication.urlPrefix}/static/js/angular/controller/header_controller.js"></script>
 			
 			<script src="https://apis.google.com/js/platform.js" async="true" defer="true"></script>

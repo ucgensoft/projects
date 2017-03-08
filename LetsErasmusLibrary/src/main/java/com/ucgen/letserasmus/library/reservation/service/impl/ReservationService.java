@@ -61,11 +61,15 @@ public class ReservationService implements IReservationService {
 	public OperationResult update(Reservation reservation, Message message) throws OperationResultException {
 		OperationResult updateReservationResult = this.reservationDao.update(reservation, message);
 		if (OperationResult.isResultSucces(updateReservationResult)) {
-			OperationResult insertMessageresult = this.messageDao.insertMessage(message);
-			if (OperationResult.isResultSucces(insertMessageresult)) {
-				return updateReservationResult;
+			if (message != null) {
+				OperationResult insertMessageresult = this.messageDao.insertMessage(message);
+				if (OperationResult.isResultSucces(insertMessageresult)) {
+					return updateReservationResult;
+				} else {
+					throw new OperationResultException(insertMessageresult);
+				}
 			} else {
-				throw new OperationResultException(insertMessageresult);
+				return updateReservationResult;
 			}
 		} else {
 			return updateReservationResult;

@@ -163,10 +163,10 @@
 												class="text-center text-wrap" id="verified-id-icon"
 												data-reactid="13">
 												<img alt="Verified"
-													src="https://a0.muscache.com/airbnb/static/badges/verified_badge-6ee370f5ca86a52ed6198fac858ac1f4.png"
+													src="#{webApplication.urlPrefix}/static/images/verified.png"
 													width="32" height="32" data-reactid="14" /><br
-													class="show-sm" /><div
-															class="va-middle show-inline-block" data-reactid="16">
+													class="show-sm" />
+													<div class="va-middle show-inline-block" data-reactid="16">
 															<span class="badge-pill-label" data-reactid="17">Verified</span>
 														</div>
 											</div></a>
@@ -211,16 +211,8 @@
 															class="comment-container expandable expandable-trigger-more space-2 expanded">
 															<div class="expandable-content">
 																<p>{{r.description}}</p>
-																<div class="expandable-indicator"></div>
 															</div>
-															<!--
-															<a class="expandable-trigger-more text-muted" href="#">
-																<strong>+ More</strong>
-															</a>
-															 -->
 														</div>
-	
-	
 														<span class="text-muted date hide-sm pull-left"> 
 															<span>{{r.createdDate | date:'MMMM dd, yyyy'}} &nbsp;·&nbsp; </span>
 															<span class="review-flag" data-review-flag-id="76962436">

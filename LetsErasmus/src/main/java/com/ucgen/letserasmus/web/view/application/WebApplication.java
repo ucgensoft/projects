@@ -183,6 +183,10 @@ public class WebApplication extends BaseController {
 		return mediumPlacePhotoSize;
 	}
 
+	public String getPlacePhotoUrlTemplate() {
+		return placePhotoUrlTemplate;
+	}
+
 	public WebApplication() {
 		
 	}
@@ -222,6 +226,8 @@ public class WebApplication extends BaseController {
 				return "reservationListCtrl";
 			} else if (requestUrl.contains("PAGES/DASHBOARD/TRIPLIST.XHTML")) {
 				return "tripListCtrl";
+			} else if (requestUrl.contains("PAGES/DASHBOARD/WISHLIST.XHTML")) {
+				return "wishListCtrl";
 			} else {
 				return "";
 			}	

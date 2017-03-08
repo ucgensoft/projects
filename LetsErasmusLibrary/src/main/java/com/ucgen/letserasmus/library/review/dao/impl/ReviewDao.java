@@ -76,8 +76,8 @@ public class ReviewDao extends JdbcDaoSupport implements IReviewDao {
 			reviewRowMapper.addFKey(ReviewRowMapper.FKEY_REVIEWED_USER);
 		}
 		if (entityFlag) {
-			if (review.getEntityType().equals(EnmEntityType.RESERVATION.getId())) {
-				reviewRowMapper.addEntiyFKey(ReviewRowMapper.FKEY_ENTITY, EnmEntityType.RESERVATION);
+			if (review.getEntityType().equals(EnmEntityType.PLACE.getId())) {
+				reviewRowMapper.addEntiyFKey(ReviewRowMapper.FKEY_ENTITY, EnmEntityType.PLACE);
 			}
 		}
 		

@@ -8,6 +8,7 @@ import java.util.List;
 import com.ucgen.letserasmus.library.common.model.BaseModel;
 import com.ucgen.letserasmus.library.file.model.FileModel;
 import com.ucgen.letserasmus.library.location.model.Location;
+import com.ucgen.letserasmus.library.review.model.Review;
 import com.ucgen.letserasmus.library.user.model.User;
 
 public class Place extends BaseModel {
@@ -48,6 +49,8 @@ public class Place extends BaseModel {
 	private User user;
 	private FileModel coverPhoto;
 	private List<FileModel> photoList;
+
+	private List<Review> reviewList;
 	
 	public Long getId() {
 		return id;
@@ -240,6 +243,12 @@ public class Place extends BaseModel {
 	}
 	public void setCoverPhoto(FileModel coverPhoto) {
 		this.coverPhoto = coverPhoto;
+	}
+	public List<Review> getReviewList() {
+		return reviewList;
+	}
+	public void setReviewList(List<Review> reviewList) {
+		this.reviewList = reviewList;
 	}
 	public List<FileModel> getPhotoList() {
 		return photoList;

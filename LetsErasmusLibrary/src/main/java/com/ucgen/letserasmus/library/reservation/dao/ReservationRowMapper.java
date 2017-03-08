@@ -31,6 +31,8 @@ public class ReservationRowMapper extends BaseRowMapper<Reservation> {
 	public static final String COL_CURRENCY_ID = "CURRENCY_ID";
 	public static final String COL_STATUS = "STATUS";
 	public static final String COL_MESSAGE_THREAD_ID = "MESSAGE_THREAD_ID";
+	public static final String COL_CLIENT_REVIEW_ID = "CLIENT_REVIEW_ID";
+	public static final String COL_HOST_REVIEW_ID = "HOST_REVIEW_ID";
 	
 	public static final String FKEY_PLACE = "PLACE";
 	public static final String FKEY_USER_HOST = "USER_HOST";
@@ -90,6 +92,8 @@ public class ReservationRowMapper extends BaseRowMapper<Reservation> {
 		reservation.setCurrencyId(super.getInteger(rs, COL_CURRENCY_ID));
 		reservation.setMessageThreadId(super.getLong(rs, COL_MESSAGE_THREAD_ID));
 		reservation.setGuestNumber(super.getInteger(rs, COL_GUEST_NUMBER));
+		reservation.setClientReviewId(super.getLong(rs, COL_CLIENT_REVIEW_ID));
+		reservation.setHostReviewId(super.getLong(rs, COL_HOST_REVIEW_ID));
 		
 		reservation.setCreatedBy(super.getString(rs, COL_CREATED_BY));		
 		reservation.setCreatedDate(super.getTimestamp(rs, COL_CREATED_DATE));
@@ -143,6 +147,8 @@ public class ReservationRowMapper extends BaseRowMapper<Reservation> {
 		super.addColumn(COL_STATUS);
 		super.addColumn(COL_MESSAGE_THREAD_ID);
 		super.addColumn(COL_GUEST_NUMBER);
+		super.addColumn(COL_CLIENT_REVIEW_ID);
+		super.addColumn(COL_HOST_REVIEW_ID);
 	}
 	
 }

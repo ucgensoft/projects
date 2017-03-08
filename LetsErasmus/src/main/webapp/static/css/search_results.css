@@ -780,7 +780,8 @@ p {
 	color: #777875;
 	padding-top: .5em;
 	padding-right: .5em;
-	font-size: 1.6rem
+	font-size: 1.6rem;
+	cursor: pointer
 }
 
 
@@ -1516,6 +1517,32 @@ p {
 	}
 }
 
+.FavouriteItem {
+	position: absolute;
+	top: 0;
+	right: 0
+}
+
+.FavouriteItem-icon {
+	color: #777875;
+	padding-top: .5em;
+	padding-right: .5em;
+	font-size: 1.6rem
+}
+
+.FavouriteItem-icon--active {
+	color: #03a9f4;
+	-webkit-animation-name: checkFavouriteIcon;
+	animation-name: checkFavouriteIcon;
+	-webkit-animation-duration: .3s;
+	animation-duration: .3s;
+	-webkit-animation-timing-function: ease-out;
+	animation-timing-function: ease-out;
+	-webkit-animation-delay: 0;
+	animation-delay: 0;
+	-webkit-animation-play-state: running;
+	animation-play-state: running
+}
 
 .ProductCardExtraInfoLine {
 	border-top: 0;

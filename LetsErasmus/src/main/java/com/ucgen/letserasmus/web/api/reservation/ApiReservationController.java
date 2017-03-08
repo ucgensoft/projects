@@ -399,6 +399,7 @@ public class ApiReservationController extends BaseApiController {
 								|| EnmReservationStatus.CONFIRMED.getId().equals(tmpReservation.getStatus())
 								|| EnmReservationStatus.CLOSED.getId().equals(tmpReservation.getStatus())
 								|| EnmReservationStatus.WAITING_PAYMENT.getId().equals(tmpReservation.getStatus())) {
+							/*
 							Review review = new Review();
 				
 							review.setEntityType(EnmEntityType.RESERVATION.getId());
@@ -406,7 +407,7 @@ public class ApiReservationController extends BaseApiController {
 							
 							List<Review> reviewList = this.reviewService.listReview(review, null, false, false, false);
 							tmpReservation.setReviewList(reviewList);
-							
+							*/
 							if (DateUtil.truncate(tmpReservation.getStartDate()).getTime() > currentDate.getTime()) {
 								upcomingList.add(tmpReservation);
 							} else if (DateUtil.truncate(tmpReservation.getEndDate()).getTime() < currentDate.getTime()) {

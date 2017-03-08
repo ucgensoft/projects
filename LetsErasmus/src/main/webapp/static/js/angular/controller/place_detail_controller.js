@@ -1,5 +1,7 @@
-App.controller('placeDetailCtrl', ['$scope', '$controller', 'placeService', 'reservationService', 'commonService', 'enumerationService', 
-                                   function($scope, $controller, placeService, reservationService, commonService, enumerationService) {
+App.controller('placeDetailCtrl', ['$scope', '$controller', 'placeService', 'reservationService', 
+                                   'commonService', 'enumerationService', 'reviewService', 
+                                   function($scope, $controller, placeService, reservationService, 
+                                		   commonService, enumerationService, reviewService) {
       var self = this;
       
       var marker = null;
@@ -11,6 +13,7 @@ App.controller('placeDetailCtrl', ['$scope', '$controller', 'placeService', 'res
       self.ruleList = [];
       var mainSliderId = "MainSlider";
       self.guestNumberArr = guestNumberArr;
+      self.reviewList = [];
                   
       self.initialize = function() {
     	  var placeId = getUriParam('placeId');
@@ -52,6 +55,14 @@ App.controller('placeDetailCtrl', ['$scope', '$controller', 'placeService', 'res
         	  if (checkoutDate != null && checkoutDate != '') {
         		  $("#txtEndDatePicker").datepicker().val(checkoutDate);
         	  }
+        	  
+        	  /*
+        	  reviewService.listPlaceReview(placeId,
+    			  function(reviewList) {
+    			  	self.reviewList	= reviewList;
+	  			  }
+	  		  );
+	  		  */
     	  }
       };
       
@@ -273,7 +284,39 @@ App.controller('placeDetailCtrl', ['$scope', '$controller', 'placeService', 'res
 		 } else {
 			 DialogUtil.warn('Warning', '\'Guest number\', \'Check In\' and \'Check Out\' are mandatory parameters for booking.');
 		 }
-	 }
+	 };
+	 
+	 self.onFavoriteIconClicked = function(placeId) {
+	  var placeId = self.place.id;
+   	  if ($('#spanAddFavorite').hasClass('hidden-force')) {
+   		  removeFavorite(EnmEntityType.PLACE, placeId, function(result) {
+   			 if (result) {
+   				 $('#spanRemoveFavorite').removeClass('hidden-force')
+   				 $('#spanRemoveFavorite').addClass('hidden-force')
+   			 } 
+   		  });
+   	  } else {
+   		  addFavorite(EnmEntityType.PLACE, placeId, function(result) {
+    			 if (result) {
+    				 $('#spanRemoveFavorite').addClass('hidden-force')
+       				 $('#spanRemoveFavorite').removeClass('hidden-force')
+    			 } 
+    		  });
+   	  }
+     };
+     
+     self.isPlaceFavorite = function() {
+    	 if (self.place != null) {
+    		 var placeId = self.place.id;
+    	   	  	if (userFavoriteMap && userFavoriteMap[EnmEntityType.PLACE.toString()]) {
+    	   		  placeFavoriteMap = userFavoriteMap[EnmEntityType.PLACE.toString()];
+    	   		  if (placeFavoriteMap[placeId.toString()]) {
+    					  return true;
+    				  }
+    	   	  }
+    	 }
+   	  	return false;
+     };
 	 
       self.initialize();
       

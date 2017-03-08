@@ -40,6 +40,9 @@ import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
 import com.ucgen.letserasmus.library.common.enumeration.EnmErrorCode;
 import com.ucgen.letserasmus.library.common.enumeration.EnmGender;
 import com.ucgen.letserasmus.library.common.enumeration.EnmSize;
+import com.ucgen.letserasmus.library.common.model.BaseModel;
+import com.ucgen.letserasmus.library.favorite.model.Favorite;
+import com.ucgen.letserasmus.library.favorite.service.IFavoriteService;
 import com.ucgen.letserasmus.library.file.enumeration.EnmFileType;
 import com.ucgen.letserasmus.library.file.model.FileModel;
 import com.ucgen.letserasmus.library.file.model.Photo;
@@ -51,7 +54,6 @@ import com.ucgen.letserasmus.library.user.model.User;
 import com.ucgen.letserasmus.library.user.service.IUserService;
 import com.ucgen.letserasmus.web.api.BaseApiController;
 import com.ucgen.letserasmus.web.view.application.AppConstants;
-import com.ucgen.letserasmus.web.view.application.AppUtil;
 import com.ucgen.letserasmus.web.view.application.EnmOperation;
 import com.ucgen.letserasmus.web.view.application.EnmSession;
 import com.ucgen.letserasmus.web.view.application.WebApplication;
@@ -63,7 +65,13 @@ public class ApiUserController extends BaseApiController {
 	private IUserService userService;
 	private IPlaceService placeService;
 	private WebApplication webApplication;
+	private IFavoriteService favoriteService;
 	
+	@Autowired
+	public void setFavoriteService(IFavoriteService favoriteService) {
+		this.favoriteService = favoriteService;
+	}
+
 	@Autowired
 	public void setWebApplication(WebApplication webApplication) {
 		this.webApplication = webApplication;
@@ -1139,6 +1147,7 @@ public class ApiUserController extends BaseApiController {
     }
     
 	private void processLogin(HttpSession session, User user, EnmLoginType loginType) {
+		// Place records are read from db
 		Place place = new Place();
 		place.setHostUserId(user.getId());
 		ListOperationResult<Place> placeListResult = this.placeService.listPlace(place, false, false, false);
@@ -1148,6 +1157,34 @@ public class ApiUserController extends BaseApiController {
 		} else {
 			user.setPlaceListingCount(0);
 		}
+		
+		// Favorite records are read from db
+		Favorite favorite = new Favorite();
+		favorite.setUserId(user.getId());
+		
+		List<Favorite> favoriteList = this.favoriteService.listFavorite(favorite, null, false, false, true);
+		
+		if (favoriteList != null && favoriteList.size() > 0) {
+			for (Favorite tmpFavorite : favoriteList) {
+				User hostUSer = tmpFavorite.getHostUser();
+				
+				User tmpUser = new User();
+				tmpUser.setId(hostUSer.getId());
+				tmpUser.setFirstName(hostUSer.getFirstName());
+				
+				String smallProfileUrl = this.webApplication.getUserPhotoUrl(hostUSer.getId(), hostUSer.getProfilePhotoId(), EnmSize.SMALL.getValue());
+				tmpUser.setProfileImageUrl(smallProfileUrl);
+				
+				tmpFavorite.setHostUser(tmpUser);
+				
+				BaseModel entity = this.favoriteService.getEntityDetails(tmpFavorite.getEntityType(), tmpFavorite.getEntityId());
+				
+				tmpFavorite.setEntity(entity);
+			}
+		}
+		
+		user.addFavoriteList(favoriteList);
+		
 		user.setLoginType(loginType.getId());
 		session.setAttribute(EnmSession.USER.getId(), user);
 		session.setAttribute(EnmSession.LOGIN_TYPE.getId(), loginType.getId());

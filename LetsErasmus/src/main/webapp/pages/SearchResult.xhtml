@@ -240,8 +240,10 @@
 													</div>
 												</div>
 												<div class="FavouriteItem">
-													<div id="favouriteIcon"
-														class="FavouriteItem-icon beicon-heart"></div>
+													<div id="favouriteIcon_{{p.id}}"
+														class="FavouriteItem-icon beicon-heart {{(ctrl.isPlaceFavorite(p.id) ? 'FavouriteItem-icon--active' : '')}}"
+														ng-click="ctrl.onFavoriteIconClicked(p.id)">
+													</div>
 												</div>
 											</div>
 									</section>
@@ -268,15 +270,15 @@
 							</article> 
 						</section>
 						<div id="divPagination" class="Pagination" data-reactid="817">
-							<a href="https://www.beroomers.com/s?lat=45.4654219&amp;lng=9.1859243&amp;topLeftLat=45.5356889&amp;topLeftLng=9.0651182&amp;bottomRightLat=45.3897787&amp;bottomRightLng=9.2903463&amp;checkin=28-12-2016&amp;checkout=31-01-2017&amp;page=1"
+							<a href="#"
 								class="Pagination-element Pagination-element--specialButton">«</a>
-								<a href="https://www.beroomers.com/s?lat=45.4654219&amp;lng=9.1859243&amp;topLeftLat=45.5356889&amp;topLeftLng=9.0651182&amp;bottomRightLat=45.3897787&amp;bottomRightLng=9.2903463&amp;checkin=28-12-2016&amp;checkout=31-01-2017&amp;page=1"
+								<a href="#"
 								class="Pagination-element Pagination-element--specialButton">‹</a>
-								<a href="https://www.beroomers.com/s?lat=45.4654219&amp;lng=9.1859243&amp;topLeftLat=45.5356889&amp;topLeftLng=9.0651182&amp;bottomRightLat=45.3897787&amp;bottomRightLng=9.2903463&amp;checkin=28-12-2016&amp;checkout=31-01-2017&amp;page=1"
+								<a href="#"
 								class="Pagination-element Pagination-element--selected">1</a>
-								<a href="https://www.beroomers.com/s?lat=45.4654219&amp;lng=9.1859243&amp;topLeftLat=45.5356889&amp;topLeftLng=9.0651182&amp;bottomRightLat=45.3897787&amp;bottomRightLng=9.2903463&amp;checkin=28-12-2016&amp;checkout=31-01-2017&amp;page=1"
+								<a href="#"
 								class="Pagination-element Pagination-element--specialButton">›</a>
-								<a href="https://www.beroomers.com/s?lat=45.4654219&amp;lng=9.1859243&amp;topLeftLat=45.5356889&amp;topLeftLng=9.0651182&amp;bottomRightLat=45.3897787&amp;bottomRightLng=9.2903463&amp;checkin=28-12-2016&amp;checkout=31-01-2017&amp;page=1"
+								<a href="#"
 								class="Pagination-element Pagination-element--specialButton">»</a>
 						</div>
 					</div>

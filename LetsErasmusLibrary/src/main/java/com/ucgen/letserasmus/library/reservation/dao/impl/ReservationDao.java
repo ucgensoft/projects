@@ -134,6 +134,16 @@ public class ReservationDao extends JdbcDaoSupport implements IReservationDao {
 			argList.add(reservation.getStatus());
 		}
 		
+		if (reservation.getClientReviewId() != null) {
+			StringUtil.append(updateFields, "CLIENT_REVIEW_ID = ?", ",");
+			argList.add(reservation.getClientReviewId());
+		}
+		
+		if (reservation.getHostReviewId() != null) {
+			StringUtil.append(updateFields, "HOST_REVIEW_ID = ?", ",");
+			argList.add(reservation.getHostReviewId());
+		}
+		
 		if (reservation.getModifiedBy() != null) {
 			StringUtil.append(updateFields, "MODIFIED_BY = ?", ",");
 			argList.add(reservation.getModifiedBy());

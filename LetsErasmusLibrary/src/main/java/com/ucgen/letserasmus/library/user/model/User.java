@@ -1,10 +1,13 @@
 package com.ucgen.letserasmus.library.user.model;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.ucgen.common.util.StringUtil;
 import com.ucgen.letserasmus.library.common.model.BaseModel;
+import com.ucgen.letserasmus.library.favorite.model.Favorite;
 import com.ucgen.letserasmus.library.file.model.FileModel;
 import com.ucgen.letserasmus.library.place.model.Place;
 
@@ -45,6 +48,8 @@ public class User extends BaseModel {
 	
 	private String profileImageUrl;
 	private Integer loginType;
+	
+	private Map<Integer, Map<Long, Favorite>> favoriteMap;
 	
 	public User() {
 		this(null);
@@ -263,4 +268,36 @@ public class User extends BaseModel {
 		}
 	}
 	
+	public Map<Integer, Map<Long, Favorite>> getFavoriteMap() {
+		return favoriteMap;
+	}
+
+	public void setFavoriteMap(Map<Integer, Map<Long, Favorite>> favoriteMap) {
+		this.favoriteMap = favoriteMap;
+	}
+
+	public void createFavoriteMap() {
+		if (this.favoriteMap == null) {
+			this.favoriteMap = new HashMap<Integer, Map<Long, Favorite>>();
+		}
+	}
+	
+	public void addFavorite(Favorite favorite) {
+		if (this.favoriteMap == null) {
+			this.favoriteMap = new HashMap<Integer, Map<Long, Favorite>>();
+		}
+		if (!this.favoriteMap.containsKey(favorite.getEntityType())) {
+			Map<Long, Favorite> entityTypeMap = new HashMap<Long, Favorite>();
+			this.favoriteMap.put(favorite.getEntityType(), entityTypeMap);
+		}
+		this.favoriteMap.get(favorite.getEntityType()).put(favorite.getEntityId(), favorite);
+	}
+	
+	public void addFavoriteList(List<Favorite> favoriteList) {
+		if (favoriteList != null) {
+			for (Favorite favorite : favoriteList) {
+				this.addFavorite(favorite);
+			}
+		}
+	}
 }

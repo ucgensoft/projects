@@ -41,6 +41,8 @@ import com.ucgen.letserasmus.library.file.service.IFileService;
 import com.ucgen.letserasmus.library.place.enumeration.EnmPlaceStatus;
 import com.ucgen.letserasmus.library.place.model.Place;
 import com.ucgen.letserasmus.library.place.service.IPlaceService;
+import com.ucgen.letserasmus.library.review.model.Review;
+import com.ucgen.letserasmus.library.review.service.IReviewService;
 import com.ucgen.letserasmus.library.user.model.User;
 import com.ucgen.letserasmus.web.api.BaseApiController;
 import com.ucgen.letserasmus.web.view.application.AppConstants;
@@ -53,8 +55,14 @@ public class ApiPlaceController extends BaseApiController {
 
 	private IPlaceService placeService;
 	private IFileService fileService;
+	private IReviewService reviewService;
 	private WebApplication webApplication;
 	
+	@Autowired
+	public void setReviewService(IReviewService reviewService) {
+		this.reviewService = reviewService;
+	}
+
 	@Autowired
 	public void setWebApplication(WebApplication webApplication) {
 		this.webApplication = webApplication;
@@ -326,7 +334,31 @@ public class ApiPlaceController extends BaseApiController {
 		User user = super.getSessionUser(session);
 		ValueOperationResult<Place> getResult = this.placeService.getPlace(placeId);
 		Place place = getResult.getResultValue();
-		if (place != null && user != null && user.getId().equals(place.getHostUserId())) {
+		if (place != null) {
+			
+			Review review = new Review();
+			review.setEntityType(EnmEntityType.PLACE.getId());
+			review.setEntityId(place.getId());
+			
+			List<Review> reviewList = this.reviewService.listReview(review, null, false, true, false);
+			
+			if (reviewList != null && reviewList.size() > 0) {
+				for (Review tmpReview : reviewList) {
+					User reviewUser = new User();
+					reviewUser.setFirstName(tmpReview.getUser().getFirstName());
+					reviewUser.setId(tmpReview.getUserId());
+					
+					String profileImageUrl = this.webApplication.getUserPhotoUrl(reviewUser.getId(), tmpReview.getUser().getProfilePhotoId(), EnmSize.SMALL.getValue());
+					
+					reviewUser.setProfileImageUrl(profileImageUrl);
+					
+					reviewUser.setProfileImageUrl(profileImageUrl);
+					
+					tmpReview.setUser(reviewUser);
+				}
+				place.setReviewList(reviewList);
+			}
+			
 			session.removeAttribute(EnmSession.ACTIVE_PLACE.getId());
 			session.setAttribute(EnmSession.ACTIVE_PLACE.getId(), place);
 		}

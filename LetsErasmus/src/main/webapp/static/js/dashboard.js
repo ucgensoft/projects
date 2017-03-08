@@ -2,7 +2,8 @@
 	profile : 1,
 	message : 2,
 	listing : 3,
-	trip : 4
+	trip : 4,
+	wishList : 5
 };
 
 for (var i = 1; i < 8; i++) {

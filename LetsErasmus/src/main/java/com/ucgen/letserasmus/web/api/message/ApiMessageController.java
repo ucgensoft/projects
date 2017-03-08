@@ -96,7 +96,6 @@ public class ApiMessageController extends BaseApiController {
 		try {
 			User user = super.getSessionUser(session);
 			if (user != null) {
-				Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
 				Map<String, List<UiMessageThread>> messageThreadMap = new HashMap<String, List<UiMessageThread>>();
 				
 				if (hostFlag != null && hostFlag.intValue() == 1) {

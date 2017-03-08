@@ -504,6 +504,17 @@ function generateUserProfilePhotoUrl(userId, photoId, size) {
 	}
 }
 
+function generatePlacePhotoUrl(placeId, photoId, size) {
+	if (placeId && photoId) {
+		var photoUrl = StringUtil.replaceAll(placePhotoUrlTemplate, '#placeId#', placeId);
+		photoUrl = StringUtil.replaceAll(photoUrl, '#photoId#', photoId);
+		photoUrl = StringUtil.replaceAll(photoUrl, '#size#', size);
+		return photoUrl;
+	} else {
+		return StringUtil.replaceAll(defaultPlaceImageUrlTemplate, '#size#', size);
+	}
+}
+
 function createEmptyFile(fileName) {
 	var parts = [
         new Blob([''], {type: 'text/plain'}), '', new Uint16Array([33])

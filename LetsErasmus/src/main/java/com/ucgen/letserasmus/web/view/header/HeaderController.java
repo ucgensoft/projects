@@ -21,7 +21,7 @@ public class HeaderController extends BaseController {
 	}
 	
 	public void login() {
-		String test = "";
+		
 	}
 	
 }

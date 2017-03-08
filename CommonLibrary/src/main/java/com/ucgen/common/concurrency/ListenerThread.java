@@ -9,7 +9,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 
-import com.ucgen.common.concurrency.enumeration.EnmInterruptSource;
 import com.ucgen.common.concurrency.enumeration.EnmSocketCommand;
 
 public class ListenerThread extends Thread {

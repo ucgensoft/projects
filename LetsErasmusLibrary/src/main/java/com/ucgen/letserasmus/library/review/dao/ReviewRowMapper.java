@@ -8,6 +8,7 @@ import com.ucgen.common.dao.EnmJoinType;
 import com.ucgen.common.dao.ForeignKey;
 import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
 import com.ucgen.letserasmus.library.place.dao.PlaceRowMapper;
+import com.ucgen.letserasmus.library.place.model.Place;
 import com.ucgen.letserasmus.library.reservation.dao.ReservationRowMapper;
 import com.ucgen.letserasmus.library.reservation.model.Reservation;
 import com.ucgen.letserasmus.library.review.model.Review;
@@ -58,12 +59,12 @@ public class ReviewRowMapper extends BaseRowMapper<Review> {
 	
 	public void addEntiyFKey(String keyName, EnmEntityType entityType) {
 		
-		if (entityType.equals(EnmEntityType.RESERVATION)) {
-			ReservationRowMapper reservationRowMapper = new ReservationRowMapper("R");
-			ForeignKey<ReviewRowMapper, ReservationRowMapper> fKeyReservation = new ForeignKey<ReviewRowMapper, ReservationRowMapper>(this, reservationRowMapper, EnmJoinType.LEFT);
-			fKeyReservation.addFieldPair(COL_ENTITY_ID, ReservationRowMapper.COL_ID);
-			fKeyReservation.addStaticValueCriteria(COL_ENTITY_TYPE, entityType.getId());
-			this.addFKey(FKEY_ENTITY, fKeyReservation);
+		if (entityType.equals(EnmEntityType.PLACE)) {
+			PlaceRowMapper placeRowMapper = new PlaceRowMapper("P");
+			ForeignKey<ReviewRowMapper, PlaceRowMapper> fKeyPlace = new ForeignKey<ReviewRowMapper, PlaceRowMapper>(this, placeRowMapper, EnmJoinType.LEFT);
+			fKeyPlace.addFieldPair(COL_ENTITY_ID, PlaceRowMapper.COL_ID);
+			fKeyPlace.addStaticValueCriteria(COL_ENTITY_TYPE, entityType.getId());
+			this.addFKey(FKEY_ENTITY, fKeyPlace);
 		}			
 	}
 	
@@ -104,10 +105,10 @@ public class ReviewRowMapper extends BaseRowMapper<Review> {
 						
 			if (this.getfKeyMap().containsKey(FKEY_ENTITY)) {
 				if (review.getEntityType() != null) {
-					if (review.getEntityType().equals(EnmEntityType.RESERVATION.getId())) {
-						ForeignKey<ReviewRowMapper, ReservationRowMapper> fKey = this.getfKeyMap().get(FKEY_ENTITY);
-						Reservation reservation = fKey.getDestMapper().mapRow(rs, rowNum);
-						review.setEntity(reservation);
+					if (review.getEntityType().equals(EnmEntityType.PLACE.getId())) {
+						ForeignKey<ReviewRowMapper, PlaceRowMapper> fKey = this.getfKeyMap().get(FKEY_ENTITY);
+						Place place = fKey.getDestMapper().mapRow(rs, rowNum);
+						review.setEntity(place);
 					}
 				}
 			}

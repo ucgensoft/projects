@@ -1,10 +1,18 @@
-App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', function($scope, userService, sce, compile) {
+App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favoriteService', 
+                              function($scope, userService, sce, compile, favoriteService) {
       var self = this;
       self.html = '';
       var auth2 = null;
       var facebookLoginResponse = null;
       
       self.initialize = function() {
+    	  if (loginType != '') {
+    		  self.listFavorite(
+    				  function(favoriteMap) {
+    			  		userFavoriteMap = favoriteMap;
+			  		  }
+			  	  );
+    	  }
 		  gapi.load('auth2', function() {
     	      auth2 = gapi.auth2.init({
     	        client_id: googleId,
@@ -273,6 +281,46 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', funct
   	        });
   	  };
   	  
+  	  self.addFavorite = function(entityType, entityId, callBack) {
+  		  var favorite = {
+  				entityType : entityType, 
+  				entityId : entityId
+  		  };
+  		favoriteService.addFavorite(favorite, 
+  			  function(favoriteMap) {
+  				userFavoriteMap = favoriteMap;
+  				if (callBack) {
+  					callBack(result);
+  				  }
+  	  		  }
+  	  	  );
+  	  };
+  	  
+  	self.removeFavorite = function(entityType, entityId, callBack) {
+		  var favorite = {
+				entityType : entityType, 
+				entityId : entityId
+		  };
+		favoriteService.removeFavorite(favorite, 
+			function(favoriteMap) {
+					userFavoriteMap = favoriteMap;
+				  if (callBack) {
+					callBack(favoriteMap);
+				  }
+	  		  }
+	  	  );
+	  };
+	  
+	  self.listFavorite = function(callBack) {
+		favoriteService.listFavorite(
+			  function(favoriteMap) {
+				  if (callBack) {
+					callBack(favoriteMap);
+				  }
+	  		  }
+	  	  );
+	  };
+  	  
      //self.initialize();
       
   }]);
@@ -305,4 +353,14 @@ function loginWithFacebook() {
 function onPageLoadHeader() {
 	var scope = angular.element( $('#divPageHeader') ).scope();
 	scope.ctrl.initialize();
+}
+
+function addFavorite(entityType, entityId, callBack) {
+	var scope = angular.element( $('#divPageHeader') ).scope();
+	scope.ctrl.addFavorite(entityType, entityId, callBack);
+}
+
+function removeFavorite(entityType, entityId, callBack) {
+	var scope = angular.element( $('#divPageHeader') ).scope();
+	scope.ctrl.removeFavorite(entityType, entityId, callBack);
 }
