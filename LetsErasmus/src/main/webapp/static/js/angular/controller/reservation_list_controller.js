@@ -26,8 +26,8 @@ App.controller('reservationListCtrl', ['$scope', '$controller', 'reservationServ
   	  	
   	self.openAcceptReservationWindow = function(reservationId) {
   		activeReservationId = reservationId;
-  		ajaxHtml(webApplicationUrlPrefix + '/static/html/AcceptReservation.html', 'divReservationModal', function() {
-  			$('#divReservationModal').css('display', '');
+  		ajaxHtml(webApplicationUrlPrefix + '/static/html/AcceptReservation.html', 'divCommonModal', function() {
+  			$('#divCommonModal').css('display', '');
     	});
   	};
   	
@@ -56,15 +56,15 @@ App.controller('reservationListCtrl', ['$scope', '$controller', 'reservationServ
   	
   	self.openDeclineReservationWindow = function(reservationId) {
   		activeReservationId = reservationId;
-  		ajaxHtml(webApplicationUrlPrefix + '/static/html/DeclineReservation.html', 'divReservationModal', function() {
-  			$('#divReservationModal').css('display', '');
+  		ajaxHtml(webApplicationUrlPrefix + '/static/html/DeclineReservation.html', 'divCommonModal', function() {
+  			$('#divCommonModal').css('display', '');
     	});
   	};
   	
   	self.openCancelReservationWindow = function(reservationId) {
   		activeReservationId = reservationId;
-  		ajaxHtml(webApplicationUrlPrefix + '/static/html/CancelReservation.html', 'divReservationModal', function() {
-  			$('#divReservationModal').css('display', '');
+  		ajaxHtml(webApplicationUrlPrefix + '/static/html/CancelReservation.html', 'divCommonModal', function() {
+  			$('#divCommonModal').css('display', '');
     	});
   	};
   	
@@ -142,8 +142,8 @@ App.controller('reservationListCtrl', ['$scope', '$controller', 'reservationServ
   	
   	self.openReviewWindow = function(reservation) {
   		activeReservationId = reservation.id;
-  		ajaxHtml(webApplicationUrlPrefix + '/static/html/Review.html', 'divReservationModal', function() {
-  			$('#divReservationModal').css('display', '');
+  		ajaxHtml(webApplicationUrlPrefix + '/static/html/Review.html', 'divCommonModal', function() {
+  			$('#divCommonModal').css('display', '');
     	});
   	};
   	

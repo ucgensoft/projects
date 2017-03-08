@@ -117,13 +117,16 @@
 								</div>
 								<div class="text-muted space-top-2">
 									<div data-hypernova-key="user_flag_controlbundlejs">
-										<div data-reactroot="" data-reactid="1"
-											data-react-checksum="802584063">
-											<div class="flag-widget" data-reactid="2">
+										<div>
+											<div class="flag-widget  {{ctrl.isUserComplainted() || ctr.userId == loginUserId ? 'hidden-force' : ''}}">
 												<a href="#" class="link-reset" title="Report this user"
-													data-prevent-default="true" data-reactid="3"><i
-													class="icon icon-flag h4" data-reactid="4"></i>
-													<span data-reactid="6">Report this user</span></a>
+													data-prevent-default="true" ng-click="ctrl.openComplaintWindow()">
+													<i class="icon icon-flag h4"></i>
+													<span>Report this user</span></a>
+											</div>
+											<div class="flag-widget  {{ctrl.isUserComplainted() ? '' : 'hidden-force'}}">
+												<i class="icon icon-flag h4"></i>
+												<span class="clsRed">You have reported this user</span>
 											</div>
 										</div>
 									</div>

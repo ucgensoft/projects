@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.ucgen.common.util.StringUtil;
 import com.ucgen.letserasmus.library.common.model.BaseModel;
+import com.ucgen.letserasmus.library.complaint.model.Complaint;
 import com.ucgen.letserasmus.library.favorite.model.Favorite;
 import com.ucgen.letserasmus.library.file.model.FileModel;
 import com.ucgen.letserasmus.library.place.model.Place;
@@ -50,6 +51,7 @@ public class User extends BaseModel {
 	private Integer loginType;
 	
 	private Map<Integer, Map<Long, Favorite>> favoriteMap;
+	private Map<Integer, Map<Long, Complaint>> complaintMap;
 	
 	public User() {
 		this(null);
@@ -297,6 +299,39 @@ public class User extends BaseModel {
 		if (favoriteList != null) {
 			for (Favorite favorite : favoriteList) {
 				this.addFavorite(favorite);
+			}
+		}
+	}
+
+	public Map<Integer, Map<Long, Complaint>> getComplaintMap() {
+		return complaintMap;
+	}
+
+	public void setComplaintMap(Map<Integer, Map<Long, Complaint>> complaintMap) {
+		this.complaintMap = complaintMap;
+	}
+	
+	public void createComplaintMap() {
+		if (this.complaintMap == null) {
+			this.complaintMap = new HashMap<Integer, Map<Long, Complaint>>();
+		}
+	}
+	
+	public void addComplaint(Complaint complaint) {
+		if (this.complaintMap == null) {
+			this.complaintMap = new HashMap<Integer, Map<Long, Complaint>>();
+		}
+		if (!this.complaintMap.containsKey(complaint.getEntityType())) {
+			Map<Long, Complaint> entityTypeMap = new HashMap<Long, Complaint>();
+			this.complaintMap.put(complaint.getEntityType(), entityTypeMap);
+		}
+		this.complaintMap.get(complaint.getEntityType()).put(complaint.getEntityId(), complaint);
+	}
+	
+	public void addComplaintList(List<Complaint> complaintList) {
+		if (complaintList != null) {
+			for (Complaint complaint : complaintList) {
+				this.addComplaint(complaint);
 			}
 		}
 	}

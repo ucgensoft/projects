@@ -108,6 +108,9 @@ var tests = {
 var currentUrlParamArr = null;
 var getUriParam = function (paramName) {
     var url = window.location.href;
+    if (url.substring(url.length - 1) == '#') {
+    	url = url.substring(0, url.length - 1);
+    }
     var indexOfParamStart = url.indexOf('?');
     if (indexOfParamStart > -1 && (indexOfParamStart + 1) < url.length) {
 

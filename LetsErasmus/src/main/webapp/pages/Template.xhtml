@@ -53,6 +53,8 @@
 			var profilePhotoUrlTemplate = '#{webApplication.userPhotoUrlTemplate}';
 			var placePhotoUrlTemplate = '#{webApplication.placePhotoUrlTemplate}';
 			var userFavoriteMap = {};
+			var userComplaintMap = {};
+			var loginUserId = '#{webApplication.user == null ? '' : webApplication.user.id}';
 		</script>
 
 		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -73,6 +75,7 @@
 			<script src="#{webApplication.urlPrefix}/static/js/angular/service/common_service.js"></script>
 			<script src="#{webApplication.urlPrefix}/static/js/angular/service/user_service.js"></script>
 			<script src="#{webApplication.urlPrefix}/static/js/angular/service/favorite_service.js"></script>
+			<script src="#{webApplication.urlPrefix}/static/js/angular/service/complaint_service.js"></script>
 			<script src="#{webApplication.urlPrefix}/static/js/angular/controller/header_controller.js"></script>
 			
 			<script src="https://apis.google.com/js/platform.js" async="true" defer="true"></script>
@@ -104,7 +107,7 @@
 				<div id="divPageHeader" class="clsHeader" ng-controller="headerCtrl as ctrl">
 					<ui:include src="Header.xhtml"   />
 					<div id="divModal" class="modalWrapper login-form overlay animate">
-						<div id="divModalContent" class="modalWindow">
+						<div id="divModalContent" class="modalWindow clsLoginModal">
 							
 						</div>
 					</div>
@@ -117,6 +120,7 @@
 				<ui:fragment rendered="#{webApplication.footerVisible}">
 					<ui:include src="Footer.xhtml" />
 				</ui:fragment>
+				<div id="divCommonModal" class="clsModal"></div>
 				<script async="true" defer="true" src="https://apis.google.com/js/client.js" 
 				  onload="onPageLoadHeader();"
 			      onreadystatechange="if (this.readyState === 'complete') { onPageLoadHeader();}">

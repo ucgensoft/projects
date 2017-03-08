@@ -1,5 +1,5 @@
-App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favoriteService', 
-                              function($scope, userService, sce, compile, favoriteService) {
+App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favoriteService', 'complaintService', 
+                              function($scope, userService, sce, compile, favoriteService, complaintService) {
       var self = this;
       self.html = '';
       var auth2 = null;
@@ -320,6 +320,53 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
 	  		  }
 	  	  );
 	  };
+	  
+	  self.listComplaint = function(callBack) {
+		complaintService.listComplaint(
+			  function(complaintMap) {
+				  userComplaintMap = complaintMap;
+				  if (callBack) {
+					callBack(complaintMap);
+				  }
+	  		  }
+	  	  );
+	  };
+	  
+	  self.createComplaint = function() {
+		  var entityType = $('#hiddenComplaintEntityType').val();
+		  var entityId = $('#hiddenComplaintEntityId').val();
+		  var description = $('#txtComplaintDescription').val();
+  		  var complaint = {
+  				entityType : entityType, 
+  				entityId : entityId,
+  				description : description
+  		  };
+  		complaintService.createComplaint(complaint, 
+  			  function(complaintMap) {
+  				DialogUtil.info('Success', 'Your complaint has been reported to LetsErasmus team. ' 
+  						+ 'Necessary action will be taken as soon as possible. Thanks for reporting.', 'OK', 
+  						function() {
+  							location.reload();
+  						}
+  				);
+  	  		  }
+  	  	  );
+  	  };
+  	  
+  	self.deleteComplaint = function(entityType, entityId, callBack) {
+		  var complaint = {
+				entityType : entityType, 
+				entityId : entityId
+		  };
+		complaintService.deleteComplaint(complaint, 
+			function(complaintMap) {
+					userComplaintMap = complaintMap;
+				  if (callBack) {
+					callBack(complaintMap);
+				  }
+	  		  }
+	  	  );
+	  };
   	  
      //self.initialize();
       
@@ -363,4 +410,19 @@ function addFavorite(entityType, entityId, callBack) {
 function removeFavorite(entityType, entityId, callBack) {
 	var scope = angular.element( $('#divPageHeader') ).scope();
 	scope.ctrl.removeFavorite(entityType, entityId, callBack);
+}
+
+function createComplaint() {
+	var scope = angular.element( $('#divPageHeader') ).scope();
+	scope.ctrl.createComplaint();
+}
+
+function deleteComplaint(entityType, entityId, callBack) {
+	var scope = angular.element( $('#divPageHeader') ).scope();
+	scope.ctrl.deleteComplaint(entityType, entityId, callBack);
+}
+
+function listComplaint(callBack) {
+	var scope = angular.element( $('#divPageHeader') ).scope();
+	scope.ctrl.listComplaint(callBack);
 }

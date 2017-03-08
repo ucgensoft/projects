@@ -65,6 +65,10 @@ body, #mainWrapper {
 	z-index : 50;
 }
 
+.clsLoginModal {
+	z-index : 1000 !important;
+}
+
 .ui-dialog { z-index: 100000 !important ;}
 
 
@@ -81,4 +85,12 @@ body, #mainWrapper {
 
 .clsInline {
 	display : inline
+}
+
+.clsUnderline {
+	text-decoration : underline;
+}
+
+.clsRed {
+	color: red;
 }

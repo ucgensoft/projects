@@ -236,7 +236,7 @@
 															<div class="row">
 																<div class="col-md-3 text-muted text-center hide-sm">
 																	<a
-																		href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.xhtml?userId={{ctrl.place.user.id}"
+																		href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.xhtml?userId={{ctrl.place.hostUserId}}"
 																		class="link-reset text-wrap">{{ctrl.place.user.firstName}}</a>
 																</div>
 																<div class="col-md-9">
@@ -451,14 +451,21 @@
 												<div class="other-actions text-center space-top-3 space-3">
 													<div>
 														<div>
-															<div class="flag-widget">
-																<a
-																	href="https://www.airbnb.com/rooms/13738469?s=Q8-G3TeD#"
-																	class="link-reset" title="Report this listing"><i
-																	class="icon icon-flag h4"></i><span> </span><span>Report
-																		this listing</span></a>
+															<div class="flag-widget {{(ctrl.isPlaceComplainted() || (ctrl.place.hostUserId.toString() == loginUserId)) ? 'hidden-force' : ''}}">
+																<a href=""
+																	class="link-reset" title="Report this listing" 
+																	ng-click="ctrl.openComplaintWindow()">
+																	<i class="icon icon-flag h4"></i>
+																	<span> </span>
+																	<span>Report this listing</span>
+																</a>
+																
 															</div>
-															<noscript></noscript>
+															<div class="flag-widget {{ctrl.isPlaceComplainted() ? '' : 'hidden-force'}}">
+																<i class="icon icon-flag h4"></i>
+																<span> </span>
+																<span class="clsRed">You have reported this Listing</span>
+															</div>
 														</div>
 													</div>
 												</div>
@@ -468,7 +475,6 @@
 								</div>
 							</div>
 						</div>
-						<style></style>
 						<div>
 							<div>
 								<div id="details" class="details-section webkit-render-fix">
@@ -865,6 +871,7 @@
 				</div>
 			</div>
 		</h:form>
+		<div id="divPlaceModal" class="clsModal"></div>
 		<script src="#{webApplication.urlPrefix}/static/js/angular/service/place_service.js"></script>
 		<script src="#{webApplication.urlPrefix}/static/js/angular/service/enumeration_service.js"></script>
 		<script src="#{webApplication.urlPrefix}/static/js/angular/service/reservation_service.js"></script>

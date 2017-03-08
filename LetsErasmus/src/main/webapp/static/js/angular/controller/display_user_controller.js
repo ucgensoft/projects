@@ -3,11 +3,13 @@ App.controller('displayUserCtrl', ['$scope', '$controller', 'placeService', 'rev
       var self = this;
       self.reviewGroupList = [];
       self.reviewCount = 0;
+      self.userId = null;
       
       self.initialize = function() {
-    	  var userId = getUriParam('userId');
-    	  if (userId != null && StringUtil.trim(userId) != '') {
-    		  reviewService.listUserReview(userId,
+    	  self.userId = getUriParam('userId');
+    	  listComplaint();
+    	  if (self.userId != null && StringUtil.trim(self.userId) != '') {
+    		  reviewService.listUserReview(self.userId,
     			  function(reviewMap) {
 	  					var guestReviewList = {
 	  							groupTitle : 'Reviews From Guests',
@@ -24,6 +26,26 @@ App.controller('displayUserCtrl', ['$scope', '$controller', 'placeService', 'rev
 	  		  );
     	  }
 	 };
+	 
+	 self.openComplaintWindow = function() {
+    	 ajaxHtml(webApplicationUrlPrefix + '/static/html/Complaint.html', 'divCommonModal', function() {
+   		     $('#hiddenComplaintEntityType').val(EnmEntityType.USER);
+   		     $('#hiddenComplaintEntityId').val(self.userId);
+    		 $('#divCommonModal').css('display', '');
+     	});
+     };
+     
+     self.isUserComplainted = function() {
+    	 if (self.userId != null) {
+    	   	  	if (userComplaintMap && userComplaintMap[EnmEntityType.USER.toString()]) {
+    	   		  complaintMap = userComplaintMap[EnmEntityType.USER.toString()];
+    	   		  if (complaintMap[self.userId.toString()]) {
+    					  return true;
+    				  }
+    	   	  }
+    	 }
+   	  	return false;
+     };
   	
     self.initialize();
       
