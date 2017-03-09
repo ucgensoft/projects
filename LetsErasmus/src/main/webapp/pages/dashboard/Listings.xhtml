@@ -39,7 +39,7 @@
 													<div class="col-middle space-sm-2 space-top-sm-4 col-md-5 listing-photo">
 														<div class="media-photo media-photo-block-lg">
 															<div class="media-cover text-center">
-																<img class="img-responsive-height" src="#{webApplication.rootPlaceImageUrl}/{{p.id}}/{{p.coverPhoto.id}}_small.{{p.coverPhoto.fileSuffix}}">
+																<img class="img-responsive-height" src="{{ctrl.generatePlacePhotoUrl(p.id, p.coverPhoto.id, 'small')}}">
 																</img>
 															</div>
 														</div>
@@ -86,7 +86,7 @@
 													<div class="col-middle space-sm-2 space-top-sm-4 col-md-5 listing-photo">
 														<div class="media-photo media-photo-block-lg">
 															<div class="media-cover text-center">
-																<img class="img-responsive-height" src="#{webApplication.rootPlaceImageUrl}/{{p.id}}/{{p.coverPhoto.id}}_small.{{p.coverPhoto.fileSuffix}}">
+																<img class="img-responsive-height" src="{{ctrl.generatePlacePhotoUrl(p.id, p.coverPhoto.id, 'small')}}">
 																</img>
 															</div>
 														</div>

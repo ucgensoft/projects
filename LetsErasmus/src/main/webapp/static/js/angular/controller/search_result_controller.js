@@ -302,8 +302,7 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
     		  $('#hiddenPlaceSliderPhotoIndex_' + place.id).val(intCurrentIndex);
     		  
         	  var currentPhoto = place.photoList[intCurrentIndex];
-        	  var photoName = currentPhoto.id + "_large." + currentPhoto.fileSuffix;;
-      		  var photoUrl = webApplicationUrlPrefix + "/place/images/" + place.id + "/" + photoName;
+      		  var photoUrl = generatePlacePhotoUrl(place.id , currentPhoto.id, 'small');
       		  $("#imgPlaceSlider_" + place.id).attr('src', photoUrl);
     	  }
       }
@@ -468,6 +467,10 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
     	  }
     	  return false;
       };
+      
+      self.generatePlacePhotoUrl = function(placeId, photoId, size) {
+  		return generatePlacePhotoUrl(placeId, photoId, size);
+  	  };
       	
       initialize();
       

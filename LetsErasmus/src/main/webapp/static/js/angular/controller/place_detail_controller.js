@@ -173,8 +173,7 @@ App.controller('placeDetailCtrl', ['$scope', '$controller', 'placeService', 'res
       self.displayCurrentPhoto = function() {
     	  var intCurrentIndex = parseInt($('#hiddenPhotoIndexMainSlider').val());
     	  var currentPhoto = self.place.photoList[intCurrentIndex];
-    	  var photoName = currentPhoto.id + "_large." + currentPhoto.fileSuffix;;
-  		  var photoUrl = webApplicationUrlPrefix + "/place/images/" + self.place.id + "/" + photoName;
+  		  var photoUrl = generatePlacePhotoUrl(self.place.id , currentPhoto.id, 'medium');
   		  $("#divPhotoSlider").css('background-image', 'url(' + photoUrl + ')');
       };
       

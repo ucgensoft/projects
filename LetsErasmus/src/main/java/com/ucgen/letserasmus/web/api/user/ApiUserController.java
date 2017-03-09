@@ -668,7 +668,7 @@ public class ApiUserController extends BaseApiController {
 				
 				String fileName = prifilePhoto.getOriginalFilename();
 				if (!fileName.toUpperCase().startsWith("DUMMY_")) {
-					String tmpPhotoPath = userTmpPhotoFolderPath + File.separatorChar + fileName;
+					String tmpPhotoPath = FileUtil.concatPath(userTmpPhotoFolderPath, fileName);
 					File tmpFile = new File(tmpPhotoPath);
 					prifilePhoto.transferTo(tmpFile);
 				}
@@ -1191,7 +1191,7 @@ public class ApiUserController extends BaseApiController {
 	}
 
 	private void sendEmailVerificationMail(User user) throws UnsupportedEncodingException {
-		String htmlFilePath = FileUtil.concatPath(this.webApplication.getLocalAppPath(), "static", "html", "VerifyEmail.html");	
+		String htmlFilePath = FileUtil.concatPath(this.webApplication.getLocalAppPath(), "static", "html", "mail", "VerifyEmail.html");	
 		
 		List<String> toList = new ArrayList<String>();
 		toList.add(user.getEmail());
@@ -1210,7 +1210,7 @@ public class ApiUserController extends BaseApiController {
 	}
 	
 	private void sendWelcomeMail(User user, EnmLoginType loginType) throws UnsupportedEncodingException {
-		String htmlFilePath = FileUtil.concatPath(this.webApplication.getLocalAppPath(), "static", "html", "VerifyEmail.html");
+		String htmlFilePath = FileUtil.concatPath(this.webApplication.getLocalAppPath(), "static", "html", "mail", "VerifyEmail.html");
 		String email = null;
 		
 		if (loginType == EnmLoginType.LOCAL_ACCOUNT) {

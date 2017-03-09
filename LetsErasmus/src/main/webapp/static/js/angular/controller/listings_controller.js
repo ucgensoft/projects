@@ -59,6 +59,10 @@ App.controller('listingsCtrl', ['$scope', '$controller', 'placeService', 'common
     			    callBack
     			);
       };
+      
+      self.generatePlacePhotoUrl = function(placeId, photoId, size) {
+    		return generatePlacePhotoUrl(placeId, photoId, size);
+    	};
       	
       self.initialize();
       

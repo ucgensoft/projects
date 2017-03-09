@@ -124,7 +124,7 @@ public class ApiPlaceController extends BaseApiController {
 						
 						try {
 							String rootPhotoFolder = this.webApplication.getRootPlacePhotoPath();
-							String placePhotoFolderPath = rootPhotoFolder + place.getId(); 
+							String placePhotoFolderPath = FileUtil.concatPath(rootPhotoFolder, place.getId().toString()); 
 							File placePhotoFolder = new File(placePhotoFolderPath);
 							
 							if (!placePhotoFolder.exists()) {
@@ -275,7 +275,7 @@ public class ApiPlaceController extends BaseApiController {
 						if (newPhotoList != null && newPhotoList.size() > 0) {
 							try {
 								String rootPhotoFolder = this.webApplication.getRootPlacePhotoPath();
-								String placePhotoFolderPath = rootPhotoFolder + place.getId(); 
+								String placePhotoFolderPath = FileUtil.concatPath(rootPhotoFolder, place.getId().toString()); 
 								File placePhotoFolder = new File(placePhotoFolderPath);
 								
 								if (!placePhotoFolder.exists()) {
@@ -437,7 +437,7 @@ public class ApiPlaceController extends BaseApiController {
 					
 					String rootPhotoFolder = this.webApplication.getRootPlacePhotoPath();
 					
-					String placeTmpPhotoFolderPath = rootPhotoFolder + placeId + File.separatorChar + "tmp";
+					String placeTmpPhotoFolderPath = FileUtil.concatPath(rootPhotoFolder, placeId.toString(), "tmp");
 					File placeTmpPhotoFolder = new File(placeTmpPhotoFolderPath);
 					if (placeTmpPhotoFolder.exists()) {
 						FileUtils.cleanDirectory(placeTmpPhotoFolder);
@@ -448,7 +448,7 @@ public class ApiPlaceController extends BaseApiController {
 						MultipartFile multipartFile = fileArr[i];
 						String fileName = multipartFile.getOriginalFilename();
 						if (!fileName.toUpperCase().startsWith("DUMMY_")) {
-							String tmpPhotoPath = placeTmpPhotoFolderPath + File.separatorChar + fileName;
+							String tmpPhotoPath = FileUtil.concatPath(placeTmpPhotoFolderPath, fileName);
 							File tmpFile = new File(tmpPhotoPath);
 							multipartFile.transferTo(tmpFile);
 						}
