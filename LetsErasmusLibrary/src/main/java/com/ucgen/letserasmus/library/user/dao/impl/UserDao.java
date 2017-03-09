@@ -26,7 +26,7 @@ public class UserDao extends JdbcDaoSupport implements IUserDao {
 	
 	private static final String INSERT_USER_SQL = " INSERT INTO USER(EMAIL, PASSWORD, MSISDN, MSISDN_COUNTRY_CODE, FIRST_NAME, LAST_NAME, " 
 			+ " GENDER,  STATUS, EMAIL_VERIFIED, MSISDN_VERIFIED, USER_ACTIVATION_KEY_EMAIL, USER_ACTIVATION_KEY_MSISDN, PROFILE_PHOTO_ID, " 
-			+ " FACEBOOK_TOKEN_ID, IP, CREATED_BY, CREATED_DATE, CREATED_DATE_GMT, MODIFIED_BY, MODIFIED_DATE, MODIFIED_DATE_GMT, GOOGLE_ID, FACEBOOK_ID) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+			+ " FACEBOOK_TOKEN_ID, IP, CREATED_BY, CREATED_DATE, CREATED_DATE_GMT, MODIFIED_BY, MODIFIED_DATE, MODIFIED_DATE_GMT, GOOGLE_ID, FACEBOOK_ID, GOOGLE_EMAIL, FACEBOOK_EMAIL) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 	
 	private static final String UPDATE_USER_SQL = " UPDATE USER SET $1 WHERE ID = ? ";
 	
@@ -259,6 +259,8 @@ public class UserDao extends JdbcDaoSupport implements IUserDao {
 		argList.add(user.getModifiedDateGmt());
 		argList.add(user.getGoogleId());
 		argList.add(user.getFacebookId());
+		argList.add(user.getGoogleEmail());
+		argList.add(user.getFacebookEmail());
 		
 		int i = this.getJdbcTemplate().update(INSERT_USER_SQL, argList.toArray());
 		
