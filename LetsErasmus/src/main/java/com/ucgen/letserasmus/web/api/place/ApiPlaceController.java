@@ -341,34 +341,43 @@ public class ApiPlaceController extends BaseApiController {
 	@RequestMapping(value = "/api/place/get", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public ResponseEntity<ValueOperationResult<Place>> getPlace(@RequestParam("placeId") Long placeId, HttpSession session) {
 		ValueOperationResult<Place> getResult = this.placeService.getPlace(placeId);
-		Place place = getResult.getResultValue();
-		if (place != null) {
-			
-			Review review = new Review();
-			review.setEntityType(EnmEntityType.PLACE.getId());
-			review.setEntityId(place.getId());
-			
-			List<Review> reviewList = this.reviewService.listReview(review, null, false, true, false);
-			
-			if (reviewList != null && reviewList.size() > 0) {
-				for (Review tmpReview : reviewList) {
-					User reviewUser = new User();
-					reviewUser.setFirstName(tmpReview.getUser().getFirstName());
-					reviewUser.setId(tmpReview.getUserId());
-					
-					String profileImageUrl = this.webApplication.getUserPhotoUrl(reviewUser.getId(), tmpReview.getUser().getProfilePhotoId(), EnmSize.SMALL.getValue());
-					
-					reviewUser.setProfileImageUrl(profileImageUrl);
-					
-					reviewUser.setProfileImageUrl(profileImageUrl);
-					
-					tmpReview.setUser(reviewUser);
+		try {
+			Place place = getResult.getResultValue();
+			if (place != null) {
+				
+				String paramDistance = this.parameterService.getParameterValue(EnmParameter.CHANGE_LOCATION_DISTANCE.getId());
+				LocationService.changeCoordinates(place.getLocation(), Integer.parseInt(paramDistance));
+				
+				Review review = new Review();
+				review.setEntityType(EnmEntityType.PLACE.getId());
+				review.setEntityId(place.getId());
+				
+				List<Review> reviewList = this.reviewService.listReview(review, null, false, true, false);
+				
+				if (reviewList != null && reviewList.size() > 0) {
+					for (Review tmpReview : reviewList) {
+						User reviewUser = new User();
+						reviewUser.setFirstName(tmpReview.getUser().getFirstName());
+						reviewUser.setId(tmpReview.getUserId());
+						
+						String profileImageUrl = this.webApplication.getUserPhotoUrl(reviewUser.getId(), tmpReview.getUser().getProfilePhotoId(), EnmSize.SMALL.getValue());
+						
+						reviewUser.setProfileImageUrl(profileImageUrl);
+						
+						reviewUser.setProfileImageUrl(profileImageUrl);
+						
+						tmpReview.setUser(reviewUser);
+					}
+					place.setReviewList(reviewList);
 				}
-				place.setReviewList(reviewList);
+				
+				session.removeAttribute(EnmSession.ACTIVE_PLACE.getId());
+				session.setAttribute(EnmSession.ACTIVE_PLACE.getId(), place);
 			}
-			
-			session.removeAttribute(EnmSession.ACTIVE_PLACE.getId());
-			session.setAttribute(EnmSession.ACTIVE_PLACE.getId(), place);
+		} catch (Exception e) {
+			// TODO: handle exception
+			getResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
+			getResult.setResultDesc("Operation could not be completed. Please try again later!");
 		}
 		return new ResponseEntity<ValueOperationResult<Place>>(getResult, HttpStatus.OK);
     }
