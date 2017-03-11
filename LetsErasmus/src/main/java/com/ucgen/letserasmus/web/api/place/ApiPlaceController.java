@@ -38,6 +38,9 @@ import com.ucgen.letserasmus.library.file.enumeration.EnmFileType;
 import com.ucgen.letserasmus.library.file.model.FileModel;
 import com.ucgen.letserasmus.library.file.model.Photo;
 import com.ucgen.letserasmus.library.file.service.IFileService;
+import com.ucgen.letserasmus.library.location.service.impl.LocationService;
+import com.ucgen.letserasmus.library.parameter.enumeration.EnmParameter;
+import com.ucgen.letserasmus.library.parameter.service.IParameterService;
 import com.ucgen.letserasmus.library.place.enumeration.EnmPlaceStatus;
 import com.ucgen.letserasmus.library.place.model.Place;
 import com.ucgen.letserasmus.library.place.service.IPlaceService;
@@ -56,8 +59,14 @@ public class ApiPlaceController extends BaseApiController {
 	private IPlaceService placeService;
 	private IFileService fileService;
 	private IReviewService reviewService;
+	private IParameterService parameterService;
 	private WebApplication webApplication;
-	
+
+	@Autowired
+	public void setParameterService(IParameterService parameterService) {
+		this.parameterService = parameterService;
+	}
+
 	@Autowired
 	public void setReviewService(IReviewService reviewService) {
 		this.reviewService = reviewService;
@@ -331,7 +340,6 @@ public class ApiPlaceController extends BaseApiController {
 	
 	@RequestMapping(value = "/api/place/get", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public ResponseEntity<ValueOperationResult<Place>> getPlace(@RequestParam("placeId") Long placeId, HttpSession session) {
-		User user = super.getSessionUser(session);
 		ValueOperationResult<Place> getResult = this.placeService.getPlace(placeId);
 		Place place = getResult.getResultValue();
 		if (place != null) {
@@ -367,14 +375,40 @@ public class ApiPlaceController extends BaseApiController {
 	
 	@RequestMapping(value = "/api/place/list", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public ResponseEntity<ListOperationResult<Place>> listPlace(@RequestParam Map<String, String> requestParams) {
-		HttpStatus httpStatus = null;
-		ListOperationResult<Place> listResult = this.placeService.listPlace(null, true, true, true);
-		if (OperationResult.isResultSucces(listResult)) {
-			httpStatus = HttpStatus.OK;
-		} else {
-			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+		ListOperationResult<Place> listResult = new ListOperationResult<Place>();
+		try {
+			/*
+			String paramPageSize = this.parameterService.getParameterValue(EnmParameter.PLACE_SEARCH_PAGE_SIZE.getId());
+			String uiPageNumber = null;
+
+			if (requestParams != null) {
+				uiPageNumber = requestParams.get("pageNumber");
+			}
+			
+			Integer pageSize = Integer.valueOf(paramPageSize);
+			Integer pageNumber = 1;
+			
+			if (uiPageNumber != null) {
+				pageNumber = Integer.valueOf(uiPageNumber);
+			}
+			*/
+			listResult = this.placeService.listPlace(null, true, true, true, null, null);
+			if (OperationResult.isResultSucces(listResult)) {
+				List<Place> placeList = listResult.getObjectList();
+				if (placeList != null) {
+					for (Place place : placeList) {
+						String paramDistance = this.parameterService.getParameterValue(EnmParameter.CHANGE_LOCATION_DISTANCE.getId());
+						LocationService.changeCoordinates(place.getLocation(), Integer.parseInt(paramDistance));
+					}
+				}
+			} else {
+				listResult.setResultDesc("Place listing failed. Please try again later!");
+			}
+		} catch (Exception e) {
+			listResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
+			listResult.setResultDesc("Place listing failed. Please try again later!");
 		}
-		return new ResponseEntity<ListOperationResult<Place>>(listResult, httpStatus);
+		return new ResponseEntity<ListOperationResult<Place>>(listResult, HttpStatus.OK);
     }
 	
 	@RequestMapping(value = "/api/place/listuserplace", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
@@ -385,7 +419,7 @@ public class ApiPlaceController extends BaseApiController {
 			if (user != null) {
 				Place place = new Place();
 				place.setHostUserId(user.getId());
-				ListOperationResult<Place> listResult = this.placeService.listPlace(place, true, true, false);
+				ListOperationResult<Place> listResult = this.placeService.listPlace(place, true, true, false, null, null);
 				
 				List<Place> placeList = listResult.getObjectList();
 				Map<String, List<Place>> placeMap = new HashMap<>();

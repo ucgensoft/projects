@@ -17,7 +17,9 @@ public enum EnmParameter {
 	FACEBOOK_APP_ID(13, "FACEBOOK_APP_ID"),
 	GOOGLE_APP_ID(14, "GOOGLE_APP_ID"),
 	PLACE_SERVICE_FEE_RATE(15, "PLACE_SERVICE_FEE_RATE"),
-	PLACE_COMMISSION_FEE_RATE(16, "PLACE_COMMISSION_FEE_RATE");
+	PLACE_COMMISSION_FEE_RATE(16, "PLACE_COMMISSION_FEE_RATE"),
+	CHANGE_LOCATION_DISTANCE(17, "CHANGE_LOCATION_DISTANCE"),
+	PLACE_SEARCH_PAGE_SIZE(18, "PLACE_SEARCH_PAGE_SIZE");
 	
 	int id;
 	String name;
@@ -33,6 +35,17 @@ public enum EnmParameter {
 	EnmParameter(int id, String name) {
 		this.id = id;
 		this.name = name;
+	}
+	
+	public static EnmParameter getParameter(String name) {
+		if (name != null) {
+			for (EnmParameter parameter : EnmParameter.values()) {
+				if (parameter.getName().equals(name)) {
+					return parameter;
+				}
+			}
+		}
+		return null;
 	}
 	
 }

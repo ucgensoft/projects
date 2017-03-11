@@ -1,10 +1,6 @@
 package com.ucgen.letserasmus.library.parameter.service.impl;
 
-import java.sql.SQLException;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.stereotype.Service;
 
 import com.ucgen.letserasmus.library.parameter.dao.IParameterDao;
@@ -20,8 +16,7 @@ public class ParameterService implements IParameterService {
 		this.parameterDao = generalParametersDao;
 	}
 	
-	public String getParameterValue(Integer parameterId)
-		throws  DataAccessException, CannotGetJdbcConnectionException, SQLException, Exception {
+	public String getParameterValue(Integer parameterId) throws Exception {
 		return parameterDao.getParameterValue(parameterId);		
 	}
 	

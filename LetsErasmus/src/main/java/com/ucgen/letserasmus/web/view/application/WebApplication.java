@@ -344,4 +344,16 @@ public class WebApplication extends BaseController {
 		}		
 	}
 	
+	public String getParameterValue(String parameterName) {
+		try {
+			EnmParameter parameter = EnmParameter.getParameter(parameterName);
+			if (parameter != null) {
+				return this.parameterService.getParameterValue(parameter.getId());
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return null;
+	}
+	
 }

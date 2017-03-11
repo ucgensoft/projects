@@ -46,7 +46,7 @@ public class PlaceDao extends JdbcDaoSupport implements IPlaceDao{
 		ValueOperationResult<Place> operationResult = new ValueOperationResult<Place>();
 		Place place = new Place();
 		place.setId(id);
-		ListOperationResult<Place> listOperationResult = this.listPlace(place, true, true, true);
+		ListOperationResult<Place> listOperationResult = this.listPlace(place, true, true, true, null, null);
 		
 		operationResult.setResultCode(listOperationResult.getResultCode());
 		operationResult.setResultDesc(listOperationResult.getResultDesc());
@@ -267,7 +267,8 @@ public class PlaceDao extends JdbcDaoSupport implements IPlaceDao{
 	}
 
 	@Override
-	public ListOperationResult<Place> listPlace(Place place, boolean locationFlag, boolean photoFlag, boolean userFlag) {
+	public ListOperationResult<Place> listPlace(Place place, boolean locationFlag, boolean photoFlag, boolean userFlag, 
+			Integer pageSize, Integer pageNumber) {
 		ListOperationResult<Place> listOperationResult = new ListOperationResult<Place>();
 		StringBuilder sqlBuilder = new StringBuilder();
 		List<Object> argList = new ArrayList<Object>();
@@ -301,10 +302,28 @@ public class PlaceDao extends JdbcDaoSupport implements IPlaceDao{
 			argList.add(EnmEntityType.PLACE.getId());
 		}
 		
-		List<Place> fileList = super.getJdbcTemplate().query(sqlBuilder.toString(), argList.toArray(), placeRowMapper);		
+		if (pageSize != null && pageNumber != null) {
+			Integer offset = ((pageNumber - 1) * pageSize);
+			sqlBuilder.append(" LIMIT " + pageSize + " OFFSET " + offset);
+		}
 		
+		List<Place> placeList = super.getJdbcTemplate().query(sqlBuilder.toString(), argList.toArray(), placeRowMapper);		
+		
+		Integer totalRowCount = placeList.size();
+		
+		if (pageSize != null && pageNumber != null) {
+			int start = ((pageNumber - 1) * pageSize);
+			int end = start + pageSize;
+			List<Place> placeListPage = new ArrayList<Place>();
+			for (int i = start; i < end; i++) {
+				placeListPage.add(placeList.get(i));
+			}
+			placeList = placeListPage;
+		}
+			
 		listOperationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
-		listOperationResult.setObjectList(fileList);		
+		listOperationResult.setObjectList(placeList);
+		listOperationResult.setTotalSize(totalRowCount);
 		
 		return listOperationResult;
 	}

@@ -94,3 +94,7 @@ body, #mainWrapper {
 .clsRed {
 	color: red;
 }
+
+.clsDisabledGrey {
+	background-color : #f1f1f1;
+}

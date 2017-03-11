@@ -19,9 +19,10 @@ App.factory('placeService', ['$http', '$q', function($http, $q) {
 								return $q.reject(errResponse);
 							});
 				},
-				listPlace : function() {
+				
+				listPlace : function(pageNumber, callBack) {
 					var data = {
-
+						pageNumber : pageNumber
 					};
 					var config = {
 						params : data,
@@ -29,14 +30,20 @@ App.factory('placeService', ['$http', '$q', function($http, $q) {
 							'Accept' : 'application/json'
 						}
 					};
-					return $http.get(webApplicationUrlPrefix + '/api/place/list',
-									config).then(function(response) {
-								return response.data;
-							}, function(errResponse) {
-								console.error('Error while fetching places');
-								return $q.reject(errResponse);
-							});
+					
+					NProgress.start(3000, 5);
+					return $http.get(webApplicationUrlPrefix + '/api/place/list', config).then(function(response) {
+						NProgress.done(true);
+						var result = isResultSuccess(response.data, true);
+						if (result && callBack) {
+							callBack(response.data.objectList);
+						}
+					}, function(errResponse) {
+						DialogUtil.error('Error', errResponse, 'OK');
+					});
+					
 				},
+				
 				listUserPlaces : function(callBack) {
 					var data = {
 							

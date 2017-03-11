@@ -10,12 +10,15 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
       self.selectedPlaceName = null;
       self.minPrice = 0;
       self.maxPrice = 500;
+      self.currentPageIndex = 1;
+      self.totalPageNumber = 0;
       
       self.amentiesList = [];
       self.safetyAmentiesList = [];
       self.ruleList = [];
       
-      var originalPlaceList = [];
+      self.originalPlaceList = [];
+      self.searchList = null;
       self.placeList = [];
 
       initialize = function() {
@@ -41,7 +44,7 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
 		          //infoWindow.close();
 		        });
 			
-			self.listPlace(self.setPlaceList);
+			self.listPlace(self.displayPlaceList);
 			
 			$("#txtSearchPlace").geocomplete().bind("geocode:result",
 	      			function(event, result) {
@@ -105,127 +108,143 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
 	        self.basicSearch();
       };
       	
-		self.search = function() {
-	    	var startDate = $.datepicker.formatDate('d.m.yy', $(
-				"#txtStartDatePicker").datepicker("getDate"));
-	    	
-			var endDate = $.datepicker.formatDate('d.m.yy', $("#txtEndDatePicker")
-						.datepicker("getDate"));
-			
-			openWindow(webApplicationUrlPrefix + '/pages/SearchResult.xhtml' 
-					+ '?' + EnmUriParam.LOCATION + '=' + self.selectedPlaceName 
-					+ '&' + EnmUriParam.LATITUDE + '=' + self.selectedLat 
-					+ '&' + EnmUriParam.LONGITUDE + '=' + self.selectedLng 
-					+ "&" + EnmUriParam.CHECKIN_DATE + "=" + startDate 
-					+ "&" + EnmUriParam.CHECKOUT_DATE + "=" + endDate, true);
-			
-	      };
-	      
-	      self.basicSearch = function() {
-	    	var newPlaceList = [];
-	    	
-	    	for(var i = 0; i < originalPlaceList.length; i++) {
-	    		var place = originalPlaceList[i];
-	    		var isMatching = true;
-	    		if (place.price < self.minPrice || place.price > self.maxPrice) {
+      self.search = function() {
+    	var startDate = $.datepicker.formatDate('d.m.yy', $(
+			"#txtStartDatePicker").datepicker("getDate"));
+    	
+		var endDate = $.datepicker.formatDate('d.m.yy', $("#txtEndDatePicker")
+					.datepicker("getDate"));
+		
+		openWindow(webApplicationUrlPrefix + '/pages/SearchResult.xhtml' 
+				+ '?' + EnmUriParam.LOCATION + '=' + self.selectedPlaceName 
+				+ '&' + EnmUriParam.LATITUDE + '=' + self.selectedLat 
+				+ '&' + EnmUriParam.LONGITUDE + '=' + self.selectedLng 
+				+ "&" + EnmUriParam.CHECKIN_DATE + "=" + startDate 
+				+ "&" + EnmUriParam.CHECKOUT_DATE + "=" + endDate, true);
+		
+      };
+      
+      self.basicSearch = function() {
+    	var newPlaceList = [];
+    	
+    	for(var i = 0; i < self.originalPlaceList.length; i++) {
+    		var place = self.originalPlaceList[i];
+    		var isMatching = true;
+    		if (place.price < self.minPrice || place.price > self.maxPrice) {
+    			isMatching = false;
+    		}
+    		
+    		if (isMatching) {
+    			var placeTypeSelected = false;
+    			var isPlaceTypeMatching = false;
+	    		for(var x = 1; x < 4; x++) {
+	    			if($("#iconPlaceTypeId_" + x).hasClass('IconFilter-icon--enabled')) {
+	    				placeTypeSelected = true;
+    					if (place.placeTypeId == x) {
+    						isPlaceTypeMatching = true;
+    					}
+	    			}
+	    		}
+	    		if (placeTypeSelected && !isPlaceTypeMatching) {
 	    			isMatching = false;
 	    		}
-	    		
-	    		if (isMatching) {
-	    			var placeTypeSelected = false;
-		    		for(var x = 1; x < 10; x++) {
-		    			if ($("#iconPlaceTypeId_" + x).length > 0) {
-		    				if($("#iconPlaceTypeId_" + x).hasClass('IconFilter-icon--enabled')) {
-		    					if (place.placeTypeId != x) {
-		    						isMatching = false;
-		    						break;
-		    					}
-			    			}
-		    			} else {
-		    				break;
-		    			}
-		    		}
-	    		}
-	    		
-	    		if (isMatching) {
-	    			var guestNumber = $('#txtGuestNumber').val();
-	    			if (guestNumber != '' && parseInt(guestNumber) > place.guestNumber) {
-	    				isMatching = false;
-	    			}
-	    		}
-	    		
-	    		if (isMatching) {
-	    			var guestGender = $('#cmbGuestGender').val();
-	    			if (guestGender != '-1' && guestGender != place.guestGender) {
-	    				isMatching = false;
-	    			}
-	    		}
-	    		
-	    		if (isMatching) {
-	    			var bathroomType = $('#cmbBathroomType').val();
-	    			if (bathroomType != '-1' && parseInt(bathroomType) != place.bathroomType) {
-	    				isMatching = false;
-	    			}
-	    		}
-	    		
-	    		if (isMatching) {
-	    			var bedNumber = $('#txtBedNumber').val();
-	    			if (bedNumber != '' && parseInt(bedNumber) > place.bedNumber) {
-	    				isMatching = false;
-	    			}
-	    		}
-	    		
-	    		if (isMatching) {
-	    			for (var x = 0; x < self.amentiesList.length; x++) {
-			      		  var itemAmenties = self.amentiesList[x];
-			      		  if ($('#chb_' + itemAmenties.enumKey)[0].checked) {
-			      			if (place.amenties == null || place.amenties == '' 
-			      				|| place.amenties.indexOf(itemAmenties.enumKey) < 0) {
-			      				isMatching = false;
-			      				break;
-			      			}
-			      		  }
-			      	  }
-	    		}
-	    		
-	    		if (isMatching) {
-	    			for (var x = 0; x < self.safetyAmentiesList.length; x++) {
-			      		  var itemSafetyAmenties = self.safetyAmentiesList[x];
-			      		  if ($('#chb_' + itemSafetyAmenties.enumKey)[0].checked) {
-			      			if (place.amenties == null || place.amenties == '' 
-			      				|| place.amenties.indexOf(itemSafetyAmenties.enumKey) < 0) {
-			      				isMatching = false;
-			      				break;
-			      			}
-			      		  }
-			      	  }
-	    		}
-	    		
-	    		if (isMatching) {
-	    			for (var x = 0; x < self.ruleList.length; x++) {
-			      		  var itemRule = self.ruleList[x];
-			      		  if ($('#chb_' + itemRule.enumKey)[0].checked) {
-			      			if (place.rules == null || place.rules == '' 
-			      				|| place.rules.indexOf(itemRule.enumKey) < 0) {
-			      				isMatching = false;
-			      				break;
-			      			}
-			      		  }
-			      	  }
-	    		}
-	    		
-	    		if (isMatching) {
-	    			newPlaceList.push(place);
-	    		}
-	    	}
-	    	
-	    	self.placeList = newPlaceList;
-	    	//refreshAngularScope($scope);
-	    	hideExtendedSearchFields();
-	    	commonService.fakeAjaxCall(self.refreshMap);
-	      };
+    		}
+    		
+    		if (isMatching) {
+    			var guestNumber = $('#txtGuestNumber').val();
+    			if (guestNumber != '' && parseInt(guestNumber) > place.guestNumber) {
+    				isMatching = false;
+    			}
+    		}
+    		
+    		if (isMatching) {
+    			var guestGender = $('#cmbGuestGender').val();
+    			if (guestGender != '-1' && guestGender != place.guestGender) {
+    				isMatching = false;
+    			}
+    		}
+    		
+    		if (isMatching) {
+    			var bathroomType = $('#cmbBathroomType').val();
+    			if (bathroomType != '-1' && parseInt(bathroomType) != place.bathroomType) {
+    				isMatching = false;
+    			}
+    		}
+    		
+    		if (isMatching) {
+    			var bedNumber = $('#txtBedNumber').val();
+    			if (bedNumber != '' && parseInt(bedNumber) > place.bedNumber) {
+    				isMatching = false;
+    			}
+    		}
+    		
+    		if (isMatching) {
+    			for (var x = 0; x < self.amentiesList.length; x++) {
+		      		  var itemAmenties = self.amentiesList[x];
+		      		  if ($('#chb_' + itemAmenties.enumKey)[0].checked) {
+		      			if (place.amenties == null || place.amenties == '' 
+		      				|| place.amenties.indexOf(itemAmenties.enumKey) < 0) {
+		      				isMatching = false;
+		      				break;
+		      			}
+		      		  }
+		      	  }
+    		}
+    		
+    		if (isMatching) {
+    			for (var x = 0; x < self.safetyAmentiesList.length; x++) {
+		      		  var itemSafetyAmenties = self.safetyAmentiesList[x];
+		      		  if ($('#chb_' + itemSafetyAmenties.enumKey)[0].checked) {
+		      			if (place.amenties == null || place.amenties == '' 
+		      				|| place.amenties.indexOf(itemSafetyAmenties.enumKey) < 0) {
+		      				isMatching = false;
+		      				break;
+		      			}
+		      		  }
+		      	  }
+    		}
+    		
+    		if (isMatching) {
+    			for (var x = 0; x < self.ruleList.length; x++) {
+		      		  var itemRule = self.ruleList[x];
+		      		  if ($('#chb_' + itemRule.enumKey)[0].checked) {
+		      			if (place.rules == null || place.rules == '' 
+		      				|| place.rules.indexOf(itemRule.enumKey) < 0) {
+		      				isMatching = false;
+		      				break;
+		      			}
+		      		  }
+		      	  }
+    		}
+    		
+    		if (isMatching) {
+    			newPlaceList.push(place);
+    		}
+    	}
+    	
+    	self.searchList = newPlaceList;
+    	self.currentPageIndex = 1;
+    	self.displayPlaceList();
+    	self.hideExtendedSearchFields();
+    	commonService.fakeAjaxCall(self.refreshMap);
+      };
 
-	      self.validateSearch = function() {
+      self.setCurrentPage = function(index) {
+    	  if (index > 0 && index <= self.totalPageNumber) {
+    		  self.currentPageIndex = index;
+    		  self.displayPlaceList();
+    	  }
+      };
+      
+      self.changeCurrentPage = function(changeAmount) {
+    	  var index = self.currentPageIndex + changeAmount;
+    	  if (index > 0 && index <= self.totalPageNumber) {
+    		  self.currentPageIndex = index;
+    		  self.displayPlaceList();
+    	  }
+      };
+      
+      self.validateSearch = function() {
 	      	var startDate = $.datepicker.formatDate('d.m.yy', $("#txtStartDatePicker")
 	      			.datepicker("getDate"));
 	      	var endDate = $.datepicker.formatDate('d.m.yy', $("#txtEndDatePicker")
@@ -252,9 +271,28 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
 				$("#txtStartDatePicker").focus()
 			}, 100);
 	    };
+	    
+	  self.getOriginalPlaceList = function() {
+		  return (self.searchList == null ? self.originalPlaceList : self.searchList);
+	  };
         
-	  self.setPlaceList = function(list) {
-		  self.placeList = list;
+	  self.displayPlaceList = function() {
+		  //self.currentPageIndex = 1;
+		  var tmpPlaceList = self.getOriginalPlaceList();
+		  if (tmpPlaceList.length > searchResultPageSize) {
+			  var start = (self.currentPageIndex - 1) * searchResultPageSize;
+			  var end = start + searchResultPageSize;
+			  
+			  self.placeList = [];
+			  for(var i = start; i < end; i++) {
+				  self.placeList.push(tmpPlaceList[i]);
+			  }
+		  } else {
+			  self.placeList = tmpPlaceList;
+		  }
+		  
+		  self.totalPageNumber = Math.ceil(tmpPlaceList.length / searchResultPageSize);
+		  
 		  setTimeout(function() {
 			  self.refreshMap();
 		  }, 500);
@@ -308,15 +346,16 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
       }
 	  
 	  self.listPlace = function(fn) {
-    	  placeService.listPlace()
-              .then(function(operationResult) {
-            	  		originalPlaceList = operationResult.objectList;
-            	  		self.setPlaceList(operationResult.objectList)
-              		},
-					function(errResponse){
-						console.error('Error while fetching Portfolio');
-					}
-  			      );
+    	  placeService.listPlace(null, 
+    			  function(resultPlaceList) {
+			  	  		self.originalPlaceList = resultPlaceList;
+				  		self.currentPageIndex = 1;
+				  		self.searchList = null;
+				  		if (fn) {
+				  			fn();
+				  		}
+  				  }
+    	 );
       };
       
       self.listPhoto = function(placeId, fn) {
@@ -330,22 +369,23 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
   			      );
       };
       
-      showExtendedSearchFields = function() {
-		document.getElementById("divExtendedSearchFields").style.display = "";
-		document.getElementById("filterToolBarId_Extended").style.display = "";
+     self.showExtendedSearchFields = function() {
 
-		document.getElementById("filterToolBarId").style.display = "none";
-		document.getElementById("searchResultsId").style.display = "none";
-		document.getElementById("divPagination").style.display = "none";
+    	  $('#divExtendedSearchFields').removeClass('hidden-force');
+    	  $('#filterToolBarId_Extended').removeClass('hidden-force');
+
+    	  $('#filterToolBarId').addClass('hidden-force');
+    	  $('#searchResultsId').addClass('hidden-force');
+    	  $('#divPagination').addClass('hidden-force');
 	};
 
-	hideExtendedSearchFields = function() {
-		document.getElementById("divExtendedSearchFields").style.display = "none";
-		document.getElementById("filterToolBarId_Extended").style.display = "none";
-
-		document.getElementById("filterToolBarId").style.display = "";
-		document.getElementById("searchResultsId").style.display = "";
-		document.getElementById("divPagination").style.display = "";
+	self.hideExtendedSearchFields = function() {
+		$('#divExtendedSearchFields').addClass('hidden-force');
+  	  	$('#filterToolBarId_Extended').addClass('hidden-force');
+		
+  	  	$('#filterToolBarId').removeClass('hidden-force');
+  	  	$('#searchResultsId').removeClass('hidden-force');
+  	  	$('#divPagination').removeClass('hidden-force');
 	};
 	
 	self.onFilterElementClick = function(element, selectedClassName) {
@@ -375,13 +415,21 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
 	
 	self.getPlaceTypeDescription = function(place) {
 		if (place.placeTypeId == 1) {
-			return "Shared Flat";
+			return "Entire Place";
 		} else if (place.placeTypeId == 2) {
-			return "Host Family";
+			return "Private Room";
 		} else if (place.placeTypeId == 3) {
-			return "Student Hall";
+			return "Shared Room";
+		}
+	};
+	
+	self.getPlaceTypeCss = function(place) {
+		if (place.placeTypeId == 1) {
+			return "icon-entire-place";
+		} else if (place.placeTypeId == 2) {
+			return "icon-private-room";
 		} else if (place.placeTypeId == 3) {
-			return "Full Apartment";
+			return "icon-shared-room";
 		}
 	};
 	
@@ -407,6 +455,10 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
 	        }
 	        map.customMarkerMap = [];
 		}
+      };
+      
+      self.getCurrencySymbol = function(currencyId) {
+    	  return getCurrencySymbol(currencyId);
       };
       
       self.animateMarker = function (placeId, animateFlag) {

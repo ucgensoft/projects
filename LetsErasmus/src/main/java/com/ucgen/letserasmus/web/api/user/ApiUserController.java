@@ -1150,7 +1150,7 @@ public class ApiUserController extends BaseApiController {
 		// Place records are read from db
 		Place place = new Place();
 		place.setHostUserId(user.getId());
-		ListOperationResult<Place> placeListResult = this.placeService.listPlace(place, false, false, false);
+		ListOperationResult<Place> placeListResult = this.placeService.listPlace(place, false, false, false, null, null);
 		user.setPlaceList(placeListResult.getObjectList());
 		if (user.getPlaceList() != null) {
 			user.setPlaceListingCount(user.getPlaceList().size());

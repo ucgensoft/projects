@@ -17,6 +17,6 @@ public interface IPlaceService {
 	
 	OperationResult updatePlace(Place place, FileModel coverPhoto, List<FileModel> newPhotoList, List<Long> deletePhotoList) throws OperationResultException;
 	
-	ListOperationResult<Place> listPlace(Place place, boolean locationFlag, boolean photoFlag, boolean userFlag);
+	ListOperationResult<Place> listPlace(Place place, boolean locationFlag, boolean photoFlag, boolean userFlag, Integer pageSize, Integer pageNumber);
 
 }

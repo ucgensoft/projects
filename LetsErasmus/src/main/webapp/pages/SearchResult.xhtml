@@ -29,283 +29,285 @@
 	        .jssora02r.jssora02rds { background-position: -63px -33px; opacity: .3; pointer-events: none; }
 	        
 	    </style>
-		
+		<script>
+			var searchResultPageSize = #{webApplication.getParameterValue("PLACE_SEARCH_PAGE_SIZE")};
+		</script>
 	</ui:define>
 
 	<ui:define name="body">
-		<h:form id="mainSearchForm">
-			<div id="containerPage">
-				<div class="SearchApp">
-					<div id="filterResultId" class="FilterResult">
-						<section class="ListFilters">
-						<div class="SearchTitle">
-							<h1>Housing Results in {{ctrl.selectedPlaceName}}</h1>
+		
+		<div id="containerPage">
+			<div class="SearchApp">
+				<div id="filterResultId" class="FilterResult">
+					<section class="ListFilters">
+					<div class="SearchTitle">
+						<h1>Housing Results in {{ctrl.selectedPlaceName}}</h1>
+					</div>
+					<div class="MainFilter">
+						<p class="MainFilter-title u-filterLabel">Destination</p>
+						<div class="SearchPlaceBox">
+							<div class="SearchPlaceBox-container">
+								<div class="SearchPlaceBoxLabelInside SearchPlaceBox-labelInside">
+									<icon class="icon-location SearchPlaceBox-labelInside-icon"></icon>
+									<div class="SearchPlaceBoxLabelInside-label" title="{{ctrl.selectedPlaceName}}">{{ctrl.selectedPlaceName}}</div>
+								</div>
+								<input id="txtSearchPlace" class="SearchPlaceBox-input" value=""
+									placeholder="Search by university or city"/>
+								<div class="SearchPlaceBox-close CloseButton"
+										style="cursor: pointer;">×</div>
+							</div>
 						</div>
-						<div class="MainFilter">
-							<p class="MainFilter-title u-filterLabel">Destination</p>
-							<div class="SearchPlaceBox">
-								<div class="SearchPlaceBox-container">
-									<div class="SearchPlaceBoxLabelInside SearchPlaceBox-labelInside">
-										<icon class="icon-location SearchPlaceBox-labelInside-icon"></icon>
-										<div class="SearchPlaceBoxLabelInside-label" title="{{ctrl.selectedPlaceName}}">{{ctrl.selectedPlaceName}}</div>
-									</div>
-									<input id="txtSearchPlace" class="SearchPlaceBox-input" value=""
-										placeholder="Search by university or city"/>
-									<div class="SearchPlaceBox-close CloseButton"
-											style="cursor: pointer;">×</div>
-								</div>
+						<div style="height: 30px; margin-top:2px">
+							<div class="DateInput" style="height: 30px;">
+								<input type="text" id="txtStartDatePicker" class="DateInput__input"
+									placeholder="Start date" readonly="true"/> 
 							</div>
-							<div style="height: 30px; margin-top:2px">
-								<div class="DateInput" style="height: 30px;">
-									<input type="text" id="txtStartDatePicker" class="DateInput__input"
-										placeholder="Start date" readonly="true"/> 
-								</div>
-								
-								<div class="DateInput" style="height: 30px;">
-									<input type="text" id="txtEndDatePicker" class="DateInput__input"
-										placeholder="End date" readonly="true"/> 
-								</div>
+							
+							<div class="DateInput" style="height: 30px;">
+								<input type="text" id="txtEndDatePicker" class="DateInput__input"
+									placeholder="End date" readonly="true"/> 
 							</div>
-							<input type="button" class="FilterToolBar-showExtended u-button" id="btnSearch"
-								value="Search" ng-click="ctrl.search();" style="height: 30px; margin-top: 2px; margin-left: 5px">
-							</input>
+						</div>
+						<input type="button" class="FilterToolBar-showExtended u-button" id="btnSearch"
+							value="Search" ng-click="ctrl.search();" style="height: 30px; margin-top: 2px; margin-left: 5px">
+						</input>
 
-						</div>
-						<div class="AccomodationFilter u-borderTop">
-							<p class="AccomodationFilter-title u-filterLabel"
-								data-reactid="499">Housing Type</p>
-							<div class="AccomodationFilter-element">
-								<div class="IconFilter u-textCenter">
-									<icon id="iconPlaceTypeId_1" class="IconFilter-icon icon-entire-place"
-										ng-click="ctrl.onFilterElementClick($event, 'IconFilter-icon--enabled'); ctrl.basicSearch();"></icon>
-									<p >Entire Place</p>
-								</div>
-								<div class="IconFilter u-textCenter">
-									<icon id="iconPlaceTypeId_2" class="IconFilter-icon icon-private-room"
-										ng-click="ctrl.onFilterElementClick($event, 'IconFilter-icon--enabled'); ctrl.basicSearch();"></icon>
-									<p>Private Room</p>
-								</div>
-								<div class="IconFilter u-textCenter">
-									<icon id="iconPlaceTypeId_3" class="IconFilter-icon icon-shared-room"
-										ng-click="ctrl.onFilterElementClick($event, 'IconFilter-icon--enabled'); ctrl.basicSearch();"></icon>
-									<p>Shared Room</p>
-								</div>
+					</div>
+					<div class="AccomodationFilter u-borderTop">
+						<p class="AccomodationFilter-title u-filterLabel"
+							data-reactid="499">Housing Type</p>
+						<div class="AccomodationFilter-element">
+							<div class="IconFilter u-textCenter">
+								<icon id="iconPlaceTypeId_1" class="IconFilter-icon icon-entire-place"
+									ng-click="ctrl.onFilterElementClick($event, 'IconFilter-icon--enabled'); ctrl.basicSearch();"></icon>
+								<p >Entire Place</p>
 							</div>
-						</div>
-						<div id="PriceFilterId" class="PriceFilter u-borderTop">
-							<div class="PriceFilter-title u-filterLabel">Budget</div>
-							<div class="PriceFilter-box">
-								<span id="spanMinPrice" class="PriceFilter-minValue">0</span>
-								<div id="divPriceSlider" class="PriceFilter-boxSlider">
-									
-								</div>
-								<span id="spanMaxPrice" class="PriceFilter-maxValue">500</span>
+							<div class="IconFilter u-textCenter">
+								<icon id="iconPlaceTypeId_2" class="IconFilter-icon icon-private-room"
+									ng-click="ctrl.onFilterElementClick($event, 'IconFilter-icon--enabled'); ctrl.basicSearch();"></icon>
+								<p>Private Room</p>
 							</div>
-						</div>
-						<div id="divExtendedSearchFields" style="width: 100%; display: none;">
-							<div class="RoomFilters u-borderTop">
-								<p class="RoomFilters-title u-filterLabel">Guest</p>
-								<div class="filter-element-4">
-									<div>
-										<span>Number</span>
-									</div>
-									<div class="top-2">
-										<input id="txtGuestNumber" type="number" min="0" class="form-input" placeholder="Guest Number" />
-									</div>
-								</div>
-								<div class="filter-element-4">
-									<div>
-										<span>Gender</span>
-									</div>
-									<div class="top-2">
-										<select id="cmbGuestGender" class="">
-											<option selected="" value="-1" disabled="">Select One</option>
-											<option value="M">Male</option>
-											<option value="F">Female</option>
-											<option value="A">No Preference</option>
-										</select>
-									</div>
-								</div>
+							<div class="IconFilter u-textCenter">
+								<icon id="iconPlaceTypeId_3" class="IconFilter-icon icon-shared-room"
+									ng-click="ctrl.onFilterElementClick($event, 'IconFilter-icon--enabled'); ctrl.basicSearch();"></icon>
+								<p>Shared Room</p>
 							</div>
-							<div class="RoomFilters u-borderTop">
-								<p class="RoomFilters-title u-filterLabel">Room</p>
-								<div class="filter-element-4">
-									<label class="h4 text-gray text-normal">
-										<span>Bathroom Type</span>
-									</label>
-									<div class="u-select-wrapper top-2">
-										<select id="cmbBathroomType">
-											<option selected="" value="-1" disabled="">Select One</option>
-											<option value="1">Private</option>
-											<option value="2">Shared</option>
-										</select>
-									</div>
-								</div>
-								<div class="filter-element-4">
-									<div>
-										<span>Number Of Beds</span>
-									</div>
-									<div class="top-2">
-										<input id="txtBedNumber" type="number" min="0" class="form-input" placeholder="Bed Number" />
-									</div>
-								</div>
-							</div>
-							<div class="FeaturesFilters  u-borderTop">
-								<p class="FeaturesFilters-title u-filterLabel">Amenties</p>
-								<div class="FeaturesFilters-element">
-									<div ng-repeat="a in ctrl.amentiesList" class="AmenityFilterItem top-2 filter-element-4">
-										<input type="checkbox" id="chb_{{a.enumKey}}"
-											class="AmenityFilterItem-checkbox u-checkbox" value="on" /><span
-											class="AmenityFilterItem-text">{{a.uiLabel}}</span>
-										<!--<icon class="AmenityFilterItem-icon"></icon> -->
-									</div>
-								</div>
-							</div>
-							<div class="FeaturesFilters  u-borderTop">
-								<p class="FeaturesFilters-title u-filterLabel">Safety Amenties</p>
-								<div class="FeaturesFilters-element">
-									<div ng-repeat="r in ctrl.safetyAmentiesList" class="AmenityFilterItem top-2 filter-element-4">
-										<input type="checkbox" id="chb_{{r.enumKey}}"
-											class="AmenityFilterItem-checkbox u-checkbox" value="on" /><span
-											class="AmenityFilterItem-text">{{r.uiLabel}}</span>
-										<!--<icon class="AmenityFilterItem-icon"></icon> -->
-									</div>
-								</div>
-							</div>
-							<div class="FeaturesFilters  u-borderTop">
-								<p class="FeaturesFilters-title u-filterLabel">Rules</p>
-								<div class="FeaturesFilters-element">
-									<div ng-repeat="r in ctrl.ruleList" class="AmenityFilterItem top-2 filter-element-4">
-										<input type="checkbox" id="chb_{{r.enumKey}}"
-											class="AmenityFilterItem-checkbox u-checkbox" value="on" /><span
-											class="AmenityFilterItem-text">{{r.uiLabel}}</span>
-										<!--<icon class="AmenityFilterItem-icon"></icon> -->
-									</div>
-								</div>
-							</div>
-						</div>
-						</section>
-						<div id="filterToolBarId_Extended"
-							class="FilterToolBar u-borderTop FilterToolBar--expanded"
-							data-reactid="532" style="display: none">
-							<input type="button" class="FilterToolBar-cancel u-button"
-								onclick="hideExtendedSearchFields();" value="Cancel" />
-							<input type="button" class="FilterToolBar-apply u-button" value="Apply" ng-click="ctrl.basicSearch()"/>
-						</div>
-						<div id="filterToolBarId" class="FilterToolBar u-borderTop"
-							data-reactid="532">
-							<button class="FilterToolBar-showExtended u-button icon icon-filter"
-								data-reactid="533"
-								onclick="showExtendedSearchFields(); return false;">More
-								filters</button>
-							<div class="SearchCounter" data-reactid="534">
-								<h2 data-reactid="535">
-									Show <b>7</b> of <b>7</b> rooms available in <strong>{{ctrl.selectedPlaceName}}</strong>
-								</h2>
-							</div>
-						</div>
-						<section id="searchResultsId" class="SearchResults"> 
-							<article ng-repeat="p in ctrl.placeList" id="articleProduct_{{p.id}}" class="ProductCard"
-								ng-mouseover="ctrl.animateMarker(p.id, true)" ng-mouseleave="ctrl.animateMarker(p.id, false)">
-								<div class="ProductCard-picture">
-									<section class="image-gallery"> 
-											<div id="divImageGalleryContent_{{p.id}}"
-												class="image-gallery-content">
-												<span class="image-gallery-left-nav" ng-click="ctrl.changePhoto(p, -1)"></span>
-												<span class="image-gallery-right-nav" ng-click="ctrl.changePhoto(p, 1)"></span>
-												<a href="#" ng-click="ctrl.openPlaceDetailWindow(p.id)">
-													<div>
-														<div class="image-gallery-slides">
-															<div class="image-gallery-slide center"
-																style="">
-																<img id="imgPlaceSlider_{{p.id}}" src="{{ctrl.generatePlacePhotoUrl(p.id, p.coverPhoto.id, 'small')}}" 
-																	role="presentation" itemprop="image" />
-																<input type="hidden" id="hiddenPlaceSliderPhotoIndex_{{p.id}}" value="0" />
-																<!-- 
-																<span ng-click="ctrl.changePhoto(p, -1)" class="jssora02l" style="top:45%;left:8px;"></span>
-				       											<span ng-click="ctrl.changePhoto(p, 1)" class="jssora02r" style="top:45%;right:8px;"></span>
-				       											 -->
-															</div>
-														</div>
-													</div>
-												</a>
-												<div class="ProductCardMainProperties">
-													<div class="ProductCardMainProperties-type">
-														<icon class="ProductCardMainProperties-type-icon center beicon-complete-apartment">
-														</icon>
-														<span>{{ctrl.getPlaceTypeDescription(p)}}</span>
-													</div>
-													<div class="ProductCardMainProperties-info">
-														<span class="ProductCardMainProperties-info-title">{{p.description}}</span>
-													</div>
-												</div>
-												<div class="FavouriteItem">
-													<div id="favouriteIcon_{{p.id}}"
-														class="FavouriteItem-icon beicon-heart {{(ctrl.isPlaceFavorite(p.id) ? 'FavouriteItem-icon--active' : '')}}"
-														ng-click="ctrl.onFavoriteIconClicked(p.id)">
-													</div>
-												</div>
-											</div>
-									</section>
-									<div class="BoxPrice" itemscope=""
-										itemtype="http://schema.org/Offer">
-										<div class="BoxPrice-container">
-											<span class="BoxPrice-price">{{ctrl.getPriceText(p)}}</span>
-											<span class="BoxPrice-separator">/</span>
-											<div class="BoxPrice-period">day</div>
-										</div>
-										<div class="BoxPrice-billsIncluded">
-											<span class="BoxPrice-billsIncluded-label">{{ctrl.getBillsDescription(p)}}</span>
-										</div>
-									</div>
-								</div>
-								<div class="ProductCardExtraInfoLine">
-									<div class="ProductCardExtraInfoLine-distance">
-										<icon class="beicon-pin"></icon>
-										<span id="spanPlaceDistance_{{p.id}}" class="ProductCardExtraInfoLine-distance--km">{{p.distance}}</span>
-									</div>
-									<div class="ProductCardExtraInfoLine-time">
-									</div>
-								</div>
-							</article> 
-						</section>
-						<div id="divPagination" class="Pagination" data-reactid="817">
-							<a href="#"
-								class="Pagination-element Pagination-element--specialButton">«</a>
-								<a href="#"
-								class="Pagination-element Pagination-element--specialButton">‹</a>
-								<a href="#"
-								class="Pagination-element Pagination-element--selected">1</a>
-								<a href="#"
-								class="Pagination-element Pagination-element--specialButton">›</a>
-								<a href="#"
-								class="Pagination-element Pagination-element--specialButton">»</a>
 						</div>
 					</div>
-					<section id="searchMapId" class="SearchMap">
-					<div id="mapa" class="mapa" itemscope=""
-						itemtype="http://schema.org/Map" style="position: relative; overflow: hidden;">
-						<div
-							style="height: 100%; width: 100%; position: absolute; background-color: rgb(229, 227, 223);">
-							<div class="gm-style" style="height: 100%; width: 100%;">
-								<div id="divMap" style="height: 100%; width: 100%;"></div>
+					<div id="PriceFilterId" class="PriceFilter u-borderTop">
+						<div class="PriceFilter-title u-filterLabel">Budget</div>
+						<div class="PriceFilter-box">
+							<span id="spanMinPrice" class="PriceFilter-minValue">0</span>
+							<div id="divPriceSlider" class="PriceFilter-boxSlider">
+								
+							</div>
+							<span id="spanMaxPrice" class="PriceFilter-maxValue">500</span>
+						</div>
+					</div>
+					<div id="divExtendedSearchFields" style="width: 100%;" class="hidden-force">
+						<div class="RoomFilters u-borderTop">
+							<p class="RoomFilters-title u-filterLabel">Guest</p>
+							<div class="filter-element-4">
+								<div>
+									<span>Number</span>
+								</div>
+								<div class="top-2">
+									<input id="txtGuestNumber" type="number" min="0" class="form-input" placeholder="Guest Number" />
+								</div>
+							</div>
+							<div class="filter-element-4">
+								<div>
+									<span>Gender</span>
+								</div>
+								<div class="top-2">
+									<select id="cmbGuestGender" class="">
+										<option selected="" value="-1" disabled="">Select One</option>
+										<option value="M">Male</option>
+										<option value="F">Female</option>
+										<option value="A">No Preference</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="RoomFilters u-borderTop">
+							<p class="RoomFilters-title u-filterLabel">Room</p>
+							<div class="filter-element-4">
+								<label class="h4 text-gray text-normal">
+									<span>Bathroom Type</span>
+								</label>
+								<div class="u-select-wrapper top-2">
+									<select id="cmbBathroomType">
+										<option selected="" value="-1" disabled="">Select One</option>
+										<option value="1">Private</option>
+										<option value="2">Shared</option>
+									</select>
+								</div>
+							</div>
+							<div class="filter-element-4">
+								<div>
+									<span>Number Of Beds</span>
+								</div>
+								<div class="top-2">
+									<input id="txtBedNumber" type="number" min="0" class="form-input" placeholder="Bed Number" />
+								</div>
+							</div>
+						</div>
+						<div class="FeaturesFilters  u-borderTop">
+							<p class="FeaturesFilters-title u-filterLabel">Amenties</p>
+							<div class="FeaturesFilters-element">
+								<div ng-repeat="a in ctrl.amentiesList" class="AmenityFilterItem top-2 filter-element-4">
+									<input type="checkbox" id="chb_{{a.enumKey}}"
+										class="AmenityFilterItem-checkbox u-checkbox" value="on" /><span
+										class="AmenityFilterItem-text">{{a.uiLabel}}</span>
+									<!--<icon class="AmenityFilterItem-icon"></icon> -->
+								</div>
+							</div>
+						</div>
+						<div class="FeaturesFilters  u-borderTop">
+							<p class="FeaturesFilters-title u-filterLabel">Safety Amenties</p>
+							<div class="FeaturesFilters-element">
+								<div ng-repeat="r in ctrl.safetyAmentiesList" class="AmenityFilterItem top-2 filter-element-4">
+									<input type="checkbox" id="chb_{{r.enumKey}}"
+										class="AmenityFilterItem-checkbox u-checkbox" value="on" /><span
+										class="AmenityFilterItem-text">{{r.uiLabel}}</span>
+									<!--<icon class="AmenityFilterItem-icon"></icon> -->
+								</div>
+							</div>
+						</div>
+						<div class="FeaturesFilters  u-borderTop">
+							<p class="FeaturesFilters-title u-filterLabel">Rules</p>
+							<div class="FeaturesFilters-element">
+								<div ng-repeat="r in ctrl.ruleList" class="AmenityFilterItem top-2 filter-element-4">
+									<input type="checkbox" id="chb_{{r.enumKey}}"
+										class="AmenityFilterItem-checkbox u-checkbox" value="on" /><span
+										class="AmenityFilterItem-text">{{r.uiLabel}}</span>
+									<!--<icon class="AmenityFilterItem-icon"></icon> -->
+								</div>
 							</div>
 						</div>
 					</div>
 					</section>
-					<div style="display: none">
-						<div ng-repeat="p in ctrl.placeList" id="divMapMarker_{{p.id}}" style="position: absolute; z-index: 1;">
-							<div class="SearchMapMarker">
-								<div class="SearchMapMarker-price">{{p.price}}€</div>
+					<div id="filterToolBarId_Extended"
+						class="FilterToolBar u-borderTop FilterToolBar--expanded hidden-force">
+						<input type="button" class="FilterToolBar-cancel u-button"
+							ng-click="ctrl.hideExtendedSearchFields();" value="Cancel" />
+						<input type="button" class="FilterToolBar-apply u-button" value="Apply" ng-click="ctrl.basicSearch()"/>
+					</div>
+					<div id="filterToolBarId" class="FilterToolBar u-borderTop"
+						data-reactid="532">
+						<button class="FilterToolBar-showExtended u-button icon icon-filter"
+							data-reactid="533"
+							ng-click="ctrl.showExtendedSearchFields();">More
+							filters</button>
+						<div class="SearchCounter" data-reactid="534">
+							<h2 data-reactid="535" ng-if="ctrl.searchList == null">
+								Show <b>{{ctrl.placeList.length}}</b> of <b>{{ctrl.getOriginalPlaceList().length}}</b> rooms available in <strong>{{ctrl.selectedPlaceName}}</strong>
+							</h2>
+							<h2 data-reactid="535" ng-if="ctrl.searchList != null">
+								Show <b>{{ctrl.placeList.length}}</b> of <b>{{ctrl.getOriginalPlaceList().length}}</b> rooms available
+							</h2>
+						</div>
+					</div>
+					<section id="searchResultsId" class="SearchResults"> 
+						<article ng-repeat="p in ctrl.placeList" id="articleProduct_{{p.id}}" class="ProductCard"
+							ng-mouseover="ctrl.animateMarker(p.id, true)" ng-mouseleave="ctrl.animateMarker(p.id, false)">
+							<div class="ProductCard-picture">
+								<section class="image-gallery"> 
+										<div id="divImageGalleryContent_{{p.id}}"
+											class="image-gallery-content">
+											<span class="image-gallery-left-nav" ng-click="ctrl.changePhoto(p, -1)"></span>
+											<span class="image-gallery-right-nav" ng-click="ctrl.changePhoto(p, 1)"></span>
+											<a href="#" ng-click="ctrl.openPlaceDetailWindow(p.id)">
+												<div>
+													<div class="image-gallery-slides">
+														<div class="image-gallery-slide center"
+															style="">
+															<img id="imgPlaceSlider_{{p.id}}" src="{{ctrl.generatePlacePhotoUrl(p.id, p.coverPhoto.id, 'small')}}" 
+																role="presentation" itemprop="image" />
+															<input type="hidden" id="hiddenPlaceSliderPhotoIndex_{{p.id}}" value="0" />
+															<!-- 
+															<span ng-click="ctrl.changePhoto(p, -1)" class="jssora02l" style="top:45%;left:8px;"></span>
+			       											<span ng-click="ctrl.changePhoto(p, 1)" class="jssora02r" style="top:45%;right:8px;"></span>
+			       											 -->
+														</div>
+													</div>
+												</div>
+											</a>
+											<div class="ProductCardMainProperties">
+												<div class="ProductCardMainProperties-type">
+													<icon class="ProductCardMainProperties-type-icon center {{ctrl.getPlaceTypeCss(p)}}">
+													</icon>
+													<span>{{ctrl.getPlaceTypeDescription(p)}}</span>
+												</div>
+												<div class="ProductCardMainProperties-info">
+													<span class="ProductCardMainProperties-info-title">{{p.description}}</span>
+												</div>
+											</div>
+											<div class="FavouriteItem">
+												<div id="favouriteIcon_{{p.id}}"
+													class="FavouriteItem-icon beicon-heart {{(ctrl.isPlaceFavorite(p.id) ? 'FavouriteItem-icon--active' : '')}}"
+													ng-click="ctrl.onFavoriteIconClicked(p.id)">
+												</div>
+											</div>
+										</div>
+								</section>
+								<div class="BoxPrice" itemscope=""
+									itemtype="http://schema.org/Offer">
+									<div class="BoxPrice-container">
+										<span class="BoxPrice-price">{{ctrl.getPriceText(p)}}</span>
+										<span class="BoxPrice-separator">/</span>
+										<div class="BoxPrice-period">Month</div>
+									</div>
+									<div class="BoxPrice-billsIncluded">
+										<span class="BoxPrice-billsIncluded-label">{{ctrl.getBillsDescription(p)}}</span>
+									</div>
+								</div>
 							</div>
+							<div class="ProductCardExtraInfoLine">
+								<div class="ProductCardExtraInfoLine-distance">
+									<icon class="beicon-pin"></icon>
+									<span id="spanPlaceDistance_{{p.id}}" class="ProductCardExtraInfoLine-distance--km">{{p.distance}}</span>
+								</div>
+								<div class="ProductCardExtraInfoLine-time">
+								</div>
+							</div>
+						</article> 
+					</section>
+					<div id="divPagination" class="Pagination" data-reactid="817" ng-if="ctrl.totalPageNumber > 1">
+						<button class="Pagination-element Pagination-element--specialButton {{ctrl.currentPageIndex == 1 ? 'clsDisabledGrey' : ''}}" 
+							ng-click="ctrl.setCurrentPage(1)">«</button>
+						<button class="Pagination-element Pagination-element--specialButton {{ctrl.currentPageIndex == 1 ? 'clsDisabledGrey' : ''}}"
+							ng-click="ctrl.changeCurrentPage(-1)">‹</button>
+						<button class="Pagination-element Pagination-element--selected">{{ctrl.currentPageIndex}}</button>
+						<button class="Pagination-element Pagination-element--specialButton {{ctrl.currentPageIndex == ctrl.totalPageNumber ? 'clsDisabledGrey' : ''}}" 
+							ng-click="ctrl.changeCurrentPage(1)">›</button>
+						<button class="Pagination-element Pagination-element--specialButton {{ctrl.currentPageIndex == ctrl.totalPageNumber ? 'clsDisabledGrey' : ''}}" 
+							ng-click="ctrl.setCurrentPage(ctrl.totalPageNumber)">»</button>
+					</div>
+				</div>
+				<section id="searchMapId" class="SearchMap">
+				<div id="mapa" class="mapa" itemscope=""
+					itemtype="http://schema.org/Map" style="position: relative; overflow: hidden;">
+					<div
+						style="height: 100%; width: 100%; position: absolute; background-color: rgb(229, 227, 223);">
+						<div class="gm-style" style="height: 100%; width: 100%;">
+							<div id="divMap" style="height: 100%; width: 100%;"></div>
 						</div>
 					</div>
 				</div>
-				<div id="divPlaceInfoWindow">
-					
+				</section>
+				<div style="display: none">
+					<div ng-repeat="p in ctrl.placeList" id="divMapMarker_{{p.id}}" style="position: absolute; z-index: 1;">
+						<div class="SearchMapMarker">
+							<div class="SearchMapMarker-price">{{p.price}} {{ctrl.getCurrencySymbol(p.currencyId)}}</div>
+						</div>
+					</div>
 				</div>
 			</div>
-		</h:form>
+			<div id="divPlaceInfoWindow">
+				
+			</div>
+		</div>
 		<script src="#{webApplication.urlPrefix}/static/js/angular/service/enumeration_service.js"></script>
 		<script src="#{webApplication.urlPrefix}/static/js/angular/service/place_service.js"></script>
 		<script src="#{webApplication.urlPrefix}/static/js/geocode/custom_marker.js"></script>
