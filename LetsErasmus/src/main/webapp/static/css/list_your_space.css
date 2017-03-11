@@ -7347,3 +7347,13 @@ keyframes spin-counterclockwise { 0%{
 		margin-top: 0;
 	max-width: 320px
 }
+
+
+.right-backdrop--with-bg--final {
+	background-color: #ffffff;
+}
+
+
+#imgLoadingnew {
+	margin-top: 190px;
+}
