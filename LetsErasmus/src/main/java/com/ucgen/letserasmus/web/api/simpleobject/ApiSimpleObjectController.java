@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ucgen.common.operationresult.EnmResultCode;
 import com.ucgen.common.operationresult.ListOperationResult;
 import com.ucgen.common.util.CommonUtil;
+import com.ucgen.common.util.FileLogger;
 import com.ucgen.letserasmus.library.common.enumeration.EnmErrorCode;
 import com.ucgen.letserasmus.library.simpleobject.model.Country;
 import com.ucgen.letserasmus.library.simpleobject.service.ISimpleObjectService;
@@ -46,6 +48,7 @@ public class ApiSimpleObjectController extends BaseApiController {
 				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
 			}
 		} catch (Exception e) {
+			FileLogger.log(Level.ERROR, "ApiSimpleObjectController-listCountry()-Error: " + CommonUtil.getExceptionMessage(e));
 			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 			operationResult.setResultDesc(CommonUtil.getExceptionMessage(e));
 		}

@@ -13,6 +13,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,7 @@ import com.ucgen.common.operationresult.ListOperationResult;
 import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.common.operationresult.ValueOperationResult;
 import com.ucgen.common.util.CommonUtil;
+import com.ucgen.common.util.FileLogger;
 import com.ucgen.common.util.FileUtil;
 import com.ucgen.common.util.ImageUtil;
 import com.ucgen.common.util.MailUtil;
@@ -116,6 +118,7 @@ public class ApiUserController extends BaseApiController {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
 			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			FileLogger.log(Level.ERROR, "ApiUserController-signup()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		return new ResponseEntity<OperationResult>(operationResult, httpStatus);
     }
@@ -138,6 +141,7 @@ public class ApiUserController extends BaseApiController {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
 			operationResult.setResultDesc("Login operation could not be completed. Please try again later!");
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			FileLogger.log(Level.ERROR, "ApiUserController-login()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		return new ResponseEntity<OperationResult>(operationResult, httpStatus);
     }
@@ -157,6 +161,7 @@ public class ApiUserController extends BaseApiController {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
 			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			FileLogger.log(Level.ERROR, "ApiUserController-logout()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		return new ResponseEntity<OperationResult>(operationResult, httpStatus);
     }
@@ -185,6 +190,7 @@ public class ApiUserController extends BaseApiController {
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
 			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+			FileLogger.log(Level.ERROR, "ApiUserController-loginWithLocalAccount()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		return operationResult;
     }
@@ -256,6 +262,7 @@ public class ApiUserController extends BaseApiController {
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
 			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+			FileLogger.log(Level.ERROR, "ApiUserController-signupWithLocalAccount()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		return operationResult;
     }
@@ -341,6 +348,7 @@ public class ApiUserController extends BaseApiController {
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
 			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+			FileLogger.log(Level.ERROR, "ApiUserController-signupWithGoogleAccount()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		return operationResult;
     }
@@ -427,6 +435,7 @@ public class ApiUserController extends BaseApiController {
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
 			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+			FileLogger.log(Level.ERROR, "ApiUserController-signupWithFacebookAccount()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		return operationResult;
     }
@@ -582,6 +591,7 @@ public class ApiUserController extends BaseApiController {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
 			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			FileLogger.log(Level.ERROR, "ApiUserController-updateUser()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		return new ResponseEntity<OperationResult>(operationResult, httpStatus);
     }
@@ -636,6 +646,7 @@ public class ApiUserController extends BaseApiController {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
 			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			FileLogger.log(Level.ERROR, "ApiUserController-confirmEmail()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		return new ResponseEntity<OperationResult>(operationResult, httpStatus);
     }
@@ -684,6 +695,7 @@ public class ApiUserController extends BaseApiController {
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 			operationResult.setResultDesc(CommonUtil.getExceptionMessage(e));
+			FileLogger.log(Level.ERROR, "ApiUserController-savePhoto()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		
 		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);
@@ -762,6 +774,7 @@ public class ApiUserController extends BaseApiController {
 			}
 		} catch (OperationResultException e) {
 			operationResult = e.getOperationResult();
+			FileLogger.log(Level.ERROR, "ApiUserController-sendMsisdnVerificationCode()-Error: " + CommonUtil.getExceptionMessage(e));
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 			operationResult.setResultDesc("Operation failed because of an unexpected error. Please try again later!");
@@ -808,6 +821,7 @@ public class ApiUserController extends BaseApiController {
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 			operationResult.setResultDesc("Operation failed because of an unexpected error. Please try again later!");
+			FileLogger.log(Level.ERROR, "ApiUserController-sendEmailVerificationCode()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		
 		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);
@@ -840,6 +854,7 @@ public class ApiUserController extends BaseApiController {
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 			operationResult.setResultDesc(CommonUtil.getExceptionMessage(e));
+			FileLogger.log(Level.ERROR, "ApiUserController-isEmailVerified()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		
 		return new ResponseEntity<ValueOperationResult<Boolean>>(operationResult, HttpStatus.OK);
@@ -895,6 +910,7 @@ public class ApiUserController extends BaseApiController {
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 			operationResult.setResultDesc(CommonUtil.getExceptionMessage(e));
+			FileLogger.log(Level.ERROR, "ApiUserController-verifyMsisdnCode()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		
 		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);
@@ -955,6 +971,7 @@ public class ApiUserController extends BaseApiController {
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 			operationResult.setResultDesc(CommonUtil.getExceptionMessage(e));
+			FileLogger.log(Level.ERROR, "ApiUserController-connectGoogleAccount()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		
 		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);
@@ -997,6 +1014,7 @@ public class ApiUserController extends BaseApiController {
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 			operationResult.setResultDesc(CommonUtil.getExceptionMessage(e));
+			FileLogger.log(Level.ERROR, "ApiUserController-disconnectGoogleAccount()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		
 		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);
@@ -1057,6 +1075,7 @@ public class ApiUserController extends BaseApiController {
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 			operationResult.setResultDesc(CommonUtil.getExceptionMessage(e));
+			FileLogger.log(Level.ERROR, "ApiUserController-connectFacebookAccount()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		
 		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);
@@ -1099,6 +1118,7 @@ public class ApiUserController extends BaseApiController {
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 			operationResult.setResultDesc(CommonUtil.getExceptionMessage(e));
+			FileLogger.log(Level.ERROR, "ApiUserController-disconnectFacebookAccount()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		
 		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);
@@ -1141,6 +1161,7 @@ public class ApiUserController extends BaseApiController {
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 			operationResult.setResultDesc(CommonUtil.getExceptionMessage(e));
+			FileLogger.log(Level.ERROR, "ApiUserController-removeMsisdn()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		
 		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);

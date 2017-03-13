@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ucgen.common.operationresult.EnmResultCode;
 import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.common.operationresult.ValueOperationResult;
+import com.ucgen.common.util.CommonUtil;
+import com.ucgen.common.util.FileLogger;
 import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
 import com.ucgen.letserasmus.library.common.enumeration.EnmErrorCode;
 import com.ucgen.letserasmus.library.common.enumeration.EnmSize;
@@ -99,6 +102,7 @@ public class ApiFavoriteController extends BaseApiController {
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
 			operationResult.setResultDesc("List operation could not be completed. Please try again later!");
+			FileLogger.log(Level.ERROR, "ApiFavoriteController-listFavorite()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		return new ResponseEntity<ValueOperationResult<Map<Integer, Map<Long, Favorite>>>>(operationResult, HttpStatus.OK);
     }
@@ -184,6 +188,7 @@ public class ApiFavoriteController extends BaseApiController {
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
 			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+			FileLogger.log(Level.ERROR, "ApiFavoriteController-addFavorite()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		return new ResponseEntity<ValueOperationResult<Map<Integer, Map<Long,Favorite>>>>(operationResult, HttpStatus.OK);
     }
@@ -235,6 +240,7 @@ public class ApiFavoriteController extends BaseApiController {
 				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
 			}
 		} catch (Exception e) {
+			FileLogger.log(Level.ERROR, "ApiFavoriteController-removeFavorite()-Error: " + CommonUtil.getExceptionMessage(e));
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
 			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
 		}

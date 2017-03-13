@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ucgen.common.operationresult.EnmResultCode;
 import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.common.operationresult.ValueOperationResult;
+import com.ucgen.common.util.CommonUtil;
+import com.ucgen.common.util.FileLogger;
 import com.ucgen.common.util.NumberUtil;
 import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
 import com.ucgen.letserasmus.library.common.enumeration.EnmErrorCode;
@@ -33,7 +36,6 @@ import com.ucgen.letserasmus.library.reservation.service.IReservationService;
 import com.ucgen.letserasmus.library.user.model.User;
 import com.ucgen.letserasmus.web.api.BaseApiController;
 import com.ucgen.letserasmus.web.view.application.AppConstants;
-import com.ucgen.letserasmus.web.view.application.EnmSession;
 import com.ucgen.letserasmus.web.view.application.WebApplication;
 
 @RestController
@@ -82,6 +84,7 @@ public class ApiMessageController extends BaseApiController {
 				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
 			}
 		} catch (Exception e) {
+			FileLogger.log(Level.ERROR, "ApiMessageController-listMessage()-Error: " + CommonUtil.getExceptionMessage(e));
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
 			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
 		}
@@ -127,6 +130,7 @@ public class ApiMessageController extends BaseApiController {
 				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
 			}
 		} catch (Exception e) {
+			FileLogger.log(Level.ERROR, "ApiMessageController-listMessageThread()-Error: " + CommonUtil.getExceptionMessage(e));
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
 			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
 		}
@@ -176,6 +180,7 @@ public class ApiMessageController extends BaseApiController {
 				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
 			}
 		} catch (Exception e) {
+			FileLogger.log(Level.ERROR, "ApiMessageController-getMessageThread()-Error: " + CommonUtil.getExceptionMessage(e));
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
 			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
 		}
@@ -242,6 +247,7 @@ public class ApiMessageController extends BaseApiController {
 				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
 			}
 		} catch (Exception e) {
+			FileLogger.log(Level.ERROR, "ApiMessageController-sendMessage()-Error: " + CommonUtil.getExceptionMessage(e));
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
 			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
 		}

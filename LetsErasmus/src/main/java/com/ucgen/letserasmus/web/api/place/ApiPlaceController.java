@@ -12,6 +12,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,7 @@ import com.ucgen.common.operationresult.ListOperationResult;
 import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.common.operationresult.ValueOperationResult;
 import com.ucgen.common.util.CommonUtil;
+import com.ucgen.common.util.FileLogger;
 import com.ucgen.common.util.FileUtil;
 import com.ucgen.common.util.ImageUtil;
 import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
@@ -184,6 +186,7 @@ public class ApiPlaceController extends BaseApiController {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
 			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			FileLogger.log(Level.ERROR, "ApiPlaceController-createPlace()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		return new ResponseEntity<OperationResult>(operationResult, httpStatus);
     }
@@ -334,6 +337,7 @@ public class ApiPlaceController extends BaseApiController {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
 			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			FileLogger.log(Level.ERROR, "ApiPlaceController-updatePlace()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		return new ResponseEntity<OperationResult>(operationResult, httpStatus);
     }
@@ -375,9 +379,9 @@ public class ApiPlaceController extends BaseApiController {
 				session.setAttribute(EnmSession.ACTIVE_PLACE.getId(), place);
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
 			getResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
 			getResult.setResultDesc("Operation could not be completed. Please try again later!");
+			FileLogger.log(Level.ERROR, "ApiPlaceController-getPlace()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		return new ResponseEntity<ValueOperationResult<Place>>(getResult, HttpStatus.OK);
     }
@@ -416,6 +420,7 @@ public class ApiPlaceController extends BaseApiController {
 		} catch (Exception e) {
 			listResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
 			listResult.setResultDesc("Place listing failed. Please try again later!");
+			FileLogger.log(Level.ERROR, "ApiPlaceController-listPlace()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		return new ResponseEntity<ListOperationResult<Place>>(listResult, HttpStatus.OK);
     }
@@ -456,6 +461,7 @@ public class ApiPlaceController extends BaseApiController {
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
 			operationResult.setResultDesc("Place list could not be fetched from database.");
+			FileLogger.log(Level.ERROR, "ApiPlaceController-listUserPlace()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		return new ResponseEntity<ValueOperationResult<Map<String, List<Place>>>>(operationResult, HttpStatus.OK);
     }
@@ -513,6 +519,7 @@ public class ApiPlaceController extends BaseApiController {
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 			operationResult.setResultDesc(CommonUtil.getExceptionMessage(e));
+			FileLogger.log(Level.ERROR, "ApiPlaceController-savePhoto()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		
 		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);
@@ -520,20 +527,21 @@ public class ApiPlaceController extends BaseApiController {
 	
 	@RequestMapping(value = "/api/place/listphoto", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public ResponseEntity<ListOperationResult<FileModel>> listPhoto(@RequestParam Map<String, String> requestParams) {
-		HttpStatus httpStatus = null;
-		String strPlaceId = requestParams.get("placeId");
-		FileModel file = new FileModel();
-		file.setEntityType(EnmEntityType.PLACE.getId());
-		file.setEntityId(Long.valueOf(strPlaceId));
-		
-		ListOperationResult<FileModel> listResult = this.fileService.listFile(file);
-		
-		if (OperationResult.isResultSucces(listResult)) {
-			httpStatus = HttpStatus.OK;
-		} else {
-			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+		ListOperationResult<FileModel> listResult = new ListOperationResult<FileModel>();
+		try {
+			String strPlaceId = requestParams.get("placeId");
+			FileModel file = new FileModel();
+			file.setEntityType(EnmEntityType.PLACE.getId());
+			file.setEntityId(Long.valueOf(strPlaceId));
+			
+			listResult = this.fileService.listFile(file);
+			
+		} catch (Exception e) {
+			FileLogger.log(Level.ERROR, "ApiPlaceController-listPhoto()-Error: " + CommonUtil.getExceptionMessage(e));
+			listResult.setResultCode(EnmResultCode.ERROR.getValue());
+			listResult.setResultDesc("Operation could not be completed. Please try again later!");
 		}
-		return new ResponseEntity<ListOperationResult<FileModel>>(listResult, httpStatus);
+		return new ResponseEntity<ListOperationResult<FileModel>>(listResult, HttpStatus.OK);
     }
 	
 	@RequestMapping(value = "/api/place/updateplacestatus", method = RequestMethod.POST)
@@ -597,6 +605,7 @@ public class ApiPlaceController extends BaseApiController {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
 			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			FileLogger.log(Level.ERROR, "ApiPlaceController-updatePlaceStatus()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		return new ResponseEntity<OperationResult>(operationResult, httpStatus);
     }

@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,8 @@ import com.ucgen.common.exception.operation.OperationResultException;
 import com.ucgen.common.operationresult.EnmResultCode;
 import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.common.operationresult.ValueOperationResult;
+import com.ucgen.common.util.CommonUtil;
+import com.ucgen.common.util.FileLogger;
 import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
 import com.ucgen.letserasmus.library.common.enumeration.EnmErrorCode;
 import com.ucgen.letserasmus.library.common.enumeration.EnmSize;
@@ -102,6 +105,7 @@ public class ApiReviewController extends BaseApiController {
 				operationResult.setResultDesc("Your request could not be completed, becase of missing parameters.");
 			}
 		} catch (Exception e) {
+			FileLogger.log(Level.ERROR, "ApiReviewController-listUserReview()-Error: " + CommonUtil.getExceptionMessage(e));
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
 			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
 		}
@@ -150,6 +154,7 @@ public class ApiReviewController extends BaseApiController {
 				operationResult.setResultDesc("Your request could not be completed, because of missing parameters.");
 			}
 		} catch (Exception e) {
+			FileLogger.log(Level.ERROR, "ApiReviewController-listEntityReview()-Error: " + CommonUtil.getExceptionMessage(e));
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
 			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
 		}
@@ -182,6 +187,7 @@ public class ApiReviewController extends BaseApiController {
 				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
 			}
 		} catch (Exception e) {
+			FileLogger.log(Level.ERROR, "ApiReviewController-createReview()-Error: " + CommonUtil.getExceptionMessage(e));
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
 			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
 		}
