@@ -1518,12 +1518,8 @@ button.accordion.active:after, button.accordion.hover:after {
 	color: #fff;
 }
 
-
-
-
-
-#profilehelp, #hostinghelp, #faqhelp, #travellinghelp, #reviewshelp,
-	#trusthelp, #taxeshelp, #contacthelp {
+#profilehelp, #hostinghelp, #paymentsforhosthelp, #tenantshelp,
+	#paymentsfortenantshelp, #trusthelp, #contacthelp {
 	display: none;
 }
 
