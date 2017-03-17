@@ -13,15 +13,13 @@ for (i = 0; i < acc.length; i++) {
 	}
 };
 
-function showDiv() {
-	   document.getElementById('content').style.display = "inline";
-	};
-
 
 var _targetdiv = null;
 function showdiv(id) {
     if(_targetdiv)
         _targetdiv.style.display = 'none';
+    _targetdiv = document.getElementById('faqhelp');
+    _targetdiv.style.display = 'none';
     _targetdiv = document.getElementById(id);
     _targetdiv.style.display = 'block';
 };
