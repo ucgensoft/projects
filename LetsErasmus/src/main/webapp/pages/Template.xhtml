@@ -55,6 +55,7 @@
 			var userFavoriteMap = {};
 			var userComplaintMap = {};
 			var loginUserId = '#{webApplication.user == null ? '' : webApplication.user.id}';
+			var globalRedirectUrl = null;
 		</script>
 
 		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -136,6 +137,7 @@
 					function closeModal() {
 						modal.style.display = "none";
 						$('.clsModal').css('display', 'none');
+						globalRedirectUrl = null;
 					}
 					
 					window.onclick = function(event) {

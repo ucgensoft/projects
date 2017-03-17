@@ -6,6 +6,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -203,37 +204,39 @@ public class ApiUserController extends BaseApiController {
 					&& uiUser.getEmail().trim().length() > 0
 					&& uiUser.getPassword() != null
 					&& uiUser.getPassword().trim().length() > 0) {
-				User dbUser = new User();
-				dbUser.setEmail(uiUser.getEmail());
-				dbUser.setPassword(uiUser.getPassword());
+				User newUser = new User();
+				newUser.setEmail(uiUser.getEmail());
+				newUser.setPassword(uiUser.getPassword());
 				
-				User registeredUser = this.userService.getUser(dbUser);
+				User registeredUser = this.userService.getUser(newUser);
 				if(registeredUser == null) {
-					dbUser.setPassword(null);
-					dbUser.setGoogleEmail(uiUser.getEmail());
-					dbUser.setFacebookEmail(uiUser.getEmail());
+					newUser.setPassword(null);
+					newUser.setGoogleEmail(uiUser.getEmail());
+					newUser.setFacebookEmail(uiUser.getEmail());
 					
-					registeredUser = this.userService.getUserForLogin(dbUser);
+					registeredUser = this.userService.getUserForLogin(newUser);
 					if(registeredUser == null) {
 						String verificationCode = SecurityUtil.generateUUID().replace("-", "");
-						dbUser = new User();
+						newUser = new User();
 						
-						dbUser.setEmail(uiUser.getEmail());
-						dbUser.setPassword(uiUser.getPassword());
-						dbUser.setFirstName(uiUser.getFirstName());
-						dbUser.setLastName(uiUser.getLastName());
+						newUser.setEmail(uiUser.getEmail());
+						newUser.setPassword(uiUser.getPassword());
+						newUser.setFirstName(uiUser.getFirstName());
+						newUser.setLastName(uiUser.getLastName());
 						
-						dbUser.setEmailVerified(EnmBoolStatus.NO.getId());
-						dbUser.setMsisdnVerified(EnmBoolStatus.NO.getId());
-						dbUser.setStatus(EnmUserStatus.ACTIVE.getValue());
-						dbUser.setUserActivationKeyEmail(verificationCode);
+						newUser.setEmailVerified(EnmBoolStatus.NO.getId());
+						newUser.setMsisdnVerified(EnmBoolStatus.NO.getId());
+						newUser.setStatus(EnmUserStatus.ACTIVE.getValue());
+						newUser.setUserActivationKeyEmail(verificationCode);
 						
-						OperationResult createUserResult = this.userService.insertUser(dbUser);
+						newUser.setCreatedDate(new Date());
+						
+						OperationResult createUserResult = this.userService.insertUser(newUser);
 						
 						if (OperationResult.isResultSucces(createUserResult)) {
 							operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
-							this.processLogin(session, dbUser, EnmLoginType.LOCAL_ACCOUNT);
-							this.sendWelcomeMail(dbUser, EnmLoginType.LOCAL_ACCOUNT);
+							this.processLogin(session, newUser, EnmLoginType.LOCAL_ACCOUNT);
+							this.sendWelcomeMail(newUser, EnmLoginType.LOCAL_ACCOUNT);
 						} else {
 							operationResult = createUserResult;
 						}
@@ -272,51 +275,53 @@ public class ApiUserController extends BaseApiController {
 		
 		try {
 			if (uiUser.getGoogleId() != null && uiUser.getGoogleEmail() != null) {
-				User dbUser = new User();
-				dbUser.setGoogleEmail(uiUser.getGoogleEmail());
-				dbUser.setGoogleId(uiUser.getGoogleId());
+				User newUser = new User();
+				newUser.setGoogleEmail(uiUser.getGoogleEmail());
+				newUser.setGoogleId(uiUser.getGoogleId());
 				
-				User registeredUser = this.userService.getUser(dbUser);
+				User registeredUser = this.userService.getUser(newUser);
 				
 				if(registeredUser == null) {
-					dbUser.setGoogleId(null);
-					dbUser.setEmail(uiUser.getGoogleEmail());
-					dbUser.setGoogleEmail(uiUser.getGoogleEmail());
-					dbUser.setFacebookEmail(uiUser.getGoogleEmail());
+					newUser.setGoogleId(null);
+					newUser.setEmail(uiUser.getGoogleEmail());
+					newUser.setGoogleEmail(uiUser.getGoogleEmail());
+					newUser.setFacebookEmail(uiUser.getGoogleEmail());
 					
-					registeredUser = this.userService.getUserForLogin(dbUser);
+					registeredUser = this.userService.getUserForLogin(newUser);
 					if(registeredUser == null) {
 						String verificationCode = SecurityUtil.generateUUID().replace("-", "");
 						
-						dbUser = new User();
+						newUser = new User();
 
-						dbUser.setEmail(uiUser.getGoogleEmail());
-						dbUser.setGoogleId(uiUser.getGoogleId());
-						dbUser.setGoogleEmail(uiUser.getGoogleEmail());
-						dbUser.setFirstName(uiUser.getFirstName());
-						dbUser.setLastName(uiUser.getLastName());
+						newUser.setEmail(uiUser.getGoogleEmail());
+						newUser.setGoogleId(uiUser.getGoogleId());
+						newUser.setGoogleEmail(uiUser.getGoogleEmail());
+						newUser.setFirstName(uiUser.getFirstName());
+						newUser.setLastName(uiUser.getLastName());
 						if (uiUser.getGender() != null) {
 							EnmGender gender = EnmGender.getGender(uiUser.getGender());
 							if (gender != null) {
-								dbUser.setGender(uiUser.getGender());
+								newUser.setGender(uiUser.getGender());
 							}
 						}
 						
-						dbUser.setProfileImageUrl(uiUser.getProfileImageUrl());
-						dbUser.setLoginType(uiUser.getLoginType());
+						newUser.setProfileImageUrl(uiUser.getProfileImageUrl());
+						newUser.setLoginType(uiUser.getLoginType());
 						
-						dbUser.setEmailVerified(EnmBoolStatus.NO.getId());
-						dbUser.setMsisdnVerified(EnmBoolStatus.NO.getId());
-						dbUser.setStatus(EnmUserStatus.ACTIVE.getValue());
+						newUser.setEmailVerified(EnmBoolStatus.NO.getId());
+						newUser.setMsisdnVerified(EnmBoolStatus.NO.getId());
+						newUser.setStatus(EnmUserStatus.ACTIVE.getValue());
 						
-						dbUser.setUserActivationKeyEmail(verificationCode);
+						newUser.setUserActivationKeyEmail(verificationCode);
 						
-						OperationResult createUserResult = this.userService.insertUser(dbUser);
+						newUser.setCreatedDate(new Date());
+						
+						OperationResult createUserResult = this.userService.insertUser(newUser);
 						
 						if (OperationResult.isResultSucces(createUserResult)) {
 							operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
-							this.processLogin(session, dbUser, EnmLoginType.GOOGLE);
-							this.sendWelcomeMail(dbUser, EnmLoginType.GOOGLE);
+							this.processLogin(session, newUser, EnmLoginType.GOOGLE);
+							this.sendWelcomeMail(newUser, EnmLoginType.GOOGLE);
 						} else {
 							operationResult = createUserResult;
 						}
@@ -358,52 +363,54 @@ public class ApiUserController extends BaseApiController {
 		
 		try {
 			if (uiUser.getFacebookId() != null && uiUser.getFacebookEmail() != null) {
-				User dbUser = new User();
-				dbUser.setFacebookEmail(uiUser.getFacebookEmail());
-				dbUser.setFacebookId(uiUser.getFacebookId());
+				User newUser = new User();
+				newUser.setFacebookEmail(uiUser.getFacebookEmail());
+				newUser.setFacebookId(uiUser.getFacebookId());
 				
-				User registeredUser = this.userService.getUser(dbUser);
+				User registeredUser = this.userService.getUser(newUser);
 				
 				if(registeredUser == null) {
-					dbUser.setFacebookId(null);
-					dbUser.setEmail(uiUser.getFacebookEmail());
-					dbUser.setGoogleEmail(uiUser.getFacebookEmail());
-					dbUser.setFacebookEmail(uiUser.getFacebookEmail());
+					newUser.setFacebookId(null);
+					newUser.setEmail(uiUser.getFacebookEmail());
+					newUser.setGoogleEmail(uiUser.getFacebookEmail());
+					newUser.setFacebookEmail(uiUser.getFacebookEmail());
 					
-					registeredUser = this.userService.getUserForLogin(dbUser);
+					registeredUser = this.userService.getUserForLogin(newUser);
 					
 					if(registeredUser == null) {
 						String verificationCode = SecurityUtil.generateUUID().replace("-", "");
-						dbUser = new User();
+						newUser = new User();
 						
-						dbUser.setEmail(uiUser.getFacebookEmail());
-						dbUser.setFacebookId(uiUser.getFacebookId());
-						dbUser.setFacebookTokenId(uiUser.getFacebookTokenId());
-						dbUser.setEmail(uiUser.getFacebookEmail());
-						dbUser.setFirstName(uiUser.getFirstName());
-						dbUser.setLastName(uiUser.getLastName());
+						newUser.setEmail(uiUser.getFacebookEmail());
+						newUser.setFacebookId(uiUser.getFacebookId());
+						newUser.setFacebookTokenId(uiUser.getFacebookTokenId());
+						newUser.setEmail(uiUser.getFacebookEmail());
+						newUser.setFirstName(uiUser.getFirstName());
+						newUser.setLastName(uiUser.getLastName());
 						if (uiUser.getGender() != null) {
 							EnmGender gender = EnmGender.getGender(uiUser.getGender());
 							if (gender != null) {
-								dbUser.setGender(uiUser.getGender());
+								newUser.setGender(uiUser.getGender());
 							}
 						}
 						
-						dbUser.setProfileImageUrl(uiUser.getProfileImageUrl());
-						dbUser.setLoginType(EnmLoginType.FACEBOOK.getId());
+						newUser.setProfileImageUrl(uiUser.getProfileImageUrl());
+						newUser.setLoginType(EnmLoginType.FACEBOOK.getId());
 						
-						dbUser.setEmailVerified(EnmBoolStatus.NO.getId());
-						dbUser.setMsisdnVerified(EnmBoolStatus.NO.getId());
-						dbUser.setStatus(EnmUserStatus.ACTIVE.getValue());
+						newUser.setEmailVerified(EnmBoolStatus.NO.getId());
+						newUser.setMsisdnVerified(EnmBoolStatus.NO.getId());
+						newUser.setStatus(EnmUserStatus.ACTIVE.getValue());
 						
-						dbUser.setUserActivationKeyEmail(verificationCode);
+						newUser.setUserActivationKeyEmail(verificationCode);
 						
-						OperationResult createUserResult = this.userService.insertUser(dbUser);
+						newUser.setCreatedDate(new Date());
+						
+						OperationResult createUserResult = this.userService.insertUser(newUser);
 						
 						if (OperationResult.isResultSucces(createUserResult)) {
 							operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
-							this.processLogin(session, dbUser, EnmLoginType.FACEBOOK);
-							this.sendWelcomeMail(dbUser, EnmLoginType.FACEBOOK);
+							this.processLogin(session, newUser, EnmLoginType.FACEBOOK);
+							this.sendWelcomeMail(newUser, EnmLoginType.FACEBOOK);
 						} else {
 							operationResult = createUserResult;
 						}
@@ -456,6 +463,7 @@ public class ApiUserController extends BaseApiController {
 						tmpUser = this.userService.getUser(tmpUser);
 					}
 					if (isValid) {
+						Date operationDate = new Date();
 						MultipartFile profilePhoto = (MultipartFile) session.getAttribute(EnmSession.USER_PHOTO.getId());
 						session.removeAttribute(EnmSession.USER_PHOTO.getId());
 						
@@ -514,6 +522,8 @@ public class ApiUserController extends BaseApiController {
 						if (profilePhotoDeleted) {
 							user.setProfilePhotoId(null);
 						}
+						user.setModifiedDate(operationDate);
+						user.setModifiedBy(modifiedBy);
 						
 						if (profilePhotoChanged) {
 							String fileSuffix = profilePhoto.getContentType().split("/")[1];
@@ -524,6 +534,7 @@ public class ApiUserController extends BaseApiController {
 							photo.setEntityType(EnmEntityType.USER.getId());
 							photo.setEntityId(user.getId());
 							photo.setCreatedBy(modifiedBy);
+							photo.setCreatedDate(operationDate);
 							photo.setFileType(EnmFileType.getFileTypeWithSuffix(fileSuffix).getValue());
 							
 							user.setProfilePhoto(photo);

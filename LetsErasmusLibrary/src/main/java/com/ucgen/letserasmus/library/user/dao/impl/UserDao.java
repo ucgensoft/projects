@@ -1,6 +1,7 @@
 package com.ucgen.letserasmus.library.user.dao.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -215,6 +216,13 @@ public class UserDao extends JdbcDaoSupport implements IUserDao {
 			argList.add(user.getLanguages());
 		}
 		
+		StringUtil.append(updateFields, " MODIFIED_DATE = ?", ",");
+		if (user.getModifiedDate() != null) {
+			argList.add(user.getModifiedDate());
+		} else {
+			argList.add(new Date());
+		}
+		
 		StringUtil.append(updateFields, " MODIFIED_BY = ?", ",");
 		argList.add(user.getModifiedBy());
 		
@@ -234,6 +242,10 @@ public class UserDao extends JdbcDaoSupport implements IUserDao {
 	public OperationResult insertUser(User user) {
 		
 		OperationResult operationResult = new OperationResult();
+		
+		if (user.getCreatedDate() == null) {
+			user.setCreatedDate(new Date());
+		}
 		
 		List<Object> argList = new ArrayList<Object>();
 		argList.add(user.getEmail());

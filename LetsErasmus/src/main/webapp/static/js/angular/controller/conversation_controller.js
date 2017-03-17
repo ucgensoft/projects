@@ -161,6 +161,30 @@ App.controller('conversationCtrl', ['$scope', '$controller', 'messageService', '
   		 	&& self.messageThread.activeUserId == self.messageThread.reservation.hostUserId;
   	};
   	
+  	self.showBookingBox = function() {
+ 		 return self.messageThread != null && self.messageThread.reservation != null 
+ 		 	&& self.messageThread.reservation.status == EnmReservationStatus.INQUIRY 
+ 		 	&& self.messageThread.activeUserId == self.messageThread.reservation.clientUserId;
+ 	};
+ 	
+ 	self.sendBookingRequest = function() {
+ 		DialogUtil.confirm('Confirm', 'Booking request will be sent to host, dou you want to continue?', function(response) {
+	  			if (response) {
+	  				var reservationId = self.messageThread.reservation.id;
+	  		  		var status = EnmReservationStatus.PENDING;
+	  		  		reservationService.updateReservation(reservationId, 'message', status,
+	  					  function(isSuccess) {
+	  						  if (isSuccess) {
+	  							  DialogUtil.info('Sucess', 'Congradulations! Booking request is sent to host.', 'OK', function() {
+	  								  location.reload();
+	  							  });
+	  						  }
+	  			  		  }
+	  			  	  );
+	  			}
+	  		});
+  	};
+  	
     self.initialize();
       
   }]);

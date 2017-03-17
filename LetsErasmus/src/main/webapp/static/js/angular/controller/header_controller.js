@@ -28,7 +28,7 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
 		  
 		  FB.init({
 			    appId: facebookId,
-			    version: 'v2.7' // or v2.1, v2.2, v2.3, ...
+			    version: 'v2.7'
 			  });
 		 
 		  self.checkUrlOperation();
@@ -173,7 +173,13 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
   		userService.createUser(user,
 				function(isSuccess) {
 					if (isSuccess) {
-						location.reload();
+						if (globalRedirectUrl != null) {
+							var redirectUrl = globalRedirectUrl;
+							closeModal();
+							openWindow(redirectUrl, true);
+						} else {
+							location.reload();
+						}
 					}
 				}
 		  );
@@ -199,7 +205,11 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
   		userService.login(user,
 					function(isSuccess) {
 						if (isSuccess) {
-							location.reload();
+							if (globalRedirectUrl != null) {
+								openWindow(globalRedirectUrl, true);
+							} else {
+								location.reload();
+							}
 						}
 					}
 			  );
@@ -366,6 +376,11 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
 				  }
 	  		  }
 	  	  );
+	  };
+	  
+	  self.onBecomeHostClicked = function() {
+		  globalRedirectUrl = webApplicationUrlPrefix + '/pages/Place.xhtml';
+		  self.openLoginWindow();
 	  };
   	  
      //self.initialize();

@@ -266,8 +266,8 @@ App.controller('placeDetailCtrl', ['$scope', '$controller', 'placeService', 'res
 	 self.onBookBtnClick = function() {
 		 var placeId = self.place.id;
 		 var guestNumber = $('#cmbGuestNumber').val();
-		 var startDate = $("#txtStartDatePicker").datepicker("getDate")
-		 var endDate = $("#txtEndDatePicker").datepicker("getDate")
+		 var startDate = $("#txtStartDatePicker").datepicker("getDate");
+		 var endDate = $("#txtEndDatePicker").datepicker("getDate");
 		 
 		 if (guestNumber != null && guestNumber != '' 
 			 && startDate != null && startDate != ''
@@ -355,6 +355,85 @@ App.controller('placeDetailCtrl', ['$scope', '$controller', 'placeService', 'res
    	  	return false;
      };
      
+     self.onContactHostBtnClicked = function() {
+    	 if (loginUserId != '') {
+    		 ajaxHtml(webApplicationUrlPrefix + '/static/html/ContactHost.html', 'divCommonModal', function() {
+        		 $('#headerContactHost').html(self.place.user.firstName);
+        		 $('#lnkContactHostUser').attr('href', $('#lnkHostUser').attr('href'));
+        		 $('#imgContactHostUser').attr('src', $('#imgHostUser').attr('src'));
+        		 $('#imgContactHostUser').attr('title', self.place.user.firstName);
+        		 
+        		 $('#imgContactHostClientUser').attr('src', $('#hiddenActiveUserProfileImageUrl').val());
+        		 
+        		 $("#txtContactHostStartDatePicker").datepicker(
+				{
+					minDate : new Date(),
+					dateFormat : "dd.mm.yy",
+					onSelect : function(selectedDate, cal) {
+						
+					}
+				});
+    		  
+	    	  $("#txtContactHostEndDatePicker").datepicker(
+				{
+					minDate : new Date(),
+					dateFormat : "dd.mm.yy",
+					onSelect : function(selectedDate, cal) {
+						
+					}
+				});
+	    	  
+	    	  var startDate = $("#txtStartDatePicker").datepicker("getDate")
+	 		  var endDate = $("#txtEndDatePicker").datepicker("getDate")
+	    	  
+	    	  $("#txtContactHostStartDatePicker").datepicker('setDate', startDate);
+	    	  $("#txtContactHostEndDatePicker").datepicker('setDate', endDate);
+	    	  
+	    	  $.each($('#cmbGuestNumber')[0].options, function (i, option) {
+	    		    $('#cmbContactHostGuestNumber').append($('<option>', { 
+	    		        value: option.value,
+	    		        text : option.text 
+	    		    }));
+	    		});
+	    	          		 
+         	}); 
+    	 } else {
+    		 openLoginWindow();
+    	 }
+     };
+     
+     self.contactHost = function() {
+    	 var placeId = self.place.id;
+		 var guestNumber = $('#cmbContactHostGuestNumber').val();
+		 var startDate = $("#txtContactHostStartDatePicker").datepicker("getDate");
+		 var endDate = $("#txtContactHostEndDatePicker").datepicker("getDate");
+		 var message = StringUtil.trim($("#txtContactHostMessage").val());
+		 
+		 if (guestNumber != null && guestNumber != '' 
+			 && startDate != null && startDate != ''
+				 && endDate != null && endDate != '' && message != '') {
+			 var reservation = {
+					 placeId : placeId,
+					 guestNumber : guestNumber,
+					 startDate : startDate,
+					 endDate : endDate,
+					 messageText : message
+				 };
+				 
+				 reservationService.createInquiry(reservation, function() {
+					 DialogUtil.info('Success', 'Your message has been successfully sent to host!', 'OK');
+					 location.reload();
+				 });
+		 } else {
+			 DialogUtil.warn('Warning', 'Please fill mandatory parameters!', 'OK');
+		 } 
+     };
+     
       self.initialize();
       
   }]);
+
+function contactHost() {
+	var scope = angular.element( $('#divBody') ).scope();
+	scope.ctrl.contactHost();
+}

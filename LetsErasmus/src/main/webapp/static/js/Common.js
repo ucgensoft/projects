@@ -89,7 +89,8 @@ var EnmErrorCode = {
 		UNAUTHORIZED_OPERATION : 1,
         USER_NOT_FOUND : 2,
         MSISDN_VERIFICATION_CODE_INCORRECT : 3,
-        USER_NOT_LOGGED_IN : 4
+        USER_NOT_LOGGED_IN : 4,
+        ALREADY_CONTACTED : 5
 };
 
 var EnmLoginType = {
@@ -174,7 +175,10 @@ var newOperationResult = function (resultCode, resultDesc, resultObj) {
 };
 
 function openModal(url, elementId) {
-	ajaxHtml(url, elementId, function() { modal.style.display='block'; });
+	ajaxHtml(url, elementId, 
+			function() { 
+				modal.style.display='block'; 
+			});
 }
 
 function openWindow (url, isSelf) {
@@ -188,6 +192,7 @@ function openWindow (url, isSelf) {
 function ajaxHtml(url, elementId, callbackFunc) {
 	getHtml(url, function(html) {
 		$('#' + elementId).html(html);
+		$('#' + elementId).css('display', '');
         if (callbackFunc != null) {
         	callbackFunc();
         }
@@ -467,7 +472,11 @@ $.extend({ confirm: function (title, message, yesText, noText, yesCallback) {
 
 function handleAjaxError(operationResult) {
 	if (operationResult.resultCode == EnmOperationResultCode.WARNING) {
-		DialogUtil.warn('Warning', operationResult.resultDesc, 'OK', null);
+		DialogUtil.warn('Warning', operationResult.resultDesc, 'OK', function() {
+			if (operationResult.errorCode == EnmErrorCode.ALREADY_CONTACTED) {
+				openWindow(operationResult.resultValue, true);
+			}
+		});
 	} else {
 		DialogUtil.error('Error', operationResult.resultDesc, 'OK', function() {
 			if (operationResult.errorCode == EnmErrorCode.UNAUTHORIZED_OPERATION) {

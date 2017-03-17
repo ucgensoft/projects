@@ -137,16 +137,14 @@
 																<div class="col-md-3 space-sm-4 text-center space-sm-2">
 																	<div class="media-photo-badge">
 																		<a
-																			href=""
+																			href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.xhtml?userId={{ctrl.place.hostUserId}}"
 																			rel="nofollow" class="media-photo media-round"> 
-																			<img
-																				alt="{{ctrl.place.user.firstName}}" class="host-profile-image"
+																			<img alt="{{ctrl.place.user.firstName}}" class="host-profile-image"
 																				height="90" width="90"
 																				src="#{webApplication.getUserPhotoUrl(placeDetailController.place.hostUserId, placeDetailController.place.user.profilePhotoId,'small')}"
 																				title="{{ctrl.place.user.firstName}}" />
-																		</a> <img
-																			src=""
-																			class="superhost-photo-badge superhost-photo-badge"
+																		</a> 
+																		<img src="" class="superhost-photo-badge superhost-photo-badge"
 																			alt="" />
 																	</div>
 																</div>
@@ -155,11 +153,10 @@
 																		id="listing_name">{{ctrl.place.title}}</h1>
 																	<div id="display-address"
 																		class="space-2 text-muted text-center-sm">
-																		<a
-																			href="https://www.airbnb.com/rooms/13738469?s=Q8-G3TeD#neighborhood"
+																		<a href=""
 																			class="link-reset">{{ ctrl.getLocationText() }}</a><span>
 																			&nbsp; </span><a
-																			href="https://www.airbnb.com/rooms/13738469?s=Q8-G3TeD#reviews"
+																			href=""
 																			class="link-reset show-inline-block hide-sm"><div
 																				class="star-rating-wrapper" itemscope=""
 																				itemprop="aggregateRating"
@@ -260,34 +257,6 @@
 										</div>
 									</div>
 									<div class="col-lg-4">
-										<div
-											class="mobile-bookit-btn-container js-bookit-btn-container panel-btn-sm panel-btn-fixed-sm hide-md hide-lg">
-											<button
-												class="btn btn-primary btn-block btn-large js-book-it-sm-trigger">
-												<span class="book-it__btn-text hide"> Request to Book</span>
-												<span class="book-it__btn-text--contact-host hide">Contact Host </span>
-												<span class="book-it__btn-text--instant"><i class="icon icon-beach h4"></i> Book</span>
-											</button>
-										</div>
-										<span class="tooltip tooltip-top-middle" role="tooltip"
-											aria-hidden="true">
-											<div class="js-monthly-breakdown"></div>
-										</span> <span id="cleaning-fee-tip"
-											class="tooltip tooltip-top-middle" role="tooltip"
-											aria-hidden="true">
-											<p class="panel-body">One-time fee charged by host to
-												cover the cost of cleaning their space</p>
-										</span> <span id="service-fee-tip" class="tooltip tooltip-top-middle"
-											role="tooltip" aria-hidden="true">
-											<p class="panel-body fee-no-vat-tooltip">This helps us
-												run our platform and offer services like 24/7 support on
-												your trip.</p>
-											<p class="panel-body hide fee-vat-tooltip">This helps us
-												run our platform and offer services like 24/7 support on
-												your trip. It includes VAT.</p>
-										</span>
-										<div id="tax-descriptions-tip"
-											class="tooltip tooltip-top-middle" role="tooltip"></div>
 										<div style="margin-top: 0px" class="book-it js-book-it book-it--inNewStickyExperiment">
 											<div
 												class="book-it__container js-book-it-container book-it__container--inNewStickyExperiment"
@@ -372,39 +341,10 @@
 																			<small><span>You won’t be charged yet</span></small>
 																		</div>
 																	</div>
-																	<div class="hide">
-																		<button type="button"
-																			class="btn btn-primary btn-large btn-small btn-block">
-																			<span>Contact host</span>
-																		</button>
-																		<div>
-																			<noscript></noscript>
-																		</div>
-																	</div>
-																	<div
-																		class="book-it__message-container js-book-it-message recent_views">
-																		<hr aria-hidden="true" />
-																		<div class="listing-desirability">
-																			<div
-																				class="icon-background-container icon-clock-background">
-																				<div class="book-it__message-text">
-																					<strong>This home is on people’s minds.</strong>
-																					<div class="media space-top-1">It’s been
-																						viewed 1976 times in the past week.</div>
-																				</div>
-																			</div>
-																		</div>
-																	</div>
 																</div>
 															</div>
 														</div>
 													</div>
-												</div>
-												<div>
-													<noscript></noscript>
-												</div>
-												<div>
-													<noscript></noscript>
 												</div>
 												<div
 													class="panel wishlist-panel space-top-6 space-md-3 hide-sm">
@@ -430,23 +370,7 @@
 															</div>
 														</div>
 													</div>
-													<div id="box-social-share-widget-container"
-														class="boxed-icons show-lg">
-														<div
-															class="social-share-widget p3-box-share-widget p3-share-widget">
-															<span class="share-title" style="display: none;">
-																Share: </span>
-															<div class="share-triggers btn-group">
-																<a
-																	class="share-btn link-icon text-center btn btn-width-control"
-																	rel="nofollow" title="Email"
-																	href="https://www.airbnb.com/rooms/13738469?s=Q8-G3TeD#">
-																	<span class="screen-reader-only">Email</span> <i
-																	class="icon icon-envelope social-icon-size"></i> Email
-																</a>
-															</div>
-														</div>
-													</div>
+													
 												</div>
 												<div class="other-actions text-center space-top-3 space-3">
 													<div>
@@ -515,11 +439,8 @@
 														<div class="contact-host-div col-12">
 															<div>
 																<button class="btn-link btn-link--bold" type="button">
-																	<span>Contact host</span>
+																	<span ng-click="ctrl.onContactHostBtnClicked()">Contact host</span>
 																</button>
-																<div>
-																	<noscript></noscript>
-																</div>
 															</div>
 														</div>
 													</div>
@@ -541,7 +462,7 @@
 																		</span><strong>({{ (ctrl.place.bathRoomType == 1 ? 'Private' : 'Shared') }} bathroom)</strong>
 																	</div>
 																	<div>
-																		<span>Beds: </span><span> </span><strong>2</strong>
+																		<span>Beds: </span><span> </span><strong>{{ctrl.place.bedNumber}}</strong>
 																	</div>
 																</div>
 																<div class="col-md-6">
@@ -712,7 +633,7 @@
 														<div class="media-photo-badge">
 															<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.xhtml?userId={{ctrl.place.user.id}}"
 																rel="nofollow" class="media-photo media-round"> 
-																<img
+																<img id="imgHostUser"
 																	alt="{{ctrl.place.user.firstName}}" class="media-photo media-round"
 																	height="90" width="90"
 																	src="#{webApplication.getUserPhotoUrl(placeDetailController.place.hostUserId, placeDetailController.place.user.profilePhotoId,'small')}"
@@ -725,7 +646,7 @@
 													</div>
 													<div class="col-md-9">
 														<h3 class="space-1">
-															<a class="link-reset"
+															<a id="lnkHostUser" class="link-reset"
 																href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.xhtml?userId={{ctrl.place.user.id}}"
 																rel="nofollow">{{ctrl.place.user.firstName}}</a>
 														</h3>
@@ -776,12 +697,12 @@
 																			</div>
 																		</div>
 																	</a>
-																	<noscript></noscript>
 																</div>
 															</div>
 														</div>
 														<div class="">
-															<button type="button" class="btn btn-primary btn-small">
+															<button type="button" class="btn btn-primary btn-small" 
+																ng-click="ctrl.onContactHostBtnClicked()">
 																<span>Contact host</span>
 															</button>
 														</div>

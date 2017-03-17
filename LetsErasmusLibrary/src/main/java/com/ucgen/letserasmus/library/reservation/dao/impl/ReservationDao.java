@@ -108,11 +108,15 @@ public class ReservationDao extends JdbcDaoSupport implements IReservationDao {
 			}
 			if (reservation.getStatus() != null) {
 				sqlBuilder.append(" AND " + reservationRowMapper.getCriteriaColumnName(ReservationRowMapper.COL_STATUS) + " = ? ");
-				argList.add(reservation.getClientUserId());
+				argList.add(reservation.getStatus());
 			}
 			if (reservation.getMessageThreadId() != null) {
 				sqlBuilder.append(" AND " + reservationRowMapper.getCriteriaColumnName(ReservationRowMapper.COL_MESSAGE_THREAD_ID) + " = ? ");
 				argList.add(reservation.getMessageThreadId());
+			}
+			if (reservation.getPlaceId() != null) {
+				sqlBuilder.append(" AND " + reservationRowMapper.getCriteriaColumnName(ReservationRowMapper.COL_PLACE_ID) + " = ? ");
+				argList.add(reservation.getPlaceId());
 			}
 		}
 				

@@ -1,0 +1,111 @@
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<div class="modal-container modal-transitions contact-modal">
+	<div class="modal-table">
+		<div class="modal-cell">
+			<div class="modal-content" tabindex="-1">
+				<div id="contact-host-panel" class="">
+					<div class="panel-header main-header">
+						<button class="modal-close" type="button" title="Close"
+							aria-label="Close" onclick="closeModal()"></button>
+						Contact host
+					</div>
+					<div id="compose-message" class="contact-host-panel panel-dark">
+						<div class="row">
+							<div class="host-questions-panel panel panel-dark col-md-4">
+								<div class="panel-body">
+									<div class="text-center space-2">
+										<div class="media-photo media-round">
+											<div class="media-photo-badge">
+												<a id="lnkContactHostUser" href=""
+													rel="nofollow" class="media-photo media-round">
+													<img id="imgContactHostUser" alt="User Profile Image" height="120" width="120"
+														data-pin-nopin="true"
+														src="" title="Anıl" />
+												</a>
+											</div>
+										</div>
+									</div>
+									<div>
+										<h5 id="headerContactHost" class="text-center"></h5>
+										<div>
+											<p>
+												<span>Make sure you share the following:</span>
+											</p>
+											<ul>
+												<li><span>Tell Anıl a little about yourself</span></li>
+												<li><span>What brings you to Kadıköy? Who’s
+														joining you?</span></li>
+												<li><span>What do you love about this listing?
+														Mention it!</span></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="guest-message-panel panel col-md-8">
+								<div class="panel-body">
+									<h5>
+										<span>When are you traveling?</span>
+									</h5>
+									<div class="clearfix datepicker-row-container space-4">
+										<div>
+											<div class="col-5 input-col">
+												<label>Check In</label>
+												<input id="txtContactHostStartDatePicker" type="text"
+													aria-describedby="datespan-checkin-description"
+													class="checkin ui-datepicker-target"
+													placeholder="dd.mm.yy" />
+											</div>
+											<div class="col-5 input-col left-2">
+												<label>Check Out</label>
+												<input id="txtContactHostEndDatePicker" type="text"
+													aria-describedby="datespan-checkin-description"
+													class="checkin ui-datepicker-target"
+													placeholder="dd.mm.yy" />
+											</div>
+										</div>
+										<div class="input-col col-12 space-top-3">
+											<div class="select">
+												<select id="cmbContactHostGuestNumber">
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-12">
+											<div
+												class="message-panel tooltip tooltip-fixed space-4 tooltip-bottom-left">
+												<div class="panel-body">
+													<textarea id="txtContactHostMessage" class="focus-on-active"
+														placeholder="Start your message..." />
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-4">
+											<div class="media-photo media-round">
+												<div class="media-photo-badge">
+													<a id="lnkContactHostClientUser" href=""
+														rel="nofollow" class="media-photo media-round">
+														<img id="imgContactHostClientUser" alt="User Profile Image" height="68" width="68"
+															data-pin-nopin="true" src="" title="Mehmet" />
+													</a>
+												</div>
+											</div>
+										</div>
+										<div class="col-7 col-offset-1 space-top-2">
+											<button class="btn btn-primary btn-large btn-block" onclick="contactHost()">
+												<span>Send Message</span>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

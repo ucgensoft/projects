@@ -43,6 +43,7 @@ import com.ucgen.letserasmus.library.review.service.IReviewService;
 import com.ucgen.letserasmus.library.user.model.User;
 import com.ucgen.letserasmus.web.api.BaseApiController;
 import com.ucgen.letserasmus.web.view.application.AppConstants;
+import com.ucgen.letserasmus.web.view.application.AppUtil;
 import com.ucgen.letserasmus.web.view.application.EnmOperation;
 import com.ucgen.letserasmus.web.view.application.EnmSession;
 import com.ucgen.letserasmus.web.view.application.WebApplication;
@@ -207,7 +208,7 @@ public class ApiReservationController extends BaseApiController {
 						OperationResult createResult = this.reservationService.insert(reservation);
 						
 						if (!OperationResult.isResultSucces(createResult)) {
-							// TODO: Write log
+							FileLogger.log(Level.ERROR, "Reservation could not be saved. UserId:" + user.getId() + ", Error:" + OperationResult.getResultDesc(createResult));
 							createResult.setResultDesc("Reservation could not be saved. Please try again later!");
 						}
 						operationResult = createResult;
@@ -267,6 +268,12 @@ public class ApiReservationController extends BaseApiController {
 							}
 						}
 						
+						if (uiReservation.getStatus().equals(EnmReservationStatus.PENDING.getId())) {
+							if (reservation.getClientUserId().equals(user.getId())) {
+								isUserAutorized = true;
+							}
+						}
+						
 						if (isUserAutorized) {
 							boolean statusSuitable = false;
 							
@@ -290,31 +297,48 @@ public class ApiReservationController extends BaseApiController {
 								}
 							}
 							
+							if (uiReservation.getStatus().equals(EnmReservationStatus.PENDING.getId())) {
+								if (dbReservationList.get(0).getStatus().equals(EnmReservationStatus.INQUIRY.getId())) {
+									statusSuitable = true;
+								}
+							}
+							
 							if (statusSuitable) {
-								Date createdDate = new Date();
+								Date operationDate = new Date();
 								String createdBy = user.getFullName();
 								
 								reservation.setStatus(uiReservation.getStatus());
 								
 								reservation.setModifiedBy(createdBy);
-								reservation.setModifiedDate(createdDate);
+								reservation.setModifiedDate(operationDate);
 								
-								Message message = new Message();
-								message.setMessageThreadId(dbReservationList.get(0).getMessageThreadId());
-								message.setSenderUserId(user.getId());
-								message.setReceiverUserId(dbReservationList.get(0).getClientUserId());
-								message.setMessageText(uiReservation.getMessageText());
-								message.setCreatedBy(createdBy);
-								message.setCreatedDate(createdDate);
-								message.setStatus(EnmMessageStatus.NOT_READ.getId());
+								Message message = null;
 								
-								OperationResult createResult = this.reservationService.update(reservation, message);
-								
-								if (!OperationResult.isResultSucces(createResult)) {
-									// TODO: Write log
-									createResult.setResultDesc("Reservation could not be updated. Please try again later!");
+								if (!dbReservationList.get(0).getStatus().equals(EnmReservationStatus.INQUIRY.getId())) {
+									message = new Message();
+									message.setMessageThreadId(dbReservationList.get(0).getMessageThreadId());
+									message.setSenderUserId(user.getId());
+									message.setReceiverUserId(dbReservationList.get(0).getClientUserId());
+									message.setMessageText(uiReservation.getMessageText());
+									message.setCreatedBy(createdBy);
+									message.setCreatedDate(operationDate);
+									message.setStatus(EnmMessageStatus.NOT_READ.getId());
 								}
-								operationResult = createResult;
+								
+								if (dbReservationList.get(0).getStatus().equals(EnmReservationStatus.INQUIRY.getId()) 
+										&& operationDate.getTime() > reservation.getStartDate().getTime()) {
+									operationResult.setResultCode(EnmResultCode.WARNING.getValue());
+									operationResult.setResultDesc("Your reservation dates are old. Please send a new booking request!");
+								} else {
+									OperationResult createResult = this.reservationService.update(reservation, message);
+									
+									if (!OperationResult.isResultSucces(createResult)) {
+										// TODO: Write log
+										createResult.setResultDesc("Reservation could not be updated. Please try again later!");
+									}
+									operationResult = createResult;
+								}
+						
 							} else {
 								operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 								operationResult.setResultDesc("Reservation status is not suitable for this operation!");
@@ -499,6 +523,115 @@ public class ApiReservationController extends BaseApiController {
 			operationResult.setResultDesc("List trip could not be completed. Please try again later!");
 		}
 		return new ResponseEntity<ValueOperationResult<Map<String, List<Reservation>>>>(operationResult, HttpStatus.OK);
+    }
+
+	@RequestMapping(value = "/api/reservation/createinquiry", method = RequestMethod.POST)
+    public ResponseEntity<ValueOperationResult<String>> createInquiry(@RequestBody UiReservation uiReservation, HttpSession session) {
+		ValueOperationResult<String> operationResult = new ValueOperationResult<String>();
+		
+		try {
+			User user = super.getSessionUser(session);
+			if (user != null) {				
+				if (uiReservation.getPlaceId() != null && uiReservation.getStartDate() != null 
+						&& uiReservation.getEndDate() != null && uiReservation.getGuestNumber() != null
+						&& uiReservation.getMessageText() != null && uiReservation.getMessageText().trim().length() > 0) {
+					Reservation dbReservation = new Reservation();
+					
+					dbReservation.setClientUserId(user.getId());
+					dbReservation.setPlaceId(uiReservation.getPlaceId());
+					dbReservation.setStatus(EnmReservationStatus.INQUIRY.getId());
+					
+					List<Reservation> dbReservationList = this.reservationService.list(dbReservation, false, false, false);
+					
+					if (dbReservationList == null || dbReservationList.size() == 0) {
+						Date operationDate = new Date();
+						String createdBy = user.getFullName();
+						
+						String paramServiceFeeRate = this.parameterService.getParameterValue(EnmParameter.PLACE_SERVICE_FEE_RATE.getId());
+						String paramCommissionFeeRate = this.parameterService.getParameterValue(EnmParameter.PLACE_COMMISSION_FEE_RATE.getId());
+						
+						BigDecimal serviceFeeRate = (new BigDecimal(paramServiceFeeRate)).divide(new BigDecimal(100));
+						BigDecimal commissionFeeRate = (new BigDecimal(paramCommissionFeeRate)).divide(new BigDecimal(100));
+						
+						ValueOperationResult<Place> getOperationResult = this.placeService.getPlace(uiReservation.getPlaceId());
+						
+						Place place = getOperationResult.getResultValue();
+						
+						Reservation reservation = new Reservation();
+						
+						reservation.setClientUserId(user.getId());
+						
+						reservation.setPlaceId(place.getId());
+						reservation.setPlacePrice(place.getPrice());
+						reservation.setHostUserId(place.getHostUserId());
+						
+						reservation.setServiceRate(serviceFeeRate);
+						reservation.setServiceFee(serviceFeeRate.multiply(place.getPrice()));
+						
+						reservation.setCommissionRate(commissionFeeRate);
+						reservation.setCommissionFee(commissionFeeRate.multiply(place.getPrice()));
+						
+						reservation.setGuestNumber(uiReservation.getGuestNumber());
+						reservation.setCurrencyId(place.getCurrencyId());
+						reservation.setStartDate(uiReservation.getStartDate());
+						reservation.setEndDate(uiReservation.getEndDate());
+						
+						reservation.setStatus(EnmReservationStatus.INQUIRY.getId());
+						reservation.setCreatedDate(operationDate);
+						reservation.setCreatedBy(createdBy);
+						
+						MessageThread messageThread = new MessageThread();
+						messageThread.setHostUserId(place.getHostUserId());
+						messageThread.setClientUserId(user.getId());
+						messageThread.setEntityType(EnmEntityType.PLACE.getId());
+						messageThread.setEntityId(place.getId());
+						messageThread.setThreadTitle(place.getTitle());
+						messageThread.setCreatedDate(operationDate);
+						messageThread.setCreatedBy(createdBy);
+						
+						Message message = new Message();
+						
+						message.setSenderUserId(user.getId());
+						message.setReceiverUserId(place.getHostUserId());
+						message.setMessageText(uiReservation.getMessageText());
+						message.setStatus(EnmMessageStatus.NOT_READ.getId());
+						message.setCreatedDate(operationDate);
+						message.setCreatedBy(createdBy);
+						
+						messageThread.addMessage(message);
+						
+						reservation.setMessageThread(messageThread);
+						
+						OperationResult createResult = this.reservationService.insert(reservation);
+						
+						if (!OperationResult.isResultSucces(createResult)) {
+							FileLogger.log(Level.ERROR, "Contact host operation could not be completed. UserId:" + user.getId() + ", Error:" + OperationResult.getResultDesc(createResult));
+							createResult.setResultDesc("Reservation could not be saved. Please try again later!");
+						}
+						
+						operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+					} else {
+						operationResult.setResultCode(EnmResultCode.WARNING.getValue());
+						operationResult.setErrorCode(EnmErrorCode.ALREADY_CONTACTED.getId());
+						operationResult.setResultDesc("You have an active connection with this user. Please use existing thread to send a new message!");
+						String conversationPageUrl = AppUtil.concatPath(this.webApplication.getUrlPrefix(), "/pages/dashboard/Conversation.xhtml?threadId="+ dbReservationList.get(0).getMessageThreadId());
+						operationResult.setResultValue(conversationPageUrl);
+					}
+				} else {
+					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+					operationResult.setResultDesc("Mandatory parameters are missing!");
+				}	
+			} else {
+				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
+			}
+		} catch (Exception e) {
+			FileLogger.log(Level.ERROR, "ApiReservationController-startReservation()-Error: " + CommonUtil.getExceptionMessage(e));
+			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
+			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+		}
+		return new ResponseEntity<ValueOperationResult<String>>(operationResult, HttpStatus.OK);
     }
 	
 }

@@ -61,6 +61,10 @@ body, #mainWrapper {
 	margin-top: 6px;	
 }
 
+.left-2 {
+	margin-left: 6px;	
+}
+
 .clsModal {
 	z-index : 50;
 }

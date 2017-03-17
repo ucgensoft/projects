@@ -1053,20 +1053,18 @@ tr.book-it__price-item-row+tr.book-it__price-item-row {
 }
 
 .contact-modal .checkin {
-	border-right-width: 0;
 	-webkit-border-radius: 2px 0 0 2px;
 	-moz-border-radius: 2px 0 0 2px;
 	border-radius: 2px 0 0 2px
 }
 
 .contact-modal .checkout {
-	border-right-width: 0;
 	-webkit-border-radius: 0;
 	-moz-border-radius: 0;
 	border-radius: 0
 }
 
-.contact-modal .tooltip-fixed {
+.contact-modal .tooltip.tooltip-fixed {
 	position: relative;
 	max-width: none;
 	z-index: auto;

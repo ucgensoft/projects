@@ -70,6 +70,23 @@
 									</div>
 								</div>
 							</div>
+							<div ng-if="ctrl.showBookingBox()" class="space-6">
+								<div class="panel action-status contextual-padding">
+									<div class="panel-body">
+										<div>
+											<div class="row row-condensed space-top-3">
+												<div class="col-lg-4 space-sm-2 space-md-2">
+													<button type="button"
+														class="btn btn-block btn-primary contextual-primary-btn"
+														ng-click="ctrl.sendBookingRequest()">
+														<span>Send Booking Request</span>
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
 							<div class="row row-condensed space-6 send-message-box"
 								id="post_message_box">
 								<div class="col-sm-12 col-md-9 col-lg-10">

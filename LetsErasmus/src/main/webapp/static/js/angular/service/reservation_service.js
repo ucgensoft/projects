@@ -48,6 +48,28 @@ App.factory('reservationService', ['$http', '$q', function($http, $q){
 			});
 		},
 		
+		createInquiry : function(reservation, callBack) {
+			var config = {
+				headers : {
+					'Accept' : 'application/json'
+				}
+			};
+			
+			NProgress.start(3000, 5);
+			return $http.post(webApplicationUrlPrefix + '/api/reservation/createinquiry', reservation, config).then(function(response) {
+				NProgress.done(true);
+				var result = isResultSuccess(response.data, true);
+				if (result && callBack) {
+					callBack();
+				}
+			}, function(errResponse) {
+				DialogUtil.error('Error', errResponse, 'OK');
+				if (callBack) {
+					callBack(false);
+				}
+			});
+		},
+		
 		updateReservation : function(reservationId, messageText, status, callBack) {
 			var config = {
 				headers : {
