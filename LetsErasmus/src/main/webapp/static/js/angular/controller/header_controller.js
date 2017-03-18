@@ -143,7 +143,7 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
     				
     				});
     		} else {
-    			FB.login(self.facebookLoginCallback, {scope: 'public_profile, email'});
+    			//FB.login(self.facebookLoginCallback, {scope: 'public_profile, email'});
     		}
     	};
       

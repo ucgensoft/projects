@@ -11,11 +11,22 @@ App.factory('userService', ['$http', '$q', function($http, $q){
 			};
 			
 			NProgress.start(3000, 5);
+			self = this;
 			return $http.post(webApplicationUrlPrefix + '/api/user/signup', user, config).then(function(response) {
 				NProgress.done(true);
 				var result = isResultSuccess(response.data, true);
-				if (callBack) {
-					callBack(result);
+				if (result) {
+					if (response.data != null && response.data.errorCode == EnmErrorCode.USER_DEACTIVE) {
+						DialogUtil.confirm('Confirm', response.data.resultDesc, function(isAccepted) {
+							if (isAccepted) {
+								self.reactivateUser(callBack);	
+							}
+						});
+					} else {
+						if (callBack) {
+							callBack(result);
+						}
+					}
 				}
 			}, function(errResponse) {
 				DialogUtil.error('Error', errResponse, 'OK');
@@ -108,12 +119,23 @@ App.factory('userService', ['$http', '$q', function($http, $q){
 				}
 			};
 			NProgress.start(3000, 5);
+			self = this;
 			return $http.post(webApplicationUrlPrefix + '/api/user/login', user, config).then(function(response) {
 				NProgress.done(true);
 				var result = isResultSuccess(response.data, true);
-				if (callBack) {
-					callBack(result);
-				}
+				if (result) {
+					if (response.data != null && response.data.errorCode == EnmErrorCode.USER_DEACTIVE) {
+						DialogUtil.confirm('Confirm', response.data.resultDesc, function(isAccepted) {
+							if (isAccepted) {
+								self.reactivateUser(callBack);	
+							}
+						});
+					} else {
+						if (callBack) {
+							callBack(result);
+						}
+					}
+				}	
 			}, function(errResponse) {
 				DialogUtil.error('Error', errResponse, 'OK');
 				if (callBack) {
@@ -360,6 +382,64 @@ App.factory('userService', ['$http', '$q', function($http, $q){
 				var result = isResultSuccess(response.data, true);
 				if (callBack) {
 					callBack(result);
+				}
+			}, function(errResponse) {
+				DialogUtil.error('Error', errResponse, 'OK');
+			});
+		},
+		
+		deactivateUser : function(callBack) {
+			var config = {
+				headers : {
+					'Accept' : 'application/json'
+				}
+			};
+			
+			NProgress.start(2000, 5);
+			return $http.post(webApplicationUrlPrefix + '/api/user/deactivate', config).then(function(response) {
+				NProgress.done(true);
+				var result = isResultSuccess(response.data, true);
+				if (callBack) {
+					callBack(result);
+				}
+			}, function(errResponse) {
+				DialogUtil.error('Error', errResponse, 'OK');
+			});
+		},
+		
+		reactivateUser : function(callBack) {
+			var config = {
+				headers : {
+					'Accept' : 'application/json'
+				}
+			};
+			
+			NProgress.start(2000, 5);
+			return $http.post(webApplicationUrlPrefix + '/api/user/reactivate', config).then(function(response) {
+				NProgress.done(true);
+				var result = isResultSuccess(response.data, true);
+				if (callBack) {
+					callBack(result);
+				}
+			}, function(errResponse) {
+				DialogUtil.error('Error', errResponse, 'OK');
+			});
+		},
+		
+		getUser : function(userId, callBack) {
+			var config = {
+				params : {userId: userId},
+				headers : {
+					'Accept' : 'application/json'
+				}
+			};
+			
+			NProgress.start(2000, 5);
+			return $http.get(webApplicationUrlPrefix + '/api/user/get', config).then(function(response) {
+				NProgress.done(true);
+				var result = isResultSuccess(response.data, true);
+				if (result && callBack) {
+					callBack(response.data.resultValue);
 				}
 			}, function(errResponse) {
 				DialogUtil.error('Error', errResponse, 'OK');

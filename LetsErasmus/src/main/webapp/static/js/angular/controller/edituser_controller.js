@@ -258,6 +258,21 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
   		$('#divCountryPrefix')[0].innerText= $('#cmbCountry').val();
   	};
   	
+  	self.deactivateUser = function() {
+  		DialogUtil.confirm('Confirm', 'Your user profile will be deactivated and you will be logged out. Do you wish to proceed?', function(response) {
+	  			if (response) {
+	  		  		userService.deactivateUser(function(isSuccess) {
+	  						  if (isSuccess) {
+	  							  DialogUtil.info('Sucess', 'Your user profile is deactivated!', 'OK', function() {
+	  								openWindow(webApplicationUrlPrefix + "/pages/Main.xhtml", true);
+	  							  });
+	  						  }
+	  			  		  }
+	  			  	  );
+	  			}
+	  		});
+  	};
+  	
     self.initialize();
       
   }]);

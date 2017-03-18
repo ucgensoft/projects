@@ -405,13 +405,15 @@ public class ApiPlaceController extends BaseApiController {
 				pageNumber = Integer.valueOf(uiPageNumber);
 			}
 			*/
-			listResult = this.placeService.listPlace(null, true, true, true, null, null);
+			Place place = new Place();
+			place.setStatus(EnmPlaceStatus.ACTIVE.getValue());
+			listResult = this.placeService.listPlace(place, true, true, true, null, null);
 			if (OperationResult.isResultSucces(listResult)) {
 				List<Place> placeList = listResult.getObjectList();
 				if (placeList != null) {
-					for (Place place : placeList) {
+					for (Place tmpPlace : placeList) {
 						String paramDistance = this.parameterService.getParameterValue(EnmParameter.CHANGE_LOCATION_DISTANCE.getId());
-						LocationService.changeCoordinates(place.getLocation(), Integer.parseInt(paramDistance));
+						LocationService.changeCoordinates(tmpPlace.getLocation(), Integer.parseInt(paramDistance));
 					}
 				}
 			} else {

@@ -25,9 +25,9 @@
 										<ul class="slideshow-images">
 											<li class="active media-photo media-photo-block">
 											<img
-												alt="#{displayUserController.user.firstName}" class="img-responsive" height="225"
-												src="#{webApplication.getUserPhotoUrl(displayUserController.user.id, displayUserController.user.profilePhotoId, 'medium')}"
-												title="#{displayUserController.user.firstName}" width="225" /></li>
+												alt="{{ctrl.user.firstName}}" class="img-responsive" height="225"
+												src="{{ctrl.getUserProfilePhotoUrl()}}"
+												title="{{ctrl.user.firstName}}" width="225" /></li>
 											<li class="media-photo media-photo-block"></li>
 										</ul>
 									</div>
@@ -42,13 +42,13 @@
 									<li class="row row-table space-2">
 										<div class="col-12 col-middle">Email address</div>
 										<div class="col-3 col-middle">
-											<i class="icon #{displayUserController.user.emailVerified == 'Y' ? 'icon-ok' : 'icon-remove'} h3"></i>
+											<i class="icon {{ctrl.user.emailVerified == 'Y' ? 'icon-ok' : 'icon-remove'}} h3"></i>
 										</div>
 									</li>
 									<li class="row row-table space-2">
 										<div class="col-12 col-middle">Phone number</div>
 										<div class="col-3 col-middle">
-											<i class="icon #{displayUserController.user.msisdnVerified == 'Y' ? 'icon-ok' : 'icon-remove'} h3"></i>
+											<i class="icon {{ctrl.user.msisdnVerified == 'Y' ? 'icon-ok' : 'icon-remove'}} h3"></i>
 										</div>
 									</li>
 								</ul>
@@ -62,13 +62,13 @@
 									<li class="row row-table space-2">
 										<div class="col-12 col-middle">Facebook</div>
 										<div class="col-3 col-middle">
-											<i class="icon #{displayUserController.user.facebookId != null ? 'icon-ok' : 'icon-remove'} h3"></i>
+											<i class="icon {{ctrl.user.facebookId != null ? 'icon-ok' : 'icon-remove'}} h3"></i>
 										</div>
 									</li>
 									<li class="row row-table space-2">
 										<div class="col-12 col-middle">Google</div>
 										<div class="col-3 col-middle">
-											<i class="icon #{displayUserController.user.googleId != null ? 'icon-ok' : 'icon-remove'} h3"></i>
+											<i class="icon {{ctrl.user.googleId != null ? 'icon-ok' : 'icon-remove'}} h3"></i>
 										</div>
 									</li>
 								</ul>
@@ -81,20 +81,7 @@
 							<div class="panel-body">
 								<dl>
 									<dt>School</dt>
-									<dd>#{displayUserController.user.schoolName}</dd>
-	
-									<dt class="airbnb-symbol-hidden hide space-1">#{displayUserController.user.firstName}'s LetsErasmus Symbol</dt>
-									<dd class="airbnb-symbol-hidden hide">
-	
-										<div class="user-profile-symbol" data-user-id="54995441">
-											<img
-												src="https://a0.muscache.com/airbnb/static/profile/symbol-empty-state-d97ee7a003fdab31cfaa9b20bd3a27ff.png"
-												data-default-url="https://a0.muscache.com/airbnb/static/profile/symbol-empty-state-d97ee7a003fdab31cfaa9b20bd3a27ff.png"
-												data-base-url="https://create.airbnb.com/"
-												data-src-url="https://create.airbnb.com/54995441/symbol"
-												alt="#{displayUserController.user.firstName}" class="img-responsive" />
-										</div>
-									</dd>
+									<dd>{{ctrl.user.schoolName}}</dd>
 								</dl>
 							</div>
 						</div>
@@ -102,18 +89,11 @@
 	
 					<div class="col-lg-9 col-md-8 col-sm-12">
 						<div class="row space-4">
-							<div class="col-sm-4 show-sm">
-								<div class="media-photo media-photo-block media-round">
-									<img alt="Anıl" class="img-responsive" height="225"
-										src="https://a0.muscache.com/im/pictures/2fbedaff-e37d-4f85-a3f4-1659d22d07ab.jpg?aki_policy=profile_x_medium"
-										title="Anıl" width="225" />
-								</div>
-							</div>
 							<div class="col-sm-8 col-md-12 col-lg-12">
-								<h1>Hey, I’m #{displayUserController.user.firstName}!</h1>
+								<h1>Hey, I’m {{ctrl.user.firstName}}!</h1>
 								<div class="h5 space-top-2">
-									<a href="/s/Istanbul--Turkey" class="link-reset">#{displayUserController.user.residenceLocationName}</a> · 
-									<span class="text-normal"> Joined in #{displayUserController.formatDate(displayUserController.user.createdDate, 'MMMM yyyy')}</span>
+									<span class="text-normal">{{ctrl.user.residenceLocationName}} {{ctrl.user.residenceLocationName != null ? '.' : ''}} 
+										Joined in {{ctrl.user.createdDate | date:'MMMM dd, yyyy'}}</span>
 								</div>
 								<div class="text-muted space-top-2">
 									<div data-hypernova-key="user_flag_controlbundlejs">
@@ -131,11 +111,9 @@
 										</div>
 									</div>
 								</div>
-								<ui:fragment rendered="#{webApplication.user.id == displayUserController.user.id}">
-									<div class="edit_profile_container space-3">
-										<a href="#{webApplication.urlPrefix}/pages/dashboard/EditUser.xhtml">Edit Profile</a>
-									</div>
-								</ui:fragment>
+								<div class="edit_profile_container space-3 {{ctrl.isActiveUser() ? '' : 'hidden-force'}}">
+									<a href="#{webApplication.urlPrefix}/pages/dashboard/EditUser.xhtml">Edit Profile</a>
+								</div>
 							</div>
 						</div>
 						<div class="space-top-2">
@@ -249,6 +227,7 @@
 		</main>
 		<script src="#{webApplication.urlPrefix}/static/js/angular/service/place_service.js"></script>
 		<script src="#{webApplication.urlPrefix}/static/js/angular/service/review_service.js"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/service/user_service.js"></script>
 		<script src="#{webApplication.urlPrefix}/static/js/angular/controller/display_user_controller.js"></script>
 	</ui:define>
 </ui:composition>

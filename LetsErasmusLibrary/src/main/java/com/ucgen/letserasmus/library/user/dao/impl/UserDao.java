@@ -59,6 +59,11 @@ public class UserDao extends JdbcDaoSupport implements IUserDao {
 			argList.add(user.getId());
 		}
 		
+		if (user.getStatus() != null) {
+			sqlBuilder.append(" AND " + userRowMapper.getCriteriaColumnName(PlaceRowMapper.COL_STATUS) + " = ? ");
+			argList.add(user.getStatus());
+		}
+		
 		if (user.getEmail() != null) {
 			sqlBuilder.append(" AND " + userRowMapper.getCriteriaColumnName(UserRowMapper.COL_EMAIL) + " = ? ");
 			argList.add(user.getEmail());

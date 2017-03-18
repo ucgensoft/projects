@@ -153,8 +153,7 @@ public class ApiUserController extends BaseApiController {
 		OperationResult operationResult = new OperationResult();
 		
 		try {
-			
-			session.invalidate();
+			this.processLogout(session);
 			operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 			
 			httpStatus = HttpStatus.OK;			
@@ -178,8 +177,16 @@ public class ApiUserController extends BaseApiController {
 				dbUser = this.userService.getUser(dbUser);
 				
 				if(dbUser != null) {
-					operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
-					this.processLogin(session, dbUser, EnmLoginType.LOCAL_ACCOUNT);
+					if (dbUser.getStatus().equals(EnmUserStatus.ACTIVE.getValue())) {
+						operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+						this.processLogin(session, dbUser, EnmLoginType.LOCAL_ACCOUNT);
+					} else {
+						session.setAttribute(EnmSession.DEACTIVE_USER.getId(), dbUser);
+						session.setAttribute(EnmSession.DEACTIVE_USER_LOGIN_TYPE.getId(), EnmLoginType.LOCAL_ACCOUNT);
+						operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+						operationResult.setErrorCode(EnmErrorCode.USER_DEACTIVE.getId());
+						operationResult.setResultDesc("Your account is deactive. Do you want to reactivate ?");
+					}
 				} else {
 					operationResult.setResultCode(EnmResultCode.WARNING.getValue());
 					operationResult.setResultDesc("Email or password is incorrect.");
@@ -210,6 +217,7 @@ public class ApiUserController extends BaseApiController {
 				
 				User registeredUser = this.userService.getUser(newUser);
 				if(registeredUser == null) {
+					
 					newUser.setPassword(null);
 					newUser.setGoogleEmail(uiUser.getEmail());
 					newUser.setFacebookEmail(uiUser.getEmail());
@@ -340,11 +348,19 @@ public class ApiUserController extends BaseApiController {
 						operationResult.setResultDesc(message);
 					}
 				} else {
-					registeredUser.setLoginType(EnmLoginType.GOOGLE.getId());
-					registeredUser.setProfileImageUrl(uiUser.getProfileImageUrl());
-					this.processLogin(session, registeredUser, EnmLoginType.GOOGLE);
-					
-					operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+					if (registeredUser.getStatus().equals(EnmUserStatus.ACTIVE.getValue())) {
+						registeredUser.setLoginType(EnmLoginType.GOOGLE.getId());
+						registeredUser.setProfileImageUrl(uiUser.getProfileImageUrl());
+						this.processLogin(session, registeredUser, EnmLoginType.GOOGLE);
+						
+						operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+					} else {
+						session.setAttribute(EnmSession.DEACTIVE_USER.getId(), registeredUser);
+						session.setAttribute(EnmSession.DEACTIVE_USER_LOGIN_TYPE.getId(), EnmLoginType.GOOGLE);
+						operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+						operationResult.setErrorCode(EnmErrorCode.USER_DEACTIVE.getId());
+						operationResult.setResultDesc("Your account is deactive. Do you want to reactivate ?");
+					}
 				}	
 			} else {
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
@@ -429,11 +445,19 @@ public class ApiUserController extends BaseApiController {
 						operationResult.setResultDesc(message);
 					}
 				} else {
-					registeredUser.setLoginType(EnmLoginType.FACEBOOK.getId());
-					registeredUser.setProfileImageUrl(uiUser.getProfileImageUrl());
-					this.processLogin(session, registeredUser, EnmLoginType.FACEBOOK);
-					
-					operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+					if (registeredUser.getStatus().equals(EnmUserStatus.ACTIVE.getValue())) {
+						registeredUser.setLoginType(EnmLoginType.FACEBOOK.getId());
+						registeredUser.setProfileImageUrl(uiUser.getProfileImageUrl());
+						this.processLogin(session, registeredUser, EnmLoginType.FACEBOOK);
+						
+						operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+					} else {
+						session.setAttribute(EnmSession.DEACTIVE_USER.getId(), registeredUser);
+						session.setAttribute(EnmSession.DEACTIVE_USER_LOGIN_TYPE.getId(), EnmLoginType.FACEBOOK);
+						operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+						operationResult.setErrorCode(EnmErrorCode.USER_DEACTIVE.getId());
+						operationResult.setResultDesc("Your account is deactive. Do you want to reactivate ?");
+					}
 				}
 			} else {
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
@@ -789,6 +813,7 @@ public class ApiUserController extends BaseApiController {
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 			operationResult.setResultDesc("Operation failed because of an unexpected error. Please try again later!");
+			FileLogger.log(Level.ERROR, "ApiUserController-sendMsisdnVerificationCode()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		
 		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);
@@ -1178,6 +1203,137 @@ public class ApiUserController extends BaseApiController {
 		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);
     }
     
+    @RequestMapping(value = "/api/user/deactivate", method = RequestMethod.POST)
+    public ResponseEntity<OperationResult> deactivateUser(HttpSession session) {
+    	OperationResult operationResult = new OperationResult();
+		try {
+			User user = super.getSessionUser(session);
+			if (user != null) {
+				User updatedUser = new User();
+				updatedUser.setId(user.getId());
+				updatedUser.setStatus(EnmUserStatus.DEACTIVE.getValue());
+				
+				updatedUser.setModifiedDate(new Date());
+				updatedUser.setModifiedBy(user.getFullName());
+				
+				OperationResult updateResult = this.userService.deactivateUser(updatedUser);
+				if (OperationResult.isResultSucces(updateResult)) {
+					operationResult = updateResult;
+					this.processLogout(session);
+				} else {
+					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+					operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
+					operationResult.setResultDesc("User record could not be updated. Please try again later!");
+					throw new OperationResultException(operationResult);
+				}
+			} else {
+				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
+			}
+		} catch (OperationResultException e) {
+			operationResult = e.getOperationResult();
+			FileLogger.log(Level.ERROR, "ApiUserController-deactivateUser()-Error: " + CommonUtil.getExceptionMessage(e));
+		} catch (Exception e) {
+			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+			operationResult.setResultDesc("Operation failed because of an unexpected error. Please try again later!");
+			FileLogger.log(Level.ERROR, "ApiUserController-deactivateUser()-Error: " + CommonUtil.getExceptionMessage(e));
+		}
+		
+		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "/api/user/reactivate", method = RequestMethod.POST)
+    public ResponseEntity<OperationResult> reactivateUser(HttpSession session) {
+    	OperationResult operationResult = new OperationResult();
+		try {
+			Object objuser = session.getAttribute(EnmSession.DEACTIVE_USER.getId());
+			if (objuser != null) {
+				EnmLoginType loginType = (EnmLoginType) session.getAttribute(EnmSession.DEACTIVE_USER_LOGIN_TYPE.getId());
+				User sessionUser = (User) objuser;
+				
+				super.getSession().removeAttribute(EnmSession.DEACTIVE_USER.getId());
+				super.getSession().removeAttribute(EnmSession.DEACTIVE_USER_LOGIN_TYPE.getId());
+				
+				User updatedUser = new User();
+				updatedUser.setId(sessionUser.getId());
+				updatedUser.setStatus(EnmUserStatus.ACTIVE.getValue());
+				
+				updatedUser.setModifiedDate(new Date());
+				updatedUser.setModifiedBy(sessionUser.getFullName());
+				
+				OperationResult updateResult = this.userService.updateUser(updatedUser, false, null);
+				if (OperationResult.isResultSucces(updateResult)) {
+					operationResult = updateResult;
+					sessionUser.setStatus(updatedUser.getStatus());
+					this.processLogin(session, sessionUser, loginType);
+				} else {
+					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+					operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
+					operationResult.setResultDesc("User record could not be updated. Please try again later!");
+				}
+			} else {
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc(AppConstants.UNAUTHORIZED_OPERATION);
+			}
+		} catch (OperationResultException e) {
+			operationResult = e.getOperationResult();
+			FileLogger.log(Level.ERROR, "ApiUserController-reactivateUser()-Error: " + CommonUtil.getExceptionMessage(e));
+		} catch (Exception e) {
+			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+			operationResult.setResultDesc("Operation failed because of an unexpected error. Please try again later!");
+			FileLogger.log(Level.ERROR, "ApiUserController-reactivateUser()-Error: " + CommonUtil.getExceptionMessage(e));
+		}
+		
+		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "/api/user/get", method = RequestMethod.GET)
+    public ResponseEntity<ValueOperationResult<User>> getUser(@RequestParam("userId") Long userId, HttpSession session) {
+    	ValueOperationResult<User> valueOperationResult = new ValueOperationResult<User>();
+		try {
+			if (userId != null) {
+				User user = new User();
+				user.setId(userId);
+				user.setStatus(EnmUserStatus.ACTIVE.getValue());
+				
+				User dbUser = this.userService.getUser(user);
+				
+				if (dbUser != null) {
+					user.setFirstName(dbUser.getFirstName());
+					user.setProfilePhotoId(dbUser.getProfilePhotoId());
+					user.setCreatedDate(dbUser.getCreatedDate());
+					user.setResidenceLocationName(dbUser.getResidenceLocationName());
+					user.setSchoolName(dbUser.getSchoolName());
+					user.setEmailVerified(dbUser.getEmailVerified());
+					user.setMsisdnVerified(dbUser.getMsisdnVerified());
+					user.setDescription(dbUser.getDescription());
+					if (dbUser.getGoogleId() != null) {
+						user.setGoogleId("xxxx");
+					}
+					if (dbUser.getFacebookId() != null) {
+						user.setFacebookId("xxxx");
+					}
+					
+					valueOperationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+					valueOperationResult.setResultValue(user);
+				} else {
+					valueOperationResult.setResultCode(EnmResultCode.ERROR.getValue());
+					valueOperationResult.setResultDesc("User not found!");
+				}
+			} else {
+				valueOperationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				valueOperationResult.setResultDesc(AppConstants.MISSING_MANDATORY_PARAM);
+			}
+		} catch (Exception e) {
+			valueOperationResult.setResultCode(EnmResultCode.ERROR.getValue());
+			valueOperationResult.setResultDesc("Operation failed because of an unexpected error. Please try again later!");
+			FileLogger.log(Level.ERROR, "ApiUserController-getUser()-Error: " + CommonUtil.getExceptionMessage(e));
+		}
+		
+		return new ResponseEntity<ValueOperationResult<User>>(valueOperationResult, HttpStatus.OK);
+    }
+    
 	private void processLogin(HttpSession session, User user, EnmLoginType loginType) {
 		// Place records are read from db
 		Place place = new Place();
@@ -1220,6 +1376,10 @@ public class ApiUserController extends BaseApiController {
 		user.setLoginType(loginType.getId());
 		session.setAttribute(EnmSession.USER.getId(), user);
 		session.setAttribute(EnmSession.LOGIN_TYPE.getId(), loginType.getId());
+	}
+	
+	private void processLogout(HttpSession session) {
+		session.invalidate();
 	}
 
 	private void sendEmailVerificationMail(User user) throws UnsupportedEncodingException {

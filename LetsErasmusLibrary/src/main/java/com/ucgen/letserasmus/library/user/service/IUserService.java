@@ -15,4 +15,6 @@ public interface IUserService {
 
 	User getUserForLogin(User user);
 	
+	OperationResult deactivateUser(User user) throws OperationResultException ;
+	
 }

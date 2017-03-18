@@ -90,7 +90,8 @@ var EnmErrorCode = {
         USER_NOT_FOUND : 2,
         MSISDN_VERIFICATION_CODE_INCORRECT : 3,
         USER_NOT_LOGGED_IN : 4,
-        ALREADY_CONTACTED : 5
+        ALREADY_CONTACTED : 5,
+        USER_DEACTIVE : 6
 };
 
 var EnmLoginType = {
@@ -98,6 +99,11 @@ var EnmLoginType = {
 		GOOGLE : 2,
 		FACEBOOK : 3
 };
+
+var EnmImageSize = {
+		SMALL : 'small',
+		MEDIUM : 'medium'
+}
 
 var tests = {
       	  	filereader : typeof FileReader != 'undefined',
