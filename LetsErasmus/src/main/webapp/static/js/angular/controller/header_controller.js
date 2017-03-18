@@ -379,8 +379,13 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
 	  };
 	  
 	  self.onBecomeHostClicked = function() {
-		  globalRedirectUrl = webApplicationUrlPrefix + '/pages/Place.xhtml';
-		  self.openLoginWindow();
+		  var placeUrl = webApplicationUrlPrefix + '/pages/Place.xhtml';
+		  if (loginUserId == '') {
+			  globalRedirectUrl = placeUrl;
+			  self.openLoginWindow();
+		  } else {
+			  openWindow(placeUrl, true);
+		  }
 	  };
   	  
      //self.initialize();
