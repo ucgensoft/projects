@@ -15,7 +15,7 @@ App.controller('mainCtrl', ['$scope', '$controller', 'userService', function($sc
     	      			});
     	      	$("#txtStartDatePicker").datepicker(
     	      			{
-    	      				minDate : new Date(),
+    	      				minDate: '+0',
     	      				dateFormat : "dd.mm.yy",
     	      				onSelect : function(selectedDate, cal) {
     	      					self.validateSearch();
@@ -27,7 +27,7 @@ App.controller('mainCtrl', ['$scope', '$controller', 'userService', function($sc
 
     	      	$("#txtEndDatePicker").datepicker(
     	      			{
-    	      				minDate : new Date(),
+    	      				minDate: '+1m',
     	      				dateFormat : "dd.mm.yy",
     	      				onSelect : function(selectedDate, cal) {
     	      					self.validateSearch();

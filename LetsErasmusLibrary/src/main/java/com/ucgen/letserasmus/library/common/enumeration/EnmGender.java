@@ -4,7 +4,7 @@ public enum EnmGender {
 
 	FEMALE("F"),
 	MALE("M"),
-	OTHER("O");
+	ALL("A");
 	
 	private String id;
 	

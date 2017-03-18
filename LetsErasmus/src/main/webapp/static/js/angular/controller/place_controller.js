@@ -29,7 +29,8 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     	  if (loginType != '') {
     		  $("#txtStartDatePicker").datepicker(
 				{
-					dateFormat : "d MM, y",
+					minDate: '+0',
+					dateFormat : "dd.mm.yy",
 					onSelect : function(selectedDate, cal) {
 						
 					}
@@ -37,7 +38,8 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
 	    	  
 	    	  $("#txtEndDatePicker").datepicker(
 				{
-					dateFormat : "d MM, y",
+					minDate: '+1m',
+					dateFormat : "dd.mm.yy",
 					onSelect : function(selectedDate, cal) {
 						
 					}
@@ -130,7 +132,10 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     	      	  
     	  setCounterElementValue('spanGuestNumber', self.place.guestNumber);
     	  
-    	  $("#cmbGuestGender").val(self.place.guestGender)
+    	  $("#cmbGuestGender").val(self.place.guestGender);
+    	  if (self.place.lgbtFriendly == 'Y') {
+    		  $("#chbLgbtFriendly").attr('checked', 'checked');
+    	  }
     	  setCounterElementValue('spanPlaceMateNumber', self.place.placeMateNumber);
     	  if (self.place.placeMateGender) {
     		  $("#cmbPlaceMateGender").val(self.place.placeMateGender);
@@ -517,6 +522,7 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     	  if ($("#cmbPlaceMateGender")[0].selectedIndex > 0) {
     		  newPlace.placeMateGender = $("#cmbPlaceMateGender").val();
     	  }
+    	  newPlace.lgbtFriendly = ($("#chbLgbtFriendly")[0].checked ? 'Y' : 'N');
     	  
     	  newPlace.price = $("#txtDailyPrice").val();
     	  if ($("#txtDepositPrice").val() != '') {
@@ -586,8 +592,9 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     		  placeService.savePlace(newPlace, self.photoList,
     					function(isSuccess) {
     						if (isSuccess) {
-    							DialogUtil.info('Success', 'Congradulations! Your place is saved successfully!', 'OK');	
-								document.location.href = webApplicationUrlPrefix + '/pages/dashboard/Listings.xhtml';
+    							DialogUtil.info('Success', 'Congradulations! Your place is saved successfully!', 'OK', function() {
+    								document.location.href = webApplicationUrlPrefix + '/pages/dashboard/Listings.xhtml';
+    							});
     						}
     					}
     		  );
@@ -595,8 +602,9 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     		  placeService.updatePlace(newPlace, self.photoList,
   					function(isSuccess) {
   						if (isSuccess) {
-  							DialogUtil.info('Success', 'Congradulations! Your place is updated successfully!', 'OK');	
-								document.location.href = webApplicationUrlPrefix + '/pages/dashboard/Listings.xhtml';
+  							DialogUtil.info('Success', 'Congradulations! Your place is updated successfully!', 'OK', function() {
+  								document.location.href = webApplicationUrlPrefix + '/pages/dashboard/Listings.xhtml';
+  							});	
   						}
   					}
     		  );

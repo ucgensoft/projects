@@ -53,7 +53,7 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
 			
 			$("#txtStartDatePicker").datepicker(
   			{
-  				minDate : new Date(),
+  				minDate : '+0',
   				dateFormat : "dd.mm.yy",
   				onSelect : function(selectedDate, cal) {
   					self.validateSearch();
@@ -67,7 +67,7 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
 			
 	      	$("#txtEndDatePicker").datepicker(
   			{
-  				minDate : new Date(),
+  				minDate: '+1m',
   				dateFormat : "dd.mm.yy",
   				onSelect : function(selectedDate, cal) {
   					self.validateSearch();
@@ -160,6 +160,13 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
     		if (isMatching) {
     			var guestGender = $('#cmbGuestGender').val();
     			if (guestGender != '-1' && guestGender != place.guestGender) {
+    				isMatching = false;
+    			}
+    		}
+    		
+    		if (isMatching) {
+    			var guestGender = $('#chbLgbtFriendly').val();
+    			if ($('#chbLgbtFriendly')[0].checked && place.lgbtFriendly != 'Y') {
     				isMatching = false;
     			}
     		}
