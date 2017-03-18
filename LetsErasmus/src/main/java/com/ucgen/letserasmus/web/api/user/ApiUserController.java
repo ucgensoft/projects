@@ -3,7 +3,6 @@ package com.ucgen.letserasmus.web.api.user;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,6 +32,7 @@ import com.ucgen.common.operationresult.ListOperationResult;
 import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.common.operationresult.ValueOperationResult;
 import com.ucgen.common.util.CommonUtil;
+import com.ucgen.common.util.DateUtil;
 import com.ucgen.common.util.FileLogger;
 import com.ucgen.common.util.FileUtil;
 import com.ucgen.common.util.ImageUtil;
@@ -49,6 +49,8 @@ import com.ucgen.letserasmus.library.favorite.service.IFavoriteService;
 import com.ucgen.letserasmus.library.file.enumeration.EnmFileType;
 import com.ucgen.letserasmus.library.file.model.FileModel;
 import com.ucgen.letserasmus.library.file.model.Photo;
+import com.ucgen.letserasmus.library.parameter.enumeration.EnmParameter;
+import com.ucgen.letserasmus.library.parameter.service.IParameterService;
 import com.ucgen.letserasmus.library.place.model.Place;
 import com.ucgen.letserasmus.library.place.service.IPlaceService;
 import com.ucgen.letserasmus.library.user.enumeration.EnmLoginType;
@@ -69,6 +71,7 @@ public class ApiUserController extends BaseApiController {
 	private IPlaceService placeService;
 	private WebApplication webApplication;
 	private IFavoriteService favoriteService;
+	private IParameterService parameterService;
 	
 	@Autowired
 	public void setFavoriteService(IFavoriteService favoriteService) {
@@ -90,6 +93,11 @@ public class ApiUserController extends BaseApiController {
 		this.placeService = placeService;
 	}
 	
+	@Autowired
+	public void setParameterService(IParameterService parameterService) {
+		this.parameterService = parameterService;
+	}
+
 	@Autowired
 	public void setMailUtil(MailUtil mailUtil) {
 		this.mailUtil = mailUtil;
@@ -224,7 +232,7 @@ public class ApiUserController extends BaseApiController {
 					
 					registeredUser = this.userService.getUserForLogin(newUser);
 					if(registeredUser == null) {
-						String verificationCode = SecurityUtil.generateUUID().replace("-", "");
+						String verificationCode = SecurityUtil.generateUUID();
 						newUser = new User();
 						
 						newUser.setEmail(uiUser.getEmail());
@@ -297,7 +305,7 @@ public class ApiUserController extends BaseApiController {
 					
 					registeredUser = this.userService.getUserForLogin(newUser);
 					if(registeredUser == null) {
-						String verificationCode = SecurityUtil.generateUUID().replace("-", "");
+						String verificationCode = SecurityUtil.generateUUID();
 						
 						newUser = new User();
 
@@ -394,7 +402,7 @@ public class ApiUserController extends BaseApiController {
 					registeredUser = this.userService.getUserForLogin(newUser);
 					
 					if(registeredUser == null) {
-						String verificationCode = SecurityUtil.generateUUID().replace("-", "");
+						String verificationCode = SecurityUtil.generateUUID();
 						newUser = new User();
 						
 						newUser.setEmail(uiUser.getFacebookEmail());
@@ -529,7 +537,7 @@ public class ApiUserController extends BaseApiController {
 							user.setEmail(uiUser.getEmail());
 							
 							if (sessionUser.getEmail() == null || !sessionUser.getEmail().equals(user.getEmail())) {
-								String verificationCode = SecurityUtil.generateUUID().replace("-", "");
+								String verificationCode = SecurityUtil.generateUUID();
 								
 								user.setEmailVerified(EnmBoolStatus.NO.getId());
 								user.setUserActivationKeyEmail(verificationCode);
@@ -1334,6 +1342,124 @@ public class ApiUserController extends BaseApiController {
 		return new ResponseEntity<ValueOperationResult<User>>(valueOperationResult, HttpStatus.OK);
     }
     
+    @RequestMapping(value = "/api/user/sendresetpasswordemail", method = RequestMethod.GET)
+    public ResponseEntity<OperationResult> sendResetPasswordEmail(@RequestParam("email") String email, HttpSession session) {
+    	ValueOperationResult<User> operationResult = new ValueOperationResult<User>();
+		try {
+			if (email != null) {
+				User user = new User();
+				user.setEmail(email);
+				user.setStatus(EnmUserStatus.ACTIVE.getValue());
+				
+				User dbUser = this.userService.getUser(user);
+				
+				if (dbUser != null) {
+					if (dbUser.getEmailVerified().equals(EnmBoolStatus.YES.getId())) {
+						if (dbUser.getPassword() != null) {
+							String resetPasswordCode = SecurityUtil.generateUUID();
+							
+							user.setId(dbUser.getId());
+							user.setResetPasswordToken(resetPasswordCode);
+							
+							user.setModifiedBy(dbUser.getFullName());
+							user.setModifiedDate(new Date());
+							
+							ValueOperationResult<Integer> updateUserResult = this.userService.updateUser(user, false, null);
+							if (OperationResult.isResultSucces(updateUserResult)) {
+								dbUser.setResetPasswordToken(resetPasswordCode);
+								sendResetPasswordMail(dbUser);
+								operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+							} else {
+								operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+								operationResult.setResultDesc(AppConstants.UNEXPECTED_ERROR);
+							}
+						} else {
+							operationResult.setResultCode(EnmResultCode.WARNING.getValue());
+							if (dbUser.getGoogleId() != null && dbUser.getFacebookId() != null) {
+								operationResult.setResultDesc("User record does not have a password. Please login with your google or facebook account!");
+							} else if (dbUser.getGoogleId() != null) {
+								operationResult.setResultDesc("User record does not have a password. Please login with your google account!");
+							} else if(dbUser.getFacebookId() != null) {
+								operationResult.setResultDesc("User record does not have a password. Please login with your facebook account!");
+							}
+						}
+					} else {
+						operationResult.setResultCode(EnmResultCode.WARNING.getValue());
+						operationResult.setResultDesc("Your email is not verified. Please click the verification link which is sent to your email first!");
+					}
+				} else {
+					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+					operationResult.setResultDesc("User not found!");
+				}
+			} else {
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc(AppConstants.MISSING_MANDATORY_PARAM);
+			}
+		} catch (Exception e) {
+			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+			operationResult.setResultDesc("Operation failed because of an unexpected error. Please try again later!");
+			FileLogger.log(Level.ERROR, "ApiUserController-getUser()-Error: " + CommonUtil.getExceptionMessage(e));
+		}
+		
+		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "/api/user/resetpassword", method = RequestMethod.GET)
+    public ResponseEntity<OperationResult> resetPassword(@RequestParam("userId") Long userId, @RequestParam("code") String code, HttpSession session) throws JsonParseException, JsonMappingException, IOException, ParseException {
+		OperationResult operationResult = new OperationResult();
+		try {			
+			User user = new User();
+			user.setId(userId);
+			
+			User dbUser = this.userService.getUser(user);
+			if (dbUser != null) {
+				if (dbUser.getResetPasswordToken() != null) {
+					if (dbUser.getResetPasswordToken().equals(code)) {
+						String modifiedBy = dbUser.getFullName();
+						String paramMinPassLength = this.parameterService.getParameterValue(EnmParameter.MIN_USER_PASSWORD_LENGTH.getId());
+						String newPassword = SecurityUtil.generateAlphaNumericCode(Integer.valueOf(paramMinPassLength));
+						
+						dbUser.setPassword(newPassword);
+						dbUser.setResetPasswordToken(null);
+						dbUser.setModifiedBy(modifiedBy);
+						dbUser.setModifiedDate(new Date());
+						
+						OperationResult updateResult = this.userService.updateUser(dbUser, true, null);
+						if (OperationResult.isResultSucces(updateResult)) {
+							User sessionUser = this.getSessionUser(session);
+							if (sessionUser != null) {
+								sessionUser.setPassword(newPassword);
+								sessionUser.setResetPasswordToken(null);
+							}
+							sendNewPasswordMail(dbUser);
+							operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+						} else {
+							operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+							operationResult.setResultDesc("User update could not be completed!");
+							operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
+						}
+					} else {
+						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+						operationResult.setResultDesc("Reset password code is incorrect!");
+					}
+				} else {
+					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+					operationResult.setResultDesc(AppConstants.UNAUTHORIZED_OPERATION);
+					operationResult.setErrorCode(EnmErrorCode.UNAUTHORIZED_OPERATION.getId());
+				}
+			} else {
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc("User not found!");
+				operationResult.setErrorCode(EnmErrorCode.USER_NOT_FOUND.getId());
+			}
+		} catch (Exception e) {
+			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
+			operationResult.setResultDesc(AppConstants.UNAUTHORIZED_OPERATION);
+			FileLogger.log(Level.ERROR, "ApiUserController-confirmEmail()-Error: " + CommonUtil.getExceptionMessage(e));
+		}
+		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);
+    }
+    
 	private void processLogin(HttpSession session, User user, EnmLoginType loginType) {
 		// Place records are read from db
 		Place place = new Place();
@@ -1390,14 +1516,14 @@ public class ApiUserController extends BaseApiController {
 		
 		String emailVerificationUrl = this.webApplication.getEmailVerificationUrl();
 		emailVerificationUrl = emailVerificationUrl.replaceAll("#paramUserId#", user.getId().toString());
-		emailVerificationUrl = emailVerificationUrl.replaceAll("#paramEmailVerificationCode#", user.getUserActivationKeyEmail());
+		emailVerificationUrl = emailVerificationUrl.replaceAll("#paramCode#", user.getUserActivationKeyEmail());
 		
-		String emailVerificationUrlEncoded = URLEncoder.encode(emailVerificationUrl, "UTF-8");
+		//String emailVerificationUrlEncoded = URLEncoder.encode(emailVerificationUrl, "UTF-8");
 		
 		Map<String, String> paramMap = new HashMap<String, String>();
 		paramMap.put("#paramUserName#", user.getFirstName());
 		paramMap.put("#paramEmailVerificationUrl#", emailVerificationUrl);
-		paramMap.put("#paramEmailVerificationUrlEncoded#", emailVerificationUrlEncoded);
+		//paramMap.put("#paramEmailVerificationUrlEncoded#", emailVerificationUrlEncoded);
 		this.mailUtil.sendMailFromTemplate(htmlFilePath, paramMap, toList, null, "LetsErasmus Email Verifitcation", null);
 	}
 	
@@ -1418,14 +1544,14 @@ public class ApiUserController extends BaseApiController {
 		
 		String emailVerificationUrl = this.webApplication.getEmailVerificationUrl();
 		emailVerificationUrl = emailVerificationUrl.replaceAll("#paramUserId#", user.getId().toString());
-		emailVerificationUrl = emailVerificationUrl.replaceAll("#paramEmailVerificationCode#", user.getUserActivationKeyEmail());
+		emailVerificationUrl = emailVerificationUrl.replaceAll("#paramCode#", user.getUserActivationKeyEmail());
 		
-		String emailVerificationUrlEncoded = URLEncoder.encode(emailVerificationUrl, "UTF-8");
+		//String emailVerificationUrlEncoded = URLEncoder.encode(emailVerificationUrl, "UTF-8");
 		
 		Map<String, String> paramMap = new HashMap<String, String>();
 		paramMap.put("#paramUserName#", user.getFirstName());
 		paramMap.put("#paramEmailVerificationUrl#", emailVerificationUrl);
-		paramMap.put("#paramEmailVerificationUrlEncoded#", emailVerificationUrlEncoded);
+		//paramMap.put("#paramEmailVerificationUrlEncoded#", emailVerificationUrlEncoded);
 		this.mailUtil.sendMailFromTemplate(htmlFilePath, paramMap, toList, null, "LetsErasmus Email Verifitcation", null);
 	}
 		
@@ -1437,6 +1563,40 @@ public class ApiUserController extends BaseApiController {
 		String emailContent = "Your msisdn verification code is: " + verificationCode.toString();
 		
 		this.mailUtil.sendMail(emailContent, toList, null, "LetsErasmus Msisdn Verifitcation Code", null);
+	}
+	
+	private void sendResetPasswordMail(User user) throws UnsupportedEncodingException {
+		String htmlFilePath = FileUtil.concatPath(this.webApplication.getLocalAppPath(), "static", "html", "mail", "ResetPassword.html");	
+		
+		List<String> toList = new ArrayList<String>();
+		toList.add(user.getEmail());
+		
+		String resetPasswordUrl = this.webApplication.getResetPasswordUrl();
+		resetPasswordUrl = resetPasswordUrl.replaceAll("#paramUserId#", user.getId().toString());
+		resetPasswordUrl = resetPasswordUrl.replaceAll("#paramCode#", user.getResetPasswordToken());
+		
+		//String emailVerificationUrlEncoded = URLEncoder.encode(resetPasswordUrl, "UTF-8");
+		
+		Map<String, String> paramMap = new HashMap<String, String>();
+		paramMap.put("#paramUserName#", user.getFirstName());
+		paramMap.put("#paramResetPasswordUrl#", resetPasswordUrl);
+		paramMap.put("#paramTimeStamp#", DateUtil.format(new Date(), DateUtil.LONG_DATE_FORMAT_H24));
+		this.mailUtil.sendMailFromTemplate(htmlFilePath, paramMap, toList, null, "LetsErasmus Reset Password", null);
+	}
+	
+	private void sendNewPasswordMail(User user) throws UnsupportedEncodingException {
+		String htmlFilePath = FileUtil.concatPath(this.webApplication.getLocalAppPath(), "static", "html", "mail", "NewPassword.html");	
+		
+		List<String> toList = new ArrayList<String>();
+		toList.add(user.getEmail());
+				
+		//String emailVerificationUrlEncoded = URLEncoder.encode(resetPasswordUrl, "UTF-8");
+		
+		Map<String, String> paramMap = new HashMap<String, String>();
+		paramMap.put("#paramUserName#", user.getFirstName());
+		paramMap.put("#newPassword#", user.getPassword());
+		paramMap.put("#paramTimeStamp#", DateUtil.format(new Date(), DateUtil.LONG_DATE_FORMAT_H24));
+		this.mailUtil.sendMailFromTemplate(htmlFilePath, paramMap, toList, null, "LetsErasmus New Password", null);
 	}
 	
 }

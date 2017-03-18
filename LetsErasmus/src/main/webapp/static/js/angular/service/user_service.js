@@ -444,6 +444,59 @@ App.factory('userService', ['$http', '$q', function($http, $q){
 			}, function(errResponse) {
 				DialogUtil.error('Error', errResponse, 'OK');
 			});
+		},
+		
+		sendResetPasswordEmail : function(email, callBack) {
+			NProgress.start(4000, 5);
+			var data = {
+				email : email
+			}
+			
+			var config = {
+				params : data,
+				headers : {
+					'Accept' : 'application/json'
+				}
+			};
+			
+			NProgress.start(2000, 5);
+			return $http.get(webApplicationUrlPrefix + '/api/user/sendresetpasswordemail', config).then(function(response) {
+				NProgress.done(true);
+				var result = isResultSuccess(response.data, true);
+				if (result && callBack) {
+					callBack(result);
+				}
+			}, function(errResponse) {
+				DialogUtil.error('Error', errResponse, 'OK');
+			});
+			
+		},
+		
+		resetPassword : function(userId, code, callBack) {
+			NProgress.start(4000, 5);
+			var data = {
+					userId : userId,
+					code : code
+			}
+			
+			var config = {
+				params : data,
+				headers : {
+					'Accept' : 'application/json'
+				}
+			};
+			
+			NProgress.start(2000, 5);
+			return $http.get(webApplicationUrlPrefix + '/api/user/resetpassword', config).then(function(response) {
+				NProgress.done(true);
+				var result = isResultSuccess(response.data, true);
+				if (result && callBack) {
+					callBack(result);
+				}
+			}, function(errResponse) {
+				DialogUtil.error('Error', errResponse, 'OK');
+			});
+			
 		}
 	};
 

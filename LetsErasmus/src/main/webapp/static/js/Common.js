@@ -46,7 +46,8 @@ var EnmUriParam = {
 
 var EnmOperation = {
 	CONFIRM_EMAIL : 1,
-	LOGIN : 2
+	LOGIN : 2,
+	RESET_PASSWORD : 3
 };
 
 var EnmPageMode = {

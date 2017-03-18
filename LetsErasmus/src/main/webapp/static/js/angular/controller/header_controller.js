@@ -59,10 +59,25 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
 							}, function(errResponse) {
 								
 							});
-	   				  sessionActive
 	   			  }
 	       	  } else if (paramOp == EnmOperation.LOGIN) {
 	       		  openLoginWindow();
+	       	  } else if (paramOp == EnmOperation.RESET_PASSWORD) {
+	       		  var userId = getUriParam("user");
+	   			  var code = getUriParam("code");
+	   			  if (userId != null && userId != '' && code != null && code != '') {
+	   				userService.resetPassword(userId, code,
+							function(isSuccess) {
+								if (isSuccess) {
+									DialogUtil.info('Success', 'Your password is reset successfully and auto generated new password is sent to your email!', 'OK', function() {
+										var newUrl = clearUrlParameter(location.href, null);
+										newUrl += '?op=' + EnmOperation.LOGIN; 
+										openWindow(newUrl, true);
+									});
+								}
+							}
+					  );
+	   			  }
 	       	  }
 	   	  } 
 	 };
@@ -363,7 +378,7 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
   	  	  );
   	  };
   	  
-  	self.deleteComplaint = function(entityType, entityId, callBack) {
+  	  self.deleteComplaint = function(entityType, entityId, callBack) {
 		  var complaint = {
 				entityType : entityType, 
 				entityId : entityId
@@ -388,6 +403,26 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
 		  }
 	  };
   	  
+	  self.onResetPasswordBtnClicked = function() {
+		  	var email = StringUtil.trim($("#txtEmail").val());
+	  		
+	  		if (email == '') {
+	  			DialogUtil.warn('Warning', 'Please enter your email!', 'OK', null);
+	  		} else {
+	  			DialogUtil.confirm('Confirm', 'Your password will be reset, do you want to continue ?', function(isAccepted) {
+	  				if (isAccepted) {
+	  					userService.sendResetPasswordEmail(email,
+								function(isSuccess) {
+									if (isSuccess) {
+										DialogUtil.info('Success', 'An email is sent to your mail address. Please follow the instructions in the mail to reset your password!', 'OK');
+									}
+								}
+						  );
+	  				}
+	  			});
+	  		}
+	  }
+	  
      //self.initialize();
       
   }]);
@@ -445,4 +480,9 @@ function deleteComplaint(entityType, entityId, callBack) {
 function listComplaint(callBack) {
 	var scope = angular.element( $('#divPageHeader') ).scope();
 	scope.ctrl.listComplaint(callBack);
+}
+
+function onResetPasswordBtnClicked() {
+	var scope = angular.element( $('#divPageHeader') ).scope();
+	scope.ctrl.onResetPasswordBtnClicked();
 }

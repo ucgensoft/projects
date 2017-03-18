@@ -8,4 +8,6 @@ public interface AppConstants {
 	
 	String UNAUTHORIZED_OPERATION = "Unauthorized operation!";
 	
+	String UNEXPECTED_ERROR = "Operation failed because of an unexpected error. Please try again later!";
+	
 }

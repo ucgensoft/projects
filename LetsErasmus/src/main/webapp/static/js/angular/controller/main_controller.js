@@ -60,9 +60,9 @@ App.controller('mainCtrl', ['$scope', '$controller', 'userService', function($sc
       };
 
       self.validateSearch = function() {
-      	var startDate = $.datepicker.formatDate('d.m.yy', $("#txtStartDatePicker")
+      	var startDate = $.datepicker.formatDate('dd.mm.yy', $("#txtStartDatePicker")
       			.datepicker("getDate"));
-      	var endDate = $.datepicker.formatDate('d.m.yy', $("#txtEndDatePicker")
+      	var endDate = $.datepicker.formatDate('dd.mm.yy', $("#txtEndDatePicker")
       			.datepicker("getDate"));
 
       	if (selectedPlaceName == null || selectedPlaceName == ''

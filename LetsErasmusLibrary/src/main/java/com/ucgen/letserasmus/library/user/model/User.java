@@ -42,6 +42,7 @@ public class User extends BaseModel {
 	private String languages;
 	private String googleEmail;
 	private String facebookEmail;
+	private String resetPasswordToken;
 	
 	private FileModel profilePhoto;
 	private List<Place> placeList;
@@ -238,6 +239,14 @@ public class User extends BaseModel {
 
 	public void setFacebookEmail(String facebookEmail) {
 		this.facebookEmail = facebookEmail;
+	}
+
+	public String getResetPasswordToken() {
+		return resetPasswordToken;
+	}
+
+	public void setResetPasswordToken(String resetPasswordToken) {
+		this.resetPasswordToken = resetPasswordToken;
 	}
 
 	public List<Place> getPlaceList() {

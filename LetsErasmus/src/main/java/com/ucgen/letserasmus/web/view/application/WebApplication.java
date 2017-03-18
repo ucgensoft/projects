@@ -30,6 +30,7 @@ public class WebApplication extends BaseController {
 	private String urlPrefix;
 	
 	private String emailVerificationUrl;
+	private String resetPasswordUrl;
 	
 	private String rootUserPhotoPath;
 	private String rootPlacePhotoPath;
@@ -69,7 +70,8 @@ public class WebApplication extends BaseController {
 			
 			urlPrefix = this.parameterService.getParameterValue(EnmParameter.LETSERASMUS_URL_PREFIX.getId());
 			
-			emailVerificationUrl = urlPrefix + "/pages/Main.xhtml?user=#paramUserId#&code=#paramEmailVerificationCode#&op=1";
+			emailVerificationUrl = urlPrefix + "/pages/Main.xhtml?user=#paramUserId#&code=#paramCode#&op=1";
+			resetPasswordUrl = urlPrefix + "/pages/Main.xhtml?user=#paramUserId#&code=#paramCode#&op=3";
 			
 			String placeImageSubUrl = this.parameterService.getParameterValue(EnmParameter.PLACE_IMAGE_SUB_URL.getId());
 			String userImageSubUrl = this.parameterService.getParameterValue(EnmParameter.USER_IMAGE_SUB_URL.getId());
@@ -139,6 +141,10 @@ public class WebApplication extends BaseController {
 		this.emailVerificationUrl = emailVerificationUrl;
 	}
 	
+	public String getResetPasswordUrl() {
+		return resetPasswordUrl;
+	}
+
 	public String getRootUserPhotoPath() {
 		return this.rootUserPhotoPath;
 	}

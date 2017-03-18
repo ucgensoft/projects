@@ -23,7 +23,7 @@ import com.ucgen.letserasmus.library.user.model.User;
 @Repository
 public class UserDao extends JdbcDaoSupport implements IUserDao {
 
-	private static final String GET_USER_SQL = " SELECT * FROM USER WHERE 1 = 1 ";
+	//private static final String GET_USER_SQL = " SELECT * FROM USER WHERE 1 = 1 ";
 	
 	private static final String INSERT_USER_SQL = " INSERT INTO USER(EMAIL, PASSWORD, MSISDN, MSISDN_COUNTRY_CODE, FIRST_NAME, LAST_NAME, " 
 			+ " GENDER,  STATUS, EMAIL_VERIFIED, MSISDN_VERIFIED, USER_ACTIVATION_KEY_EMAIL, USER_ACTIVATION_KEY_MSISDN, PROFILE_PHOTO_ID, " 
@@ -221,6 +221,11 @@ public class UserDao extends JdbcDaoSupport implements IUserDao {
 			argList.add(user.getLanguages());
 		}
 		
+		if (setNull || user.getResetPasswordToken() != null) {
+			StringUtil.append(updateFields, " RESET_PASSWORD_TOKEN = ?", ",");
+			argList.add(user.getResetPasswordToken());
+		}
+		
 		StringUtil.append(updateFields, " MODIFIED_DATE = ?", ",");
 		if (user.getModifiedDate() != null) {
 			argList.add(user.getModifiedDate());
@@ -294,11 +299,11 @@ public class UserDao extends JdbcDaoSupport implements IUserDao {
 
 	@Override
 	public User getUserForLogin(User user) {
-		StringBuilder sqlBuilder = new StringBuilder(GET_USER_SQL);
+		UserRowMapper userRowMapper = new UserRowMapper();
+		
+		StringBuilder sqlBuilder = new StringBuilder(userRowMapper.getSelectSql());
 		List<Object> argList = new ArrayList<>();
 		
-		UserRowMapper userRowMapper = new UserRowMapper();
-				
 		sqlBuilder.append(" AND ((EMAIL = IFNULL(?, EMAIL) AND PASSWORD = IFNULL(?, PASSWORD)) " 
 				+ " OR (GOOGLE_ID = IFNULL(?, GOOGLE_ID) AND GOOGLE_EMAIL = IFNULL(?, GOOGLE_EMAIL)) " 
 				+ " OR (FACEBOOK_ID = IFNULL(?, FACEBOOK_ID) AND FACEBOOK_EMAIL = IFNULL(?, FACEBOOK_EMAIL)))");
