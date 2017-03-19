@@ -16,6 +16,12 @@ angular.module('myApp').directive('dynamic', function ($compile) {
   };
 });
 
+App.filter('html', ['$sce', function ($sce) { 
+    return function (text) {
+        return $sce.trustAsHtml(text);
+    };    
+}])
+
 /*
 var App = angular.module('myApp', ['ngMockE2E']);
 App.run(function($httpBackend) {

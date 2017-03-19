@@ -234,6 +234,8 @@ public class WebApplication extends BaseController {
 				return "tripListCtrl";
 			} else if (requestUrl.contains("PAGES/DASHBOARD/WISHLIST.XHTML")) {
 				return "wishListCtrl";
+			} else if (requestUrl.contains("PAGES/HELP/HELP.XHTML")) {
+				return "helpCtrl";
 			} else {
 				return "";
 			}	

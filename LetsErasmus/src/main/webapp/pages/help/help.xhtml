@@ -24,19 +24,18 @@
 						<div class="row">
 							<form
 								class="help-search-form col-sm-12 col-md-10 col-md-offset-1"
-								action="https://www.airbnb.com/help/search" method="GET">
+								action="" method="GET" ng-submit="ctrl.search()">
 								<div id="help-search-container">
 									<div data-reactroot=""
 										class="text-left search-container mobile-autosuggest">
 										<div>
 											<div class="search-input-container">
 												<div class="icon icon-search search-input-inner-container">
-													<input type="text" aria-label="Search help articles"
+													<input id="txtSearch" type="text" aria-label="Search help articles"
 														class="search-input dls-search-input" name="q"
 														autocomplete="off" maxlength="1024" value=""
 														placeholder="Ask a question or search by keyword">
-													</input> <input type="hidden" name="sid"
-														value="7a6da6ae-10e4-4578-b0d8-24e3ab6830d7"></input>
+													</input>
 												</div>
 											</div>
 										</div>
@@ -49,227 +48,33 @@
 			</div>
 		</div>
 
-		<div
-			class="page-container page-container-responsive page-container-sm-full">
+		<div class="page-container page-container-responsive page-container-sm-full">
 			<div class="row space-top-8 space-top-sm-2">
-				<div class="col-md-2 left-menu">
+				<div id="divQuestionGroupList" class="col-md-2 left-menu">
 					<div class="navtree dls-help-center">
 						<ul class="sidenav-list navtree-list" role="navigation"
 							id="navtree-0" style="display: block; left: 0px;">
-							<li><a class="sidenav-item" onclick="showdiv('faqhelp');"
-								href="#">FAQ</a></li>
-							<li><a class="sidenav-item"
-								onclick="showdiv('profilehelp');" href="#">Profile</a></li>
-							<li><a class="sidenav-item"
-								onclick="showdiv('hostinghelp');" href="#">Hosts</a></li>
-							<li><a class="sidenav-item"
-								onclick="showdiv('paymentsforhosthelp');" href="#">Payments For Hosts</a></li>
-							<li><a class="sidenav-item"
-								onclick="showdiv('tenantshelp');" href="#">Tenants</a></li>
-							<li><a class="sidenav-item"
-								onclick="showdiv('paymentsfortenantshelp');" href="#">Payments For Tenants</a></li>
-							<li><a class="sidenav-item" onclick="showdiv('trusthelp');"
-								href="#">Trust&amp;Safety</a></li>
-							<li><a class="sidenav-item"
-								onclick="showdiv('contacthelp');" href="#">Contact</a></li>
+							<li ng-repeat="g in ctrl.questionGroupList">
+								<span class="cursor-pointer sidenav-item" ng-click="ctrl.onQuestionGroupSelected(g.groupTitle)">{{g.groupTitle}}</span>
+							</li>
 						</ul>
-
-
-					</div>
-
-
-				</div>
-				
-				<div id="faqhelp">
-					<div id="content"
-						class="col-sm-12 col-sm-offset-0 col-md-10 col-offset-1 help-content text-copy navtree-content breadcrumbs-content">
-						<button class="accordion icon icon-guide-book">FAQ</button>
-						<div class="panel-help">
-							<div class="col-padding">
-								<p>
-									If you don't have an Let's Erasmus account yet, go to <a
-										href="https://www.letserasmus.com/">letserasmus.com</a> and
-									click <strong>Sign Up</strong>.
-								</p>
-								<p>You can sign up using your email address, Facebook
-									account, Google account. Signing up and creating a Let's
-									Erasmus account is free.</p>
-								<p>After you sign up, be sure to complete your account
-									information before booking a reservation.</p>
-							</div>
-						</div>
-
-
 					</div>
 				</div>
-
-
-				<div id="profilehelp">
-					<div id="content"
+				<div>
+					<div id="divQuestionList"
 						class="col-sm-12 col-sm-offset-0 col-md-10 col-offset-1 help-content text-copy navtree-content breadcrumbs-content">
-						<button class="accordion icon icon-guide-book">Profile question</button>
-						<div class="panel-help">
-							<div class="col-padding">
-								<p>
-									If you don't have an Let's Erasmus account yet, go to <a
-										href="https://www.letserasmus.com/">letserasmus.com</a> and
-									click <strong>Sign Up</strong>.
-								</p>
-								<p>You can sign up using your email address, Facebook
-									account, Google account. Signing up and creating a Let's
-									Erasmus account is free.</p>
-								<p>After you sign up, be sure to complete your account
-									information before booking a reservation.</p>
-							</div>
-						</div>
-
-
-					</div>
-				</div>
-
-
-				<div id="hostinghelp">
-					<div id="content"
-						class="col-sm-12 col-sm-offset-0 col-md-10 col-offset-1 help-content text-copy navtree-content breadcrumbs-content">
-
-
-						<button class="accordion icon icon-guide-book">What are some things I should
-							consider before hosting long-term guests?</button>
-						<div class="panel-help">
-							<div class="col-padding">
-
-								<p>While it’s not a requirement, we strongly advise that you
-									do. You should also avoid non-verbal agreements (get it in
-									writing!) at the very least.</p>
-								<p>If you want guests to sign a rental agreement, you should
-									make these requirements clear in your House Rules before
-									finalizing a booking. Laws governing these subjects vary widely
-									depending on where you live, so be sure to contact a
-									landlord-tenant attorney familiar with your local laws and
-									regulations.</p>
-								<p>Rent control is a special set of laws that includes
-									limits on rent increases and eviction restrictions. Some local
-									rent control laws may override state law, and while many states
-									or local jurisdictions do not have rent control, other laws may
-									still protect tenants. For these reasons, we recommend you
-									contact your local Rent board, Department of Consumer Affairs,
-									Attorney General, or other agencies to learn more about rent
-									control and rent stabilization and how these rules might impact
-									a long-term reservation.</p>
-
-							</div>
-						</div>
-
-
-	
-
-
-
-					</div>
-				</div>
-
-
-				<div id="paymentsforhosthelp">
-					<div id="content"
-						class="col-sm-12 col-sm-offset-0 col-md-10 col-offset-1 help-content text-copy navtree-content breadcrumbs-content">
-
-
-						<button class="accordion icon icon-guide-book">Payment host questions</button>
-						<div class="panel-help">
-							<div class="col-padding">
-
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-									sed do eiusmod tempor incididunt ut labore et dolore magna
-									aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-									ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+						<div ng-repeat="q in ctrl.questionList">
+							<button id="btnQuestion_{{q.id}}" class="accordion icon icon-guide-book"
+								ng-click="ctrl.onQuestionHeaderClick(q.id)">{{q.question}}</button>
+							<div id="divAnswer_{{q.id}}" class="panel-help">
+								<div class="col-padding" ng-bind-html="q.answer | html">
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-
-
-				<div id="tenantshelp">
-					<div id="content"
-						class="col-sm-12 col-sm-offset-0 col-md-10 col-offset-1 help-content text-copy navtree-content breadcrumbs-content">
-						<button class="accordion icon icon-guide-book">Tenants questions</button>
-						<div class="panel-help">
-							<div class="col-padding">
-
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-									sed do eiusmod tempor incididunt ut labore et dolore magna
-									aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-									ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-							</div>
-						</div>
-
-					</div>
-				</div>
-				
-								<div id="paymentsfortenantshelp">
-					<div id="content"
-						class="col-sm-12 col-sm-offset-0 col-md-10 col-offset-1 help-content text-copy navtree-content breadcrumbs-content">
-						<button class="accordion icon icon-guide-book">Payment for tenant questions</button>
-						<div class="panel-help">
-							<div class="col-padding">
-
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-									sed do eiusmod tempor incididunt ut labore et dolore magna
-									aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-									ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-							</div>
-						</div>
-
-					
-					</div>
-				</div>
-
-				<div id="trusthelp">
-					<div id="content"
-						class="col-sm-12 col-sm-offset-0 col-md-10 col-offset-1 help-content text-copy navtree-content breadcrumbs-content">
-						<button class="accordion icon icon-guide-book">trust and safety questions</button>
-						<div class="panel-help">
-							<div class="col-padding">
-
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-									sed do eiusmod tempor incididunt ut labore et dolore magna
-									aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-									ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-							</div>
-						</div>
-
-					</div>
-				</div>
-
-
-				<div id="contacthelp">
-					<div id="content"
-						class="col-sm-12 col-sm-offset-0 col-md-10 col-offset-1 help-content text-copy navtree-content breadcrumbs-content">
-						<button class="accordion icon icon-guide-book">contact form</button>
-						<div class="panel-help">
-							<div class="col-padding">
-
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-									sed do eiusmod tempor incididunt ut labore et dolore magna
-									aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-									ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-							</div>
-						</div>
-
-						
-					</div>
-				</div>
-
-
-
-
-
-
-
-
-
 			</div>
 		</div>
-		<script src="#{webApplication.urlPrefix}/static/js/helpaccordion.js"></script>
-
+		<script src="#{webApplication.urlPrefix}/static/js/angular/controller/help_controller.js"></script>
 	</ui:define>
 </ui:composition>
