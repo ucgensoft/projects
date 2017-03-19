@@ -32,7 +32,7 @@
 										<div class="panel-header active-panel-header">
 											<div class="active-panel-padding">Active Listings</div>
 										</div>
-										<div class="space-2 space-top-2 {{ (ctrl.activePlaceList.length != 0 ? 'hidden' : '') }}">You have no active listing.</div>
+										<div class="listing-left space-2 space-top-2 {{ (ctrl.activePlaceList.length != 0 ? 'hidden' : '') }}">You have no active listing.</div>
 										<ul class="list-unstyled list-layout">
 											<li ng-repeat="p in ctrl.activePlaceList" class="listing panel-body">
 												<div class="row row-table">
@@ -79,7 +79,7 @@
 										<div class="panel-header active-panel-header">
 											<div class="active-panel-padding">Deactive Listings</div>
 										</div>
-										<div class="space-2 space-top-2 {{ (ctrl.deactivePlaceList.length != 0 ? 'hidden' : '') }}">You have no deactive listing.</div>
+										<div class="listing-left space-2 space-top-2 {{ (ctrl.deactivePlaceList.length != 0 ? 'hidden' : '') }}">You have no deactive listing.</div>
 										<ul class="list-unstyled list-layout">
 											<li ng-repeat="p in ctrl.deactivePlaceList" class="listing panel-body">
 												<div class="row row-table">

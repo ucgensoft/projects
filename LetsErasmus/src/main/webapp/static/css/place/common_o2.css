@@ -5994,6 +5994,10 @@ input.segmented-control__input {
 	float: left
 }
 
+.listing-left{
+	margin-left: 20px;
+}
+
 .space-0 {
 	margin-bottom: 0px
 }
@@ -6016,7 +6020,6 @@ input.segmented-control__input {
 
 .space-top-2 {
 	margin-top: 12px;
-	    margin-left: 20px;
 }
 
 .space-3 {
