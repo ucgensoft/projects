@@ -99,24 +99,6 @@ body, #mainWrapper {
 	color: red;
 }
 
-.btn-primary-red {
-	border-color: #ff5a5f;
-	background-color: #ff5a5f;
-	color: #fff
-}
-
-.btn-primary-red:hover, .btn-primary-red:focus {
-	border-color: #ff7e82;
-	background-color: #ff7e82;
-	color: #fff
-}
-
-.btn-primary-red:active {
-	border-color: #e00007;
-	background-color: #e00007;
-	color: #fff
-}
-
 .clsDisabledGrey {
 	background-color : #f1f1f1;
 }
