@@ -1,0 +1,380 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
+
+	<ui:define name="head">
+		<link rel="stylesheet" type="text/css"
+			href="#{webApplication.urlPrefix}/static/css/helpcenter.css" />
+		<link rel="stylesheet"
+			href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+	</ui:define>
+
+	<ui:define name="body">
+
+		<div
+			class="page-container page-container-responsive page-container-sm-full">
+			<div class="row space-top-8 space-top-sm-2">
+				<div class="col-md-2 left-menu">
+					<div class="navtree dls-help-center">
+						<ul class="sidenav-list navtree-list" role="navigation"
+							id="navtree-0" style="display: block; left: 0px;">
+							<li><a class="sidenav-item" onclick="showdiv('termsofservice');"
+								href="#">Terms Of Service</a></li>
+							<li><a class="sidenav-item"
+								onclick="showdiv('privacypolicy');" href="#">Privacy Policy</a></li>
+							<li><a class="sidenav-item"
+								onclick="showdiv('refundpolicy');" href="#">Refund Policy</a></li>
+							<li><a class="sidenav-item"
+								onclick="showdiv('cookies');" href="#">Cookies
+									</a></li>
+						</ul>
+
+
+					</div>
+
+
+				</div>
+
+				<div id="termsofservice">
+					<div
+						class="space-top-6 space-16 text-wrap col-sm-12 col-md-9 col-lg-10">
+						<h1>Terms of Service</h1>
+						<p>Last updated at: March 21, 2017</p>
+						<p>Let’s Erasmus provides an online marketplace for booking student accommodation. As such it provides booking services for both users (who are seeking accommodation) and accommodation providers (who wish to offer their accommodation to users). Please note that Let’s Erasmus is an online marketplace – it does not itself let or rent accommodation to users directly.</p>
+						<p>At law, if you are a consumer, you have certain rights to cancel your agreement with Let’s Erasmus to receive such booking services within a 14 day cooling off period following your agreement to these terms of service (please see clause 7 for further details of these rights).</p>
+						<p>However, by using our services to book (if you are a user) or accept a booking of (if you are an accommodation provider) accommodation during such cooling off period, you are requesting us to provide our services and, as a result, you will cease to have a right to cancel, under consumer law, from the time such booking is made (please see clause 7 for further details of this). You will still retain your contractual rights to cancel, which are set out in clause 11.</p>
+						<p>Further, if you are using our services to book accommodation, you are likely to be required to pay a 1st Rental Payment to your accommodation provider via Let’s Erasmus (who will receive it on behalf of the accommodation provider and then send it onto them). This 1st Rental Payment is payable to your accommodation provider and therefore is only repayable in accordance with your contractual rights to cancel, which are set out in clause 11.</p>
+						<p><strong>Please read this document carefully. It contains important information about your rights and obligations. In particular, it contains:</strong></p>
+						<ul>
+						<li>a disclaimer of warranty and a limitation of liability (in clause 19), which together limit our responsibilities and liability to users and accommodation providers;</li>
+						<li>a reimbursement clause under which users (in clause 12.9) agree to reimburse Let’s Erasmus in certain circumstances;</li>
+						<li>an indemnity clause (in clause 21) under which accommodation providers, which are businesses, will indemnify Let’s Erasmus in certain circumstance.</li>						
+						</ul>
+						<p><strong>You are advised to review these provisions carefully before proceeding.</strong></p>
+						<p><strong>If there is an inconsistency between any of the provisions of this English language version and a translated version, the provisions of this English language version shall prevail. Any translated versions of these Terms and the Terms of Use shall be for convenience only.</strong></p>
+						
+						<h2>1. About these Terms of Service</h2>
+						<p>1.1 In these Terms of Service:</p>
+						<p>“1st Rental Payment” means the amount of the 1st rental payment due to be paid by the User to Let’s Erasmus (on behalf of the Accommodation Provider), as advised on the Website from time to time;</p>
+						<p>“Accommodation” means a room, studio or other house or apartment offered through the Website by an Accommodation Provider;</p>
+						<p>“Accommodation Provider” means the provider of Accommodation listed on the Website;</p>
+						<p>“Booking Confirmation” refers to the email sent by Let’s Erasmus to the User and Accommodation Provider as soon as a Booking Request has been accepted by the relevant Accommodation Provider;</p>
+						<p>“Booking Request” means a request to book Accommodation submitted by a User;</p>
+						<p>“Booking Value” means the amount corresponding to the sum of all the rental payments (including the 1st Rental Payment and Future Payments, but excluding the One-time Service Fee, Security Deposit and Holding Deposit (if applicable));</p>
+						<p>“Business Day” means any day other than a Saturday, Sunday or public holiday;</p>
+						<p>“Contract Start Date” means the date of commencement of the booking Term as specified in the relevant Booking Confirmation;</p>
+						<p>“Fully Verified Accommodation” refers to Accommodation where the Accommodation itself and the Accommodation Provider have successfully completed all the possible verification steps as set out on the Let’s Erasmus website.</p>
+						<p>“Future Payments” means all the future payments the User has to make directly to the Accommodation Provider (in addition to the 1st Rental Payment), which include any rental payments payable by the User to the Accommodation Provider and the Security Deposit;</p>
+						<p>“Locations” means the cities and countries as set out on our Website;</p>
+						<p>“Move In Date” means the date when the User moves into the Accommodation as specified in the relevant Booking Confirmation.</p>
+						<p>“Security Deposit” means the amount that the User has to pay in cash to the Accommodation Provider to cover any damages that occur during his occupation of the Accommodation or any other breach by the User of the Tenancy Agreement. The deposit is refunded after move-out at the end of the Tenancy Agreement by the Accommodation Provider subject to deduction of any fee for damages. The Security Deposit is a matter between User and the Accommodation Provider and Let’s Erasmus is not involved in, and shall not be liable for the management of, any such deposits;</p>
+						<p>“One-time Service Fee” means the amount (inclusive of VAT) the User pays to Let’s Erasmus in respect of its fees when a Booking is accepted in consideration of the Services provided by Let’s Erasmus to such User. It is calculated as a percentage of the 1st Rental Payment (as advised from time to time). This fee applies to the specific Accommodation displayed on the Website, so that if such Accommodation is a single room in a larger flat or house, this fee applies to the specific room you will be occupying and not the entire flat or house;</p>
+						<p>“Services” means the facilitation of bookings of Accommodation by Users with Accommodation Providers by means of the Website;</p>
+						<p>“Tenancy Agreement” means the tenancy agreement, lease or licence (whether or not formal and whether or not in writing) between the Accommodation Provider and the User in respect of the tenancy of the Accommodation;</p>
+						<p>“Term” means the lesser of: (i) the term of the tenancy based on the “Contract Start” and “Contract End” date (as specified in the relevant Booking Confirmation); or (ii) a period of 12 months from the “Contract Start” date;</p>
+						<p>“Let’s Erasmus Commission” is the fee (inclusive of VAT) that Let’s Erasmus charges the Accommodation Provider when a booking occurs in consideration of the Services provided by Let’s Erasmus to such Accommodation Provider by means of the Website. It is calculated as a percentage of the 1st Rental Payment (as advised from time to time) plus any relevant VAT charged on this percentage of the 1st Rental Payment. It is then deducted from the amount that Let’s Erasmus transfers to the Accommodation Provider”;</p>
+						<p>“Let’s Erasmus”, “we” and “us” are references to <strong>Let’s Erasmus, Inc.</strong>;</p>
+						<p>“User” means a user of the Website seeking Accommodation;</p>
+						<p>“Website” means any website maintained by Let’s Erasmus including without limitation the websites at www.letserasmus.com, and its subdomains, any associated social networking profiles and any applications for mobile devices that Let’s Erasmus may publish from time to time; and</p>
+						<p>“You” means a User or an Accommodation Provider (as applicable).</p>
+						<p>1.2 These Terms of Service set out the terms on which we offer the Services and provide the Website and on which you agree to use the Services provided by us and the Website maintained by us.</p>
+						<p>1.3 Please read these Terms of Service carefully and make sure that you understand them before using the Services or the Website. If you do not agree to these Terms of Service, you must cease use of the Services and Website immediately.</p>
+						
+						<h2>2. Acceptance of Terms of Service</h2>
+						<p>2.1 By registering to use the Services and/or the Website on the Website and/or by requesting Let’s Erasmus to create listings of Accommodation for you, you accept and agree to be bound by these Terms of Service. These Terms of Service are only published in, and valid in, the English language.</p>
+						<p>2.2 We may at any time modify these Terms of Service. We will notify you of any significant changes to these Terms of Service either by emailing you (at the email address entered by you into any form on the Website) in advance of the changes coming into effect giving you the right to cancel the contract if you do not agree to them. By continuing to use the Services and/or the Website following the expiry of any right to cancel, you agree to be bound by such changes. You can review the most current version of our Terms of Service at any time by clicking on the "Policies" link located at the bottom of the Website.</p>
+						
+						<h2>3. What is the Website?</h2>
+						<p>3.1 The Website is an electronic platform enabling Users to browse, search and book Accommodation at the Locations and enables Accommodation Providers to advertise Accommodation to Users. Bookings can be made for short or long terms ranging from 28 days upwards.</p>
+						<p>3.2 Let’s Erasmus provides booking services to Users and Accommodation Providers, but it does not offer Accommodation to Users on its behalf. Any Tenancy Agreement shall be entered into between the User and the Accommodation Provider directly. Let’s Erasmus will not be a party to such Tenancy Agreement and will have no rights or obligations arising out of it.</p>
+						
+						<h2>4. Information Displayed on the Website</h2>
+						<p>4.1 The Website contains information, images and prices of Accommodation as well as information relating to the Location of the Accommodation.</p>
+						<p>4.2 Let’s Erasmus tries hard to ensure that all information published on the Website is clear, accurate, complete and not misleading. We also try to ensure that only Accommodation that meets certain standards of cleanliness, decor, building safety and finish, facilities and customer service are listed on the Website. However, as we do not provide the Accommodation, we cannot guarantee this.</p>
+						<p>4.3 Let’s Erasmus relies on Accommodation Providers to provide appropriate accurate information and to keep such information updated. We do not verify the accuracy or currency of any information uploaded or provided to us by Accommodation Providers unless we have expressly stated that we do. If you are an Accommodation Provider, you acknowledge and agree that you are solely responsible for the content of the information uploaded or provided to us in respect of any Accommodation offered on the Website.</p>
+						<p>4.4 If you are an Accommodation Provider, you must check the relevant listing information of any Accommodation offered by you on the Website including (but not limited to) its price, availability, and facilities before accepting any Booking Request sent to you via Let’s Erasmus.</p>
+						<p>4.5 If you are a User, you acknowledge and agree that we will have no liability in respect of any information uploaded to the Website or provided to us by an Accommodation Provider about the Accommodation and that your proper remedy in respect of any loss or damage you may suffer arising out of or in connection with the information displayed in respect of the Accommodation is against the relevant Accommodation Provider. If Accommodation has been verified by Let’s Erasmus, Let’s Erasmus shall be responsible for the accuracy of the verified information only. However, Let’s Erasmus shall not be liable for any changes to the Accommodation after its verification.</p>
+						<p>4.6 We reserve the right to remove without notice all or any part of any Accommodation listed on the Website in respect of which we receive a complaint (or otherwise conclude) that it is out of date, inaccurate or breaches the rights of a third party. We will use reasonable efforts to process and act on such complaints reasonably and promptly.</p>
+						<p>4.7 Users are advised to read any documentation carefully and ensure that they understand the cost of the Accommodation (i.e. the rent and any other costs) and the terms and duration of the Tenancy Agreement and any restrictions on the usage to which the Accommodation can be put.</p>
+						
+						<h2>5. Booking Accommodation</h2>
+						<p>5.1 Users are able to submit a Booking Request for Accommodation through the Website. The User must select the dates and Accommodation that user wishes to book and then click the “Request to Book” button.</p>
+						<p>5.2 The User warrants that user is of legal age to enter into a contract such as a Tenancy Agreement in the country where the Accommodation is located and acknowledges that, if the User is in breach of this warranty, then Let’s Erasmus shall be entitled to retain any Service Fee that has been paid by the User as compensation for breach of this warranty by the User. It is the User’s responsibility to check that he can legally contract with the Accommodation Provider.</p>
+						<p>5.3 The User will be asked to complete certain personal details and provide payment details for the 1st Rental Payment, One-time Service Fee in respect of the Booking Request. The User will receive an email confirming that a Booking Request has been submitted.</p>
+						<p>5.4 The system creates an authorization for the 1st Rental Payment, One-time Service Fee, but does not draw the funds.</p>
+						<p>5.5 On acceptance of the authorization by the Accommodation Provider, Let’s Erasmus makes an introduction of the User to the Accommodation Provider selected by the User. The User’s card will only be charged after the Accommodation Provider has accepted the Booking Request in accordance with these Terms and Conditions and thereby giving rise to a booking.</p>
+						
+						<h2>6. Confirmation of a Booking</h2>
+						<p>6.1 The Accommodation Provider can accept or reject the Booking Request. If the Booking Request is rejected, Let’s Erasmus will promptly notify the User and immediately cancel the authorization for the 1st Rental Payment, One-time Service Fee and will make reasonable efforts to suggest other suitable properties. If the Accommodation Provider accepts the Booking Request, Let’s Erasmus will process the payment in respect of the 1st Rental Payment, the One-time Service Fee. Let’s Erasmus will promptly notify the User, by email, once a Booking Request has been accepted or rejected by the Accommodation Provider (including if the Accommodation Provider cancels in accordance with these terms). If the Booking Request has been accepted, an acceptance email will be sent to both parties setting out the next steps.</p>
+						<p>6.2 Once a booking has been accepted it is the User’s responsibility to:</p>
+						<p>(a) comply with any further requirements that the Accommodation Provider may have. This may include (but not be limited to) the provision of character references and/or guarantor information. This information can also be required by the Accommodation Provider before accepting the Booking Request, in such cases the User will be informed that such information will be required; and</p>
+						<p>(b) stay in the relevant Accommodation throughout the Term, comply with the Tenancy Agreement, and to make, promptly and in full, all payments to Let’s Erasmus and to the </p>
+						<p>Accommodation Provider as may be required by these Terms of Service or the Tenancy Agreement, as the case may be.</p>
+						<p>6.3 The Accommodation Provider agrees that once it accepts a Booking Request it accepts and is bound to offer the relevant Accommodation for the dates, and at the price stated on the Booking Request and, further, that the property details, condition and facilities of the Accommodation are not materially different from those stated on the Let’s Erasmus listing. Failure to do so may result in complaints and cancellation by the User (who may be entitled to a full refund).</p>
+						
+						<h2>7. Consumer Contracts (Information, Cancellation and Additional Charges) Regulations 2013</h2>
+						<p>7.1 Subject to clauses 7.3 and 7.4, if you are a consumer, you have a legal right to cancel your agreement with us to provide the Services at any time during the 14 days after you have first accepted these Terms of Service in accordance with clause 2.</p>
+						<p>7.2 To cancel your agreement with us to provide the Services, you just need to let Let’s Erasmus know that you have decided to cancel. You may use a copy of the form which is located at the back of these Terms of Service as a Schedule to do so. If you use this method, Let’s Erasmus will e-mail you to confirm it has received your cancellation.</p>
+						<p>7.3 If you make or accept a Booking Request within the 14 day cancellation period set out above, then you have requested Let’s Erasmus to provide its Services during such 14 day cancellation period and accordingly you will lose your statutory right to cancel your agreement with Let’s Erasmus to provide the Services once the Booking Request is accepted in accordance with clause 6, at which point the One-time Service Fee (if applicable) will be payable in accordance with these Terms of Service. Your contractual rights to cancel, as set out in clause 11, will still apply.</p>
+						<p>7.4 In any event, cancellation of the agreement with Let’s Erasmus to provide the Services shall have no effect on any Tenancy Agreement that may have been or will be entered into.</p>
+						<p>7.5 Any payment that is paid by the User to Let’s Erasmus on behalf of the Accommodation Provider under, or in connection with, a Tenancy Agreement (including the 1st Rental Payment) will be held on trust by Let’s Erasmus for the Accommodation Provider and will only be repaid to the User in accordance with clause 11.</p>
+						
+						<h2>8. The 1st Rental Payment</h2>
+						<p>8.1 The 1st Rental Payment is a contractual reservation fee payable by the User to Let’s Erasmus, which will receive it on behalf of the Accommodation Provider and hold it on trust for the Accommodation Provider.</p>
+						<p>8.2 Within two Business Days of the Move-In Date, unless otherwise agreed in writing with Let’s Erasmus, Let’s Erasmus shall pay to the Accommodation Provider, subject to deductions for the Let’s Erasmus Commission, the 1st Rental Payment.</p>
+						<p>8.3 Let’s Erasmus is not a member of any deposit protection scheme in respect of such 1st Rental Payments and will not be holding any damages deposit or performance deposit for the Accommodation Provider which they request from the User.</p>
+						
+						<h2>9. Tenancy Agreement</h2>
+						<p>9.1 The Tenancy Agreement only comes into effect when the Accommodation Provider and the User agree the terms for the occupation of the Accommodation. The Tenancy Agreement shall be entered between a User and an Accommodation Provider and for the avoidance of doubt, Let’s Erasmus shall not be a party to such agreement.</p>
+						<p>9.2 Let’s Erasmus shall not be responsible or liable for any failure or deficiency in the performance of the Tenancy Agreement by the Accommodation Provider and/or for any defect in any Accommodation provided by the Accommodation Provider.</p>
+						<p>9.3 Let’s Erasmus shall not be responsible or liable for any failure or deficiency in performance of any contract by the User, including, but not limited to, changes in move in date and/or move-out dates. The Accommodation Provider has the mechanisms to enforce any pre-agreed details (including move-in date and move-out dates) with the User and thus, no additional payment or refund shall be or ever become due from Let’s Erasmus to the Accommodation Provider.</p>
+						
+						<h2>10. Move in Date</h2>
+						<p>On the date set out in the relevant Booking Confirmation, the User will move into the Accommodation. All Future Payments will be made directly to the Accommodation Provider. The listing for the Accommodation sets out what the Future Payments constitute. For any further clarification, the user should contact the Accommodation Provider.</p>
+						
+						<h2>11. Cancellations</h2>
+						<p>11.1 In addition to and subject to the User’s rights to cancel under clause 7, a User may also cancel the booking in accordance with the cancellation policy chosen by the Accommodation Provider and as set out below.</p>
+						<p>11.2 Accommodation Providers may select ONE of the following cancellation policies while listing accommodation. Once they have made a selection, this policy will be in effect for all future bookings. The Accommodation Provider gives Let’s Erasmus irrevocable authority to commit the Accommodation Provider to the selected cancellation policy, to process (and if necessary refund) any 1st Rental Payment, and apply Let’s Erasmus Commission, in the manner set out below.</p>
+						<p>11.3 A User is permitted to cancel in the following circumstances and according to the following terms:</p>
+						<p>(a) after a booking has been made and a Tenancy Agreement has been entered into in accordance with clause 9.1 and/or the User moved into the Accommodation, it cannot be cancelled except pursuant to the termination provisions contained in such Tenancy Agreement.</p>
+						<p>(b) Cancellation Policy: Flexible: before the Tenancy Agreement has been entered into by the User and Accommodation Provider but after the Accommodation Provider has accepted the Booking Request and after the User has made the 1st Rental Payment if the User notifies Let’s Erasmus that user wishes to cancel:</p>
+						<p>(i) less than 15 days prior to the Contract Start Date, no refund will be due in respect of the 1st Rental Payment (and the booking will be cancelled);</p>
+						<p>(ii) between 15 days and 30 days prior to the Contract Start Date, Let’s Erasmus will refund 50% of the 1st Rental Payment (and the booking will be cancelled); and,</p>
+						<p>(iii) more than 30 days prior to the Contract Start Date, Let’s Erasmus will refund 100% of the 1st Rental Payment (and the booking will be cancelled).</p>
+						<p>With respect to clause 11.3(b)(i), the Accommodation Provider shall, in case of cancellation, receive the balance of the 1st Rental Payment after Let’s Erasmus’ Commission has been deducted and with respect to clause 11.3(b)(ii), the Accommodation Provider shall, in case of cancellation, receive 50% of the 1st Rental Payment after Let’s Erasmus’ Commission has been deducted.</p>
+						<p>(c) Cancellation Policy: Moderate: before the Tenancy Agreement has been entered into by the User and Accommodation Provider but after the Accommodation Provider has accepted the Booking Request and after the User has made the 1st Rental Payment if the User notifies Let’s Erasmus that user wishes to cancel:</p>
+						<p>(i) less than 30 days prior to the Contract Start Date, no refund will be due in respect of the 1st Rental Payment (and the booking will be cancelled);</p>
+						<p>(ii) between 30 days and 60 days prior to the Contract Start Date, Let’s Erasmus will refund 50% of the 1st Rental Payment (and the booking will be cancelled); and</p>
+						<p>(iii) more than 60 days prior to the Contract Start Date, Let’s Erasmus will refund 100% of the 1st Rental Payment (and the booking will be cancelled).</p>
+						<p>With respect to clause 11.3.(c)(i), the Accommodation Provider shall, in case of cancellation, receive the 1st Rental Payment that is left after Let’s Erasmus’ Commission has been deducted and with respect to clause 11.3.(c)(ii), the Accommodation Provider shall, in case of cancellation, receive 50% of the 1st Rental Payment that is left after Let’s Erasmus’ Commission has been deducted.</p>
+						<p>(d) Cancellation Policy: Strict: before the Tenancy Agreement has been entered into by the User and Accommodation Provider but after the Accommodation Provider has accepted the Booking Request and after the User has made the 1st Rental Payment if the User notifies Let’s Erasmus that user wishes to cancel:</p>
+						<p>(i) less than 30 days prior to the Contract Start Date, no refund will be due in respect of the 1st Rental Payment (and the booking will be cancelled);</p>
+						<p>(ii) between 30 days and 90 days prior to the Contract Start Date, Let’s Erasmus will refund 50% of the 1st Rental Payment (and the booking will be cancelled); and</p>
+						<p>(iii) more than 90 days prior to the Contract Start Date, Let’s Erasmus will refund 100% of the 1st Rental Payment (and the booking will be cancelled).</p>
+						<p>With respect to clause 11.3.(d)(i), the Accommodation Provider shall, in case of cancellation, receive the 1st Rental Payment that is left after Let’s Erasmus’ commission has been deducted and with respect to clause 11.3.(d)(ii), the Accommodation Provider shall, in case of cancellation, receive 50% of the 1st Rental Payment that is left after Let’s Erasmus’ Commission has been deducted.</p>
+						<p>11.4 For the avoidance of doubt, if a booking is cancelled by a User in accordance with this clause 11, Let’s Erasmus will not refund the One-time Service Fee.</p>
+						
+						<h2>12. Your Conduct</h2>
+						<p>12.1 In making any Booking Request and authorizing the One-time Service Fee, 1st Rental Payment in respect of selected Accommodation, the User agrees that it shall not seek to circumvent Let’s Erasmus by trying to make (or in fact making) a booking with the Accommodation Provider directly and notifying us that you have decided not to make a booking.</p>
+						<p>12.2 In using the Website and/or the Services and/or accepting any introduction of a User in respect of selected Accommodation, the Accommodation Provider agrees that it shall not seek to circumvent Let’s Erasmus by trying to make (or in fact making) a booking with the User directly and notifying us that the User has decided not to make a booking.</p>
+						<p>12.3 By downloading and/or using the Website, you agree not to upload, post, email or otherwise send or transmit any material that contains viruses, Trojan horses, worms or any other computer code, files or programs designed to interrupt, destroy or limit the functionality of any computer software or hardware or telecommunications equipment associated with the Services or Website.</p>
+						<p>12.4 You agree and undertake to keep your username and password confidential, not to disclose your password to any other person and not to permit any other person to log in to the Website using your username and password.</p>
+						<p>12.5 You agree not to interfere with the servers or networks connected to the Website or to violate any of the procedures, policies or regulations of networks connected to the Website, including these Terms of Service. You also agree not to:</p>
+						<p>(a) attempt to reverse engineer or sell, export, license, modify, copy, distribute or transmit the Website to any third party, or jeopardize the correct functioning of the Website, or otherwise attempt to derive the source code of the software (including the tools, methods, processes and infrastructure) that enables or underlies the Website;</p>
+						<p>(b) attempt to gain access to secured portions of the Website to which you do not possess access rights;</p>
+						<p>(c) impersonate any other person while using the Services or Website;</p>
+						<p>(d) conduct yourself in a vulgar, offensive, harassing or objectionable manner while using the Website;</p>
+						<p>(e) resell or export the software associated with the Website;</p>
+						<p>(f) use the Website to generate unsolicited advertisements or spam; or</p>
+						<p>(g) use any automatic or manual process to search or harvest information from the Website, or to interfere in any way with the proper functioning of the Website.</p>
+						
+						<h2>13. Let’s Erasmus’ Rights</h2>
+						<p>In providing you with access to the Website, Let’s Erasmus reserves the following rights, and in accessing, browsing or otherwise using the Website you grant to Let’s Erasmus and agree that Let’s Eramus shall have the following rights:</p>
+						<p>13.1 the right to refuse or withdraw your access to the Website in accordance with applicable laws for any reason at any time (with or without notice) if in Let’s Erasmus’ sole and absolute discretion you violate or breach any of these Terms of Service;</p>
+						<p>13.2 the right to suspend, amend or disable your profile without giving you notice or any reason;</p>
+						<p>13.3 the right to amend or update the Website, fees, billing methods or these Terms of Service from time to time; and</p>
+						<p>13.4 the right to report you to the police or other judicial body if Let’s Erasmus believes in its sole and absolute discretion that your conduct (whether in using the Website, our Services or otherwise) is unlawful.</p>
+						
+						<h2>14. Intellectual Property</h2>
+						<p>14.1 Let’s Erasmus and/or its licensor(s) are the sole owners of the Website, which includes any software, domains, and content made available through the Website. The Website is protected by U.S. and International copyright and other intellectual property laws.</p>
+						<p>14.2 Without limitation, this means that you may not sell, export, license, modify, copy, distribute or transmit the Website (or any part of it) or any material provided through the Website without Let’s Erasmus’ prior express written consent.</p>
+						<p>14.3 We grant you a royalty free, non-exclusive, non-transferable, revocable, worldwide license to use our intellectual property rights in the Services and the Website solely to the extent necessary to allow you to participate in the Service. Any unauthorized use of the Website will result in the automatic termination of the limited license granted by us. Let’s Erasmus reserves the right to terminate the limited license without notice at any time following an unauthorized use by you of the Website.</p>
+						<p>14.4 Let’s Erasmus and its graphics, logos, icons and service names related to the Website are registered and unregistered trademarks or trade dress of Let’s Erasmus. They may not be used without Let’s Erasmus’ prior express written permission.</p>
+						<p>14.5 You agree that Let’s Erasmus owns the copyright for any content, whether textual, graphic, photographic or video, that it creates and publishes on its Website and you must not sell, export, license, modify, copy, distribute or transmit this content to any third party.</p>
+						<p>14.6 You grant Let’s Erasmus a royalty free, non-exclusive, non-transferable, irrevocable, worldwide license to use your intellectual property rights solely to the extent necessary to allow Let’s Erasmus to provide the Services to you. For clarity, such use might include such matters as displaying your name and logo next to an Accommodation listing, or providing a link to your website.</p>
+						<p>14.7 Additionally, you grant us a royalty free, non-exclusive, non-transferable, irrevocable during the term of this Agreement, worldwide license to use your intellectual property rights in your name, logo and brand get-up (your “Brand”) for the purposes of promoting the Service by means of referring on the Website and in our public statements and publicity material to the fact of your participation in the Service, provided that in doing so we use reasonable efforts to ensure that we do not do anything which damages the goodwill in your Brand.</p>
+						<p>14.8. You shall reimburse us on demand in respect of any costs, damages or expenses that might arise as a result of, or in connection with, any alleged or actual infringement of any third party's intellectual property or other rights, arising out of Let’s Erasmus’ use of information submitted by you on the Website.</p>
+						
+						<h2>15. Security</h2>
+						<p>Whilst we have implemented commercially reasonable technical and organizational measures to secure your personal information and user content from unauthorized use, we cannot guarantee that unauthorized third parties will never be able to defeat those measures. You acknowledge that you provide your personal information and user content at your own risk.</p>
+						
+						<h2>16. Electronic Communications</h2>
+						<p>By downloading and/or using the Website and/or material provided through the Website, you consent to receiving electronic communications and notices from Let’s Erasmus. You agree that any notice, agreement, disclosure or other communications that we send to you electronically will satisfy any legal communication requirements, including that such communications be in writing. You have the right to ask us not to process your personal data for such marketing purposes. You can exercise your right to prevent such processing by checking certain boxes on the forms we use to collect your data. You can also exercise the right at any time by contacting us.</p>
+						
+						<h2>17. Privacy</h2>
+						<p>You provide us with information when you register on the Website. We also collect information both relating to you (for example on your usage history and your preferences for certain kinds of offer) and to users of the Website and the Services in general. Any information that you submit or that we collect when you are using the Website or Services is subject to our Cookie Policy the terms of which are hereby incorporated into these Terms of Service.</p>
+						
+						<h2>18. Use of Information Submitted</h2>
+						<p>18.1 You agree that Let’s Erasmus is free to use comments, information (except personal information) or ideas contained in any communication you may send to Let’s Erasmus without compensation, acknowledgement or payment to you for any purpose whatsoever, including, but not limited to, developing, manufacturing and marketing products and services and creating, modifying or improving the Services or Website or other products or services. For the avoidance of doubt, all such information will be deemed by Let’s Erasmus to be non-confidential and non-proprietary, and you agree that such information may be used by us without any limitation whatsoever.</p>
+						<p>18.2 You agree that any information published by you on the Website may be public information and that other users of the Website will be able to view and comment on such information. You can classify some information as public information and some information as private information. Public information will appear on your profile page.</p>
+						<p>18.3 You agree that Let’s Erasmus is free to republish and make use of any information, including but not limited to, text and images that you publish on the Website. Our use may include, but is not limited to, reposting your Accommodation listing on other websites. You agree that Let’s Erasmus has the right not to acknowledge you as the source of such information and/ or creator of such content. In general however, we will make an attempt to provide a link back to your page when posting content on other third party sites. You hereby irrevocably waive all your moral rights to any content posted by you on the Website. You confirm that you have all necessary rights and consents to share any such information that may be owned by a third party which you may post on the Website.</p>
+						
+						<h2>19. No Warranty &amp; Liability Limit</h2>
+						<p>Let’s Erasmus provides the Services and Website "as is" and without any warranty or condition, whether express, implied or statutory. Unless you are a consumer, Let’s Erasmus specifically disclaims any implied warranties of title, merchantability, or fitness for a particular purpose. Let’s Erasmus specifically disclaims any implied warranties for non-infringement. Let’s Erasmus assumes no liability or responsibility for any errors or omissions in the Website or provision of the Services; any failures, delays or interruptions in the Website; any losses or damages arising from the use of the Services or Website; any conduct by users of the Services or Website; or any liability of an Accommodation Provider under the Immigration Act 2014 arising from the immigration status of any User. We reserve the right to deliver the Services and Website in our sole and absolute discretion.</p>
+						<p>19.1 This clause 19.1 only applies if you are a business and not a consumer. Subject to clause 19.4, Let’s Erasmus, its shareholders, directors, officers, employees or agents shall not be liable (jointly or severally) to you for:</p>
+						<p>(a) loss of profits, business or revenue;</p>
+						<p>(b) loss or corruption of data, information or software;</p>
+						<p>(c) loss of business opportunity;</p>
+						<p>(d) loss of anticipated savings;</p>
+						<p>(e) loss of goodwill; or</p>
+						<p>(f) any indirect or consequential loss, arising out of or in connection with the Services and/or Website or these Terms of Service, and whether or not advised of the possibility of damage.</p>
+						<p>19.2 This clause 19.2 only applies if you are a consumer. If Let’s Erasmus fails to comply with these Terms of Service, Let’s Erasmus is responsible for loss or damage you suffer that is a foreseeable result of Let’s Erasmus’ breach of these Terms of Service or our negligence, but Let’s Erasmus is not responsible for any loss or damage that is not foreseeable. Loss or damage is foreseeable if it is an obvious consequence of our breach or if it was contemplated by you and Let’s Erasmus at the time we entered into this contract. Let’s Erasmus provides the Services for domestic and private use. Let’s Erasmus has no liability to you for any loss of profit, loss of business, business interruption, or loss of business opportunity.</p>
+						<p>19.3 Let’s Erasmus does not seek to exclude liability for death or personal injury caused by our negligence, or for fraud or fraudulent misrepresentation on the part of Let’s Erasmus.</p>
+						<p>19.4 From time to time you may use or access services, promotions and websites of third parties (including without limitation Accommodation Providers). In using or accessing third party services, promotions and websites, you agree to be bound by the terms of service of such third parties governing their services, promotions and websites and hereby acknowledge that we shall not be responsible for the provision of services, accuracy of promotions or content of websites belonging or operated by third parties.</p>
+						<p>19.5 From time to time Let’s Erasmus may run promotions or incentives for the benefit of our Website visitors, potential customers and customers. Let’s Erasmus reserves the right to modify or remove these promotions at any time and may cancel any benefits or monetary payments owed to people who have not yet redeemed part or all of the benefit owed to them under the promotion. </p>
+						<p>19.6 You acknowledge and agree that Let’s Erasmus is not responsible for the accuracy of any information published on the Website by users and does not warrant that any information appearing on the Website is accurate, true or complete. Let’s Erasmus specifically excludes liability for any loss, harm, distress or damage suffered by you or any third party as a result of inaccurate information appearing on the Website.</p>
+						<p>19.7 If any applicable authority holds any portion of this section to be unenforceable, then liability will be limited to the fullest possible extent permitted by applicable law.</p>
+						
+						<h2>20. Indemnity</h2>
+						<p>If you are a business, you agree to indemnify and hold Let’s Erasmus and its related companies, and each of their respective shareholders, directors, officers, employees, agents, merchant partners and professional affiliates harmless from and against any third-party claim or cause of action, including reasonable attorneys' fees and court costs, arising, directly or indirectly, out of your use of the Services and/or Website or your violation of any law or the rights of any third party.</p>
+						
+						<h2>21. Disputes</h2>
+						<p>21.1 You agree that these Terms of Service and any claim, dispute or controversy arising out of in connection with these Terms of Service or their subject matter or formation (including non-contractual disputes or claims), the Services, the Website, Let’s Erasmus’ advertising or any related transaction between you and Let’s Erasmus shall be governed by and construed in accordance with U.S. law.</p>
+						<p>21.2 Any dispute or claim arising out of or in connection with such matters (including non-contractual disputes or claims) will be subject to the exclusive jurisdiction of the courts of Delaware, U.S.</p>
+						
+						<h2>22. Termination</h2>
+						<p>Let’s Erasmus may change or discontinue the Services and/or Website at any time without prior notice. We reserve the right to terminate these Terms of Service for any reason, without notice, and these Terms of Service shall automatically terminate in the event that you violate any of the Terms of Service set forth herein (without prejudice to our accumulated rights against you). In the event of any termination, you will immediately cease use of the Services and Website.</p>
+						
+						<h2>23. General</h2>
+						<p>23.1 These Terms of Service are agreed between you and us. No person shall have any rights under or in connection with these Terms of Service under the Contracts (Rights of Third Parties) Act 1999.</p>
+						<p>23.2 If any court or competent authority decides that any term of these Terms of Service is held to be invalid, unlawful or unenforceable to any extent, such term shall, to that extent only, be severed from the remaining terms, which shall continue to be valid to the fullest extent permitted by law.</p>
+						<p>23.3 Headings are for reference purposes only and in no way define, limit, construe or describe the extent or scope of such section.</p>
+						<p>23.4 Our failure to enforce any provision of these Terms of Service shall not constitute a waiver of that or any other provision and will not relieve you from the obligation to comply with such provision.</p>
+						<p>23.5 You are not permitted to assign, transfer, charge, sub-contract or deal in any other manner with all or any of your rights under these Terms of Service without our prior express written consent.</p>
+						<p>23.6 These Terms of Service and Cookie Policy constitute the entire agreement between you and Let’s Erasmus and supersede and extinguish all previous agreements, promises, assurances, warranties, representations and understanding between us, whether written or oral, relating to its subject matter.</p>
+						
+						<h2>24. Contact Us</h2>
+						<p>Let’s Erasmus, Inc. is a company registered in Delaware, U.S.</p>
+						<p>For more information about how to contact Let’s Erasmus, please see <a href="#">here</a>.</p>
+						
+						
+						
+					</div>
+				</div>
+
+
+				<div id="privacypolicy">
+					<div
+						class="space-top-6 space-16 text-wrap col-sm-12 col-md-9 col-lg-10">
+						<h1>Privacy Policy</h1>
+						<p>Last updated at: March 21, 2017</p>
+						<h2>1. Introduction</h2>
+						<p>1.1. We are LET’S ERASMUS, INC. (referred to as "we", “us” and “Let’s Erasmus”) and we are committed to protecting and respecting your privacy when you are visiting any website maintained by us including without limitation the website at www.letserasmus.com and our social networking pages and any application for mobile devices (together the “Website”), as we may publish and operate from time to time or communicating electronically with us, or attending an event organized by us (or on our behalf).</p>
+						<p>1.2. This policy, together with the Terms of Service (which can be found at the bottom of the Website at www.letserasmus.com) explains what types of personal and non-personal information we collect when you use the Website and the basis on which any personal information we collect from you, or that you provide to us, will be processed by us. Please read the following carefully to understand our views and practices regarding your personal information and how we will treat it. By disclosing your personal information to us by using the Website, speaking to us over the telephone or attending an event organized by us (or on our behalf) you consent to the collection, storage and processing of your personal information as stated in this policy.</p>
+						<p>1.3. Let’s Erasmus uses the personal information we collect from you to provide our service to you. We will not rent, sell or share your personal information with any other company for its own marketing purposes without your consent except where mentioned in this policy.</p>
+						<p>1.4. For the purpose of the Data Protection Act 1998 (the “Act”), the data controller is LET’S ERASMUS, INC. of c/o Let’s Erasmus, Inc., 22 Upper Ground, 8th Floor, London, SE1 9PD which is registered with the ICO with registered number: ZA000143.</p>
+						
+						<h2>2. What personal information do we collect?</h2>
+						<p>2.1. When you register for the various services provided by the Website, update your registration, social media or payment details or otherwise use or register to use our services or agree to act as a Guarantor or emergency contact, contact our customer services team, or report a problem with our site, certain of your personal information is collected by us. In addition you may give us information when you correspond with us by phone, e-mail or otherwise. We may collect, store and use the following kinds of personal information:</p>
+						<p>(a) your name, address, email address, telephone number, fax number, username and password;</p>
+						<p>(b) material submitted by you to us including without limitation answers to questions on surveys or registration forms;</p>
+						<p>(c) payment information collected from you including without limitation credit and debit card numbers, financial institutions and credit card expiry dates;</p>
+						<p>(d) any other information from which you can be identified and which you may disclose to us at any time; and</p>
+						<p>(e) information gathered from your usage of the website, particularly information about your accommodation preferences if you are a student and information about your properties if you are an accommodation provider.</p>
+						<p>2.2. With regard to each of your visits to our site we may automatically collect the following information:</p>
+						<p>(a) technical information including the Internet protocol (IP) address used to connect your computer to the Internet, your login information, browser type and version, time zone setting, browser plug-in types and versions, operating system and platform; and</p>
+						<p>(b) information about your visit, including the Uniform Resource Locators (URL) clickstream to, through and from our site (including date and time); products you viewed or searched for; page response times, download errors, length of visits to certain pages, page interaction information (such as scrolling, clicks and mouse-overs), and methods used to browse away from the page and any phone number used to call our service number.</p>
+						<p>2.3. We work closely with third parties including sub-contractors in technical and payment services, advertising networks, search information providers, credit reference agencies and any other companies we may work with in the future, including, but not limited to, utility providers, telecoms, banks and insurance companies and may receive information about you from them.</p>
+						
+						<h2>3. Cookies</h2>
+						<p>3.1. Our website uses cookies to distinguish you from other users of our website. This helps us to provide you with a good experience when you browse our website and also allows us to improve our site. For detailed information on the cookies use and the purposes for which we use them see our Cookie Policy at https://www.letserasmus.com/policies.</p>
+						
+						<h2>4. How do we use personal information?</h2>
+						<p>4.1. We may use your personal information for the following purposes:</p>
+						<p>(a) to manage and administer the Website;</p>
+						<p>(b) to improve your browsing experience by personalizing the Website;</p>
+						<p>(c) to assist in and administer the provision of our services to you, or if you are a guarantor, to administer your guarantee;</p>
+						<p>(d) to send you newsletters and other relevant and targeted promotional communications;</p>
+						<p>(e) to deal with enquiries, complaints and feedback from you and our service providers;</p>
+						<p>(f) to notify you about changes to our service;</p>
+						<p>(g) to provide third parties with statistical anonymized information about our users;</p>
+						<p>(h) to investigate any suspected breaches of our Terms of Service or the breach of any other terms or conditions applicable to you;</p>
+						<p>(i) to administer our site and for internal operations, including troubleshooting, data analysis, testing, research, statistical and survey purposes;</p>
+						<p>(j) to improve our site to ensure that content is presented in the most effective manner for you and for your computer;</p>
+						<p>(k) to allow you to participate in interactive features of our service, when you choose to do so;</p>
+						<p>(l) as part of our efforts to keep our site safe and secure;</p>
+						<p>(m) to measure or understand the effectiveness of advertising we serve to you and others, and to deliver relevant advertising to you;</p>
+						<p>(n) to make suggestions and recommendations to you and other users of our site about goods or services that may interest you or them; and</p>
+						<p>(o) to pass on information to third parties if the user expresses an interest to enable them to deal with the user’s enquiry/request.</p>
+						<p>4.2. In particular, during the process of booking a room, we only request information that is necessary to enable us to allocate your room in accordance with your needs and to contact you directly.</p>
+						
+						<h2>5. When might we disclose personal information?</h2>
+						<p>5.1. Except as set out below and to the extent required by any applicable law or governmental or judicial body, we will not disclose your personal information to any third party.</p>
+						<p>5.2. We may pass your personal information to those of our employees and agents and those providing services on our behalf, where we consider that it is necessary for the performance of our services to you.</p>
+						<p>5.3. We may also disclose your personal information to the accommodation provider who is providing your room.</p>
+						<p>5.4. We may also disclose your personal information to insurers.</p>
+						<p>5.5. We may share your information with credit reference agencies for the purpose of assessing your credit score where this is a condition of us entering into a contract with you.</p>
+						<p>5.6. We may provide general statistical information about our users including, sales patterns, traffic volumes and related matters to reputable third parties but these details will not include information personally identifying you.</p>
+						<p>5.7. We may disclose your personal information to the police, regulatory bodies or legal advisers in connection with any alleged criminal offence or suspected breach of our Terms of Service and/or the breach of other terms and conditions otherwise relating to you or otherwise where required by law. We will co-operate with law enforcement agencies and will comply with any court order requesting or directing us to disclose the identity of (or personal information relating to) any user breaching our Terms of Service and/or the breach of other terms and conditions otherwise relating to such user or otherwise for the prevention or detection of crime or the apprehension or prosecution of offenders.</p>
+						<p>5.8. In the event that we sell or buy any business or assets we may disclose your personal data to the prospective seller or buyer of such business or assets.</p>
+						<p>5.9. We may share your personal information with any third party such as utility providers, insurance, Wi-Fi or telecom companies who we engage for the purposes of providing you with a full “accommodation package”.</p>
+						
+						<h2>6. Where we store your personal data</h2>
+						<p>6.1. We may transfer, store, use and process your information, including any Personal Information, to countries outside of the European Economic Area (“EEA”) including the United States and possibly other countries. It may also be processed by staff operating outside the EEA who work for us or for one of our suppliers. Such staff may be engaged in, among other things, the fulfilment of your order, the processing of your payment details and the provision of support services. By submitting your personal data, you agree to this transfer, storing or processing. Let’s Erasmus will take all steps reasonably necessary to ensure that your data is treated securely and in accordance with this privacy policy.</p>
+						<p>6.2. All information you provide to us is stored on our secure servers. Any payment transactions will be encrypted using SSL technology. Where we have given you (or where you have chosen) a password which enables you to access certain parts of our site, you are responsible for keeping this password confidential. We ask you not to share a password with anyone.</p>
+						<p>6.3. Unfortunately, the transmission of information via the internet is not completely secure. Although we will do our best to protect your personal data, we cannot guarantee the security of your data transmitted to our site; any transmission is at your own risk. Once we have received your information, we will use strict procedures and security features to try to prevent unauthorized access.</p>
+						
+						<h2>7. Your rights</h2>
+						<p>7.1. You have the right to ask us not to process your personal data for marketing purposes. We will usually inform you (before collecting your data) if we intend to use your data for such purposes or if we intend to disclose your information to any third party for such purposes. You can exercise your right to prevent such processing by checking certain boxes on the forms we use to collect your data. </p>
+						<p>7.2. Our site may, from time to time, contain links to and from the websites of our partner networks, advertisers and affiliates. If you follow a link to any of these websites, please note that these websites have their own privacy policies and that we do not accept any responsibility or liability for these policies. Please check these policies before you submit any personal data to these websites.</p>
+						
+						<h2>8. Access to information</h2>
+						<p>8.1. The Act gives you the right to access information held about you. Your right of access can be exercised in accordance with the Act. Any access request may be subject to a fee of $10 to meet our costs in providing you with details of the information we hold about you.</p>
+						
+						<h2>9. Changes to our privacy policy</h2>
+						<p>9.1. Any changes we may make to our privacy policy in the future will be posted on this page and, where appropriate, notified to you by e-mail. Please check back frequently to see any updates or changes to our privacy policy.</p>
+						
+						<h2>10. Contact</h2>
+						<p>10.1. Questions, comments and requests regarding this privacy policy are welcomed, contact through <a href="#">here</a>.</p>
+						
+					</div>
+				</div>
+
+
+				<div id="refundpolicy">
+					<div
+						class="space-top-6 space-16 text-wrap col-sm-12 col-md-9 col-lg-10">
+						<h1>Refund Policy</h1>
+						<p>Last updated at: March 21, 2017</p>
+						<h2>1. Our Refund Policy</h2>
+						<p>1.1 Our refund policy applies if one of the 3 following options occurs:</p>
+						<p>(a) A User decides to cancel the booking (after the Booking Request is accepted by the Accommodation Provider). The Refund Policy depends on the Cancellation Policy applicable to the booked Accommodation, displayed on each listing, as stated in our Terms of Service;</p>
+						<p>(b) An Accommodation Provider decides to cancel the Booking (after Booking Request is accepted by the Accommodation Provider): the User is entitled to a full refund, in this case 100%, of the 1st Rental Payment, One-time Service Fee; or</p>
+						<p>(c) A User notifies a complaint to Let’s Erasmus: If the complaint is considered to be valid by Let’s Erasmus, Let’s Erasmus will decide (in its absolute discretion) on the amount to be refunded to the User. For the avoidance of doubt, Let’s Erasmus will not consider making a refund where the User is in material breach of the Terms of Service. For a complaint to be considered valid by Let’s Erasmus (acting reasonably), the User shall notify Let’s Erasmus within 24 hours after the Move In Date of such complaint and cooperate with Let’s Erasmus. The User has to prove that the Accommodation has materially different conditions from the ones advertised on our Website.</p>
+						
+						
+					</div>
+				</div>
+
+
+				<div id="cookies">
+					<div
+						class="space-top-6 space-16 text-wrap col-sm-12 col-md-9 col-lg-10">
+						<h1>Cookies</h1>
+						<p>Last updated at: March 21, 2017</p>
+						<h2>1. Our Use of Cookies and Web Beacons</h2>
+						<p>1.1 Our Website uses cookies to distinguish you from other users of our Website. A cookie is a small text file that a website saves on your computer or mobile device when you visit the site. It enables the website to remember your actions and preferences (such as login, language, font size and other display preferences) over a period of time, so you don’t have to keep re-entering them whenever you come back to the site or browse from one page to another.</p>
+						<p>1.2 The data collected by cookies is anonymous. You can delete all cookies that are already on your computer's hard drive by searching for files with "cookie" in it and deleting them. In addition, if you want to stop cookies from being stored on your computer, you can edit your browser settings so that cookies are blocked. Unfortunately, if you block cookies you may not be able to use the full functionality of the Website. For more information about cookies, please visit: <a href="http://www.allaboutcookies.org/" target="_blank">www.allaboutcookies.org</a>.</p>
+						<p>1.3 Cookies can be used to recognize you when you visit Let’s Erasmus, remember your preferences, and give you a tailored experience consistent with your settings. Cookies also make your interactions with Let’s Erasmus faster and more secure. On top of this, cookies enables us to bring you advertising off the Let’s Erasmus site.</p>
+						<p>We use cookies for the following purposes:</p>
+						<p>Authentication: If you're logged in to Let’s Erasmus or returning user, cookies help us show you the right information and present the same experiences as your previous settings.</p>
+						<p>Preferences, features and services: Cookies can tell us which language you prefer and what your communications preferences are. They can help pre-fill any forms on Let’s Erasmus faster.</p>
+						<p>Advertising: We may use cookies to show you advertising off the Let’s Erasmus site.</p>
+						<p>Performance, Analytics and Research: Cookies help us learn how well our site performs in different locations. We also use cookies to understand, improve, and research products, features, and services. The services that Let’s Erasmus uses which require cookies are: Google Analytics, Impact Radius, Inspectlet, Vero, Kissmetrics, VWO, Let’s Erasmus own software, Stripe and Bluesnap.</p>
+						<p>1.4 We also use web beacons, which consist of a small string of software code that represents a graphic image request on a page or email. There may or may not be a visible graphic image associated with the web beacon and often the image is designed to blend into the background of a page or email. Web beacons can be used for many purposes - including site traffic reporting, unique visitor counts, advertising auditing and reporting, and personalization. Web beacons used by the Website collect only anonymous data.</p>
+						<p>1.5 In order to improve the Website and the services we offer you, we may use (temporary and persistent) cookies, authorized third parties cookies, web beacons and/or other technologies to collect non-personally identifiable data. This non-personally identifiable data helps us to track browsing behavior, to create specific or tailor-made offers or advertisements, and to monitor and record the visits and use of the Website.</p>
+						<p>1.6 In order to understand how people use the Website and for marketing analysis and quality improvement purposes, we (and/or third party service providers) may collect, record, process and use on an anonymous basis certain information (including the total number of transactions, viewed pages, referring/exit pages, platform type, date/time stamp information and details like the number and location of mouse clicks on a given page, mouse movements, scrolling activity and the search words) you use while being on and using the Website.</p>
+						<p>1.7 If you continue to use the Website, you agree to our use of cookies.</p>
+						<p>1.8 You can find more about cookies using the following resources:</p>
+						<ul>
+						<li>www.allaboutcookies.org</li>
+						<li>http://ec.europa.eu/ipg/basics/legal/cookies/index_en.htm</li>
+						<li>European Interactive Digital Advertising Alliance (EU)</li>
+						<li>Internet Advertising Bureau (EU)</li>
+						<li>Network Advertising Initiative</li>
+						</ul>
+						
+					</div>
+				</div>
+
+
+
+
+			</div>
+		</div>
+		<script src="#{webApplication.urlPrefix}/static/js/helpaccordion.js"></script>
+
+	</ui:define>
+</ui:composition>
