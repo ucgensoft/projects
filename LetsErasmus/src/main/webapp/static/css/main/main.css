@@ -582,7 +582,7 @@
 	background-position: 50%
 }
 
-.page-container-responsive {
+.page-container-responsive, .page-container-responsive-main {
 	width: auto;
 	margin-left: auto;
 	margin-right: auto;
@@ -590,17 +590,17 @@
 	padding-right: 12px;
 }
 
-.page-container-responsive:before, .page-container-responsive:after {
+.page-container-responsive:before, .page-container-responsive:after, .page-container-responsive-main:before, .page-container-responsive-main:after {
 	content: " ";
 	display: table;
 }
 
-.page-container-responsive:after {
+.page-container-responsive:after, .page-container-responsive-main:after {
 	clear: both;
 }
 
 @media ( min-width : 744px) {
-	.page-container-responsive {
+	.page-container-responsive, .page-container-responsive-main {
 		padding-left: 24px;
 		padding-right: 24px;
 		width: 696px;
@@ -610,6 +610,12 @@
 @media ( min-width : 1128px) {
 	.page-container-responsive {
 		width: 1080px;
+	}
+}
+
+@media ( min-width : 1128px) {
+	.page-container-responsive-main {
+		width: 1400px;
 	}
 }
 
@@ -673,28 +679,32 @@
 }
 
 .how-it-works {
-	background-color: #79cccd;
+	background-color: #f0f1f3;
 }
 
 .how-it-works__image {
 	background:
-		url(https://a0.muscache.com/airbnb/static/landing_pages/pretzel/how_it_works-6f1c02e84d49e801d12a5ff57565098a.png)
+		url("http://localhost:8080/LetsErasmus/static/images/how_it_works.png")
 		center 0 no-repeat;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
 	background-size: cover;
-	height: 310px;
+	height: 450px;
 	margin: 0 auto;
-	max-width: 283px;
+	max-width: 400px;
+}
+
+.how-it-works__step-one .how-it-works__image {
+	background-position: center -20px;
 }
 
 .how-it-works__step-two .how-it-works__image {
-	background-position: center -310px;
+	background-position: center -910px;
 }
 
 .how-it-works__step-three .how-it-works__image {
-	background-position: center -620px;
+	background-position: center -460px;
 }
 
 @media ( min-width : 744px) and (max-width: 1127px) {
@@ -702,10 +712,10 @@
 		height: 180px;
 	}
 	.how-it-works__step-two .how-it-works__image {
-		background-position-y: -180px;
+		background-position-y: -365px;
 	}
 	.how-it-works__step-three .how-it-works__image {
-		background-position-y: -360px;
+		background-position-y: -195px;
 	}
 }
 
