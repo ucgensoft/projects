@@ -20,9 +20,15 @@ App.factory('placeService', ['$http', '$q', function($http, $q) {
 							});
 				},
 				
-				listPlace : function(pageNumber, callBack) {
+				listPlace : function(startDate, endDate, pageNumber, locSearchCriteria, callBack) {
 					var data = {
-						pageNumber : pageNumber
+						pageNumber : pageNumber,
+						startDate : startDate,
+						endDate : endDate,
+						lat1 : locSearchCriteria.lat1,
+						lat2 : locSearchCriteria.lat2,
+						lng1 : locSearchCriteria.lng1,
+						lng2 : locSearchCriteria.lng2
 					};
 					var config = {
 						params : data,

@@ -8,6 +8,10 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
       self.selectedLat = null;
       self.selectedLng = null;
       self.selectedPlaceName = null;
+      self.selectedLocationId = null;
+      self.locSearchCriteria = null;
+      self.selectedStartDate = null;
+      self.selectedEndDate = null;
       self.minPrice = 0;
       self.maxPrice = 500;
       self.currentPageIndex = 1;
@@ -20,31 +24,75 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
       self.originalPlaceList = [];
       self.searchList = null;
       self.placeList = [];
+      var geocoder = new google.maps.Geocoder;
+      var mapBoundaries = null;
 
       initialize = function() {
     	  
     	  	self.selectedPlaceName = getUriParam(EnmUriParam.LOCATION);
-    	  	self.selectedLat = getUriParam(EnmUriParam.LATITUDE);  
-    	  	self.selectedLng = getUriParam(EnmUriParam.LONGITUDE);
-	    	var startDate = getUriParam(EnmUriParam.CHECKIN_DATE);
-	    	var endDate = getUriParam(EnmUriParam.CHECKOUT_DATE);
+	    	self.selectedStartDate = getUriParam(EnmUriParam.CHECKIN_DATE);
+	    	self.selectedEndDate = getUriParam(EnmUriParam.CHECKOUT_DATE);
+	    	self.selectedLocationId = getUriParam(EnmUriParam.LOCATION_ID);
 		  
-			self.selectedLocation = new google.maps.LatLng(self.selectedLat, self.selectedLng);
-			var mapOptions = {
-				zoom: 14,
-				center: self.selectedLocation,
-				disableDefaultUI: false
-			}
-			
-			map = new google.maps.Map(document.getElementById('divMap'), mapOptions);
+	    	var mapOptions = {
+					//zoom: 14,
+					//center: self.selectedLocation,
+					disableDefaultUI: true,
+					zoomControl: true,
+					zoomControlOptions: {
+			              position: google.maps.ControlPosition.TOP_LEFT
+			         }
+			};
+	    	
+	    	map = new google.maps.Map(document.getElementById('divMap'), mapOptions);
+	    	
+	    	geocoder.geocode({'placeId': self.selectedLocationId}, function(results, status) {
+	            if (status === 'OK') {
+	              if (results[0]) {
+	            	var result = results[0]; 
+	                //map.setZoom(16);
+	                map.setCenter(result.geometry.location);
+	                
+	                self.locSearchCriteria = self.getDisplayArea(result.geometry.viewport);
+	                
+	                var point1 = new google.maps.LatLng(self.locSearchCriteria.lat1, self.locSearchCriteria.lng1);
+	                var point2 = new google.maps.LatLng(self.locSearchCriteria.lat2, self.locSearchCriteria.lng2);
+	                
+	                var bounds = new google.maps.LatLngBounds();
+	                bounds.extend(point1);
+	                bounds.extend(point2);
+	              	
+	                map.fitBounds(bounds);
+	                
+	                self.selectedLat = result.geometry.location.lat();
+	    	    	self.selectedLng = result.geometry.location.lng();
+	    	    	
+	    	    	self.selectedLocation = new google.maps.LatLng(self.selectedLat, self.selectedLng);
+	    	    	
+	    	    	marker = new google.maps.Marker({
+	    		        map: map,
+	    				draggable: false,
+	    		        position: self.selectedLocation
+	    		    });
+	    	    	
+	    	    	map.controls[google.maps.ControlPosition.TOP_LEFT].push($('#divMapCheckbox')[0]);
+	    	    	
+	    	    	$('#divMapCheckbox').removeClass('hidden-force');
+	    	    	
+	    	    	self.listPlace(self.displayPlaceList);
+	              }
+	            } else {
+	              console.log('Geocoder failed due to: ' + status);
+	            }
+	          });
 			
 			infoWindow = new google.maps.InfoWindow();
 			
+			/*
 			google.maps.event.addListener(map, 'click', function() {
 		          //infoWindow.close();
 		        });
-			
-			self.listPlace(self.displayPlaceList);
+			*/
 			
 			$("#txtSearchPlace").geocomplete().bind("geocode:result",
 	      			function(event, result) {
@@ -63,7 +111,7 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
   				}
   			});
 
-			$("#txtStartDatePicker").datepicker().val(startDate);
+			$("#txtStartDatePicker").datepicker().val(self.selectedStartDate);
 			
 	      	$("#txtEndDatePicker").datepicker(
   			{
@@ -74,7 +122,7 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
   				}
   			});
 	      	
-	      	$("#txtEndDatePicker").datepicker().val(endDate);
+	      	$("#txtEndDatePicker").datepicker().val(self.selectedEndDate);
 	      	
 	      	
       	    $( "#divPriceSlider" ).slider({
@@ -100,6 +148,71 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
 	      );
       };
       
+      self.getDisplayArea = function(viewPort) {
+    	  var lat1 = viewPort.f.f;
+    	  var lat2 = viewPort.f.b
+    	  
+    	  var lng1 = viewPort.b.b;
+    	  var lng2 = viewPort.b.f;
+    	      	      	  
+    	  var verticalDistance = MapUtil.getDistanceLat(lat1, lat2);
+    	  var horizontalDistance = MapUtil.getDistanceLng(lng1, lng2, lat1);
+    	  
+    	  if (verticalDistance < minMapEdgeLength) {
+    		  var vertDistDiff = minMapEdgeLength - verticalDistance;
+    		  var latDegreeDiff = MapUtil.meterToDegreeLat(vertDistDiff);
+    		  var adjustAmount = latDegreeDiff / 2;
+    		  
+    		  if ((lat1 > 0 && lat2 > 0) || (lat1 < 0 && lat2 < 0)) {
+        		  if (Math.abs(lat1) > Math.abs(lat2)) {
+        			  lat1 = MapUtil.adjustLat(lat1, adjustAmount);
+        			  lat2 = MapUtil.adjustLat(lat2, -1 * adjustAmount);
+        		  } else {
+        			  lat2 = MapUtil.adjustLat(lat2, adjustAmount);
+        			  lat1 = MapUtil.adjustLat(lat1, -1 * adjustAmount);
+        		  }
+        	  } else {
+        		  lat1 = MapUtil.adjustLat(lat1, adjustAmount);
+        		  lat2 = MapUtil.adjustLat(lat2, adjustAmount);
+        	  }
+    	  }
+    	  
+    	  if (horizontalDistance < minMapEdgeLength) {
+    		  var horizontalDistDiff = minMapEdgeLength - horizontalDistance;
+    		  var lngDegreeDiff = MapUtil.meterToDegreeLng(horizontalDistDiff, lat1);
+    		  var adjustAmount = lngDegreeDiff / 2;
+    		  
+    		  if ((lng1 > 0 && lng2 > 0) || (lng1 < 0 && lng2 < 0)) {
+        		  if (Math.abs(lng1) > Math.abs(lng2)) {
+        			  lng1 = MapUtil.adjustLat(lng1, adjustAmount);
+        			  lng2 = MapUtil.adjustLat(lng2, -1 * adjustAmount);
+        		  } else {
+        			  lng2 = MapUtil.adjustLat(lng2, adjustAmount);
+        			  lng1 = MapUtil.adjustLat(lng1, -1 * adjustAmount);
+        		  }
+        	  } else {
+        		  lng1 = MapUtil.adjustLat(lng1, adjustAmount);
+        		  lng2 = MapUtil.adjustLat(lng2, adjustAmount);
+        	  }
+    	  }
+    	  
+    	  /*
+    	  viewPort.f.f = lat1;
+    	  viewPort.f.b = lat2;
+    	  
+    	  viewPort.b.b = lng1;
+    	  viewPort.b.f = lng2;
+    	  */
+    	  
+    	  return {
+    		  lat1 : lat1,
+    		  lat2 : lat2,
+    		  lng1 : lng1,
+    		  lng2 : lng2
+    	  };
+    	  
+      };
+      
       self.setPriceRange = function (selectedMinPrice, selectedMaxPrice) {
     	  	self.minPrice= selectedMinPrice;
 	        self.maxPrice= selectedMaxPrice;
@@ -116,11 +229,10 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
 					.datepicker("getDate"));
 		
 		openWindow(webApplicationUrlPrefix + '/pages/SearchResult.xhtml' 
-				+ '?' + EnmUriParam.LOCATION + '=' + self.selectedPlaceName 
-				+ '&' + EnmUriParam.LATITUDE + '=' + self.selectedLat 
-				+ '&' + EnmUriParam.LONGITUDE + '=' + self.selectedLng 
+				+ '?' + EnmUriParam.LOCATION + '=' + self.selectedPlaceName
 				+ "&" + EnmUriParam.CHECKIN_DATE + "=" + startDate 
-				+ "&" + EnmUriParam.CHECKOUT_DATE + "=" + endDate, true);
+				+ "&" + EnmUriParam.CHECKOUT_DATE + "=" + endDate
+				+ "&" + EnmUriParam.LOCATION_ID + "=" + self.selectedLocationId, true);
 		
       };
       
@@ -274,6 +386,7 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
 	    	self.selectedPlaceName = result.name;
 	    	self.selectedLat = result.geometry.location.lat();
 	    	self.selectedLng = result.geometry.location.lng();
+	    	self.selectedLocationId = result.place_id;
 	    	setTimeout(function() {
 				$("#txtStartDatePicker").focus()
 			}, 100);
@@ -353,7 +466,8 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
       }
 	  
 	  self.listPlace = function(fn) {
-    	  placeService.listPlace(null, 
+    	  placeService.listPlace(self.selectedStartDate, self.selectedEndDate, null, self.locSearchCriteria
+    			  , 
     			  function(resultPlaceList) {
 			  	  		self.originalPlaceList = resultPlaceList;
 				  		self.currentPageIndex = 1;

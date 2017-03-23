@@ -4,42 +4,45 @@ App.controller('mainCtrl', ['$scope', '$controller', 'userService', function($sc
       var selectedPlaceName = null;
       var selectedLat = null;
       var selectedLng = null;
+      var selectedLocationId = null;
 
       self.isSearchValid = false;
 
       self.initialize = function() {
-    	  $(function() {
-    	      	$("#txtSearchPlace").geocomplete().bind("geocode:result",
-    	      			function(event, result) {
-    	      				self.onPlaceChange(event, result);
-    	      			});
-    	      	$("#txtStartDatePicker").datepicker(
-    	      			{
-    	      				minDate: '+0',
-    	      				dateFormat : "dd.mm.yy",
-    	      				onSelect : function(selectedDate, cal) {
-    	      					self.validateSearch();
-    	      					setTimeout(function() {
-    	      						$("#txtEndDatePicker").focus()
-    	      					}, 200);
-    	      				}
-    	      			});
+    	  $("#txtSearchPlace").geocomplete().bind("geocode:result", function(event, result) {
+  				self.onPlaceChange(event, result);
+  			});
+    	  
+	      	$("#txtStartDatePicker").datepicker(
+  			{
+  				minDate: '+0',
+  				dateFormat : "dd.mm.yy",
+  				onSelect : function(selectedDate, cal) {
+  					self.validateSearch();
+  					setTimeout(function() {
+  						$("#txtEndDatePicker").focus()
+  					}, 200);
+  				}
+  			});
 
-    	      	$("#txtEndDatePicker").datepicker(
-    	      			{
-    	      				minDate: '+1m',
-    	      				dateFormat : "dd.mm.yy",
-    	      				onSelect : function(selectedDate, cal) {
-    	      					self.validateSearch();
-    	      				}
-    	      			});
-    	      });
+	      	$("#txtEndDatePicker").datepicker(
+  			{
+  				minDate: '+1m',
+  				dateFormat : "dd.mm.yy",
+  				onSelect : function(selectedDate, cal) {
+  					self.validateSearch();
+  				}
+  			});
       };
       
       self.onPlaceChange = function (event, result) {
       	selectedPlaceName = result.name;
       	selectedLat = result.geometry.location.lat();
       	selectedLng = result.geometry.location.lng();
+      	//selectedLat = result.geometry.viewport.b.b + ':' + result.geometry.viewport.b.f;
+      	//selectedLng = result.geometry.viewport.f.b + ':' + result.geometry.viewport.f.f;
+      	selectedLocationId = result.place_id;
+      	
       	setTimeout(function() {
 				$("#txtStartDatePicker").focus()
 			}, 100);
@@ -53,10 +56,9 @@ App.controller('mainCtrl', ['$scope', '$controller', 'userService', function($sc
 		
 		openWindow(webApplicationUrlPrefix + '/pages/SearchResult.xhtml' 
 				+ '?' + EnmUriParam.LOCATION + '=' + selectedPlaceName 
-				+ '&' + EnmUriParam.LATITUDE + '=' + selectedLat 
-				+ '&' + EnmUriParam.LONGITUDE + '=' + selectedLng 
 				+ "&" + EnmUriParam.CHECKIN_DATE + "=" + startDate 
-				+ "&" + EnmUriParam.CHECKOUT_DATE + "=" + endDate, true);
+				+ "&" + EnmUriParam.CHECKOUT_DATE + "=" + endDate
+				+ "&" + EnmUriParam.LOCATION_ID + "=" + selectedLocationId, true);
       };
 
       self.validateSearch = function() {

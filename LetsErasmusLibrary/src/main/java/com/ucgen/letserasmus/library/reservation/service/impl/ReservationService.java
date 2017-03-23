@@ -21,6 +21,11 @@ public class ReservationService implements IReservationService {
 	private IReservationDao reservationDao;
 	private IMessageDao messageDao;
 	
+	public ReservationService() {
+		String a = "";
+		System.out.println(a);
+	}
+	
 	@Autowired
 	public void setReservationDao(IReservationDao reservationDao) {
 		this.reservationDao = reservationDao;
@@ -32,7 +37,7 @@ public class ReservationService implements IReservationService {
 	}
 
 	@Override
-	@Transactional(rollbackFor = Exception.class)
+	@Transactional
 	public OperationResult insert(Reservation reservation) throws OperationResultException {
 		if (reservation.getMessageThread() != null) {
 			MessageThread messageThread = reservation.getMessageThread();

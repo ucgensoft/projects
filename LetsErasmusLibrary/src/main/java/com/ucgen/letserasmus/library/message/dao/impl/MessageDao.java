@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
@@ -55,8 +56,7 @@ public class MessageDao extends JdbcDaoSupport implements IMessageDao {
 		argList.add(messageThread.getThreadTitle());
 		argList.add(messageThread.getCreatedBy());
 		argList.add(messageThread.getCreatedDate());
-		
-		
+				
 		this.getJdbcTemplate().update(INSERT_MESSAGE_THREAD_SQL, argList.toArray());
 		
 		messageThread.setId(this.utilityDao.getLastIncrementId());

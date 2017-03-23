@@ -40,6 +40,7 @@ var EnmUriParam = {
 	LATITUDE : 'lat',
 	LONGITUDE : 'lng',
 	LOCATION : 'loc',
+	LOCATION_ID : 'locationId',
 	PLACE_ID : 'placeId',
 	USER_ID : 'userId'
 };
@@ -540,4 +541,84 @@ function createEmptyFile(fileName) {
       ];
 
 	return new File(parts, fileName, {});
+}
+
+MapUtil = {
+		degreeToMeterLat : function(degreeValue) {
+			return degreeValue * 111000;
+		},
+		
+		meterToDegreeLat : function(distance) {
+			return (distance / 111000);
+		},
+		
+		meterToDegreeLng : function(distance, lat) {
+			//return (distance / 111000) * ( 90 / (90 - Math.abs(lat)));
+			return (distance / 111000);
+		},
+		
+		degreeToMeterLng : function(degreeValue, lat) {
+			return (degreeValue * 111000) * ( (90 - Math.abs(lat)) / 90) ;
+		},
+		
+		adjustLat : function(lat, adjustAmount) {
+			sign = (lat >= 0 ? 1 : -1);
+			
+			if (lat >= 0) {
+				lat = lat + adjustAmount;
+			} else {
+				lat = sign * (Math.abs(lat) + adjustAmount);
+			}
+			
+			if (lat > 90) {
+				lat = 90;
+			} else if (lat < -90) {
+				lat = -90;
+			}
+			return lat;
+		},
+		
+		adjustLng : function(lng, adjustAmount) {
+			sign = (lat >= 0 ? 1 : -1);
+			
+			if (lng >= 0) {
+				lng = lng + adjustAmount;
+			} else {
+				lng = sign * (Math.abs(lng) + adjustAmount);
+			}
+			
+			if (lng > 180) {
+				lng = -1 * (lng - 180);
+			} else if (lng < -180) {
+				lng = 180 - (Math.abs(lng) - 180);
+			}
+			return lng;
+		},
+		
+		getDistanceLat : function(lat1, lat2) {
+			var latDiff = 0;
+			if ((lat1 > 0 && lat2 > 0) || (lat1 < 0 && lat2 < 0)) {
+    		  latDiff = (lat1 > lat2 ? (Math.abs(lat1) - Math.abs(lat2)) : (Math.abs(lat2) - Math.abs(lat1)));
+			} else {
+    		  latDiff = Math.abs(lat1) + Math.abs(lat2);
+			}
+			return MapUtil.degreeToMeterLat(latDiff);
+		},
+		
+		getDistanceLng : function(lng1, lng2, lat) {
+			var lngDiff = 0;
+			if ((lng1 > 0 && lng2 > 0) || lng1 < 0 && lng2 < 0) {
+	    		  lngDiff = (lng1 > lng2 ? (Math.abs(lng1) - Math.abs(lng2)) : (Math.abs(lng2) - Math.abs(lng1)));
+	    	} else {
+	    		var lngDiff1 = Math.abs(lat1) + Math.abs(lat2);
+	    		var lngDiff2 = (180 - Math.abs(lat1)) + (180 - Math.abs(lat2));
+	    		if (lngDiff1 < lngDiff2) {
+	    			lngDiff = lngDiff1;
+	    		} else {
+	    			lngDiff = lngDiff2;
+	    		}
+	    	}
+			return MapUtil.degreeToMeterLng(lngDiff, lat);
+		}
+		
 }

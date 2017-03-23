@@ -2,6 +2,7 @@ package com.ucgen.letserasmus.web.api.place;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,9 +31,11 @@ import com.ucgen.common.operationresult.ListOperationResult;
 import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.common.operationresult.ValueOperationResult;
 import com.ucgen.common.util.CommonUtil;
+import com.ucgen.common.util.DateUtil;
 import com.ucgen.common.util.FileLogger;
 import com.ucgen.common.util.FileUtil;
 import com.ucgen.common.util.ImageUtil;
+import com.ucgen.common.util.StringUtil;
 import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
 import com.ucgen.letserasmus.library.common.enumeration.EnmErrorCode;
 import com.ucgen.letserasmus.library.common.enumeration.EnmSize;
@@ -40,6 +43,7 @@ import com.ucgen.letserasmus.library.file.enumeration.EnmFileType;
 import com.ucgen.letserasmus.library.file.model.FileModel;
 import com.ucgen.letserasmus.library.file.model.Photo;
 import com.ucgen.letserasmus.library.file.service.IFileService;
+import com.ucgen.letserasmus.library.location.model.LocationSearchCriteria;
 import com.ucgen.letserasmus.library.location.service.impl.LocationService;
 import com.ucgen.letserasmus.library.parameter.enumeration.EnmParameter;
 import com.ucgen.letserasmus.library.parameter.service.IParameterService;
@@ -405,19 +409,46 @@ public class ApiPlaceController extends BaseApiController {
 				pageNumber = Integer.valueOf(uiPageNumber);
 			}
 			*/
-			Place place = new Place();
-			place.setStatus(EnmPlaceStatus.ACTIVE.getValue());
-			listResult = this.placeService.listPlace(place, true, true, true, null, null);
-			if (OperationResult.isResultSucces(listResult)) {
-				List<Place> placeList = listResult.getObjectList();
-				if (placeList != null) {
-					for (Place tmpPlace : placeList) {
-						String paramDistance = this.parameterService.getParameterValue(EnmParameter.CHANGE_LOCATION_DISTANCE.getId());
-						LocationService.changeCoordinates(tmpPlace.getLocation(), Integer.parseInt(paramDistance));
-					}
-				}
+			String paramStartDate = requestParams.get("startDate");
+			String paramEndDate = requestParams.get("endDate");
+			String paramLat1 = requestParams.get("lat1");
+			String paramLat2 = requestParams.get("lat2");
+			String paramLng1 = requestParams.get("lng1");
+			String paramLng2 = requestParams.get("lng2");
+			
+			if (StringUtil.isEmpty(paramStartDate) || StringUtil.isEmpty(paramEndDate)
+					|| StringUtil.isEmpty(paramLat1) || StringUtil.isEmpty(paramLat2)
+					|| StringUtil.isEmpty(paramLng1) || StringUtil.isEmpty(paramLng2)) {
+				listResult.setResultCode(EnmResultCode.WARNING.getValue());
+				listResult.setResultDesc("Mising mandatory parameter!");
 			} else {
-				listResult.setResultDesc("Place listing failed. Please try again later!");
+				Date startDate = DateUtil.valueOf(paramStartDate, DateUtil.SHORT_DATE_FORMAT);
+				Date endDate = DateUtil.valueOf(paramEndDate, DateUtil.SHORT_DATE_FORMAT);
+				
+				LocationSearchCriteria locSearchCriteria = new LocationSearchCriteria();
+				locSearchCriteria.setLat1(new BigDecimal(paramLat1));
+				locSearchCriteria.setLat2(new BigDecimal(paramLat2));
+				locSearchCriteria.setLng1(new BigDecimal(paramLng1));
+				locSearchCriteria.setLng2(new BigDecimal(paramLng2));
+				
+				Place place = new Place();
+				place.setStatus(EnmPlaceStatus.ACTIVE.getValue());
+				
+				place.setStartDate(startDate);
+				place.setEndDate(endDate);
+				
+				listResult = this.placeService.listPlace(place, locSearchCriteria, true, true, true, null, null);
+				if (OperationResult.isResultSucces(listResult)) {
+					List<Place> placeList = listResult.getObjectList();
+					if (placeList != null) {
+						for (Place tmpPlace : placeList) {
+							String paramDistance = this.parameterService.getParameterValue(EnmParameter.CHANGE_LOCATION_DISTANCE.getId());
+							LocationService.changeCoordinates(tmpPlace.getLocation(), Integer.parseInt(paramDistance));
+						}
+					}
+				} else {
+					listResult.setResultDesc("Place listing failed. Please try again later!");
+				}
 			}
 		} catch (Exception e) {
 			listResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
@@ -435,7 +466,7 @@ public class ApiPlaceController extends BaseApiController {
 			if (user != null) {
 				Place place = new Place();
 				place.setHostUserId(user.getId());
-				ListOperationResult<Place> listResult = this.placeService.listPlace(place, true, true, false, null, null);
+				ListOperationResult<Place> listResult = this.placeService.listPlace(place, null, true, true, false, null, null);
 				
 				List<Place> placeList = listResult.getObjectList();
 				Map<String, List<Place>> placeMap = new HashMap<>();

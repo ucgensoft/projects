@@ -1,18 +1,16 @@
 package com.ucgen.letserasmus.web.config;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.web.multipart.support.StandardServletMultipartResolver;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "com.ucgen")
 @Import (AppConfig.class)
+@EnableTransactionManagement
 public class SpringMVCConfiguration extends WebMvcConfigurerAdapter{
 	/*
 	@Override
@@ -30,10 +28,5 @@ public class SpringMVCConfiguration extends WebMvcConfigurerAdapter{
 		registry.addResourceHandler("/place/**").addResourceLocations("/place/");
 		registry.addResourceHandler("/user/**").addResourceLocations("/user/");
 	}
-	
-	@Bean(name = "multipartResolver")
-    public StandardServletMultipartResolver resolver() {
-        return new StandardServletMultipartResolver();
-    }
 	
 }

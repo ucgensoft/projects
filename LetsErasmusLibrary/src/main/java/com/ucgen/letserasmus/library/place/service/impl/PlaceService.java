@@ -13,6 +13,7 @@ import com.ucgen.common.operationresult.ValueOperationResult;
 import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
 import com.ucgen.letserasmus.library.file.model.FileModel;
 import com.ucgen.letserasmus.library.file.service.IFileService;
+import com.ucgen.letserasmus.library.location.model.LocationSearchCriteria;
 import com.ucgen.letserasmus.library.location.service.ILocationService;
 import com.ucgen.letserasmus.library.place.dao.IPlaceDao;
 import com.ucgen.letserasmus.library.place.model.Place;
@@ -146,9 +147,9 @@ public class PlaceService implements IPlaceService{
 	}
 
 	@Override
-	public ListOperationResult<Place> listPlace(Place place, boolean locationFlag, boolean photoFlag, 
+	public ListOperationResult<Place> listPlace(Place place, LocationSearchCriteria locationSearchCriteria, boolean locationFlag, boolean photoFlag, 
 			boolean userFlag, Integer pageSize, Integer pageNumber) {
-		return this.placeDao.listPlace(place, locationFlag, photoFlag, userFlag, pageSize, pageNumber);
+		return this.placeDao.listPlace(place, locationSearchCriteria, locationFlag, photoFlag, userFlag, pageSize, pageNumber);
 	}
 
 }

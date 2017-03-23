@@ -103,7 +103,7 @@ public class UserService implements IUserService{
 		Place place = new Place();
 		place.setHostUserId(user.getId());
 		
-		ListOperationResult<Place> placeListResult = this.placeService.listPlace(place, false, false, false, null, null);
+		ListOperationResult<Place> placeListResult = this.placeService.listPlace(place, null, false, false, false, null, null);
 		
 		if (OperationResult.isResultSucces(placeListResult)) {
 			for (Place userPlace : placeListResult.getObjectList()) {

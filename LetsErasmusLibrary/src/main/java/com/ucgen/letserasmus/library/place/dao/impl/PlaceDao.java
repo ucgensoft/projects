@@ -1,5 +1,6 @@
 package com.ucgen.letserasmus.library.place.dao.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,8 +16,11 @@ import com.ucgen.common.operationresult.ListOperationResult;
 import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.common.operationresult.ValueOperationResult;
 import com.ucgen.common.util.StringUtil;
+import com.ucgen.common.util.enumeration.EnmCompareResult;
 import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
 import com.ucgen.letserasmus.library.file.dao.FileRowMapper;
+import com.ucgen.letserasmus.library.location.dao.LocationRowMapper;
+import com.ucgen.letserasmus.library.location.model.LocationSearchCriteria;
 import com.ucgen.letserasmus.library.place.dao.IPlaceDao;
 import com.ucgen.letserasmus.library.place.dao.PlaceRowMapper;
 import com.ucgen.letserasmus.library.place.model.Place;
@@ -46,7 +50,7 @@ public class PlaceDao extends JdbcDaoSupport implements IPlaceDao{
 		ValueOperationResult<Place> operationResult = new ValueOperationResult<Place>();
 		Place place = new Place();
 		place.setId(id);
-		ListOperationResult<Place> listOperationResult = this.listPlace(place, true, true, true, null, null);
+		ListOperationResult<Place> listOperationResult = this.listPlace(place, null, true, true, true, null, null);
 		
 		operationResult.setResultCode(listOperationResult.getResultCode());
 		operationResult.setResultDesc(listOperationResult.getResultDesc());
@@ -273,7 +277,8 @@ public class PlaceDao extends JdbcDaoSupport implements IPlaceDao{
 	}
 
 	@Override
-	public ListOperationResult<Place> listPlace(Place place, boolean locationFlag, boolean photoFlag, boolean userFlag, 
+	public ListOperationResult<Place> listPlace(Place place, 
+			LocationSearchCriteria locationSearchCriteria, boolean locationFlag, boolean photoFlag, boolean userFlag, 
 			Integer pageSize, Integer pageNumber) {
 		ListOperationResult<Place> listOperationResult = new ListOperationResult<Place>();
 		StringBuilder sqlBuilder = new StringBuilder();
@@ -305,11 +310,68 @@ public class PlaceDao extends JdbcDaoSupport implements IPlaceDao{
 				sqlBuilder.append(" AND " + placeRowMapper.getCriteriaColumnName(PlaceRowMapper.COL_HOST_USER_ID) + " = ? ");
 				argList.add(place.getHostUserId());
 			}
+			if (place.getStartDate() != null) {
+				sqlBuilder.append(" AND " + placeRowMapper.getCriteriaColumnName(PlaceRowMapper.COL_START_DATE) + " <= ? ");
+				argList.add(place.getStartDate());
+			}
+			if (place.getEndDate() != null) {
+				sqlBuilder.append(" AND " + placeRowMapper.getCriteriaColumnName(PlaceRowMapper.COL_END_DATE) + " >= ? ");
+				argList.add(place.getEndDate());
+			}
 		}
 		
 		if (photoFlag) {
 			sqlBuilder.append(" AND " + FileRowMapper.COL_ENTITY_TYPE + " = ? ");
 			argList.add(EnmEntityType.PLACE.getId());
+		}
+		
+		if (locationSearchCriteria != null) {
+			BigDecimal latLowLimit = null;
+			BigDecimal latUpLimit = null;
+			
+			if (locationSearchCriteria.getLat1().compareTo(locationSearchCriteria.getLat2()) == EnmCompareResult.SMALLER.getValue()) {
+				latLowLimit = locationSearchCriteria.getLat1();
+				latUpLimit = locationSearchCriteria.getLat2();
+			} else {
+				latLowLimit = locationSearchCriteria.getLat2();
+				latUpLimit = locationSearchCriteria.getLat1();
+			}
+			
+			sqlBuilder.append(" AND " + LocationRowMapper.COL_LATITUDE + " >= ? ");
+			argList.add(latLowLimit);
+			
+			sqlBuilder.append(" AND " + LocationRowMapper.COL_LATITUDE + " <= ? ");
+			argList.add(latUpLimit);
+			
+			BigDecimal lngLowLimit = null;
+			BigDecimal lngUpLimit = null;
+			
+			if (locationSearchCriteria.getLng1().compareTo(locationSearchCriteria.getLng2()) == EnmCompareResult.SMALLER.getValue()) {
+				lngLowLimit = locationSearchCriteria.getLng1();
+				lngUpLimit = locationSearchCriteria.getLng2();
+			} else {
+				lngLowLimit = locationSearchCriteria.getLng2();
+				lngUpLimit = locationSearchCriteria.getLng1();
+			}
+			
+			if (lngLowLimit.signum() == lngUpLimit.signum()) {
+				sqlBuilder.append(" AND " + LocationRowMapper.COL_LONGITUDE + " >= ? ");
+				sqlBuilder.append(" AND " + LocationRowMapper.COL_LONGITUDE + " <= ? ");
+			} else {
+				if (lngLowLimit.compareTo(new BigDecimal(-90)) == EnmCompareResult.SMALLER.getValue()) {
+					sqlBuilder.append(" AND " + LocationRowMapper.COL_LONGITUDE + " >= ? ");
+				} else {
+					sqlBuilder.append(" AND " + LocationRowMapper.COL_LONGITUDE + " <= ? ");
+				}
+				if (lngUpLimit.compareTo(new BigDecimal(90)) == EnmCompareResult.SMALLER.getValue()) {
+					sqlBuilder.append(" AND " + LocationRowMapper.COL_LONGITUDE + " <= ? ");
+				} else {
+					sqlBuilder.append(" AND " + LocationRowMapper.COL_LONGITUDE + " >= ? ");
+				}
+			}
+			
+			argList.add(lngLowLimit);
+			argList.add(lngUpLimit);
 		}
 		
 		if (pageSize != null && pageNumber != null) {

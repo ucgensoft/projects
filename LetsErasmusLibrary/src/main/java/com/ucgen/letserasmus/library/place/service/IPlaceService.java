@@ -7,6 +7,7 @@ import com.ucgen.common.operationresult.ListOperationResult;
 import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.common.operationresult.ValueOperationResult;
 import com.ucgen.letserasmus.library.file.model.FileModel;
+import com.ucgen.letserasmus.library.location.model.LocationSearchCriteria;
 import com.ucgen.letserasmus.library.place.model.Place;
 
 public interface IPlaceService {
@@ -17,6 +18,7 @@ public interface IPlaceService {
 	
 	OperationResult updatePlace(Place place, FileModel coverPhoto, List<FileModel> newPhotoList, List<Long> deletePhotoList) throws OperationResultException;
 	
-	ListOperationResult<Place> listPlace(Place place, boolean locationFlag, boolean photoFlag, boolean userFlag, Integer pageSize, Integer pageNumber);
+	ListOperationResult<Place> listPlace(Place place, LocationSearchCriteria locationSearchCriteria, boolean locationFlag, 
+			boolean photoFlag, boolean userFlag, Integer pageSize, Integer pageNumber);
 
 }

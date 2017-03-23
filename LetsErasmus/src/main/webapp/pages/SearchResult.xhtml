@@ -31,6 +31,7 @@
 	    </style>
 		<script>
 			var searchResultPageSize = #{webApplication.getParameterValue("PLACE_SEARCH_PAGE_SIZE")};
+			var minMapEdgeLength = #{webApplication.getParameterValue("MAP_MIN_DISPLAY_DISTANCE")}
 		</script>
 	</ui:define>
 
@@ -316,6 +317,15 @@
 			</div>
 			<div id="divPlaceInfoWindow">
 				
+			</div>
+			<div id="divMapCheckbox" class="map-refresh-controls google hidden-force" style="margin-top: 10px;">
+				<div class="map-auto-refresh panel" style="padding: 8px;">
+					<label class="checkbox" for="">
+						<input type="checkbox" class="" 
+							id="map-auto-refresh-checkbox" value="on" />
+						<small><span style="font-size: 14px">Search as I move the map</span></small>
+					</label>
+				</div>
 			</div>
 		</div>
 		<script src="#{webApplication.urlPrefix}/static/js/angular/service/enumeration_service.js"></script>
