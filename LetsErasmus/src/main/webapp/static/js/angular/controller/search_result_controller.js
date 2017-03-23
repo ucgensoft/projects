@@ -27,6 +27,8 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
       var geocoder = new google.maps.Geocoder;
       var mapBoundaries = null;
 
+      var basicSearchFlag = false;
+      
       initialize = function() {
     	  
     	  	self.selectedPlaceName = getUriParam(EnmUriParam.LOCATION);
@@ -87,6 +89,9 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
 	    		    });
 	    	    	
 	    	    	map.controls[google.maps.ControlPosition.TOP_LEFT].push($('#divMapCheckbox')[0]);
+	    	    	
+	    	    	map.addListener('zoom_changed', self.mapDisplayAreaChanged);
+	    	    	map.addListener('dragend', self.mapDisplayAreaChanged);
 	    	    	
 	    	    	$('#divMapCheckbox').removeClass('hidden-force');
 	    	    	
@@ -157,6 +162,23 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
 				console.error('Error while fetching Enumerations');
 			}
 	      );
+      };
+      
+      self.mapDisplayAreaChanged = function() {
+    	  if (document.getElementById('chbSearchOnMove').checked) {
+    		  self.locSearchCriteria.lat1 =  map.getBounds().getNorthEast().lat();
+              self.locSearchCriteria.lng1 = map.getBounds().getNorthEast().lng();
+              self.locSearchCriteria.lat2 =  map.getBounds().getSouthWest().lat();
+              self.locSearchCriteria.lng2 = map.getBounds().getSouthWest().lng();
+        	  
+        	  self.listPlace(function() {
+        		  if (basicSearchFlag) {
+        			  self.basicSearch();
+        		  } else {
+        			  self.displayPlaceList();
+        		  }
+        	  });
+    	  }
       };
       
       self.getDisplayArea = function(viewPort) {
@@ -357,6 +379,8 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
     	self.displayPlaceList();
     	self.hideExtendedSearchFields();
     	commonService.fakeAjaxCall(self.refreshMap);
+    	
+    	basicSearchFlag = true;
       };
 
       self.setCurrentPage = function(index) {
@@ -407,7 +431,7 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
 		  return (self.searchList == null ? self.originalPlaceList : self.searchList);
 	  };
         
-	  self.displayPlaceList = function() {
+	  self.displayPlaceList = function(callBack) {
 		  //self.currentPageIndex = 1;
 		  var tmpPlaceList = self.getOriginalPlaceList();
 		  if (tmpPlaceList.length > searchResultPageSize) {
@@ -426,6 +450,9 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
 		  
 		  setTimeout(function() {
 			  self.refreshMap();
+			  if (callBack) {
+				  callBack();
+			  }
 		  }, 500);
 	  };
 	  
