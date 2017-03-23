@@ -50,19 +50,30 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
 	            if (status === 'OK') {
 	              if (results[0]) {
 	            	var result = results[0]; 
-	                //map.setZoom(16);
+	               
 	                map.setCenter(result.geometry.location);
 	                
 	                self.locSearchCriteria = self.getDisplayArea(result.geometry.viewport);
+	                
+	                if (self.locSearchCriteria.lat1 != result.geometry.viewport.f.f 
+	                		&& self.locSearchCriteria.lng1 != result.geometry.viewport.b.b) {
+	                	 map.setZoom(15);
+	                }
 	                
 	                var point1 = new google.maps.LatLng(self.locSearchCriteria.lat1, self.locSearchCriteria.lng1);
 	                var point2 = new google.maps.LatLng(self.locSearchCriteria.lat2, self.locSearchCriteria.lng2);
 	                
 	                var bounds = new google.maps.LatLngBounds();
+	                
 	                bounds.extend(point1);
 	                bounds.extend(point2);
 	              	
 	                map.fitBounds(bounds);
+	                
+	                self.locSearchCriteria.lat1 =  map.getBounds().getNorthEast().lat();
+	                self.locSearchCriteria.lng1 = map.getBounds().getNorthEast().lng();
+	                self.locSearchCriteria.lat2 =  map.getBounds().getSouthWest().lat();
+	                self.locSearchCriteria.lng2 = map.getBounds().getSouthWest().lng();
 	                
 	                self.selectedLat = result.geometry.location.lat();
 	    	    	self.selectedLng = result.geometry.location.lng();
