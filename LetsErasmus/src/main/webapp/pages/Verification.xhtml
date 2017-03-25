@@ -57,8 +57,7 @@
 												<span>Confirm your phone number</span>
 											</h3>
 											<div class="text-lead space-4">
-												<span>This is so your host can contact you during your
-													trip, and so Airbnb knows how to reach you.</span>
+												<span>This is so your host can contact you, and so Let's Erasmus knows how to reach you.</span>
 											</div>
 											<div class="space-4 space-top-4">
 												<div class="activation-icon-container">
@@ -146,16 +145,14 @@
 									<ui:fragment rendered="#{webApplication.user.msisdnVerified == 'Y' and webApplication.user.emailVerified == 'N'}">
 										<div id="divVerifyEmail">
 											<h3 class="space-1">
-												<span>E-postanıza bakın</span>
+												<span>Check your email</span>
 											</h3>
 											<div class="text-lead space-4">
 												<div>
-													<span>Size gönderdiğimiz e-postadaki bağlantıya
-														dokunun.</span>
+													<span>Click the link in the email we sent you.</span>
 												</div>
 												<div>
-													<span>E-posta adresinizi onaylamak size seyahat
-														bilgilerini göndermemize yardımcı olur.</span>
+													<span>Confirming your email address helps us send you information.</span>
 												</div>
 											</div>
 											<div class="space-4 space-top-4">
@@ -166,7 +163,7 @@
 												</div>
 											</div>
 											<div class="space-2">
-												<label class="screen-reader-only"><span>E-posta Adresi</span></label>
+												<label class="screen-reader-only"><span>Email Address</span></label>
 												<input type="email" id="txtEmail"
 													class="text-center" value="#{webApplication.user.email}" />
 											</div>
@@ -174,7 +171,7 @@
 												<button type="button"
 													class="btn btn-primary btn-block space-2"
 													ng-click="ctrl.sendEmailVerificationCode()">
-													<span>Yeniden E-posta Gönder</span>
+													<span>Resend Email</span>
 												</button>
 											</div>
 											<div>
