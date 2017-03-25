@@ -230,7 +230,7 @@
 	text-align: center;
 	margin: 0 auto;
 	background-size: cover;
-	background-position: top;
+	background-position: center;
 	background-repeat: no-repeat;
 	position: relative;
 	width: 100%;
@@ -259,28 +259,28 @@
 @media only screen and (min-width:1921px) and (max-width:2412px) {
 	.home-first-screen {
 		background-image:
-			url("http://localhost:8080/LetsErasmus/static/images/home_2412.jpg")
+			url("http://localhost:8080/LetsErasmus/static/images/home/home_2412.jpg")
 	}
 }
 
 @media only screen and (min-width:1337px) and (max-width:1920px) {
 	.home-first-screen {
 		background-image:
-			url("http://localhost:8080/LetsErasmus/static/images/home_1920.jpg")
+			url("http://localhost:8080/LetsErasmus/static/images/home/home_1920.jpg")
 	}
 }
 
 @media only screen and (min-width:765px) and (max-width:1337px) {
 	.home-first-screen {
 		background-image:
-			url("http://localhost:8080/LetsErasmus/static/images/home_1337.jpeg")
+			url("http://localhost:8080/LetsErasmus/static/images/home/home_1337.jpg")
 	}
 }
 
 @media only screen and (min-width:0px) and (max-width:765px) {
 	.home-first-screen {
 		background-image:
-			url("http://localhost:8080/LetsErasmus/static/images/home_765.png")
+			url("http://localhost:8080/LetsErasmus/static/images/home/home_765.jpg")
 	}
 }
 
@@ -291,14 +291,14 @@
 	(min-width:414px) and (max-width:768px) and (min-resolution:125dpi) {
 	.home-first-screen {
 		background-image:
-			url("http://localhost:8080/LetsErasmus/static/images/home_765.png")
+			url("http://localhost:8080/LetsErasmus/static/images/home/home_765.jpg")
 	}
 }
 
-/*@media only screen and (min-width:0) and (max-width:417px) {
+@media only screen and (min-width:0) and (max-width:417px) {
 	.home-first-screen {
 		background-image:
-			url("http://localhost:8080/LetsErasmus/static/images/home_417.jpg")
+			url("http://localhost:8080/LetsErasmus/static/images/home/home_417.jpg")
 	}
 }
 
@@ -309,10 +309,10 @@
 	(min-width:0) and (max-width:414px) and (min-resolution:125dpi) {
 	.home-first-screen {
 		background-image:
-			url("http://localhost:8080/LetsErasmus/static/images/home_417.jpg")		
+			url("http://localhost:8080/LetsErasmus/static/images/home/home_417.jpg")		
 	}
 }
-*/
+
 .home-first-screen .alert, .home-first-screen .info, .home-first-screen .sendgrid-subscription-widget form .response.success,
 	.home-first-screen .sendgrid-subscription-widget form .response.warning,
 	.sendgrid-subscription-widget form .home-first-screen .response.success,
