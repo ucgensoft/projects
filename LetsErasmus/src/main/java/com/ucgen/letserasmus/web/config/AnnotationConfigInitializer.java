@@ -10,7 +10,7 @@ import com.ucgen.letserasmus.web.filter.SecurityFilter;
 
 public class AnnotationConfigInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
  
-    protected Class<?>[] getRootConfigClasses() {
+	protected Class<?>[] getRootConfigClasses() {
         return new Class[] { SpringMVCConfiguration.class };
     }
   
@@ -33,7 +33,7 @@ public class AnnotationConfigInitializer extends AbstractAnnotationConfigDispatc
     }
  
     private MultipartConfigElement getMultipartConfigElement() {
-        MultipartConfigElement multipartConfigElement = new MultipartConfigElement( LOCATION, MAX_FILE_SIZE, MAX_REQUEST_SIZE, FILE_SIZE_THRESHOLD);
+    	MultipartConfigElement multipartConfigElement = new MultipartConfigElement( LOCATION, MAX_FILE_SIZE, MAX_REQUEST_SIZE, FILE_SIZE_THRESHOLD);
         return multipartConfigElement;
     }
  

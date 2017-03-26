@@ -87,7 +87,7 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     	  var photoIndex = 0;
 			for(var i = 0; i < self.place.photoList.length; i++) {
 				var photo = self.place.photoList[i];
-				self.photoList.push({ 'photoId': photo.id, 'file': null, 'src': rootPlaceImageFolder + self.place.id + '/' + photo.id + '_small.' + photo.fileSuffix });
+				self.photoList.push({ 'photoId': photo.id, 'file': null, 'src': generatePlacePhotoUrl(self.place.id, photo.id, EnmImageSize.SMALL) });
 			}
     	  
     	  self.place.amentyMap = {};

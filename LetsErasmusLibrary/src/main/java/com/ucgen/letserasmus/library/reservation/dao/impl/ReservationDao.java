@@ -23,7 +23,7 @@ import com.ucgen.letserasmus.library.reservation.model.Reservation;
 @Repository
 public class ReservationDao extends JdbcDaoSupport implements IReservationDao {
 
-	private static final String INSERT_RESERVATION_SQL = "INSERT INTO reservation (PLACE_ID, HOST_USER_ID, CLIENT_USER_ID, START_DATE, "
+	private static final String INSERT_RESERVATION_SQL = "INSERT INTO RESERVATION (PLACE_ID, HOST_USER_ID, CLIENT_USER_ID, START_DATE, "
 			+ " END_DATE, GUEST_NUMBER, PLACE_PRICE, SERVICE_RATE, SERVICE_FEE, COMMISSION_RATE, COMMISSION_FEE, CURRENCY_ID, STATUS,"
 			+ " CREATED_BY, CREATED_DATE, MESSAGE_THREAD_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";	
 	

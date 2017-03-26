@@ -16,7 +16,7 @@ public class ParameterService implements IParameterService {
 		this.parameterDao = generalParametersDao;
 	}
 	
-	public String getParameterValue(Integer parameterId) throws Exception {
+	public String getParameterValue(Integer parameterId) {
 		return parameterDao.getParameterValue(parameterId);		
 	}
 	

@@ -104,15 +104,15 @@
 @font-face {
 	font-family: '63242100-bac3-11e6-ae03-dfd7358aabd2';
 	src:
-		url("/LetsErasmus/static/font/searchresult/63242100-bac3-11e6-ae03-dfd7358aabd2.eot");
+		url("/static/font/searchresult/63242100-bac3-11e6-ae03-dfd7358aabd2.eot");
 	src:
-		url("/LetsErasmus/static/font/searchresult/63242100-bac3-11e6-ae03-dfd7358aabd2.eot?#iefix")
+		url("/static/font/searchresult/63242100-bac3-11e6-ae03-dfd7358aabd2.eot?#iefix")
 		format('eot'),
-		url("/LetsErasmus/static/font/searchresult/63242100-bac3-11e6-ae03-dfd7358aabd2.woff")
+		url("/static/font/searchresult/63242100-bac3-11e6-ae03-dfd7358aabd2.woff")
 		format('woff'),
-		url("/LetsErasmus/static/font/searchresult/63242100-bac3-11e6-ae03-dfd7358aabd2.ttf")
+		url("/static/font/searchresult/63242100-bac3-11e6-ae03-dfd7358aabd2.ttf")
 		format('truetype'),
-		url("/LetsErasmus/static/font/searchresult/63242100-bac3-11e6-ae03-dfd7358aabd2.svg#63242100-bac3-11e6-ae03-dfd7358aabd2")
+		url("/static/font/searchresult/63242100-bac3-11e6-ae03-dfd7358aabd2.svg#63242100-bac3-11e6-ae03-dfd7358aabd2")
 		format('svg')
 }
 

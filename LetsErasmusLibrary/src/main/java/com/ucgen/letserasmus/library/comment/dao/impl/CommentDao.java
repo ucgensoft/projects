@@ -22,8 +22,8 @@ import com.ucgen.letserasmus.library.comment.model.Comment;
 @Repository
 public class CommentDao extends JdbcDaoSupport implements ICommentDao {
 	
-	private static final String LIST_COMMENT_SQL = " select `ID`, `ENTITY_TYPE`, `ENTITY_ID`, `AUTHOR_USER_ID`, `COMMENT_CONTENT`, `STATUS`, `CREATED_BY`, `CREATED_DATE`, `CREATED_DATE_GMT`, `MODIFIED_BY`, `MODIFIED_DATE`, `MODIFIED_DATE_GMT` FROM COMMENT ";
-	private static final String INSERT_COMMENT_SQL = "INSERT INTO `COMMENT` (`ID`, `ENTITY_TYPE`, `ENTITY_ID`, `AUTHOR_USER_ID`, `COMMENT_CONTENT`, `STATUS`, `CREATED_BY`, `CREATED_DATE`, `CREATED_DATE_GMT`, `MODIFIED_BY`, `MODIFIED_DATE`, `MODIFIED_DATE_GMT`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+	private static final String LIST_COMMENT_SQL = " SELECT `ID`, `ENTITY_TYPE`, `ENTITY_ID`, `AUTHOR_USER_ID`, `COMMENT_CONTENT`, `STATUS`, `CREATED_BY`, `CREATED_DATE`, `CREATED_DATE_GMT`, `MODIFIED_BY`, `MODIFIED_DATE`, `MODIFIED_DATE_GMT` FROM COMMENT ";
+	private static final String INSERT_COMMENT_SQL = "INSERT INTO `comment` (`ID`, `ENTITY_TYPE`, `ENTITY_ID`, `AUTHOR_USER_ID`, `COMMENT_CONTENT`, `STATUS`, `CREATED_BY`, `CREATED_DATE`, `CREATED_DATE_GMT`, `MODIFIED_BY`, `MODIFIED_DATE`, `MODIFIED_DATE_GMT`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
 
 	@Autowired
 	public CommentDao(DataSource dataSource) {

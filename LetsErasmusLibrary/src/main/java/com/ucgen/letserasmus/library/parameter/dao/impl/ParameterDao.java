@@ -41,15 +41,19 @@ public class ParameterDao extends JdbcDaoSupport implements IParameterDao {
 	}
 	
 	public String getParameterValue(Integer parameterId) {
-		synchronized (parametersMap) {
-			if (parametersMap == null || this.isCacheExpired()) {
-				this.refreshCache();
-			} 
-			if(parametersMap.containsKey(parameterId)) {
-				return parametersMap.get(parameterId);
-			} else {
-				return null;
+		try {
+			synchronized (parametersMap) {
+				if (parametersMap == null || this.isCacheExpired()) {
+					this.refreshCache();
+				} 
+				if(parametersMap.containsKey(parameterId)) {
+					return parametersMap.get(parameterId);
+				} else {
+					return null;
+				}
 			}
+		} catch (Exception e) {
+			return null;
 		}
 	}
 	
