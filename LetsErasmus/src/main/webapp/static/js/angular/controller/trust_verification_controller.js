@@ -108,7 +108,7 @@ App.controller('trustAndverificationCtrl', ['$scope', 'userService', 'commonServ
   	  					}
   	  			  );
   			} else {
-  				DialogUtil.warn('Warning', 'google email and id are mandatory!');
+  				DialogUtil.warn('Warning', 'Google email and ID are mandatory!');
   			}
   		}
   	};

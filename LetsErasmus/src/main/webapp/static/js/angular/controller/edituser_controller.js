@@ -134,7 +134,7 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
 	  				DialogUtil.warn('Warning', 'Please confirm your password!', 'OK', null);
 	  				return;
 	  			} else if (password != passwordConfirm) {
-	  				DialogUtil.warn('Warning', 'Password and confirm password do not match!', 'OK', null);
+	  				DialogUtil.warn('Warning', 'Two passwords do not match!', 'OK', null);
 	  				return;
 	  			}	
   		} else {
@@ -259,11 +259,11 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
   	};
   	
   	self.deactivateUser = function() {
-  		DialogUtil.confirm('Confirm', 'Your user profile will be deactivated and you will be logged out. Do you wish to proceed?', function(response) {
+  		DialogUtil.confirm('Confirm', 'Your profile will be deactivated and you will be logged out. Do you wish to proceed?', function(response) {
 	  			if (response) {
 	  		  		userService.deactivateUser(function(isSuccess) {
 	  						  if (isSuccess) {
-	  							  DialogUtil.info('Sucess', 'Your user profile is deactivated!', 'OK', function() {
+	  							  DialogUtil.info('Sucess', 'Your profile is deactivated!', 'OK', function() {
 	  								openWindow(webApplicationUrlPrefix + "/pages/Main.xhtml", true);
 	  							  });
 	  						  }

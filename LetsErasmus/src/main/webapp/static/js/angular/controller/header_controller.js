@@ -45,7 +45,7 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
 	   				  userService.confirmEmail(id, code).then(
 							function(operationResult) {
 								if (isResultSuccess(operationResult, false)) {
-									DialogUtil.info('Success', 'Congradulations! Your mail is verified successfully!', 'OK', function() {
+									DialogUtil.info('Success', 'Congratulations! Your mail is verified successfully!', 'OK', function() {
 										var newUrl = clearUrlParameter(location.href, null);
 										if (sessionActive) {
 											newUrl = clearUrlParameter(location.href, null);
@@ -69,7 +69,7 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
 	   				userService.resetPassword(userId, code,
 							function(isSuccess) {
 								if (isSuccess) {
-									DialogUtil.info('Success', 'Your password is reset successfully and auto generated new password is sent to your email!', 'OK', function() {
+									DialogUtil.info('Success', 'We reset your password successfully and new password is sent to your email!', 'OK', function() {
 										var newUrl = clearUrlParameter(location.href, null);
 										newUrl += '?op=' + EnmOperation.LOGIN; 
 										openWindow(newUrl, true);
@@ -368,8 +368,8 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
   		  };
   		complaintService.createComplaint(complaint, 
   			  function(complaintMap) {
-  				DialogUtil.info('Success', 'Your complaint has been reported to LetsErasmus team. ' 
-  						+ 'Necessary action will be taken as soon as possible. Thanks for reporting.', 'OK', 
+  				DialogUtil.info('Success', 'Your complaint has been reported to our team. ' 
+  						+ 'Necessary actions will be taken as soon as possible. Thanks for reporting.', 'OK', 
   						function() {
   							location.reload();
   						}

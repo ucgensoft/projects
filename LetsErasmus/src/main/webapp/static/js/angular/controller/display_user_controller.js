@@ -16,7 +16,7 @@ App.controller('displayUserCtrl', ['$scope', '$controller', 'placeService', 'rev
     			  				self.user = tmpUser;
         	  					self.displayUserInfo();
     			  			} else {
-    			  				DialogUtil.warn('Warning', 'User not found in LetsErasmus system!', 'OK');
+    			  				DialogUtil.warn('Warning', 'User not found in the system!', 'OK');
     			  			}
     	  				}
     	  		  );

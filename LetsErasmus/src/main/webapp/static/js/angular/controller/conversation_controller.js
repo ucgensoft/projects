@@ -113,7 +113,7 @@ App.controller('conversationCtrl', ['$scope', '$controller', 'messageService', '
   	  		  		reservationService.updateReservation(reservationId, messageText, status,
   	  					  function(isSuccess) {
   	  						  if (isSuccess) {
-  	  							  DialogUtil.info('Sucess', 'Congradulations! Reservation request is accepted.', 'OK', function() {
+  	  							  DialogUtil.info('Sucess', 'Congratulations! Reservation request is accepted.', 'OK', function() {
   	  								  location.reload();
   	  							  });
   	  						  }
@@ -175,7 +175,7 @@ App.controller('conversationCtrl', ['$scope', '$controller', 'messageService', '
 	  		  		reservationService.updateReservation(reservationId, 'message', status,
 	  					  function(isSuccess) {
 	  						  if (isSuccess) {
-	  							  DialogUtil.info('Sucess', 'Congradulations! Booking request is sent to host.', 'OK', function() {
+	  							  DialogUtil.info('Sucess', 'Congratulations! Booking request is sent to host.', 'OK', function() {
 	  								  location.reload();
 	  							  });
 	  						  }

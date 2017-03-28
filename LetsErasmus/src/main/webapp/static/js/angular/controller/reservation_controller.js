@@ -14,7 +14,7 @@ App.controller('reservationCtrl', ['$scope', 'reservationService',
   		reservationService.finishReservation(reservation,
 				function(isSuccess) {
 					if (isSuccess) {
-						DialogUtil.info('Success', 'Congradulations! Your request is sent to host.', 'OK', function() {
+						DialogUtil.info('Success', 'Congratulations! Your request is sent to host.', 'OK', function() {
 							var url = webApplicationUrlPrefix + '/pages/dashboard/MessageList.xhtml';
 							openWindow(url, true);
 						});

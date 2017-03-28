@@ -41,7 +41,7 @@ App.controller('reservationListCtrl', ['$scope', '$controller', 'reservationServ
   	  		  		reservationService.updateReservation(reservationId, messageText, status,
   	  					  function(isSuccess) {
   	  						  if (isSuccess) {
-  	  							  DialogUtil.info('Sucess', 'Congradulations! Reservation request is accepted.', 'OK', function() {
+  	  							  DialogUtil.info('Sucess', 'Congratulations! Reservation request is accepted.', 'OK', function() {
   	  								  location.reload();
   	  							  });
   	  						  }
