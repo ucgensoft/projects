@@ -102,12 +102,12 @@ public class ApiReviewController extends BaseApiController {
 				operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 			} else {
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("Your request could not be completed, becase of missing parameters.");
+				operationResult.setResultDesc(AppConstants.MISSING_MANDATORY_PARAM);
 			}
 		} catch (Exception e) {
 			FileLogger.log(Level.ERROR, "ApiReviewController-listUserReview()-Error: " + CommonUtil.getExceptionMessage(e));
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
-			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+			operationResult.setResultDesc(AppConstants.CREATE_OPERATION_FAIL);
 		}
 		return new ResponseEntity<ValueOperationResult<Map<String, List<Review>>>>(operationResult, HttpStatus.OK);
     }
@@ -151,12 +151,12 @@ public class ApiReviewController extends BaseApiController {
 				operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 			} else {
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("Your request could not be completed, because of missing parameters.");
+				operationResult.setResultDesc(AppConstants.MISSING_MANDATORY_PARAM);
 			}
 		} catch (Exception e) {
 			FileLogger.log(Level.ERROR, "ApiReviewController-listEntityReview()-Error: " + CommonUtil.getExceptionMessage(e));
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
-			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+			operationResult.setResultDesc(AppConstants.CREATE_OPERATION_FAIL);
 		}
 		return new ResponseEntity<ValueOperationResult<List<Review>>>(operationResult, HttpStatus.OK);
     }
@@ -179,7 +179,7 @@ public class ApiReviewController extends BaseApiController {
 					
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc("Missing mandatory parameters !");
+					operationResult.setResultDesc(AppConstants.MISSING_MANDATORY_PARAM);
 				}
 			} else {
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
@@ -189,7 +189,7 @@ public class ApiReviewController extends BaseApiController {
 		} catch (Exception e) {
 			FileLogger.log(Level.ERROR, "ApiReviewController-createReview()-Error: " + CommonUtil.getExceptionMessage(e));
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
-			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+			operationResult.setResultDesc(AppConstants.CREATE_OPERATION_FAIL);
 		}
 		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);
     }
@@ -252,24 +252,24 @@ public class ApiReviewController extends BaseApiController {
 							operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 						} else {
 							operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-							operationResult.setResultDesc("Your review could not be saved. Please try again later!");
+							operationResult.setResultDesc(AppConstants.REVIEW_NOT_SAVED);
 							throw new OperationResultException(operationResult);
 						}
 					} else {
 						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-						operationResult.setResultDesc("Your review could not be saved. Please try again later!");
+						operationResult.setResultDesc(AppConstants.REVIEW_NOT_SAVED);
 					}
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc("You have already reviewed this reservation!");
+					operationResult.setResultDesc(AppConstants.REVIEW_DOUBLE);
 				}							
 			} else {
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("Unauthorized operation!");
+				operationResult.setResultDesc(AppConstants.UNAUTHORIZED_OPERATION);
 			}
 		} else {
 			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-			operationResult.setResultDesc("Entity record is not found!");
+			operationResult.setResultDesc(AppConstants.PLACE_LIST_NOT_FOUND);
 		}
 		return operationResult;
 	}

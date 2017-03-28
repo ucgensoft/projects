@@ -101,7 +101,7 @@ public class ApiFavoriteController extends BaseApiController {
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
-			operationResult.setResultDesc("List operation could not be completed. Please try again later!");
+			operationResult.setResultDesc(AppConstants.LIST_OPERATION_FAIL);
 			FileLogger.log(Level.ERROR, "ApiFavoriteController-listFavorite()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		return new ResponseEntity<ValueOperationResult<Map<Integer, Map<Long, Favorite>>>>(operationResult, HttpStatus.OK);
@@ -162,23 +162,23 @@ public class ApiFavoriteController extends BaseApiController {
 									operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 								} else {
 									operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-									operationResult.setResultDesc("Operation could not be completed. Please try again later!");
+									operationResult.setResultDesc(AppConstants.OPERATION_FAIL);
 								}
 							} else {
 								operationResult.setResultCode(EnmResultCode.WARNING.getValue());
-								operationResult.setResultDesc("Item is not found in system!");
+								operationResult.setResultDesc(AppConstants.ITEM_NOT_FOUND);
 							}
 						} else {
 							operationResult.setResultCode(EnmResultCode.WARNING.getValue());
-							operationResult.setResultDesc("You already have this in your favorite list!");
+							operationResult.setResultDesc(AppConstants.WISH_LIST_DOUBLE);
 						}
 					} else {
 						operationResult.setResultCode(EnmResultCode.WARNING.getValue());
-						operationResult.setResultDesc("Maximum 20 items can be added in favorite list!");
+						operationResult.setResultDesc(AppConstants.WISH_LIST_MAX);
 					}
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc("Missing mandatory parameters !");
+					operationResult.setResultDesc(AppConstants.MISSING_MANDATORY_PARAM);
 				}
 			} else {
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
@@ -187,7 +187,7 @@ public class ApiFavoriteController extends BaseApiController {
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
-			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+			operationResult.setResultDesc(AppConstants.CREATE_OPERATION_FAIL);
 			FileLogger.log(Level.ERROR, "ApiFavoriteController-addFavorite()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		return new ResponseEntity<ValueOperationResult<Map<Integer, Map<Long,Favorite>>>>(operationResult, HttpStatus.OK);
@@ -220,19 +220,19 @@ public class ApiFavoriteController extends BaseApiController {
 								operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 							} else {
 								operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-								operationResult.setResultDesc("Operation could not be completed. Please try again later!");
+								operationResult.setResultDesc(AppConstants.OPERATION_FAIL);
 							}
 						} else {
 							operationResult.setResultCode(EnmResultCode.WARNING.getValue());
-							operationResult.setResultDesc("You are not authorized for this operation!");
+							operationResult.setResultDesc(AppConstants.UNAUTHORIZED_OPERATION);
 						}
 					} else {
 						operationResult.setResultCode(EnmResultCode.WARNING.getValue());
-						operationResult.setResultDesc("Favorite record not found. You may have previously removed it.");
+						operationResult.setResultDesc(AppConstants.WISH_LIST_NOT_FOUND);
 					}
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc("Missing mandatory parameters !");
+					operationResult.setResultDesc(AppConstants.MISSING_MANDATORY_PARAM);
 				}
 			} else {
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
@@ -242,7 +242,7 @@ public class ApiFavoriteController extends BaseApiController {
 		} catch (Exception e) {
 			FileLogger.log(Level.ERROR, "ApiFavoriteController-removeFavorite()-Error: " + CommonUtil.getExceptionMessage(e));
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
-			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+			operationResult.setResultDesc(AppConstants.CREATE_OPERATION_FAIL);
 		}
 		return new ResponseEntity<ValueOperationResult<Map<Integer, Map<Long,Favorite>>>>(operationResult, HttpStatus.OK);
     }

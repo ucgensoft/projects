@@ -120,12 +120,12 @@ public class ApiUserController extends BaseApiController {
 				}
 			} else {
 				operationResult.setResultCode(EnmResultCode.WARNING.getValue());
-				operationResult.setResultDesc("Login type is not supported!");
+				operationResult.setResultDesc(AppConstants.LOGIN_TYPE_NOT_FOUND);
 			}
 			httpStatus = HttpStatus.OK;			
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
-			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+			operationResult.setResultDesc(AppConstants.CREATE_OPERATION_FAIL);
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 			FileLogger.log(Level.ERROR, "ApiUserController-signup()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
@@ -143,12 +143,12 @@ public class ApiUserController extends BaseApiController {
 				operationResult = this.loginWithLocalAccount(user, session);
 			} else {
 				operationResult.setResultCode(EnmResultCode.WARNING.getValue());
-				operationResult.setResultDesc("Login type is not supported!");
+				operationResult.setResultDesc(AppConstants.LOGIN_TYPE_NOT_FOUND);
 			}
 			httpStatus = HttpStatus.OK;			
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
-			operationResult.setResultDesc("Login operation could not be completed. Please try again later!");
+			operationResult.setResultDesc(AppConstants.LOGIN_NOT_COMPLETED);
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 			FileLogger.log(Level.ERROR, "ApiUserController-login()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
@@ -167,7 +167,7 @@ public class ApiUserController extends BaseApiController {
 			httpStatus = HttpStatus.OK;			
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
-			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+			operationResult.setResultDesc(AppConstants.CREATE_OPERATION_FAIL);
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 			FileLogger.log(Level.ERROR, "ApiUserController-logout()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
@@ -193,19 +193,19 @@ public class ApiUserController extends BaseApiController {
 						session.setAttribute(EnmSession.DEACTIVE_USER_LOGIN_TYPE.getId(), EnmLoginType.LOCAL_ACCOUNT);
 						operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 						operationResult.setErrorCode(EnmErrorCode.USER_DEACTIVE.getId());
-						operationResult.setResultDesc("Your account is deactive. Do you want to reactivate ?");
+						operationResult.setResultDesc(AppConstants.ACCOUNT_REACTIVATE);
 					}
 				} else {
 					operationResult.setResultCode(EnmResultCode.WARNING.getValue());
-					operationResult.setResultDesc("Email or password is incorrect.");
+					operationResult.setResultDesc(AppConstants.LOGIN_FAIL);
 				}
 			} else {
 				operationResult.setResultCode(EnmResultCode.WARNING.getValue());
-				operationResult.setResultDesc("Email and password fields are mandatory.");
+				operationResult.setResultDesc(AppConstants.LOGIN_MANDATORY_PARAM);
 			}	
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
-			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+			operationResult.setResultDesc(AppConstants.CREATE_OPERATION_FAIL);
 			FileLogger.log(Level.ERROR, "ApiUserController-loginWithLocalAccount()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		return operationResult;
@@ -272,15 +272,15 @@ public class ApiUserController extends BaseApiController {
 					}
 				} else {
 					operationResult.setResultCode(EnmResultCode.WARNING.getValue());
-					operationResult.setResultDesc("This email is in use! If you forgot your password click 'Forgot password' link in login page.");
+					operationResult.setResultDesc(AppConstants.MAIL_IN_USE_FAIL);
 				}
 			} else {
 				operationResult.setResultCode(EnmResultCode.WARNING.getValue());
-				operationResult.setResultDesc("Email and password parameters are mandatory!");
+				operationResult.setResultDesc(AppConstants.LOGIN_MANDATORY_PARAM);
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
-			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+			operationResult.setResultDesc(AppConstants.CREATE_OPERATION_FAIL);
 			FileLogger.log(Level.ERROR, "ApiUserController-signupWithLocalAccount()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		return operationResult;
@@ -367,16 +367,16 @@ public class ApiUserController extends BaseApiController {
 						session.setAttribute(EnmSession.DEACTIVE_USER_LOGIN_TYPE.getId(), EnmLoginType.GOOGLE);
 						operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 						operationResult.setErrorCode(EnmErrorCode.USER_DEACTIVE.getId());
-						operationResult.setResultDesc("Your account is deactive. Do you want to reactivate ?");
+						operationResult.setResultDesc(AppConstants.ACCOUNT_REACTIVATE);
 					}
 				}	
 			} else {
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("googleId and email parameters are mandatory!");
+				operationResult.setResultDesc(AppConstants.GOOGLE_MANDATORY_PARAM);
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
-			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+			operationResult.setResultDesc(AppConstants.CREATE_OPERATION_FAIL);
 			FileLogger.log(Level.ERROR, "ApiUserController-signupWithGoogleAccount()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		return operationResult;
@@ -464,16 +464,16 @@ public class ApiUserController extends BaseApiController {
 						session.setAttribute(EnmSession.DEACTIVE_USER_LOGIN_TYPE.getId(), EnmLoginType.FACEBOOK);
 						operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 						operationResult.setErrorCode(EnmErrorCode.USER_DEACTIVE.getId());
-						operationResult.setResultDesc("Your account is deactive. Do you want to reactivate ?");
+						operationResult.setResultDesc(AppConstants.ACCOUNT_REACTIVATE);
 					}
 				}
 			} else {
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("facebookId and email parameters are mandatory!");
+				operationResult.setResultDesc(AppConstants.FACEBOOK_MANDATORY_PARAM);
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
-			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+			operationResult.setResultDesc(AppConstants.CREATE_OPERATION_FAIL);
 			FileLogger.log(Level.ERROR, "ApiUserController-signupWithFacebookAccount()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		return operationResult;
@@ -617,7 +617,7 @@ public class ApiUserController extends BaseApiController {
 						operationResult = updateResult;
 					} else {
 						operationResult.setResultCode(EnmResultCode.WARNING.getValue());
-						operationResult.setResultDesc("This email is used by another user!");
+						operationResult.setResultDesc(AppConstants.MAIL_IN_USE_FAIL);
 					}
 				} else {
 					operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
@@ -626,13 +626,13 @@ public class ApiUserController extends BaseApiController {
 				}
 			} else {
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("You are not authorized for this operation!");
+				operationResult.setResultDesc(AppConstants.UNAUTHORIZED_OPERATION);
 			}
 			
 			httpStatus = HttpStatus.OK;			
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
-			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+			operationResult.setResultDesc(AppConstants.CREATE_OPERATION_FAIL);
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 			FileLogger.log(Level.ERROR, "ApiUserController-updateUser()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
@@ -665,29 +665,29 @@ public class ApiUserController extends BaseApiController {
 							operationResult = createResult;
 						} else {
 							operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-							operationResult.setResultDesc("User update could not be completed!");
+							operationResult.setResultDesc(AppConstants.USER_UPDATE_FAIL);
 							operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
 						}
 					} else {
 						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-						operationResult.setResultDesc("Email verification code is incorrect!");
+						operationResult.setResultDesc(AppConstants.VERIFICATION_CODE_FAIL);
 						operationResult.setErrorCode(EnmErrorCode.USER_NOT_FOUND.getId());
 					}
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc("User is already verified!");
+					operationResult.setResultDesc(AppConstants.USER_VERIFICATION_DOUBLE);
 					operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
 				}
 			} else {
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("User not found!");
+				operationResult.setResultDesc(AppConstants.USER_FOUND_FAIL);
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_FOUND.getId());
 			}
 			
 			httpStatus = HttpStatus.OK;			
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
-			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+			operationResult.setResultDesc(AppConstants.CREATE_OPERATION_FAIL);
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 			FileLogger.log(Level.ERROR, "ApiUserController-confirmEmail()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
@@ -733,7 +733,7 @@ public class ApiUserController extends BaseApiController {
 				operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 			} else {
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("You are not authorized for this operation!");
+				operationResult.setResultDesc(AppConstants.UNAUTHORIZED_OPERATION);
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
@@ -759,7 +759,7 @@ public class ApiUserController extends BaseApiController {
 								|| (msisdn == null && msisdnCountryCode != null)) {
 							operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 							operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
-							operationResult.setResultDesc("msisdn and country code parameters are required!");
+							operationResult.setResultDesc(AppConstants.VERIFICATION_PARAM_FAIL);
 						} else {
 							boolean msisdnSent = false;
 							if (msisdn != null && msisdnCountryCode != null) {
@@ -785,7 +785,7 @@ public class ApiUserController extends BaseApiController {
 									} else {
 										operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 										operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
-										operationResult.setResultDesc("User record could not be updated. Please try again later!");
+										operationResult.setResultDesc(AppConstants.USER_UPDATE_FAIL);
 										throw new OperationResultException(operationResult);
 									}
 								}
@@ -798,17 +798,17 @@ public class ApiUserController extends BaseApiController {
 							} else {
 								operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 								operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
-								operationResult.setResultDesc("msisdn is required!");
+								operationResult.setResultDesc(AppConstants.MSISDN_REQUIRED);
 							}	
 						}
 					} else {
 						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 						operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
-						operationResult.setResultDesc("msisdn is already verified!");
+						operationResult.setResultDesc(AppConstants.MSISDN_DOUBLE_VERIFICATION);
 					}
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc("You are not authorized for this operation!");
+					operationResult.setResultDesc(AppConstants.UNAUTHORIZED_OPERATION);
 				}
 			} else {
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
@@ -820,7 +820,7 @@ public class ApiUserController extends BaseApiController {
 			FileLogger.log(Level.ERROR, "ApiUserController-sendMsisdnVerificationCode()-Error: " + CommonUtil.getExceptionMessage(e));
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-			operationResult.setResultDesc("Operation failed because of an unexpected error. Please try again later!");
+			operationResult.setResultDesc(AppConstants.UNEXPECTED_ERROR);
 			FileLogger.log(Level.ERROR, "ApiUserController-sendMsisdnVerificationCode()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		
@@ -851,11 +851,11 @@ public class ApiUserController extends BaseApiController {
 					} else {
 						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 						operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
-						operationResult.setResultDesc("User record could not be updated. Please try again later!");
+						operationResult.setResultDesc(AppConstants.USER_UPDATE_FAIL);
 					}
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc("You are not authorized for this operation!");
+					operationResult.setResultDesc(AppConstants.UNAUTHORIZED_OPERATION);
 				}
 			} else {
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
@@ -864,7 +864,7 @@ public class ApiUserController extends BaseApiController {
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-			operationResult.setResultDesc("Operation failed because of an unexpected error. Please try again later!");
+			operationResult.setResultDesc(AppConstants.UNEXPECTED_ERROR);
 			FileLogger.log(Level.ERROR, "ApiUserController-sendEmailVerificationCode()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		
@@ -888,7 +888,7 @@ public class ApiUserController extends BaseApiController {
 					operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc("You are not authorized for this operation!");
+					operationResult.setResultDesc(AppConstants.UNAUTHORIZED_OPERATION);
 				}
 			} else {
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
@@ -930,21 +930,21 @@ public class ApiUserController extends BaseApiController {
 							} else {
 								operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 								operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
-								operationResult.setResultDesc("User record could not be updated. Please try again later!");
+								operationResult.setResultDesc(AppConstants.USER_UPDATE_FAIL);
 							}
 						} else {
 							operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 							operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
-							operationResult.setResultDesc("Verification code is incorrect!");
+							operationResult.setResultDesc(AppConstants.VERIFICATION_CODE_FAIL);
 						}
 					} else {
 						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 						operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
-						operationResult.setResultDesc("System is not in msisdn verification state!");
+						operationResult.setResultDesc(AppConstants.MSISDN_VERIFICATION_FAIL);
 					}
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc("You are not authorized for this operation!");
+					operationResult.setResultDesc(AppConstants.UNAUTHORIZED_OPERATION);
 				}
 			} else {
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
@@ -1001,11 +1001,11 @@ public class ApiUserController extends BaseApiController {
 						}
 					} else {
 						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-						operationResult.setResultDesc("This google account is used by another user!");
+						operationResult.setResultDesc(AppConstants.GOOGLE_IN_USE_FAIL);
 					}	
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc("googleId and email parameters are mandatory!");
+					operationResult.setResultDesc(AppConstants.GOOGLE_MANDATORY_PARAM);
 				}
 			} else {
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
@@ -1044,11 +1044,11 @@ public class ApiUserController extends BaseApiController {
 					} else {
 						// TODO : log to file
 						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-						operationResult.setResultDesc("User record could not be updated, please try again later!");
+						operationResult.setResultDesc(AppConstants.USER_UPDATE_FAIL);
 					}	
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc("Google is the only account binded to your user record!");
+					operationResult.setResultDesc(AppConstants.GOOGLE_BINDING_FAIL);
 				}
 			} else {
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
@@ -1105,11 +1105,11 @@ public class ApiUserController extends BaseApiController {
 						}
 					} else {
 						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-						operationResult.setResultDesc("This google account is used by another user!");
+						operationResult.setResultDesc(AppConstants.GOOGLE_IN_USE_FAIL);
 					}	
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc("googleId and email parameters are mandatory!");
+					operationResult.setResultDesc(AppConstants.GOOGLE_MANDATORY_PARAM);
 				}
 			} else {
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
@@ -1148,11 +1148,11 @@ public class ApiUserController extends BaseApiController {
 					} else {
 						// TODO : log to file
 						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-						operationResult.setResultDesc("User record could not be updated, please try again later!");
+						operationResult.setResultDesc(AppConstants.USER_UPDATE_FAIL);
 					}	
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc("Google is the only account binded to your user record!");
+					operationResult.setResultDesc(AppConstants.GOOGLE_BINDING_FAIL);
 				}
 			} else {
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
@@ -1191,11 +1191,11 @@ public class ApiUserController extends BaseApiController {
 					} else {
 						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 						operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
-						operationResult.setResultDesc("User record could not be updated. Please try again later!");
+						operationResult.setResultDesc(AppConstants.USER_UPDATE_FAIL);
 					}
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc("You are not authorized for this operation!");
+					operationResult.setResultDesc(AppConstants.UNAUTHORIZED_OPERATION);
 				}
 			} else {
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
@@ -1231,7 +1231,7 @@ public class ApiUserController extends BaseApiController {
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 					operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
-					operationResult.setResultDesc("User record could not be updated. Please try again later!");
+					operationResult.setResultDesc(AppConstants.USER_UPDATE_FAIL);
 					throw new OperationResultException(operationResult);
 				}
 			} else {
@@ -1244,7 +1244,7 @@ public class ApiUserController extends BaseApiController {
 			FileLogger.log(Level.ERROR, "ApiUserController-deactivateUser()-Error: " + CommonUtil.getExceptionMessage(e));
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-			operationResult.setResultDesc("Operation failed because of an unexpected error. Please try again later!");
+			operationResult.setResultDesc(AppConstants.UNEXPECTED_ERROR);
 			FileLogger.log(Level.ERROR, "ApiUserController-deactivateUser()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		
@@ -1278,7 +1278,7 @@ public class ApiUserController extends BaseApiController {
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 					operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
-					operationResult.setResultDesc("User record could not be updated. Please try again later!");
+					operationResult.setResultDesc(AppConstants.USER_UPDATE_FAIL);
 				}
 			} else {
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
@@ -1289,7 +1289,7 @@ public class ApiUserController extends BaseApiController {
 			FileLogger.log(Level.ERROR, "ApiUserController-reactivateUser()-Error: " + CommonUtil.getExceptionMessage(e));
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-			operationResult.setResultDesc("Operation failed because of an unexpected error. Please try again later!");
+			operationResult.setResultDesc(AppConstants.UNEXPECTED_ERROR);
 			FileLogger.log(Level.ERROR, "ApiUserController-reactivateUser()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		
@@ -1376,20 +1376,20 @@ public class ApiUserController extends BaseApiController {
 						} else {
 							operationResult.setResultCode(EnmResultCode.WARNING.getValue());
 							if (dbUser.getGoogleId() != null && dbUser.getFacebookId() != null) {
-								operationResult.setResultDesc("User record does not have a password. Please login with your google or facebook account!");
+								operationResult.setResultDesc(AppConstants.LOGIN_WITH_G_OR_FB);
 							} else if (dbUser.getGoogleId() != null) {
-								operationResult.setResultDesc("User record does not have a password. Please login with your google account!");
+								operationResult.setResultDesc(AppConstants.LOGIN_WITH_GOOGLE);
 							} else if(dbUser.getFacebookId() != null) {
-								operationResult.setResultDesc("User record does not have a password. Please login with your facebook account!");
+								operationResult.setResultDesc(AppConstants.LOGIN_WITH_FB);
 							}
 						}
 					} else {
 						operationResult.setResultCode(EnmResultCode.WARNING.getValue());
-						operationResult.setResultDesc("Your email is not verified. Please click the verification link which is sent to your email first!");
+						operationResult.setResultDesc(AppConstants.MAIL_NOT_VERIFIED);
 					}
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc("User not found!");
+					operationResult.setResultDesc(AppConstants.USER_FOUND_FAIL);
 				}
 			} else {
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
@@ -1397,7 +1397,7 @@ public class ApiUserController extends BaseApiController {
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-			operationResult.setResultDesc("Operation failed because of an unexpected error. Please try again later!");
+			operationResult.setResultDesc(AppConstants.UNEXPECTED_ERROR);
 			FileLogger.log(Level.ERROR, "ApiUserController-getUser()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		
@@ -1435,12 +1435,12 @@ public class ApiUserController extends BaseApiController {
 							operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 						} else {
 							operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-							operationResult.setResultDesc("User update could not be completed!");
+							operationResult.setResultDesc(AppConstants.USER_UPDATE_FAIL);
 							operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
 						}
 					} else {
 						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-						operationResult.setResultDesc("Reset password code is incorrect!");
+						operationResult.setResultDesc(AppConstants.PASS_RESET_FAIL);
 					}
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
@@ -1449,7 +1449,7 @@ public class ApiUserController extends BaseApiController {
 				}
 			} else {
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("User not found!");
+				operationResult.setResultDesc(AppConstants.USER_FOUND_FAIL);
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_FOUND.getId());
 			}
 		} catch (Exception e) {

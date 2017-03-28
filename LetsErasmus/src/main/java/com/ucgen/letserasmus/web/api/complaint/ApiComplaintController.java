@@ -76,7 +76,7 @@ public class ApiComplaintController extends BaseApiController {
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
-			operationResult.setResultDesc("List operation could not be completed. Please try again later!");
+			operationResult.setResultDesc(AppConstants.LIST_OPERATION_FAIL);
 			FileLogger.log(Level.ERROR, "ApiComplaintController-listComplaint()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		return new ResponseEntity<ValueOperationResult<Map<Integer, Map<Long, Complaint>>>>(operationResult, HttpStatus.OK);
@@ -133,16 +133,16 @@ public class ApiComplaintController extends BaseApiController {
 							
 						} else {
 							operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-							operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+							operationResult.setResultDesc(AppConstants.CREATE_OPERATION_FAIL);
 						}
 					} else {
 						operationResult.setResultCode(EnmResultCode.WARNING.getValue());
-						operationResult.setResultDesc("You already have an active complaint record, necessary action will be taken as soon as possible. Thanks for reporting.");
+						operationResult.setResultDesc(AppConstants.COMPLAINT_DOUBLE);
 					}
 					
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc("Missing mandatory parameters !");
+					operationResult.setResultDesc(AppConstants.MISSING_MANDATORY_PARAM);
 				}
 			} else {
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
@@ -151,7 +151,7 @@ public class ApiComplaintController extends BaseApiController {
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
-			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+			operationResult.setResultDesc(AppConstants.CREATE_OPERATION_FAIL);
 			FileLogger.log(Level.ERROR, "ApiComplaintController-createComplaint()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		return new ResponseEntity<ValueOperationResult<Map<Integer, Map<Long, Complaint>>>>(operationResult, HttpStatus.OK);
@@ -182,15 +182,15 @@ public class ApiComplaintController extends BaseApiController {
 							operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 						} else {
 							operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-							operationResult.setResultDesc("Operation could not be completed. Please try again later!");
+							operationResult.setResultDesc(AppConstants.OPERATION_FAIL);
 						}
 					} else {
 						operationResult.setResultCode(EnmResultCode.WARNING.getValue());
-						operationResult.setResultDesc("Complaint record not found. You may have previously removed it.");
+						operationResult.setResultDesc(AppConstants.COMPLAINT_NOT_FOUND);
 					}
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc("Missing mandatory parameters !");
+					operationResult.setResultDesc(AppConstants.MISSING_MANDATORY_PARAM);
 				}
 			} else {
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
@@ -199,7 +199,7 @@ public class ApiComplaintController extends BaseApiController {
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
-			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+			operationResult.setResultDesc(AppConstants.CREATE_OPERATION_FAIL);
 			FileLogger.log(Level.ERROR, "ApiComplaintController-deleteComplaint()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		return new ResponseEntity<ValueOperationResult<Map<Integer, Map<Long, Complaint>>>>(operationResult, HttpStatus.OK);

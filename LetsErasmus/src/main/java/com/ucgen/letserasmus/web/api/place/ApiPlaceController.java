@@ -174,11 +174,11 @@ public class ApiPlaceController extends BaseApiController {
 						httpStatus = HttpStatus.OK;	
 					} else {
 						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-						operationResult.setResultDesc("At least one photo should be added!");
+						operationResult.setResultDesc(AppConstants.PHOTO_MIN_NUM);
 					}
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc("You are not authorized for this operation!");
+					operationResult.setResultDesc(AppConstants.UNAUTHORIZED_OPERATION);
 				}
 			} else {
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
@@ -188,7 +188,7 @@ public class ApiPlaceController extends BaseApiController {
 			httpStatus = HttpStatus.OK;			
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
-			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+			operationResult.setResultDesc(AppConstants.CREATE_OPERATION_FAIL);
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 			FileLogger.log(Level.ERROR, "ApiPlaceController-createPlace()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
@@ -325,11 +325,11 @@ public class ApiPlaceController extends BaseApiController {
 						httpStatus = HttpStatus.OK;	
 					} else {
 						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-						operationResult.setResultDesc("At least one photo should be added!");
+						operationResult.setResultDesc(AppConstants.PHOTO_MIN_NUM);
 					}
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc("You are not authorized for this operation!");
+					operationResult.setResultDesc(AppConstants.UNAUTHORIZED_OPERATION);
 				}
 			} else {
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
@@ -339,7 +339,7 @@ public class ApiPlaceController extends BaseApiController {
 			httpStatus = HttpStatus.OK;			
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
-			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+			operationResult.setResultDesc(AppConstants.CREATE_OPERATION_FAIL);
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 			FileLogger.log(Level.ERROR, "ApiPlaceController-updatePlace()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
@@ -493,7 +493,7 @@ public class ApiPlaceController extends BaseApiController {
 			}
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
-			operationResult.setResultDesc("Place list could not be fetched from database.");
+			operationResult.setResultDesc(AppConstants.PLACE_LIST_NOT_FOUND);
 			FileLogger.log(Level.ERROR, "ApiPlaceController-listUserPlace()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		return new ResponseEntity<ValueOperationResult<Map<String, List<Place>>>>(operationResult, HttpStatus.OK);
@@ -542,7 +542,7 @@ public class ApiPlaceController extends BaseApiController {
 					operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc("You are not authorized for this operation!");
+					operationResult.setResultDesc(AppConstants.UNAUTHORIZED_OPERATION);
 				}
 			} else {
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
@@ -607,26 +607,26 @@ public class ApiPlaceController extends BaseApiController {
 										operationResult = this.placeService.updatePlace(updatedPlace, null, null, null);
 									} else {
 										operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-										operationResult.setResultDesc("Existing status of place is not suitable for this operation.");
+										operationResult.setResultDesc(AppConstants.LIST_STATUS_FAIL);
 									}
 								} else {
 									operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-									operationResult.setResultDesc("You are not authorized to edit this listing");
+									operationResult.setResultDesc(AppConstants.UNAUTHORIZED_OPERATION);
 								}
 							} else {
 								operationResult.setResultCode(EnmResultCode.WARNING.getValue());
-								operationResult.setResultDesc("There is no place definition with this id!");
+								operationResult.setResultDesc(AppConstants.PLACE_LIST_NOT_FOUND);
 							}
 						} else {
 							operationResult = getPlaceResult;
 						}
 					} else {
 						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-						operationResult.setResultDesc("placeId and status parameters are mandatory");
+						operationResult.setResultDesc(AppConstants.PLACE_LIST_MANDATORY_PARAM);
 					}
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc("You are not authorized for this operation!");
+					operationResult.setResultDesc(AppConstants.UNAUTHORIZED_OPERATION);
 				}
 			} else {
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
@@ -636,7 +636,7 @@ public class ApiPlaceController extends BaseApiController {
 			httpStatus = HttpStatus.OK;			
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
-			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+			operationResult.setResultDesc(AppConstants.CREATE_OPERATION_FAIL);
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 			FileLogger.log(Level.ERROR, "ApiPlaceController-updatePlaceStatus()-Error: " + CommonUtil.getExceptionMessage(e));
 		}

@@ -156,7 +156,7 @@ public class ApiReservationController extends BaseApiController {
 					operationResult.setResultValue(nextUrl);
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc("Mandatory parameters are missing!");
+					operationResult.setResultDesc(AppConstants.MISSING_MANDATORY_PARAM);
 				}	
 			} else {
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
@@ -166,7 +166,7 @@ public class ApiReservationController extends BaseApiController {
 		} catch (Exception e) {
 			FileLogger.log(Level.ERROR, "ApiReservationController-startReservation()-Error: " + CommonUtil.getExceptionMessage(e));
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
-			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+			operationResult.setResultDesc(AppConstants.CREATE_OPERATION_FAIL);
 		}
 		return new ResponseEntity<ValueOperationResult<String>>(operationResult, HttpStatus.OK);
     }
@@ -214,11 +214,11 @@ public class ApiReservationController extends BaseApiController {
 						operationResult = createResult;
 					} else {
 						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-						operationResult.setResultDesc("Place record could not be found!");
+						operationResult.setResultDesc(AppConstants.PLACE_LIST_NOT_FOUND);
 					}	
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc("You are not authorized for this operation!");
+					operationResult.setResultDesc(AppConstants.UNAUTHORIZED_OPERATION);
 				}
 			} else {
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
@@ -228,7 +228,7 @@ public class ApiReservationController extends BaseApiController {
 		} catch (Exception e) {
 			FileLogger.log(Level.ERROR, "ApiReservationController-finishReservation()-Error: " + CommonUtil.getExceptionMessage(e));
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
-			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+			operationResult.setResultDesc(AppConstants.CREATE_OPERATION_FAIL);
 		}
 		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);
     }
@@ -328,7 +328,7 @@ public class ApiReservationController extends BaseApiController {
 								if (dbReservationList.get(0).getStatus().equals(EnmReservationStatus.INQUIRY.getId()) 
 										&& operationDate.getTime() > reservation.getStartDate().getTime()) {
 									operationResult.setResultCode(EnmResultCode.WARNING.getValue());
-									operationResult.setResultDesc("Your reservation dates are old. Please send a new booking request!");
+									operationResult.setResultDesc(AppConstants.RESERV_REQUEST_OUTDATED);
 								} else {
 									OperationResult createResult = this.reservationService.update(reservation, message);
 									
@@ -341,19 +341,19 @@ public class ApiReservationController extends BaseApiController {
 						
 							} else {
 								operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-								operationResult.setResultDesc("Reservation status is not suitable for this operation!");
+								operationResult.setResultDesc(AppConstants.RESERV_STATUS_FAIL);
 							}
 						} else {
 							operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-							operationResult.setResultDesc("You are not authorized for this operation!");
+							operationResult.setResultDesc(AppConstants.UNAUTHORIZED_OPERATION);
 						}
 					} else {
 						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-						operationResult.setResultDesc("Reservation record could not be found!");
+						operationResult.setResultDesc(AppConstants.RESERV_NOT_FOUND);
 					}	
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc("Missing mandatory parameter!");
+					operationResult.setResultDesc(AppConstants.MISSING_MANDATORY_PARAM);
 				}
 			} else {
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
@@ -363,7 +363,7 @@ public class ApiReservationController extends BaseApiController {
 		} catch (Exception e) {
 			FileLogger.log(Level.ERROR, "ApiReservationController-updateReservation()-Error: " + CommonUtil.getExceptionMessage(e));
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
-			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+			operationResult.setResultDesc(AppConstants.CREATE_OPERATION_FAIL);
 		}
 		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);
     }
@@ -385,11 +385,11 @@ public class ApiReservationController extends BaseApiController {
 					if (reservationList != null && reservationList.size() > 0) {
 						operationResult.setResultValue(reservationList.get(0));
 					} else {
-						operationResult.setResultDesc("Reservation not found!");
+						operationResult.setResultDesc(AppConstants.RESERV_NOT_FOUND);
 					}
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc("You are not authorized for this operation!");
+					operationResult.setResultDesc(AppConstants.UNAUTHORIZED_OPERATION);
 				}
 			} else {
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
@@ -399,7 +399,7 @@ public class ApiReservationController extends BaseApiController {
 		} catch (Exception e) {
 			FileLogger.log(Level.ERROR, "ApiReservationController-getReservation()-Error: " + CommonUtil.getExceptionMessage(e));
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
-			operationResult.setResultDesc("Get reservation could not be completed. Please try again later!");
+			operationResult.setResultDesc(AppConstants.GET_RESERV_NOT_COMPLETED);
 		}
 		return new ResponseEntity<ValueOperationResult<Reservation>>(operationResult, HttpStatus.OK);
     }
@@ -460,7 +460,7 @@ public class ApiReservationController extends BaseApiController {
 		} catch (Exception e) {
 			FileLogger.log(Level.ERROR, "ApiReservationController-listReservation()-Error: " + CommonUtil.getExceptionMessage(e));
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
-			operationResult.setResultDesc("List reservation could not be completed. Please try again later!");
+			operationResult.setResultDesc(AppConstants.LIST_RESERV_NOT_COMPLETED);
 		}
 		return new ResponseEntity<ValueOperationResult<Map<String, List<Reservation>>>>(operationResult, HttpStatus.OK);
     }
@@ -520,7 +520,7 @@ public class ApiReservationController extends BaseApiController {
 		} catch (Exception e) {
 			FileLogger.log(Level.ERROR, "ApiReservationController-listTrips()-Error: " + CommonUtil.getExceptionMessage(e));
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
-			operationResult.setResultDesc("List trip could not be completed. Please try again later!");
+			operationResult.setResultDesc(AppConstants.LIST_TRIP_NOT_COMPLETED);
 		}
 		return new ResponseEntity<ValueOperationResult<Map<String, List<Reservation>>>>(operationResult, HttpStatus.OK);
     }
@@ -613,13 +613,13 @@ public class ApiReservationController extends BaseApiController {
 					} else {
 						operationResult.setResultCode(EnmResultCode.WARNING.getValue());
 						operationResult.setErrorCode(EnmErrorCode.ALREADY_CONTACTED.getId());
-						operationResult.setResultDesc("You have an active connection with this user. Please use existing thread to send a new message!");
+						operationResult.setResultDesc(AppConstants.MESSAGE_DOUBLE);
 						String conversationPageUrl = AppUtil.concatPath(this.webApplication.getUrlPrefix(), "/pages/dashboard/Conversation.xhtml?threadId="+ dbReservationList.get(0).getMessageThreadId());
 						operationResult.setResultValue(conversationPageUrl);
 					}
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc("Mandatory parameters are missing!");
+					operationResult.setResultDesc(AppConstants.MISSING_MANDATORY_PARAM);
 				}	
 			} else {
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
@@ -629,7 +629,7 @@ public class ApiReservationController extends BaseApiController {
 		} catch (Exception e) {
 			FileLogger.log(Level.ERROR, "ApiReservationController-startReservation()-Error: " + CommonUtil.getExceptionMessage(e));
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
-			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+			operationResult.setResultDesc(AppConstants.CREATE_OPERATION_FAIL);
 		}
 		return new ResponseEntity<ValueOperationResult<String>>(operationResult, HttpStatus.OK);
     }

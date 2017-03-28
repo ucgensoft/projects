@@ -76,7 +76,7 @@ public class ApiMessageController extends BaseApiController {
 					operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());;
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc("Mandatory parameters are missing or invalid!");
+					operationResult.setResultDesc(AppConstants.MISSING_MANDATORY_PARAM);
 				}	
 			} else {
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
@@ -86,7 +86,7 @@ public class ApiMessageController extends BaseApiController {
 		} catch (Exception e) {
 			FileLogger.log(Level.ERROR, "ApiMessageController-listMessage()-Error: " + CommonUtil.getExceptionMessage(e));
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
-			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+			operationResult.setResultDesc(AppConstants.CREATE_OPERATION_FAIL);
 		}
 		return new ResponseEntity<ValueOperationResult<String>>(operationResult, HttpStatus.OK);
     }
@@ -132,7 +132,7 @@ public class ApiMessageController extends BaseApiController {
 		} catch (Exception e) {
 			FileLogger.log(Level.ERROR, "ApiMessageController-listMessageThread()-Error: " + CommonUtil.getExceptionMessage(e));
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
-			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+			operationResult.setResultDesc(AppConstants.CREATE_OPERATION_FAIL);
 		}
 		return new ResponseEntity<ValueOperationResult<Map<String, List<UiMessageThread>>>>(operationResult, HttpStatus.OK);
     }
@@ -168,11 +168,11 @@ public class ApiMessageController extends BaseApiController {
 						operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 					} else {
 						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-						operationResult.setResultDesc("Unauthorized operation!");
+						operationResult.setResultDesc(AppConstants.UNAUTHORIZED_OPERATION);
 					}
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc("Message thread is not found!");
+					operationResult.setResultDesc(AppConstants.MESSAGE_NOT_FOUND);
 				}			
 			} else {
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
@@ -182,7 +182,7 @@ public class ApiMessageController extends BaseApiController {
 		} catch (Exception e) {
 			FileLogger.log(Level.ERROR, "ApiMessageController-getMessageThread()-Error: " + CommonUtil.getExceptionMessage(e));
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
-			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+			operationResult.setResultDesc(AppConstants.CREATE_OPERATION_FAIL);
 		}
 		return new ResponseEntity<ValueOperationResult<UiMessageThread>>(operationResult, HttpStatus.OK);
     }
@@ -227,19 +227,19 @@ public class ApiMessageController extends BaseApiController {
 								operationResult.setResultValue(message);
 							} else {
 								operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-								operationResult.setResultDesc("Message could not be saved. Please try again later!");
+								operationResult.setResultDesc(AppConstants.MESSAGE_NOT_SAVED);
 							}
 						} else {
 							operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-							operationResult.setResultDesc("Unauthorized operation!");
+							operationResult.setResultDesc(AppConstants.UNAUTHORIZED_OPERATION);
 						}
 					} else {
 						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-						operationResult.setResultDesc("Message thread is not found!");
+						operationResult.setResultDesc(AppConstants.MESSAGE_NOT_FOUND);
 					}
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc("Missing mandatory parameters !");
+					operationResult.setResultDesc(AppConstants.MISSING_MANDATORY_PARAM);
 				}
 			} else {
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
@@ -249,7 +249,7 @@ public class ApiMessageController extends BaseApiController {
 		} catch (Exception e) {
 			FileLogger.log(Level.ERROR, "ApiMessageController-sendMessage()-Error: " + CommonUtil.getExceptionMessage(e));
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
-			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
+			operationResult.setResultDesc(AppConstants.CREATE_OPERATION_FAIL);
 		}
 		return new ResponseEntity<ValueOperationResult<Message>>(operationResult, HttpStatus.OK);
     }
