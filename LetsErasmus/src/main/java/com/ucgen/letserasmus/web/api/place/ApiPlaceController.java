@@ -101,84 +101,98 @@ public class ApiPlaceController extends BaseApiController {
 		try {
 			User user = super.getSessionUser(session);
 			if (user != null) {
-				Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
-				if (activeOperation != null && activeOperation.equals(EnmOperation.CREATE_PLACE)) {
-					MultipartFile[] photoList = (MultipartFile[]) session.getAttribute(EnmSession.PLACE_PHOTO_LIST.getId());
-					session.removeAttribute(EnmSession.PLACE_PHOTO_LIST.getId());
-					if (photoList != null && photoList.length > 0) {
-						Date createdDate = new Date();
-						String createdBy = user.getFullName();
-						
-						place.setHostUserId(super.getSessionUser(session).getId());
-						place.setCreatedDate(createdDate);
-						place.setCreatedBy(createdBy);
-						place.setStatus(EnmPlaceStatus.ACTIVE.getValue());
-						
-						place.getLocation().setCreatedDate(createdDate);
-						place.getLocation().setCreatedBy(createdBy);
-						
+				if (this.webApplication.isActiveUserVerified()) {
+					Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
+					if (activeOperation != null && activeOperation.equals(EnmOperation.CREATE_PLACE)) {
+						MultipartFile[] photoList = (MultipartFile[]) session.getAttribute(EnmSession.PLACE_PHOTO_LIST.getId());
+						session.removeAttribute(EnmSession.PLACE_PHOTO_LIST.getId());
 						if (photoList != null && photoList.length > 0) {
-							for (MultipartFile multipartFile : photoList) {
-								String fileSuffix = multipartFile.getContentType().split("/")[1];
-								String fileName = multipartFile.getOriginalFilename().split("\\.")[0];
-								Photo photo = new Photo();
-								photo.setFileName(fileName);
-								photo.setFileSize(multipartFile.getSize());
-								photo.setEntityType(EnmEntityType.PLACE.getId());
-								photo.setCreatedBy(createdBy);
-								photo.setFileType(EnmFileType.getFileTypeWithSuffix(fileSuffix).getValue());
-								photo.setCreatedDate(createdDate);
-								
-								photo.setFile(multipartFile);
-								
-								place.addPhoto(photo);
+							Date createdDate = new Date();
+							String createdBy = user.getFullName();
+							
+							place.setHostUserId(super.getSessionUser(session).getId());
+							place.setCreatedDate(createdDate);
+							place.setCreatedBy(createdBy);
+							place.setStatus(EnmPlaceStatus.ACTIVE.getValue());
+							
+							place.getLocation().setCreatedDate(createdDate);
+							place.getLocation().setCreatedBy(createdBy);
+							
+							if (photoList != null && photoList.length > 0) {
+								for (MultipartFile multipartFile : photoList) {
+									String fileSuffix = multipartFile.getContentType().split("/")[1];
+									String fileName = multipartFile.getOriginalFilename().split("\\.")[0];
+									Photo photo = new Photo();
+									photo.setFileName(fileName);
+									photo.setFileSize(multipartFile.getSize());
+									photo.setEntityType(EnmEntityType.PLACE.getId());
+									photo.setCreatedBy(createdBy);
+									photo.setFileType(EnmFileType.getFileTypeWithSuffix(fileSuffix).getValue());
+									photo.setCreatedDate(createdDate);
+									
+									photo.setFile(multipartFile);
+									
+									place.addPhoto(photo);
+								}
 							}
+							
+							OperationResult createResult = this.placeService.insertPlace(place);
+							
+							try {
+								String rootPhotoFolder = this.webApplication.getRootPlacePhotoPath();
+								String placePhotoFolderPath = FileUtil.concatPath(rootPhotoFolder, place.getId().toString()); 
+								File placePhotoFolder = new File(placePhotoFolderPath);
+								
+								if (!placePhotoFolder.exists()) {
+									placePhotoFolder.mkdirs();
+								}
+								
+								String tmpPlaceId = (String) session.getAttribute(EnmSession.TMP_PHOTO_PLACE_ID.getId());
+								String tmpPhotoDirPath = FileUtil.concatPath(rootPhotoFolder, tmpPlaceId);
+								
+								for (int i = 0; i < place.getPhotoList().size(); i++) {
+									FileModel photo = place.getPhotoList().get(i);
+									MultipartFile multipartFile = photo.getFile();
+									String fileName = multipartFile.getOriginalFilename();
+									
+									String tmpPhotoPath = FileUtil.concatPath(rootPhotoFolder, tmpPlaceId, "tmp", fileName);
+									
+									String smallPhotoPath = this.webApplication.getPlacePhotoPath(place.getId(), photo.getId(), EnmSize.SMALL.getValue());
+									String mediumPhotoPath = this.webApplication.getPlacePhotoPath(place.getId(), photo.getId(), EnmSize.MEDIUM.getValue());
+																	
+									File tmpFile = new File(tmpPhotoPath);
+									
+									ImageUtil.resizeImage(tmpFile, mediumPhotoPath, this.webApplication.getMediumPlacePhotoSize());
+									ImageUtil.resizeImage(tmpFile, smallPhotoPath, this.webApplication.getSmallPlacePhotoSize());
+									tmpFile.delete();
+								}
+								(new File(tmpPhotoDirPath)).delete();
+							} catch (Exception e) {
+								System.out.println(CommonUtil.getExceptionMessage(e));
+							}
+							
+							operationResult = createResult;
+							if (OperationResult.isResultSucces(operationResult)) {
+								Integer userPlaceCount = user.getPlaceListingCount();
+								if (userPlaceCount == null) {
+									userPlaceCount = 1;
+								} else {
+									userPlaceCount += 1; 
+								}
+								user.setPlaceListingCount(userPlaceCount);
+							}
+							httpStatus = HttpStatus.OK;	
+						} else {
+							operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+							operationResult.setResultDesc("At least one photo should be added!");
 						}
-						
-						OperationResult createResult = this.placeService.insertPlace(place);
-						
-						try {
-							String rootPhotoFolder = this.webApplication.getRootPlacePhotoPath();
-							String placePhotoFolderPath = FileUtil.concatPath(rootPhotoFolder, place.getId().toString()); 
-							File placePhotoFolder = new File(placePhotoFolderPath);
-							
-							if (!placePhotoFolder.exists()) {
-								placePhotoFolder.mkdirs();
-							}
-							
-							String tmpPlaceId = (String) session.getAttribute(EnmSession.TMP_PHOTO_PLACE_ID.getId());
-							String tmpPhotoDirPath = FileUtil.concatPath(rootPhotoFolder, tmpPlaceId);
-							
-							for (int i = 0; i < place.getPhotoList().size(); i++) {
-								FileModel photo = place.getPhotoList().get(i);
-								MultipartFile multipartFile = photo.getFile();
-								String fileName = multipartFile.getOriginalFilename();
-								
-								String tmpPhotoPath = FileUtil.concatPath(rootPhotoFolder, tmpPlaceId, "tmp", fileName);
-								
-								String smallPhotoPath = this.webApplication.getPlacePhotoPath(place.getId(), photo.getId(), EnmSize.SMALL.getValue());
-								String mediumPhotoPath = this.webApplication.getPlacePhotoPath(place.getId(), photo.getId(), EnmSize.MEDIUM.getValue());
-																
-								File tmpFile = new File(tmpPhotoPath);
-								
-								ImageUtil.resizeImage(tmpFile, mediumPhotoPath, this.webApplication.getMediumPlacePhotoSize());
-								ImageUtil.resizeImage(tmpFile, smallPhotoPath, this.webApplication.getSmallPlacePhotoSize());
-								tmpFile.delete();
-							}
-							(new File(tmpPhotoDirPath)).delete();
-						} catch (Exception e) {
-							System.out.println(CommonUtil.getExceptionMessage(e));
-						}
-						
-						operationResult = createResult;
-						httpStatus = HttpStatus.OK;	
 					} else {
 						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-						operationResult.setResultDesc(AppConstants.PHOTO_MIN_NUM);
+						operationResult.setResultDesc("You are not authorized for this operation!");
 					}
 				} else {
-					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc(AppConstants.UNAUTHORIZED_OPERATION);
+					operationResult.setResultCode(EnmResultCode.WARNING.getValue());
+					operationResult.setResultDesc(AppConstants.USER_NOT_VERIFIED);
 				}
 			} else {
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
@@ -188,7 +202,7 @@ public class ApiPlaceController extends BaseApiController {
 			httpStatus = HttpStatus.OK;			
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
-			operationResult.setResultDesc(AppConstants.CREATE_OPERATION_FAIL);
+			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 			FileLogger.log(Level.ERROR, "ApiPlaceController-createPlace()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
@@ -505,44 +519,49 @@ public class ApiPlaceController extends BaseApiController {
 		try {
 			User sessionUser = super.getSessionUser(session);
 			if (sessionUser != null) {
-				Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
-				if (activeOperation != null && (activeOperation.equals(EnmOperation.CREATE_PLACE) || activeOperation.equals(EnmOperation.EDIT_PLACE))) {
-					String placeId = null;
-					if (activeOperation.equals(EnmOperation.CREATE_PLACE)) {
-						placeId = "tmp_" + Double.valueOf((Math.random() * 100000000)).longValue();
-						session.removeAttribute(EnmSession.TMP_PHOTO_PLACE_ID.getId());
-						session.setAttribute(EnmSession.TMP_PHOTO_PLACE_ID.getId(), placeId);
-					} else {
-						Place place = (Place) session.getAttribute(EnmSession.ACTIVE_PLACE.getId());
-						placeId = place.getId().toString();
-					}
-					
-					String rootPhotoFolder = this.webApplication.getRootPlacePhotoPath();
-					
-					String placeTmpPhotoFolderPath = FileUtil.concatPath(rootPhotoFolder, placeId.toString(), "tmp");
-					File placeTmpPhotoFolder = new File(placeTmpPhotoFolderPath);
-					if (placeTmpPhotoFolder.exists()) {
-						FileUtils.cleanDirectory(placeTmpPhotoFolder);
-					} else {
-						placeTmpPhotoFolder.mkdirs();	
-					}
-					for (int i = 0; i < fileArr.length; i++) {
-						MultipartFile multipartFile = fileArr[i];
-						String fileName = multipartFile.getOriginalFilename();
-						if (!fileName.toUpperCase().startsWith("DUMMY_")) {
-							String tmpPhotoPath = FileUtil.concatPath(placeTmpPhotoFolderPath, fileName);
-							File tmpFile = new File(tmpPhotoPath);
-							multipartFile.transferTo(tmpFile);
+				if (this.webApplication.isActiveUserVerified()) {
+					Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
+					if (activeOperation != null && (activeOperation.equals(EnmOperation.CREATE_PLACE) || activeOperation.equals(EnmOperation.EDIT_PLACE))) {
+						String placeId = null;
+						if (activeOperation.equals(EnmOperation.CREATE_PLACE)) {
+							placeId = "tmp_" + Double.valueOf((Math.random() * 100000000)).longValue();
+							session.removeAttribute(EnmSession.TMP_PHOTO_PLACE_ID.getId());
+							session.setAttribute(EnmSession.TMP_PHOTO_PLACE_ID.getId(), placeId);
+						} else {
+							Place place = (Place) session.getAttribute(EnmSession.ACTIVE_PLACE.getId());
+							placeId = place.getId().toString();
 						}
+						
+						String rootPhotoFolder = this.webApplication.getRootPlacePhotoPath();
+						
+						String placeTmpPhotoFolderPath = FileUtil.concatPath(rootPhotoFolder, placeId.toString(), "tmp");
+						File placeTmpPhotoFolder = new File(placeTmpPhotoFolderPath);
+						if (placeTmpPhotoFolder.exists()) {
+							FileUtils.cleanDirectory(placeTmpPhotoFolder);
+						} else {
+							placeTmpPhotoFolder.mkdirs();	
+						}
+						for (int i = 0; i < fileArr.length; i++) {
+							MultipartFile multipartFile = fileArr[i];
+							String fileName = multipartFile.getOriginalFilename();
+							if (!fileName.toUpperCase().startsWith("DUMMY_")) {
+								String tmpPhotoPath = FileUtil.concatPath(placeTmpPhotoFolderPath, fileName);
+								File tmpFile = new File(tmpPhotoPath);
+								multipartFile.transferTo(tmpFile);
+							}
+						}
+						
+						session.removeAttribute(EnmSession.PLACE_PHOTO_LIST.getId());
+						session.setAttribute(EnmSession.PLACE_PHOTO_LIST.getId(), fileArr);
+						
+						operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+					} else {
+						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+						operationResult.setResultDesc("You are not authorized for this operation!");
 					}
-					
-					session.removeAttribute(EnmSession.PLACE_PHOTO_LIST.getId());
-					session.setAttribute(EnmSession.PLACE_PHOTO_LIST.getId(), fileArr);
-					
-					operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 				} else {
-					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc(AppConstants.UNAUTHORIZED_OPERATION);
+					operationResult.setResultCode(EnmResultCode.WARNING.getValue());
+					operationResult.setResultDesc(AppConstants.USER_NOT_VERIFIED);
 				}
 			} else {
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());

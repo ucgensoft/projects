@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.ucgen.common.model.Size;
 import com.ucgen.common.util.FileUtil;
+import com.ucgen.letserasmus.library.common.enumeration.EnmBoolStatus;
 import com.ucgen.letserasmus.library.common.enumeration.EnmSize;
 import com.ucgen.letserasmus.library.parameter.enumeration.EnmParameter;
 import com.ucgen.letserasmus.library.parameter.service.IParameterService;
@@ -70,8 +71,8 @@ public class WebApplication extends BaseController {
 			
 			urlPrefix = this.parameterService.getParameterValue(EnmParameter.LETSERASMUS_URL_PREFIX.getId());
 			
-			emailVerificationUrl = urlPrefix + "/pages/Main.xhtml?user=#paramUserId#&code=#paramCode#&op=1";
-			resetPasswordUrl = urlPrefix + "/pages/Main.xhtml?user=#paramUserId#&code=#paramCode#&op=3";
+			emailVerificationUrl = urlPrefix + "/pages/Main.xhtml?user=#paramUserId#&code=#paramCode#&op=10";
+			resetPasswordUrl = urlPrefix + "/pages/Main.xhtml?user=#paramUserId#&code=#paramCode#&op=12";
 			
 			String placeImageSubUrl = this.parameterService.getParameterValue(EnmParameter.PLACE_IMAGE_SUB_URL.getId());
 			String userImageSubUrl = this.parameterService.getParameterValue(EnmParameter.USER_IMAGE_SUB_URL.getId());
@@ -362,6 +363,13 @@ public class WebApplication extends BaseController {
 			// TODO: handle exception
 		}
 		return null;
+	}
+
+	public Boolean isActiveUserVerified() {
+		User user = this.getUser();
+		return (user != null 
+				&& user.getEmailVerified() != null && user.getEmailVerified().equals(EnmBoolStatus.YES.getId())
+				&& user.getMsisdnVerified() != null && user.getMsisdnVerified().equals(EnmBoolStatus.YES.getId()));
 	}
 	
 }

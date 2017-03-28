@@ -42,13 +42,16 @@ var EnmUriParam = {
 	LOCATION : 'loc',
 	LOCATION_ID : 'locationId',
 	PLACE_ID : 'placeId',
-	USER_ID : 'userId'
+	USER_ID : 'userId',
+	OPERATION : 'op'
 };
 
 var EnmOperation = {
-	CONFIRM_EMAIL : 1,
-	LOGIN : 2,
-	RESET_PASSWORD : 3
+	CREATE_PLACE : 5,
+	CREATE_RESERVATION : 8,
+	CONFIRM_EMAIL : 10,
+	LOGIN : 11,
+	RESET_PASSWORD : 12 
 };
 
 var EnmPageMode = {
@@ -195,6 +198,11 @@ function openWindow (url, isSelf) {
 	} else {
 		window.open(url, '_blank');
 	}
+}
+
+function closeWindow() {
+	 window.open('','_parent','');
+     window.close();
 }
 
 function ajaxHtml(url, elementId, callbackFunc) {

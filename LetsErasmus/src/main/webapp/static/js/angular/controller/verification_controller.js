@@ -5,30 +5,41 @@ App.controller('verificationCtrl', ['$scope', 'userService', 'commonService', '$
       self.countryList = [];
       self.dummyModel = null;
       var checkEmailTimer = null;
+      var activeOperation = null;
       
       
       self.initialize = function() {
     	  
-    	  if ($('#divVerifyMsisdn').length > 0) {
-    		  commonService.listCountry( function(countryList) {
-					if (countryList) {
-						self.countryList = countryList;
-						if (userMsisdn != '') {
-							$('#cmbCountry').val(userMsisdn);
-						}
-					}
-				}
-    		  );
-    	  }
+    	  activeOperation = getUriParam(EnmUriParam.OPERATION);
     	  
-    	  if ($('#divVerifyMsisdn').length > 0) {
-    		  setTimeout(function() {
-    			  	$('#cmbCountry').val(userCountryCode);
-    			  }, 500);
-    	  }
-    	  
-    	  if ($('#divVerifyEmail').length > 0) {
-    		  checkEmailTimer = setInterval(self.checkEmailVerification, 4000);
+    	  if (activeOperation != null 
+    			  && (activeOperation == EnmOperation.CREATE_RESERVATION 
+    					  || activeOperation == EnmOperation.CREATE_PLACE)) {
+    		  if ($('#divVerifyMsisdn').length > 0) {
+        		  commonService.listCountry( function(countryList) {
+    					if (countryList) {
+    						self.countryList = countryList;
+    						if (userMsisdn != '') {
+    							$('#cmbCountry').val(userMsisdn);
+    						}
+    					}
+    				}
+        		  );
+        	  }
+        	  
+        	  if ($('#divVerifyMsisdn').length > 0) {
+        		  setTimeout(function() {
+        			  	$('#cmbCountry').val(userCountryCode);
+        			  }, 500);
+        	  }
+        	  
+        	  if ($('#divVerifyEmail').length > 0) {
+        		  checkEmailTimer = setInterval(self.checkEmailVerification, 4000);
+        	  }
+    	  } else {
+    		DialogUtil.error('Error', 'Invalid operation parameter!', 'OK', function() {
+    			closeWindow();
+    		});  
     	  }
     	      	  
 	 };
@@ -41,7 +52,7 @@ App.controller('verificationCtrl', ['$scope', 'userService', 'commonService', '$
 							$('#imgLoading').addClass('hidden');
 							$('#imgEmailVerified').removeClass('hidden');
 							setTimeout(function() {
-								var url = webApplicationUrlPrefix + '/pages/Reservation.xhtml';
+								var url = self.getOperationUrl();
   	  							openWindow(url, true);
 							}, 1000);
 						}
@@ -78,7 +89,7 @@ App.controller('verificationCtrl', ['$scope', 'userService', 'commonService', '$
   							if (emailVerified == 'N') {
   								location.reload();
   							} else {
-  								var url = webApplicationUrlPrefix + '/pages/Booking.xhtml';
+  								var url = self.getOperationUrl();
   	  							openWindow(url, true);
   							}
   						}
@@ -104,6 +115,16 @@ App.controller('verificationCtrl', ['$scope', 'userService', 'commonService', '$
 						DialogUtil.info('Success', 'Verification code is sent to your email address. Please click the verification link in the mail.', 'OK');
 					}
 		});
+  	};
+  	
+  	self.getOperationUrl = function() {
+  		var url = null;
+		if (activeOperation == EnmOperation.CREATE_RESERVATION) {
+			url = webApplicationUrlPrefix + '/pages/Reservation.xhtml';
+		} else {
+			url = webApplicationUrlPrefix + '/pages/Place.xhtml';
+		}
+		return url;
   	};
   	
     self.initialize();

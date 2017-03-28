@@ -396,10 +396,15 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
 	  self.onBecomeHostClicked = function() {
 		  var placeUrl = webApplicationUrlPrefix + '/pages/Place.xhtml';
 		  if (loginUserId == '') {
-			  globalRedirectUrl = placeUrl;
+			  globalRedirectUrl = null;
 			  self.openLoginWindow();
 		  } else {
-			  openWindow(placeUrl, true);
+			  if (globalIsUserVerified) {
+				  openWindow(placeUrl, true);
+			  } else {
+				  var verificationUrl = webApplicationUrlPrefix + '/pages/Verification.xhtml?op=' + EnmOperation.CREATE_PLACE;
+				  openWindow(verificationUrl, true);
+			  }
 		  }
 	  };
   	  

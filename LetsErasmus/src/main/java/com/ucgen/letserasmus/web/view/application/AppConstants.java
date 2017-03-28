@@ -10,6 +10,8 @@ public interface AppConstants {
 	
 	String UNEXPECTED_ERROR = "Operation failed because of an unexpected error. Please try again later!";
 	
+	String USER_NOT_VERIFIED = "Please verify your email and msisdn using our 'Trust And Verification' page.";
+	
 	String LIST_OPERATION_FAIL = "List operation could not be completed. Please try again later!";
 	
 	String CREATE_OPERATION_FAIL = "Create operation could not be completed. Please try again later!";	
@@ -103,5 +105,7 @@ public interface AppConstants {
 	String MAIL_NOT_VERIFIED = "Your email is not verified. Please click the verification link which is sent to your email first!";
 
 	String PASS_RESET_FAIL = "Reset password code is incorrect!";
+
+	
 }
 
