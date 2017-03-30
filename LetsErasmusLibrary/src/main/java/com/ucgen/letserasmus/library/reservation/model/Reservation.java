@@ -8,6 +8,7 @@ import com.ucgen.letserasmus.library.common.model.BaseModel;
 import com.ucgen.letserasmus.library.message.model.MessageThread;
 import com.ucgen.letserasmus.library.place.model.Place;
 import com.ucgen.letserasmus.library.review.model.Review;
+import com.ucgen.letserasmus.library.transactionlog.model.TransactionLog;
 import com.ucgen.letserasmus.library.user.model.User;
 
 public class Reservation extends BaseModel {
@@ -38,6 +39,7 @@ public class Reservation extends BaseModel {
 	
 	private MessageThread messageThread;
 	private List<Review> reviewList;
+	private List<TransactionLog> transactionLogList;
 	
 	public Long getId() {
 		return id;
@@ -170,6 +172,12 @@ public class Reservation extends BaseModel {
 	}
 	public void setReviewList(List<Review> reviewList) {
 		this.reviewList = reviewList;
+	}
+	public List<TransactionLog> getTransactionLogList() {
+		return transactionLogList;
+	}
+	public void setTransactionLogList(List<TransactionLog> transactionLogList) {
+		this.transactionLogList = transactionLogList;
 	}
 	
 }

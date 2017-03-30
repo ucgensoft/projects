@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ucgen.letserasmus.library.common.model.BaseModel;
+import com.ucgen.letserasmus.library.transactionlog.model.TransactionLog;
 import com.ucgen.letserasmus.library.user.model.User;
 
 public class MessageThread extends BaseModel {
@@ -22,6 +23,7 @@ public class MessageThread extends BaseModel {
 	private Object entity;
 	
 	private List<Message> messageList;
+	private List<TransactionLog> transactionLogList;
 	
 	public List<Message> getMessageList() {
 		return messageList;
@@ -91,4 +93,11 @@ public class MessageThread extends BaseModel {
 			this.messageList.add(message);
 		}
 	}
+	public List<TransactionLog> getTransactionLogList() {
+		return transactionLogList;
+	}
+	public void setTransactionLogList(List<TransactionLog> transactionLogList) {
+		this.transactionLogList = transactionLogList;
+	}
+	
 }

@@ -1,6 +1,7 @@
 package com.ucgen.letserasmus.web.api.message;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +34,9 @@ import com.ucgen.letserasmus.library.message.model.MessageThread;
 import com.ucgen.letserasmus.library.message.service.IMessageService;
 import com.ucgen.letserasmus.library.reservation.model.Reservation;
 import com.ucgen.letserasmus.library.reservation.service.IReservationService;
+import com.ucgen.letserasmus.library.transactionlog.enumeration.EnmTransaction;
+import com.ucgen.letserasmus.library.transactionlog.model.TransactionLog;
+import com.ucgen.letserasmus.library.transactionlog.service.ILogService;
 import com.ucgen.letserasmus.library.user.model.User;
 import com.ucgen.letserasmus.web.api.BaseApiController;
 import com.ucgen.letserasmus.web.view.application.AppConstants;
@@ -43,6 +47,7 @@ public class ApiMessageController extends BaseApiController {
 
 	private IMessageService messageService;
 	private IReservationService reservationService;
+	private ILogService logService;
 	
 	private WebApplication webApplication;
 	
@@ -54,6 +59,11 @@ public class ApiMessageController extends BaseApiController {
 	@Autowired
 	public void setReservationService(IReservationService reservationService) {
 		this.reservationService = reservationService;
+	}
+
+	@Autowired
+	public void setLogService(ILogService logService) {
+		this.logService = logService;
 	}
 
 	@Autowired
@@ -148,13 +158,14 @@ public class ApiMessageController extends BaseApiController {
 				MessageThread messageThread = new MessageThread();
 				
 				messageThread.setId(threadId);
-				messageThread.setEntityType(EnmEntityType.PLACE.getId());
+				messageThread.setEntityType(EnmEntityType.RESERVATION.getId());
 				
 				MessageThread dbMessageThread = this.messageService.getMessageThread(messageThread, true, true, true);
-				
 				if (dbMessageThread != null) {
 					if (user.getId().equals(dbMessageThread.getHostUserId()) 
 							|| user.getId().equals(dbMessageThread.getClientUserId())) {
+						Reservation reservation = (Reservation) dbMessageThread.getEntity();
+						
 						boolean isHost = (user.getId().equals(dbMessageThread.getHostUserId()));
 						UiMessageThread uiMessageThread = this.convertToUiMessageThread(user, dbMessageThread, isHost, true);
 						
@@ -162,7 +173,80 @@ public class ApiMessageController extends BaseApiController {
 						message.setMessageThreadId(threadId);
 												
 						List<Message> messageList = this.messageService.listMessage(message, false, false);
-						uiMessageThread.setMessageList(messageList);
+						
+						TransactionLog transactionLog = new TransactionLog();
+						transactionLog.setEntityType(EnmEntityType.RESERVATION.getId());
+						transactionLog.setEntityId(uiMessageThread.getReservation().getId());
+						List<TransactionLog> transactionLogList = this.logService.listTransactionLog(transactionLog, false, false);
+						
+						List<UiMessage> uiMessageList = new ArrayList<UiMessage>();
+												
+						Integer totalMessageCount = (messageList == null ? 0 : messageList.size()) 
+								+ (transactionLogList == null ? 0 : transactionLogList.size());
+						
+						Integer messageListIndex = 0;
+						Integer logListIndex = 0;
+						
+						for (int i = 0; i < totalMessageCount; i++) {
+							TransactionLog currentLog = null;
+							if (transactionLogList != null && transactionLogList.size() > logListIndex) {
+								currentLog = transactionLogList.get(logListIndex);
+							}
+							Message currentMessage = null;
+							if (messageList != null && messageList.size() > messageListIndex) {
+								currentMessage = messageList.get(messageListIndex);
+							}
+							UiMessage newUiMessage = new UiMessage();
+							if (i == 0) {
+								newUiMessage.setMessageType(UiMessage.MESSAGE_TYPE_TRANSACTION);
+							} else {
+								if (currentMessage != null && currentLog != null) {
+									if (currentMessage.getCreatedDate().getTime() < currentLog.getOperationDate().getTime()) {
+										newUiMessage.setMessageType(UiMessage.MESSAGE_TYPE_TEXT);
+									} else {
+										newUiMessage.setMessageType(UiMessage.MESSAGE_TYPE_TRANSACTION);
+									}
+								} else if (currentMessage != null) {
+									newUiMessage.setMessageType(UiMessage.MESSAGE_TYPE_TEXT);
+								} else {
+									newUiMessage.setMessageType(UiMessage.MESSAGE_TYPE_TRANSACTION);
+								}
+							}
+							if (newUiMessage.getMessageType().equals(UiMessage.MESSAGE_TYPE_TRANSACTION)) {
+								newUiMessage.setSenderUserId(currentLog.getUserId());
+								if (currentLog.getOperationId().equals(EnmTransaction.RESERVATION_SEND_INQUIRY.getId())) {
+									newUiMessage.setMessageText("Client contacted host");
+								} else if (currentLog.getOperationId().equals(EnmTransaction.RESERVATION_SEND_REQUEST.getId())) {
+									newUiMessage.setMessageText("Booking request sent");
+								} else if (currentLog.getOperationId().equals(EnmTransaction.RESERVATION_ACCEPT.getId())) {
+									newUiMessage.setMessageText("Booking request accepted");
+								} else if (currentLog.getOperationId().equals(EnmTransaction.RESERVATION_DECLINE.getId())) {
+									newUiMessage.setMessageText("Booking request declined");
+								} else if (currentLog.getOperationId().equals(EnmTransaction.RESERVATION_RECALL.getId())) {
+									newUiMessage.setMessageText("Booking request recalled");
+								} else if (currentLog.getOperationId().equals(EnmTransaction.RESERVATION_CANCEL.getId())) {
+									if (currentLog.getUserId().equals(reservation.getClientUserId())) {
+										newUiMessage.setMessageText("Booking request cancelled by client");
+									} else {
+										newUiMessage.setMessageText("Booking request cancelled by host");
+									}
+								}
+								newUiMessage.setCreatedDate(currentLog.getOperationDate());
+								logListIndex += 1;
+							} else {
+								newUiMessage.setSenderUserId(currentMessage.getSenderUserId());
+								newUiMessage.setReceiverUserId(currentMessage.getReceiverUserId());
+								newUiMessage.setMessageText(currentMessage.getMessageText());
+								newUiMessage.setCreatedDate(currentMessage.getCreatedDate());
+								messageListIndex += 1;
+							}
+							
+							uiMessageList.add(newUiMessage);
+						}
+						
+						Collections.reverse(uiMessageList);
+						
+						uiMessageThread.setMessageList(uiMessageList);
 						
 						operationResult.setResultValue(uiMessageThread);
 						operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
@@ -188,8 +272,8 @@ public class ApiMessageController extends BaseApiController {
     }
 	
 	@RequestMapping(value = "/api/message/send", method = RequestMethod.POST)
-    public ResponseEntity<ValueOperationResult<Message>> sendMessage(@RequestBody Message uiMessage, HttpSession session) {
-		ValueOperationResult<Message> operationResult = new ValueOperationResult<Message>();
+    public ResponseEntity<ValueOperationResult<UiMessage>> sendMessage(@RequestBody Message uiMessage, HttpSession session) {
+		ValueOperationResult<UiMessage> operationResult = new ValueOperationResult<UiMessage>();
 		
 		try {
 			User user = super.getSessionUser(session);
@@ -200,7 +284,7 @@ public class ApiMessageController extends BaseApiController {
 					MessageThread messageThread = new MessageThread();
 					
 					messageThread.setId(uiMessage.getMessageThreadId());
-					messageThread.setEntityType(EnmEntityType.PLACE.getId());
+					messageThread.setEntityType(EnmEntityType.RESERVATION.getId());
 					
 					MessageThread dbMessageThread = this.messageService.getMessageThread(messageThread, false, false, false);
 					
@@ -224,7 +308,15 @@ public class ApiMessageController extends BaseApiController {
 							OperationResult insertMessageResult = this.messageService.insertMessage(message);
 							if (OperationResult.isResultSucces(insertMessageResult)) {
 								operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
-								operationResult.setResultValue(message);
+								
+								UiMessage createdMessage = new UiMessage();
+								createdMessage.setMessageType(UiMessage.MESSAGE_TYPE_TEXT);
+								createdMessage.setSenderUserId(message.getSenderUserId());
+								createdMessage.setReceiverUserId(message.getReceiverUserId());
+								createdMessage.setMessageText(message.getMessageText());
+								createdMessage.setCreatedDate(message.getCreatedDate());
+								
+								operationResult.setResultValue(createdMessage);
 							} else {
 								operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 								operationResult.setResultDesc(AppConstants.MESSAGE_NOT_SAVED);
@@ -251,7 +343,7 @@ public class ApiMessageController extends BaseApiController {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
 			operationResult.setResultDesc(AppConstants.CREATE_OPERATION_FAIL);
 		}
-		return new ResponseEntity<ValueOperationResult<Message>>(operationResult, HttpStatus.OK);
+		return new ResponseEntity<ValueOperationResult<UiMessage>>(operationResult, HttpStatus.OK);
     }
 	
 	private List<UiMessageThread> convertToUiMessageThreadList(User activeUser, List<MessageThread> messageThreadList, boolean isHost, boolean getReservation) {

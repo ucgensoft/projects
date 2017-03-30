@@ -15,7 +15,7 @@ App.controller('messageListCtrl', ['$scope', '$controller', 'messageService',
 	 };
 	 
 	 self.listMessageThread = function(hostFlag, clientFlag, callBack) {
-		  var entityType = EnmEntityType.PLACE;
+		  var entityType = EnmEntityType.RESERVATION;
 	   	  
 		  messageService.listMessageThread(entityType, hostFlag, clientFlag,
 	  				function(messageMap) {

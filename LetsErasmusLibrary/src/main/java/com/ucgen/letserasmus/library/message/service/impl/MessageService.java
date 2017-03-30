@@ -28,6 +28,11 @@ public class MessageService implements IMessageService {
 	}
 	
 	@Override
+	public OperationResult updateMessageThread(MessageThread messageThread) {
+		return this.messageDao.updateMessageThread(messageThread);
+	}
+	
+	@Override
 	public OperationResult insertMessage(Message message) {
 		return this.messageDao.insertMessage(message);
 	}

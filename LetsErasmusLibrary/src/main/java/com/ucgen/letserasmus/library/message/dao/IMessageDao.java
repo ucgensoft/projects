@@ -11,6 +11,8 @@ public interface IMessageDao {
 
 	OperationResult insertMessageThread(MessageThread messageThread) throws OperationResultException;
 	
+	OperationResult updateMessageThread(MessageThread messageThread);
+	
 	OperationResult insertMessage(Message message);
 	
 	List<Message> listMessage(Message message, boolean senderUserFlag, boolean receiverUserFlag);

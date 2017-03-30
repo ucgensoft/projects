@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
@@ -14,6 +13,8 @@ import com.ucgen.common.dao.UtilityDao;
 import com.ucgen.common.exception.operation.OperationResultException;
 import com.ucgen.common.operationresult.EnmResultCode;
 import com.ucgen.common.operationresult.OperationResult;
+import com.ucgen.common.operationresult.ValueOperationResult;
+import com.ucgen.common.util.StringUtil;
 import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
 import com.ucgen.letserasmus.library.message.dao.IMessageDao;
 import com.ucgen.letserasmus.library.message.dao.MessageRowMapper;
@@ -29,6 +30,8 @@ public class MessageDao extends JdbcDaoSupport implements IMessageDao {
 		
 	private static final String INSERT_MESSAGE_THREAD_SQL = "INSERT INTO MESSAGE_THREAD (ENTITY_TYPE, ENTITY_ID, HOST_USER_ID, CLIENT_USER_ID, " 
 			+ " THREAD_TITLE, CREATED_BY, CREATED_DATE) VALUES (?, ?, ?, ?, ?, ?, ?)";
+	
+	private static final String UPDATE_MESSAGE_THREAD_SQL = "UPDATE MESSAGE_THREAD SET $1 WHERE ID = ? ";
 	
 	private UtilityDao utilityDao;
 	
@@ -75,6 +78,40 @@ public class MessageDao extends JdbcDaoSupport implements IMessageDao {
 		
 		operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 						
+		return operationResult;
+	}
+	
+	@Override
+	public OperationResult updateMessageThread(MessageThread messageThread) {
+		ValueOperationResult<Integer> operationResult = new ValueOperationResult<Integer>();		
+		List<Object> argList = new ArrayList<Object>();
+		
+		String updateSql = new String(UPDATE_MESSAGE_THREAD_SQL);
+		StringBuilder updateFields = new StringBuilder();
+						
+		if (messageThread.getEntityId() != null) {
+			StringUtil.append(updateFields, MessageThreadRowMapper.COL_ENTITY_ID + " = ?", ",");
+			argList.add(messageThread.getEntityId());
+		}
+		
+		if (messageThread.getModifiedBy() != null) {
+			StringUtil.append(updateFields, "MODIFIED_BY = ?", ",");
+			argList.add(messageThread.getModifiedBy());
+		}
+		
+		if (messageThread.getModifiedDate() != null) {
+			StringUtil.append(updateFields, "MODIFIED_DATE = ?", ",");
+			argList.add(messageThread.getModifiedDate());
+		}
+		
+		argList.add(messageThread.getId());
+
+		updateSql = updateSql.replace("$1", updateFields);
+		int updatedRowCount =  this.getJdbcTemplate().update(updateSql, argList.toArray() );
+		
+		operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+		operationResult.setResultValue(updatedRowCount);
+		
 		return operationResult;
 	}
 	
@@ -138,7 +175,7 @@ public class MessageDao extends JdbcDaoSupport implements IMessageDao {
 			}			
 		}
 		
-		sqlBuilder.append(" ORDER BY " + messageRowMapper.getCriteriaColumnName(MessageRowMapper.COL_CREATED_DATE) + " DESC");
+		sqlBuilder.append(" ORDER BY " + messageRowMapper.getCriteriaColumnName(MessageRowMapper.COL_CREATED_DATE) + " ASC");
 		
 		List<Message> messageList = super.getJdbcTemplate().query(sqlBuilder.toString(), argList.toArray(), messageRowMapper);
 		

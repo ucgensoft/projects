@@ -32,6 +32,8 @@ import com.ucgen.letserasmus.library.reservation.model.Reservation;
 import com.ucgen.letserasmus.library.reservation.service.IReservationService;
 import com.ucgen.letserasmus.library.review.model.Review;
 import com.ucgen.letserasmus.library.review.service.IReviewService;
+import com.ucgen.letserasmus.library.transactionlog.enumeration.EnmTransaction;
+import com.ucgen.letserasmus.library.transactionlog.model.TransactionLog;
 import com.ucgen.letserasmus.library.user.model.User;
 import com.ucgen.letserasmus.web.api.BaseApiController;
 import com.ucgen.letserasmus.web.view.application.AppConstants;
@@ -247,7 +249,17 @@ public class ApiReviewController extends BaseApiController {
 						reservation.setModifiedBy(user.getFullName());
 						reservation.setModifiedDate(operationDate);
 						
-						OperationResult updateResult = this.reservationService.update(reservation, null);
+						TransactionLog tLog = new TransactionLog();
+						tLog.setUserId(reservation.getClientUserId());
+						tLog.setOperationId(EnmTransaction.REVIEW.getId());
+						tLog.setOperationDate(reservation.getCreatedDate());
+						tLog.setEntityType(EnmEntityType.RESERVATION.getId());
+						tLog.setEntityId(reservation.getId());
+						
+						tLog.setCreatedBy(reservation.getCreatedBy());
+						tLog.setCreatedDate(reservation.getCreatedDate());
+						
+						OperationResult updateResult = this.reservationService.update(reservation, null, tLog);
 						if (OperationResult.isResultSucces(updateResult)) {
 							operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 						} else {

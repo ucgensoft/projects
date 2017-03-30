@@ -3,8 +3,8 @@ package com.ucgen.letserasmus.web.api.message;
 import java.util.Date;
 import java.util.List;
 
-import com.ucgen.letserasmus.library.message.model.Message;
 import com.ucgen.letserasmus.library.reservation.model.Reservation;
+import com.ucgen.letserasmus.library.transactionlog.model.TransactionLog;
 
 public class UiMessageThread {
 
@@ -27,7 +27,8 @@ public class UiMessageThread {
 	private Reservation reservation;
 	private String reservationPriceText;
 	
-	private List<Message> messageList;
+	private List<UiMessage> messageList;
+	private List<TransactionLog> transactionLogList;
 	
 	public Long getId() {
 		return id;
@@ -119,11 +120,17 @@ public class UiMessageThread {
 	public void setReservation(Reservation reservation) {
 		this.reservation = reservation;
 	}
-	public List<Message> getMessageList() {
+	public List<UiMessage> getMessageList() {
 		return messageList;
 	}
-	public void setMessageList(List<Message> messageList) {
+	public void setMessageList(List<UiMessage> messageList) {
 		this.messageList = messageList;
+	}
+	public List<TransactionLog> getTransactionLogList() {
+		return transactionLogList;
+	}
+	public void setTransactionLogList(List<TransactionLog> transactionLogList) {
+		this.transactionLogList = transactionLogList;
 	}
 	
 }

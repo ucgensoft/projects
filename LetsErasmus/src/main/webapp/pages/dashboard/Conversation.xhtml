@@ -161,7 +161,17 @@
 								</div>
 								 -->
 								<div ng-repeat="m in ctrl.messageThread.messageList">
-									<div ng-if="m.senderUserId != ctrl.messageThread.activeUserId">
+									<div ng-if="m.messageType == 2">
+										<div class="inline-status text-branding space-6">
+											<div class="horizontal-rule-text">
+												<span class="horizontal-rule-wrapper"><span>
+														{{m.messageText}}
+														<span>{{m.createdDate | date:'MMMM dd, yyyy hh:mm:ss'}}</span>
+												</span></span>
+											</div>
+										</div>
+									</div>
+									<div ng-if="m.messageType == 1 &amp;&amp; m.senderUserId != ctrl.messageThread.activeUserId">
 										<div class="row row-condensed space-6 post">
 											<div class="col-sm-2 col-md-3 col-lg-2 text-left">
 												<div class="media-photo media-round">
@@ -201,7 +211,7 @@
 											</div>
 										</div>
 									</div>
-									<div ng-if="m.senderUserId == ctrl.messageThread.activeUserId">
+									<div ng-if="m.messageType == 1 &amp;&amp; m.senderUserId == ctrl.messageThread.activeUserId">
 										<div class="row row-condensed space-6 post">
 											<div class="col-sm-10 col-md-9 col-lg-10">
 												<div

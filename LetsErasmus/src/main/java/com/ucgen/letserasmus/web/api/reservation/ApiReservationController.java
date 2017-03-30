@@ -40,6 +40,8 @@ import com.ucgen.letserasmus.library.reservation.model.Reservation;
 import com.ucgen.letserasmus.library.reservation.service.IReservationService;
 import com.ucgen.letserasmus.library.review.model.Review;
 import com.ucgen.letserasmus.library.review.service.IReviewService;
+import com.ucgen.letserasmus.library.transactionlog.enumeration.EnmTransaction;
+import com.ucgen.letserasmus.library.transactionlog.model.TransactionLog;
 import com.ucgen.letserasmus.library.user.model.User;
 import com.ucgen.letserasmus.web.api.BaseApiController;
 import com.ucgen.letserasmus.web.view.application.AppConstants;
@@ -314,7 +316,7 @@ public class ApiReservationController extends BaseApiController {
 								
 								Message message = null;
 								
-								if (!dbReservationList.get(0).getStatus().equals(EnmReservationStatus.INQUIRY.getId())) {
+								if (!dbReservationList.get(0).getStatus().equals(EnmReservationStatus.PENDING.getId())) {
 									message = new Message();
 									message.setMessageThreadId(dbReservationList.get(0).getMessageThreadId());
 									message.setSenderUserId(user.getId());
@@ -325,12 +327,33 @@ public class ApiReservationController extends BaseApiController {
 									message.setStatus(EnmMessageStatus.NOT_READ.getId());
 								}
 								
+								TransactionLog tLog = new TransactionLog();
+								tLog.setUserId(reservation.getClientUserId());
+								tLog.setOperationDate(operationDate);
+								tLog.setEntityType(EnmEntityType.RESERVATION.getId());
+								tLog.setEntityId(reservation.getId());
+								tLog.setCreatedBy(createdBy);
+								tLog.setCreatedDate(operationDate);
+								
+								if (uiReservation.getStatus().equals(EnmReservationStatus.CONFIRMED.getId())) {
+									tLog.setOperationId(EnmTransaction.RESERVATION_ACCEPT.getId());
+								} else if (uiReservation.getStatus().equals(EnmReservationStatus.DECLINED.getId())) {
+									tLog.setOperationId(EnmTransaction.RESERVATION_DECLINE.getId());
+								} else if (uiReservation.getStatus().equals(EnmReservationStatus.CLIENT_CANCELLED.getId()) 
+										|| uiReservation.getStatus().equals(EnmReservationStatus.HOST_CANCELLED.getId())) {
+									tLog.setOperationId(EnmTransaction.RESERVATION_CANCEL.getId());
+								} else if (uiReservation.getStatus().equals(EnmReservationStatus.RECALLED.getId())) {
+									tLog.setOperationId(EnmTransaction.RESERVATION_RECALL.getId());
+								} else if (uiReservation.getStatus().equals(EnmReservationStatus.PENDING.getId())) {
+									tLog.setOperationId(EnmTransaction.RESERVATION_SEND_REQUEST.getId());
+								}
+								
 								if (dbReservationList.get(0).getStatus().equals(EnmReservationStatus.INQUIRY.getId()) 
 										&& operationDate.getTime() > reservation.getStartDate().getTime()) {
 									operationResult.setResultCode(EnmResultCode.WARNING.getValue());
 									operationResult.setResultDesc(AppConstants.RESERV_REQUEST_OUTDATED);
 								} else {
-									OperationResult createResult = this.reservationService.update(reservation, message);
+									OperationResult createResult = this.reservationService.update(reservation, message, tLog);
 									
 									if (!OperationResult.isResultSucces(createResult)) {
 										// TODO: Write log
@@ -583,8 +606,8 @@ public class ApiReservationController extends BaseApiController {
 						MessageThread messageThread = new MessageThread();
 						messageThread.setHostUserId(place.getHostUserId());
 						messageThread.setClientUserId(user.getId());
-						messageThread.setEntityType(EnmEntityType.PLACE.getId());
-						messageThread.setEntityId(place.getId());
+						messageThread.setEntityType(EnmEntityType.RESERVATION.getId());
+						messageThread.setEntityId(-1l);
 						messageThread.setThreadTitle(place.getTitle());
 						messageThread.setCreatedDate(operationDate);
 						messageThread.setCreatedBy(createdBy);
