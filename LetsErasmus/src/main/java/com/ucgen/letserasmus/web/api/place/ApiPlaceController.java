@@ -45,6 +45,7 @@ import com.ucgen.letserasmus.library.file.model.Photo;
 import com.ucgen.letserasmus.library.file.service.IFileService;
 import com.ucgen.letserasmus.library.location.model.LocationSearchCriteria;
 import com.ucgen.letserasmus.library.location.service.impl.LocationService;
+import com.ucgen.letserasmus.library.log.enumeration.EnmOperation;
 import com.ucgen.letserasmus.library.parameter.enumeration.EnmParameter;
 import com.ucgen.letserasmus.library.parameter.service.IParameterService;
 import com.ucgen.letserasmus.library.place.enumeration.EnmPlaceStatus;
@@ -55,7 +56,6 @@ import com.ucgen.letserasmus.library.review.service.IReviewService;
 import com.ucgen.letserasmus.library.user.model.User;
 import com.ucgen.letserasmus.web.api.BaseApiController;
 import com.ucgen.letserasmus.web.view.application.AppConstants;
-import com.ucgen.letserasmus.web.view.application.EnmOperation;
 import com.ucgen.letserasmus.web.view.application.EnmSession;
 import com.ucgen.letserasmus.web.view.application.WebApplication;
 
@@ -101,7 +101,7 @@ public class ApiPlaceController extends BaseApiController {
 		try {
 			User user = super.getSessionUser(session);
 			if (user != null) {
-				if (this.webApplication.isActiveUserVerified()) {
+				if (this.webApplication.isUserVerified(user)) {
 					Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
 					if (activeOperation != null && activeOperation.equals(EnmOperation.CREATE_PLACE)) {
 						MultipartFile[] photoList = (MultipartFile[]) session.getAttribute(EnmSession.PLACE_PHOTO_LIST.getId());
@@ -519,7 +519,7 @@ public class ApiPlaceController extends BaseApiController {
 		try {
 			User sessionUser = super.getSessionUser(session);
 			if (sessionUser != null) {
-				if (this.webApplication.isActiveUserVerified()) {
+				if (this.webApplication.isUserVerified(sessionUser)) {
 					Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
 					if (activeOperation != null && (activeOperation.equals(EnmOperation.CREATE_PLACE) || activeOperation.equals(EnmOperation.EDIT_PLACE))) {
 						String placeId = null;

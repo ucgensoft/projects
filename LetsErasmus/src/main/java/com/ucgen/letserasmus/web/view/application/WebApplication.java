@@ -14,6 +14,7 @@ import com.ucgen.common.model.Size;
 import com.ucgen.common.util.FileUtil;
 import com.ucgen.letserasmus.library.common.enumeration.EnmBoolStatus;
 import com.ucgen.letserasmus.library.common.enumeration.EnmSize;
+import com.ucgen.letserasmus.library.log.enumeration.EnmOperation;
 import com.ucgen.letserasmus.library.parameter.enumeration.EnmParameter;
 import com.ucgen.letserasmus.library.parameter.service.IParameterService;
 import com.ucgen.letserasmus.library.user.model.User;
@@ -237,6 +238,8 @@ public class WebApplication extends BaseController {
 				return "wishListCtrl";
 			} else if (requestUrl.contains("PAGES/HELP/HELP.XHTML")) {
 				return "helpCtrl";
+			} else if (requestUrl.contains("PAGES/DASHBOARD/PAYMENTMETHODS.XHTML")) {
+				return "paymentMethodCtrl";
 			} else {
 				return "";
 			}	
@@ -367,6 +370,10 @@ public class WebApplication extends BaseController {
 
 	public Boolean isActiveUserVerified() {
 		User user = this.getUser();
+		return this.isUserVerified(user);
+	}
+	
+	public Boolean isUserVerified(User user) {
 		return (user != null 
 				&& user.getEmailVerified() != null && user.getEmailVerified().equals(EnmBoolStatus.YES.getId())
 				&& user.getMsisdnVerified() != null && user.getMsisdnVerified().equals(EnmBoolStatus.YES.getId()));
