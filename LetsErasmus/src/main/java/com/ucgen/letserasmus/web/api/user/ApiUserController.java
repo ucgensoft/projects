@@ -49,6 +49,7 @@ import com.ucgen.letserasmus.library.favorite.service.IFavoriteService;
 import com.ucgen.letserasmus.library.file.enumeration.EnmFileType;
 import com.ucgen.letserasmus.library.file.model.FileModel;
 import com.ucgen.letserasmus.library.file.model.Photo;
+import com.ucgen.letserasmus.library.log.enumeration.EnmOperation;
 import com.ucgen.letserasmus.library.parameter.enumeration.EnmParameter;
 import com.ucgen.letserasmus.library.parameter.service.IParameterService;
 import com.ucgen.letserasmus.library.place.model.Place;
@@ -59,7 +60,6 @@ import com.ucgen.letserasmus.library.user.model.User;
 import com.ucgen.letserasmus.library.user.service.IUserService;
 import com.ucgen.letserasmus.web.api.BaseApiController;
 import com.ucgen.letserasmus.web.view.application.AppConstants;
-import com.ucgen.letserasmus.web.view.application.EnmOperation;
 import com.ucgen.letserasmus.web.view.application.EnmSession;
 import com.ucgen.letserasmus.web.view.application.WebApplication;
 

@@ -60,48 +60,49 @@
 		</script>
 
 		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-			<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-			<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
-			<script src="#{webApplication.urlPrefix}/static/js/jquery/jquery.msgbox.min_0_8_1.js"></script>
-			<script src="#{webApplication.urlPrefix}/static/js/jquery/nprogress.js"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/jquery/jquery.msgbox.min_0_8_1.js"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/jquery/jquery.mask.min.js"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/jquery/nprogress.js"></script>
+		
+		<script src="http://maps.googleapis.com/maps/api/js?libraries=places&amp;key=AIzaSyBPX8f2vL1lLg0tqCWs9lcVWcdtSyNajVI"></script>
+		
+		<script src="http://connect.facebook.net/en_US/sdk.js"></script>
+		
+		<script src="#{webApplication.urlPrefix}/static/js/Common.js"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/geocode/jquery.geocomplete.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+		
+		<script src="#{webApplication.urlPrefix}/static/js/angular/app.js"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/service/common_service.js"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/service/user_service.js"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/service/favorite_service.js"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/service/complaint_service.js"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/controller/header_controller.js"></script>
+		
+		<script src="https://apis.google.com/js/platform.js" async="true" defer="true"></script>
+		
+		<style>
+			/* Add Zoom Animation */
+			.animate {
+			    -webkit-animation: animatezoom 0.6s;
+			    animation: animatezoom 0.6s
+			}
 			
-			<script src="http://maps.googleapis.com/maps/api/js?libraries=places&amp;key=AIzaSyBPX8f2vL1lLg0tqCWs9lcVWcdtSyNajVI"></script>
+			@-webkit-keyframes animatezoom {
+			    from {-webkit-transform: scale(0)}
+			    to {-webkit-transform: scale(1)}
+			}
+			    
+			@keyframes animatezoom {
+			    from {transform: scale(0)}
+			    to {transform: scale(1)}
+			}
 			
-			<script src="http://connect.facebook.net/en_US/sdk.js"></script>
-			
-			<script src="#{webApplication.urlPrefix}/static/js/Common.js"></script>
-			<script src="#{webApplication.urlPrefix}/static/js/geocode/jquery.geocomplete.js"></script>
-			<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
-			
-			<script src="#{webApplication.urlPrefix}/static/js/angular/app.js"></script>
-			<script src="#{webApplication.urlPrefix}/static/js/angular/service/common_service.js"></script>
-			<script src="#{webApplication.urlPrefix}/static/js/angular/service/user_service.js"></script>
-			<script src="#{webApplication.urlPrefix}/static/js/angular/service/favorite_service.js"></script>
-			<script src="#{webApplication.urlPrefix}/static/js/angular/service/complaint_service.js"></script>
-			<script src="#{webApplication.urlPrefix}/static/js/angular/controller/header_controller.js"></script>
-			
-			<script src="https://apis.google.com/js/platform.js" async="true" defer="true"></script>
-			
-			<style>
-				/* Add Zoom Animation */
-				.animate {
-				    -webkit-animation: animatezoom 0.6s;
-				    animation: animatezoom 0.6s
-				}
+			</style>
 				
-				@-webkit-keyframes animatezoom {
-				    from {-webkit-transform: scale(0)}
-				    to {-webkit-transform: scale(1)}
-				}
-				    
-				@keyframes animatezoom {
-				    from {transform: scale(0)}
-				    to {transform: scale(1)}
-				}
-				
-				</style>
-				
-				<ui:insert name="head" />
+			<ui:insert name="head" />
 		</h:head>
 		<h:body style="background-position: center center; background-repeat: no-repeat; background-attachment: fixed; background-size: cover; 
 				padding-top: 0px; padding-bottom: 0px;">

@@ -1,0 +1,290 @@
+.payment-logo {
+	width: 50px;
+	height: 30px;
+	margin-right: 10px;
+	margin-top: 5px;
+	float: left;
+	text-indent: -99999px;
+	background:
+		url(https://a0.muscache.com/airbnb/static/page4/payment-icons-1x-40aa35fe971b13ecd5431b2d63b4d432.png)
+		no-repeat
+}
+
+.payment-logo.visa {
+	background-position: 0 0
+}
+
+.payment-logo.master {
+	background-position: -50px 0
+}
+
+.payment-logo.mastercard {
+	background-position: -50px 0
+}
+
+.payment-logo.american_express {
+	background-position: -100px 0
+}
+
+.payment-logo.amex_express_checkout {
+	background-position: -100px 0
+}
+
+.payment-logo.discover {
+	background-position: -150px 0
+}
+
+.payment-logo.paypal {
+	background-position: -200px 0
+}
+
+.payment-logo.braintree_paypal {
+	background-position: -200px 0
+}
+
+.payment-logo.sofort {
+	background-position: -250px 0
+}
+
+.payment-logo.ideal {
+	background-position: -300px 0
+}
+
+.payment-logo.unionpay {
+	background-position: -350px 0
+}
+
+.payment-logo.alipay {
+	background-position: -400px 0
+}
+
+.payment-logo.alipay_direct {
+	background-position: -400px 0
+}
+
+.payment-logo.jcb {
+	background-position: -650px 0
+}
+
+.payment-logo.postepay {
+	background-position: -700px 0
+}
+
+.payment-logo.hipercard {
+	background-position: -750px 0
+}
+
+.payment-logo.boleto {
+	background-position: -800px 0
+}
+
+.payment-logo.elo {
+	background-position: -850px 0
+}
+
+.payment-logo.diners_club {
+	background-position: -900px 0
+}
+
+.payment-logo.aura {
+	background-position: -950px 0
+}
+
+.payment-logo.international.visa {
+	background-position: -450px 0
+}
+
+.payment-logo.international.master {
+	background-position: -500px 0
+}
+
+.payment-logo.international.mastercard {
+	background-position: -500px 0
+}
+
+.payment-logo.international.american_express {
+	background-position: -550px 0
+}
+
+.payment-logo.international.discover {
+	background-position: -600px 0
+}
+
+.payment-logo.business-travel-invoice {
+	background: none;
+	text-indent: initial;
+	margin-top: -5px
+}
+
+.payment-logo.inactive {
+	opacity: 0.4;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)"
+}
+
+.payment-logo-redesign {
+	width: 48px;
+	height: 29px;
+	margin-right: 5px;
+	float: left;
+	text-indent: -99999px;
+	background:
+		url(https://a0.muscache.com/airbnb/static/page4/payment-sprites-1x-a44d0c0b932c2c6280eefed0bb3d601b.png)
+		no-repeat
+}
+
+.payment-logo-redesign.visa {
+	background-position: 0px 0
+}
+
+.payment-logo-redesign.master, .payment-logo-redesign.mastercard {
+	background-position: -48px 0
+}
+
+.payment-logo-redesign.american_express, .payment-logo-redesign.amex_express_checkout
+	{
+	background-position: -96px 0
+}
+
+.payment-logo-redesign.discover {
+	background-position: -144px 0
+}
+
+.payment-logo-redesign.braintree_paypal, .payment-logo-redesign.paypal {
+	background-position: -192px 0
+}
+
+.payment-logo-redesign.international.visa {
+	background-position: -240px 0
+}
+
+.payment-logo-redesign.international.master, .payment-logo-redesign.international.mastercard
+	{
+	background-position: -288px 0
+}
+
+.payment-logo-redesign.international.american_express {
+	background-position: -336px 0
+}
+
+.payment-logo-redesign.international.discover {
+	background-position: -384px 0
+}
+
+.payment-logo-redesign.sofort {
+	background-position: -432px 0
+}
+
+.payment-logo-redesign.ideal {
+	background-position: -480px 0
+}
+
+.payment-logo-redesign.unionpay {
+	background-position: -528px 0
+}
+
+.payment-logo-redesign.alipay {
+	background-position: -576px 0
+}
+
+.payment-logo-redesign.alipay_direct {
+	background-position: -576px 0
+}
+
+.payment-logo-redesign.jcb {
+	background-position: -624px 0
+}
+
+.payment-logo-redesign.postepay {
+	background-position: -672px 0
+}
+
+.payment-logo-redesign.hipercard {
+	background-position: -720px 0
+}
+
+.payment-logo-redesign.boleto {
+	background-position: -768px 0
+}
+
+.payment-logo-redesign.elo {
+	background-position: -816px 0
+}
+
+.payment-logo-redesign.diners_club {
+	background-position: -864px 0
+}
+
+.payment-logo-redesign.aura {
+	background-position: -912px 0
+}
+
+.payment-logo-redesign.business-travel-invoice {
+	background: none;
+	text-indent: initial;
+	margin-top: -5px
+}
+
+.payment-logo-redesign.inactive {
+	opacity: 0.4;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
+	filter: alpha(opacity = 40)
+}
+
+.payment-image {
+	height: 150px
+}
+
+#modal-trigger-add {
+	cursor: pointer
+}
+
+.modal-content {
+	background-color: #f5f5f5
+}
+
+.tooltip-cvv {
+	width: 173px;
+	height: 108px;
+	background:
+		url(https://a0.muscache.com/airbnb/static/page4/cvv-49f6bd0dad5b83af870b3ebfd29a74d1.gif)
+		no-repeat;
+	background-position: -173px 0
+}
+
+.tooltip-cvv.american_express {
+	background-position: 0 0
+}
+
+.code-entry {
+	padding-left: 0
+}
+
+/*BlueSnap css*/
+.new-payment-panel {
+  width: 80%;
+  margin: 2em auto;
+}
+
+
+.new-payment-panel-body {
+  width: 90%;
+  margin: 2em auto;
+}
+
+.helper-text {
+  color: #ff5722;
+  font-size: 12px;
+  margin-top: 5px;
+  height: 12px;
+  display: block;
+}
+
+/* Hosted Payment Fields styles*/
+
+.hosted-field-focus { 
+  outline: none;
+  background-image: linear-gradient(#009688, #009688), linear-gradient(#d2d2d2, #d2d2d2);
+  animation: input-highlight 0.5s forwards;
+  box-shadow: none;
+  background-size: 0 2px, 100% 1px;
+}

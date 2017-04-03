@@ -1,4 +1,4 @@
-package com.ucgen.letserasmus.library.transactionlog.dao.impl;
+package com.ucgen.letserasmus.library.log.dao.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,16 +13,20 @@ import com.ucgen.common.dao.UtilityDao;
 import com.ucgen.common.exception.operation.OperationResultException;
 import com.ucgen.common.operationresult.EnmResultCode;
 import com.ucgen.common.operationresult.OperationResult;
+import com.ucgen.letserasmus.library.log.dao.ILogDao;
+import com.ucgen.letserasmus.library.log.dao.TransactionLogRowMapper;
+import com.ucgen.letserasmus.library.log.model.IntegrationLog;
+import com.ucgen.letserasmus.library.log.model.TransactionLog;
 import com.ucgen.letserasmus.library.review.dao.ReviewRowMapper;
-import com.ucgen.letserasmus.library.transactionlog.dao.ILogDao;
-import com.ucgen.letserasmus.library.transactionlog.dao.TransactionLogRowMapper;
-import com.ucgen.letserasmus.library.transactionlog.model.TransactionLog;
 
 @Repository
 public class LogDao extends JdbcDaoSupport implements ILogDao {
 		
-	private static final String INSERT_REVIEW_SQL = "INSERT INTO TRANSACTION_LOG (USER_ID, OPERATION_ID, OPERATION_DATE, ENTITY_TYPE, ENTITY_ID, " 
+	private static final String INSERT_TRANSACTION_SQL = "INSERT INTO TRANSACTION_LOG (USER_ID, OPERATION_ID, OPERATION_DATE, ENTITY_TYPE, ENTITY_ID, " 
 			+ " CREATED_BY, CREATED_DATE) VALUES (?, ?, ?, ?, ?, ?, ?)";
+	
+	private static final String INSERT_INTEGRATION_SQL = "INSERT INTO TRANSACTION_LOG (USER_ID, EXT_SYSTEM_ID, OPERATION_ID, OPERATION_DATE, DURATION, " 
+			+ " REQUEST, RESPONSE, RESPONSE_CODE, CREATED_BY, CREATED_DATE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	
 	private UtilityDao utilityDao;
 	
@@ -51,7 +55,7 @@ public class LogDao extends JdbcDaoSupport implements ILogDao {
 		argList.add(transactionLog.getCreatedBy());
 		argList.add(transactionLog.getCreatedDate());
 		
-		this.getJdbcTemplate().update(INSERT_REVIEW_SQL, argList.toArray());
+		this.getJdbcTemplate().update(INSERT_TRANSACTION_SQL, argList.toArray());
 		
 		transactionLog.setId(this.utilityDao.getLastIncrementId());
 				
@@ -102,6 +106,32 @@ public class LogDao extends JdbcDaoSupport implements ILogDao {
 		List<TransactionLog> transactionLogList = super.getJdbcTemplate().query(sqlBuilder.toString(), argList.toArray(), transactionLogRowMapper);		
 				
 		return transactionLogList;
+	}
+
+	@Override
+	public OperationResult insertIntegrationLog(IntegrationLog integrationLog) {
+OperationResult operationResult = new OperationResult();
+		
+		List<Object> argList = new ArrayList<Object>();
+				
+		argList.add(integrationLog.getUserId());
+		argList.add(integrationLog.getExtSystemId());
+		argList.add(integrationLog.getOperationId());
+		argList.add(integrationLog.getOperationDate());
+		argList.add(integrationLog.getDuration());
+		argList.add(integrationLog.getRequest());
+		argList.add(integrationLog.getResponse());
+		argList.add(integrationLog.getResponseCode());
+		argList.add(integrationLog.getCreatedBy());
+		argList.add(integrationLog.getCreatedDate());
+		
+		this.getJdbcTemplate().update(INSERT_INTEGRATION_SQL, argList.toArray());
+		
+		integrationLog.setId(this.utilityDao.getLastIncrementId());
+				
+		operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+						
+		return operationResult;
 	}
 
 }

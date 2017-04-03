@@ -9,15 +9,15 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ucgen.common.exception.operation.OperationResultException;
 import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
+import com.ucgen.letserasmus.library.log.dao.ILogDao;
+import com.ucgen.letserasmus.library.log.enumeration.EnmTransaction;
+import com.ucgen.letserasmus.library.log.model.TransactionLog;
 import com.ucgen.letserasmus.library.message.dao.IMessageDao;
 import com.ucgen.letserasmus.library.message.model.Message;
 import com.ucgen.letserasmus.library.message.model.MessageThread;
 import com.ucgen.letserasmus.library.reservation.dao.IReservationDao;
 import com.ucgen.letserasmus.library.reservation.model.Reservation;
 import com.ucgen.letserasmus.library.reservation.service.IReservationService;
-import com.ucgen.letserasmus.library.transactionlog.dao.ILogDao;
-import com.ucgen.letserasmus.library.transactionlog.enumeration.EnmTransaction;
-import com.ucgen.letserasmus.library.transactionlog.model.TransactionLog;
 
 @Service
 public class ReservationService implements IReservationService {

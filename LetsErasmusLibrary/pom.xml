@@ -27,6 +27,13 @@
 		</dependency>
 		
 		<dependency>
+	      <groupId>com.twilio.sdk</groupId>
+	      <artifactId>twilio</artifactId>
+	      <version>7.8.0</version>
+	      <scope>compile</scope>
+	   </dependency>
+		
+		<dependency>
 			<groupId>com.ucgen.common</groupId>
 			<artifactId>CommonLibrary</artifactId>
 			<version>1</version>

@@ -5,10 +5,10 @@ import java.util.Date;
 import java.util.List;
 
 import com.ucgen.letserasmus.library.common.model.BaseModel;
+import com.ucgen.letserasmus.library.log.model.TransactionLog;
 import com.ucgen.letserasmus.library.message.model.MessageThread;
 import com.ucgen.letserasmus.library.place.model.Place;
 import com.ucgen.letserasmus.library.review.model.Review;
-import com.ucgen.letserasmus.library.transactionlog.model.TransactionLog;
 import com.ucgen.letserasmus.library.user.model.User;
 
 public class Reservation extends BaseModel {

@@ -1,4 +1,4 @@
-package com.ucgen.letserasmus.web.view.application;
+package com.ucgen.letserasmus.library.log.enumeration;
 
 public enum EnmOperation {
 
@@ -13,7 +13,8 @@ public enum EnmOperation {
 	FINISH_RESERVATION(9),
 	CONFIRM_EMAIL(10),
 	LOGIN(11),
-	RESET_PASSWORD(12);
+	RESET_PASSWORD(12),
+	SEND_VERIFICATION_SMS(13);
 	
 	private final int id;
 	

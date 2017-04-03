@@ -3,8 +3,8 @@ package com.ucgen.letserasmus.web.api.message;
 import java.util.Date;
 import java.util.List;
 
+import com.ucgen.letserasmus.library.log.model.TransactionLog;
 import com.ucgen.letserasmus.library.reservation.model.Reservation;
-import com.ucgen.letserasmus.library.transactionlog.model.TransactionLog;
 
 public class UiMessageThread {
 

@@ -1,5 +1,8 @@
 package com.ucgen.letserasmus.library.parameter.enumeration;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public enum EnmParameter {
 
 	LETSERASMUS_URL_PREFIX(1, "LETSERASMUS_URL_PREFIX"),
@@ -23,10 +26,25 @@ public enum EnmParameter {
 	LOG_CONFIG_FILE_PATH(19, "LOG_CONFIG_FILE_PATH"),
 	MIN_USER_PASSWORD_LENGTH(20, "MIN_USER_PASSWORD_LENGTH"),
 	HELP_DEFAULT_GROUP(21, "HELP_DEFAULT_GROUP"),
-	MAP_MIN_DISPLAY_DISTANCE(22, "MAP_MIN_DISPLAY_DISTANCE");
+	MAP_MIN_DISPLAY_DISTANCE(22, "MAP_MIN_DISPLAY_DISTANCE"),
+	TWILIO_ACCOUNT_SID(23, "TWILIO_ACCOUNT_SID"),
+	TWILIO_AUTH_TOKEN(24, "TWILIO_AUTH_TOKEN"),
+	TWILIO_VERIFICATION_MESSAGE_TEMPLATE(25, "TWILIO_VERIFICATION_MESSAGE_TEMPLATE"),
+	TWILIO_FROM_PHONE_NUMBER(26, "TWILIO_FROM_PHONE_NUMBER"),
+	BLUESNAP_USER(27, "BLUESNAP_USER"),
+	BLUESNAP_PASSWORD(28, "BLUESNAP_PASSWORD"),
+	BLUESNAP_DOMAIN(29, "BLUESNAP_DOMAIN");
 	
 	int id;
 	String name;
+	private static Map<String, EnmParameter> parameterNameMap;
+	
+	static {
+		parameterNameMap = new HashMap<String, EnmParameter>();
+		for (EnmParameter parameter : EnmParameter.values()) {
+			parameterNameMap.put(parameter.getName(), parameter);
+		}
+	}
 	
 	public int getId() {
 		return id;
@@ -42,12 +60,8 @@ public enum EnmParameter {
 	}
 	
 	public static EnmParameter getParameter(String name) {
-		if (name != null) {
-			for (EnmParameter parameter : EnmParameter.values()) {
-				if (parameter.getName().equals(name)) {
-					return parameter;
-				}
-			}
+		if (name != null && parameterNameMap.containsKey(name)) {
+			return parameterNameMap.get(name);
 		}
 		return null;
 	}

@@ -1,4 +1,4 @@
-package com.ucgen.letserasmus.library.transactionlog.dao;
+package com.ucgen.letserasmus.library.log.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -7,8 +7,8 @@ import com.ucgen.common.dao.BaseRowMapper;
 import com.ucgen.common.dao.EnmJoinType;
 import com.ucgen.common.dao.ForeignKey;
 import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
+import com.ucgen.letserasmus.library.log.model.TransactionLog;
 import com.ucgen.letserasmus.library.place.dao.PlaceRowMapper;
-import com.ucgen.letserasmus.library.transactionlog.model.TransactionLog;
 
 public class TransactionLogRowMapper extends BaseRowMapper<TransactionLog> {
 

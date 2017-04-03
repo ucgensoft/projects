@@ -1,4 +1,4 @@
-package com.ucgen.letserasmus.library.transactionlog.enumeration;
+package com.ucgen.letserasmus.library.log.enumeration;
 
 public enum EnmTransaction {
 

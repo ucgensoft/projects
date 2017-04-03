@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ucgen.letserasmus.library.common.model.BaseModel;
-import com.ucgen.letserasmus.library.transactionlog.model.TransactionLog;
+import com.ucgen.letserasmus.library.log.model.TransactionLog;
 import com.ucgen.letserasmus.library.user.model.User;
 
 public class MessageThread extends BaseModel {
