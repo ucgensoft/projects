@@ -467,8 +467,8 @@
 															<div class="row">
 																<div class="col-md-6">
 																	<div>
-																		<span>Accommodates: </span><span> </span><strong>{{
-																			ctrl.place.guestNumber }}</strong>
+																		<span>Property type: </span><span>
+																		</span><strong>{{ ctrl.getHomeTypeDescription() }}</strong>
 																	</div>
 																	<div>
 																		<span>Bathrooms: </span><span> </span><strong>{{
@@ -482,14 +482,110 @@
 																</div>
 																<div class="col-md-6">
 																	<div>
-																		<a href="https://www.airbnb.com/s/Milano--Italy"
-																			class="link-reset"><span>Property type: </span><span>
-																		</span><strong>{{ ctrl.getHomeTypeDescription() }}</strong></a>
+																		<span>Place Mate Number: </span><span> </span><strong>{{
+																			ctrl.place.placeMateNumber }}</strong>
+																	</div>
+																	<div>
+																		<span>Place Mate Gender: </span><span> </span><strong>{{
+																			(ctrl.place.placeMateGender == 'M' ? 'Male' : (ctrl.place.placeMateGender == 'F' ? 'Female' : 'Mixed'))
+																			}}</strong>
+																	</div>																	
+																</div>
+															</div>
+														</div>
+													</div>
+													<hr class="" />
+													<div class="row">
+														<div class="col-md-3 text-muted">
+															<div>
+																<span>Preferred Tenant</span>
+															</div>
+														</div>
+														<div class="col-md-9">
+															<div class="row">
+																<div class="col-md-6">
+																	<div>
+																		<span>Guest Number: </span><span> </span><strong>{{
+																			ctrl.place.guestNumber }}</strong>
+																	</div>
+																	<div>
+																		<span>Guest Gender: </span><span> </span><strong>{{
+																			(ctrl.place.guestGender == 'A' ? 'No Preference' : (ctrl.place.guestGender == 'F' ? 'Female' : 'Male'))
+																			}}</strong>
+																	</div>
+																</div>
+																<div class="col-md-6">
+																	<div>
+																		<span>LGBT Friendly: </span><span>
+																		</span><strong>{{ (ctrl.place.lgbtFriendly == 'Y' ? 'Yes' : 'No') }}</strong>
 																	</div>
 																</div>
 															</div>
 														</div>
 													</div>
+
+													<hr class="" />
+													<div class="row">
+														<div class="col-md-3 text-muted">
+															<div>
+																<span>Rental Conditions</span>
+															</div>
+														</div>
+														<div class="col-md-9">
+															<div class="row">
+																<div class="col-md-12">
+																	<div>
+																		<span>Monthly Rent: </span><span> </span><strong>{{
+																			ctrl.place.price}} {{(ctrl.place.currencyId == 1 ? 'TRY' : (ctrl.place.currencyId == 2 ? 'USD' : 'EUR'))}}</strong>
+																	</div>
+																	<div>
+																		<span>Bills</span><span> </span><strong>{{
+																			(ctrl.place.billsInclude == 'Y' ? 'are included' : 'are not included') }}</strong>
+																	</div>
+																	<div>
+																		<span>Deposit Price: </span><span> </span><strong>{{
+																			ctrl.place.depositPrice 
+																			}} {{(ctrl.place.currencyId == 1 ? 'TRY' : (ctrl.place.currencyId == 2 ? 'USD' : 'EUR'))}} (Paid to host in cash)</strong>
+																	</div>
+																	<div>
+																		<span>Minimum Stay: </span><span> </span><strong>{{
+																			ctrl.place.minimumStay }} months</strong>
+																	</div>
+																	<div>
+																		<span>Maximum Stay: </span><span> </span><strong>{{
+																			ctrl.place.maximumStay }} months</strong>
+																	</div>																	
+																</div>
+															</div>
+														</div>
+													</div>													
+													<hr class="" />
+													<div class="row">
+														<div class="col-md-3 text-muted">
+															<div style="margin-bottom: 16px;">
+																<span>Cancellations</span>
+															</div>
+														</div>
+														<div class="col-md-9">
+															<p>
+																<span> </span><span><span>This host has a
+																</span><span><strong class=""><span>Moderate
+																				Cancellation Policy</span></strong></span></span><span> </span>
+															</p>
+															<p>
+																<span> </span><span>Cancel up to 7 days before
+																	your trip and get a full refund. Cancel within 7 days
+																	of the trip and get a 50% refund of the nightly rate,
+																	as well as a full refund of fees.</span><span> </span>
+															</p>
+															<div>
+																<a
+																	href="#{webApplication.urlPrefix}/pages/Policies.xhtml"
+																	target="_blank" rel="noopener"><strong><span>
+																	</span><span>View details</span><span> </span></strong></a>
+															</div>
+														</div>
+													</div>													
 													<hr class="" />
 													<div class="row amenities">
 														<div class="col-md-3 text-muted">
@@ -554,35 +650,6 @@
 															</div>
 														</div>
 													</div>
-
-
-													<hr class="" />
-													<div class="row">
-														<div class="col-md-3 text-muted">
-															<div style="margin-bottom: 16px;">
-																<span>Cancellations</span>
-															</div>
-														</div>
-														<div class="col-md-9">
-															<p>
-																<span> </span><span><span>This host has a
-																</span><span><strong class=""><span>Moderate
-																				Cancellation Policy</span></strong></span></span><span> </span>
-															</p>
-															<p>
-																<span> </span><span>Cancel up to 7 days before
-																	your trip and get a full refund. Cancel within 7 days
-																	of the trip and get a 50% refund of the nightly rate,
-																	as well as a full refund of fees.</span><span> </span>
-															</p>
-															<div>
-																<a
-																	href="https://www.airbnb.com/home/updated_cancellation_policies#moderate"
-																	target="_blank" rel="noopener"><strong><span>
-																	</span><span>View details</span><span> </span></strong></a>
-															</div>
-														</div>
-													</div>
 													<hr class="" />
 													<div class="row">
 														<div class="col-md-3 text-muted">
@@ -611,29 +678,6 @@
 																			</div>
 																		</div>
 																	</div>
-																</div>
-															</div>
-														</div>
-													</div>
-													<hr class="" />
-													<div class="row">
-														<div class="col-md-3 text-muted">
-															<div>
-																<span>Availability</span>
-															</div>
-														</div>
-														<div class="col-md-9">
-															<div class="row">
-																<div class="col-md-6">
-																	<strong>{{ ctrl.place.minimumStay }} night</strong>
-																	minimum stay
-																</div>
-																<div class="col-md-6"></div>
-															</div>
-															<div class="row space-top-2">
-																<div class="col-md-6">
-																	<strong>{{ ctrl.place.maximumStay }} night</strong>
-																	maximum stay
 																</div>
 															</div>
 														</div>
