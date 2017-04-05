@@ -723,13 +723,18 @@
 																	| date:'MMMM dd, yyyy'}}</span>
 															</div>
 														</div>
-														<div>
-															<p>
-																{{ crtl.place.user.description }} <br /> <span></span>
-																<br /> <span>{{ crtl.place.user.firstName }}</span> <br />
-																<span> </span> <br />
-															</p>
+														<div class="row row-condensed space-2">
+															<div class="col-md-12 text-muted">
+																<span><i class="icon {{ctrl.place.user.emailVerified == 'Y' ? 'icon-ok-fill' : 'icon-sad-face'}} h3"></i></span>
+																<strong><span>Email {{ctrl.place.user.emailVerified == 'Y' ? 'is' : 'is not'}} verified</span></strong>
+															</div>
 														</div>
+														<div class="row row-condensed space-2">
+															<div class="col-md-12 text-muted">
+																<span><i class="icon {{ctrl.place.user.msisdnVerified == 'Y' ? 'icon-ok-fill' : 'icon-sad-face'}} h3"></i></span>
+																<strong><span>Phone number {{ctrl.place.user.msisdnVerified == 'Y' ? 'is' : 'is not'}} verified</span></strong>
+															</div>
+														</div>														
 														<div class="space-top-3">
 															<div class="badge-container space-4">
 																<a class="link-reset" target="_blank"
@@ -744,22 +749,6 @@
 																			<span class="badge-pill-label">Reviews</span>
 																		</div>
 																	</div></a>
-															</div>
-															<div class="badge-container space-4">
-																<div>
-																	<a class="link-reset" target="_blank"
-																		rel="noopener noreferrer nofollow">
-																		<div class="text-center text-wrap"
-																			id="verified-id-icon">
-																			<img alt="Verified"
-																				src="#{webApplication.urlPrefix}/static/images/verified.png"
-																				width="32" height="32" /> <br class="show-sm" />
-																			<div class="va-middle show-inline-block">
-																				<span class="badge-pill-label">Verified</span>
-																			</div>
-																		</div>
-																	</a>
-																</div>
 															</div>
 														</div>
 														<div class="">
