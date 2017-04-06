@@ -105,7 +105,8 @@ public interface AppConstants {
 	String MAIL_NOT_VERIFIED = "Your email is not verified. Please click the verification link which is sent to your email first!";
 
 	String PASS_RESET_FAIL = "Reset password code is incorrect!";
-
+	
+	String PAYMENT_METHOD_DOUBLE = "You have already defined this payment method!";
 	
 }
 

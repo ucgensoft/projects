@@ -1,5 +1,6 @@
 eclipse.preferences.version=1
 encoding//src/main/java=Cp1254
+encoding//src/main/java/com/ucgen/letserasmus/web/api/message/ApiMessageController.java=ISO-8859-1
 encoding//src/main/resources=Cp1254
 encoding//src/test/java=Cp1254
 encoding/<project>=Cp1254

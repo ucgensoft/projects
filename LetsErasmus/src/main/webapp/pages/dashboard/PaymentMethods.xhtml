@@ -27,20 +27,19 @@
 						<div class="panel-header">Payment Methods</div>
 						<div id="icons-panel" class="panel-body">
 							<div class="row space-3">
-								<div id="payment-image-69523612"
+								<div ng-repeat="p in ctrl.paymentMethodList"
 									class="col-4 space-2 space-top-2">
 									<div class="panel panel-image payment-image">
 										<div>
 											<div class="panel-overlay-top-left text-lead">
-												XXXXXXXXXXXX6917
-												<div>11 / 2018</div>
+												XXXXXXXXXXXX{{p.cardNumber}}
+												<div>{{p.expDate}}</div>
 											</div>
 											<div class="panel-overlay-bottom-left text-lead">
-												Default Card <i class="icon icon-question"
-													title="Default payment method cannot be removed."></i>
+												Default Card <i class="icon icon-question" title="Default payment method cannot be removed."></i>
 											</div>
 											<div class="panel-overlay-bottom-right">
-												<div class="payment-logo master"></div>
+												<img class="payment-logo" src="{{ctrl.getPaymentMethodImage(p.cardType)}}"></img>
 											</div>
 										</div>
 									</div>
@@ -67,46 +66,15 @@
 	
 						</div>
 					</section>
-					<div id="divNewPaymentMethod" class="panel hidden-force panel-primary" style="width: 400px;">
-						<div class="panel-header">
-							New Payment Method
-						</div>
-						<div class="panel-body">
-							<div class="row">
-								<div class="form-group col-md-12">
-									<label for="cardholder-name">Cardholder Name</label> 
-									<input id="txtCardHolderName" type="text" class="form-control" 
-										maxlength="50"/>
-								</div>
-								<div class="form-group col-md-10">
-									<label for="card-number">Card Number</label>
-									<input id="txtCardNumber" type="text" style="display: inline-block; width: 80%" />
-									<img src="https://files.readme.io/d1a25b4-generic-card.png" height="20px" />
-								</div>
-								<div class="form-group col-md-6">
-									<label for="exp-date">Exp. (mm/yyyy)</label>
-									<input id="txtExpDate" type="text" />
-								</div>
-								<div class="form-group col-md-4">
-									<label for="cvv">CVV</label>
-									<input id="txtCvv" type="text" />
-								</div>
-								<div class="form-group col-md-6">
-									<label for="cardholder-name">Postal Code</label> 
-									<input id="txtPostalCode" type="text" class="form-control" /> 
-								</div>
-							</div>
-							<button class="btn btn-primary" id="btnCreateNewPayment">Create</button>
-							<button class="btn btn__second-btn" id="btnCreateNewPayment"
-								ng-click="ctrl.onCancelNewPaymentBtnClick()">Cancel</button>
-						</div>
-					</div>
+					<iframe id="frameNewPayment" src="#{webApplication.urlPrefix}/static/html/NewPayment.html" class="hidden-force" 
+						style="width: 440px; height: 500px; border-width:0px; padding: 0px;">	
+					</iframe>
 				</div>
 			</div>
 			</div>
 		</main>
 		<script src="#{webApplication.urlPrefix}/static/js/dashboard.js"></script>
-		<script type="text/javascript" src="https://sandbox.bluesnap.com/services/hosted-payment-fields/v1.0/bluesnap.hpf.mini.js"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/service/payment_service.js"></script>
 		<script src="#{webApplication.urlPrefix}/static/js/angular/controller/payment_method_controller.js"></script>
 	</ui:define>
 </ui:composition>

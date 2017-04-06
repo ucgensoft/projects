@@ -1,0 +1,228 @@
+<html>
+<head>
+<style>
+/* Uses bootstrap-material-design - http://fezvrasta.github.io/bootstrap-material-design */
+.panel {
+	width: 80%;
+	margin: 0px;
+}
+
+.panel-body {
+	width: 90%;
+	margin: 2em auto;
+}
+
+body {
+	font-size: 15px;
+}
+
+label {
+	font-weight: 400;
+}
+
+.helper-text {
+	color: #ff5722;
+	font-size: 12px;
+	margin-top: 5px;
+	height: 12px;
+	display: block;
+}
+
+/* Hosted Payment Fields styles*/
+.hosted-field-focus {
+	outline: none;
+	background-image: linear-gradient(#009688, #009688),
+		linear-gradient(#d2d2d2, #d2d2d2);
+	animation: input-highlight 0.5s forwards;
+	box-shadow: none;
+	background-size: 0 2px, 100% 1px;
+}
+</style>
+<link rel="stylesheet prefetch"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+
+<body>
+	<div id="divNewPayment" class="panel panel-primary" style="width: 425px;">
+		<div class="panel-heading">
+			<h3 class="panel-title">New Payment Method</h3>
+		</div>
+		<div class="row">
+			<div class="panel-body">
+				<div class="form-group col-md-12">
+					<label for="cardholder-name">Cardholder Name</label> <input
+						type="text" class="form-control" id="cardholder-name"> <span
+						class="helper-text"></span>
+				</div>
+				<!--Hosted Payment Field for CC number-->
+				<div class="form-group col-xs-9">
+					<label for="card-number">Card Number</label>
+					<div class="input-group">
+						<div class="form-control" id="card-number" data-bluesnap="ccn"></div>
+						<div id="card-logo" class="input-group-addon">
+							<img src="https://files.readme.io/d1a25b4-generic-card.png"
+								height="20px">
+						</div>
+					</div>
+					<span class="helper-text" id="card-help"></span>
+				</div>
+				<!--Hosted Payment Field for CC CVV-->
+				<div class="form-group col-xs-3">
+					<label for="cvv">CVV</label>
+					<div class="form-control" id="cvv" data-bluesnap="cvv"></div>
+					<span class="helper-text" id="cvv-help"></span>
+				</div>
+	
+				<!--Hosted Payment Field for CC EXP-->
+				<div class="form-group col-xs-6">
+					<label for="exp-date">Exp. (mm/yyyy)</label>
+					<div class="form-control" id="exp-date" data-bluesnap="exp"></div>
+					<span class="helper-text" id="exp-help"></span>
+				</div>
+				<div class="form-group col-xs-6">
+					<label for="cardholder-name">Postal Code</label> <input type="text"
+						class="form-control" id="cardholder-name"> <span
+						class="helper-text"></span>
+				</div>
+			
+				<button class="btn btn-raised btn-danger btn-lg col-md-4"
+					id="btnCreate" onclick="parent.onCancelNewPaymentBtnClick()">Cancel</button>	
+				<button class="btn btn-raised btn-info btn-lg col-md-4"
+					id="btnCreate" style="float:right" onclick="parent.btnCreatePaymentMethodClick()">Create</button>
+				
+			</div>
+		</div>
+	</div>
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+
+	<script type="text/javascript"
+		src="https://sandbox.bluesnap.com/services/hosted-payment-fields/v1.0/bluesnap.hpf.mini.js"></script>
+	<script>
+		//Initiates the Hosted Payment Fields script with your Hosted Payment Fields token and defines event handlers and styles
+
+		var bsObj = {
+			hostedPaymentFields : {
+				ccn : "ccn", // name cannot contain spaces or special characters 
+				cvv : "cvv", // name cannot contain spaces or special characters 
+				exp : "exp" // name cannot contain spaces or special characters 
+			},
+			onFieldEventHandler : {
+				onFocus : function(tagId) {
+					// Handle focus 
+					if (tagId == "ccn") {
+						$("#card-number").addClass("hosted-field-focus");
+					} else if (tagId == "exp") {
+						$("#exp-date").addClass("hosted-field-focus");
+					} else if (tagId == "cvv") {
+						$("#cvv").addClass("hosted-field-focus");
+					}
+				},
+				onBlur : function(tagId) {
+					// Handle blur  
+					if (tagId == "ccn") {
+						$("#card-number").removeClass("hosted-field-focus");
+					} else if (tagId == "exp") {
+						$("#exp-date").removeClass("hosted-field-focus");
+					} else if (tagId == "cvv") {
+						$("#cvv").removeClass("hosted-field-focus");
+					}
+				},
+				onError : function(tagId, errorCode) {
+					// Handle a change in validation
+					/* error codes:
+					    "001" --> "Please enter a valid credit card number";            
+					    "002" --> "Please enter the CVV/CVC of your card";          
+					    "003" --> "Please enter your credit card's expiration date";            
+					    "004" --> "Session expired please refresh page to continue";            
+					    "005" --> "Internal server error please try again later";           
+					 */
+
+					if (tagId == "ccn" && errorCode == "001") {
+						$("#card-help").text(
+								'Please enter a valid credit card number');
+					} else if (tagId == "exp" && errorCode == "003") {
+						$("#exp-help").text(
+								'Please enter the expiration date (mm/yyyy)');
+					} else if (tagId == "cvv" && errorCode == "002") {
+						$("#cvv-help").text(
+								'Please enter the CVV/CVC of your card');
+					}
+				},
+				onEmpty : function(tagId, errorCode) {
+					// Handle a change in validation  
+					if (tagId == "ccn" && errorCode == "001") {
+						$("#card-help").text('');
+						$('#card-logo img').attr("src", "https://files.readme.io/d1a25b4-generic-card.png");
+					} else if (tagId == "exp" && errorCode == "003") {
+						$("#exp-help").text('');
+					} else if (tagId == "cvv" && errorCode == "002") {
+						$("#cvv-help").text('');
+					}
+				},
+				onType : function(tagId, cardType) {
+					$('#card-logo img').attr('src', parent.setPaymentMethodImage(cardType));
+				},
+				onValid : function(tagId) {
+					// Handle a change in validation
+					if (tagId == "ccn") {
+						$("#card-number").removeClass("hosted-field-focus");
+						$("#card-help").text('');
+					} else if (tagId == "exp") {
+						$("#exp-date").removeClass("hosted-field-focus");
+						$("#exp-help").text('');
+					} else if (tagId == "cvv") {
+						$("#cvv").removeClass("hosted-field-focus");
+						$("#cvv-help").text('');
+					}
+				}
+			},
+			style : {
+				// Styling all Hosted Payment Field inputs
+				"input" : {
+					"font-size" : "14px",
+					"font-family" : "RobotoDraft,Roboto,Helvetica Neue,Helvetica,Arial,sans-serif",
+					"line-height" : "1.42857143",
+					"color" : "#555"
+				},
+
+				/*"#ccn": {
+				    
+				},*/
+
+				// Styling Hosted Payment Field input state
+				":focus" : {
+					"color" : "#555"
+				}
+			},
+			ccnPlaceHolder : "",
+			cvvPlaceHolder : "",
+			expPlaceHolder : ""
+		};
+		// Use jQuery ready() Method to run bluesnap.hostedPaymentFieldsCreation command after DOM is fully loaded
+		$(document)
+				.ready(
+						function() {
+							bluesnap
+									.hostedPaymentFieldsCreation(
+											"672d02b47ae64498c30ec3312ce57976bf171d86a1b75c805c212b715352639d_",
+											bsObj); //insert your Hosted Payment Fields token
+						});
+
+		// Submits the credit card, expiration date and CVV data to BlueSnap, where it will be associated with the Hosted Payment Fields token. On success, a card data object containing the card type and last four digits will be be passed to the function (cardData). You should add a function to do the final submit of the form after the card type and last four digits are received.
+
+		function do_when_clicking_submit_button() {
+			bluesnap.submitCredentials(function(cardData) {
+				console.log('the card type is ' + cardData.ccType
+						+ ' and last 4 digits are ' + cardData.last4Digits
+						+ ' and exp is ' + cardData.exp
+						+ ' after that I can call final submit');
+			});
+			/* submit the form
+			return true; */
+			return false; // don't submit the form
+		}
+		
+	</script>
+</body>
+
+</html>

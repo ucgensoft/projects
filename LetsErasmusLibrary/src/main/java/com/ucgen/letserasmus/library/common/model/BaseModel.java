@@ -7,6 +7,8 @@ public class BaseModel implements Serializable {
 
 	private static final long serialVersionUID = 1318396349636631033L;
 
+	private String ip;
+	
 	private String createdBy;
 	private Date createdDate;
 	private Date createdDateGmt;
@@ -14,6 +16,12 @@ public class BaseModel implements Serializable {
 	private Date modifiedDate;
 	private Date modifiedDateGmt;
 	
+	public String getIp() {
+		return ip;
+	}
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
 	public String getCreatedBy() {
 		return createdBy;
 	}
