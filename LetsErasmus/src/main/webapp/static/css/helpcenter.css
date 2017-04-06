@@ -515,6 +515,10 @@ dd {
 	right: 0
 }
 
+.anchor {
+   margin-top:-114px; /* this is again negative value of the height of your header */
+}
+
 .media-cover-dark:after {
 	background: #000;
 	opacity: 0.3;
