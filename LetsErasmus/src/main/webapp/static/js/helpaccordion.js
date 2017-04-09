@@ -12,14 +12,3 @@ for (i = 0; i < acc.length; i++) {
 		}
 	}
 };
-
-
-var _targetdiv = null;
-function showdiv(id) {
-    if(_targetdiv)
-        _targetdiv.style.display = 'none';
-    _targetdiv = document.getElementById('termsofservice');
-    _targetdiv.style.display = 'none';
-    _targetdiv = document.getElementById(id);
-    _targetdiv.style.display = 'block';
-};
