@@ -41,6 +41,11 @@ public class ApiPaymentController extends BaseApiController {
 		this.paymentService = paymentService;
 	}
 
+	@Autowired
+	public void setExtPaymentService(IExtPaymentService extPaymentService) {
+		this.extPaymentService = extPaymentService;
+	}
+
 	@RequestMapping(value = "/api/payment/gettoken", method = RequestMethod.GET)
     public ResponseEntity<ValueOperationResult<String>> getPaymentToken(@RequestParam("operationToken") String operationToken,
     		@RequestParam("operationId") Integer operationId, HttpSession session) {
