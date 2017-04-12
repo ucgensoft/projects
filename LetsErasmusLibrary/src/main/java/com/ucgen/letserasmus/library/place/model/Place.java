@@ -51,6 +51,8 @@ public class Place extends BaseModel {
 	private FileModel coverPhoto;
 	private List<FileModel> photoList;
 
+	private String coverPhotoUrl;
+	
 	private List<Review> reviewList;
 	
 	public Long getId() {
@@ -268,5 +270,11 @@ public class Place extends BaseModel {
 			this.photoList = new ArrayList<FileModel>();
 		}
 		this.photoList.add(photo);
+	}
+	public String getCoverPhotoUrl() {
+		return coverPhotoUrl;
+	}
+	public void setCoverPhotoUrl(String coverPhotoUrl) {
+		this.coverPhotoUrl = coverPhotoUrl;
 	}
 }

@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ucgen.common.exception.operation.OperationResultException;
 import com.ucgen.common.operationresult.OperationResult;
@@ -33,6 +35,7 @@ public class LogService implements ILogService {
 	}
 
 	@Override
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public OperationResult insertIntegrationLog(IntegrationLog integrationLog) {
 		return this.logDao.insertIntegrationLog(integrationLog);
 	}

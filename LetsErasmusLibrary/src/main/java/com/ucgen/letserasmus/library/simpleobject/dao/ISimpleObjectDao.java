@@ -14,4 +14,6 @@ public interface ISimpleObjectDao {
 	
 	List<Question> listQuestion(String groupTitle, String searchText);
 	
+	void updateCountry(List<String> countryList);
+	
 }

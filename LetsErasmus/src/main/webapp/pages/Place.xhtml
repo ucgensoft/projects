@@ -410,8 +410,8 @@
 									<div class="panel--no-border panel-title">
 										<h3 class="no-margin-padding">Let's talk about money :)</h3>
 									</div>
-									<div>
-										<div>
+									<div class="row space-top-4">
+										<div class="col-md-4">
 											<label class="h4 text-gray text-normal">
 												<span>Monthly Price</span>
 											</label>
@@ -421,9 +421,7 @@
 													data-validation-length="min4"></input>
 											</div>
 										</div>
-									</div>
-									<div class="space-top-2">
-										<div>
+										<div class="col-md-4">
 											<label class="h4 text-gray text-normal">
 												<span>Deposit Price</span>
 											</label>
@@ -432,8 +430,9 @@
 											</div>
 										</div>
 									</div>
-									<div class="space-top-2">
-										<div>
+									
+									<div class="row space-top-4">
+										<div class="col-md-4">
 											<label class="h4 text-gray text-normal">
 												<span>Currency</span>
 											</label>
@@ -446,34 +445,52 @@
 												</select>
 											</div>
 										</div>
-									</div>
-									<div class="space-top-4">
-										<div class="block-radio-button">
-											<label class="btn btn-block block-radio-button__panel">
-												<div class="row no-margin-h">
-													<div class="pull-left text-lead block-radio-button__label">
-														<span>Bills Included</span>
-													</div>
-													<div class="pull-right">
-														<input id="chbBillsIncluded" type="checkbox"
-															value="entire_home"
-															class="pointer-input" />
-													</div>
-												</div>
+										<div class="col-md-4">
+											<label class="h4 text-gray text-normal" style="visibility: hidden">
+												<span>Test</span>
 											</label>
+											<div class="block-radio-button">
+												<label class="btn btn-block block-radio-button__panel">
+													<div class="row no-margin-h">
+														<div class="pull-left text-lead block-radio-button__label">
+															<span>Bills Included</span>
+														</div>
+														<div class="pull-right">
+															<input id="chbBillsIncluded" type="checkbox"
+																value="entire_home"
+																class="pointer-input" />
+														</div>
+													</div>
+												</label>
+											</div>
+										</div>
+									</div>
+									<div class="row space-top-4" ng-if="ctrl.place == null &amp;&amp; !ctrl.hasPayout">
+										<label class="h4 text-gray text-normal">
+											<span style="padding-left: 12px">Country of your bank account</span>
+										</label>
+										<div class="col-md-8">
+											<div class="select select-block">
+												<select id="cmbBankCountry" class=""
+													ng-model="ctrl.dummyModel">
+													<option selected="" value="" disabled="">Select One</option>
+													<option ng-repeat="c in ctrl.countryList"
+														value="{{c.blueSnapCountryCode}}">{{c.name}}</option>
+												</select>
+											</div>
 										</div>
 									</div>
 									<div class="row space-top-4">
 										<label class="h4 text-gray text-normal">
-												<span  style="padding-left: 12px">Available Dates</span>
-											</label>
-										<div class="col-sm-12 col-md-10">
+											<span style="padding-left: 12px">Available Dates</span>
+										</label>
+										<div class="col-md-4">
 											<div>
 												<input type="text" id="txtStartDatePicker" class="form-input"
 													placeholder="Start date" value="" readonly="true" /> 
 											</div>
 										</div>
-										<div class="col-sm-12 col-md-10">
+										<div class="col-md-4">
 											<div>
 												<input type="text" id="txtEndDatePicker" class="form-input"
 													placeholder="End date" value="" readonly="true" /> 
@@ -484,13 +501,13 @@
 									<label class="h4 text-gray text-normal">
 												<span  style="padding-left: 12px">Stay Duration</span>
 											</label>
-										<div class="col-sm-12 col-md-10">
+										<div class="col-md-4">
 											<div>
 												 <input id="txtMinStay" type="number" min="0" class="form-input"
 												 	placeholder="Minimum Stay"></input>
 											</div>
 										</div>
-										<div class="col-sm-12 col-md-10">
+										<div class="col-md-4">
 											<div>
 												<input id="txtMaxStay" type="number" min="0" class="form-input"
 													placeholder="Maximum Stay"></input>
@@ -1032,13 +1049,10 @@
 				</div>
 			</div>			
 		</h:form>
-		<script
-			src="#{webApplication.urlPrefix}/static/js/angular/service/place_service.js"></script>
-		<script
-			src="#{webApplication.urlPrefix}/static/js/angular/service/enumeration_service.js"></script>
-		<script
-			src="#{webApplication.urlPrefix}/static/js/geocode/custom_marker.js"></script>
-		<script
-			src="#{webApplication.urlPrefix}/static/js/angular/controller/place_controller.js"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/service/payment_service.js"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/service/place_service.js"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/service/enumeration_service.js"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/geocode/custom_marker.js"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/controller/place_controller.js"></script>
 	</ui:define>
 </ui:composition>

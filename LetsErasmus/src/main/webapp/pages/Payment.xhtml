@@ -1,0 +1,228 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" 
+	template="/pages/Template.xhtml">
+	<ui:define name="head">
+		<link rel="stylesheet" type="text/css"
+			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css" />
+		<link rel="stylesheet" type="text/css"
+			href="#{webApplication.urlPrefix}/static/css/reservation.css" />
+		<script>
+		</script>
+	</ui:define>
+	<ui:define name="body">
+		<main id="site-content" role="main">
+			<div id="main-view"
+				class="main-view page-container-responsive space-top-md-6 space-md-6 space-top-lg-6 space-lg-6">
+				<div class="row">
+					<div
+						class="col-md-5 col-md-push-7 space-lg-2 space-md-2 side-summary-container">
+						<div>
+							<div class="summary-card col-center">
+								<div class="background-cover summary-card__payments-listing-image space-top-2"
+									style="background-image: url({{ctrl.reservation.place.coverPhotoUrl}});">
+								</div>
+								<div class="pull-right space-3 summary-card__host-profile-photo">
+									<div class="media-photo media-round">
+										<img class="summary-card__host-profile-photo-src"
+											src="{{ctrl.reservation.hostUser.profileImageUrl}}"
+											alt="{{ctrl.reservation.hostUser.firstName}}" />
+									</div>
+								</div>
+								<div class="panel">
+									<div class="panel-body">
+										<div class="text-muted space-2">
+											<span>Hosted by {{ctrl.reservation.hostUser.firstName}}</span>
+										</div>
+										<div class="sidebar-text-large">{{ctrl.reservation.title}}</div>
+										<div class="hide-sm text-muted">
+											<ul class="list-layout summary-card__additional-details-list">
+												<li>{{ctrl.getPlaceTypeDescription()}}</li>
+											</ul>
+											<div>{{ ctrl.getLocationText() }}</div>
+										</div>
+									</div>
+									<div class="panel-body hide-sm">
+										<div class="row row-condensed">
+											<div class="col-sm-5">
+												<div class="text-muted space-bottom-2">
+													<span>Check-in</span>
+												</div>
+												{{ctrl.reservation.startDate | date:'MMM dd, yyyy'}}
+											</div>
+											<div class="col-sm-2 summary-card__check-in-icon">
+												<i class="icon icon-chevron-right icon-light-gray"></i>
+											</div>
+											<div class="col-sm-5">
+												<div class="text-muted space-bottom-2">
+													<span>Checkout</span>
+												</div>
+												{{ctrl.reservation.endDate | date:'MMM dd, yyyy'}}
+											</div>
+										</div>
+									</div>
+									<div class="panel-body hide-sm">
+										<table class="summary-card__billing-table">
+											<tbody>
+												<tr class="price-item">
+													<th class="price-item__header" scope="row">
+														 {{ctrl.reservation.placePrice }} {{ctrl.getCurrencySymbol() }} x 1 month
+														<span aria-hidden="true">&nbsp;</span>
+													</th>
+													<td class="text-right price-item__price">
+														<div class="">
+															<span>{{ctrl.reservation.placePrice }} {{ctrl.getCurrencySymbol() }}</span>
+														</div>
+													</td>
+												</tr>
+												<tr class="price-item">
+													<th class="price-item__header" scope="row">
+														Service fee
+														<span aria-hidden="true">&nbsp;</span>
+														<span>
+															<span>
+																<i class="icon icon-question" aria-label="This helps us run our platform and offer services like 24/7 support on your trip."></i>
+															</span>
+														</span>
+													</th>
+													<td class="text-right price-item__price">
+														<div class="">
+															<span>{{ctrl.reservation.serviceFee }} {{ctrl.getCurrencySymbol() }}</span>
+														</div>
+													</td>
+												</tr>
+												
+											</tbody>
+										</table>
+									</div>
+									<div class="panel-body hide-sm">
+										<button
+											class="sidebar-text-large space-2 summary-card__total-price"
+											tabindex="-1">
+											<table class="summary-card__billing-table">
+												<tbody>
+													<tr class="price-item">
+														<th class="price-item__header" scope="row">
+															Total
+															<span aria-hidden="true">&nbsp;</span>
+														</th>
+														<td class="text-right price-item__price">
+															<div class="">
+																<span>{{ctrl.reservation.placePrice + ctrl.reservation.serviceFee }} {{ctrl.getCurrencySymbol()}}</span>
+																<sup>{{ctrl.getCurrencyAbbr()}}</sup>
+																<sup></sup>
+															</div>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</button>
+										<div class="cancellation-policy">
+											<span> Cancellation policy:
+												<span>
+													<a href="#{webApplication.urlPrefix}/pages/Policies.xhtml"
+														target="_blank"><span>Flexible</span>
+													</a>
+												</span>
+											</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="content-container"
+						class="summary-card-page-content col-md-7 col-md-pull-5 space-top-4">
+						<div class="accordion-panel">
+							<section> 
+								<header class="accordion-header text-lead accordion-header--below-collapsed">
+									<div class="row">
+										<div class="col-md-10 text-left">
+											<div class="h3 pull-left">Payment</div>
+										</div>
+										<div class="col-md-2 text-right header-edit-link"></div>
+									</div>
+									<div class="space-2"></div>
+								</header>
+							</section>						
+							<div id="payment-panel"
+								class="accordion-panel__content accordion-panel-overflow text-lead accordion-panel--expanded">
+								<div id="payment_selectors">
+									<div class="">
+										<div class="row space-4">
+											<div class="col-sm-12">
+												<span>You’ll only be charged if your request is
+													accepted by the host. They’ll have 24 hours to accept or
+													decline.</span>
+											</div>
+										</div>
+									</div>
+								</div>
+								<section id="sectionPaymentMethodList" class="panel">
+									<div class="panel-header">Card Information</div>
+									<iframe id="frameNewPayment" src="#{webApplication.urlPrefix}/static/html/NewPayment.html" 
+										style="width: 100%; min-height: 200px; height: 100%; border-width:0px; padding: 10px 10px 0px 10px;">	
+									</iframe>
+								</section>
+								<section id="sectionPaymentMethodList" class="panel space-top-4" style="">
+									<div class="panel-header">Card Holder Information</div>
+									<div style="padding: 10px;">
+										<div>
+											<div class="row space-4">
+												<div class="col-6">
+													<div>
+														<label for="credit-card-first-name">
+															<span id="">
+																<span>First Name</span>
+															</span>
+															<span class="clsRed">&nbsp;*</span>
+														</label>
+														<input type="text" class=""
+															aria-describedby="credit-card-first-name-field-error"
+															aria-invalid="false" aria-labelledby=""
+															aria-required="false" id="credit-card-first-name"
+															name="credit_card[first_name]" value="#{webApplication.user.firstName}" />
+													</div>
+												</div>
+												<div class="col-6">
+													<div>
+														<label for="credit-card-last-name">
+															<span id="">
+																<span>Last Name</span>
+															</span>
+															<span class="clsRed">&nbsp;*</span>
+														</label>
+														<input type="text" class=""
+															aria-describedby="credit-card-last-name-field-error"
+															aria-invalid="false" aria-labelledby=""
+															aria-required="false" id="credit-card-first-name"
+															name="credit_card[last_name]" value="#{webApplication.user.lastName}" />
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row space-4">
+											<div class="col-sm-12">
+												<button type="button" class="btn btn-primary btn-large" 
+													ng-click="ctrl.onBtnFinishClick()">
+													<span>Submit</span>
+												</button>
+											</div>
+										</div>
+									</div>
+								</section>
+								
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/service/common_service.js"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/service/payment_service.js"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/service/reservation_service.js"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/controller/payment_controller.js"></script>
+	</ui:define>
+</ui:composition>

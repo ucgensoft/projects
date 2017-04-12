@@ -6,13 +6,14 @@ App.controller('verificationCtrl', ['$scope', 'userService', 'commonService', '$
       self.dummyModel = null;
       var checkEmailTimer = null;
       var activeOperation = null;
-      
+      var operationToken = null;
       
       self.initialize = function() {
     	  
     	  activeOperation = getUriParam(EnmUriParam.OPERATION);
+    	  operationToken = getUriParam(EnmUriParam.OPERATION_TOKEN);
     	  
-    	  if (activeOperation != null 
+    	  if (operationToken != null && activeOperation != null 
     			  && (activeOperation == EnmOperation.CREATE_RESERVATION 
     					  || activeOperation == EnmOperation.CREATE_PLACE)) {
     		  if ($('#divVerifyMsisdn').length > 0) {
@@ -120,9 +121,9 @@ App.controller('verificationCtrl', ['$scope', 'userService', 'commonService', '$
   	self.getOperationUrl = function() {
   		var url = null;
 		if (activeOperation == EnmOperation.CREATE_RESERVATION) {
-			url = webApplicationUrlPrefix + '/pages/Reservation.xhtml';
+			url = webApplicationUrlPrefix + '/pages/Payment.xhtml?' + EnmUriParam.OPERATION_TOKEN + '=' + operationToken;
 		} else {
-			url = webApplicationUrlPrefix + '/pages/Place.xhtml';
+			url = webApplicationUrlPrefix + '/pages/Place.xhtml?' + EnmUriParam.OPERATION_TOKEN + '=' + operationToken;
 		}
 		return url;
   	};

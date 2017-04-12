@@ -1,5 +1,6 @@
 package com.ucgen.letserasmus.web.api.simpleobject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -15,11 +16,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ucgen.common.operationresult.EnmResultCode;
 import com.ucgen.common.operationresult.ListOperationResult;
+import com.ucgen.common.operationresult.OperationResult;
+import com.ucgen.common.operationresult.ValueOperationResult;
 import com.ucgen.common.util.CommonUtil;
 import com.ucgen.common.util.FileLogger;
+import com.ucgen.common.util.FileUtil;
 import com.ucgen.letserasmus.library.common.enumeration.EnmErrorCode;
 import com.ucgen.letserasmus.library.parameter.enumeration.EnmParameter;
 import com.ucgen.letserasmus.library.parameter.service.IParameterService;
+import com.ucgen.letserasmus.library.simpleobject.dao.ISimpleObjectDao;
 import com.ucgen.letserasmus.library.simpleobject.model.Country;
 import com.ucgen.letserasmus.library.simpleobject.model.Question;
 import com.ucgen.letserasmus.library.simpleobject.model.QuestionGroup;
@@ -33,6 +38,7 @@ public class ApiSimpleObjectController extends BaseApiController {
 
 	private ISimpleObjectService simpleObjectService;
 	private IParameterService parameterService;
+	private ISimpleObjectDao simpleObjectDao;
 	
 	@Autowired
 	public void setParameterService(IParameterService parameterService) {
@@ -44,6 +50,11 @@ public class ApiSimpleObjectController extends BaseApiController {
 		this.simpleObjectService = simpleObjectService;
 	}
 	
+	@Autowired
+	public void setSimpleObjectDao(ISimpleObjectDao simpleObjectDao) {
+		this.simpleObjectDao = simpleObjectDao;
+	}
+
 	@RequestMapping(value = "/api/simpleobject/listcountry", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public ResponseEntity<ListOperationResult<Country>> listCountry(HttpSession session) {
 		ListOperationResult<Country> operationResult = new ListOperationResult<Country>();
@@ -101,6 +112,43 @@ public class ApiSimpleObjectController extends BaseApiController {
 		}
 		
 		return new ResponseEntity<ListOperationResult<Question>>(operationResult, HttpStatus.OK);
+    }
+	
+	@RequestMapping(value = "/api/simpleobject/updatecountry", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public ResponseEntity<OperationResult> updateCountry(HttpSession session) {
+		OperationResult operationResult = new OperationResult();
+		try {
+			ValueOperationResult<List<String>> fileLinesResult = FileUtil.readFile("C:\\country_codes.txt");
+			
+			List<String> countryList = new ArrayList<String>();
+			
+			int counter = 1;
+			String countryInfo = "";
+			for (String line : fileLinesResult.getResultValue()) {
+				if (line != null && !line.trim().isEmpty()) {
+					if (!countryInfo.isEmpty()) {
+						countryInfo += ",";
+					}
+					countryInfo += line.trim();
+					if (counter == 2) {
+						countryList.add(countryInfo);
+						countryInfo = "";
+						counter = 1;
+					} else {
+						counter++;
+					}
+				}
+			}
+			this.simpleObjectDao.updateCountry(countryList);
+			
+			operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+		} catch (Exception e) {
+			FileLogger.log(Level.ERROR, "ApiSimpleObjectController-updateCountry()-Error: " + CommonUtil.getExceptionMessage(e));
+			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+			operationResult.setResultDesc(CommonUtil.getExceptionMessage(e));
+		}
+		
+		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);
     }
 	
 }

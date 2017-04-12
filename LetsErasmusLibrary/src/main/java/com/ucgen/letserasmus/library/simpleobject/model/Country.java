@@ -6,6 +6,7 @@ public class Country {
 	private String name;
 	private String code;
 	private String isoCode;
+	private String blueSnapCountryCode;
 	
 	public Long getId() {
 		return id;
@@ -30,6 +31,12 @@ public class Country {
 	}
 	public void setIsoCode(String isoCode) {
 		this.isoCode = isoCode;
+	}
+	public String getBlueSnapCountryCode() {
+		return blueSnapCountryCode;
+	}
+	public void setBlueSnapCountryCode(String blueSnapCountryCode) {
+		this.blueSnapCountryCode = blueSnapCountryCode;
 	}
 	
 }

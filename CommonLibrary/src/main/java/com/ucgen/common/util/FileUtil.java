@@ -158,7 +158,7 @@ public class FileUtil {
 			String line = br.readLine();
 			
 			lineList = new ArrayList<String>();
-			while (line != null && line.trim().length() > 0) {
+			while (line != null) {
 				lineList.add(line);
 				line = br.readLine();
 			}

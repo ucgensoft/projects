@@ -1,17 +1,31 @@
 package com.ucgen.letserasmus.web.api;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.ucgen.common.util.SecurityUtil;
+import com.ucgen.letserasmus.library.log.enumeration.EnmOperation;
+import com.ucgen.letserasmus.library.parameter.enumeration.EnmParameter;
+import com.ucgen.letserasmus.library.parameter.service.IParameterService;
 import com.ucgen.letserasmus.library.user.model.User;
 import com.ucgen.letserasmus.web.view.application.EnmSession;
 
 public abstract class BaseApiController {
 
+	protected IParameterService parameterService;
+	
+	@Autowired
+	public void setParameterService(IParameterService parameterService) {
+		this.parameterService = parameterService;
+	}
+	
 	public HttpSession getSession() {
 		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 		return attr.getRequest().getSession();
@@ -34,6 +48,51 @@ public abstract class BaseApiController {
 			return true;
 		} else {
 			return false;
+		}
+	}
+	
+	public <T> void saveOperationToken(String tokenId, EnmOperation operation, T object) {
+		HttpSession session = this.getSession();
+		if (session != null) {
+			Map<Integer, Map<String, Object>> sessionOperationTokenMap = null;
+			Object operationTokenMap = session.getAttribute(EnmSession.OPERATION_TOKEN.getId());
+			if (operationTokenMap == null) { 
+				Map<Integer, Map<String, Object>> newOperationTokenMap = new HashMap<Integer, Map<String, Object>>();
+				session.setAttribute(EnmSession.OPERATION_TOKEN.getId(), newOperationTokenMap);
+				sessionOperationTokenMap = newOperationTokenMap;
+			} else {
+				sessionOperationTokenMap = (HashMap<Integer, Map<String, Object>>) operationTokenMap;
+			}
+			
+			Map<String, Object> tokenMap = null;
+			if (!sessionOperationTokenMap.containsKey(operation.getId())) {
+				tokenMap = new HashMap<String, Object>();
+				tokenMap.put(tokenId, object);
+				sessionOperationTokenMap.put(operation.getId(), tokenMap);
+			} else {
+				tokenMap = sessionOperationTokenMap.get(operation.getId());
+				tokenMap.put(tokenId, object);
+			}
+		}
+	}
+	
+	public <T> T getObjectForToken(String tokenId, Integer operationId) {
+		HttpSession session = this.getSession();
+		if (session != null) {
+			Object operationTokenMap = session.getAttribute(EnmSession.OPERATION_TOKEN.getId());
+			if (operationTokenMap != null) {
+				Map<Integer, Map<String, Object>> sessionOperationTokenMap = (HashMap<Integer, Map<String, Object>>) operationTokenMap;
+				if (sessionOperationTokenMap.containsKey(operationId) 
+						&& sessionOperationTokenMap.get(operationId).containsKey(tokenId)) {
+					return (T) sessionOperationTokenMap.get(operationId).get(tokenId);
+				} else {
+					return null;
+				}
+			} else {
+				return null;
+			}
+		} else {
+			return null;
 		}
 	}
 	
@@ -83,6 +142,11 @@ public abstract class BaseApiController {
 		} else {
 			return null;
 		}
+	}
+	
+	public String generateOperationToken() {
+		String tokenLength = this.parameterService.getParameterValue(EnmParameter.OPERATIN_TOKEN_LENGTH.getId());
+		return SecurityUtil.generateToken(Integer.valueOf(tokenLength));
 	}
 	
 }

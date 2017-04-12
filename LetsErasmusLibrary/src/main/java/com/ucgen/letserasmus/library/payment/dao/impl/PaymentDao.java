@@ -15,7 +15,9 @@ import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.letserasmus.library.payment.dao.IPaymentDao;
 import com.ucgen.letserasmus.library.payment.dao.IPaymentDaoConstants;
 import com.ucgen.letserasmus.library.payment.dao.PaymentMethodRowMapper;
+import com.ucgen.letserasmus.library.payment.dao.PayoutMethodRowMapper;
 import com.ucgen.letserasmus.library.payment.model.PaymentMethod;
+import com.ucgen.letserasmus.library.payment.model.PayoutMethod;
 
 @Repository
 public class PaymentDao extends JdbcDaoSupport implements IPaymentDao, IPaymentDaoConstants {
@@ -93,5 +95,66 @@ public class PaymentDao extends JdbcDaoSupport implements IPaymentDao, IPaymentD
 				
 		return paymentMethodList;
 	}
+
+	@Override
+	public List<PayoutMethod> listPayoutMethod(PayoutMethod payoutMethod) {
+		StringBuilder sqlBuilder = new StringBuilder(LIST_PAYOUT_METHOD_SQL);
+		List<Object> argList = new ArrayList<Object>();
 		
+		PayoutMethodRowMapper payoutMethodRowMapper = new PayoutMethodRowMapper(null);
+		
+		if (payoutMethod != null) {
+			if (payoutMethod.getId() != null) {
+				sqlBuilder.append(" AND " + payoutMethodRowMapper.getCriteriaColumnName(PayoutMethodRowMapper.COL_ID) + " = ? ");
+				argList.add(payoutMethod.getId());
+			}
+			if (payoutMethod.getUserId() != null) {
+				sqlBuilder.append(" AND " + payoutMethodRowMapper.getCriteriaColumnName(PayoutMethodRowMapper.COL_USER_ID) + " = ? ");
+				argList.add(payoutMethod.getUserId());
+			}
+			if (payoutMethod.getBlueSnapVendorId() != null) {
+				sqlBuilder.append(" AND " + payoutMethodRowMapper.getCriteriaColumnName(PayoutMethodRowMapper.COL_BLUESNAP_VENDOR_ID) + " = ? ");
+				argList.add(payoutMethod.getBlueSnapVendorId());
+			}
+			
+		}
+				
+		List<PayoutMethod> payoutMethodList = super.getJdbcTemplate().query(sqlBuilder.toString(), argList.toArray(), payoutMethodRowMapper);		
+				
+		return payoutMethodList;
+	}
+
+	@Override
+	public PayoutMethod getPayoutMethod(PayoutMethod payoutMethod) {
+		List<PayoutMethod> payoutMethodList = this.listPayoutMethod(payoutMethod);
+		if (payoutMethodList != null && payoutMethodList.size() > 0) {
+			return payoutMethodList.get(0);
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public OperationResult insertPayoutMethod(PayoutMethod payoutMethod) {
+OperationResult operationResult = new OperationResult();
+		
+		List<Object> argList = new ArrayList<Object>();
+				
+		argList.add(payoutMethod.getUserId());
+		argList.add(payoutMethod.getEmail());
+		argList.add(payoutMethod.getBlueSnapCountryCode());
+		argList.add(payoutMethod.getBlueSnapVendorId());
+		
+		argList.add(payoutMethod.getCreatedBy());
+		argList.add(payoutMethod.getCreatedDate());
+		
+		this.getJdbcTemplate().update(INSERT_PAYOUT_METHOD_SQL, argList.toArray());
+		
+		payoutMethod.setId(this.utilityDao.getLastIncrementId());
+				
+		operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+						
+		return operationResult;
+	}
+	
 }

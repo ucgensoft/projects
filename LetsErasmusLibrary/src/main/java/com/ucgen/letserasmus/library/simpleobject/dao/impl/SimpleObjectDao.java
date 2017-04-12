@@ -68,4 +68,14 @@ public class SimpleObjectDao extends JdbcDaoSupport implements ISimpleObjectDao 
 		return this.getJdbcTemplate().query(listQuestionBuilder.toString(), argList.toArray(), new QuestionRowMapper());
 	}
 
+	@Override
+	public void updateCountry(List<String> countryList) {
+		for (String string : countryList) {
+			String[] countryParts = string.split(",");
+			this.getJdbcTemplate().update("UPDATE COUNTRY SET BLUESNAP_COUNTRY_CODE = ? WHERE UPPER(NAME) = UPPER(?)", 
+					new Object[] { countryParts[0], countryParts[1] });
+		}
+		
+	}
+
 }

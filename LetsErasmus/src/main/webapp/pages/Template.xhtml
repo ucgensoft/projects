@@ -57,6 +57,7 @@
 			var loginUserId = '#{webApplication.user == null ? '' : webApplication.user.id}';
 			var globalRedirectUrl = null;
 			var globalIsUserVerified = #{webApplication.isActiveUserVerified()};
+			var operationToken = null;
 		</script>
 
 		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>

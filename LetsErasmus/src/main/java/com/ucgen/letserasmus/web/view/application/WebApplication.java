@@ -224,8 +224,8 @@ public class WebApplication extends BaseController {
 				return "trustAndverificationCtrl";
 			} else if (requestUrl.contains("PAGES/VERIFICATION.XHTML")) {
 				return "verificationCtrl";
-			} else if (requestUrl.contains("PAGES/RESERVATION.XHTML")) {
-				return "reservationCtrl";
+			} else if (requestUrl.contains("PAGES/PAYMENT.XHTML")) {
+				return "paymentCtrl";
 			} else if (requestUrl.contains("PAGES/DASHBOARD/MESSAGELIST.XHTML")) {
 				return "messageListCtrl";
 			} else if (requestUrl.contains("PAGES/DASHBOARD/CONVERSATION.XHTML")) {

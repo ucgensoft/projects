@@ -4,8 +4,9 @@ import java.util.Date;
 import java.util.List;
 
 import com.ucgen.letserasmus.library.review.model.Review;
+import com.ucgen.letserasmus.web.api.BaseUiModel;
 
-public class UiReservation {
+public class UiReservation extends BaseUiModel {
 
 	private Long id;
 	private Long placeId;

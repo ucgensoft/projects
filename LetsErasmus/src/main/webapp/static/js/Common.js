@@ -43,7 +43,8 @@ var EnmUriParam = {
 	LOCATION_ID : 'locationId',
 	PLACE_ID : 'placeId',
 	USER_ID : 'userId',
-	OPERATION : 'op'
+	OPERATION : 'op',
+	OPERATION_TOKEN : 'opToken'
 };
 
 var EnmOperation = {
@@ -263,6 +264,16 @@ function getCurrencySymbol(currencyId) {
 		return "$";
 	} else if (currencyId == 3) {
 		return "€";
+	}
+}
+
+function getCurrencyAbbr(currencyId) {
+	if (currencyId == 1) {
+		return "TRY";
+	} else if (currencyId == 2) {
+		return "USD";
+	} else if (currencyId == 3) {
+		return "EUR";
 	}
 }
 

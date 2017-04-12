@@ -28,6 +28,8 @@ import com.ucgen.common.util.FileLogger;
 import com.ucgen.letserasmus.library.common.enumeration.EnmBoolStatus;
 import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
 import com.ucgen.letserasmus.library.common.enumeration.EnmErrorCode;
+import com.ucgen.letserasmus.library.common.enumeration.EnmSize;
+import com.ucgen.letserasmus.library.location.model.Location;
 import com.ucgen.letserasmus.library.log.enumeration.EnmOperation;
 import com.ucgen.letserasmus.library.log.enumeration.EnmTransaction;
 import com.ucgen.letserasmus.library.log.model.TransactionLog;
@@ -35,7 +37,6 @@ import com.ucgen.letserasmus.library.message.enumeration.EnmMessageStatus;
 import com.ucgen.letserasmus.library.message.model.Message;
 import com.ucgen.letserasmus.library.message.model.MessageThread;
 import com.ucgen.letserasmus.library.parameter.enumeration.EnmParameter;
-import com.ucgen.letserasmus.library.parameter.service.IParameterService;
 import com.ucgen.letserasmus.library.place.model.Place;
 import com.ucgen.letserasmus.library.place.service.IPlaceService;
 import com.ucgen.letserasmus.library.reservation.enumeration.EnmReservationStatus;
@@ -44,7 +45,9 @@ import com.ucgen.letserasmus.library.reservation.service.IReservationService;
 import com.ucgen.letserasmus.library.review.model.Review;
 import com.ucgen.letserasmus.library.review.service.IReviewService;
 import com.ucgen.letserasmus.library.user.model.User;
+import com.ucgen.letserasmus.library.user.service.IUserService;
 import com.ucgen.letserasmus.web.api.BaseApiController;
+import com.ucgen.letserasmus.web.enumeration.EnmUriParameter;
 import com.ucgen.letserasmus.web.view.application.AppConstants;
 import com.ucgen.letserasmus.web.view.application.AppUtil;
 import com.ucgen.letserasmus.web.view.application.EnmSession;
@@ -56,19 +59,21 @@ public class ApiReservationController extends BaseApiController {
 	private IReservationService reservationService;
 	private IPlaceService placeService;
 	private WebApplication webApplication;
-	private IParameterService parameterService;
 	private IReviewService reviewService;
+	private IUserService userService;
 	
 	@Autowired
 	public void setReviewService(IReviewService reviewService) {
 		this.reviewService = reviewService;
 	}
-
-	@Autowired
-	public void setParameterService(IParameterService parameterService) {
-		this.parameterService = parameterService;
-	}
 	
+	@Autowired
+	public void setUserService(IUserService userService) {
+		this.userService = userService;
+	}
+
+
+
 	@Autowired
 	public void setReservationService(IReservationService reservationService) {
 		this.reservationService = reservationService;
@@ -143,18 +148,23 @@ public class ApiReservationController extends BaseApiController {
 					
 					reservation.setMessageThread(messageThread);
 					
-					super.getSession().removeAttribute(EnmSession.ACTIVE_RESERVATION.getId());
-					super.getSession().setAttribute(EnmSession.ACTIVE_RESERVATION.getId(), reservation);
+					String operationToken = this.generateOperationToken();
+					
+					this.saveOperationToken(operationToken, EnmOperation.CREATE_RESERVATION, reservation);
 					
 					operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 					String nextUrl = null;
-							
+					
+					String uriParams = EnmUriParameter.OPERATION_TOKEN.getName() + "=" + operationToken 
+							+ "&" + EnmUriParameter.OPERATION.getName() + "=" + EnmOperation.CREATE_RESERVATION.getId();
+					
 					if (user.getMsisdnVerified().equals(EnmBoolStatus.YES.getId()) 
 							&& user.getEmailVerified().equals(EnmBoolStatus.YES.getId())) {
-						nextUrl = this.webApplication.getUrlPrefix() + "/pages/Reservation.xhtml";
+						nextUrl = this.webApplication.getUrlPrefix() + "/pages/Payment.xhtml";
 					} else {
 						nextUrl = this.webApplication.getUrlPrefix() + "/pages/Verification.xhtml";
 					}
+					nextUrl = nextUrl + "?" + uriParams;
 					operationResult.setResultValue(nextUrl);
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
@@ -180,48 +190,41 @@ public class ApiReservationController extends BaseApiController {
 		try {
 			User user = super.getSessionUser(session);
 			if (user != null) {
-				Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
-				if (activeOperation != null && activeOperation.equals(EnmOperation.FINISH_RESERVATION)) {
-					Object objReservation = super.getSession().getAttribute(EnmSession.ACTIVE_RESERVATION.getId());
-					if (objReservation != null) {
-						
-						Reservation reservation = (Reservation) objReservation;
-						
-						Date createdDate = new Date();
-						String createdBy = user.getFullName();
-						
-						reservation.setStatus(EnmReservationStatus.PENDING.getId());
-						
-						reservation.setCreatedBy(createdBy);
-						reservation.setCreatedDate(createdDate);
-						
-						MessageThread messageThread = reservation.getMessageThread();
-						
-						messageThread.setCreatedBy(createdBy);
-						messageThread.setCreatedDate(createdDate);
-						
-						if (reservation.getMessageThread().getMessageList() != null 
-								&& reservation.getMessageThread().getMessageList().size() > 0) {
-							Message message = reservation.getMessageThread().getMessageList().get(0);
-							message.setCreatedDate(createdDate);
-							message.setMessageText(uiReservation.getMessageText());
-						}
-						
-						OperationResult createResult = this.reservationService.insert(reservation);
-						
-						if (!OperationResult.isResultSucces(createResult)) {
-							FileLogger.log(Level.ERROR, "Reservation could not be saved. UserId:" + user.getId() + ", Error:" + OperationResult.getResultDesc(createResult));
-							createResult.setResultDesc("Reservation could not be saved. Please try again later!");
-						}
-						operationResult = createResult;
-					} else {
-						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-						operationResult.setResultDesc(AppConstants.PLACE_LIST_NOT_FOUND);
-					}	
+				if (uiReservation != null && uiReservation.getOperationToken() != null) {
+					
+					Reservation reservation = this.getObjectForToken(uiReservation.getOperationToken(), EnmOperation.CREATE_RESERVATION.getId());
+					
+					Date createdDate = new Date();
+					String createdBy = user.getFullName();
+					
+					reservation.setStatus(EnmReservationStatus.PENDING.getId());
+					
+					reservation.setCreatedBy(createdBy);
+					reservation.setCreatedDate(createdDate);
+					
+					MessageThread messageThread = reservation.getMessageThread();
+					
+					messageThread.setCreatedBy(createdBy);
+					messageThread.setCreatedDate(createdDate);
+					
+					if (reservation.getMessageThread().getMessageList() != null 
+							&& reservation.getMessageThread().getMessageList().size() > 0) {
+						Message message = reservation.getMessageThread().getMessageList().get(0);
+						message.setCreatedDate(createdDate);
+						message.setMessageText(uiReservation.getMessageText());
+					}
+					
+					OperationResult createResult = this.reservationService.insert(reservation);
+					
+					if (!OperationResult.isResultSucces(createResult)) {
+						FileLogger.log(Level.ERROR, "Reservation could not be saved. UserId:" + user.getId() + ", Error:" + OperationResult.getResultDesc(createResult));
+						createResult.setResultDesc("Reservation could not be saved. Please try again later!");
+					}
+					operationResult = createResult;
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 					operationResult.setResultDesc(AppConstants.UNAUTHORIZED_OPERATION);
-				}
+				}	
 			} else {
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
@@ -655,6 +658,74 @@ public class ApiReservationController extends BaseApiController {
 			operationResult.setResultDesc(AppConstants.CREATE_OPERATION_FAIL);
 		}
 		return new ResponseEntity<ValueOperationResult<String>>(operationResult, HttpStatus.OK);
+    }
+	
+	@RequestMapping(value = "/api/reservation/gettokenobject", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public ResponseEntity<ValueOperationResult<Reservation>> getTokenObject(@RequestParam("operationToken") String operationToken,
+    		@RequestParam("operationId") Integer operationId, HttpSession session) {
+		ValueOperationResult<Reservation> operationResult = new ValueOperationResult<Reservation>();		
+		try {
+			User user = this.getSessionUser(session);
+			if (user != null) {
+				if (operationToken != null && !operationToken.trim().isEmpty()
+						&& operationId != null) {
+					Reservation reservation = this.getObjectForToken(operationToken, operationId);
+					if (reservation != null) {
+						User hostUser = this.userService.getUser(new User(reservation.getHostUserId()));
+						
+						User responseHostUser = new User();
+						String profileImageUrl = this.webApplication.getUserPhotoUrl(hostUser.getId(), hostUser.getProfilePhotoId(), EnmSize.SMALL.getValue());
+						
+						responseHostUser.setFirstName(hostUser.getFirstName());
+						responseHostUser.setProfileImageUrl(profileImageUrl);
+						
+						ValueOperationResult<Place> placeResult = this.placeService.getPlace(reservation.getPlaceId());
+						
+						Place place = placeResult.getResultValue();
+						String coverPhotoUrl = this.webApplication.getPlacePhotoUrl(place.getId(), place.getCoverPhotoId(), EnmSize.SMALL.getValue());
+						
+						Place responsePlace = new Place();
+						responsePlace.setTitle(place.getTitle());
+						responsePlace.setPlaceTypeId(place.getPlaceTypeId());
+						responsePlace.setCoverPhotoUrl(coverPhotoUrl);
+						
+						Location responseLocation = new Location();
+						responseLocation.setCountry(place.getLocation().getCountry());
+						responseLocation.setState(place.getLocation().getState());
+												
+						responsePlace.setLocation(responseLocation);
+						
+						Reservation responseReservation = new Reservation();
+						responseReservation.setPlacePrice(reservation.getPlacePrice());
+						responseReservation.setServiceFee(reservation.getServiceFee());
+						responseReservation.setStartDate(reservation.getStartDate());
+						responseReservation.setEndDate(reservation.getEndDate());
+						responseReservation.setCurrencyId(reservation.getCurrencyId());
+						
+						responseReservation.setPlace(responsePlace);
+						responseReservation.setHostUser(responseHostUser);
+						
+						operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+						operationResult.setResultValue(responseReservation);
+					} else {
+						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+						operationResult.setResultDesc(AppConstants.INVALID_OPERATION_TOKEN);
+					}
+				} else {
+					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+					operationResult.setResultDesc(AppConstants.MISSING_MANDATORY_PARAM);
+				}
+			} else {
+				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
+			}
+		} catch (Exception e) {
+			FileLogger.log(Level.ERROR, "BaseApiController-getTokenObject()-Error: " + CommonUtil.getExceptionMessage(e));
+			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
+			operationResult.setResultDesc(AppConstants.OPERATION_FAIL);
+		}
+		return new ResponseEntity<ValueOperationResult<Reservation>>(operationResult, HttpStatus.OK);
     }
 	
 }

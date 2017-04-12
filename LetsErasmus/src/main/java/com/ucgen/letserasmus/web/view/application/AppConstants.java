@@ -108,5 +108,11 @@ public interface AppConstants {
 	
 	String PAYMENT_METHOD_DOUBLE = "You have already defined this payment method!";
 	
+	String INVALID_OPERATION_TOKEN = "Invalid operation token!";
+	
+	String USER_ALREADY_HAVE_PAYOUT_METHOD = "User payout method already defined!";
+	
+	String BLUESNAP_CREATE_VENDOR_FAILES = "Bluesnap vendor creation failed!";
+	
 }
 

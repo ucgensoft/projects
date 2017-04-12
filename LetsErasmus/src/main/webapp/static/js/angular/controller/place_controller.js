@@ -1,17 +1,21 @@
-App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonService', 'enumerationService', 
-                             function($scope, $controller, placeService, commonService, enumerationService) {
+App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonService', 'enumerationService', 'paymentService', 
+                             function($scope, $controller, placeService, commonService, enumerationService, paymentService) {
       var self = this;
       
       var pageMode = null;
       
+      self.dummyModel = null;
+      
       var marker = null;
       var map = null;
       var autocomplete = null;
+      self.countryList = [];
       self.place = null;
       self.photoList = [];
       self.amentiesList = [];
       self.safetyAmentiesList = [];
       self.ruleList = [];
+      self.hasPayout = false;
       
       var acceptedPhotoTypes = {
       	  	'image/png' : true,
@@ -54,6 +58,14 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
 						console.error('Error while fetching Portfolio');
 					}
 			      );
+	    	  } else {
+	    		  paymentService.hasPayoutMethod(function(hasPayout) {
+	    			  self.hasPayout = hasPayout;
+	    		  });
+	    		  
+	    		  commonService.listCountry(function(countryList) {
+	    			  self.countryList = countryList;
+	    		  });
 	    	  }
 	    	  
 	    	  enumerationService.listEnumeration(null).then(function(operationResult) {
@@ -433,6 +445,8 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     		  } else if ($("#txtStartDatePicker").datepicker("getDate") == ''
     			  || $("#txtEndDatePicker").datepicker("getDate") == '') {
     			  isValid = false;
+    		  } else if ($("#cmbBankCountry")[0].selectedIndex == 0) {
+    			  isValid = false;
     		  }
     	  } 
 		  
@@ -530,8 +544,6 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     	  }
     	  newPlace.currencyId = $("#cmbCurrencyId").val();
     	  newPlace.billsInclude = ($("#chbBillsIncluded")[0].checked ? 'Y' : 'N');
-    	  //newPlace.startDate = $.datepicker.formatDate('d.m.yy', $("#txtStartDatePicker").datepicker("getDate"));
-    	  //newPlace.endDate = $.datepicker.formatDate('d.m.yy', $("#txtEndDatePicker").datepicker("getDate"));
     	  newPlace.startDate = $("#txtStartDatePicker").datepicker("getDate");
     	  newPlace.endDate = $("#txtEndDatePicker").datepicker("getDate");
     	  newPlace.minimumStay = $("#txtMinStay").val();
@@ -589,15 +601,30 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     	  newPlace.description = $("#txtDescription").val()
     	  
     	  if (self.place == null) {
-    		  placeService.savePlace(newPlace, self.photoList,
-    					function(isSuccess) {
-    						if (isSuccess) {
-    							DialogUtil.info('Success', 'Congratulations! Your place is saved successfully!', 'OK', function() {
-    								document.location.href = webApplicationUrlPrefix + '/pages/dashboard/Listings.xhtml';
-    							});
-    						}
-    					}
-    		  );
+    		  
+    		  tmpSavePlace = function() {
+    			  placeService.savePlace(newPlace, self.photoList,
+  	  					function(isSuccess) {
+  	  						if (isSuccess) {
+  	  							DialogUtil.info('Success', 'Congratulations! Your place is saved successfully!', 'OK', function() {
+  	  								document.location.href = webApplicationUrlPrefix + '/pages/dashboard/Listings.xhtml';
+  	  							});
+  	  						}
+  	  					}
+      			  );
+    		  }
+    			  
+    		  var bankCountryCode = $("#cmbBankCountry").val();
+    		  
+    		  if (!self.hasPayout) {
+    			  paymentService.createPayoutMethod(bankCountryCode, function(result) {
+        			  if (result) {
+        				  tmpSavePlace();
+        			  }
+        		  });
+    		  } else {
+    			  tmpSavePlace();
+    		  }
     	  } else {
     		  placeService.updatePlace(newPlace, self.photoList,
   					function(isSuccess) {

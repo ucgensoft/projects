@@ -66,9 +66,14 @@
 	
 						</div>
 					</section>
-					<iframe id="frameNewPayment" src="#{webApplication.urlPrefix}/static/html/NewPayment.html" class="hidden-force" 
-						style="width: 440px; height: 500px; border-width:0px; padding: 0px;">	
-					</iframe>
+					<div id="divNewPayment" class="hidden-force">
+						<form method="POST" action="https://sandbox.bluesnap.com/services/2/payment-fields-tokens">
+							<button type="submit">Submit</button>
+						</form>
+						<iframe id="frameNewPayment" src="#{webApplication.urlPrefix}/static/html/NewPayment.html" 
+							style="width: 440px; height: 500px; border-width:0px; padding: 0px;">	
+						</iframe>
+					</div>
 				</div>
 			</div>
 			</div>
