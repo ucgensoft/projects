@@ -66,14 +66,11 @@ label {
 				<span class="helper-text" id="exp-help"></span>
 			</div>
 			<div class="form-group col-xs-6">
-				<label for="cardholder-name">Postal Code</label> 
+				<label for="txtZipCode">Postal Code</label> 
 				<span style="color:red">&nbsp;*</span>
-				<input type="text" class="form-control" id="cardholder-name" /> 
+				<input type="text" class="form-control" id="txtZipCode" /> 
 				<span class="helper-text"></span>
 			</div>
-		
-			<button class="btn btn-raised btn-info btn-lg col-md-4" style="display: none"
-				id="btnCreate" onclick="submitPayment()">Create</button>
 		</div>
 	</div>
 	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -161,21 +158,29 @@ label {
 		};
 
 		$(document).ready(
-				function() {
-					parent.getPaymentToken(function(paymentToken) {
-						bluesnap.hostedPaymentFieldsCreation(paymentToken, bsObj);
-					});
+			function() {
+				parent.getPaymentToken(function(paymentToken) {
+					bluesnap.hostedPaymentFieldsCreation(paymentToken, bsObj);
 				});
+				parent.addListener(submitPayment, validateForm);
+			}
+		);
 
-		function submitPayment() {
+		function validateForm() {
+			var zipCode = $('#txtZipCode').val();
+			if (zipCode == '') {
+				return false;
+			} else {
+				return true;
+			}
+		};
+		
+		function submitPayment(callBack) {
 			bluesnap.submitCredentials(function(cardData) {
-				console.log('the card type is ' + cardData.ccType
-						+ ' and last 4 digits are ' + cardData.last4Digits
-						+ ' and exp is ' + cardData.exp
-						+ ' after that I can call final submit');
+				callBack($('#txtZipCode').val());
 			});
 			return false;
-		}
+		};
 		
 		function getPaymentMethodImage(cardType) {
 			var imageUrl = null;

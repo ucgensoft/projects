@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 
+import com.ucgen.common.operationresult.EnmResultCode;
+import com.ucgen.common.operationresult.OperationResult;
+import com.ucgen.letserasmus.library.common.enumeration.EnmErrorCode;
 import com.ucgen.letserasmus.library.simpleobject.dao.CountryRowMapper;
 import com.ucgen.letserasmus.library.simpleobject.dao.ISimpleObjectDao;
 import com.ucgen.letserasmus.library.simpleobject.dao.QuestionGroupRowMapper;
@@ -23,6 +26,8 @@ public class SimpleObjectDao extends JdbcDaoSupport implements ISimpleObjectDao 
 	private static final String LIST_COUNTRY_SQL = "SELECT * FROM COUNTRY";
 	private static final String LIST_QUESTION_GROUP_SQL = "SELECT DISTINCT Q_GROUP, GROUP_ORDER FROM HELP ORDER BY GROUP_ORDER";
 	private static final String LIST_QUESTION_SQL = "SELECT * FROM HELP WHERE 1=1";
+	private static final String GET_TRANSACTION_ID_SQL = "SELECT COUNT(1) FROM TRANSACTION_ID WHERE ID = ?";
+	private static final String INSERT_TRANSACTION_ID_SQL = "INSERT INTO TRANSACTION_ID (ID) VALUES(?)";
 	
 	@Autowired
 	public SimpleObjectDao(DataSource dataSource) {
@@ -76,6 +81,20 @@ public class SimpleObjectDao extends JdbcDaoSupport implements ISimpleObjectDao 
 					new Object[] { countryParts[0], countryParts[1] });
 		}
 		
+	}
+
+	@Override
+	public OperationResult insertTransactionId(String transactionId) {
+		OperationResult operationResult = new OperationResult();
+		Integer count = this.getJdbcTemplate().queryForObject(GET_TRANSACTION_ID_SQL, new Object[] { transactionId }, Integer.class);
+		if (count == 0) {
+			this.getJdbcTemplate().update(INSERT_TRANSACTION_ID_SQL, new Object[] { transactionId });
+			operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+		} else {
+			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+			operationResult.setErrorCode(EnmErrorCode.ALREADY_EXIST.getId());
+		}
+		return operationResult;
 	}
 
 }

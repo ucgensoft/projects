@@ -24,12 +24,12 @@ public class SecurityUtil {
 	public static String generateUUID() {
 		return UUID.randomUUID().toString().replace("-", "");
 	}
-	
-	public static String generateToken(int length) {
+		
+	public static String generateAlphaNumericCode(int length) {
 		return RandomStringUtils.random( length, 0, alphaNumericSimpleCharacters.length-1, false, false, alphaNumericSimpleCharacters, new SecureRandom());
 	}
 	
-	public static String generateAlphaNumericCode(int length) {
+	public static String generateAlphaNumericCodeComplex(int length) {
 		return RandomStringUtils.random( length, 0, alphaNumericComplexCharacters.length-1, false, false, alphaNumericComplexCharacters, new SecureRandom());
 	}
 	

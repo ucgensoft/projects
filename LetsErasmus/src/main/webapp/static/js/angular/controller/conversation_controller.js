@@ -4,6 +4,11 @@ App.controller('conversationCtrl', ['$scope', '$controller', 'messageService', '
       self.messageThread = null;
       
       self.initialize = function() {
+    	  
+    	  if (loginUserId != '') {
+    		  listComplaint(EnmEntityType.MESSAGE);
+    	  }
+    	  
     	  var messageThreadId = getUriParam('threadId');
     	  if (messageThreadId) {
     		  self.getMessageThread(messageThreadId);
@@ -79,9 +84,21 @@ App.controller('conversationCtrl', ['$scope', '$controller', 'messageService', '
 		 }
 	 };
   	
-  	self.getCurrencySymbol = function(currencyId) {
-  		return getCurrencySymbol(currencyId);
+  	self.getCurrencySymbol = function() {
+  		if (self.messageThread != null) {
+  			return getCurrencySymbol(self.messageThread.currencyId);
+  		}
   	};
+  	
+  	self.getTotalLabel = function() {
+  		if (self.messageThread != null) {
+  			if (self.messageThread.hostUserId == loginUserId) {
+  				 return "You earn";
+  			 } else {
+  				 return "Total";
+  			 }
+  		}
+	 };
   	
   	self.sendMessage = function() {
   		var messageText = StringUtil.trim($('#txtMessage').val());
@@ -184,6 +201,14 @@ App.controller('conversationCtrl', ['$scope', '$controller', 'messageService', '
 	  			}
 	  		});
   	};
+  	
+  	self.openComplaintWindow = function(messageId) {
+  		openComplaintWindow(EnmEntityType.MESSAGE, messageId);
+    };
+    
+    self.isMessageComplainted = function(messageId) {
+    	return isEntityComplainted(EnmEntityType.MESSAGE, messageId); 
+    };
   	
     self.initialize();
       

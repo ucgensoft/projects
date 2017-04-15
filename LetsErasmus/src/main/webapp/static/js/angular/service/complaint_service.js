@@ -3,16 +3,15 @@
 App.factory('complaintService', ['$http', '$q', function($http, $q){
 
 	return {
-		listComplaint : function(callBack) {
+		listComplaint : function(entityType, callBack) {
 			var config = {
+				params : {entityType : entityType},
 				headers : {
 					'Accept' : 'application/json'
 				}
 			};
 			
-			NProgress.start(3000, 5);
 			return $http.get(webApplicationUrlPrefix + '/api/complaint/list', config).then(function(response) {
-				NProgress.done(true);
 				var result = isResultSuccess(response.data, true);
 				if (result && callBack) {
 					callBack(response.data.resultValue);

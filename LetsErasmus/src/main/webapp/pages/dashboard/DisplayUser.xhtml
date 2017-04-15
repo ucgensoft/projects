@@ -92,13 +92,13 @@
 							<div class="col-sm-8 col-md-12 col-lg-12">
 								<h1>Hey, I’m {{ctrl.user.firstName}}!</h1>
 								<div class="h5 space-top-2">
-									<span class="text-normal">{{ctrl.user.residenceLocationName}} {{ctrl.user.residenceLocationName != null ? '.' : ''}} 
+									<span class="text-normal">{{ctrl.user.residenceLocationName}} {{ctrl.user.residenceLocationName ? '.' : ''}} 
 										Joined in {{ctrl.user.createdDate | date:'MMMM dd, yyyy'}}</span>
 								</div>
 								<div class="text-muted space-top-2">
 									<div data-hypernova-key="user_flag_controlbundlejs">
 										<div>
-											<div class="flag-widget  {{ctrl.isUserComplainted() || ctr.userId == loginUserId ? 'hidden-force' : ''}}">
+											<div class="flag-widget  {{ctrl.isUserComplainted() || ctrl.userId == loginUserId ? 'hidden-force' : ''}}">
 												<a href="#" class="link-reset" title="Report this user"
 													data-prevent-default="true" ng-click="ctrl.openComplaintWindow()">
 													<i class="icon icon-flag h4"></i>

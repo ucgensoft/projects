@@ -78,7 +78,8 @@ var EnmEntityType = {
 	PLACE : 2,
     EVENT : 3,
     STAFF : 4,
-    RESERVATION : 5
+    RESERVATION : 5,
+    MESSAGE : 6
 };
 
 var OperationResult = {

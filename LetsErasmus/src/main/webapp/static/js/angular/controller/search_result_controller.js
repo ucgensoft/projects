@@ -641,7 +641,7 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
       };
       
       self.openPlaceDetailWindow = function(placeId) {
-    	  
+    	  self.animateMarker(placeId, false);
     	  var startDate = getUriParam(EnmUriParam.CHECKIN_DATE);
     	  var endDate = getUriParam(EnmUriParam.CHECKOUT_DATE);
     	  

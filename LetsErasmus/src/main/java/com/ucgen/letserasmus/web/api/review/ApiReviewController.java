@@ -207,6 +207,7 @@ public class ApiReviewController extends BaseApiController {
 		
 		if (reservationList != null && reservationList.size() > 0) {
 			reservation = reservationList.get(0);
+			Integer oldReservationStatus = reservation.getStatus();
 			if (user.getId().equals(reservation.getHostUserId()) 
 					|| user.getId().equals(reservation.getClientUserId())) {
 				Date operationDate = new Date();
@@ -259,7 +260,7 @@ public class ApiReviewController extends BaseApiController {
 						tLog.setCreatedBy(reservation.getCreatedBy());
 						tLog.setCreatedDate(reservation.getCreatedDate());
 						
-						OperationResult updateResult = this.reservationService.update(reservation, null, tLog);
+						OperationResult updateResult = this.reservationService.update(reservation, null, tLog, oldReservationStatus);
 						if (OperationResult.isResultSucces(updateResult)) {
 							operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 						} else {

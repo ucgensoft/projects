@@ -12,6 +12,12 @@ public class PaymentMethod extends BaseModel {
 	private String cardNumber;
 	private String cardType;
 	private String expDate;
+	private String cardHolderFirstName;
+	private String cardHolderLastName;
+	private String cardHolderZipCode;
+	private String paymentToken;
+	
+	private Payment payment;
 	
 	public Long getId() {
 		return id;
@@ -48,6 +54,36 @@ public class PaymentMethod extends BaseModel {
 	}
 	public void setExpDate(String expDate) {
 		this.expDate = expDate;
+	}
+	public String getCardHolderFirstName() {
+		return cardHolderFirstName;
+	}
+	public void setCardHolderFirstName(String cardHolderFirstName) {
+		this.cardHolderFirstName = cardHolderFirstName;
+	}
+	public String getCardHolderLastName() {
+		return cardHolderLastName;
+	}
+	public void setCardHolderLastName(String cardHolderLastName) {
+		this.cardHolderLastName = cardHolderLastName;
+	}
+	public String getCardHolderZipCode() {
+		return cardHolderZipCode;
+	}
+	public void setCardHolderZipCode(String cardHolderZipCode) {
+		this.cardHolderZipCode = cardHolderZipCode;
+	}
+	public String getPaymentToken() {
+		return paymentToken;
+	}
+	public void setPaymentToken(String paymentToken) {
+		this.paymentToken = paymentToken;
+	}
+	public Payment getPayment() {
+		return payment;
+	}
+	public void setPayment(Payment payment) {
+		this.payment = payment;
 	}
 	
 }

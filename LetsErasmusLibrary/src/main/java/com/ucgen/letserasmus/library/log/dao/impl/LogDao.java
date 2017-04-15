@@ -110,10 +110,18 @@ public class LogDao extends JdbcDaoSupport implements ILogDao {
 
 	@Override
 	public OperationResult insertIntegrationLog(IntegrationLog integrationLog) {
-OperationResult operationResult = new OperationResult();
+		OperationResult operationResult = new OperationResult();
 		
 		List<Object> argList = new ArrayList<Object>();
 				
+		if (integrationLog.getRequest() != null && integrationLog.getRequest().length() > 1000) {
+			integrationLog.setRequest(integrationLog.getRequest().substring(0, 1000));
+		}
+		
+		if (integrationLog.getResponse() != null && integrationLog.getResponse().length() > 1000) {
+			integrationLog.setResponse(integrationLog.getResponse().substring(0, 1000));
+		}
+		
 		argList.add(integrationLog.getUserId());
 		argList.add(integrationLog.getExtSystemId());
 		argList.add(integrationLog.getOperationId());

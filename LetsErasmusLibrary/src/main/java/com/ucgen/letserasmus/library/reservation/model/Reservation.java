@@ -32,6 +32,9 @@ public class Reservation extends BaseModel {
 	private Long messageThreadId;
 	private Long clientReviewId;
 	private Long hostReviewId;
+	private String transactionId;
+	private String blueSnapTransactionId;
+	private Integer paymentStatus;
 	
 	private Place place;
 	private User hostUser;
@@ -178,6 +181,24 @@ public class Reservation extends BaseModel {
 	}
 	public void setTransactionLogList(List<TransactionLog> transactionLogList) {
 		this.transactionLogList = transactionLogList;
+	}
+	public String getTransactionId() {
+		return transactionId;
+	}
+	public void setTransactionId(String transactionId) {
+		this.transactionId = transactionId;
+	}
+	public String getBlueSnapTransactionId() {
+		return blueSnapTransactionId;
+	}
+	public void setBlueSnapTransactionId(String blueSnapTransactionId) {
+		this.blueSnapTransactionId = blueSnapTransactionId;
+	}
+	public Integer getPaymentStatus() {
+		return paymentStatus;
+	}
+	public void setPaymentStatus(Integer paymentStatus) {
+		this.paymentStatus = paymentStatus;
 	}
 	
 }

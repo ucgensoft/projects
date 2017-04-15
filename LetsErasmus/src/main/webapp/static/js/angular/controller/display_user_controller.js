@@ -5,10 +5,15 @@ App.controller('displayUserCtrl', ['$scope', '$controller', 'placeService', 'rev
       self.reviewCount = 0;
       self.user = null;
       self.userId = null;
+      var complaintList = null;
       
       self.initialize = function() {
     	  self.userId = getUriParam('userId');
-    	  listComplaint();
+    	  
+    	  if (loginType != '') {
+    		  listComplaint(EnmEntityType.USER);
+    	  }
+    	  
     	  if (self.userId != null && StringUtil.trim(self.userId) != '') {
     		  userService.getUser(self.userId,
         			  function(tmpUser) {
@@ -51,14 +56,10 @@ App.controller('displayUserCtrl', ['$scope', '$controller', 'placeService', 'rev
      
      self.isUserComplainted = function() {
     	 if (self.userId != null) {
-    	   	  	if (userComplaintMap && userComplaintMap[EnmEntityType.USER.toString()]) {
-    	   		  complaintMap = userComplaintMap[EnmEntityType.USER.toString()];
-    	   		  if (complaintMap[self.userId.toString()]) {
-    					  return true;
-    				  }
-    	   	  }
+    		 return isEntityComplainted(EnmEntityType.USER, self.userId);
+    	 } else {
+    		 return false;
     	 }
-   	  	return false;
      };
      
      self.getUserProfilePhotoUrl = function() {

@@ -14,4 +14,6 @@ public interface ISimpleObjectService {
 	
 	List<Question> listQuestion(String groupTitle, String searchText);
 	
+	String generateTransactionId();
+	
 }

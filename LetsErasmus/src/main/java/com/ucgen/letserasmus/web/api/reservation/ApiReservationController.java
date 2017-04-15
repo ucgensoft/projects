@@ -26,6 +26,7 @@ import com.ucgen.common.util.CommonUtil;
 import com.ucgen.common.util.DateUtil;
 import com.ucgen.common.util.FileLogger;
 import com.ucgen.letserasmus.library.common.enumeration.EnmBoolStatus;
+import com.ucgen.letserasmus.library.common.enumeration.EnmCurrency;
 import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
 import com.ucgen.letserasmus.library.common.enumeration.EnmErrorCode;
 import com.ucgen.letserasmus.library.common.enumeration.EnmSize;
@@ -37,6 +38,8 @@ import com.ucgen.letserasmus.library.message.enumeration.EnmMessageStatus;
 import com.ucgen.letserasmus.library.message.model.Message;
 import com.ucgen.letserasmus.library.message.model.MessageThread;
 import com.ucgen.letserasmus.library.parameter.enumeration.EnmParameter;
+import com.ucgen.letserasmus.library.payment.model.Payment;
+import com.ucgen.letserasmus.library.payment.model.PaymentMethod;
 import com.ucgen.letserasmus.library.place.model.Place;
 import com.ucgen.letserasmus.library.place.service.IPlaceService;
 import com.ucgen.letserasmus.library.reservation.enumeration.EnmReservationStatus;
@@ -47,6 +50,7 @@ import com.ucgen.letserasmus.library.review.service.IReviewService;
 import com.ucgen.letserasmus.library.user.model.User;
 import com.ucgen.letserasmus.library.user.service.IUserService;
 import com.ucgen.letserasmus.web.api.BaseApiController;
+import com.ucgen.letserasmus.web.api.payment.UiPaymentMethod;
 import com.ucgen.letserasmus.web.enumeration.EnmUriParameter;
 import com.ucgen.letserasmus.web.view.application.AppConstants;
 import com.ucgen.letserasmus.web.view.application.AppUtil;
@@ -71,8 +75,6 @@ public class ApiReservationController extends BaseApiController {
 	public void setUserService(IUserService userService) {
 		this.userService = userService;
 	}
-
-
 
 	@Autowired
 	public void setReservationService(IReservationService reservationService) {
@@ -133,7 +135,7 @@ public class ApiReservationController extends BaseApiController {
 					MessageThread messageThread = new MessageThread();
 					messageThread.setHostUserId(place.getHostUserId());
 					messageThread.setClientUserId(user.getId());
-					messageThread.setEntityType(EnmEntityType.PLACE.getId());
+					messageThread.setEntityType(EnmEntityType.RESERVATION.getId());
 					messageThread.setEntityId(place.getId());
 					messageThread.setThreadTitle(place.getTitle());
 					
@@ -190,37 +192,58 @@ public class ApiReservationController extends BaseApiController {
 		try {
 			User user = super.getSessionUser(session);
 			if (user != null) {
-				if (uiReservation != null && uiReservation.getOperationToken() != null) {
-					
-					Reservation reservation = this.getObjectForToken(uiReservation.getOperationToken(), EnmOperation.CREATE_RESERVATION.getId());
-					
-					Date createdDate = new Date();
-					String createdBy = user.getFullName();
-					
-					reservation.setStatus(EnmReservationStatus.PENDING.getId());
-					
-					reservation.setCreatedBy(createdBy);
-					reservation.setCreatedDate(createdDate);
-					
-					MessageThread messageThread = reservation.getMessageThread();
-					
-					messageThread.setCreatedBy(createdBy);
-					messageThread.setCreatedDate(createdDate);
-					
-					if (reservation.getMessageThread().getMessageList() != null 
-							&& reservation.getMessageThread().getMessageList().size() > 0) {
-						Message message = reservation.getMessageThread().getMessageList().get(0);
-						message.setCreatedDate(createdDate);
-						message.setMessageText(uiReservation.getMessageText());
+				UiPaymentMethod uiPaymentMethod = uiReservation.getUiPaymentMethod();
+				if (uiReservation != null && uiReservation.getOperationToken() != null && uiPaymentMethod != null 
+						&& uiPaymentMethod.getCardHolderFirstName() != null && !uiPaymentMethod.getCardHolderFirstName().trim().isEmpty()
+						&& uiPaymentMethod.getCardHolderLastName() != null && !uiPaymentMethod.getCardHolderLastName().trim().isEmpty()) {
+					String paymentToken = this.getPaymentToken(uiReservation.getOperationToken());
+					if (paymentToken != null) {
+						Reservation reservation = this.getObjectForToken(uiReservation.getOperationToken(), EnmOperation.CREATE_RESERVATION.getId());
+						
+						Date createdDate = new Date();
+						String createdBy = user.getFullName();
+						
+						reservation.setStatus(EnmReservationStatus.PENDING.getId());
+						
+						reservation.setCreatedBy(createdBy);
+						reservation.setCreatedDate(createdDate);
+						
+						MessageThread messageThread = reservation.getMessageThread();
+						
+						messageThread.setCreatedBy(createdBy);
+						messageThread.setCreatedDate(createdDate);
+						
+						if (reservation.getMessageThread().getMessageList() != null 
+								&& reservation.getMessageThread().getMessageList().size() > 0) {
+							Message message = reservation.getMessageThread().getMessageList().get(0);
+							message.setCreatedDate(createdDate);
+							message.setMessageText(uiReservation.getMessageText());
+						}
+						
+						Payment payment = new Payment();
+						payment.setCommissionFee(reservation.getCommissionFee());
+						payment.setServiceFee(reservation.getServiceFee());
+						payment.setTotalPrice(reservation.getPlacePrice().add(reservation.getCommissionFee().add(reservation.getServiceFee())));
+						payment.setBlueSnapHostedFieldToken(paymentToken);
+						payment.setBlueSnapCurrencyCode(EnmCurrency.getCurrency(reservation.getCurrencyId()).getBlueSnapCode());
+						
+						PaymentMethod paymentMethod = new PaymentMethod();
+						paymentMethod.setCardHolderFirstName(uiPaymentMethod.getCardHolderFirstName());
+						paymentMethod.setCardHolderLastName(uiPaymentMethod.getCardHolderLastName());
+						paymentMethod.setCardHolderZipCode(uiPaymentMethod.getZipCode());
+						paymentMethod.setPayment(payment);
+						
+						OperationResult createResult = this.reservationService.insert(user.getId(), reservation, paymentMethod);
+						
+						if (!OperationResult.isResultSucces(createResult)) {
+							FileLogger.log(Level.ERROR, "Reservation could not be saved. UserId:" + user.getId() + ", Error:" + OperationResult.getResultDesc(createResult));
+							createResult.setResultDesc("Reservation could not be saved. Please try again later!");
+						}
+						operationResult = createResult;
+					} else {
+						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+						operationResult.setResultDesc(AppConstants.OPERATION_FAIL);
 					}
-					
-					OperationResult createResult = this.reservationService.insert(reservation);
-					
-					if (!OperationResult.isResultSucces(createResult)) {
-						FileLogger.log(Level.ERROR, "Reservation could not be saved. UserId:" + user.getId() + ", Error:" + OperationResult.getResultDesc(createResult));
-						createResult.setResultDesc("Reservation could not be saved. Please try again later!");
-					}
-					operationResult = createResult;
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 					operationResult.setResultDesc(AppConstants.UNAUTHORIZED_OPERATION);
@@ -257,6 +280,7 @@ public class ApiReservationController extends BaseApiController {
 					if (dbReservationList != null && dbReservationList.size() > 0) {
 						reservation = dbReservationList.get(0);
 						boolean isUserAutorized = false;
+						Integer oldReservationStatus = reservation.getStatus();
 						
 						if (uiReservation.getStatus().equals(EnmReservationStatus.DECLINED.getId()) 
 								|| uiReservation.getStatus().equals(EnmReservationStatus.CONFIRMED.getId()) 
@@ -356,7 +380,7 @@ public class ApiReservationController extends BaseApiController {
 									operationResult.setResultCode(EnmResultCode.WARNING.getValue());
 									operationResult.setResultDesc(AppConstants.RESERV_REQUEST_OUTDATED);
 								} else {
-									OperationResult createResult = this.reservationService.update(reservation, message, tLog);
+									OperationResult createResult = this.reservationService.update(reservation, message, tLog, oldReservationStatus);
 									
 									if (!OperationResult.isResultSucces(createResult)) {
 										// TODO: Write log
@@ -394,7 +418,7 @@ public class ApiReservationController extends BaseApiController {
 		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);
     }
 	
-	@RequestMapping(value = "/api/reservation/get", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	//@RequestMapping(value = "/api/reservation/get", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public ResponseEntity<ValueOperationResult<Reservation>> getReservation(@RequestParam("reservationId") Long reservationId, HttpSession session) {
 		ValueOperationResult<Reservation> operationResult = new ValueOperationResult<Reservation>();		
 		try {
@@ -628,7 +652,7 @@ public class ApiReservationController extends BaseApiController {
 						
 						reservation.setMessageThread(messageThread);
 						
-						OperationResult createResult = this.reservationService.insert(reservation);
+						OperationResult createResult = this.reservationService.insert(user.getId(), reservation, null);
 						
 						if (!OperationResult.isResultSucces(createResult)) {
 							FileLogger.log(Level.ERROR, "Contact host operation could not be completed. UserId:" + user.getId() + ", Error:" + OperationResult.getResultDesc(createResult));

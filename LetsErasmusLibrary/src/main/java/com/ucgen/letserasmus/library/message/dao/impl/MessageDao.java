@@ -195,10 +195,8 @@ public class MessageDao extends JdbcDaoSupport implements IMessageDao {
 		if (clientUserFlag) {
 			messageThreadRowMapper.addFKey(MessageThreadRowMapper.FKEY_USER_CLIENT);
 		}
-		if (entityFlag) {
-			if (messageThread.getEntityType().equals(EnmEntityType.PLACE.getId())) {
-				messageThreadRowMapper.addFKey(MessageThreadRowMapper.FKEY_ENTITY);
-			}
+		if (entityFlag && messageThread.getEntityType() != null) {
+			messageThreadRowMapper.addEntiyFKey(MessageThreadRowMapper.FKEY_ENTITY, EnmEntityType.getEntityType(messageThread.getEntityType()));
 		}
 		
 		sqlBuilder.append(messageThreadRowMapper.getSelectSqlWithForeignKeys());

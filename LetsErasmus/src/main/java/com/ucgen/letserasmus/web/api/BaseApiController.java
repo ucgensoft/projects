@@ -96,6 +96,40 @@ public abstract class BaseApiController {
 		}
 	}
 	
+	public void savePaymentToken(String operationTokenId, String paymentToken) {
+		HttpSession session = this.getSession();
+		if (session != null) {
+			Map<String, String> sessionPaymentTokenMap = null;
+			Object paymentTokenMap = session.getAttribute(EnmSession.PAYMENT_TOKEN.getId());
+			if (paymentTokenMap == null) { 
+				Map<String, String> newPaymentTokenMap = new HashMap<String, String>();
+				session.setAttribute(EnmSession.PAYMENT_TOKEN.getId(), newPaymentTokenMap);
+				sessionPaymentTokenMap = newPaymentTokenMap;
+			} else {
+				sessionPaymentTokenMap = (HashMap<String, String>) paymentTokenMap;
+			}
+			if (sessionPaymentTokenMap.containsKey(operationTokenId)) {
+				sessionPaymentTokenMap.remove(operationTokenId);
+			}
+			sessionPaymentTokenMap.put(operationTokenId, paymentToken);
+		}
+	}
+	
+	public String getPaymentToken(String operationTokenId) {
+		HttpSession session = this.getSession();
+		if (session != null) {
+			Map<String, String> sessionPaymentTokenMap = null;
+			Object paymentTokenMap = session.getAttribute(EnmSession.PAYMENT_TOKEN.getId());
+			if (paymentTokenMap != null) { 
+				return ((Map<String, String>) paymentTokenMap).get(operationTokenId);
+			} else {
+				return null;
+			}
+		} else {
+			return null;
+		}
+	}
+	
 	public String getString(Object jsonValue) {
 		if (jsonValue != null) {
 			if (jsonValue instanceof String) {
@@ -146,7 +180,7 @@ public abstract class BaseApiController {
 	
 	public String generateOperationToken() {
 		String tokenLength = this.parameterService.getParameterValue(EnmParameter.OPERATIN_TOKEN_LENGTH.getId());
-		return SecurityUtil.generateToken(Integer.valueOf(tokenLength));
+		return SecurityUtil.generateAlphaNumericCode(Integer.valueOf(tokenLength));
 	}
 	
 }

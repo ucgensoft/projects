@@ -10,6 +10,8 @@ import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
 import com.ucgen.letserasmus.library.message.model.MessageThread;
 import com.ucgen.letserasmus.library.place.dao.PlaceRowMapper;
 import com.ucgen.letserasmus.library.place.model.Place;
+import com.ucgen.letserasmus.library.reservation.dao.ReservationRowMapper;
+import com.ucgen.letserasmus.library.reservation.model.Reservation;
 import com.ucgen.letserasmus.library.user.dao.UserRowMapper;
 import com.ucgen.letserasmus.library.user.model.User;
 
@@ -56,12 +58,12 @@ public class MessageThreadRowMapper extends BaseRowMapper<MessageThread> {
 	
 	public void addEntiyFKey(String keyName, EnmEntityType entityType) {
 		
-		if (entityType.equals(EnmEntityType.PLACE)) {
-			PlaceRowMapper placeRowMapper = new PlaceRowMapper("P");
-			ForeignKey<MessageThreadRowMapper, PlaceRowMapper> fKeyPlace = new ForeignKey<MessageThreadRowMapper, PlaceRowMapper>(this, placeRowMapper, EnmJoinType.LEFT);
-			fKeyPlace.addFieldPair(COL_ENTITY_ID, PlaceRowMapper.COL_ID);
-			fKeyPlace.addStaticValueCriteria(COL_ENTITY_TYPE, EnmEntityType.PLACE.getId());
-			this.addFKey(FKEY_ENTITY, fKeyPlace);
+		if (entityType.equals(EnmEntityType.RESERVATION)) {
+			ReservationRowMapper reservationRowMapper = new ReservationRowMapper("R");
+			ForeignKey<MessageThreadRowMapper, ReservationRowMapper> fKeyReservation = new ForeignKey<MessageThreadRowMapper, ReservationRowMapper>(this, reservationRowMapper, EnmJoinType.LEFT);
+			fKeyReservation.addFieldPair(COL_ENTITY_ID, PlaceRowMapper.COL_ID);
+			fKeyReservation.addStaticValueCriteria(COL_ENTITY_TYPE, EnmEntityType.RESERVATION.getId());
+			this.addFKey(FKEY_ENTITY, fKeyReservation);
 		}			
 	}
 	
@@ -101,10 +103,10 @@ public class MessageThreadRowMapper extends BaseRowMapper<MessageThread> {
 			
 			if (this.getfKeyMap().containsKey(FKEY_ENTITY)) {
 				if (messageThread.getEntityType() != null) {
-					if (messageThread.getEntityType().equals(EnmEntityType.PLACE.getId())) {
-						ForeignKey<MessageThreadRowMapper, PlaceRowMapper> fKey = this.getfKeyMap().get(FKEY_ENTITY);
-						Place place = fKey.getDestMapper().mapRow(rs, rowNum);
-						messageThread.setEntity(place);
+					if (messageThread.getEntityType().equals(EnmEntityType.RESERVATION.getId())) {
+						ForeignKey<MessageThreadRowMapper, ReservationRowMapper> fKey = this.getfKeyMap().get(FKEY_ENTITY);
+						Reservation reservation = fKey.getDestMapper().mapRow(rs, rowNum);
+						messageThread.setEntity(reservation);
 					}
 				}
 			}

@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ucgen.common.operationresult.EnmResultCode;
@@ -48,7 +49,8 @@ public class ApiComplaintController extends BaseApiController {
 	}
 
 	@RequestMapping(value = "/api/complaint/list", method = RequestMethod.GET)
-    public ResponseEntity<ValueOperationResult<Map<Integer, Map<Long, Complaint>>>> listComplaint(HttpSession session) {
+    public ResponseEntity<ValueOperationResult<Map<Integer, Map<Long, Complaint>>>> listComplaint(@RequestParam("entityType") Integer entityType, 
+    		HttpSession session) {
 		ValueOperationResult<Map<Integer, Map<Long, Complaint>>> operationResult = new ValueOperationResult<Map<Integer, Map<Long, Complaint>>>();
 		
 		try {
@@ -57,15 +59,13 @@ public class ApiComplaintController extends BaseApiController {
 				
 				Complaint complaint = new Complaint();
 				complaint.setUserId(sessionUser.getId());
-				complaint.setEntityType(EnmEntityType.PLACE.getId());
+				complaint.setEntityType(entityType);
 				complaint.setStatus(EnmComplaintStatus.OPEN.getId());
 				
-				if (sessionUser.getComplaintMap() == null) {
-					List<Complaint> complaintList = this.complaintService.listComplaint(complaint, null, false, false, false);
-					
-					sessionUser.createComplaintMap();
-					sessionUser.addComplaintList(complaintList);
-				}
+				List<Complaint> complaintList = this.complaintService.listComplaint(complaint, null, false, false, false);
+				
+				sessionUser.createComplaintMap();
+				sessionUser.addComplaintList(complaintList);
 				
 				operationResult.setResultValue(sessionUser.getComplaintMap());
 				operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
@@ -92,7 +92,8 @@ public class ApiComplaintController extends BaseApiController {
 				EnmEntityType entityType = EnmEntityType.getEntityType(complaint.getEntityType());
 				if (complaint.getEntityType() != null && entityType != null 
 						&& complaint.getEntityId() != null && complaint.getDescription() != null 
-						&& (entityType.equals(EnmEntityType.PLACE) || entityType.equals(EnmEntityType.USER))) {
+						&& (entityType.equals(EnmEntityType.PLACE) || entityType.equals(EnmEntityType.USER)
+								|| entityType.equals(EnmEntityType.MESSAGE))) {
 					
 					Complaint userComplaint = new Complaint();
 					userComplaint.setUserId(user.getId());

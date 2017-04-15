@@ -141,25 +141,6 @@
 										</p>
 									</div>
 								</div>
-								
-								<!--
-								<div class="inline-status text-branding space-6">
-									<div class="horizontal-rule-text">
-										<span class="horizontal-rule-wrapper"><span>
-												Reservation confirmed
-												<span>05/24/2016</span>
-										</span></span>
-									</div>
-								</div>
-								<div class="inline-status text-branding space-6">
-									<div class="horizontal-rule-text">
-										<span class="horizontal-rule-wrapper"><span>
-												Inquiry sent 
-												<span>05/24/2016</span>
-										</span></span>
-									</div>
-								</div>
-								 -->
 								<div ng-repeat="m in ctrl.messageThread.messageList">
 									<div ng-if="m.messageType == 2">
 										<div class="inline-status text-branding space-6">
@@ -187,12 +168,16 @@
 														<div>
 															<div>
 																<div class="pull-right">
-																	<div class="flag-widget">
-																		<a href="#" class="link-reset"
+																	<div class="flag-widget {{ctrl.isMessageComplainted(m.id) ? 'hidden-force' : ''}}">
+																		<a href="#" ng-click="ctrl.openComplaintWindow(m.id)" class="link-reset"
 																			title="Report this message"
 																			data-prevent-default="true"><i
 																			class="icon icon-flag h4"></i>
 																		</a>
+																	</div>
+																	<div
+																		class="flag-widget {{ctrl.isMessageComplainted(m.id) ? '' : 'hidden-force'}}">
+																		<span class="clsRed">Reported</span>
 																	</div>
 																</div>
 															</div>
@@ -269,7 +254,7 @@
 													class="media-photo media-round">
 												<img
 													src="{{ctrl.getDestinationUser().profilePhotoUrlMedium}}"
-													width="150" height="150" alt="Paul" /></a>
+													width="150" height="150" alt="{{ctrl.getDestinationUser().firstName}}" /></a>
 												<div
 													class="va-container verified-overlay-bottom-right-single-host">
 													<span
@@ -351,11 +336,11 @@
 											<div>
 												<div class="row text-emphasis-gray">
 													<div class="col-sm-8 text-left">
-														<span><span><span>78₺</span>
-														</span>x 1 night</span>
+														<span><span><span>{{ctrl.messageThread.entityPrice}} {{ctrl.getCurrencySymbol()}}</span>
+														</span>x 1 month</span>
 													</div>
 													<div class="col-sm-4 text-right">
-														<span>78₺</span>
+														<span>{{ctrl.messageThread.entityPrice}} {{ctrl.getCurrencySymbol()}}</span>
 													</div>
 												</div>
 											</div>
@@ -364,7 +349,7 @@
 													<strong><span>Subtotal</span></strong>
 												</div>
 												<div class="col-sm-4 text-right">
-													<strong><span>78₺</span></strong>
+													<strong><span>{{ctrl.messageThread.entityPrice}} {{ctrl.getCurrencySymbol()}}</span></strong>
 												</div>
 											</div>
 											<div class="row text-emphasis-gray space-2 space-top-2">
@@ -372,16 +357,16 @@
 													<span>Service fee</span>
 												</div>
 												<div class="col-sm-4 text-right">
-													<span>-4₺</span>
+													<span>{{ctrl.messageThread.serviceFee}} {{ctrl.getCurrencySymbol()}}</span>
 												</div>
 											</div>
 											<hr/>
 												<div class="row space-3 space-top-2">
 													<div class="col-sm-8 text-left">
-														<strong><span>You earn</span></strong>
+														<strong><span>{{ctrl.getTotalLabel()}}</span></strong>
 													</div>
 													<div class="col-sm-4 text-right">
-														<strong><span>74₺</span></strong>
+														<strong><span>{{ctrl.messageThread.entityPrice + ctrl.messageThread.serviceFee}} {{ctrl.getCurrencySymbol()}}</span></strong>
 													</div>
 												</div>
 										</div>

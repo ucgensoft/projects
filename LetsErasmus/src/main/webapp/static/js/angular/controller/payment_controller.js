@@ -5,6 +5,7 @@ App.controller('paymentCtrl', ['$scope', 'reservationService', 'commonService', 
       
       var operationToken = null;
       var operationId = null;
+      var submitListener = null;
         
       self.initialize = function() {
     	  
@@ -64,10 +65,39 @@ App.controller('paymentCtrl', ['$scope', 'reservationService', 'commonService', 
 		  }
 	  };
 	  	
+	var validationTimer = null;
   	self.onBtnFinishClick = function() {
-  		var reservation = {
+  		var paymentFormValid = validateListener();
+  		var firstName = StringUtil.trim($("#txtFirstName").val());
+  		var lastName = StringUtil.trim($("#txtLastName").val());
+  		if (firstName != '' && lastName != '' && paymentFormValid) {
+  			submitListener(self.finishReservation);
+  			validationTimer = setTimeout(function() {
+  	  			DialogUtil.warn('Warning', 'Please fill mandatory parameters!', 'OK');
+  	  		}, 1500);
+  		} else {
+  			DialogUtil.info('Warning', 'Please fill mandatory fields.', 'OK');
+  		}
+  	};
+  	
+  	self.finishReservation = function(zipCode) {
+  		if (validationTimer != null) {
+  			clearTimeout(validationTimer);
+  		}
+  		var paymentFormValid = validateListener();
+  		var firstName = StringUtil.trim($("#txtFirstName").val());
+  		var lastName = StringUtil.trim($("#txtLastName").val());
+  		
+  		var uiPaymentMethod = {
+					cardHolderFirstName : firstName,
+					cardHolderLastName : lastName,
+					zipCode : zipCode
+			};
+			
+			var reservation = {
   			messageText : 'I would like to book your place.',
-  			operationToken : operationToken
+  			operationToken : operationToken,
+  			uiPaymentMethod : uiPaymentMethod
   		};
   		reservationService.finishReservation(reservation,
 				function(isSuccess) {
@@ -79,6 +109,7 @@ App.controller('paymentCtrl', ['$scope', 'reservationService', 'commonService', 
 					}
 				}
 		  );
+  		
   	};
   	
   	self.getPaymentToken = function(callBack) {
@@ -91,7 +122,12 @@ App.controller('paymentCtrl', ['$scope', 'reservationService', 'commonService', 
   				});
   			}
   		});
-  	}
+  	};
+  	
+  	self.addListener = function(funcSubmit, funcValidate) {
+  		submitListener = funcSubmit;
+  		validateListener = funcValidate;
+  	};
   	
     self.initialize();
       
@@ -100,4 +136,9 @@ App.controller('paymentCtrl', ['$scope', 'reservationService', 'commonService', 
 function getPaymentToken(callBack) {
 	var scope = angular.element( $('#divBody') ).scope();
 	scope.ctrl.getPaymentToken(callBack);
+}
+
+function addListener(funcSubmit, funcValidate) {
+	var scope = angular.element( $('#divBody') ).scope();
+	scope.ctrl.addListener(funcSubmit, funcValidate);
 }

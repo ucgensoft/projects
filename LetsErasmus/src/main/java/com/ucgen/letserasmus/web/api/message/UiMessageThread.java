@@ -1,5 +1,6 @@
 package com.ucgen.letserasmus.web.api.message;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -29,6 +30,10 @@ public class UiMessageThread {
 	
 	private List<UiMessage> messageList;
 	private List<TransactionLog> transactionLogList;
+	
+	private BigDecimal entityPrice;
+	private BigDecimal serviceFee;
+	private Integer currencyId;
 	
 	public Long getId() {
 		return id;
@@ -131,6 +136,24 @@ public class UiMessageThread {
 	}
 	public void setTransactionLogList(List<TransactionLog> transactionLogList) {
 		this.transactionLogList = transactionLogList;
+	}
+	public BigDecimal getEntityPrice() {
+		return entityPrice;
+	}
+	public void setEntityPrice(BigDecimal entityPrice) {
+		this.entityPrice = entityPrice;
+	}
+	public BigDecimal getServiceFee() {
+		return serviceFee;
+	}
+	public void setServiceFee(BigDecimal serviceFee) {
+		this.serviceFee = serviceFee;
+	}
+	public Integer getCurrencyId() {
+		return currencyId;
+	}
+	public void setCurrencyId(Integer currencyId) {
+		this.currencyId = currencyId;
 	}
 	
 }

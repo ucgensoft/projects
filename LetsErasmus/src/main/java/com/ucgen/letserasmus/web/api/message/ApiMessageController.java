@@ -1,5 +1,6 @@
 package com.ucgen.letserasmus.web.api.message;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -234,6 +235,7 @@ public class ApiMessageController extends BaseApiController {
 								newUiMessage.setCreatedDate(currentLog.getOperationDate());
 								logListIndex += 1;
 							} else {
+								newUiMessage.setId(currentMessage.getId());
 								newUiMessage.setSenderUserId(currentMessage.getSenderUserId());
 								newUiMessage.setReceiverUserId(currentMessage.getReceiverUserId());
 								newUiMessage.setMessageText(currentMessage.getMessageText());
@@ -247,6 +249,14 @@ public class ApiMessageController extends BaseApiController {
 						Collections.reverse(uiMessageList);
 						
 						uiMessageThread.setMessageList(uiMessageList);
+												
+						uiMessageThread.setCurrencyId(reservation.getCurrencyId());
+						uiMessageThread.setEntityPrice(reservation.getPlacePrice());
+						if (isHost) {
+							uiMessageThread.setServiceFee(reservation.getCommissionFee().multiply(new BigDecimal(-1)));
+						} else {
+							uiMessageThread.setServiceFee(reservation.getServiceFee());
+						}
 						
 						operationResult.setResultValue(uiMessageThread);
 						operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());

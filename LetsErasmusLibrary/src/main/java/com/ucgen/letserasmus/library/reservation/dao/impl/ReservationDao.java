@@ -15,7 +15,6 @@ import com.ucgen.common.operationresult.EnmResultCode;
 import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.common.operationresult.ValueOperationResult;
 import com.ucgen.common.util.StringUtil;
-import com.ucgen.letserasmus.library.message.model.Message;
 import com.ucgen.letserasmus.library.reservation.dao.IReservationDao;
 import com.ucgen.letserasmus.library.reservation.dao.ReservationRowMapper;
 import com.ucgen.letserasmus.library.reservation.model.Reservation;
@@ -25,7 +24,7 @@ public class ReservationDao extends JdbcDaoSupport implements IReservationDao {
 
 	private static final String INSERT_RESERVATION_SQL = "INSERT INTO RESERVATION (PLACE_ID, HOST_USER_ID, CLIENT_USER_ID, START_DATE, "
 			+ " END_DATE, GUEST_NUMBER, PLACE_PRICE, SERVICE_RATE, SERVICE_FEE, COMMISSION_RATE, COMMISSION_FEE, CURRENCY_ID, STATUS,"
-			+ " CREATED_BY, CREATED_DATE, MESSAGE_THREAD_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";	
+			+ " CREATED_BY, CREATED_DATE, MESSAGE_THREAD_ID, TRANSACTION_ID, BLUESNAP_TRANSACTION_ID, PAYMENT_STATUS) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";	
 	
 	private static final String UPDATE_RESERVATION_SQL = " UPDATE RESERVATION SET $1 WHERE ID=? ";
 	
@@ -64,6 +63,9 @@ public class ReservationDao extends JdbcDaoSupport implements IReservationDao {
 		argList.add(reservation.getCreatedBy());
 		argList.add(reservation.getCreatedDate());
 		argList.add(reservation.getMessageThreadId());
+		argList.add(reservation.getTransactionId());
+		argList.add(reservation.getBlueSnapTransactionId());
+		argList.add(reservation.getPaymentStatus());
 		
 		this.getJdbcTemplate().update(INSERT_RESERVATION_SQL, argList.toArray());
 		
@@ -126,7 +128,7 @@ public class ReservationDao extends JdbcDaoSupport implements IReservationDao {
 	}
 
 	@Override
-	public OperationResult update(Reservation reservation, Message message) {
+	public OperationResult update(Reservation reservation) {
 		ValueOperationResult<Integer> operationResult = new ValueOperationResult<Integer>();		
 		List<Object> argList = new ArrayList<Object>();
 		
@@ -146,6 +148,16 @@ public class ReservationDao extends JdbcDaoSupport implements IReservationDao {
 		if (reservation.getHostReviewId() != null) {
 			StringUtil.append(updateFields, "HOST_REVIEW_ID = ?", ",");
 			argList.add(reservation.getHostReviewId());
+		}
+		
+		if (reservation.getBlueSnapTransactionId() != null) {
+			StringUtil.append(updateFields, "BLUESNAP_TRANSACTION_ID = ?", ",");
+			argList.add(reservation.getBlueSnapTransactionId());
+		}
+		
+		if (reservation.getPaymentStatus() != null) {
+			StringUtil.append(updateFields, "PAYMENT_STATUS = ?", ",");
+			argList.add(reservation.getPaymentStatus());
 		}
 		
 		if (reservation.getModifiedBy() != null) {

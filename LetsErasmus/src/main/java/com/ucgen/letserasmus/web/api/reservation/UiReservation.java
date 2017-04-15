@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.ucgen.letserasmus.library.review.model.Review;
 import com.ucgen.letserasmus.web.api.BaseUiModel;
+import com.ucgen.letserasmus.web.api.payment.UiPaymentMethod;
 
 public class UiReservation extends BaseUiModel {
 
@@ -14,6 +15,8 @@ public class UiReservation extends BaseUiModel {
 	private Date endDate;
 	private Integer guestNumber;
 	private Integer status;
+	
+	private UiPaymentMethod uiPaymentMethod;
 	
 	private String messageText;
 
@@ -81,6 +84,14 @@ public class UiReservation extends BaseUiModel {
 
 	public void setReviewList(List<Review> reviewList) {
 		this.reviewList = reviewList;
+	}
+
+	public UiPaymentMethod getUiPaymentMethod() {
+		return uiPaymentMethod;
+	}
+
+	public void setUiPaymentMethod(UiPaymentMethod uiPaymentMethod) {
+		this.uiPaymentMethod = uiPaymentMethod;
 	}
 	
 }

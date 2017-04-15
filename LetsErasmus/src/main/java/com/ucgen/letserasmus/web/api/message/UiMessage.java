@@ -9,6 +9,7 @@ public class UiMessage extends BaseModel {
 	public static final Integer MESSAGE_TYPE_TEXT = 1;
 	public static final Integer MESSAGE_TYPE_TRANSACTION = 2;
 	
+	private Long id;
 	private Long senderUserId;
 	private Long receiverUserId;
 	private String messageTitle;
@@ -16,6 +17,12 @@ public class UiMessage extends BaseModel {
 	private Integer status;
 	private Integer messageType;
 	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
 	public Long getSenderUserId() {
 		return senderUserId;
 	}

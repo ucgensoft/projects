@@ -60,6 +60,7 @@ public class ApiPaymentController extends BaseApiController {
 					if (tokenObject != null) {
 						ValueOperationResult<String> getTokenResult = this.extPaymentService.getPaymentFieldToken(user.getId(), "ApiPaymentController");
 						if (OperationResult.isResultSucces(getTokenResult)) {
+							super.savePaymentToken(operationToken, getTokenResult.getResultValue());
 							operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 							operationResult.setResultValue(getTokenResult.getResultValue());
 						} else {

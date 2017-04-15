@@ -346,8 +346,8 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
 	  	  );
 	  };
 	  
-	  self.listComplaint = function(callBack) {
-		complaintService.listComplaint(
+	  self.listComplaint = function(entityType, callBack) {
+		complaintService.listComplaint(entityType,
 			  function(complaintMap) {
 				  userComplaintMap = complaintMap;
 				  if (callBack) {
@@ -356,6 +356,18 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
 	  		  }
 	  	  );
 	  };
+	  
+	  self.openComplaintWindow = function(entityType, entityId) {
+		  if (loginUserId != null) {
+			  ajaxHtml(webApplicationUrlPrefix + '/static/html/Complaint.html', 'divCommonModal', function() {
+		   		     $('#hiddenComplaintEntityType').val(entityType);
+		   		     $('#hiddenComplaintEntityId').val(entityId);
+		    		 $('#divCommonModal').css('display', '');
+		     	});
+		  } else {
+			  self.openLoginWindow();
+		  }
+     };
 	  
 	  self.createComplaint = function() {
 		  var entityType = $('#hiddenComplaintEntityType').val();
@@ -472,6 +484,11 @@ function removeFavorite(entityType, entityId, callBack) {
 	scope.ctrl.removeFavorite(entityType, entityId, callBack);
 }
 
+function openComplaintWindow(entityType, entityId) {
+	var scope = angular.element( $('#divPageHeader') ).scope();
+	scope.ctrl.openComplaintWindow(entityType, entityId);
+}
+
 function createComplaint() {
 	var scope = angular.element( $('#divPageHeader') ).scope();
 	scope.ctrl.createComplaint();
@@ -482,9 +499,19 @@ function deleteComplaint(entityType, entityId, callBack) {
 	scope.ctrl.deleteComplaint(entityType, entityId, callBack);
 }
 
-function listComplaint(callBack) {
+function listComplaint(entityType, callBack) {
 	var scope = angular.element( $('#divPageHeader') ).scope();
-	scope.ctrl.listComplaint(callBack);
+	scope.ctrl.listComplaint(entityType, callBack);
+}
+
+function isEntityComplainted(entityType, entityId) {
+	if (userComplaintMap && userComplaintMap[entityType.toString()]) {
+		entityComplaintMap = userComplaintMap[entityType.toString()];
+		if (entityComplaintMap[entityId.toString()]) {
+			return true;
+		}
+	}
+	return false;
 }
 
 function onResetPasswordBtnClicked() {

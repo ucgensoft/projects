@@ -73,8 +73,8 @@ App.controller('placeDetailCtrl', ['$scope', '$controller', 'placeService', 'res
       self.displayPlaceDetails = function(place) {
     	  self.place = place;
     	  
-    	  if (loginType != '') {
-    		  listComplaint();
+    	  if (loginUserId != '') {
+    		  listComplaint(EnmEntityType.PLACE);
     	  }
     	  
     	  if (self.place.coverPhoto != null) {
@@ -322,11 +322,7 @@ App.controller('placeDetailCtrl', ['$scope', '$controller', 'placeService', 'res
      };
      
      self.openComplaintWindow = function() {
-    	 ajaxHtml(webApplicationUrlPrefix + '/static/html/Complaint.html', 'divCommonModal', function() {
-   		     $('#hiddenComplaintEntityType').val(EnmEntityType.PLACE);
-   		     $('#hiddenComplaintEntityId').val(self.place.id);
-    		 $('#divCommonModal').css('display', '');
-     	});
+    	 openComplaintWindow(EnmEntityType.PLACE, self.place.id);
      };
      
      self.isPlaceFavorite = function() {
@@ -344,15 +340,10 @@ App.controller('placeDetailCtrl', ['$scope', '$controller', 'placeService', 'res
      
      self.isPlaceComplainted = function() {
     	 if (self.place != null) {
-    		 var placeId = self.place.id;
-    	   	  	if (userComplaintMap && userComplaintMap[EnmEntityType.PLACE.toString()]) {
-    	   		  placeComplaintMap = userComplaintMap[EnmEntityType.PLACE.toString()];
-    	   		  if (placeComplaintMap[placeId.toString()]) {
-    					  return true;
-    				  }
-    	   	  }
+    		 return isEntityComplainted(EnmEntityType.PLACE, self.place.id);
+    	 } else {
+    		 return false;
     	 }
-   	  	return false;
      };
      
      self.onContactHostBtnClicked = function() {
