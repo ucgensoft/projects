@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
+
+	<ui:define name="head">
+			<link rel="stylesheet" type="text/css" href="#{webApplication.urlPrefix}/static/css/notfound.css" />
+		<link rel="stylesheet"
+			href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+	</ui:define>
+
+	<ui:define name="body">
+
+		<div class="page-container-responsive">
+			<div class="row space-top-8 space-8" style="margin-top: 0px">
+				<div class="col-md-5 col-middle">
+					<h1 class="text-jumbo text-ginormous hide-sm">Something's wrong here...</h1>
+					<h3>Let's Erasmus expert team can't seem to find the page you're looking for.</h3>
+					<ul class="list-unstyled text-list">
+						<li>Check out our Help Center or head back to home page:</li>
+						<li><a href="#{webApplication.urlPrefix}/pages/help/help.xhtml">Help</a></li>
+						<li><a href="#{webApplication.urlPrefix}">Home</a></li>
+					</ul>
+				</div>
+				<div class="col-md-5 col-middle text-center">
+					<img
+						src="#{webApplication.urlPrefix}/static/images/notfound.gif"
+						width="800" height="600" class="hide-sm"
+						alt="The company couldn't find the page you're looking for."/>
+				</div>
+			</div>
+		</div>
+
+	</ui:define>
+</ui:composition>

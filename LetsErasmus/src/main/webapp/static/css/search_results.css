@@ -776,14 +776,6 @@ p {
 	right: 0
 }
 
-.FavouriteItem-icon {
-	color: #777875;
-	padding-top: .5em;
-	padding-right: .5em;
-	font-size: 1.6rem;
-	cursor: pointer
-}
-
 
 .FeaturesFilters {
 	display: -webkit-box;
@@ -1527,7 +1519,8 @@ p {
 	color: #000000;
 	padding-top: .5em;
 	padding-right: .5em;
-	font-size: 1.6rem
+	font-size: 1.6rem;
+	cursor: pointer
 }
 
 .FavouriteItem-icon--active {
@@ -1660,10 +1653,14 @@ p {
 	line-height: normal
 }
 
+.ProductCardMainProperties-type-icon:before {
+	font-family: Airglyphs, sans-serif
+}
+
 .ProductCardMainProperties-type-icon {
 	margin-top: .15em;
 	display: block;
-	font-size: 3em;
+	font-size: 2.4em;
 	margin-bottom: .1em
 }
 
@@ -1675,11 +1672,10 @@ p {
 }
 
 .ProductCardMainProperties-info-title {
-	font-size: 1em;
+	font-size: 1.5em;
 	display: block;
 	height: 50.39999999999999px;
 	margin: 0 auto;
-	font-size: 12px;
 	line-height: 1.4;
 	-webkit-line-clamp: 3;
 	-webkit-box-orient: vertical;
