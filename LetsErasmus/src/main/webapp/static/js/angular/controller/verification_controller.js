@@ -13,9 +13,8 @@ App.controller('verificationCtrl', ['$scope', 'userService', 'commonService', '$
     	  activeOperation = getUriParam(EnmUriParam.OPERATION);
     	  operationToken = getUriParam(EnmUriParam.OPERATION_TOKEN);
     	  
-    	  if (operationToken != null && activeOperation != null 
-    			  && (activeOperation == EnmOperation.CREATE_RESERVATION 
-    					  || activeOperation == EnmOperation.CREATE_PLACE)) {
+    	  if ((activeOperation == EnmOperation.CREATE_RESERVATION && operationToken != null) 
+    			  || activeOperation == EnmOperation.CREATE_PLACE) {
     		  if ($('#divVerifyMsisdn').length > 0) {
         		  commonService.listCountry( function(countryList) {
     					if (countryList) {
