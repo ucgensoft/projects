@@ -24,7 +24,8 @@ public class ReservationDao extends JdbcDaoSupport implements IReservationDao {
 
 	private static final String INSERT_RESERVATION_SQL = "INSERT INTO RESERVATION (PLACE_ID, HOST_USER_ID, CLIENT_USER_ID, START_DATE, "
 			+ " END_DATE, GUEST_NUMBER, PLACE_PRICE, SERVICE_RATE, SERVICE_FEE, COMMISSION_RATE, COMMISSION_FEE, CURRENCY_ID, STATUS,"
-			+ " CREATED_BY, CREATED_DATE, MESSAGE_THREAD_ID, TRANSACTION_ID, BLUESNAP_TRANSACTION_ID, PAYMENT_STATUS) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";	
+			+ " CREATED_BY, CREATED_DATE, MESSAGE_THREAD_ID, TRANSACTION_ID, BLUESNAP_TRANSACTION_ID, PAYMENT_STATUS, CANCELLATION_POLICY_ID)" 
+			+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";	
 	
 	private static final String UPDATE_RESERVATION_SQL = " UPDATE RESERVATION SET $1 WHERE ID=? ";
 	
@@ -66,6 +67,7 @@ public class ReservationDao extends JdbcDaoSupport implements IReservationDao {
 		argList.add(reservation.getTransactionId());
 		argList.add(reservation.getBlueSnapTransactionId());
 		argList.add(reservation.getPaymentStatus());
+		argList.add(reservation.getCancellationPolicyId());
 		
 		this.getJdbcTemplate().update(INSERT_RESERVATION_SQL, argList.toArray());
 		
@@ -158,6 +160,11 @@ public class ReservationDao extends JdbcDaoSupport implements IReservationDao {
 		if (reservation.getPaymentStatus() != null) {
 			StringUtil.append(updateFields, "PAYMENT_STATUS = ?", ",");
 			argList.add(reservation.getPaymentStatus());
+		}
+		
+		if (reservation.getCancellationPolicyId() != null) {
+			StringUtil.append(updateFields, "CANCELLATION_POLICY_ID = ?", ",");
+			argList.add(reservation.getCancellationPolicyId());
 		}
 		
 		if (reservation.getModifiedBy() != null) {

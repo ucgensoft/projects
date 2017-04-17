@@ -199,6 +199,7 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     	  
     	  $("#txtTitle").val(self.place.title);
     	  $("#txtDescription").val(self.place.description);
+    	  $("#cmbCancellationPolicy").val(self.place.cancellationPolicyId);
     	  
       };
       
@@ -445,7 +446,7 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     		  } else if ($("#txtStartDatePicker").datepicker("getDate") == ''
     			  || $("#txtEndDatePicker").datepicker("getDate") == '') {
     			  isValid = false;
-    		  } else if ($("#cmbBankCountry")[0].selectedIndex == 0) {
+    		  } else if ($("#cmbBankCountry").length > 0 && $("#cmbBankCountry")[0].selectedIndex == 0) {
     			  isValid = false;
     		  }
     	  } 
@@ -472,7 +473,8 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
 		  
 		  if (step == null || step == 7) {
     		  if ($('#txtTitle').val() == '' 
-    			  || $('#txtDescription').val() == '') {
+    			  || $('#txtDescription').val() == ''
+    				  || $("#cmbCancellationPolicy")[0].selectedIndex == 0) {
     			  isValid = false;
     		  }
     	  }
@@ -597,8 +599,9 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     	  newPlace.location.latitude = $("#txtLatitude").val();
     	  newPlace.location.longitude = $("#txtLongitude").val();
     	  
-    	  newPlace.title = $("#txtTitle").val()
-    	  newPlace.description = $("#txtDescription").val()
+    	  newPlace.title = $("#txtTitle").val();
+    	  newPlace.description = $("#txtDescription").val();
+    	  newPlace.cancellationPolicyId = $('#cmbCancellationPolicy').val();
     	  
     	  if (self.place == null) {
     		  
@@ -613,10 +616,9 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
   	  					}
       			  );
     		  }
-    			  
-    		  var bankCountryCode = $("#cmbBankCountry").val();
-    		  
+    			
     		  if (!self.hasPayout) {
+    			  var bankCountryCode = $("#cmbBankCountry").val();
     			  paymentService.createPayoutMethod(bankCountryCode, function(result) {
         			  if (result) {
         				  tmpSavePlace();

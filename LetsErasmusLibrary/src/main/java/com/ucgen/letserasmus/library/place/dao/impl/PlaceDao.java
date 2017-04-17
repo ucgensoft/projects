@@ -255,6 +255,11 @@ public class PlaceDao extends JdbcDaoSupport implements IPlaceDao{
 			argList.add(place.getDescription());
 		}
 		
+		if (place.getCancellationPolicyId() != null) {
+			StringUtil.append(updateFields, "CANCELLATION_POLICY_ID = ?", ",");
+			argList.add(place.getCancellationPolicyId());
+		}
+		
 		if (place.getModifiedBy() != null) {
 			StringUtil.append(updateFields, "MODIFIED_BY = ?", ",");
 			argList.add(place.getModifiedBy());

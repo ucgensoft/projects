@@ -123,6 +123,8 @@ public class PlaceRowMapper extends BaseRowMapper<Place> {
 		place.setEndDate(super.getTimestamp(rs, COL_END_DATE));
 		place.setCoverPhotoId(super.getLong(rs, COL_COVER_PHOTO_ID));
 		place.setLgbtFriendly(super.getString(rs, COL_LGBT_FRIENDLY));
+		place.setCancellationPolicyId(super.getInteger(rs, COL_CANCELLATION_POLICY_ID));
+		
 		place.setCreatedBy(super.getString(rs, COL_CREATED_BY));		
 		place.setCreatedDate(super.getTimestamp(rs, COL_CREATED_DATE));
 		place.setCreatedDateGmt(super.getTimestamp(rs, COL_CREATED_DATE_GMT));		

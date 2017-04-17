@@ -48,6 +48,7 @@ import com.ucgen.letserasmus.library.location.service.impl.LocationService;
 import com.ucgen.letserasmus.library.log.enumeration.EnmOperation;
 import com.ucgen.letserasmus.library.parameter.enumeration.EnmParameter;
 import com.ucgen.letserasmus.library.parameter.service.IParameterService;
+import com.ucgen.letserasmus.library.place.enumeration.EnmPlaceCancelPolicy;
 import com.ucgen.letserasmus.library.place.enumeration.EnmPlaceStatus;
 import com.ucgen.letserasmus.library.place.model.Place;
 import com.ucgen.letserasmus.library.place.service.IPlaceService;
@@ -102,8 +103,14 @@ public class ApiPlaceController extends BaseApiController {
 			User user = super.getSessionUser(session);
 			if (user != null) {
 				if (this.webApplication.isUserVerified(user)) {
-					Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
-					if (activeOperation != null && activeOperation.equals(EnmOperation.CREATE_PLACE)) {
+					boolean isValid = true;
+					
+					EnmPlaceCancelPolicy enmPlaceCancelPolicy = EnmPlaceCancelPolicy.getPlaceCancelPolicy(place.getCancellationPolicyId());
+					if (enmPlaceCancelPolicy == null) {
+						isValid = false;
+					}
+					
+					if (isValid) {
 						MultipartFile[] photoList = (MultipartFile[]) session.getAttribute(EnmSession.PLACE_PHOTO_LIST.getId());
 						session.removeAttribute(EnmSession.PLACE_PHOTO_LIST.getId());
 						if (photoList != null && photoList.length > 0) {
@@ -188,7 +195,7 @@ public class ApiPlaceController extends BaseApiController {
 						}
 					} else {
 						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-						operationResult.setResultDesc("You are not authorized for this operation!");
+						operationResult.setResultDesc(AppConstants.MISSING_MANDATORY_PARAM);
 					}
 				} else {
 					operationResult.setResultCode(EnmResultCode.WARNING.getValue());

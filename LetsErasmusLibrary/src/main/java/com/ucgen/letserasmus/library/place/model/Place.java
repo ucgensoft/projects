@@ -42,7 +42,7 @@ public class Place extends BaseModel {
 	private Integer maximumStay;
 	private Date startDate;
 	private Date endDate;
-	private Long cancellationPolicyId;
+	private Integer cancellationPolicyId;
 	private Long coverPhotoId;
 	private String lgbtFriendly;
 	
@@ -217,10 +217,10 @@ public class Place extends BaseModel {
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
-	public Long getCancellationPolicyId() {
+	public Integer getCancellationPolicyId() {
 		return cancellationPolicyId;
 	}
-	public void setCancellationPolicyId(Long cancellationPolicyId) {
+	public void setCancellationPolicyId(Integer cancellationPolicyId) {
 		this.cancellationPolicyId = cancellationPolicyId;
 	}
 	public Long getCoverPhotoId() {

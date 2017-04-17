@@ -131,6 +131,7 @@ public class ApiReservationController extends BaseApiController {
 					reservation.setEndDate(uiReservation.getEndDate());
 					
 					reservation.setStatus(EnmReservationStatus.PENDING.getId());
+					reservation.setCancellationPolicyId(place.getCancellationPolicyId());
 					
 					MessageThread messageThread = new MessageThread();
 					messageThread.setHostUserId(place.getHostUserId());

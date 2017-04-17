@@ -35,6 +35,7 @@ public class Reservation extends BaseModel {
 	private String transactionId;
 	private String blueSnapTransactionId;
 	private Integer paymentStatus;
+	private Integer cancellationPolicyId;
 	
 	private Place place;
 	private User hostUser;
@@ -199,6 +200,12 @@ public class Reservation extends BaseModel {
 	}
 	public void setPaymentStatus(Integer paymentStatus) {
 		this.paymentStatus = paymentStatus;
+	}
+	public Integer getCancellationPolicyId() {
+		return cancellationPolicyId;
+	}
+	public void setCancellationPolicyId(Integer cancellationPolicyId) {
+		this.cancellationPolicyId = cancellationPolicyId;
 	}
 	
 }
