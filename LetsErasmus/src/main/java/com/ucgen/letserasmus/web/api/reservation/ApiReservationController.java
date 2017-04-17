@@ -224,7 +224,7 @@ public class ApiReservationController extends BaseApiController {
 						Payment payment = new Payment();
 						payment.setCommissionFee(reservation.getCommissionFee());
 						payment.setServiceFee(reservation.getServiceFee());
-						payment.setTotalPrice(reservation.getPlacePrice().add(reservation.getCommissionFee().add(reservation.getServiceFee())));
+						payment.setEntityPrice(reservation.getPlacePrice());
 						payment.setBlueSnapHostedFieldToken(paymentToken);
 						payment.setBlueSnapCurrencyCode(EnmCurrency.getCurrency(reservation.getCurrencyId()).getBlueSnapCode());
 						
@@ -284,7 +284,7 @@ public class ApiReservationController extends BaseApiController {
 						Integer oldReservationStatus = reservation.getStatus();
 						
 						if (uiReservation.getStatus().equals(EnmReservationStatus.DECLINED.getId()) 
-								|| uiReservation.getStatus().equals(EnmReservationStatus.CONFIRMED.getId()) 
+								|| uiReservation.getStatus().equals(EnmReservationStatus.ACCEPTED.getId()) 
 								|| uiReservation.getStatus().equals(EnmReservationStatus.HOST_CANCELLED.getId())) {
 							if (reservation.getHostUserId().equals(user.getId())) {
 								isUserAutorized = true;
@@ -308,7 +308,7 @@ public class ApiReservationController extends BaseApiController {
 							boolean statusSuitable = false;
 							
 							if (uiReservation.getStatus().equals(EnmReservationStatus.DECLINED.getId()) 
-									|| uiReservation.getStatus().equals(EnmReservationStatus.CONFIRMED.getId())) {
+									|| uiReservation.getStatus().equals(EnmReservationStatus.ACCEPTED.getId())) {
 								if (dbReservationList.get(0).getStatus().equals(EnmReservationStatus.PENDING.getId())) {
 									statusSuitable = true;
 								}
@@ -316,7 +316,7 @@ public class ApiReservationController extends BaseApiController {
 							
 							if (uiReservation.getStatus().equals(EnmReservationStatus.HOST_CANCELLED.getId()) 
 									|| uiReservation.getStatus().equals(EnmReservationStatus.CLIENT_CANCELLED.getId())) {
-								if (dbReservationList.get(0).getStatus().equals(EnmReservationStatus.CONFIRMED.getId())) {
+								if (dbReservationList.get(0).getStatus().equals(EnmReservationStatus.ACCEPTED.getId())) {
 									statusSuitable = true;
 								}
 							}
@@ -363,7 +363,7 @@ public class ApiReservationController extends BaseApiController {
 								tLog.setCreatedBy(createdBy);
 								tLog.setCreatedDate(operationDate);
 								
-								if (uiReservation.getStatus().equals(EnmReservationStatus.CONFIRMED.getId())) {
+								if (uiReservation.getStatus().equals(EnmReservationStatus.ACCEPTED.getId())) {
 									tLog.setOperationId(EnmTransaction.RESERVATION_ACCEPT.getId());
 								} else if (uiReservation.getStatus().equals(EnmReservationStatus.DECLINED.getId())) {
 									tLog.setOperationId(EnmTransaction.RESERVATION_DECLINE.getId());
@@ -478,7 +478,7 @@ public class ApiReservationController extends BaseApiController {
 				if (reservationList != null && reservationList.size() > 0) {
 					for (Reservation tmpReservation : reservationList) {
 						if (EnmReservationStatus.PENDING.getId().equals(tmpReservation.getStatus())
-								|| EnmReservationStatus.CONFIRMED.getId().equals(tmpReservation.getStatus())
+								|| EnmReservationStatus.ACCEPTED.getId().equals(tmpReservation.getStatus())
 								|| EnmReservationStatus.CLOSED.getId().equals(tmpReservation.getStatus())
 								|| EnmReservationStatus.WAITING_PAYMENT.getId().equals(tmpReservation.getStatus())) {
 							/*
@@ -539,7 +539,7 @@ public class ApiReservationController extends BaseApiController {
 				if (reservationList != null && reservationList.size() > 0) {
 					for (Reservation tmpReservation : reservationList) {
 						if (EnmReservationStatus.PENDING.getId().equals(tmpReservation.getStatus())
-								|| EnmReservationStatus.CONFIRMED.getId().equals(tmpReservation.getStatus())
+								|| EnmReservationStatus.ACCEPTED.getId().equals(tmpReservation.getStatus())
 								|| EnmReservationStatus.CLOSED.getId().equals(tmpReservation.getStatus())
 								|| EnmReservationStatus.WAITING_PAYMENT.getId().equals(tmpReservation.getStatus())) {
 

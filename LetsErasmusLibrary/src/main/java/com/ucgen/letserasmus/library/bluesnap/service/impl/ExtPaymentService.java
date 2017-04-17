@@ -253,10 +253,10 @@ public class ExtPaymentService implements IExtPaymentService {
 		    Payment payment = paymentMethod.getPayment();
 		    
 		    ExtVendorInfo vendorInfo = new ExtVendorInfo(payoutMethod.getBlueSnapVendorId());
-		    vendorInfo.setCommissionAmount(payment.getCommissionFee().add(payment.getServiceFee()));
+		    vendorInfo.setCommissionAmount(payment.getEntityPrice().subtract(payment.getCommissionFee()));
 		    
 		    ExtPaymentInfo paymentInfo = new ExtPaymentInfo();
-		    paymentInfo.setAmount(payment.getTotalPrice());
+		    paymentInfo.setAmount(payment.getEntityPrice().add(payment.getServiceFee()));
 		    paymentInfo.setCurrency(payment.getBlueSnapCurrencyCode());
 		    paymentInfo.setRecurringTransaction("ECOMMERCE");
 		    paymentInfo.setMerchantTransactionId(payment.getMerchantTransactionId());
@@ -347,6 +347,85 @@ public class ExtPaymentService implements IExtPaymentService {
 		    ExtPaymentInfo paymentInfo = new ExtPaymentInfo();
 		    paymentInfo.setTransactionId(blueSnapTransactionId);
 		    paymentInfo.setCardTransactionType(ExtEnmTransactionType.AUTH_REVERSAL.getName());
+		    
+		    ObjectMapper objectMapper = new ObjectMapper();
+		    objectMapper.setSerializationInclusion(Include.NON_NULL);
+		    
+		    String strPaymentInfo = objectMapper.writeValueAsString(paymentInfo);
+		    
+		    HttpEntity<String> entity = new HttpEntity<String>(strPaymentInfo, headers);
+		     
+		    request.append("URL : " + uri);
+		    request.append(System.lineSeparator());
+		    request.append("user : " + this.parameterService.getParameterValue(EnmParameter.BLUESNAP_USER.getId()));
+		    request.append(System.lineSeparator());
+		    request.append("pass : " + this.parameterService.getParameterValue(EnmParameter.BLUESNAP_PASSWORD.getId()));
+		    request.append(System.lineSeparator());
+		    request.append("request : " + strPaymentInfo);
+		    
+		    startDate = new Date();
+		    ResponseEntity<String> result = restTemplate.exchange(uri, HttpMethod.PUT, entity, String.class);
+		    endDate = new Date();
+		    
+		    responseCode = String.valueOf(result.getStatusCode().value());
+		    
+		    response.append("Response Code: " + result.getStatusCode());
+		    response.append("Response Body: " + result.getBody());
+		    
+		    if (result.getStatusCode() == HttpStatus.OK) {
+			    operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+		    } else {
+		    	operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+		    }
+		} catch (Exception e) {
+			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
+			operationResult.setResultDesc(CommonUtil.getExceptionMessage(e));
+			responseCode = "-1";
+			response.append(CommonUtil.getExceptionMessage(e));
+		}  finally {
+			if (startDate != null && request != null) {
+				if (endDate == null) {
+					endDate = new Date();
+				}
+				IntegrationLog integrationLog = new IntegrationLog();
+				integrationLog.setUserId(userId);
+				integrationLog.setExtSystemId(EnmExternalSystem.BLUESNAP.getId());
+				integrationLog.setOperationId(EnmOperation.BLUESNAP_CREATE_VENDOR_DRAFT.getId());
+				integrationLog.setOperationDate(startDate);
+				integrationLog.setDuration(endDate.getTime() - startDate.getTime());
+				integrationLog.setRequest(request.toString());
+				integrationLog.setResponse(response.toString());
+				integrationLog.setResponseCode(responseCode);
+				integrationLog.setCreatedBy(operationBy);
+				integrationLog.setCreatedDate(new Date());
+				this.logService.insertIntegrationLog(integrationLog);
+			}
+		}
+		return operationResult;
+	}
+	
+	@Override
+	public OperationResult paymentCapture(Long userId, String blueSnapTransactionId, String operationBy) {
+		
+		StringBuilder request = new StringBuilder();
+		StringBuilder response = new StringBuilder();
+		String responseCode = null;
+		Date startDate = null;
+		Date endDate = null;
+		
+		OperationResult operationResult = new OperationResult();
+		String blueSnapDomain = this.parameterService.getParameterValue(EnmParameter.BLUESNAP_DOMAIN.getId());
+		final String uri =  blueSnapDomain + "/services/2/transactions";
+		try {
+			RestTemplate restTemplate = this.createRestTemplate();
+		     
+		    HttpHeaders headers = new HttpHeaders();
+		    headers.setContentType(MediaType.APPLICATION_JSON);
+		    headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		    		    
+		    ExtPaymentInfo paymentInfo = new ExtPaymentInfo();
+		    paymentInfo.setTransactionId(blueSnapTransactionId);
+		    paymentInfo.setCardTransactionType(ExtEnmTransactionType.CAPTURE.getName());
 		    
 		    ObjectMapper objectMapper = new ObjectMapper();
 		    objectMapper.setSerializationInclusion(Include.NON_NULL);

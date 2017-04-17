@@ -18,4 +18,6 @@ public interface IExtPaymentService {
 
 	OperationResult paymentAuthReversal(Long userId, String blueSnapTransactionId, String operationBy);
 	
+	OperationResult paymentCapture(Long userId, String blueSnapTransactionId, String operationBy);
+	
 }

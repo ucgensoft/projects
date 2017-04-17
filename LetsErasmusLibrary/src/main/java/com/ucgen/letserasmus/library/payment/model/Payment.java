@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 public class Payment {
 
-	private BigDecimal totalPrice;
+	private BigDecimal entityPrice;
 	private BigDecimal commissionFee;
 	private BigDecimal serviceFee;
 	private Integer currencyId;
@@ -13,11 +13,11 @@ public class Payment {
 	private String blueSnapTransactionId;
 	private String merchantTransactionId;
 	
-	public BigDecimal getTotalPrice() {
-		return totalPrice;
+	public BigDecimal getEntityPrice() {
+		return entityPrice;
 	}
-	public void setTotalPrice(BigDecimal totalPrice) {
-		this.totalPrice = totalPrice;
+	public void setEntityPrice(BigDecimal entityPrice) {
+		this.entityPrice = entityPrice;
 	}
 	public BigDecimal getCommissionFee() {
 		return commissionFee;

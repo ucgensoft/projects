@@ -6,7 +6,8 @@ public enum EnmPaymentStatus {
 	AUTH(1),
 	AUTH_REVERSAL(2),
 	CAPTURE(3),
-	REFUND(4);
+	PAYOUT(4),
+	REFUND(5);
 	
 	
 	private Integer id;

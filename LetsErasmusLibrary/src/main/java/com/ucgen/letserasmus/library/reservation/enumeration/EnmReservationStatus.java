@@ -4,7 +4,7 @@ public enum EnmReservationStatus {
 
 	INQUIRY(0),
 	PENDING(1),
-	CONFIRMED(2),
+	ACCEPTED(2),
 	DECLINED(3),
 	EXPIRED(4),
 	RECALLED(5),

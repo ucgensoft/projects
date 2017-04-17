@@ -166,6 +166,11 @@ public class ReservationService implements IReservationService {
 							&& !reservationOldStatus.equals(EnmReservationStatus.EXPIRED.getId()))) {
 				reservation.setPaymentStatus(EnmPaymentStatus.AUTH_REVERSAL.getId());
 			}
+			
+			if ((reservation.getStatus().equals(EnmReservationStatus.ACCEPTED.getId()) 
+					&& !reservationOldStatus.equals(EnmReservationStatus.ACCEPTED.getId()))) {
+				reservation.setPaymentStatus(EnmPaymentStatus.CAPTURE.getId());
+			}
 		}
 		OperationResult updateReservationResult = this.reservationDao.update(reservation);
 		if (OperationResult.isResultSucces(updateReservationResult)) {
@@ -182,6 +187,15 @@ public class ReservationService implements IReservationService {
 										reservation.getBlueSnapTransactionId(), reservation.getModifiedBy());
 								if (!OperationResult.isResultSucces(authPaymentReverseResult)) {
 									updateReservationResult.setResultDesc("Payment auth reversal failed(BlueSnap). Error:" + OperationResult.getResultDesc(authPaymentReverseResult));
+									throw new OperationResultException(updateReservationResult);
+								}
+							}
+							if (reservation.getStatus().equals(EnmReservationStatus.ACCEPTED.getId()) 
+									&& !reservationOldStatus.equals(EnmReservationStatus.ACCEPTED.getId())) {
+								OperationResult capturePaymentResult = this.extPaymentService.paymentCapture(reservation.getClientUserId(), 
+										reservation.getBlueSnapTransactionId(), reservation.getModifiedBy());
+								if (!OperationResult.isResultSucces(capturePaymentResult)) {
+									updateReservationResult.setResultDesc("Payment capture operation failed(BlueSnap). Error:" + OperationResult.getResultDesc(capturePaymentResult));
 									throw new OperationResultException(updateReservationResult);
 								}
 							}
