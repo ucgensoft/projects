@@ -523,7 +523,7 @@
 														<div class="col-md-9">
 															<p>
 																<span> </span><span><span>This host has a
-																</span><span><strong class=""><span>Moderate
+																</span><span><strong class=""><span>{{(ctrl.place.cancellationPolicyId == 1 ? 'Flexible' : (ctrl.place.cancellationPolicyId == 2 ? 'Moderate' : 'Strict'))}}
 																				Cancellation Policy</span></strong></span></span><span> </span>
 															</p>
 															<div>
