@@ -99,6 +99,26 @@ App.controller('conversationCtrl', ['$scope', '$controller', 'messageService', '
   			 }
   		}
 	 };
+	 
+	  	self.getFeeLabel = function() {
+	  		if (self.messageThread != null) {
+	  			if (self.messageThread.hostUserId == loginUserId) {
+	  				 return "Host Service Fee";
+	  			 } else {
+	  				 return "Tenant Service Fee";
+	  			 }
+	  		}
+		 };
+		 
+		  	self.getUserLabel = function() {
+		  		if (self.messageThread != null) {
+		  			if (self.messageThread.hostUserId == loginUserId) {
+		  				 return "Requested by ";
+		  			 } else {
+		  				 return "Hosted by ";
+		  			 }
+		  		}
+			 };
   	
   	self.sendMessage = function() {
   		var messageText = StringUtil.trim($('#txtMessage').val());

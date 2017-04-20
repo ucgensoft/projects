@@ -36,6 +36,7 @@ import com.ucgen.letserasmus.library.message.enumeration.EnmMessageStatus;
 import com.ucgen.letserasmus.library.message.model.Message;
 import com.ucgen.letserasmus.library.message.model.MessageThread;
 import com.ucgen.letserasmus.library.message.service.IMessageService;
+import com.ucgen.letserasmus.library.place.model.Place;
 import com.ucgen.letserasmus.library.reservation.model.Reservation;
 import com.ucgen.letserasmus.library.reservation.service.IReservationService;
 import com.ucgen.letserasmus.library.user.model.User;
@@ -408,9 +409,13 @@ public class ApiMessageController extends BaseApiController {
 		if (getReservation) {
 			Reservation reservation = new Reservation();
 			reservation.setMessageThreadId(messageThread.getId());
-			List<Reservation> reservationList = this.reservationService.list(reservation, false, false, false);
+			List<Reservation> reservationList = this.reservationService.list(reservation, true, false, false);
 			if (reservationList != null && reservationList.size() > 0) {
 				reservation = reservationList.get(0);
+				Place uiPlace = new Place();
+				String coverPhotoUrl = this.webApplication.getPlacePhotoUrl(reservation.getPlace().getId(), reservation.getPlace().getCoverPhotoId(), EnmSize.SMALL.getValue());
+				uiPlace.setCoverPhotoUrl(coverPhotoUrl);
+				reservation.setPlace(uiPlace);
 				newUiMessageThread.setReservation(reservation);
 				newUiMessageThread.setReservationPriceText(NumberUtil.format(reservation.getPlacePrice(), ',', '.', 2));
 			}

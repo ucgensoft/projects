@@ -1006,3 +1006,8 @@
 .host-decline-modal-body-first {
 	min-height: 140px
 }
+
+.summary-card__payments-listing-image {
+	height: 140px;
+	margin-bottom: 12px;
+}
