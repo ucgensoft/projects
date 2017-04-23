@@ -21,9 +21,12 @@
 						class="col-md-5 col-md-push-7 space-lg-2 space-md-2 side-summary-container">
 						<div>
 							<div class="summary-card col-center">
+								<a href="#{webApplication.urlPrefix}/pages/PlaceDetail.xhtml?placeId={{}}" target="_blank">
 								<div class="background-cover summary-card__payments-listing-image space-top-2"
 									style="background-image: url({{ctrl.reservation.place.coverPhotoUrl}});">
 								</div>
+								</a>
+								<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.xhtml?userId={{}}" target="_blank">
 								<div class="pull-right space-3 summary-card__host-profile-photo">
 									<div class="media-photo media-round">
 										<img class="summary-card__host-profile-photo-src"
@@ -31,6 +34,7 @@
 											alt="{{ctrl.reservation.hostUser.firstName}}" />
 									</div>
 								</div>
+								</a>								
 								<div class="panel">
 									<div class="panel-body">
 										<div class="text-muted space-2">
@@ -81,11 +85,7 @@
 													<th class="price-item__header" scope="row">
 														Service fee
 														<span aria-hidden="true">&nbsp;</span>
-														<span>
-															<span>
-																<i class="icon icon-question" aria-label="This helps us run our platform and offer services like 24/7 support on your trip."></i>
-															</span>
-														</span>
+
 													</th>
 													<td class="text-right price-item__price">
 														<div class="">
@@ -111,8 +111,6 @@
 														<td class="text-right price-item__price">
 															<div class="">
 																<span>{{ctrl.reservation.placePrice + ctrl.reservation.serviceFee }} {{ctrl.getCurrencySymbol()}}</span>
-																<sup>{{ctrl.getCurrencyAbbr()}}</sup>
-																<sup></sup>
 															</div>
 														</td>
 													</tr>
@@ -135,18 +133,12 @@
 					</div>
 					<div id="content-container"
 						class="summary-card-page-content col-md-7 col-md-pull-5 space-top-4">
-						<div class="accordion-panel">
-							<section> 
-								<header class="accordion-header text-lead accordion-header--below-collapsed">
-									<div class="row">
-										<div class="col-md-10 text-left">
-											<div class="h3 pull-left">Payment</div>
-										</div>
-										<div class="col-md-2 text-right header-edit-link"></div>
-									</div>
-									<div class="space-2"></div>
-								</header>
-							</section>						
+							<div>
+								<p style="float: left;"><a href="https://home.bluesnap.com/" target="_blank"><img src="#{webApplication.urlPrefix}/static/images/BlueSnap_logo.png" height="30px" width="120px"></img></a></p>
+    							<p style = "vertical-align: middle; padding-top: 5px">is an authorized Reseller for Let's Erasmus.</p>
+							</div>
+							<div class="accordion-panel">
+					
 							<div id="payment-panel"
 								class="accordion-panel__content accordion-panel-overflow text-lead accordion-panel--expanded">
 								<div id="payment_selectors">
@@ -154,7 +146,7 @@
 										<div class="row space-4">
 											<div class="col-sm-12">
 												<span>You’ll only be charged if your request is
-													accepted by the host. They’ll have 24 hours to accept or
+													accepted by the host. They’ll have 48 hours to accept or
 													decline.</span>
 											</div>
 										</div>
@@ -217,6 +209,26 @@
 							</div>
 						</div>
 					</div>
+				</div>
+				<div class="hide-sm text-center">
+						<p class="space-6 dls-title-1" style="margin-bottom: 12px;">For questions about your payment, please contact BlueSnap at <a href="mailto:shoppers@BlueSnap.com" target="_top">shoppers@BlueSnap.com</a>.</p>
+						<p class="space-6 dls-title-1" style="margin-bottom: 12px;">For technical or product related questions, please contact Let's Erasmus at <a href="support@letserasmus.com" target="_top">support@letserasmus.com</a>.</p>
+						<p><h6>BlueSnap is an authorized Reseller for Let's Erasmus.</h6></p>
+<div id="blue_pagewrap" class="text-center">
+
+		
+	<section id="blue_content">
+		<a href="#{webApplication.urlPrefix}/pages/Policies.xhtml" target="_blank" class="component_59vu4c-o_O-footer_td6kew" data-reactid="38"><span data-reactid="39">Terms &amp; Conditions</span></a>
+	</section>
+	
+	<section id="blue_middle">
+		<a href="#{webApplication.urlPrefix}/pages/Policies.xhtml" target="_blank" class="component_59vu4c-o_O-footer_td6kew" data-reactid="38"><span data-reactid="39">Privacy Policy</span></a>
+	</section>
+
+	<aside id="blue_sidebar">
+		<a href="#{webApplication.urlPrefix}/pages/Policies.xhtml" target="_blank" class="component_59vu4c-o_O-footer_td6kew" data-reactid="38"><span data-reactid="39">Refund Policy</span></a>
+	</aside>
+</div>
 				</div>
 			</div>
 		</main>

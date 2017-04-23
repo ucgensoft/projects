@@ -2480,7 +2480,7 @@ body.has-smart-banner.p1-header-view .airbnb-header .nav-animate-cover {
 	line-height: normal;
 	-webkit-border-radius: 0 0 2px 2px;
 	-moz-border-radius: 0 0 2px 2px;
-	border-radius: 0 0 2px 2px
+	border-radius: 10px;
 }
 
 .drop-down-menu .loading {
@@ -7366,7 +7366,7 @@ PAYMENT.css -->.cc-short-half {
 }
 
 .summary-card__payments-listing-image {
-	height: 140px
+	height: 220px
 }
 
 .summary-card__host-profile-photo {
@@ -8401,4 +8401,82 @@ body {
 	border: 0;
 	min-height: 550px;
 	width: 100%
+}
+
+
+/* STRUCTURE */
+
+#blue_pagewrap {
+	padding: 5px;
+	width: 960px;
+	margin: 20px auto;
+}
+
+#blue_content {
+	width: 290px;
+	float: left;
+	padding: 5px 15px;
+}
+
+#blue_middle {
+	width: 294px; /* Account for margins + border values */
+	float: left;
+	padding: 5px 15px;
+	margin: 0px 5px 5px 5px;
+}
+
+#blue_sidebar {
+	width: 270px;
+	padding: 5px 15px;
+	float: left;
+}
+
+/************************************************************************************
+MEDIA QUERIES
+*************************************************************************************/
+/* for 980px or less */
+@media screen and (max-width: 980px) {
+	
+	#blue_pagewrap {
+		width: 94%;
+	}
+	#blue_content {
+		width: 41%;
+		padding: 1% 4%;
+	}
+	#blue_middle {
+		width: 41%;
+		padding: 1% 4%;
+		margin: 0px 0px 5px 5px;
+		float: right;
+	}
+	
+	#blue_sidebar {
+		clear: both;
+		padding: 1% 4%;
+		width: auto;
+		float: none;
+	}
+
+}
+
+/* for 700px or less */
+@media screen and (max-width: 600px) {
+
+	#blue_content {
+		width: auto;
+		float: none;
+	}
+	
+	#blue_middle {
+		width: auto;
+		float: none;
+		margin-left: 0px;
+	}
+	
+	#blue_sidebar {
+		width: auto;
+		float: none;
+	}
+
 }
