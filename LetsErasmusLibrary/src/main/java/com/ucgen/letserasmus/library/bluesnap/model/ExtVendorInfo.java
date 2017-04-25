@@ -8,6 +8,9 @@ public class ExtVendorInfo {
 	private String email;
 	private String country;
 	private BigDecimal commissionAmount;
+	private ExtVendorPrincipal vendorPrincipal;
+	private ExtVendorAgreement vendorAgreement;
+	private ExtPayoutInfo payoutInfo;
 	
 	public ExtVendorInfo() {
 		
@@ -44,6 +47,30 @@ public class ExtVendorInfo {
 
 	public void setCommissionAmount(BigDecimal commissionAmount) {
 		this.commissionAmount = commissionAmount;
+	}
+
+	public ExtVendorPrincipal getVendorPrincipal() {
+		return vendorPrincipal;
+	}
+
+	public void setVendorPrincipal(ExtVendorPrincipal vendorPrincipal) {
+		this.vendorPrincipal = vendorPrincipal;
+	}
+
+	public ExtVendorAgreement getVendorAgreement() {
+		return vendorAgreement;
+	}
+
+	public void setVendorAgreement(ExtVendorAgreement vendorAgreement) {
+		this.vendorAgreement = vendorAgreement;
+	}
+
+	public ExtPayoutInfo getPayoutInfo() {
+		return payoutInfo;
+	}
+
+	public void setPayoutInfo(ExtPayoutInfo payoutInfo) {
+		this.payoutInfo = payoutInfo;
 	}
 	
 }

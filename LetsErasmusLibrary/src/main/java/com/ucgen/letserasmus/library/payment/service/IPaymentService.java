@@ -20,4 +20,6 @@ public interface IPaymentService {
 	
 	OperationResult createPayoutMethodDraft(PayoutMethod payoutMethod);
 	
+	OperationResult updatePayoutMethod(PayoutMethod payoutMethod);
+	
 }

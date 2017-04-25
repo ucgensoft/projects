@@ -240,6 +240,8 @@ public class WebApplication extends BaseController {
 				return "helpCtrl";
 			} else if (requestUrl.contains("PAGES/DASHBOARD/PAYMENTMETHODS.XHTML")) {
 				return "paymentMethodCtrl";
+			} else if (requestUrl.contains("PAGES/DASHBOARD/PAYOUTMETHODS.XHTML")) {
+				return "payoutMethodCtrl";
 			} else {
 				return "";
 			}	

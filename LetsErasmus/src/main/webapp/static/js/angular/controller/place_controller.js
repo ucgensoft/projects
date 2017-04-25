@@ -621,6 +621,7 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     			  var bankCountryCode = $("#cmbBankCountry").val();
     			  paymentService.createPayoutMethod(bankCountryCode, function(result) {
         			  if (result) {
+        				  self.hasPayout = true;
         				  tmpSavePlace();
         			  }
         		  });

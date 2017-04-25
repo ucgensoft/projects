@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.ucgen.common.dao.UtilityDao;
 import com.ucgen.common.operationresult.EnmResultCode;
 import com.ucgen.common.operationresult.OperationResult;
+import com.ucgen.common.util.StringUtil;
 import com.ucgen.letserasmus.library.payment.dao.IPaymentDao;
 import com.ucgen.letserasmus.library.payment.dao.IPaymentDaoConstants;
 import com.ucgen.letserasmus.library.payment.dao.PaymentMethodRowMapper;
@@ -136,13 +137,13 @@ public class PaymentDao extends JdbcDaoSupport implements IPaymentDao, IPaymentD
 
 	@Override
 	public OperationResult insertPayoutMethod(PayoutMethod payoutMethod) {
-OperationResult operationResult = new OperationResult();
+		OperationResult operationResult = new OperationResult();
 		
 		List<Object> argList = new ArrayList<Object>();
 				
 		argList.add(payoutMethod.getUserId());
-		argList.add(payoutMethod.getEmail());
-		argList.add(payoutMethod.getBlueSnapCountryCode());
+		argList.add(payoutMethod.getVendorEmail());
+		argList.add(payoutMethod.getBankCountry());
 		argList.add(payoutMethod.getBlueSnapVendorId());
 		
 		argList.add(payoutMethod.getCreatedBy());
@@ -154,6 +155,144 @@ OperationResult operationResult = new OperationResult();
 				
 		operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 						
+		return operationResult;
+	}
+
+	@Override
+	public OperationResult updatePayoutMethod(PayoutMethod payoutMethod) {
+		OperationResult operationResult = new OperationResult();		
+		List<Object> argList = new ArrayList<Object>();
+		
+		String updateSql = new String(UPDATE_PAYOUT_METHOD_SQL);
+		StringBuilder updateFields = new StringBuilder();
+						
+		if (payoutMethod.getVendorNationalId() != null) {
+			StringUtil.append(updateFields, PayoutMethodRowMapper.COL_VENDOR_NATIONAL_ID + " = ?", ",");
+			argList.add(payoutMethod.getVendorNationalId());
+		}
+		
+		if (payoutMethod.getVendorTaxId() != null) {
+			StringUtil.append(updateFields, PayoutMethodRowMapper.COL_VENDOR_TAXID + " = ?", ",");
+			argList.add(payoutMethod.getVendorTaxId());
+		}
+		
+		if (payoutMethod.getVendorFirstName() != null) {
+			StringUtil.append(updateFields, PayoutMethodRowMapper.COL_VENDOR_FIRST_NAME + " = ?", ",");
+			argList.add(payoutMethod.getVendorFirstName());
+		}
+		
+		if (payoutMethod.getVendorLastName() != null) {
+			StringUtil.append(updateFields, PayoutMethodRowMapper.COL_VENDOR_LAST_NAME + " = ?", ",");
+			argList.add(payoutMethod.getVendorLastName());
+		}
+		
+		if (payoutMethod.getVendorEmail() != null) {
+			StringUtil.append(updateFields, PayoutMethodRowMapper.COL_VENDOR_EMAIL + " = ?", ",");
+			argList.add(payoutMethod.getVendorEmail());
+		}
+		
+		if (payoutMethod.getVendorBirthDate() != null) {
+			StringUtil.append(updateFields, PayoutMethodRowMapper.COL_VENDOR_BIRTH_DATE + " = ?", ",");
+			argList.add(payoutMethod.getVendorBirthDate());
+		}
+		
+		if (payoutMethod.getVendorAddress() != null) {
+			StringUtil.append(updateFields, PayoutMethodRowMapper.COL_VENDOR_ADDRESS + " = ?", ",");
+			argList.add(payoutMethod.getVendorAddress());
+		}
+		
+		if (payoutMethod.getVendorAddress2() != null) {
+			StringUtil.append(updateFields, PayoutMethodRowMapper.COL_VENDOR_ADDRESS2 + " = ?", ",");
+			argList.add(payoutMethod.getVendorAddress2());
+		}
+		
+		if (payoutMethod.getVendorCountry() != null) {
+			StringUtil.append(updateFields, PayoutMethodRowMapper.COL_VENDOR_COUNTRY + " = ?", ",");
+			argList.add(payoutMethod.getVendorCountry());
+		}
+		
+		if (payoutMethod.getVendorCity() != null) {
+			StringUtil.append(updateFields, PayoutMethodRowMapper.COL_VENDOR_CITY + " = ?", ",");
+			argList.add(payoutMethod.getVendorCity());
+		}
+		
+		if (payoutMethod.getVendorState() != null) {
+			StringUtil.append(updateFields, PayoutMethodRowMapper.COL_VENDOR_STATE + " = ?", ",");
+			argList.add(payoutMethod.getVendorState());
+		}
+		
+		if (payoutMethod.getVendorZip() != null) {
+			StringUtil.append(updateFields, PayoutMethodRowMapper.COL_VENDOR_ZIP + " = ?", ",");
+			argList.add(payoutMethod.getVendorZip());
+		}
+		
+		if (payoutMethod.getBankAccountId() != null) {
+			StringUtil.append(updateFields, PayoutMethodRowMapper.COL_BANK_ACCOUNT_ID + " = ?", ",");
+			argList.add(payoutMethod.getBankAccountId());
+		}
+		
+		if (payoutMethod.getBankAccountIban() != null) {
+			StringUtil.append(updateFields, PayoutMethodRowMapper.COL_BANK_ACCOUNT_IBAN + " = ?", ",");
+			argList.add(payoutMethod.getBankAccountIban());
+		}
+		
+		if (payoutMethod.getBankAccountClass() != null) {
+			StringUtil.append(updateFields, PayoutMethodRowMapper.COL_BANK_ACCOUNT_CLASS + " = ?", ",");
+			argList.add(payoutMethod.getBankAccountClass());
+		}
+		
+		if (payoutMethod.getBankAccountType() != null) {
+			StringUtil.append(updateFields, PayoutMethodRowMapper.COL_BANK_ACCOUNT_TYPE + " = ?", ",");
+			argList.add(payoutMethod.getBankAccountType());
+		}
+		
+		if (payoutMethod.getBankAccountHolderName() != null) {
+			StringUtil.append(updateFields, PayoutMethodRowMapper.COL_BANK_ACCOUNT_HOLDER_NAME + " = ?", ",");
+			argList.add(payoutMethod.getBankAccountHolderName());
+		}
+		
+		if (payoutMethod.getBankId() != null) {
+			StringUtil.append(updateFields, PayoutMethodRowMapper.COL_BANK_ID + " = ?", ",");
+			argList.add(payoutMethod.getBankId());
+		}
+		
+		if (payoutMethod.getBankName() != null) {
+			StringUtil.append(updateFields, PayoutMethodRowMapper.COL_BANK_NAME + " = ?", ",");
+			argList.add(payoutMethod.getBankName());
+		}
+		
+		if (payoutMethod.getBankSwiftBic() != null) {
+			StringUtil.append(updateFields, PayoutMethodRowMapper.COL_BANK_SWIFT_BIC + " = ?", ",");
+			argList.add(payoutMethod.getBankSwiftBic());
+		}
+		
+		if (payoutMethod.getBankCountry() != null) {
+			StringUtil.append(updateFields, PayoutMethodRowMapper.COL_BANK_COUNTRY + " = ?", ",");
+			argList.add(payoutMethod.getBankCountry());
+		}
+		
+		if (payoutMethod.getBankState() != null) {
+			StringUtil.append(updateFields, PayoutMethodRowMapper.COL_BANK_STATE + " = ?", ",");
+			argList.add(payoutMethod.getBankState());
+		}
+		
+		if (payoutMethod.getModifiedBy() != null) {
+			StringUtil.append(updateFields, "MODIFIED_BY = ?", ",");
+			argList.add(payoutMethod.getModifiedBy());
+		}
+		
+		if (payoutMethod.getModifiedDate() != null) {
+			StringUtil.append(updateFields, "MODIFIED_DATE = ?", ",");
+			argList.add(payoutMethod.getModifiedDate());
+		}
+		
+		argList.add(payoutMethod.getId());
+
+		updateSql = updateSql.replace("$1", updateFields);
+		this.getJdbcTemplate().update(updateSql, argList.toArray() );
+		
+		operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+		
 		return operationResult;
 	}
 	

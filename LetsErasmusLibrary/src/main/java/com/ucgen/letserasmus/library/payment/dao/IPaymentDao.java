@@ -20,4 +20,6 @@ public interface IPaymentDao {
 	
 	OperationResult insertPayoutMethod(PayoutMethod payoutMethod);
 	
+	OperationResult updatePayoutMethod(PayoutMethod payoutMethod);
+	
 }

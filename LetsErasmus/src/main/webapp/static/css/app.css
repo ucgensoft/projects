@@ -102,3 +102,9 @@ body, #mainWrapper {
 .clsDisabledGrey {
 	background-color : #f1f1f1;
 }
+
+.clsBox {
+	border: 1px solid #aaa;
+	border-radius: 4px;
+	padding : 5px;
+}

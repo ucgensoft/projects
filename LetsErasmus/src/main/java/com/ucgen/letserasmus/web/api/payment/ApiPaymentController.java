@@ -205,12 +205,13 @@ public class ApiPaymentController extends BaseApiController {
 					if (payoutMethod == null) {
 						payoutMethod = new PayoutMethod();
 						payoutMethod.setUserId(user.getId());
-						payoutMethod.setEmail(user.getEmail());
-						payoutMethod.setBlueSnapCountryCode(countryCode);
+						payoutMethod.setVendorEmail(user.getEmail());
+						payoutMethod.setBankCountry(countryCode);
 						payoutMethod.setCreatedBy(user.getFullName());
 						payoutMethod.setCreatedDate(new Date());
 						OperationResult createPayoutResult = this.paymentService.createPayoutMethodDraft(payoutMethod);
 						if (OperationResult.isResultSucces(createPayoutResult)) {
+							user.setPayoutMethod(payoutMethod);
 							operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 						} else {
 							operationResult.setResultCode(EnmResultCode.ERROR.getValue());
@@ -235,6 +236,106 @@ public class ApiPaymentController extends BaseApiController {
 			FileLogger.log(Level.ERROR, "ApiPaymentController-createDraftPayoutMethod()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);
+    }
+	
+	@RequestMapping(value = "/api/payout/update", method = RequestMethod.POST)
+    public ResponseEntity<OperationResult> updatePayoutMethod(@RequestBody PayoutMethod uiPayoutMethod, HttpSession session) {
+		OperationResult operationResult = new OperationResult();
+		
+		try {
+			User user = super.getSessionUser(session);
+			if (user != null) {
+				if (uiPayoutMethod != null) {
+					
+					PayoutMethod dbPayoutMethod = this.paymentService.getPayoutMethod(new PayoutMethod(user.getId()));
+					if (dbPayoutMethod != null) {		
+						
+						dbPayoutMethod.setVendorNationalId(uiPayoutMethod.getVendorNationalId());
+						dbPayoutMethod.setVendorTaxId(uiPayoutMethod.getVendorTaxId());
+						dbPayoutMethod.setVendorFirstName(uiPayoutMethod.getVendorFirstName());
+						dbPayoutMethod.setVendorLastName(uiPayoutMethod.getVendorLastName());
+						dbPayoutMethod.setVendorBirthDate(uiPayoutMethod.getVendorBirthDate());
+						dbPayoutMethod.setVendorCountry(uiPayoutMethod.getVendorCountry());
+						dbPayoutMethod.setVendorCity(uiPayoutMethod.getVendorCity());
+						dbPayoutMethod.setVendorZip(uiPayoutMethod.getVendorZip());
+						dbPayoutMethod.setVendorAddress(uiPayoutMethod.getVendorAddress());
+						dbPayoutMethod.setVendorAddress2(uiPayoutMethod.getVendorAddress2());
+						
+						dbPayoutMethod.setBankAccountClass(uiPayoutMethod.getBankAccountClass());
+						dbPayoutMethod.setBankAccountIban(uiPayoutMethod.getBankAccountIban());
+						dbPayoutMethod.setBankAccountHolderName(uiPayoutMethod.getBankAccountHolderName());
+						dbPayoutMethod.setBankCountry(uiPayoutMethod.getBankCountry());
+						dbPayoutMethod.setBankSwiftBic(uiPayoutMethod.getBankSwiftBic());
+						
+						dbPayoutMethod.setModifiedBy(user.getFullName());
+						dbPayoutMethod.setCreatedDate(new Date());
+						OperationResult updatePayoutResult = this.paymentService.updatePayoutMethod(dbPayoutMethod);
+						if (OperationResult.isResultSucces(updatePayoutResult)) {
+							user.setPayoutMethod(dbPayoutMethod);
+							operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+						} else {
+							operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+							operationResult.setResultDesc(AppConstants.OPERATION_FAIL);
+						}
+					} else {
+						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+						operationResult.setResultDesc(AppConstants.USER_DO_NOT_HAVE_PAYOUT_METHOD);
+					}	
+					
+				} else {
+					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+					operationResult.setResultDesc(AppConstants.MISSING_MANDATORY_PARAM);
+				}				
+			} else {
+				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
+			}
+		} catch (Exception e) {
+			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
+			operationResult.setResultDesc(AppConstants.OPERATION_FAIL);
+			FileLogger.log(Level.ERROR, "ApiPaymentController-createDraftPayoutMethod()-Error: " + CommonUtil.getExceptionMessage(e));
+		}
+		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);
+    }
+	
+	@RequestMapping(value = "/api/payout/get", method = RequestMethod.GET)
+    public ResponseEntity<ValueOperationResult<PayoutMethod>> getPayoutMethod(HttpSession session) {
+		ValueOperationResult<PayoutMethod> operationResult = new ValueOperationResult<PayoutMethod>();
+		
+		try {
+			User user = super.getSessionUser(session);
+			if (user != null) {
+				PayoutMethod payoutMethod = this.paymentService.getPayoutMethod(new PayoutMethod(user.getId()));
+				if (payoutMethod != null) {
+					//payoutMethod = new PayoutMethod();
+					if (payoutMethod.getVendorFirstName() == null) {
+						payoutMethod.setVendorFirstName(user.getFirstName());
+					}
+					if (payoutMethod.getVendorLastName() == null) {
+						payoutMethod.setVendorLastName(user.getLastName());
+					}
+					if (payoutMethod.getVendorBirthDate() == null) {
+						payoutMethod.setVendorBirthDate(user.getBirthDate());
+					}
+					if (payoutMethod.getVendorCountry() == null) {
+						payoutMethod.setVendorCountry(payoutMethod.getBankCountry());
+					}
+				}
+				
+				operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+				operationResult.setResultValue(payoutMethod);			
+			} else {
+				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
+			}
+		} catch (Exception e) {
+			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
+			operationResult.setResultDesc(AppConstants.OPERATION_FAIL);
+			FileLogger.log(Level.ERROR, "ApiPaymentController-getPayoutMethod()-Error: " + CommonUtil.getExceptionMessage(e));
+		}
+		return new ResponseEntity<ValueOperationResult<PayoutMethod>>(operationResult, HttpStatus.OK);
     }
 	
 }

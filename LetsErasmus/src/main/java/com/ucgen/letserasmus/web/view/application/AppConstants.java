@@ -112,6 +112,8 @@ public interface AppConstants {
 	
 	String USER_ALREADY_HAVE_PAYOUT_METHOD = "User payout method already defined!";
 	
+	String USER_DO_NOT_HAVE_PAYOUT_METHOD = "User does not have a payout method!";
+	
 	String BLUESNAP_CREATE_VENDOR_FAILES = "Bluesnap vendor creation failed!";
 	
 }

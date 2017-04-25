@@ -111,7 +111,45 @@ App.factory('paymentService', ['$http', '$q', function($http, $q){
 			}, function(errResponse) {
 				DialogUtil.error('Error', errResponse, 'OK');
 			});
-		}
+		},
+		
+		updatePayoutMethod : function(payoutMethod, callBack) {
+			var config = {
+				headers : {
+					'Accept' : 'application/json'
+				}
+			};
+			
+			NProgress.start(3000, 5);
+			return $http.post(webApplicationUrlPrefix + '/api/payout/update', payoutMethod, config).then(function(response) {
+				NProgress.done(true);
+				var result = isResultSuccess(response.data, true);
+				if (result && callBack) {
+					callBack(result);
+				}		
+			}, function(errResponse) {
+				DialogUtil.error('Error', errResponse, 'OK');
+			});
+		},
+		
+		getPayoutMethod : function(callBack) {
+			var config = {
+				headers : {
+					'Accept' : 'application/json'
+				}
+			};
+			
+			NProgress.start(3000, 5);
+			return $http.get(webApplicationUrlPrefix + '/api/payout/get', config).then(function(response) {
+				NProgress.done(true);
+				var result = isResultSuccess(response.data, true);
+				if (result && callBack) {
+					callBack(response.data.resultValue);
+				}		
+			}, function(errResponse) {
+				DialogUtil.error('Error', errResponse, 'OK');
+			});
+		},
 	}
 
 }]);

@@ -60,7 +60,7 @@ public class PaymentService implements IPaymentService {
 	@Transactional
 	public OperationResult createPayoutMethodDraft(PayoutMethod payoutMethod) {
 		OperationResult operationResult = new OperationResult();
-		ValueOperationResult<Long> createVendorResult = this.extPaymentService.createVendorDraft(payoutMethod.getUserId(), payoutMethod.getEmail(), payoutMethod.getBlueSnapCountryCode(), payoutMethod.getCreatedBy());
+		ValueOperationResult<Long> createVendorResult = this.extPaymentService.createVendorDraft(payoutMethod.getUserId(), payoutMethod.getVendorEmail(), payoutMethod.getBankCountry(), payoutMethod.getCreatedBy());
 		if (OperationResult.isResultSucces(createVendorResult)) {
 			payoutMethod.setBlueSnapVendorId(createVendorResult.getResultValue());
 			OperationResult createPayoutResult = this.paymentDao.insertPayoutMethod(payoutMethod);
@@ -75,6 +75,11 @@ public class PaymentService implements IPaymentService {
 			operationResult.setResultDesc("Bluesnap vendor creation failed. Error: " + OperationResult.getResultDesc(createVendorResult));
 		}
 		return operationResult;
+	}
+
+	@Override
+	public OperationResult updatePayoutMethod(PayoutMethod payoutMethod) {
+		return this.paymentDao.updatePayoutMethod(payoutMethod);
 	}
 
 }

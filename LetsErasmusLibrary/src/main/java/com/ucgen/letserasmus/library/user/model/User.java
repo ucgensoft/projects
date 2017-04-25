@@ -10,6 +10,7 @@ import com.ucgen.letserasmus.library.common.model.BaseModel;
 import com.ucgen.letserasmus.library.complaint.model.Complaint;
 import com.ucgen.letserasmus.library.favorite.model.Favorite;
 import com.ucgen.letserasmus.library.file.model.FileModel;
+import com.ucgen.letserasmus.library.payment.model.PayoutMethod;
 import com.ucgen.letserasmus.library.place.model.Place;
 
 public class User extends BaseModel {
@@ -50,6 +51,8 @@ public class User extends BaseModel {
 	
 	private String profileImageUrl;
 	private Integer loginType;
+	
+	private PayoutMethod payoutMethod;
 	
 	private Map<Integer, Map<Long, Favorite>> favoriteMap;
 	private Map<Integer, Map<Long, Complaint>> complaintMap;
@@ -247,6 +250,14 @@ public class User extends BaseModel {
 
 	public void setResetPasswordToken(String resetPasswordToken) {
 		this.resetPasswordToken = resetPasswordToken;
+	}
+
+	public PayoutMethod getPayoutMethod() {
+		return payoutMethod;
+	}
+
+	public void setPayoutMethod(PayoutMethod payoutMethod) {
+		this.payoutMethod = payoutMethod;
 	}
 
 	public List<Place> getPlaceList() {

@@ -12,11 +12,38 @@ public class PayoutMethodRowMapper extends BaseRowMapper<PayoutMethod> {
 	
 	public static final String COL_ID = "ID";
 	public static final String COL_USER_ID = "USER_ID";	
-	public static final String COL_EMAIL = "EMAIL";
-	public static final String COL_BLUESNAP_COUNTRY_CODE = "BLUESNAP_COUNTRY_CODE";
 	public static final String COL_BLUESNAP_VENDOR_ID = "BLUESNAP_VENDOR_ID";
-	public static final String COL_IBAN = "IBAN";
-		
+	
+	public static final String COL_COMMISSION_PERCENT = "COMMISSION_PERCENT";
+	public static final String COL_PAYOUT_TYPE = "PAYOUT_TYPE";
+	public static final String COL_BASE_CURRENCY = "BASE_CURRENCY";
+	
+	public static final String COL_VENDOR_NATIONAL_ID = "VENDOR_NATIONAL_ID";
+	public static final String COL_VENDOR_TAXID = "VENDOR_TAXID";
+	public static final String COL_VENDOR_FIRST_NAME = "VENDOR_FIRST_NAME";
+	public static final String COL_VENDOR_LAST_NAME = "VENDOR_LAST_NAME";
+	public static final String COL_VENDOR_EMAIL = "VENDOR_EMAIL";
+	public static final String COL_VENDOR_BIRTH_DATE = "VENDOR_BIRTH_DATE";
+	public static final String COL_VENDOR_ADDRESS = "VENDOR_ADDRESS";
+	public static final String COL_VENDOR_ADDRESS2 = "VENDOR_ADDRESS2";
+	public static final String COL_VENDOR_COUNTRY = "VENDOR_COUNTRY";
+	public static final String COL_VENDOR_CITY = "VENDOR_CITY";
+	public static final String COL_VENDOR_STATE = "VENDOR_STATE";
+	public static final String COL_VENDOR_ZIP = "VENDOR_ZIP";
+	
+	
+	public static final String COL_BANK_ACCOUNT_ID = "BANK_ACCOUNT_ID";
+	public static final String COL_BANK_ACCOUNT_IBAN = "BANK_ACCOUNT_IBAN";
+	public static final String COL_BANK_ACCOUNT_HOLDER_NAME = "BANK_ACCOUNT_HOLDER_NAME";
+	public static final String COL_BANK_ACCOUNT_CLASS = "BANK_ACCOUNT_CLASS";
+	public static final String COL_BANK_ACCOUNT_TYPE = "BANK_ACCOUNT_TYPE";
+	
+	public static final String COL_BANK_NAME = "BANK_NAME";
+	public static final String COL_BANK_ID = "BANK_ID";
+	public static final String COL_BANK_COUNTRY = "BANK_COUNTRY";
+	public static final String COL_BANK_STATE = "BANK_STATE";
+	public static final String COL_BANK_SWIFT_BIC = "BANK_SWIFT_BIC";
+			
 	public PayoutMethodRowMapper() {
 		this("PO");
 	}
@@ -33,10 +60,34 @@ public class PayoutMethodRowMapper extends BaseRowMapper<PayoutMethod> {
 		
 		payoutMethod.setId(super.getLong(rs, COL_ID));		
 		payoutMethod.setUserId(super.getLong(rs, COL_USER_ID));
-		payoutMethod.setEmail(super.getString(rs, COL_EMAIL));
-		payoutMethod.setBlueSnapCountryCode(super.getString(rs, COL_BLUESNAP_COUNTRY_CODE));
 		payoutMethod.setBlueSnapVendorId(super.getLong(rs, COL_BLUESNAP_VENDOR_ID));
-		payoutMethod.setIban(super.getString(rs, COL_IBAN));
+		
+		payoutMethod.setVendorNationalId(super.getLong(rs, COL_VENDOR_NATIONAL_ID));
+		payoutMethod.setVendorTaxId(super.getLong(rs, COL_VENDOR_TAXID));
+		payoutMethod.setVendorFirstName(super.getString(rs, COL_VENDOR_FIRST_NAME));
+		payoutMethod.setVendorLastName(super.getString(rs, COL_VENDOR_LAST_NAME));
+		payoutMethod.setVendorEmail(super.getString(rs, COL_VENDOR_EMAIL));
+		payoutMethod.setVendorEmail(super.getString(rs, COL_VENDOR_EMAIL));
+		payoutMethod.setVendorBirthDate(super.getTimestamp(rs, COL_VENDOR_BIRTH_DATE));
+		payoutMethod.setVendorAddress(super.getString(rs, COL_VENDOR_ADDRESS));
+		payoutMethod.setVendorAddress2(super.getString(rs, COL_VENDOR_ADDRESS2));
+		payoutMethod.setVendorCountry(super.getString(rs, COL_VENDOR_COUNTRY));
+		payoutMethod.setVendorCity(super.getString(rs, COL_VENDOR_CITY));
+		payoutMethod.setVendorState(super.getString(rs, COL_VENDOR_STATE));
+		payoutMethod.setVendorZip(super.getString(rs, COL_VENDOR_ZIP));
+		
+		payoutMethod.setBankAccountId(super.getLong(rs, COL_BANK_ACCOUNT_ID));
+		payoutMethod.setBankAccountIban(super.getString(rs, COL_BANK_ACCOUNT_IBAN));
+		payoutMethod.setBankAccountHolderName(super.getString(rs, COL_BANK_ACCOUNT_HOLDER_NAME));
+		payoutMethod.setBankAccountHolderName(super.getString(rs, COL_BANK_ACCOUNT_HOLDER_NAME));
+		payoutMethod.setBankAccountClass(super.getString(rs, COL_BANK_ACCOUNT_CLASS));
+		payoutMethod.setBankAccountType(super.getString(rs, COL_BANK_ACCOUNT_TYPE));
+		
+		payoutMethod.setBankName(super.getString(rs, COL_BANK_NAME));
+		payoutMethod.setBankId(super.getLong(rs, COL_BANK_ID));
+		payoutMethod.setBankCountry(super.getString(rs, COL_BANK_COUNTRY));
+		payoutMethod.setBankState(super.getString(rs, COL_BANK_STATE));
+		payoutMethod.setBankSwiftBic(super.getString(rs, COL_BANK_SWIFT_BIC));
 		
 		payoutMethod.setCreatedBy(super.getString(rs, COL_CREATED_BY));		
 		payoutMethod.setCreatedDate(super.getTimestamp(rs, COL_CREATED_DATE));
@@ -55,14 +106,7 @@ public class PayoutMethodRowMapper extends BaseRowMapper<PayoutMethod> {
 
 	@Override
 	public void initializeColList() {
-		super.addColumn(COL_ID);
-		super.addColumn(COL_USER_ID);
-		super.addColumn(COL_EMAIL);
-		super.addColumn(COL_BLUESNAP_COUNTRY_CODE);
-		super.addColumn(COL_BLUESNAP_VENDOR_ID);		
-		super.addColumn(COL_IBAN);
-		super.addColumn(COL_CREATED_BY);
-		super.addColumn(COL_CREATED_DATE);		
+			
 	}
 	
 }

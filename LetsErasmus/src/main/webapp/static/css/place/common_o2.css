@@ -2749,6 +2749,10 @@ ul.panel-body>li>*:last-child, ol.panel-body>li>*:last-child {
 	font-size: 16px
 }
 
+.btn-large:hover, .btn-large:focus {
+	border-color: #0275a8 !important;
+}
+
 .btn-large .icon:first-child {
 	margin-right: 4px
 }
