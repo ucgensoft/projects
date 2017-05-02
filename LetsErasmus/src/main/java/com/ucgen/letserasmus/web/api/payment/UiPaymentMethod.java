@@ -5,7 +5,8 @@ public class UiPaymentMethod {
 	private String cardHolderFirstName;
 	private String cardHolderLastName;
 	private String zipCode;
-	
+	private String cardInfoToken;
+		
 	public String getCardHolderFirstName() {
 		return cardHolderFirstName;
 	}
@@ -23,6 +24,12 @@ public class UiPaymentMethod {
 	}
 	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
+	}
+	public String getCardInfoToken() {
+		return cardInfoToken;
+	}
+	public void setCardInfoToken(String cardInfoToken) {
+		this.cardInfoToken = cardInfoToken;
 	}
 	
 }

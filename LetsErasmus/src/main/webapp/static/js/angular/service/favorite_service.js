@@ -53,7 +53,7 @@ App.factory('favoriteService', ['$http', '$q', function($http, $q){
 				NProgress.done(true);
 				var result = isResultSuccess(response.data, true);
 				if (result && callBack) {
-					callBack(result);
+					callBack(response.data.resultValue);
 				}
 			}, function(errResponse) {
 				DialogUtil.error('Error', errResponse, 'OK');

@@ -11,11 +11,14 @@ public class PayoutMethod extends BaseModel {
 
 	private Long id;
 	private Long userId;
+	private Integer externalSystemId;
 	private Long blueSnapVendorId;
+	private String stripeAccountId;
 	private String payoutType;
 	private BigDecimal commissionPercent;
 	private String baseCurrency;
 	
+	private String vendorEntityType;
 	private Long vendorNationalId;
 	private Long vendorTaxId;
 	private String vendorFirstName;
@@ -65,12 +68,28 @@ public class PayoutMethod extends BaseModel {
 		this.userId = userId;
 	}
 
+	public Integer getExternalSystemId() {
+		return externalSystemId;
+	}
+
+	public void setExternalSystemId(Integer externalSystemId) {
+		this.externalSystemId = externalSystemId;
+	}
+
 	public Long getBlueSnapVendorId() {
 		return blueSnapVendorId;
 	}
 
 	public void setBlueSnapVendorId(Long blueSnapVendorId) {
 		this.blueSnapVendorId = blueSnapVendorId;
+	}
+
+	public String getStripeAccountId() {
+		return stripeAccountId;
+	}
+
+	public void setStripeAccountId(String stripeAccountId) {
+		this.stripeAccountId = stripeAccountId;
 	}
 
 	public String getPayoutType() {
@@ -95,6 +114,14 @@ public class PayoutMethod extends BaseModel {
 
 	public void setBaseCurrency(String baseCurrency) {
 		this.baseCurrency = baseCurrency;
+	}
+
+	public String getVendorEntityType() {
+		return vendorEntityType;
+	}
+
+	public void setVendorEntityType(String vendorEntityType) {
+		this.vendorEntityType = vendorEntityType;
 	}
 
 	public Long getVendorNationalId() {

@@ -90,19 +90,15 @@ App.factory('paymentService', ['$http', '$q', function($http, $q){
 			});
 		},
 		
-		createPayoutMethod : function(countryCode, callBack) {
-			var data = {
-					countryCode : countryCode
-			}
+		createPayoutMethod : function(payoutMethod, callBack) {
 			var config = {
-				params : data,
 				headers : {
 					'Accept' : 'application/json'
 				}
 			};
 			
 			NProgress.start(3000, 5);
-			return $http.get(webApplicationUrlPrefix + '/api/payout/createdraft', config).then(function(response) {
+			return $http.post(webApplicationUrlPrefix + '/api/payout/createdraft', payoutMethod, config).then(function(response) {
 				NProgress.done(true);
 				var result = isResultSuccess(response.data, true);
 				if (result && callBack) {

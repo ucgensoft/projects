@@ -6,6 +6,8 @@ App.controller('paymentCtrl', ['$scope', 'reservationService', 'commonService', 
       var operationToken = null;
       var operationId = null;
       var submitListener = null;
+      var initializeListener = null;
+      var validateListener = null;
         
       self.initialize = function() {
     	  
@@ -16,10 +18,13 @@ App.controller('paymentCtrl', ['$scope', 'reservationService', 'commonService', 
     		  commonService.getTokenObject(operationToken, operationId,
   					function(reservation) {
       			  		self.reservation = reservation;
+      			  		if (initializeListener != null) {
+      			  			initializeListener(self.reservation.clientUser.firstName, self.reservation.clientUser.lastName);
+      			  		}
   					}
       		  ); 
     	  } else {
-    		  DialogUtil.error('Error', 'Missin parameters in url!', 'OK', function() {
+    		  DialogUtil.error('Error', 'Missing parameters in url!', 'OK', function() {
       			closeWindow();
       		  }); 
     	  }
@@ -71,8 +76,10 @@ App.controller('paymentCtrl', ['$scope', 'reservationService', 'commonService', 
   		var firstName = StringUtil.trim($("#txtFirstName").val());
   		var lastName = StringUtil.trim($("#txtLastName").val());
   		if (firstName != '' && lastName != '' && paymentFormValid) {
+  			NProgress.start(4000, 5);
   			submitListener(self.finishReservation);
   			validationTimer = setTimeout(function() {
+  				NProgress.done(true);
   	  			DialogUtil.warn('Warning', 'Please fill mandatory parameters!', 'OK');
   	  		}, 1500);
   		} else {
@@ -89,15 +96,15 @@ App.controller('paymentCtrl', ['$scope', 'reservationService', 'commonService', 
   		var lastName = StringUtil.trim($("#txtLastName").val());
   		
   		var uiPaymentMethod = {
-					cardHolderFirstName : firstName,
-					cardHolderLastName : lastName,
-					zipCode : zipCode
-			};
+			cardHolderFirstName : firstName,
+			cardHolderLastName : lastName,
+			zipCode : zipCode
+		};
 			
-			var reservation = {
-  			messageText : 'I would like to book your place.',
-  			operationToken : operationToken,
-  			uiPaymentMethod : uiPaymentMethod
+		var reservation = {
+			messageText : 'I would like to book your place.',
+			operationToken : operationToken,
+			uiPaymentMethod : uiPaymentMethod
   		};
   		reservationService.finishReservation(reservation,
 				function(isSuccess) {
@@ -112,6 +119,40 @@ App.controller('paymentCtrl', ['$scope', 'reservationService', 'commonService', 
   		
   	};
   	
+  	self.onBtnFinishClickStripe = function() {
+  		var paymentFormValid = validateListener();
+  		if (paymentFormValid) {
+  			NProgress.start(4000, 5);
+  			submitListener(self.finishReservationStripe);
+  		} else {
+  			DialogUtil.info('Warning', 'Please fill mandatory fields.', 'OK');
+  		}
+  	};
+  	
+  	self.finishReservationStripe = function(operationResult) {
+  		if (operationResult.resultCode == EnmOperationResultCode.SUCCESS) {
+  			var uiPaymentMethod = operationResult.resultValue;
+				
+			var reservation = {
+				messageText : 'I would like to book your place.',
+				operationToken : operationToken,
+				uiPaymentMethod : uiPaymentMethod
+	  		};
+	  		reservationService.finishReservation(reservation,
+					function(isSuccess) {
+						if (isSuccess) {
+							DialogUtil.info('Success', 'Congratulations! Your request is sent to host.', 'OK', function() {
+								var url = webApplicationUrlPrefix + '/pages/dashboard/MessageList.xhtml';
+								openWindow(url, true);
+							});
+						}
+					}
+			  );
+  		} else {
+  			
+  		}
+  	};
+  	
   	self.getPaymentToken = function(callBack) {
   		paymentService.getPaymentToken(operationToken, operationId, function(isSuccess, paymentToken) {
   			if (isSuccess) {
@@ -124,9 +165,13 @@ App.controller('paymentCtrl', ['$scope', 'reservationService', 'commonService', 
   		});
   	};
   	
-  	self.addListener = function(funcSubmit, funcValidate) {
+  	self.addListener = function(funcSubmit, funcValidate, funcInitialize) {
   		submitListener = funcSubmit;
   		validateListener = funcValidate;
+  		initializeListener = funcInitialize;
+  		if (self.reservation != null && initializeListener != null) {
+  			initializeListener(self.reservation.clientUser.firstName, self.reservation.clientUser.lastName);
+  		}
   	};
   	
     self.initialize();
@@ -138,7 +183,7 @@ function getPaymentToken(callBack) {
 	scope.ctrl.getPaymentToken(callBack);
 }
 
-function addListener(funcSubmit, funcValidate) {
+function addListener(funcSubmit, funcValidate, funcInitialize) {
 	var scope = angular.element( $('#divBody') ).scope();
-	scope.ctrl.addListener(funcSubmit, funcValidate);
+	scope.ctrl.addListener(funcSubmit, funcValidate, funcInitialize);
 }

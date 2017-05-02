@@ -257,12 +257,12 @@ public class ExtPaymentService implements IExtPaymentService {
 		    
 		    ExtPaymentInfo paymentInfo = new ExtPaymentInfo();
 		    paymentInfo.setAmount(payment.getEntityPrice().add(payment.getServiceFee()));
-		    paymentInfo.setCurrency(payment.getBlueSnapCurrencyCode());
+		    paymentInfo.setCurrency(payment.getCurrencyCode());
 		    paymentInfo.setRecurringTransaction("ECOMMERCE");
 		    paymentInfo.setMerchantTransactionId(payment.getMerchantTransactionId());
 		    paymentInfo.setTransactionId(payment.getBlueSnapTransactionId());
 		    paymentInfo.setCardTransactionType(ExtEnmTransactionType.AUTH_ONLY.getName());
-		    paymentInfo.setPfToken(payment.getBlueSnapHostedFieldToken());
+		    paymentInfo.setPfToken(payment.getCardInfoToken());
 		    paymentInfo.setVendorInfo(vendorInfo);
 		    paymentInfo.setCardHolderInfo(cardHolderInfo);
 		    

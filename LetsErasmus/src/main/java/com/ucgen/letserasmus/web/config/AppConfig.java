@@ -31,9 +31,9 @@ public class AppConfig implements TransactionManagementConfigurer {
 		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
 		
 		
-		dataSource.setUrl("jdbc:mysql://localhost:3306/motokroscum_com");
+		dataSource.setUrl("jdbc:mysql://localhost:3306/letserasmus_db");
 		dataSource.setUsername("root");
-		dataSource.setPassword("admin");
+		dataSource.setPassword("root");
 		
 		/*
 		dataSource.setUrl("jdbc:mysql://dbletserasmus.cknhbnlsvkjo.us-west-2.rds.amazonaws.com:1234/letserasmus_db");

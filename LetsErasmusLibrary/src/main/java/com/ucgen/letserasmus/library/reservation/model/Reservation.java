@@ -33,7 +33,7 @@ public class Reservation extends BaseModel {
 	private Long clientReviewId;
 	private Long hostReviewId;
 	private String transactionId;
-	private String blueSnapTransactionId;
+	private String paymentTransactionId;
 	private Integer paymentStatus;
 	private Integer cancellationPolicyId;
 	
@@ -189,11 +189,11 @@ public class Reservation extends BaseModel {
 	public void setTransactionId(String transactionId) {
 		this.transactionId = transactionId;
 	}
-	public String getBlueSnapTransactionId() {
-		return blueSnapTransactionId;
+	public String getPaymentTransactionId() {
+		return paymentTransactionId;
 	}
-	public void setBlueSnapTransactionId(String blueSnapTransactionId) {
-		this.blueSnapTransactionId = blueSnapTransactionId;
+	public void setPaymentTransactionId(String paymentTransactionId) {
+		this.paymentTransactionId = paymentTransactionId;
 	}
 	public Integer getPaymentStatus() {
 		return paymentStatus;

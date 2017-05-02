@@ -10,16 +10,23 @@ import com.ucgen.common.operationresult.EnmResultCode;
 import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.common.operationresult.ValueOperationResult;
 import com.ucgen.letserasmus.library.bluesnap.service.IExtPaymentService;
+import com.ucgen.letserasmus.library.common.enumeration.EnmBoolStatus;
+import com.ucgen.letserasmus.library.log.enumeration.EnmExternalSystem;
 import com.ucgen.letserasmus.library.payment.dao.IPaymentDao;
 import com.ucgen.letserasmus.library.payment.model.PaymentMethod;
 import com.ucgen.letserasmus.library.payment.model.PayoutMethod;
 import com.ucgen.letserasmus.library.payment.service.IPaymentService;
+import com.ucgen.letserasmus.library.simpleobject.model.Country;
+import com.ucgen.letserasmus.library.simpleobject.service.ISimpleObjectService;
+import com.ucgen.letserasmus.library.stripe.service.IStripePaymentService;
 
 @Service
 public class PaymentService implements IPaymentService {
 
 	private IExtPaymentService extPaymentService;
 	private IPaymentDao paymentDao;
+	private IStripePaymentService stripePaymentService;
+	private ISimpleObjectService simpleObjectService;
 	
 	@Autowired
 	public void setPaymentDao(IPaymentDao paymentDao) {
@@ -29,6 +36,16 @@ public class PaymentService implements IPaymentService {
 	@Autowired
 	public void setExtPaymentService(IExtPaymentService extPaymentService) {
 		this.extPaymentService = extPaymentService;
+	}
+
+	@Autowired
+	public void setStripePaymentService(IStripePaymentService stripePaymentService) {
+		this.stripePaymentService = stripePaymentService;
+	}
+
+	@Autowired
+	public void setSimpleObjectService(ISimpleObjectService simpleObjectService) {
+		this.simpleObjectService = simpleObjectService;
 	}
 
 	@Override
@@ -60,19 +77,48 @@ public class PaymentService implements IPaymentService {
 	@Transactional
 	public OperationResult createPayoutMethodDraft(PayoutMethod payoutMethod) {
 		OperationResult operationResult = new OperationResult();
-		ValueOperationResult<Long> createVendorResult = this.extPaymentService.createVendorDraft(payoutMethod.getUserId(), payoutMethod.getVendorEmail(), payoutMethod.getBankCountry(), payoutMethod.getCreatedBy());
-		if (OperationResult.isResultSucces(createVendorResult)) {
-			payoutMethod.setBlueSnapVendorId(createVendorResult.getResultValue());
-			OperationResult createPayoutResult = this.paymentDao.insertPayoutMethod(payoutMethod);
-			if (OperationResult.isResultSucces(createPayoutResult)) {
-				operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+		
+		String countryIsoCode2 = payoutMethod.getVendorCountry().toUpperCase();
+		
+		Country vendorCountry = this.simpleObjectService.getCountryWithIsoCode2(countryIsoCode2);
+		
+		if (vendorCountry != null) {
+			if (vendorCountry.getStripeSupportFlag().equals(EnmBoolStatus.YES.getId())) {
+				ValueOperationResult<String> createAccountResult = this.stripePaymentService.createManagedAccount(payoutMethod);
+				if (OperationResult.isResultSucces(createAccountResult)) {
+					payoutMethod.setExternalSystemId(EnmExternalSystem.STRIPE.getId());
+					payoutMethod.setStripeAccountId(createAccountResult.getResultValue());
+					OperationResult createPayoutResult = this.paymentDao.insertPayoutMethod(payoutMethod);
+					if (OperationResult.isResultSucces(createPayoutResult)) {
+						operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+					} else {
+						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+						operationResult.setResultDesc("Stripe account created, payout method creation failed. Error: " + OperationResult.getResultDesc(createPayoutResult));
+					}
+				} else {
+					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+					operationResult.setResultDesc("Stripe account creation failed. Error: " + OperationResult.getResultDesc(createAccountResult));
+				}
 			} else {
-				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("Bluesnap vendor created, payout method creation failed. Error: " + OperationResult.getResultDesc(createPayoutResult));
+				ValueOperationResult<Long> createVendorResult = this.extPaymentService.createVendorDraft(payoutMethod.getUserId(), payoutMethod.getVendorEmail(), payoutMethod.getBankCountry(), payoutMethod.getCreatedBy());
+				if (OperationResult.isResultSucces(createVendorResult)) {
+					payoutMethod.setExternalSystemId(EnmExternalSystem.BLUESNAP.getId());
+					payoutMethod.setBlueSnapVendorId(createVendorResult.getResultValue());
+					OperationResult createPayoutResult = this.paymentDao.insertPayoutMethod(payoutMethod);
+					if (OperationResult.isResultSucces(createPayoutResult)) {
+						operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+					} else {
+						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+						operationResult.setResultDesc("Bluesnap vendor created, payout method creation failed. Error: " + OperationResult.getResultDesc(createPayoutResult));
+					}
+				} else {
+					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+					operationResult.setResultDesc("Bluesnap vendor creation failed. Error: " + OperationResult.getResultDesc(createVendorResult));
+				}
 			}
 		} else {
 			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-			operationResult.setResultDesc("Bluesnap vendor creation failed. Error: " + OperationResult.getResultDesc(createVendorResult));
+			operationResult.setResultDesc("Country information not found for isoCode2: " + countryIsoCode2);
 		}
 		return operationResult;
 	}

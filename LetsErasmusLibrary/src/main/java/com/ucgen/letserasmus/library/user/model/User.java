@@ -315,6 +315,15 @@ public class User extends BaseModel {
 		this.favoriteMap.get(favorite.getEntityType()).put(favorite.getEntityId(), favorite);
 	}
 	
+	public void removeFavorite(Favorite favorite) {
+		if (this.favoriteMap == null) {
+			this.favoriteMap = new HashMap<Integer, Map<Long, Favorite>>();
+		}
+		if (this.favoriteMap.containsKey(favorite.getEntityType())) {
+			this.favoriteMap.get(favorite.getEntityType()).remove(favorite.getEntityId());
+		}
+	}
+	
 	public void addFavoriteList(List<Favorite> favoriteList) {
 		if (favoriteList != null) {
 			for (Favorite favorite : favoriteList) {

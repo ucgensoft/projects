@@ -657,13 +657,13 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
     	  if ($('#favouriteIcon_' + placeId).hasClass('FavouriteItem-icon--active')) {
     		  removeFavorite(EnmEntityType.PLACE, placeId, function(result) {
     			 if (result) {
-    				 $('#favouriteIcon_' + placeId).removeClass('FavouriteItem-icon--active')
+    				 //$('#favouriteIcon_' + placeId).removeClass('FavouriteItem-icon--active')
     			 } 
     		  });
     	  } else {
     		  addFavorite(EnmEntityType.PLACE, placeId, function(result) {
      			 if (result) {
-     				$('#favouriteIcon_' + placeId).addClass('FavouriteItem-icon--active')
+     				//$('#favouriteIcon_' + placeId).addClass('FavouriteItem-icon--active')
      			 } 
      		  });
     	  }

@@ -5,8 +5,9 @@ public class Country {
 	private Long id;
 	private String name;
 	private String code;
-	private String isoCode;
-	private String blueSnapCountryCode;
+	private String isoCodeThreeDigit;
+	private String isoCodeTwoDigit;
+	private String stripeSupportFlag;
 	
 	public Long getId() {
 		return id;
@@ -26,17 +27,24 @@ public class Country {
 	public void setCode(String code) {
 		this.code = code;
 	}
-	public String getIsoCode() {
-		return isoCode;
+	public String getIsoCodeThreeDigit() {
+		return isoCodeThreeDigit;
 	}
-	public void setIsoCode(String isoCode) {
-		this.isoCode = isoCode;
+	public void setIsoCodeThreeDigit(String isoCodeThreeDigit) {
+		this.isoCodeThreeDigit = isoCodeThreeDigit;
 	}
-	public String getBlueSnapCountryCode() {
-		return blueSnapCountryCode;
+	public String getIsoCodeTwoDigit() {
+		return isoCodeTwoDigit;
 	}
-	public void setBlueSnapCountryCode(String blueSnapCountryCode) {
-		this.blueSnapCountryCode = blueSnapCountryCode;
+	public void setIsoCodeTwoDigit(String isoCodeTwoDigit) {
+		this.isoCodeTwoDigit = isoCodeTwoDigit;
 	}
+	public String getStripeSupportFlag() {
+		return stripeSupportFlag;
+	}
+	public void setStripeSupportFlag(String stripeSupportFlag) {
+		this.stripeSupportFlag = stripeSupportFlag;
+	}
+	
 	
 }

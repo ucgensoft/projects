@@ -1,5 +1,5 @@
-App.controller('verificationCtrl', ['$scope', 'userService', 'commonService', '$sce', '$compile', 
-                                function($scope, userService, commonService, sce, compile) {
+App.controller('verificationCtrl', ['$scope', 'userService', 'commonService', 
+                                function($scope, userService, commonService) {
       var self = this;
       
       self.countryList = [];
@@ -7,6 +7,7 @@ App.controller('verificationCtrl', ['$scope', 'userService', 'commonService', '$
       var checkEmailTimer = null;
       var activeOperation = null;
       var operationToken = null;
+      
       
       self.initialize = function() {
     	  

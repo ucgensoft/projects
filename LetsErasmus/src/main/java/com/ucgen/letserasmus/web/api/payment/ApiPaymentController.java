@@ -23,9 +23,11 @@ import com.ucgen.common.util.CommonUtil;
 import com.ucgen.common.util.FileLogger;
 import com.ucgen.letserasmus.library.bluesnap.service.IExtPaymentService;
 import com.ucgen.letserasmus.library.common.enumeration.EnmErrorCode;
+import com.ucgen.letserasmus.library.payment.enumeration.EnmVendorEntityType;
 import com.ucgen.letserasmus.library.payment.model.PaymentMethod;
 import com.ucgen.letserasmus.library.payment.model.PayoutMethod;
 import com.ucgen.letserasmus.library.payment.service.IPaymentService;
+import com.ucgen.letserasmus.library.stripe.service.IStripePaymentService;
 import com.ucgen.letserasmus.library.user.model.User;
 import com.ucgen.letserasmus.web.api.BaseApiController;
 import com.ucgen.letserasmus.web.view.application.AppConstants;
@@ -35,6 +37,7 @@ public class ApiPaymentController extends BaseApiController {
 
 	private IPaymentService paymentService;
 	private IExtPaymentService extPaymentService;
+	private IStripePaymentService stripePaymentService;
 	
 	@Autowired
 	public void setPaymentService(IPaymentService paymentService) {
@@ -44,6 +47,11 @@ public class ApiPaymentController extends BaseApiController {
 	@Autowired
 	public void setExtPaymentService(IExtPaymentService extPaymentService) {
 		this.extPaymentService = extPaymentService;
+	}
+
+	@Autowired
+	public void setStripePaymentService(IStripePaymentService stripePaymentService) {
+		this.stripePaymentService = stripePaymentService;
 	}
 
 	@RequestMapping(value = "/api/payment/gettoken", method = RequestMethod.GET)
@@ -193,20 +201,36 @@ public class ApiPaymentController extends BaseApiController {
 		return new ResponseEntity<ValueOperationResult<Boolean>>(operationResult, HttpStatus.OK);
     }
 	
-	@RequestMapping(value = "/api/payout/createdraft", method = RequestMethod.GET)
-    public ResponseEntity<OperationResult> createDraftPayoutMethod(@RequestParam("countryCode") String countryCode, HttpSession session) {
+	@RequestMapping(value = "/api/payout/createdraft", method = RequestMethod.POST)
+    public ResponseEntity<OperationResult> createDraftPayoutMethod(@RequestBody PayoutMethod uiPayoutMethod, HttpSession session) {
 		OperationResult operationResult = new OperationResult();
 		
 		try {
 			User user = super.getSessionUser(session);
 			if (user != null) {
-				if (countryCode != null && !countryCode.trim().isEmpty()) {
+				if (uiPayoutMethod != null 
+						&& uiPayoutMethod.getVendorEntityType() != null && !uiPayoutMethod.getVendorEntityType().trim().isEmpty()
+						&& EnmVendorEntityType.getEntityType(uiPayoutMethod.getVendorEntityType()) != null
+						&& uiPayoutMethod.getVendorLastName() != null && !uiPayoutMethod.getVendorLastName().trim().isEmpty()
+						&& uiPayoutMethod.getVendorFirstName() != null && !uiPayoutMethod.getVendorFirstName().trim().isEmpty()
+						&& uiPayoutMethod.getVendorCountry() != null && !uiPayoutMethod.getVendorCountry().trim().isEmpty()
+						&& uiPayoutMethod.getVendorCity() != null && !uiPayoutMethod.getVendorCity().trim().isEmpty()
+						&& uiPayoutMethod.getVendorZip() != null && !uiPayoutMethod.getVendorZip().trim().isEmpty()
+						&& uiPayoutMethod.getVendorAddress() != null && !uiPayoutMethod.getVendorAddress().trim().isEmpty()) {
 					PayoutMethod payoutMethod = this.paymentService.getPayoutMethod(new PayoutMethod(user.getId()));
 					if (payoutMethod == null) {
 						payoutMethod = new PayoutMethod();
+						payoutMethod.setVendorEntityType(uiPayoutMethod.getVendorEntityType().toUpperCase());
 						payoutMethod.setUserId(user.getId());
 						payoutMethod.setVendorEmail(user.getEmail());
-						payoutMethod.setBankCountry(countryCode);
+						payoutMethod.setVendorFirstName(uiPayoutMethod.getVendorFirstName());
+						payoutMethod.setVendorLastName(uiPayoutMethod.getVendorLastName());
+						payoutMethod.setVendorCountry(uiPayoutMethod.getVendorCountry());
+						payoutMethod.setVendorCity(uiPayoutMethod.getVendorCity());
+						payoutMethod.setVendorZip(uiPayoutMethod.getVendorZip());
+						payoutMethod.setVendorAddress(uiPayoutMethod.getVendorAddress());
+						payoutMethod.setVendorAddress2(uiPayoutMethod.getVendorAddress2());
+						
 						payoutMethod.setCreatedBy(user.getFullName());
 						payoutMethod.setCreatedDate(new Date());
 						OperationResult createPayoutResult = this.paymentService.createPayoutMethodDraft(payoutMethod);

@@ -11,23 +11,24 @@ import com.ucgen.common.operationresult.EnmResultCode;
 import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.common.operationresult.ValueOperationResult;
 import com.ucgen.letserasmus.library.bluesnap.service.IExtPaymentService;
-import com.ucgen.letserasmus.library.common.enumeration.EnmCurrency;
 import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
 import com.ucgen.letserasmus.library.log.dao.ILogDao;
+import com.ucgen.letserasmus.library.log.enumeration.EnmExternalSystem;
 import com.ucgen.letserasmus.library.log.enumeration.EnmTransaction;
 import com.ucgen.letserasmus.library.log.model.TransactionLog;
 import com.ucgen.letserasmus.library.message.dao.IMessageDao;
 import com.ucgen.letserasmus.library.message.model.Message;
 import com.ucgen.letserasmus.library.message.model.MessageThread;
-import com.ucgen.letserasmus.library.payment.dao.IPaymentDao;
 import com.ucgen.letserasmus.library.payment.enumeration.EnmPaymentStatus;
 import com.ucgen.letserasmus.library.payment.model.PaymentMethod;
 import com.ucgen.letserasmus.library.payment.model.PayoutMethod;
+import com.ucgen.letserasmus.library.payment.service.IPaymentService;
 import com.ucgen.letserasmus.library.reservation.dao.IReservationDao;
 import com.ucgen.letserasmus.library.reservation.enumeration.EnmReservationStatus;
 import com.ucgen.letserasmus.library.reservation.model.Reservation;
 import com.ucgen.letserasmus.library.reservation.service.IReservationService;
 import com.ucgen.letserasmus.library.simpleobject.service.ISimpleObjectService;
+import com.ucgen.letserasmus.library.stripe.service.IStripePaymentService;
 
 @Service
 public class ReservationService implements IReservationService {
@@ -35,9 +36,10 @@ public class ReservationService implements IReservationService {
 	private IReservationDao reservationDao;
 	private IMessageDao messageDao;
 	private ILogDao logDao;
-	private IPaymentDao paymentDao;
 	private IExtPaymentService extPaymentService;
 	private ISimpleObjectService simpleObjectService;
+	private IStripePaymentService stripePaymentService;
+	private IPaymentService paymentService;
 	
 	@Autowired
 	public void setReservationDao(IReservationDao reservationDao) {
@@ -55,11 +57,6 @@ public class ReservationService implements IReservationService {
 	}
 
 	@Autowired
-	public void setPaymentDao(IPaymentDao paymentDao) {
-		this.paymentDao = paymentDao;
-	}
-
-	@Autowired
 	public void setExtPaymentService(IExtPaymentService extPaymentService) {
 		this.extPaymentService = extPaymentService;
 	}
@@ -69,15 +66,25 @@ public class ReservationService implements IReservationService {
 		this.simpleObjectService = simpleObjectService;
 	}
 
+	@Autowired
+	public void setStripePaymentService(IStripePaymentService stripePaymentService) {
+		this.stripePaymentService = stripePaymentService;
+	}
+
+	@Autowired
+	public void setPaymentService(IPaymentService paymentService) {
+		this.paymentService = paymentService;
+	}
+
 	@Override
 	@Transactional
-	public OperationResult insert(Long userId, Reservation reservation, PaymentMethod paymentMethod) throws OperationResultException {
+	public OperationResult insert(Long userId, Reservation reservation, PaymentMethod paymentMethod, PayoutMethod payoutMethod) throws OperationResultException {
 		OperationResult operationResult = new OperationResult();
-		Long hostUserId = reservation.getHostUserId();
-		PayoutMethod payoutMethod = new PayoutMethod(hostUserId);
+		//Long hostUserId = reservation.getHostUserId();
+		//PayoutMethod payoutMethod = new PayoutMethod(hostUserId);
 		
-		payoutMethod = this.paymentDao.getPayoutMethod(payoutMethod);
-		if (payoutMethod != null && payoutMethod.getBlueSnapVendorId() != null) {
+		//payoutMethod = this.paymentDao.getPayoutMethod(payoutMethod);
+		if (payoutMethod != null && (payoutMethod.getBlueSnapVendorId() != null ||  payoutMethod.getStripeAccountId() != null)) {
 			if (reservation.getMessageThread() != null) {
 				MessageThread messageThread = reservation.getMessageThread();
 				OperationResult createMessageThreadResult = this.messageDao.insertMessageThread(reservation.getMessageThread());
@@ -121,11 +128,17 @@ public class ReservationService implements IReservationService {
 					// Send Inquiry 'de ödeme bilgileri girilmiyor.
 					if (paymentMethod != null) {
 						
-						ValueOperationResult<String> sendPaymentResult = this.extPaymentService.paymentAuth(userId, paymentMethod, payoutMethod, 
-								reservation.getCreatedBy());
+						ValueOperationResult<String> sendPaymentResult = null;
+						
+						if (payoutMethod.getExternalSystemId().equals(EnmExternalSystem.BLUESNAP.getId())) {
+							sendPaymentResult = this.extPaymentService.paymentAuth(userId, paymentMethod, payoutMethod, reservation.getCreatedBy());
+						} else if (payoutMethod.getExternalSystemId().equals(EnmExternalSystem.STRIPE.getId())) {
+							sendPaymentResult = this.stripePaymentService.charge(payoutMethod, paymentMethod, reservation.getCreatedBy());
+						}
+								
 						if (OperationResult.isResultSucces(sendPaymentResult)) {
-							String blueSnapTransactionId = sendPaymentResult.getResultValue();
-							reservation.setBlueSnapTransactionId(blueSnapTransactionId);
+							String paymentTransactionId = sendPaymentResult.getResultValue();
+							reservation.setPaymentTransactionId(paymentTransactionId);
 							reservation.setPaymentStatus(EnmPaymentStatus.AUTH.getId());
 							this.reservationDao.update(reservation);
 						} else {
@@ -181,21 +194,34 @@ public class ReservationService implements IReservationService {
 					if (OperationResult.isResultSucces(createLogResult)) {
 						if (reservation.getStatus() != null && reservationOldStatus != null 
 								&& !reservation.getStatus().equals(reservationOldStatus)) {
-							if (reservation.getStatus().equals(EnmReservationStatus.DECLINED.getId()) 
-									&& !reservationOldStatus.equals(EnmReservationStatus.DECLINED.getId())) {
-								OperationResult authPaymentReverseResult = this.extPaymentService.paymentAuthReversal(reservation.getClientUserId(), 
-										reservation.getBlueSnapTransactionId(), reservation.getModifiedBy());
+							PayoutMethod hostPayoutMethod = this.paymentService.getPayoutMethod(new PayoutMethod(reservation.getHostUserId()));
+							if ((reservation.getStatus().equals(EnmReservationStatus.DECLINED.getId()) 
+									&& !reservationOldStatus.equals(EnmReservationStatus.DECLINED.getId()))
+									|| (reservation.getStatus().equals(EnmReservationStatus.EXPIRED.getId()) 
+									&& !reservationOldStatus.equals(EnmReservationStatus.EXPIRED.getId()))) {
+								OperationResult authPaymentReverseResult = null;
+								if (hostPayoutMethod.getExternalSystemId().equals(EnmExternalSystem.BLUESNAP.getId())) {
+									authPaymentReverseResult = this.extPaymentService.paymentAuthReversal(reservation.getClientUserId(), 
+											reservation.getPaymentTransactionId(), reservation.getModifiedBy());
+								} else if (hostPayoutMethod.getExternalSystemId().equals(EnmExternalSystem.STRIPE.getId())) {
+									authPaymentReverseResult = this.stripePaymentService.refund(reservation.getClientUserId(), reservation.getPaymentTransactionId(), reservation.getModifiedBy());
+								}
 								if (!OperationResult.isResultSucces(authPaymentReverseResult)) {
-									updateReservationResult.setResultDesc("Payment auth reversal failed(BlueSnap). Error:" + OperationResult.getResultDesc(authPaymentReverseResult));
+									updateReservationResult.setResultDesc("Payment auth reversal failed. Error:" + OperationResult.getResultDesc(authPaymentReverseResult));
 									throw new OperationResultException(updateReservationResult);
 								}
 							}
 							if (reservation.getStatus().equals(EnmReservationStatus.ACCEPTED.getId()) 
 									&& !reservationOldStatus.equals(EnmReservationStatus.ACCEPTED.getId())) {
-								OperationResult capturePaymentResult = this.extPaymentService.paymentCapture(reservation.getClientUserId(), 
-										reservation.getBlueSnapTransactionId(), reservation.getModifiedBy());
+								OperationResult capturePaymentResult = null;
+								if (hostPayoutMethod.getExternalSystemId().equals(EnmExternalSystem.BLUESNAP.getId())) {
+									capturePaymentResult = this.extPaymentService.paymentCapture(reservation.getClientUserId(), 
+											reservation.getPaymentTransactionId(), reservation.getModifiedBy());
+								} else if (hostPayoutMethod.getExternalSystemId().equals(EnmExternalSystem.STRIPE.getId())) {
+									capturePaymentResult = this.stripePaymentService.capture(reservation.getClientUserId(), reservation.getPaymentTransactionId(), reservation.getModifiedBy());
+								}
 								if (!OperationResult.isResultSucces(capturePaymentResult)) {
-									updateReservationResult.setResultDesc("Payment capture operation failed(BlueSnap). Error:" + OperationResult.getResultDesc(capturePaymentResult));
+									updateReservationResult.setResultDesc("Payment capture operation failed. Error:" + OperationResult.getResultDesc(capturePaymentResult));
 									throw new OperationResultException(updateReservationResult);
 								}
 							}

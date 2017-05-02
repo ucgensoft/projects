@@ -133,102 +133,127 @@
 					</div>
 					<div id="content-container"
 						class="summary-card-page-content col-md-7 col-md-pull-5 space-top-4">
+						<div id="divBlueSnapPayment" 
+							ng-if="ctrl.reservation.hostUser.payoutMethod.externalSystemId == 2">
 							<div>
 								<p style="float: left;"><a href="https://home.bluesnap.com/" target="_blank"><img src="#{webApplication.urlPrefix}/static/images/BlueSnap_logo.png" height="30px" width="120px"></img></a></p>
     							<p style = "vertical-align: middle; padding-top: 5px">is an authorized Reseller for Let's Erasmus.</p>
 							</div>
-							<div class="accordion-panel">
-					
-							<div id="payment-panel"
-								class="accordion-panel__content accordion-panel-overflow text-lead accordion-panel--expanded">
-								<div id="payment_selectors">
-									<div class="">
-										<div class="row space-4">
-											<div class="col-sm-12">
-												<span>You’ll only be charged if your request is
-													accepted by the host. They’ll have 48 hours to accept or
-													decline.</span>
+							<div class="accordion-panel">					
+								<div id="payment-panel"
+									class="accordion-panel__content accordion-panel-overflow text-lead accordion-panel--expanded">
+									<div id="payment_selectors">
+										<div class="">
+											<div class="row space-4">
+												<div class="col-sm-12">
+													<span>You’ll only be charged if your request is
+														accepted by the host. They’ll have 48 hours to accept or
+														decline.</span>
+												</div>
 											</div>
 										</div>
+									</div>
+									<section id="sectionPaymentMethodList" class="panel">
+										<div class="panel-header">Card Information</div>
+										<iframe id="frameNewPayment" src="#{webApplication.urlPrefix}/static/html/NewPayment.html" 
+											style="width: 100%; min-height: 200px; height: 100%; border-width:0px; padding: 10px 10px 0px 10px;">	
+										</iframe>
+									</section>
+									<section id="sectionPaymentMethodList" class="panel space-top-4" style="">
+										<div class="panel-header">Card Holder Information</div>
+										<div style="padding: 10px;">
+											<div>
+												<div class="row space-4">
+													<div class="col-6">
+														<div>
+															<label for="credit-card-first-name">
+																<span id="">
+																	<span>First Name</span>
+																</span>
+																<span class="clsRed">&nbsp;*</span>
+															</label>
+															<input type="text" class=""
+																aria-describedby="credit-card-first-name-field-error"
+																aria-invalid="false" aria-labelledby=""
+																aria-required="false" id="txtFirstName"
+																name="credit_card[first_name]" value="#{webApplication.user.firstName}" />
+														</div>
+													</div>
+													<div class="col-6">
+														<div>
+															<label for="credit-card-last-name">
+																<span id="">
+																	<span>Last Name</span>
+																</span>
+																<span class="clsRed">&nbsp;*</span>
+															</label>
+															<input type="text" class=""
+																aria-describedby="credit-card-last-name-field-error"
+																aria-invalid="false" aria-labelledby=""
+																aria-required="false" id="txtLastName"
+																name="credit_card[last_name]" value="#{webApplication.user.lastName}" />
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="row space-4">
+												<div class="col-sm-12">
+													<button type="button" class="btn btn-primary btn-large" 
+														ng-click="ctrl.onBtnFinishClick()">
+														<span>Submit</span>
+													</button>
+												</div>
+											</div>
+										</div>
+									</section>
+									
+								</div>
+							</div>
+						</div>
+						<div id="divStripePayment" 
+							ng-if="ctrl.reservation.hostUser.payoutMethod.externalSystemId == 3">
+							<section id="sectionPaymentMethodList" class="panel">
+								<div class="panel-header">Card Information</div>
+								<iframe id="frameStripePayment" src="#{webApplication.urlPrefix}/static/html/StripePaymentForm.html" 
+									style="width: 100%; min-height: 300px; height: 100%; border-width:0px; padding: 10px 10px 0px 10px;">	
+								</iframe>
+							</section>
+							
+							<section class="panel">
+								<div class="row space-4">
+									<div class="space-top-4">
+										<button type="button" class="btn btn-primary btn-large" 
+											ng-click="ctrl.onBtnFinishClickStripe()" style="float:right; margin-right:24px;">
+											<span>Submit</span>
+										</button>
 									</div>
 								</div>
-								<section id="sectionPaymentMethodList" class="panel">
-									<div class="panel-header">Card Information</div>
-									<iframe id="frameNewPayment" src="#{webApplication.urlPrefix}/static/html/NewPayment.html" 
-										style="width: 100%; min-height: 200px; height: 100%; border-width:0px; padding: 10px 10px 0px 10px;">	
-									</iframe>
-								</section>
-								<section id="sectionPaymentMethodList" class="panel space-top-4" style="">
-									<div class="panel-header">Card Holder Information</div>
-									<div style="padding: 10px;">
-										<div>
-											<div class="row space-4">
-												<div class="col-6">
-													<div>
-														<label for="credit-card-first-name">
-															<span id="">
-																<span>First Name</span>
-															</span>
-															<span class="clsRed">&nbsp;*</span>
-														</label>
-														<input type="text" class=""
-															aria-describedby="credit-card-first-name-field-error"
-															aria-invalid="false" aria-labelledby=""
-															aria-required="false" id="txtFirstName"
-															name="credit_card[first_name]" value="#{webApplication.user.firstName}" />
-													</div>
-												</div>
-												<div class="col-6">
-													<div>
-														<label for="credit-card-last-name">
-															<span id="">
-																<span>Last Name</span>
-															</span>
-															<span class="clsRed">&nbsp;*</span>
-														</label>
-														<input type="text" class=""
-															aria-describedby="credit-card-last-name-field-error"
-															aria-invalid="false" aria-labelledby=""
-															aria-required="false" id="txtLastName"
-															name="credit_card[last_name]" value="#{webApplication.user.lastName}" />
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row space-4">
-											<div class="col-sm-12">
-												<button type="button" class="btn btn-primary btn-large" 
-													ng-click="ctrl.onBtnFinishClick()">
-													<span>Submit</span>
-												</button>
-											</div>
-										</div>
-									</div>
-								</section>
 								
-							</div>
+							</section>
 						</div>
 					</div>
 				</div>
-				<div class="hide-sm text-center">
-						<p class="space-6 dls-title-1" style="margin-bottom: 12px;">For questions about your payment, please contact BlueSnap at <a href="mailto:shoppers@BlueSnap.com" target="_top">shoppers@BlueSnap.com</a>.</p>
-						<p class="space-6 dls-title-1" style="margin-bottom: 12px;">For technical or product related questions, please contact Let's Erasmus at <a href="support@letserasmus.com" target="_top">support@letserasmus.com</a>.</p>
-						<p><h6>BlueSnap is an authorized Reseller for Let's Erasmus.</h6></p>
-<div id="blue_pagewrap" class="text-center">
-
-		
-	<section id="blue_content">
-		<a href="#{webApplication.urlPrefix}/pages/Policies.xhtml" target="_blank" class="component_59vu4c-o_O-footer_td6kew" data-reactid="38"><span data-reactid="39">Terms &amp; Conditions</span></a>
-	</section>
-	
-	<section id="blue_middle">
-		<a href="#{webApplication.urlPrefix}/pages/Policies.xhtml" target="_blank" class="component_59vu4c-o_O-footer_td6kew" data-reactid="38"><span data-reactid="39">Privacy Policy</span></a>
-	</section>
-
-	<aside id="blue_sidebar">
-		<a href="#{webApplication.urlPrefix}/pages/Policies.xhtml" target="_blank" class="component_59vu4c-o_O-footer_td6kew" data-reactid="38"><span data-reactid="39">Refund Policy</span></a>
-	</aside>
-</div>
+				<div ng-if="ctrl.reservation.hostUser.payoutMethod.externalSystemId == 2" id="divBlueSnapFooter" class="hide-sm text-center">
+					<p class="space-6 dls-title-1" style="margin-bottom: 12px;">For questions about your payment, please contact BlueSnap at <a href="mailto:shoppers@BlueSnap.com" target="_top">shoppers@BlueSnap.com</a>.</p>
+					<p class="space-6 dls-title-1" style="margin-bottom: 12px;">For technical or product related questions, please contact Let's Erasmus at <a href="support@letserasmus.com" target="_top">support@letserasmus.com</a>.</p>
+					<p><h6>BlueSnap is an authorized Reseller for Let's Erasmus.</h6></p>
+					<div id="blue_pagewrap" class="text-center">
+							
+						<section id="blue_content">
+							<a href="#{webApplication.urlPrefix}/pages/Policies.xhtml" target="_blank" class="component_59vu4c-o_O-footer_td6kew" data-reactid="38"><span data-reactid="39">Terms &amp; Conditions</span></a>
+						</section>
+						
+						<section id="blue_middle">
+							<a href="#{webApplication.urlPrefix}/pages/Policies.xhtml" target="_blank" class="component_59vu4c-o_O-footer_td6kew" data-reactid="38"><span data-reactid="39">Privacy Policy</span></a>
+						</section>
+					
+						<aside id="blue_sidebar">
+							<a href="#{webApplication.urlPrefix}/pages/Policies.xhtml" target="_blank" class="component_59vu4c-o_O-footer_td6kew" data-reactid="38"><span data-reactid="39">Refund Policy</span></a>
+						</aside>
+					</div>
+				</div>
+				<div id="divStripeFooter" class="hide-sm text-center">
+					
 				</div>
 			</div>
 		</main>
@@ -236,5 +261,6 @@
 		<script src="#{webApplication.urlPrefix}/static/js/angular/service/payment_service.js"></script>
 		<script src="#{webApplication.urlPrefix}/static/js/angular/service/reservation_service.js"></script>
 		<script src="#{webApplication.urlPrefix}/static/js/angular/controller/payment_controller.js"></script>
+		
 	</ui:define>
 </ui:composition>

@@ -10,6 +10,8 @@ public interface ISimpleObjectService {
 
 	List<Country> listCountry();
 	
+	Country getCountryWithIsoCode2(String isoCode2);
+	
 	List<QuestionGroup> listQuestionGroup();
 	
 	List<Question> listQuestion(String groupTitle, String searchText);

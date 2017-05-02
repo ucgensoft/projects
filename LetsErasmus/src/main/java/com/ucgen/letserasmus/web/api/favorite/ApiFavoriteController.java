@@ -215,7 +215,7 @@ public class ApiFavoriteController extends BaseApiController {
 						if (userId.equals(favoriteList.get(0).getUserId())) {
 							ValueOperationResult<Integer> deleteResult = this.favoriteService.deleteFavorite(favoriteList.get(0).getId());
 							if (OperationResult.isResultSucces(deleteResult)) {
-								user.getFavoriteMap().get(favorite.getEntityType()).remove(favorite.getEntityId());
+								user.removeFavorite(favorite);
 								operationResult.setResultValue(user.getFavoriteMap());
 								operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 							} else {

@@ -1,3 +1,4 @@
+
 package com.ucgen.letserasmus.library.simpleobject.dao;
 
 import java.util.List;
@@ -12,6 +13,8 @@ public interface ISimpleObjectDao {
 	List<Country> listCountry();
 	
 	List<QuestionGroup> listQuestionGroup();
+	
+	Country getCountryWithIsoCode2(String isoCode2);
 	
 	List<Question> listQuestion(String groupTitle, String searchText);
 	

@@ -12,12 +12,15 @@ public class PayoutMethodRowMapper extends BaseRowMapper<PayoutMethod> {
 	
 	public static final String COL_ID = "ID";
 	public static final String COL_USER_ID = "USER_ID";	
+	public static final String COL_EXTERNAL_SYSTEM_ID = "EXTERNAL_SYSTEM_ID";
 	public static final String COL_BLUESNAP_VENDOR_ID = "BLUESNAP_VENDOR_ID";
+	public static final String COL_STRIPE_ACCOUNT_ID = "STRIPE_ACCOUNT_ID";
 	
 	public static final String COL_COMMISSION_PERCENT = "COMMISSION_PERCENT";
 	public static final String COL_PAYOUT_TYPE = "PAYOUT_TYPE";
 	public static final String COL_BASE_CURRENCY = "BASE_CURRENCY";
 	
+	public static final String COL_VENDOR_ENTITY_TYPE = "VENDOR_ENTITY_TYPE";
 	public static final String COL_VENDOR_NATIONAL_ID = "VENDOR_NATIONAL_ID";
 	public static final String COL_VENDOR_TAXID = "VENDOR_TAXID";
 	public static final String COL_VENDOR_FIRST_NAME = "VENDOR_FIRST_NAME";
@@ -60,8 +63,11 @@ public class PayoutMethodRowMapper extends BaseRowMapper<PayoutMethod> {
 		
 		payoutMethod.setId(super.getLong(rs, COL_ID));		
 		payoutMethod.setUserId(super.getLong(rs, COL_USER_ID));
+		payoutMethod.setExternalSystemId(super.getInteger(rs, COL_EXTERNAL_SYSTEM_ID));
 		payoutMethod.setBlueSnapVendorId(super.getLong(rs, COL_BLUESNAP_VENDOR_ID));
+		payoutMethod.setStripeAccountId(super.getString(rs, COL_STRIPE_ACCOUNT_ID));
 		
+		payoutMethod.setVendorEntityType(super.getString(rs, COL_VENDOR_ENTITY_TYPE));
 		payoutMethod.setVendorNationalId(super.getLong(rs, COL_VENDOR_NATIONAL_ID));
 		payoutMethod.setVendorTaxId(super.getLong(rs, COL_VENDOR_TAXID));
 		payoutMethod.setVendorFirstName(super.getString(rs, COL_VENDOR_FIRST_NAME));

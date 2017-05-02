@@ -13,8 +13,9 @@ public class CountryRowMapper extends BaseRowMapper<Country> {
 	public static final String COL_ID = "ID";
 	public static final String COL_NAME = "NAME";
 	public static final String COL_CODE = "CODE";
-	public static final String COL_ISO_CODE = "ISO_CODE";
-	public static final String COL_BLUESNAP_COUNTRY_CODE = "BLUESNAP_COUNTRY_CODE";
+	public static final String COL_ISO_CODE_3_DIGITS = "ISO_CODE_3_DIGITS";
+	public static final String COL_ISO_CODE_2_DIGITS = "ISO_CODE_2_DIGITS";
+	public static final String COL_STRIPE_SUPPORT_FLAG = "STRIPE_SUPPORT_FLAG";
 	
 	public CountryRowMapper() {
 		this(null);
@@ -33,8 +34,9 @@ public class CountryRowMapper extends BaseRowMapper<Country> {
 		country.setId(super.getLong(rs, COL_ID));
 		country.setName(super.getString(rs, COL_NAME));
 		country.setCode(super.getString(rs, COL_CODE));
-		country.setIsoCode(super.getString(rs, COL_ISO_CODE));
-		country.setBlueSnapCountryCode(super.getString(rs, COL_BLUESNAP_COUNTRY_CODE));
+		country.setIsoCodeTwoDigit(super.getString(rs, COL_ISO_CODE_2_DIGITS));
+		country.setIsoCodeThreeDigit(super.getString(rs, COL_ISO_CODE_3_DIGITS));
+		country.setStripeSupportFlag(super.getString(rs, COL_STRIPE_SUPPORT_FLAG));
 		
 		return country;
 	}
@@ -50,8 +52,9 @@ public class CountryRowMapper extends BaseRowMapper<Country> {
 		super.addColumn(COL_ID);
 		super.addColumn(COL_NAME);
 		super.addColumn(COL_CODE);
-		super.addColumn(COL_ISO_CODE);
-		super.addColumn(COL_BLUESNAP_COUNTRY_CODE);
+		super.addColumn(COL_ISO_CODE_2_DIGITS);
+		super.addColumn(COL_ISO_CODE_3_DIGITS);
+		super.addColumn(COL_STRIPE_SUPPORT_FLAG);
 	}
 	
 }

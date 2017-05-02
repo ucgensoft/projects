@@ -3,7 +3,8 @@ package com.ucgen.letserasmus.library.log.enumeration;
 public enum EnmExternalSystem {
 
 	TWILIO(1),
-	BLUESNAP(2);
+	BLUESNAP(2),
+	STRIPE(3);
 	
 	private final int id;
 	

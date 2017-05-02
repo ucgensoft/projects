@@ -8,8 +8,8 @@ public class Payment {
 	private BigDecimal commissionFee;
 	private BigDecimal serviceFee;
 	private Integer currencyId;
-	private String blueSnapCurrencyCode;
-	private String blueSnapHostedFieldToken;
+	private String currencyCode;
+	private String cardInfoToken;
 	private String blueSnapTransactionId;
 	private String merchantTransactionId;
 	
@@ -37,17 +37,17 @@ public class Payment {
 	public void setCurrencyId(Integer currencyId) {
 		this.currencyId = currencyId;
 	}
-	public String getBlueSnapCurrencyCode() {
-		return blueSnapCurrencyCode;
+	public String getCurrencyCode() {
+		return currencyCode;
 	}
-	public void setBlueSnapCurrencyCode(String blueSnapCurrencyCode) {
-		this.blueSnapCurrencyCode = blueSnapCurrencyCode;
+	public void setCurrencyCode(String currencyCode) {
+		this.currencyCode = currencyCode;
 	}
-	public String getBlueSnapHostedFieldToken() {
-		return blueSnapHostedFieldToken;
+	public String getCardInfoToken() {
+		return cardInfoToken;
 	}
-	public void setBlueSnapHostedFieldToken(String blueSnapHostedFieldToken) {
-		this.blueSnapHostedFieldToken = blueSnapHostedFieldToken;
+	public void setCardInfoToken(String cardInfoToken) {
+		this.cardInfoToken = cardInfoToken;
 	}
 	public String getBlueSnapTransactionId() {
 		return blueSnapTransactionId;

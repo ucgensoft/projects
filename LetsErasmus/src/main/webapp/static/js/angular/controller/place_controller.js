@@ -61,6 +61,17 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
 	    	  } else {
 	    		  paymentService.hasPayoutMethod(function(hasPayout) {
 	    			  self.hasPayout = hasPayout;
+	    			  if (!self.hasPayout) {
+	    				  $("#txtBirthDatePicker").datepicker(
+				  			{
+				  				changeMonth: true,
+				  	            changeYear: true,
+				  	            yearRange: '-100:-10',
+				  				maxDate : new Date(),
+				  				dateFormat : "dd.mm.yy"
+				  			});
+	    			  }
+	    			  self.displayTab(1);
 	    		  });
 	    		  
 	    		  commonService.listCountry(function(countryList) {
@@ -78,6 +89,8 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
 				}
 		      );
 	    	  
+	    	  self.displayTab(1);
+	    	  /*
 	    	  //$("#divStep1").css("display", "none");
 	    	  $("#divStep2").css("display", "none");
 	    	  $("#divStep3").css("display", "none");
@@ -86,10 +99,21 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
 	    	  $("#divStep6").css("display", "none");
 	    	  $("#divStep7").css("display", "none");
 	    	  $("#divStep8").css("display", "none");
+	    	  */
 	    	  
 	    	  self.initPhotoTab();
     	  } else {
     		  openLoginWindow();
+    	  }
+      };
+      
+      self.displayTab = function(tabId) {
+    	  for(var i = 0; i <= 9; i++) {
+    		  if (i == tabId) {
+    			  $("#divStep" + i).removeClass("hidden-force");
+    		  } else {
+    			  $("#divStep" + i).addClass("hidden-force");
+    		  }
     	  }
       };
       
@@ -479,6 +503,19 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     		  }
     	  }
 		  
+		  if (step == null || step == 8) {
+    		  if (($("#rdAccountClassPersonal")[0].checked == false 
+    				  && $("#rdAccountClassBusiness")[0].checked == false)
+    			  || StringUtil.trim($('#txtFirstName').val()) == '' 
+    			  || StringUtil.trim($('#txtLastName').val()) == ''
+    			  || $("#cmbVendorCountry")[0].selectedIndex == 0
+    			  || StringUtil.trim($('#txtVendorCity').val()) == ''
+    			  || StringUtil.trim($('#txtVendorPostalCode').val()) == ''
+    			  || StringUtil.trim($('#txtVendorAddress1').val()) == '') {
+    			  isValid = false;
+    		  }
+    	  }
+		  
 		  return isValid;
 	  };
       
@@ -488,14 +525,18 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     	  if (isValid) {
     		  $('#divProgress' + step).addClass('progress-section--completed');
     		  
-    		  if (step == 8) {
+    		  if (step == 9) {
     			  self.savePlace();
     		  } else {
     			  var currentStep = step;
-            	  var nextStep = step + 1;
+    			  var nextStep = null;
+    	    	  if (self.hasPayout && step == 7) {
+    	    		  nextStep = step + 2;
+    	    	  } else {
+    	    		  nextStep = step + 1;
+    	    	  }
             	  if ($("#divStep" + nextStep).length > 0) {
-            		  $("#divStep" + currentStep).css("display", "none");
-            		  $("#divStep" + nextStep).css("display", "");
+            		  self.displayTab(nextStep);
             	  }
             	  if (step == 4) {
             		  if (map == null) {
@@ -511,10 +552,14 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
       
       self.back = function(step) {
     	  var currentStep = step;
-    	  var nextStep = step - 1;
+    	  var nextStep = null;
+    	  if (self.hasPayout && step == 9) {
+    		  nextStep = step - 2;
+    	  } else {
+    		  nextStep = step - 1;
+    	  }
     	  if ($("#divStep" + nextStep).length > 0) {
-    		  $("#divStep" + currentStep).css("display", "none");
-    		  $("#divStep" + nextStep).css("display", "");
+    		  self.displayTab(nextStep);
     	  }
       };
       
@@ -618,8 +663,34 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     		  }
     			
     		  if (!self.hasPayout) {
-    			  var bankCountryCode = $("#cmbBankCountry").val();
-    			  paymentService.createPayoutMethod(bankCountryCode, function(result) {
+    			  var vendorEntityType = null;
+    			  if ($("#rdAccountClassPersonal")[0].checked) {
+    				  vendorEntityType = 'P';
+    			  } else if ($("#rdAccountClassBusiness")[0].checked) {
+    				  vendorEntityType = 'B';
+    			  }
+    			  
+    			  var vendorFirstName = StringUtil.trim($("#txtFirstName").val());
+    			  var vendorLastName = StringUtil.trim($("#txtLastName").val());
+    			  
+    			  var vendorCountry = $("#cmbVendorCountry").val();
+    			  var vendorCity = StringUtil.trim($("#txtVendorCity").val());
+    			  var vendorZip = StringUtil.trim($("#txtVendorPostalCode").val());
+    			  var vendorAddress = StringUtil.trim($("#txtVendorAddress1").val());
+    			  var vendorAddress2 = StringUtil.trim($("#txtVendorAddress2").val());
+    			  
+    			  var payoutMethod = {
+    					  vendorEntityType : vendorEntityType,
+    					  vendorFirstName : vendorFirstName,
+    					  vendorLastName : vendorLastName,
+    					  vendorCountry : vendorCountry,
+    					  vendorCity : vendorCity,
+    					  vendorZip : vendorZip,
+    					  vendorAddress : vendorAddress,
+    					  vendorAddress2 : vendorAddress2
+    			  };
+    			  
+    			  paymentService.createPayoutMethod(payoutMethod, function(result) {
         			  if (result) {
         				  self.hasPayout = true;
         				  tmpSavePlace();

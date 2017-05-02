@@ -38,6 +38,11 @@ public class SimpleObjectService implements ISimpleObjectService {
 	public List<Country> listCountry() {
 		return this.simpleObjectDao.listCountry();
 	}
+	
+	@Override
+	public Country getCountryWithIsoCode2(String isoCode2) {
+		return this.simpleObjectDao.getCountryWithIsoCode2(isoCode2);
+	}
 
 	@Override
 	public List<QuestionGroup> listQuestionGroup() {

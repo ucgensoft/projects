@@ -15,12 +15,12 @@ public class UiReservation extends BaseUiModel {
 	private Date endDate;
 	private Integer guestNumber;
 	private Integer status;
+	private String cardInfoToken;
 	
 	private UiPaymentMethod uiPaymentMethod;
 	
 	private String messageText;
-
-	List<Review> reviewList;
+	private List<Review> reviewList;
 	
 	public Long getId() {
 		return id;
@@ -76,6 +76,14 @@ public class UiReservation extends BaseUiModel {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public String getCardInfoToken() {
+		return cardInfoToken;
+	}
+
+	public void setCardInfoToken(String cardInfoToken) {
+		this.cardInfoToken = cardInfoToken;
 	}
 
 	public List<Review> getReviewList() {

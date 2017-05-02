@@ -34,7 +34,7 @@ public class ReservationRowMapper extends BaseRowMapper<Reservation> {
 	public static final String COL_CLIENT_REVIEW_ID = "CLIENT_REVIEW_ID";
 	public static final String COL_HOST_REVIEW_ID = "HOST_REVIEW_ID";
 	public static final String COL_TRANSACTION_ID = "TRANSACTION_ID";
-	public static final String COL_BLUESNAP_TRANSACTION_ID = "BLUESNAP_TRANSACTION_ID";
+	public static final String COL_PAYMENT_TRANSACTION_ID = "PAYMENT_TRANSACTION_ID";
 	public static final String COL_PAYMENT_STATUS = "PAYMENT_STATUS";
 	
 	public static final String FKEY_PLACE = "PLACE";
@@ -98,7 +98,7 @@ public class ReservationRowMapper extends BaseRowMapper<Reservation> {
 		reservation.setClientReviewId(super.getLong(rs, COL_CLIENT_REVIEW_ID));
 		reservation.setHostReviewId(super.getLong(rs, COL_HOST_REVIEW_ID));
 		reservation.setTransactionId(super.getString(rs, COL_TRANSACTION_ID));
-		reservation.setBlueSnapTransactionId(super.getString(rs, COL_BLUESNAP_TRANSACTION_ID));
+		reservation.setPaymentTransactionId(super.getString(rs, COL_PAYMENT_TRANSACTION_ID));
 		reservation.setPaymentStatus(super.getInteger(rs, COL_PAYMENT_STATUS));
 		
 		reservation.setCreatedBy(super.getString(rs, COL_CREATED_BY));		
@@ -156,7 +156,7 @@ public class ReservationRowMapper extends BaseRowMapper<Reservation> {
 		super.addColumn(COL_CLIENT_REVIEW_ID);
 		super.addColumn(COL_HOST_REVIEW_ID);
 		super.addColumn(COL_TRANSACTION_ID);
-		super.addColumn(COL_BLUESNAP_TRANSACTION_ID);
+		super.addColumn(COL_PAYMENT_TRANSACTION_ID);
 		super.addColumn(COL_PAYMENT_STATUS);
 	}
 	

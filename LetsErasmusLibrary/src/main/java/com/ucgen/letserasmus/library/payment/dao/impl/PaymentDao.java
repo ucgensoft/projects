@@ -142,9 +142,20 @@ public class PaymentDao extends JdbcDaoSupport implements IPaymentDao, IPaymentD
 		List<Object> argList = new ArrayList<Object>();
 				
 		argList.add(payoutMethod.getUserId());
+		argList.add(payoutMethod.getVendorEntityType());
+		argList.add(payoutMethod.getVendorFirstName());
+		argList.add(payoutMethod.getVendorLastName());
 		argList.add(payoutMethod.getVendorEmail());
-		argList.add(payoutMethod.getBankCountry());
+		argList.add(payoutMethod.getVendorBirthDate());
+		argList.add(payoutMethod.getVendorCountry());
+		argList.add(payoutMethod.getVendorCity());
+		argList.add(payoutMethod.getVendorState());
+		argList.add(payoutMethod.getVendorZip());
+		argList.add(payoutMethod.getVendorAddress());
+		argList.add(payoutMethod.getVendorAddress2());
+		argList.add(payoutMethod.getExternalSystemId());
 		argList.add(payoutMethod.getBlueSnapVendorId());
+		argList.add(payoutMethod.getStripeAccountId());
 		
 		argList.add(payoutMethod.getCreatedBy());
 		argList.add(payoutMethod.getCreatedDate());

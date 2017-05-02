@@ -1,7 +1,9 @@
 package com.ucgen.letserasmus.library.simpleobject.dao.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -29,6 +31,9 @@ public class SimpleObjectDao extends JdbcDaoSupport implements ISimpleObjectDao 
 	private static final String GET_TRANSACTION_ID_SQL = "SELECT COUNT(1) FROM TRANSACTION_ID WHERE ID = ?";
 	private static final String INSERT_TRANSACTION_ID_SQL = "INSERT INTO TRANSACTION_ID (ID) VALUES(?)";
 	
+	private List<Country> countryList;
+	private Map<String, Country> countryMapIso2;
+	
 	@Autowired
 	public SimpleObjectDao(DataSource dataSource) {
 		super();
@@ -36,8 +41,27 @@ public class SimpleObjectDao extends JdbcDaoSupport implements ISimpleObjectDao 
 	}
 	
 	@Override
-	public List<Country> listCountry() {
-		return this.getJdbcTemplate().query(LIST_COUNTRY_SQL, new CountryRowMapper());
+	public synchronized List<Country> listCountry() {
+		if (countryList == null) {
+			this.countryList = this.getJdbcTemplate().query(LIST_COUNTRY_SQL, new CountryRowMapper());
+			countryMapIso2 = new HashMap<String, Country>();
+			for (Country country : countryList) {
+				countryMapIso2.put(country.getIsoCodeTwoDigit().toUpperCase(), country);
+			}
+		}
+		return this.countryList;
+	}
+	
+	@Override
+	public Country getCountryWithIsoCode2(String isoCode2) {
+		if (isoCode2 != null) {
+			if (this.countryList == null) {
+				this.listCountry();
+			}
+			return this.countryMapIso2.get(isoCode2.toUpperCase());
+		} else {
+			return null;
+		}
 	}
 
 	@Override
