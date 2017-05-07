@@ -694,11 +694,9 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     					  vendorAddress2 : vendorAddress2
     			  };
     			  
-    			  paymentService.createPayoutMethod(payoutMethod, function(result) {
-        			  if (result) {
-        				  self.hasPayout = true;
-        				  tmpSavePlace();
-        			  }
+    			  paymentService.createPayoutMethod(payoutMethod, function() {
+    				  self.hasPayout = true;
+    				  tmpSavePlace();
         		  });
     		  } else {
     			  tmpSavePlace();
@@ -706,11 +704,9 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     	  } else {
     		  placeService.updatePlace(newPlace, self.photoList,
   					function(isSuccess) {
-  						if (isSuccess) {
-  							DialogUtil.success( 'Congratulations! Your place is updated successfully!', function() {
-  								document.location.href = webApplicationUrlPrefix + '/pages/dashboard/Listings.xhtml';
-  							});	
-  						}
+	    			  DialogUtil.success( 'Congratulations! Your place is updated successfully!', function() {
+							document.location.href = webApplicationUrlPrefix + '/pages/dashboard/Listings.xhtml';
+						});
   					}
     		  );
     	  }    	  

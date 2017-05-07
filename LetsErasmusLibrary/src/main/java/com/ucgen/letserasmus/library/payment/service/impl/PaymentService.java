@@ -100,7 +100,7 @@ public class PaymentService implements IPaymentService {
 					operationResult.setResultDesc("Stripe account creation failed. Error: " + OperationResult.getResultDesc(createAccountResult));
 				}
 			} else {
-				ValueOperationResult<Long> createVendorResult = this.extPaymentService.createVendorDraft(payoutMethod.getUserId(), payoutMethod.getVendorEmail(), payoutMethod.getBankCountry(), payoutMethod.getCreatedBy());
+				ValueOperationResult<Long> createVendorResult = this.extPaymentService.createVendorDraft(payoutMethod.getUserId(), payoutMethod.getVendorEmail(), payoutMethod.getVendorCountry(), payoutMethod.getCreatedBy());
 				if (OperationResult.isResultSucces(createVendorResult)) {
 					payoutMethod.setExternalSystemId(EnmExternalSystem.BLUESNAP.getId());
 					payoutMethod.setBlueSnapVendorId(createVendorResult.getResultValue());
