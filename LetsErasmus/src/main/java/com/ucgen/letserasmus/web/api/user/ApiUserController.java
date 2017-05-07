@@ -753,7 +753,7 @@ public class ApiUserController extends BaseApiController {
 		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);
     }
     
-    @RequestMapping(value = "/api/user/msisdn/sendcode", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/user/msisdn/sendcode", method = RequestMethod.POST)
     public ResponseEntity<OperationResult> sendMsisdnVerificationCode(@RequestParam("msisdn") String msisdn, @RequestParam("msisdnCountryCode") String msisdnCountryCode, HttpSession session) throws JsonParseException, JsonMappingException, IOException, ParseException {
     	OperationResult operationResult = new OperationResult();
 		try {
@@ -771,7 +771,8 @@ public class ApiUserController extends BaseApiController {
 							operationResult.setResultDesc(AppConstants.VERIFICATION_PARAM_FAIL);
 						} else {
 							boolean msisdnSent = false;
-							if (msisdn != null && msisdnCountryCode != null) {
+							if (msisdn != null && !msisdn.equals("X") 
+									&& msisdnCountryCode != null && !msisdnCountryCode.equals("X")) {
 								msisdnSent = true;
 							}
 							if (msisdnSent || user.getMsisdn() != null) {

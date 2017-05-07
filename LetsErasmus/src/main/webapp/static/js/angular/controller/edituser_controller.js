@@ -216,6 +216,9 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
 	  			DialogUtil.warn( 'Select a country and type your phone number please!', null);
 	  			return;
 	  		}
+  		} else {
+  			var prefix = 'X';
+  	  		var msisdn = 'X';
   		}
   		userService.sendMsisdnVerificationCode(prefix, msisdn,
 				function(isSuccess) {

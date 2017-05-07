@@ -170,7 +170,7 @@ App.factory('userService', ['$http', '$q', function($http, $q){
 					'Accept' : 'application/json'
 				}
 			};
-			return $http.get(webApplicationUrlPrefix + '/api/user/msisdn/sendcode', config).then(function(response) {
+			return $http.post(webApplicationUrlPrefix + '/api/user/msisdn/sendcode', data, config).then(function(response) {
 						NProgress.done(true);
 						var result = isResultSuccess(response.data, true, function() {
 							callBack(true);
