@@ -451,6 +451,11 @@ function handleAjaxError(operationResult, callBack) {
 				openLoginWindow();
 			});
 		} else {
+			var messageText = operationResult.resultDesc;
+			//  || messageText.length > 150
+			if (messageText.indexOf('Exception') > - 1) {
+				messageText = 'Operation failed with an unknown reason. Please try again later.';
+			}
 			DialogUtil.error(operationResult.resultDesc, function() {
 				if (operationResult.errorCode == EnmErrorCode.UNAUTHORIZED_OPERATION) {
 					location.href = webApplicationUrlPrefix + '/pages/Unauthorized.xhtml';

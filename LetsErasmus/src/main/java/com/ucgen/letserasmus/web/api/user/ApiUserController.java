@@ -54,6 +54,7 @@ import com.ucgen.letserasmus.library.parameter.enumeration.EnmParameter;
 import com.ucgen.letserasmus.library.parameter.service.IParameterService;
 import com.ucgen.letserasmus.library.place.model.Place;
 import com.ucgen.letserasmus.library.place.service.IPlaceService;
+import com.ucgen.letserasmus.library.sms.service.ISmsService;
 import com.ucgen.letserasmus.library.user.enumeration.EnmLoginType;
 import com.ucgen.letserasmus.library.user.enumeration.EnmUserStatus;
 import com.ucgen.letserasmus.library.user.model.User;
@@ -72,6 +73,7 @@ public class ApiUserController extends BaseApiController {
 	private WebApplication webApplication;
 	private IFavoriteService favoriteService;
 	private IParameterService parameterService;
+	private ISmsService smsService;
 	
 	@Autowired
 	public void setFavoriteService(IFavoriteService favoriteService) {
@@ -101,6 +103,11 @@ public class ApiUserController extends BaseApiController {
 	@Autowired
 	public void setMailUtil(MailUtil mailUtil) {
 		this.mailUtil = mailUtil;
+	}
+
+	@Autowired
+	public void setSmsService(ISmsService smsService) {
+		this.smsService = smsService;
 	}
 
 	@RequestMapping(value = "/api/user/signup", method = RequestMethod.POST)
@@ -746,7 +753,7 @@ public class ApiUserController extends BaseApiController {
 		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);
     }
     
-    @RequestMapping(value = "/api/user/msisdn/sendcode", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/user/msisdn/sendcode", method = RequestMethod.GET)
     public ResponseEntity<OperationResult> sendMsisdnVerificationCode(@RequestParam("msisdn") String msisdn, @RequestParam("msisdnCountryCode") String msisdnCountryCode, HttpSession session) throws JsonParseException, JsonMappingException, IOException, ParseException {
     	OperationResult operationResult = new OperationResult();
 		try {
@@ -794,9 +801,15 @@ public class ApiUserController extends BaseApiController {
 								
 								String msisdnVerificationCode = SecurityUtil.generateNumericCode(4);
 								
-								sendVerifyMsisdnMail(user, msisdnVerificationCode);
-								session.setAttribute(EnmSession.MSISDN_VERIFICATION_CODE.getId(), msisdnVerificationCode);
-								operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+								OperationResult sendSmsResult = sendVerifyMsisdnSms(user, msisdnVerificationCode);
+								if (OperationResult.isResultSucces(sendSmsResult)) {
+									session.setAttribute(EnmSession.MSISDN_VERIFICATION_CODE.getId(), msisdnVerificationCode);
+									operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+								} else {
+									operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+									operationResult.setResultDesc("Sms send failed. Please check your msisdn.");
+								}
+								
 							} else {
 								operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 								operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
@@ -1208,7 +1221,7 @@ public class ApiUserController extends BaseApiController {
 				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
 			}
 		} catch (Exception e) {
-			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
 			operationResult.setResultDesc(CommonUtil.getExceptionMessage(e));
 			FileLogger.log(Level.ERROR, "ApiUserController-removeMsisdn()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
@@ -1560,14 +1573,12 @@ public class ApiUserController extends BaseApiController {
 		this.mailUtil.sendMailFromTemplate(htmlFilePath, paramMap, toList, null, "LetsErasmus Email Verifitcation", null);
 	}
 		
-	private void sendVerifyMsisdnMail(User user, String verificationCode) throws UnsupportedEncodingException {
+	private OperationResult sendVerifyMsisdnSms(User user, String verificationCode) throws UnsupportedEncodingException {
 		
-		List<String> toList = new ArrayList<String>();
-		toList.add(user.getEmail());
+		String smsTemplate = this.parameterService.getParameterValue(EnmParameter.TWILIO_VERIFICATION_MESSAGE_TEMPLATE.getId());
+		String smsText = smsTemplate.replace("#paramCode#", verificationCode);
 		
-		String emailContent = "Your msisdn verification code is: " + verificationCode;
-		
-		this.mailUtil.sendMail(emailContent, toList, null, "LetsErasmus Msisdn Verifitcation Code", null);
+		return this.smsService.sendSms(user.getId(), smsText, user.getMsisdnCountryCode() + user.getMsisdn(), user.getFullName());
 	}
 	
 	private void sendResetPasswordMail(User user) throws UnsupportedEncodingException {

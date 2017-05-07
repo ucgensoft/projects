@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
@@ -21,6 +22,7 @@ import com.ucgen.letserasmus.library.parameter.enumeration.EnmParameter;
 import com.ucgen.letserasmus.library.parameter.service.IParameterService;
 import com.ucgen.letserasmus.library.sms.service.ISmsService;
 
+@Service
 public class SmsService implements ISmsService {
 	
 	private String accountSid = null;
@@ -34,10 +36,7 @@ public class SmsService implements ISmsService {
 		this.parameterService = parameterService;
 	}
 	
-	public ILogService getLogService() {
-		return logService;
-	}
-
+	@Autowired
 	public void setLogService(ILogService logService) {
 		this.logService = logService;
 	}
@@ -68,13 +67,12 @@ public class SmsService implements ISmsService {
 			Message message = Message.creator(new PhoneNumber(toPhoneNumber), new PhoneNumber(fromPhoneNumber), messageText).create();
 			sendEndDate = new Date();
 			
-			String messageId = message.getSid();
 			Status messageStatus = message.getStatus();
 			
-			response = "messageId: " + messageId + ", status: " + messageStatus.name();
+			response = message.toString();
 			responseCode = messageStatus.name();
 			
-			if (messageStatus == Status.DELIVERED || messageStatus == Status.SENT) {
+			if (messageStatus == Status.DELIVERED || messageStatus == Status.SENT || messageStatus == Status.QUEUED) {
 				operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 			} else {
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());

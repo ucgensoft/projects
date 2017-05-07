@@ -195,7 +195,7 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
   	};
   	
   	self.removeMsisdn = function() {
-  		DialogUtil.confirm('Your verified phone number will be deleted. Do you want to continue?', function() {
+  		DialogUtil.confirm('Your phone number will be deleted. Do you want to continue?', function() {
   			userService.removeMsisdn(function(isSuccess) {
 					if (isSuccess) {
 						reloadPage();
