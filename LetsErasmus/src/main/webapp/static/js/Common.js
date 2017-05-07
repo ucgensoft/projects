@@ -446,15 +446,19 @@ function handleAjaxError(operationResult, callBack) {
 			}
 		});
 	} else {
-		DialogUtil.error(operationResult.resultDesc, function() {
-			if (operationResult.errorCode == EnmErrorCode.UNAUTHORIZED_OPERATION) {
-				location.href = webApplicationUrlPrefix + '/pages/Unauthorized.xhtml';
-			} else if(operationResult.errorCode == EnmErrorCode.USER_NOT_LOGGED_IN) {
+		if (operationResult.errorCode == EnmErrorCode.USER_NOT_LOGGED_IN) {
+			DialogUtil.warn(operationResult.resultDesc, function() {
 				openLoginWindow();
-			} else {
-				callBack();
-			}
-		});
+			});
+		} else {
+			DialogUtil.error(operationResult.resultDesc, function() {
+				if (operationResult.errorCode == EnmErrorCode.UNAUTHORIZED_OPERATION) {
+					location.href = webApplicationUrlPrefix + '/pages/Unauthorized.xhtml';
+				} else {
+					callBack();
+				}
+			});
+		}
 	}
 }
 
