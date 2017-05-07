@@ -40,12 +40,11 @@ App.factory('placeService', ['$http', '$q', function($http, $q) {
 					NProgress.start(3000, 5);
 					return $http.get(webApplicationUrlPrefix + '/api/place/list', config).then(function(response) {
 						NProgress.done(true);
-						var result = isResultSuccess(response.data, true);
-						if (result && callBack) {
+						var result = isResultSuccess(response.data, true, function() {
 							callBack(response.data.objectList);
-						}
+						}, false);
 					}, function(errResponse) {
-						DialogUtil.error('Error', errResponse, 'OK');
+						DialogUtil.error(errResponse);
 					});
 					
 				},
@@ -64,12 +63,11 @@ App.factory('placeService', ['$http', '$q', function($http, $q) {
 					return $http.get(webApplicationUrlPrefix + '/api/place/listuserplace', config).then(
 						function(response) {
 							NProgress.done(true);
-							var result = isResultSuccess(response.data, true);
-							if (result && callBack) {
+							var result = isResultSuccess(response.data, true, function() {
 								callBack(response.data);
-							}
+							}, false);
 						}, function(errResponse) {
-							DialogUtil.error('Error', errResponse, 'OK');
+							DialogUtil.error(errResponse);
 						});
 				},
 
@@ -97,24 +95,15 @@ App.factory('placeService', ['$http', '$q', function($http, $q) {
 	    								}
 	    							}, function(errResponse) {
 	    								NProgress.done(true);
-	    								console.error('Error while creating place');
-	    								if (callBack) {
-	    									callBack(false);
-	    								}
+	    								DialogUtil.error(errResponse);
 	    							}
 	    						);
     						} else {
     							NProgress.done(true);
-    							if (callBack) {
-									callBack(false);
-								}
     						}
     					}, function(errResponse) {
     						NProgress.done(true);
-    						alert('Operation could not be completed. Please try again later!');
-    						if (callBack) {
-								callBack(false);
-							}
+    						DialogUtil.error(errResponse);
     					});
 				},
 				
@@ -185,10 +174,7 @@ App.factory('placeService', ['$http', '$q', function($http, $q) {
     						}
     					}, function(errResponse) {
     						NProgress.done(true);
-    						alert('Operation could not be completed. Please try again later!');
-    						if (callBack) {
-								callBack(false);
-							}
+    						DialogUtil.error(errResponse);
     					});
 				},
 

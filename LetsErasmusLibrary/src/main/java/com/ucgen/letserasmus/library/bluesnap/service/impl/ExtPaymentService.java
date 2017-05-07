@@ -1,5 +1,6 @@
 package com.ucgen.letserasmus.library.bluesnap.service.impl;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
@@ -23,6 +24,8 @@ import com.ucgen.common.operationresult.EnmResultCode;
 import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.common.operationresult.ValueOperationResult;
 import com.ucgen.common.util.CommonUtil;
+import com.ucgen.common.util.NumberUtil;
+import com.ucgen.common.util.WebUtil;
 import com.ucgen.letserasmus.library.bluesnap.enumeration.ExtEnmTransactionType;
 import com.ucgen.letserasmus.library.bluesnap.model.ExtCardHolderInfo;
 import com.ucgen.letserasmus.library.bluesnap.model.ExtPaymentInfo;
@@ -311,7 +314,7 @@ public class ExtPaymentService implements IExtPaymentService {
 				IntegrationLog integrationLog = new IntegrationLog();
 				integrationLog.setUserId(userId);
 				integrationLog.setExtSystemId(EnmExternalSystem.BLUESNAP.getId());
-				integrationLog.setOperationId(EnmOperation.BLUESNAP_CREATE_VENDOR_DRAFT.getId());
+				integrationLog.setOperationId(EnmOperation.BLUESNAP_AUTH.getId());
 				integrationLog.setOperationDate(startDate);
 				integrationLog.setDuration(endDate.getTime() - startDate.getTime());
 				integrationLog.setRequest(request.toString());
@@ -390,7 +393,7 @@ public class ExtPaymentService implements IExtPaymentService {
 				IntegrationLog integrationLog = new IntegrationLog();
 				integrationLog.setUserId(userId);
 				integrationLog.setExtSystemId(EnmExternalSystem.BLUESNAP.getId());
-				integrationLog.setOperationId(EnmOperation.BLUESNAP_CREATE_VENDOR_DRAFT.getId());
+				integrationLog.setOperationId(EnmOperation.BLUESNAP_AUTH_REVERSE.getId());
 				integrationLog.setOperationDate(startDate);
 				integrationLog.setDuration(endDate.getTime() - startDate.getTime());
 				integrationLog.setRequest(request.toString());
@@ -469,7 +472,86 @@ public class ExtPaymentService implements IExtPaymentService {
 				IntegrationLog integrationLog = new IntegrationLog();
 				integrationLog.setUserId(userId);
 				integrationLog.setExtSystemId(EnmExternalSystem.BLUESNAP.getId());
-				integrationLog.setOperationId(EnmOperation.BLUESNAP_CREATE_VENDOR_DRAFT.getId());
+				integrationLog.setOperationId(EnmOperation.BLUESNAP_CAPTURE.getId());
+				integrationLog.setOperationDate(startDate);
+				integrationLog.setDuration(endDate.getTime() - startDate.getTime());
+				integrationLog.setRequest(request.toString());
+				integrationLog.setResponse(response.toString());
+				integrationLog.setResponseCode(responseCode);
+				integrationLog.setCreatedBy(operationBy);
+				integrationLog.setCreatedDate(new Date());
+				this.logService.insertIntegrationLog(integrationLog);
+			}
+		}
+		return operationResult;
+	}
+	
+	@Override
+	public OperationResult refund(Long userId, String blueSnapTransactionId, BigDecimal refundAmount, BigDecimal vendorAmount, String operationBy) {
+		
+		StringBuilder request = new StringBuilder();
+		StringBuilder response = new StringBuilder();
+		String responseCode = null;
+		Date startDate = null;
+		Date endDate = null;
+		
+		OperationResult operationResult = new OperationResult();
+		String blueSnapDomain = this.parameterService.getParameterValue(EnmParameter.BLUESNAP_DOMAIN.getId());
+		try {
+			RestTemplate restTemplate = this.createRestTemplate();
+		     
+		    HttpHeaders headers = new HttpHeaders();
+		    headers.setContentType(MediaType.APPLICATION_JSON);
+		    headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		    		    		    		    
+		    HttpEntity<String> entity = new HttpEntity<String>(null, headers);
+		     
+		    String uri =  blueSnapDomain + "services/2/transactions/" + blueSnapTransactionId + "/refund";
+		    
+		    if (refundAmount != null) {
+		    	uri = WebUtil.addUriParam(uri, "amount", NumberUtil.format(refundAmount, null, ".", 2));
+		    }
+		    
+		    if (vendorAmount != null) {
+		    	uri = WebUtil.addUriParam(uri, "vendoramount", NumberUtil.format(vendorAmount, null, ".", 2));
+		    }
+		    
+		    request.append("URL : " + uri);
+		    request.append(System.lineSeparator());
+		    request.append("user : " + this.parameterService.getParameterValue(EnmParameter.BLUESNAP_USER.getId()));
+		    request.append(System.lineSeparator());
+		    request.append("pass : " + this.parameterService.getParameterValue(EnmParameter.BLUESNAP_PASSWORD.getId()));
+		    request.append(System.lineSeparator());
+		    request.append("request : null");
+		    
+		    startDate = new Date();
+		    ResponseEntity<String> result = restTemplate.exchange(uri, HttpMethod.PUT, entity, String.class);
+		    endDate = new Date();
+		    
+		    responseCode = String.valueOf(result.getStatusCode().value());
+		    
+		    response.append("Response Code: " + result.getStatusCode());
+		    response.append("Response Body: " + result.getBody());
+		    
+		    if (result.getStatusCode() == HttpStatus.NO_CONTENT) {
+			    operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+		    } else {
+		    	operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+		    }
+		} catch (Exception e) {
+			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
+			operationResult.setResultDesc(CommonUtil.getExceptionMessage(e));
+			responseCode = "-1";
+			response.append(CommonUtil.getExceptionMessage(e));
+		}  finally {
+			if (startDate != null && request != null) {
+				if (endDate == null) {
+					endDate = new Date();
+				}
+				IntegrationLog integrationLog = new IntegrationLog();
+				integrationLog.setUserId(userId);
+				integrationLog.setExtSystemId(EnmExternalSystem.BLUESNAP.getId());
+				integrationLog.setOperationId(EnmOperation.BLUESNAP_REFUND.getId());
 				integrationLog.setOperationDate(startDate);
 				integrationLog.setDuration(endDate.getTime() - startDate.getTime());
 				integrationLog.setRequest(request.toString());

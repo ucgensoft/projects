@@ -20,8 +20,7 @@ App.factory('messageService', ['$http', '$q', function($http, $q){
 			NProgress.start(3000, 5);
 			return $http.get(webApplicationUrlPrefix + '/api/message/listthread', config).then(function(response) {
 				NProgress.done(true);
-				var result = isResultSuccess(response.data, true);
-				if (result && callBack) {
+				var result = isResultSuccess(response.data, true, function() {
 					if (response.data.resultValue['hostThreadList'] == null) {
 						response.data.resultValue['hostThreadList'] = [];
 					}
@@ -29,9 +28,9 @@ App.factory('messageService', ['$http', '$q', function($http, $q){
 						response.data.resultValue['clientThreadList'] = [];
 					}
 					callBack(response.data.resultValue);
-				}
+				}, false);
 			}, function(errResponse) {
-				DialogUtil.error('Error', errResponse, 'OK');
+				DialogUtil.error(errResponse);
 			});
 		},
 		
@@ -50,15 +49,11 @@ App.factory('messageService', ['$http', '$q', function($http, $q){
 			NProgress.start(3000, 5);
 			return $http.get(webApplicationUrlPrefix + '/api/message/getthread', config).then(function(response) {
 				NProgress.done(true);
-				var result = isResultSuccess(response.data, true);
-				if (callBack) {
+				var result = isResultSuccess(response.data, true, function() {
 					callBack(response.data.resultValue);
-				}
+				}, false);
 			}, function(errResponse) {
-				DialogUtil.error('Error', errResponse, 'OK');
-				if (callBack) {
-					callBack(false);
-				}
+				DialogUtil.error(errResponse);
 			});
 		},
 		
@@ -72,12 +67,11 @@ App.factory('messageService', ['$http', '$q', function($http, $q){
 			NProgress.start(3000, 5);
 			return $http.post(webApplicationUrlPrefix + '/api/message/list', reservation, config).then(function(response) {
 				NProgress.done(true);
-				var result = isResultSuccess(response.data, true);
-				if (result && callBack) {
+				var result = isResultSuccess(response.data, true, function() {
 					callBack(response.data.resultValue);
-				}
+				}, false);
 			}, function(errResponse) {
-				DialogUtil.error('Error', errResponse, 'OK');
+				DialogUtil.error(errResponse);
 			});
 		},
 		
@@ -96,15 +90,11 @@ App.factory('messageService', ['$http', '$q', function($http, $q){
 			NProgress.start(3000, 5);
 			return $http.post(webApplicationUrlPrefix + '/api/message/send', message, config).then(function(response) {
 				NProgress.done(true);
-				var result = isResultSuccess(response.data, true);
-				if (result && callBack) {
+				var result = isResultSuccess(response.data, true, function() {
 					callBack(response.data.resultValue);
-				}
+				}, false);
 			}, function(errResponse) {
-				DialogUtil.error('Error', errResponse, 'OK');
-				if (callBack) {
-					callBack(false);
-				}
+				DialogUtil.error(errResponse);
 			});
 		}
 	}

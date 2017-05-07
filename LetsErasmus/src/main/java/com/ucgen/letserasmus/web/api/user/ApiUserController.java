@@ -517,8 +517,10 @@ public class ApiUserController extends BaseApiController {
 						if (profilePhotoDeleted) {
 							deleteProfilePhotoId = oldProfilePhotoId; 
 						}
+						User user = new User();
+						user.setId(sessionUser.getId());
 						
-						User user = this.userService.getUser(sessionUser);
+						user = this.userService.getUser(user);
 						user.setProfilePhoto(null);
 						
 						if (uiUser.getFirstName() != null && uiUser.getFirstName().trim().length() > 0) {
@@ -790,7 +792,7 @@ public class ApiUserController extends BaseApiController {
 									}
 								}
 								
-								Integer msisdnVerificationCode = new Double(Math.random() * 10000).intValue();
+								String msisdnVerificationCode = SecurityUtil.generateNumericCode(4);
 								
 								sendVerifyMsisdnMail(user, msisdnVerificationCode);
 								session.setAttribute(EnmSession.MSISDN_VERIFICATION_CODE.getId(), msisdnVerificationCode);
@@ -1180,6 +1182,9 @@ public class ApiUserController extends BaseApiController {
 					
 					User updatedUser = new User();
 					updatedUser.setId(user.getId());
+					
+					updatedUser = this.userService.getUser(updatedUser);
+					
 					updatedUser.setMsisdn(null);
 					updatedUser.setMsisdnVerified(EnmBoolStatus.NO.getId());
 					
@@ -1555,12 +1560,12 @@ public class ApiUserController extends BaseApiController {
 		this.mailUtil.sendMailFromTemplate(htmlFilePath, paramMap, toList, null, "LetsErasmus Email Verifitcation", null);
 	}
 		
-	private void sendVerifyMsisdnMail(User user, Integer verificationCode) throws UnsupportedEncodingException {
+	private void sendVerifyMsisdnMail(User user, String verificationCode) throws UnsupportedEncodingException {
 		
 		List<String> toList = new ArrayList<String>();
 		toList.add(user.getEmail());
 		
-		String emailContent = "Your msisdn verification code is: " + verificationCode.toString();
+		String emailContent = "Your msisdn verification code is: " + verificationCode;
 		
 		this.mailUtil.sendMail(emailContent, toList, null, "LetsErasmus Msisdn Verifitcation Code", null);
 	}

@@ -144,8 +144,8 @@ App.controller('payoutMethodCtrl', ['$scope', '$controller', 'paymentService', '
 		 
 		 paymentService.updatePayoutMethod(payoutMethod, function(result) {
 			  if (result) {
-				  DialogUtil.info('Success', 'Your payout information is saved!', 'OK', function() {
-					  location.reload();
+				  DialogUtil.success( 'Your payout information is saved!', function() {
+					  reloadPage();
 				  });
 			  }
 		  });

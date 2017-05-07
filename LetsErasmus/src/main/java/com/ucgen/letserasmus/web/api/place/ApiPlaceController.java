@@ -36,6 +36,7 @@ import com.ucgen.common.util.FileLogger;
 import com.ucgen.common.util.FileUtil;
 import com.ucgen.common.util.ImageUtil;
 import com.ucgen.common.util.StringUtil;
+import com.ucgen.letserasmus.library.common.enumeration.EnmCurrency;
 import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
 import com.ucgen.letserasmus.library.common.enumeration.EnmErrorCode;
 import com.ucgen.letserasmus.library.common.enumeration.EnmSize;
@@ -107,6 +108,10 @@ public class ApiPlaceController extends BaseApiController {
 					
 					EnmPlaceCancelPolicy enmPlaceCancelPolicy = EnmPlaceCancelPolicy.getPlaceCancelPolicy(place.getCancellationPolicyId());
 					if (enmPlaceCancelPolicy == null) {
+						isValid = false;
+					}
+					
+					if (place == null || place.getCurrencyId() == null || !place.getCurrencyId().equals(EnmCurrency.EURO.getId())) {
 						isValid = false;
 					}
 					
@@ -224,8 +229,14 @@ public class ApiPlaceController extends BaseApiController {
 		try {
 			User user = super.getSessionUser(session);
 			if (user != null) {
-				Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
-				if (activeOperation != null && activeOperation.equals(EnmOperation.EDIT_PLACE)) {
+				//Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
+				boolean isValid = true;
+				
+				if (place == null || place.getCurrencyId() == null || !place.getCurrencyId().equals(EnmCurrency.EURO.getId())) {
+					isValid = false;
+				}
+				
+				if (isValid) {
 					MultipartFile[] photoList = (MultipartFile[]) session.getAttribute(EnmSession.PLACE_PHOTO_LIST.getId());
 					session.removeAttribute(EnmSession.PLACE_PHOTO_LIST.getId());
 					if (photoList != null && photoList.length > 0) {
@@ -350,7 +361,7 @@ public class ApiPlaceController extends BaseApiController {
 					}
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc(AppConstants.UNAUTHORIZED_OPERATION);
+					operationResult.setResultDesc(AppConstants.MISSING_MANDATORY_PARAM);
 				}
 			} else {
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());

@@ -438,14 +438,14 @@
 										<div class="col-md-4">
 											<label class="h4 text-gray text-normal">
 												<span>Currency</span>
-												<span class="clsRed">&nbsp;*</span>
+												<!--<span class="clsRed">&nbsp;*</span>-->
 											</label>
 											<div class="select select-block select-jumbo">
-												<select id="cmbCurrencyId" class="">
-													<option selected="" value="" disabled="">Select One</option>
+												<select id="cmbCurrencyId" disabled="true" class="">
+													<option value="" disabled="">Select One</option>
 													<option value="1">TRL</option>
 													<option value="2">USD</option>
-													<option value="3">EUR</option>
+													<option value="3" selected="true">EUR</option>
 												</select>
 											</div>
 										</div>
@@ -488,7 +488,7 @@
 									</div>
 									<div class="row space-top-4">
 									<label class="h4 text-gray text-normal">
-												<span  style="padding-left: 12px">Stay Duration</span><span class="clsRed">&nbsp;*</span>
+												<span  style="padding-left: 12px">Stay Duration (Month)</span>
 											</label>
 										<div class="col-md-4">
 											<div>
@@ -726,7 +726,6 @@
 												class="input input-block input-jumbo lys-address-form__input"
 												id="txtPostalCode" placeholder="Zip Code"
 												style="display:inline-block; width: 90%"/>
-											<span class="clsRed">&nbsp;*</span>
 										</div>
 									</div>
 									<div class="row">

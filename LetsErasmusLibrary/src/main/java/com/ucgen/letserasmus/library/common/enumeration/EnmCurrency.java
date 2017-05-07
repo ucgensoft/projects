@@ -3,8 +3,8 @@ package com.ucgen.letserasmus.library.common.enumeration;
 public enum EnmCurrency {
 
 	TL(1, "TRY"),
-	EURO(2, "EUR"),
-	DOLLAR(3, "USD");
+	DOLLAR(2, "USD"),
+	EURO(3, "EUR");
 	
 	private Integer id;
 	private String blueSnapCode;

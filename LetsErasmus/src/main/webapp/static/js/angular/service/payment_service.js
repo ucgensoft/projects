@@ -13,12 +13,11 @@ App.factory('paymentService', ['$http', '$q', function($http, $q){
 			NProgress.start(3000, 5);
 			return $http.get(webApplicationUrlPrefix + '/api/paymentmethod/list', config).then(function(response) {
 				NProgress.done(true);
-				var result = isResultSuccess(response.data, true);
-				if (result && callBack) {
+				var result = isResultSuccess(response.data, true, function() {
 					callBack(response.data.objectList);
-				}
+				}, false);
 			}, function(errResponse) {
-				DialogUtil.error('Error', errResponse, 'OK');
+				DialogUtil.error(errResponse);
 			});
 		},
 		
@@ -32,12 +31,11 @@ App.factory('paymentService', ['$http', '$q', function($http, $q){
 			NProgress.start(3000, 5);
 			return $http.post(webApplicationUrlPrefix + '/api/paymentmethod/create', paymentMethod, config).then(function(response) {
 				NProgress.done(true);
-				var result = isResultSuccess(response.data, true);
-				if (result && callBack) {
+				var result = isResultSuccess(response.data, true, function() {
 					callBack(response.data.resultValue);
-				}
+				}, false);
 			}, function(errResponse) {
-				DialogUtil.error('Error', errResponse, 'OK');
+				DialogUtil.error(errResponse);
 			});
 		},
 		
@@ -64,7 +62,7 @@ App.factory('paymentService', ['$http', '$q', function($http, $q){
 					callBack(false, null);
 				}				
 			}, function(errResponse) {
-				DialogUtil.error('Error', errResponse, 'OK');
+				DialogUtil.error(errResponse);
 			});
 		},
 		
@@ -81,12 +79,11 @@ App.factory('paymentService', ['$http', '$q', function($http, $q){
 			NProgress.start(3000, 5);
 			return $http.get(webApplicationUrlPrefix + '/api/payout/haspayout', config).then(function(response) {
 				NProgress.done(true);
-				var result = isResultSuccess(response.data, true);
-				if (result && callBack) {
+				var result = isResultSuccess(response.data, true, function() {
 					callBack(response.data.resultValue);
-				}		
+				}, false);		
 			}, function(errResponse) {
-				DialogUtil.error('Error', errResponse, 'OK');
+				DialogUtil.error(errResponse);
 			});
 		},
 		
@@ -100,12 +97,11 @@ App.factory('paymentService', ['$http', '$q', function($http, $q){
 			NProgress.start(3000, 5);
 			return $http.post(webApplicationUrlPrefix + '/api/payout/createdraft', payoutMethod, config).then(function(response) {
 				NProgress.done(true);
-				var result = isResultSuccess(response.data, true);
-				if (result && callBack) {
-					callBack(result);
-				}		
+				var result = isResultSuccess(response.data, true, function() {
+					callBack();
+				}, false);	
 			}, function(errResponse) {
-				DialogUtil.error('Error', errResponse, 'OK');
+				DialogUtil.error(errResponse);
 			});
 		},
 		
@@ -119,12 +115,11 @@ App.factory('paymentService', ['$http', '$q', function($http, $q){
 			NProgress.start(3000, 5);
 			return $http.post(webApplicationUrlPrefix + '/api/payout/update', payoutMethod, config).then(function(response) {
 				NProgress.done(true);
-				var result = isResultSuccess(response.data, true);
-				if (result && callBack) {
-					callBack(result);
-				}		
+				var result = isResultSuccess(response.data, true, function() {
+					callBack();
+				}, false);	
 			}, function(errResponse) {
-				DialogUtil.error('Error', errResponse, 'OK');
+				DialogUtil.error(errResponse);
 			});
 		},
 		
@@ -138,12 +133,11 @@ App.factory('paymentService', ['$http', '$q', function($http, $q){
 			NProgress.start(3000, 5);
 			return $http.get(webApplicationUrlPrefix + '/api/payout/get', config).then(function(response) {
 				NProgress.done(true);
-				var result = isResultSuccess(response.data, true);
-				if (result && callBack) {
+				var result = isResultSuccess(response.data, true, function() {
 					callBack(response.data.resultValue);
-				}		
+				}, false);	
 			}, function(errResponse) {
-				DialogUtil.error('Error', errResponse, 'OK');
+				DialogUtil.error(errResponse);
 			});
 		},
 	}

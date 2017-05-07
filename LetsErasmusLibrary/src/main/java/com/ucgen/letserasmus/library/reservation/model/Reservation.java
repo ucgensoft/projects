@@ -36,6 +36,7 @@ public class Reservation extends BaseModel {
 	private String paymentTransactionId;
 	private Integer paymentStatus;
 	private Integer cancellationPolicyId;
+	private Date expireDate;
 	
 	private Place place;
 	private User hostUser;
@@ -206,6 +207,12 @@ public class Reservation extends BaseModel {
 	}
 	public void setCancellationPolicyId(Integer cancellationPolicyId) {
 		this.cancellationPolicyId = cancellationPolicyId;
+	}
+	public Date getExpireDate() {
+		return expireDate;
+	}
+	public void setExpireDate(Date expireDate) {
+		this.expireDate = expireDate;
 	}
 	
 }

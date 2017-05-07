@@ -1,6 +1,7 @@
 package com.ucgen.letserasmus.library.simpleobject.service.impl;
 
 import java.util.List;
+import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import com.ucgen.letserasmus.library.common.enumeration.EnmErrorCode;
 import com.ucgen.letserasmus.library.parameter.dao.IParameterDao;
 import com.ucgen.letserasmus.library.parameter.enumeration.EnmParameter;
 import com.ucgen.letserasmus.library.simpleobject.dao.ISimpleObjectDao;
+import com.ucgen.letserasmus.library.simpleobject.model.CancelPolicyRule;
 import com.ucgen.letserasmus.library.simpleobject.model.Country;
 import com.ucgen.letserasmus.library.simpleobject.model.Question;
 import com.ucgen.letserasmus.library.simpleobject.model.QuestionGroup;
@@ -67,6 +69,11 @@ public class SimpleObjectService implements ISimpleObjectService {
 		} else {
 			return null;
 		}
+	}
+
+	@Override
+	public TreeMap<Integer, CancelPolicyRule> listCancelPolicyRule(Integer entityType) {
+		return this.simpleObjectDao.listCancelPolicyRule(entityType);
 	}
 	
 }

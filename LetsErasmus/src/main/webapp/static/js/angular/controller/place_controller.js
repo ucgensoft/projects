@@ -51,6 +51,7 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
 	    	  
 	    	  var placeId = getUriParam('placeId');
 	    	  if (placeId != null && placeId != "") {
+	    		  self.hasPayout = true;
 	    		  placeService.getPlace(placeId).then(function(operationResult) {
 	        	  		self.displayPlaceDetails(operationResult.resultValue)
 	          		},
@@ -68,7 +69,8 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
 				  	            changeYear: true,
 				  	            yearRange: '-100:-10',
 				  				maxDate : new Date(),
-				  				dateFormat : "dd.mm.yy"
+				  				dateFormat : "dd.mm.yy",
+				  				defaultDate: "1990-01-01"
 				  			});
 	    			  }
 	    			  self.displayTab(1);
@@ -390,7 +392,7 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
       self.onPlaceChange = function (event, result) {
 	        var place = autocomplete.getPlace();
 	        if (!place.geometry) {
-	            window.alert("Autocomplete's returned place contains no geometry");
+	            DialogUtil.error("Autocomplete's returned place contains no geometry");
 	            return;
 	        }
 	  
@@ -467,8 +469,8 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     			  isValid = false;
     		  } else if ($("#cmbCurrencyId")[0].selectedIndex == 0) {
     			  isValid = false;
-    		  } else if ($("#txtStartDatePicker").datepicker("getDate") == ''
-    			  || $("#txtEndDatePicker").datepicker("getDate") == '') {
+    		  } else if ($("#txtStartDatePicker").datepicker("getDate") == null
+    			  || $("#txtEndDatePicker").datepicker("getDate") == null) {
     			  isValid = false;
     		  } else if ($("#cmbBankCountry").length > 0 && $("#cmbBankCountry")[0].selectedIndex == 0) {
     			  isValid = false;
@@ -545,7 +547,7 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
             	  }
     		  }
     	  } else {
-    		  DialogUtil.warn('Warning', "Please fill required fields!", 'OK');
+    		  DialogUtil.warn( "Please fill required fields!");
     		  return false;
     	  }  
       };
@@ -654,7 +656,7 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     			  placeService.savePlace(newPlace, self.photoList,
   	  					function(isSuccess) {
   	  						if (isSuccess) {
-  	  							DialogUtil.info('Success', 'Congratulations! Your place is saved successfully!', 'OK', function() {
+  	  							DialogUtil.success( 'Congratulations! Your place is saved successfully!', function() {
   	  								document.location.href = webApplicationUrlPrefix + '/pages/dashboard/Listings.xhtml';
   	  							});
   	  						}
@@ -672,6 +674,7 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     			  
     			  var vendorFirstName = StringUtil.trim($("#txtFirstName").val());
     			  var vendorLastName = StringUtil.trim($("#txtLastName").val());
+    			  var vendorBirthDate = $("#txtBirthDatePicker").datepicker("getDate");
     			  
     			  var vendorCountry = $("#cmbVendorCountry").val();
     			  var vendorCity = StringUtil.trim($("#txtVendorCity").val());
@@ -683,6 +686,7 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     					  vendorEntityType : vendorEntityType,
     					  vendorFirstName : vendorFirstName,
     					  vendorLastName : vendorLastName,
+    					  vendorBirthDate : vendorBirthDate,
     					  vendorCountry : vendorCountry,
     					  vendorCity : vendorCity,
     					  vendorZip : vendorZip,
@@ -703,7 +707,7 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     		  placeService.updatePlace(newPlace, self.photoList,
   					function(isSuccess) {
   						if (isSuccess) {
-  							DialogUtil.info('Success', 'Congratulations! Your place is updated successfully!', 'OK', function() {
+  							DialogUtil.success( 'Congratulations! Your place is updated successfully!', function() {
   								document.location.href = webApplicationUrlPrefix + '/pages/dashboard/Listings.xhtml';
   							});	
   						}

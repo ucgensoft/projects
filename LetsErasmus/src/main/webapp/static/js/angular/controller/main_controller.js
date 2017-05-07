@@ -33,6 +33,7 @@ App.controller('mainCtrl', ['$scope', '$controller', 'userService', function($sc
   					self.validateSearch();
   				}
   			});
+	      
       };
       
       self.onPlaceChange = function (event, result) {

@@ -10,6 +10,8 @@ import java.util.TimeZone;
 
 public class DateUtil {
 
+	public static final int DAY_IN_MILISECONDS = 1000 * 60 * 60 * 24;
+	
 	public static final String SHORT_DATE_FORMAT = "dd.MM.yyyy";
 	public static final String SHORT_DATE_NO_SEPERATIR_FORMAT = "ddMMyyyy";
 	public static final String LONG_DATE_FORMAT = "dd.MM.yyyy HH:mm:ss";
@@ -124,6 +126,11 @@ public class DateUtil {
 		String strSource = format(sourceDate, strDateFormat);
 		String strDest = format(destDate, strDateFormat);
 		return Long.valueOf(strSource).compareTo(Long.valueOf(strDest));
+	}
+
+	public static long dateDiff(Date date1, Date date2, int timePeriod) {
+		Long diffInMiliseconds = Math.abs(date1.getTime() - date2.getTime());
+		return Math.abs(diffInMiliseconds / DAY_IN_MILISECONDS);
 	}
 	
 }

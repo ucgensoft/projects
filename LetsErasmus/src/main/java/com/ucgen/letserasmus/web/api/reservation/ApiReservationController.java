@@ -220,11 +220,13 @@ public class ApiReservationController extends BaseApiController {
 					}
 					if (paymentToken != null) {
 						
+						Integer parameterReserPendingDuration = Integer.valueOf(this.parameterService.getParameterValue(EnmParameter.RESERVATION_PENDING_DURATION.getId()));
+						
 						Date createdDate = new Date();
 						String createdBy = user.getFullName();
 						
 						reservation.setStatus(EnmReservationStatus.PENDING.getId());
-						
+						reservation.setExpireDate(new Date(createdDate.getTime() + parameterReserPendingDuration * 60 * 60 * 1000));
 						reservation.setCreatedBy(createdBy);
 						reservation.setCreatedDate(createdDate);
 						
@@ -289,7 +291,9 @@ public class ApiReservationController extends BaseApiController {
 		try {
 			User user = super.getSessionUser(session);
 			if (user != null) {
+				// inquiry statüdeki rezervasyon güncellenemez, þimdilik
 				if (uiReservation.getId() != null 
+						&& !uiReservation.getStatus().equals(EnmReservationStatus.INQUIRY.getId())
 						&& uiReservation.getStatus() != null && EnmReservationStatus.getReservationStatus(uiReservation.getStatus()) != null
 						&& uiReservation.getMessageText() != null && !uiReservation.getMessageText().trim().isEmpty()) {
 					
@@ -357,11 +361,6 @@ public class ApiReservationController extends BaseApiController {
 								Date operationDate = new Date();
 								String createdBy = user.getFullName();
 								
-								reservation.setStatus(uiReservation.getStatus());
-								
-								reservation.setModifiedBy(createdBy);
-								reservation.setModifiedDate(operationDate);
-								
 								Message message = null;
 								
 								if (!dbReservationList.get(0).getStatus().equals(EnmReservationStatus.PENDING.getId())) {
@@ -375,26 +374,37 @@ public class ApiReservationController extends BaseApiController {
 									message.setStatus(EnmMessageStatus.NOT_READ.getId());
 								}
 								
-								TransactionLog tLog = new TransactionLog();
-								tLog.setUserId(reservation.getClientUserId());
-								tLog.setOperationDate(operationDate);
-								tLog.setEntityType(EnmEntityType.RESERVATION.getId());
-								tLog.setEntityId(reservation.getId());
-								tLog.setCreatedBy(createdBy);
-								tLog.setCreatedDate(operationDate);
+								TransactionLog tLog = null;
 								
-								if (uiReservation.getStatus().equals(EnmReservationStatus.ACCEPTED.getId())) {
-									tLog.setOperationId(EnmTransaction.RESERVATION_ACCEPT.getId());
-								} else if (uiReservation.getStatus().equals(EnmReservationStatus.DECLINED.getId())) {
-									tLog.setOperationId(EnmTransaction.RESERVATION_DECLINE.getId());
-								} else if (uiReservation.getStatus().equals(EnmReservationStatus.CLIENT_CANCELLED.getId()) 
-										|| uiReservation.getStatus().equals(EnmReservationStatus.HOST_CANCELLED.getId())) {
-									tLog.setOperationId(EnmTransaction.RESERVATION_CANCEL.getId());
-								} else if (uiReservation.getStatus().equals(EnmReservationStatus.RECALLED.getId())) {
-									tLog.setOperationId(EnmTransaction.RESERVATION_RECALL.getId());
-								} else if (uiReservation.getStatus().equals(EnmReservationStatus.PENDING.getId())) {
-									tLog.setOperationId(EnmTransaction.RESERVATION_SEND_REQUEST.getId());
+								if (!reservation.getStatus().equals(uiReservation.getStatus())) {
+									tLog = new TransactionLog();
+									
+									tLog.setUserId(reservation.getClientUserId());
+									tLog.setOperationDate(operationDate);
+									tLog.setEntityType(EnmEntityType.RESERVATION.getId());
+									tLog.setEntityId(reservation.getId());
+									tLog.setCreatedBy(createdBy);
+									tLog.setCreatedDate(operationDate);
+									
+									if (uiReservation.getStatus().equals(EnmReservationStatus.ACCEPTED.getId())) {
+										tLog.setOperationId(EnmTransaction.RESERVATION_ACCEPT.getId());
+									} else if (uiReservation.getStatus().equals(EnmReservationStatus.DECLINED.getId())) {
+										tLog.setOperationId(EnmTransaction.RESERVATION_DECLINE.getId());
+									} else if (uiReservation.getStatus().equals(EnmReservationStatus.CLIENT_CANCELLED.getId())) {
+										tLog.setOperationId(EnmTransaction.RESERVATION_CLIENT_CANCELLED.getId());
+									} else if ( uiReservation.getStatus().equals(EnmReservationStatus.HOST_CANCELLED.getId())) {
+										tLog.setOperationId(EnmTransaction.RESERVATION_HOST_CANCELLED.getId());
+									} else if (uiReservation.getStatus().equals(EnmReservationStatus.RECALLED.getId())) {
+										tLog.setOperationId(EnmTransaction.RESERVATION_RECALL.getId());
+									} else if (uiReservation.getStatus().equals(EnmReservationStatus.PENDING.getId())) {
+										tLog.setOperationId(EnmTransaction.RESERVATION_SEND_REQUEST.getId());
+									}
 								}
+								
+								reservation.setStatus(uiReservation.getStatus());
+								
+								reservation.setModifiedBy(createdBy);
+								reservation.setModifiedDate(operationDate);
 								
 								if (dbReservationList.get(0).getStatus().equals(EnmReservationStatus.INQUIRY.getId()) 
 										&& operationDate.getTime() > reservation.getStartDate().getTime()) {

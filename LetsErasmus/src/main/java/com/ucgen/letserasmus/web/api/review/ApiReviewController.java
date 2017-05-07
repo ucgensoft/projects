@@ -252,7 +252,7 @@ public class ApiReviewController extends BaseApiController {
 						
 						TransactionLog tLog = new TransactionLog();
 						tLog.setUserId(reservation.getClientUserId());
-						tLog.setOperationId(EnmTransaction.REVIEW.getId());
+						tLog.setOperationId(EnmTransaction.RESERVATION_REVIEW.getId());
 						tLog.setOperationDate(reservation.getCreatedDate());
 						tLog.setEntityType(EnmEntityType.RESERVATION.getId());
 						tLog.setEntityId(reservation.getId());

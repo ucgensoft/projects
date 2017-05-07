@@ -24,7 +24,7 @@ App.controller('paymentCtrl', ['$scope', 'reservationService', 'commonService', 
   					}
       		  ); 
     	  } else {
-    		  DialogUtil.error('Error', 'Missing parameters in url!', 'OK', function() {
+    		  DialogUtil.error('Missing parameters in url!', function() {
       			closeWindow();
       		  }); 
     	  }
@@ -80,10 +80,10 @@ App.controller('paymentCtrl', ['$scope', 'reservationService', 'commonService', 
   			submitListener(self.finishReservation);
   			validationTimer = setTimeout(function() {
   				NProgress.done(true);
-  	  			DialogUtil.warn('Warning', 'Please fill mandatory parameters!', 'OK');
+  	  			DialogUtil.warn( 'Please fill mandatory parameters!');
   	  		}, 1500);
   		} else {
-  			DialogUtil.info('Warning', 'Please fill mandatory fields.', 'OK');
+  			DialogUtil.warn('Please fill mandatory fields.');
   		}
   	};
   	
@@ -109,7 +109,7 @@ App.controller('paymentCtrl', ['$scope', 'reservationService', 'commonService', 
   		reservationService.finishReservation(reservation,
 				function(isSuccess) {
 					if (isSuccess) {
-						DialogUtil.info('Success', 'Congratulations! Your request is sent to host.', 'OK', function() {
+						DialogUtil.success( 'Congratulations! Your request is sent to host.', function() {
 							var url = webApplicationUrlPrefix + '/pages/dashboard/MessageList.xhtml';
 							openWindow(url, true);
 						});
@@ -125,7 +125,7 @@ App.controller('paymentCtrl', ['$scope', 'reservationService', 'commonService', 
   			NProgress.start(4000, 5);
   			submitListener(self.finishReservationStripe);
   		} else {
-  			DialogUtil.info('Warning', 'Please fill mandatory fields.', 'OK');
+  			DialogUtil.warn('Please fill mandatory fields.');
   		}
   	};
   	
@@ -141,7 +141,7 @@ App.controller('paymentCtrl', ['$scope', 'reservationService', 'commonService', 
 	  		reservationService.finishReservation(reservation,
 					function(isSuccess) {
 						if (isSuccess) {
-							DialogUtil.info('Success', 'Congratulations! Your request is sent to host.', 'OK', function() {
+							DialogUtil.success( 'Congratulations! Your request is sent to host.', function() {
 								var url = webApplicationUrlPrefix + '/pages/dashboard/MessageList.xhtml';
 								openWindow(url, true);
 							});
@@ -158,7 +158,7 @@ App.controller('paymentCtrl', ['$scope', 'reservationService', 'commonService', 
   			if (isSuccess) {
   				callBack(paymentToken);
   			} else {
-  				DialogUtil.warn('Warning', 'We can not continue payment operation currently. Please try again later!', 'OK', function() {
+  				DialogUtil.warn( 'We can not continue payment operation currently. Please try again later!', function() {
   					closeWindow();
   				});
   			}

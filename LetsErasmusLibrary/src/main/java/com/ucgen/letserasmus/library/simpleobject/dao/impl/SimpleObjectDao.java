@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.sql.DataSource;
 
@@ -14,25 +15,23 @@ import org.springframework.stereotype.Repository;
 import com.ucgen.common.operationresult.EnmResultCode;
 import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.letserasmus.library.common.enumeration.EnmErrorCode;
+import com.ucgen.letserasmus.library.simpleobject.dao.CancelPolicyRuleRowMapper;
 import com.ucgen.letserasmus.library.simpleobject.dao.CountryRowMapper;
+import com.ucgen.letserasmus.library.simpleobject.dao.ISimpleDaoConstants;
 import com.ucgen.letserasmus.library.simpleobject.dao.ISimpleObjectDao;
 import com.ucgen.letserasmus.library.simpleobject.dao.QuestionGroupRowMapper;
 import com.ucgen.letserasmus.library.simpleobject.dao.QuestionRowMapper;
+import com.ucgen.letserasmus.library.simpleobject.model.CancelPolicyRule;
 import com.ucgen.letserasmus.library.simpleobject.model.Country;
 import com.ucgen.letserasmus.library.simpleobject.model.Question;
 import com.ucgen.letserasmus.library.simpleobject.model.QuestionGroup;
 
 @Repository
-public class SimpleObjectDao extends JdbcDaoSupport implements ISimpleObjectDao {
-	
-	private static final String LIST_COUNTRY_SQL = "SELECT * FROM COUNTRY";
-	private static final String LIST_QUESTION_GROUP_SQL = "SELECT DISTINCT Q_GROUP, GROUP_ORDER FROM HELP ORDER BY GROUP_ORDER";
-	private static final String LIST_QUESTION_SQL = "SELECT * FROM HELP WHERE 1=1";
-	private static final String GET_TRANSACTION_ID_SQL = "SELECT COUNT(1) FROM TRANSACTION_ID WHERE ID = ?";
-	private static final String INSERT_TRANSACTION_ID_SQL = "INSERT INTO TRANSACTION_ID (ID) VALUES(?)";
+public class SimpleObjectDao extends JdbcDaoSupport implements ISimpleObjectDao, ISimpleDaoConstants {
 	
 	private List<Country> countryList;
 	private Map<String, Country> countryMapIso2;
+	private Map<Integer, TreeMap<Integer, CancelPolicyRule>> cancelPolicyRuleMap;
 	
 	@Autowired
 	public SimpleObjectDao(DataSource dataSource) {
@@ -119,6 +118,28 @@ public class SimpleObjectDao extends JdbcDaoSupport implements ISimpleObjectDao 
 			operationResult.setErrorCode(EnmErrorCode.ALREADY_EXIST.getId());
 		}
 		return operationResult;
+	}
+
+	@Override
+	public TreeMap<Integer, CancelPolicyRule> listCancelPolicyRule(Integer entityType) {
+		if (this.cancelPolicyRuleMap == null) {
+			this.refreshCancelPolicyMap();
+		}
+		return this.cancelPolicyRuleMap.get(entityType);
+	}
+	
+	private synchronized void refreshCancelPolicyMap() {
+		if (this.cancelPolicyRuleMap == null) {
+			List<CancelPolicyRule> cancelPlicyRuleList = this.getJdbcTemplate().query(LIST_CANCEL_POLICY_RULE_SQL, new CancelPolicyRuleRowMapper());
+			this.cancelPolicyRuleMap = new HashMap<Integer, TreeMap<Integer, CancelPolicyRule>>();
+			for (CancelPolicyRule cancelPolicyRule : cancelPlicyRuleList) {
+				if (!this.cancelPolicyRuleMap.containsKey(cancelPolicyRule.getEntityType())) {
+					TreeMap<Integer, CancelPolicyRule> entityCancelPlicyRuleMap = new TreeMap<Integer, CancelPolicyRule>();
+					this.cancelPolicyRuleMap.put(cancelPolicyRule.getEntityType(), entityCancelPlicyRuleMap);
+				}
+				this.cancelPolicyRuleMap.get(cancelPolicyRule.getEntityType()).put(cancelPolicyRule.getRemainingDays(), cancelPolicyRule);
+			}
+		}
 	}
 
 }

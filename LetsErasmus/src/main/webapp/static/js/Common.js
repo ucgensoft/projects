@@ -230,7 +230,7 @@ function getHtml(url, callbackFunc) {
             }
         },
         error: function (xhr, status) {
-            alert("Sorry, there was a problem!");
+        	DialogUtil.error("Sorry, there was a problem!");
         },
         complete: function (xhr, status) {
             
@@ -250,7 +250,7 @@ function ajaxJson(url, data, callbackFunc) {
             }
         },
         error: function (xhr, status) {
-            alert("Sorry, there was a problem!");
+        	DialogUtil.error("Sorry, there was a problem!");
         },
         complete: function (xhr, status) {
             
@@ -330,131 +330,69 @@ var DialogUtil = {
 		ERROR : 3
 	},
 	
-	showInfo : function (title, message, callBackFunc) {
-		// TODO : jquery dialog framework will be used
-		alert(message);
+	success : function (message, callback, title, okText) {
+		if (!title) {
+			title = 'Success';
+		}
+		if (!okText) {
+			okText = 'OK';
+		}
+		swal({title: title, text: message, type: "success"}, callback);
 	},
 	
-	info : function (title, message, okText, callback) {
-	    $("<div style='z-index: 10000'></div>").dialog( {
-	        buttons: [{
-	            text: okText,
-	            click: function() {
-	                if (callback) {
-	                	callback();
-	                }
-	                $( this ).remove();
-	            }
-	        }],
-	        close: function (event, ui) { $(this).remove(); },
-	        resizable: false,
-	        title: title,
-	        modal: true
-	    }).text(message);
+	info : function (message, callback, title, okText) {
+		if (!title) {
+			title = 'Information';
+		}
+		if (!okText) {
+			okText = 'OK';
+		}
+		swal({title: title, text: message, type: "info"}, callback);
 	},
 	
-	warn : function (title, message, okText, callback) {
-	    $("<div style='z-index: 10000'></div>").dialog( {
-	        buttons: [{
-	            text: okText,
-	            click: function() {
-	                if (callback) {
-	                	callback();
-	                }
-	                $( this ).remove();
-	            }
-	        }],
-	        close: function (event, ui) { $(this).remove(); },
-	        resizable: false,
-	        title: title,
-	        modal: true
-	    }).text(message);
+	warn : function (message, callback, title, okText) {
+		if (!title) {
+			title = 'Warning';
+		}
+		if (!okText) {
+			okText = 'OK';
+		}
+		swal({title: title, text: message, type: "warning"}, callback);
 	},
 	
-	error : function (title, message, okText, callback) {
-	    $("<div></div>").dialog( {
-	        buttons: [{
-	            text: okText,
-	            click: function() {
-	                if (callback) {
-	                	callback();
-	                }
-	                $( this ).remove();
-	            }
-	        }],
-	        close: function (event, ui) { $(this).remove(); },
-	        resizable: false,
-	        title: title,
-	        modal: true
-	    }).text(message);
+	error : function (message, callback, title, okText) {
+		if (!title) {
+			title = 'Error';
+		}
+		if (!okText) {
+			okText = 'OK';
+		}
+		swal({title: title, text: message, type: "error"}, callback);
 	},
 	
-	confirm : function (title, message, callback) {
-	    $("<div></div>").dialog( {
-	        buttons: [{
-	            text: 'Yes',
-	            click: function() {
-	                if (callback) {
-	                	callback(true);
-	                }
-	                $( this ).remove();
-	            }
-	        },
-	        {
-	            text: 'No',
-	            click: function() {
-	                if (callback) {
-	                	callback(false);
-	                }
-	                $( this ).remove();
-	            }
-	        }
-	        ],
-	        close: function (event, ui) { $(this).remove(); },
-	        resizable: false,
-	        title: title,
-	        modal: true
-	    }).text(message);
-	},
-	
-	showMessage : function(type, title, message, callBackFunc) {
-		$.msgbox({
-			  title: title,
-			  content: message,
-			  type: type,
-			  buttons: [{ value: "Ok" }],
-			  success : function (result) {
-				  if (result == 'Ok') {
-					  if (callBackFunc) {
-						  callBackFunc();
-					  }
-				  }
-			  }
-			  });
-	
-	},
-
-	showConfirm : function(title, message, callBackFunc) {
-		$.msgBox({
-			title : title,
-			content : message,
-			type : "confirm",
-			buttons : [ {
-				value : "Yes"
-			}, {
-				value : "No"
-			}, {
-				value : "Cancel"
-			} ],
-			success : function(result) {
-				if (result == "Yes") {
-					callBackFunc(true);
-				} else if (result == "No") {
-					callBackFunc(false);
-				}
-			}
-		});
+	confirm : function (message, callback, title, confirmText, cancelText) {
+		if (!title) {
+			title = 'Confirmation';
+		}
+		if (!confirmText) {
+			confirmText = 'Yes';
+		}
+		if (!cancelText) {
+			cancelText = 'No';
+		}
+		swal({
+	      	  title: title,
+	      	  text: message,
+	      	  type: "warning",
+	      	  showCancelButton: true,
+	      	  confirmButtonColor: "#DD6B55",
+	      	  confirmButtonText: confirmText,
+	      	  cancelButtonText : cancelText,
+	      	  closeOnConfirm: false
+	      	},
+	      	callback);
 	}
+	
 };
 
 var StringUtil = {
@@ -498,30 +436,41 @@ $.extend({ confirm: function (title, message, yesText, noText, yesCallback) {
 }
 });
 
-function handleAjaxError(operationResult) {
+function handleAjaxError(operationResult, callBack) {
 	if (operationResult.resultCode == EnmOperationResultCode.WARNING) {
-		DialogUtil.warn('Warning', operationResult.resultDesc, 'OK', function() {
+		DialogUtil.warn(operationResult.resultDesc, function() {
 			if (operationResult.errorCode == EnmErrorCode.ALREADY_CONTACTED) {
 				openWindow(operationResult.resultValue, true);
+			} else {
+				callBack();
 			}
 		});
 	} else {
-		DialogUtil.error('Error', operationResult.resultDesc, 'OK', function() {
+		DialogUtil.error(operationResult.resultDesc, function() {
 			if (operationResult.errorCode == EnmErrorCode.UNAUTHORIZED_OPERATION) {
 				location.href = webApplicationUrlPrefix + '/pages/Unauthorized.xhtml';
 			} else if(operationResult.errorCode == EnmErrorCode.USER_NOT_LOGGED_IN) {
 				openLoginWindow();
+			} else {
+				callBack();
 			}
 		});
 	}
 }
 
-function isResultSuccess(operationResult, handleError) {
+function isResultSuccess(operationResult, handleError, callBack, callBackIfError) {
 	if (operationResult.resultCode == EnmOperationResultCode.SUCCESS) {
+		if (callBack) {
+			callBack();
+		}
 		return true;
 	} else {
 		if (handleError) {
-			handleAjaxError(operationResult);
+			handleAjaxError(operationResult, function() {
+				if (callBackIfError) {
+					callBack();
+				}
+			});
 		}
 		return false;
 	}
@@ -641,4 +590,12 @@ MapUtil = {
 			return MapUtil.degreeToMeterLng(lngDiff, lat);
 		}
 		
+}
+
+function reloadPage() {
+	var url = location.href;
+	if (url.indexOf('#') > -1) {
+		url = url.substring(0, url.indexOf('#'));
+	}
+	window.open(url, '_self')
 }

@@ -1,5 +1,7 @@
 package com.ucgen.letserasmus.library.bluesnap.service;
 
+import java.math.BigDecimal;
+
 import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.common.operationresult.ValueOperationResult;
 import com.ucgen.letserasmus.library.bluesnap.model.ExtVendorInfo;
@@ -19,5 +21,7 @@ public interface IExtPaymentService {
 	OperationResult paymentAuthReversal(Long userId, String blueSnapTransactionId, String operationBy);
 	
 	OperationResult paymentCapture(Long userId, String blueSnapTransactionId, String operationBy);
+
+	OperationResult refund(Long userId, String blueSnapTransactionId, BigDecimal refundAmount, BigDecimal vendorAmount, String operationBy);
 	
 }

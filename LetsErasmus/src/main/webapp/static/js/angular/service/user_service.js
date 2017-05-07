@@ -14,25 +14,19 @@ App.factory('userService', ['$http', '$q', function($http, $q){
 			self = this;
 			return $http.post(webApplicationUrlPrefix + '/api/user/signup', user, config).then(function(response) {
 				NProgress.done(true);
-				var result = isResultSuccess(response.data, true);
-				if (result) {
+				var result = isResultSuccess(response.data, true, function() {
 					if (response.data != null && response.data.errorCode == EnmErrorCode.USER_DEACTIVE) {
-						DialogUtil.confirm('Confirm', response.data.resultDesc, function(isAccepted) {
-							if (isAccepted) {
-								self.reactivateUser(callBack);	
-							}
+						DialogUtil.confirm(response.data.resultDesc, function() {
+							self.reactivateUser(callBack);
 						});
 					} else {
 						if (callBack) {
-							callBack(result);
+							callBack(true);
 						}
 					}
-				}
+				}, false);
 			}, function(errResponse) {
-				DialogUtil.error('Error', errResponse, 'OK');
-				if (callBack) {
-					callBack(false);
-				}
+				DialogUtil.error(errResponse);
 			});
 		},
 		
@@ -51,33 +45,20 @@ App.factory('userService', ['$http', '$q', function($http, $q){
 						$http.post(webApplicationUrlPrefix + '/api/user/update', user, config).then(
 							function(response) {
 								NProgress.done(true);
-								var isSuccess = false;
-								if (isResultSuccess(response.data, true)) {
-									isSuccess = true;
-								}
-								if (callBack) {
-									callBack(isSuccess);
-								}
+								var result = isResultSuccess(response.data, true, function() {
+									callBack(true);
+								}, false);
 							}, function(errResponse) {
 								NProgress.done(true);
-								console.error('Error while updating place');
-								if (callBack) {
-									callBack(false);
-								}
+								console.error(errResponse);
 							}
 						);
 					} else {
 						NProgress.done(true);
-						if (callBack) {
-							callBack(false);
-						}
 					}
 				}, function(errResponse) {
 					NProgress.done(true);
-					DialogUtil.inform('Error', 'Operation could not be completed. Please try again later!', 'OK', null);
-					if (callBack) {
-						callBack(false);
-					}
+					DialogUtil.error('Operation could not be completed. Please try again later!');
 				});
 		},
 		
@@ -122,25 +103,20 @@ App.factory('userService', ['$http', '$q', function($http, $q){
 			self = this;
 			return $http.post(webApplicationUrlPrefix + '/api/user/login', user, config).then(function(response) {
 				NProgress.done(true);
-				var result = isResultSuccess(response.data, true);
-				if (result) {
+				
+				var result = isResultSuccess(response.data, true, function() {
 					if (response.data != null && response.data.errorCode == EnmErrorCode.USER_DEACTIVE) {
-						DialogUtil.confirm('Confirm', response.data.resultDesc, function(isAccepted) {
-							if (isAccepted) {
-								self.reactivateUser(callBack);	
-							}
+						DialogUtil.confirm(response.data.resultDesc, function() {
+							self.reactivateUser(callBack);
 						});
 					} else {
 						if (callBack) {
-							callBack(result);
+							callBack(true);
 						}
 					}
-				}	
+				}, false);
 			}, function(errResponse) {
-				DialogUtil.error('Error', errResponse, 'OK');
-				if (callBack) {
-					callBack(false);
-				}
+				DialogUtil.error(errResponse);
 			});
 		},
 		
@@ -154,11 +130,11 @@ App.factory('userService', ['$http', '$q', function($http, $q){
 					.post(webApplicationUrlPrefix + '/api/user/logout', null, config).then(function(response) {
 						return response.data;
 					}, function(errResponse) {
-						return $q.reject(errResponse);
+						DialogUtil.error(errResponse);
 					});
 		},
 		
-		confirmEmail : function(id, code) {
+		confirmEmail : function(id, code, callBack) {
 			NProgress.start(4000, 5);
 			var data = {
 					id : id,
@@ -173,10 +149,11 @@ App.factory('userService', ['$http', '$q', function($http, $q){
 			};
 			return $http.post(webApplicationUrlPrefix + '/api/user/confirmemail', data, config).then(function(response) {
 						NProgress.done(true);
-						isResultSuccess(response.data, true);
-						return response.data;
+						var result = isResultSuccess(response.data, true, function() {
+							callBack(true);
+						}, false);
 					}, function(errResponse) {
-						return $q.reject(errResponse);
+						DialogUtil.error(errResponse);
 					});
 		},
 		
@@ -195,15 +172,11 @@ App.factory('userService', ['$http', '$q', function($http, $q){
 			};
 			return $http.post(webApplicationUrlPrefix + '/api/user/msisdn/sendcode', data, config).then(function(response) {
 						NProgress.done(true);
-						var result = isResultSuccess(response.data, true);
-						if (callBack) {
-							callBack(result);
-						}
+						var result = isResultSuccess(response.data, true, function() {
+							callBack(true);
+						}, false);
 					}, function(errResponse) {
-						DialogUtil.error('Error', errResponse, 'OK');
-						if (callBack) {
-							callBack(false);
-						}
+						DialogUtil.error(errResponse);
 					});
 		},
 		
@@ -220,15 +193,11 @@ App.factory('userService', ['$http', '$q', function($http, $q){
 			};
 			return $http.post(webApplicationUrlPrefix + '/api/user/email/sendcode', data, config).then(function(response) {
 						NProgress.done(true);
-						var result = isResultSuccess(response.data, true);
-						if (callBack) {
-							callBack(result);
-						}
+						var result = isResultSuccess(response.data, true, function() {
+							callBack(true);
+						}, false);
 					}, function(errResponse) {
-						DialogUtil.error('Error', errResponse, 'OK');
-						if (callBack) {
-							callBack(false);
-						}
+						DialogUtil.error(errResponse);
 					});
 		},
 		
@@ -246,15 +215,11 @@ App.factory('userService', ['$http', '$q', function($http, $q){
 			};
 			return $http.post(webApplicationUrlPrefix + '/api/user/msisdn/verify', data, config).then(function(response) {
 						NProgress.done(true);
-						var result = isResultSuccess(response.data, true);
-						if (callBack) {
-							callBack(result);
-						}
+						var result = isResultSuccess(response.data, true, function() {
+							callBack(true);
+						}, false);
 					}, function(errResponse) {
-						DialogUtil.error('Error', errResponse, 'OK');
-						if (callBack) {
-							callBack(false);
-						}
+						DialogUtil.error(errResponse);
 					});
 		},
 		
@@ -272,15 +237,11 @@ App.factory('userService', ['$http', '$q', function($http, $q){
 			};
 			return $http.post(webApplicationUrlPrefix + '/api/user/msisdn/remove', data, config).then(function(response) {
 						NProgress.done(true);
-						var result = isResultSuccess(response.data, true);
-						if (callBack) {
-							callBack(result);
-						}
+						var result = isResultSuccess(response.data, true, function() {
+							callBack(true);
+						}, false);
 					}, function(errResponse) {
-						DialogUtil.error('Error', errResponse, 'OK');
-						if (callBack) {
-							callBack(false);
-						}
+						DialogUtil.error(errResponse);
 					});
 		},
 		
@@ -295,20 +256,14 @@ App.factory('userService', ['$http', '$q', function($http, $q){
 				}
 			};
 			return $http.post(webApplicationUrlPrefix + '/api/user/email/isverified', data, config).then(function(response) {
-						var operationSuccess = isResultSuccess(response.data, false);
-						if (operationSuccess) {
+						var result = isResultSuccess(response.data, true, function() {
 							var isVerified = response.data.resultValue;
 							if (callBack) {
 								callBack(isVerified);
 							}
-						}
+						}, false);		
 					}, function(errResponse) {
-						/*
-						DialogUtil.error('Error', errResponse, 'OK');
-						if (callBack) {
-							callBack(false);
-						}
-						*/
+						DialogUtil.error(errResponse);
 					});
 		},
 		
@@ -322,12 +277,11 @@ App.factory('userService', ['$http', '$q', function($http, $q){
 				NProgress.start(3000, 5);
 				return $http.post(webApplicationUrlPrefix + '/api/user/connectgoogle', user, config).then(function(response) {
 					NProgress.done(true);
-					var result = isResultSuccess(response.data, true);
-					if (callBack) {
-						callBack(result);
-					}
+					var result = isResultSuccess(response.data, true, function() {
+						callBack(true);
+					}, false);
 				}, function(errResponse) {
-					DialogUtil.error('Error', errResponse, 'OK');
+					DialogUtil.error(errResponse);
 				});
 		},
 		
@@ -341,12 +295,11 @@ App.factory('userService', ['$http', '$q', function($http, $q){
 			NProgress.start(3000, 5);
 			return $http.post(webApplicationUrlPrefix + '/api/user/disconnectgoogle', config).then(function(response) {
 				NProgress.done(true);
-				var result = isResultSuccess(response.data, true);
-				if (callBack) {
-					callBack(result);
-				}
+				var result = isResultSuccess(response.data, true, function() {
+					callBack(true);
+				}, false);
 			}, function(errResponse) {
-				DialogUtil.error('Error', errResponse, 'OK');
+				DialogUtil.error(errResponse);
 			});
 		},
 		
@@ -360,12 +313,11 @@ App.factory('userService', ['$http', '$q', function($http, $q){
 				NProgress.start(3000, 5);
 				return $http.post(webApplicationUrlPrefix + '/api/user/connectfacebook', user, config).then(function(response) {
 					NProgress.done(true);
-					var result = isResultSuccess(response.data, true);
-					if (callBack) {
-						callBack(result);
-					}
+					var result = isResultSuccess(response.data, true, function() {
+						callBack(true);
+					}, false);
 				}, function(errResponse) {
-					DialogUtil.error('Error', errResponse, 'OK');
+					DialogUtil.error(errResponse);
 				});
 		},
 		
@@ -379,12 +331,11 @@ App.factory('userService', ['$http', '$q', function($http, $q){
 			NProgress.start(3000, 5);
 			return $http.post(webApplicationUrlPrefix + '/api/user/disconnectfacebook', config).then(function(response) {
 				NProgress.done(true);
-				var result = isResultSuccess(response.data, true);
-				if (callBack) {
-					callBack(result);
-				}
+				var result = isResultSuccess(response.data, true, function() {
+					callBack(true);
+				}, false);
 			}, function(errResponse) {
-				DialogUtil.error('Error', errResponse, 'OK');
+				DialogUtil.error(errResponse);
 			});
 		},
 		
@@ -398,12 +349,11 @@ App.factory('userService', ['$http', '$q', function($http, $q){
 			NProgress.start(2000, 5);
 			return $http.post(webApplicationUrlPrefix + '/api/user/deactivate', config).then(function(response) {
 				NProgress.done(true);
-				var result = isResultSuccess(response.data, true);
-				if (callBack) {
-					callBack(result);
-				}
+				var result = isResultSuccess(response.data, true, function() {
+					callBack(true);
+				}, false);
 			}, function(errResponse) {
-				DialogUtil.error('Error', errResponse, 'OK');
+				DialogUtil.error(errResponse);
 			});
 		},
 		
@@ -417,12 +367,11 @@ App.factory('userService', ['$http', '$q', function($http, $q){
 			NProgress.start(2000, 5);
 			return $http.post(webApplicationUrlPrefix + '/api/user/reactivate', config).then(function(response) {
 				NProgress.done(true);
-				var result = isResultSuccess(response.data, true);
-				if (callBack) {
-					callBack(result);
-				}
+				var result = isResultSuccess(response.data, true, function() {
+					callBack(true);
+				}, false);
 			}, function(errResponse) {
-				DialogUtil.error('Error', errResponse, 'OK');
+				DialogUtil.error(errResponse);
 			});
 		},
 		
@@ -437,12 +386,11 @@ App.factory('userService', ['$http', '$q', function($http, $q){
 			NProgress.start(2000, 5);
 			return $http.get(webApplicationUrlPrefix + '/api/user/get', config).then(function(response) {
 				NProgress.done(true);
-				var result = isResultSuccess(response.data, true);
-				if (result && callBack) {
+				var result = isResultSuccess(response.data, true, function() {
 					callBack(response.data.resultValue);
-				}
+				}, false);
 			}, function(errResponse) {
-				DialogUtil.error('Error', errResponse, 'OK');
+				DialogUtil.error(errResponse);
 			});
 		},
 		
@@ -462,12 +410,11 @@ App.factory('userService', ['$http', '$q', function($http, $q){
 			NProgress.start(2000, 5);
 			return $http.get(webApplicationUrlPrefix + '/api/user/sendresetpasswordemail', config).then(function(response) {
 				NProgress.done(true);
-				var result = isResultSuccess(response.data, true);
-				if (result && callBack) {
-					callBack(result);
-				}
+				var result = isResultSuccess(response.data, true, function() {
+					callBack(true);
+				}, false);
 			}, function(errResponse) {
-				DialogUtil.error('Error', errResponse, 'OK');
+				DialogUtil.error(errResponse);
 			});
 			
 		},
@@ -489,12 +436,11 @@ App.factory('userService', ['$http', '$q', function($http, $q){
 			NProgress.start(2000, 5);
 			return $http.get(webApplicationUrlPrefix + '/api/user/resetpassword', config).then(function(response) {
 				NProgress.done(true);
-				var result = isResultSuccess(response.data, true);
-				if (result && callBack) {
-					callBack(result);
-				}
+				var result = isResultSuccess(response.data, true, function() {
+					callBack(true);
+				}, false);
 			}, function(errResponse) {
-				DialogUtil.error('Error', errResponse, 'OK');
+				DialogUtil.error(errResponse);
 			});
 			
 		}

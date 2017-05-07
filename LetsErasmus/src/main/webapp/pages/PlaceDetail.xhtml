@@ -501,11 +501,11 @@
 																			ctrl.place.depositPrice 
 																			}} {{(ctrl.place.currencyId == 1 ? 'TRY' : (ctrl.place.currencyId == 2 ? 'USD' : 'EUR'))}} (Paid to host in cash)</strong>
 																	</div>
-																	<div>
+																	<div ng-if="ctrl.place.minimumStay != null">
 																		<span>Minimum Stay: </span><span> </span><strong>{{
 																			ctrl.place.minimumStay }} months</strong>
 																	</div>
-																	<div>
+																	<div ng-if="ctrl.place.maximumStay != null">
 																		<span>Maximum Stay: </span><span> </span><strong>{{
 																			ctrl.place.maximumStay }} months</strong>
 																	</div>																	

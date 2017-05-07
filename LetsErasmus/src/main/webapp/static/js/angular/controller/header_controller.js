@@ -42,10 +42,10 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
 	   			  var id = getUriParam("user");
 	   			  var code = getUriParam("code");
 	   			  if (id != null && id != '' && code != null && code != '') {
-	   				  userService.confirmEmail(id, code).then(
-							function(operationResult) {
-								if (isResultSuccess(operationResult, false)) {
-									DialogUtil.info('Success', 'Congratulations! Your mail is verified successfully!', 'OK', function() {
+	   				  userService.confirmEmail(id, code,
+							function(result) {
+								if (result) {
+									DialogUtil.success('Congratulations! Your mail is verified successfully!', function() {
 										var newUrl = clearUrlParameter(location.href, null);
 										if (sessionActive) {
 											newUrl = clearUrlParameter(location.href, null);
@@ -56,8 +56,6 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
 										
 									});
 								}
-							}, function(errResponse) {
-								
 							});
 	   			  }
 	       	  } else if (paramOp == EnmOperation.LOGIN) {
@@ -69,7 +67,7 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
 	   				userService.resetPassword(userId, code,
 							function(isSuccess) {
 								if (isSuccess) {
-									DialogUtil.info('Success', 'We reset your password successfully and new password is sent to your email!', 'OK', function() {
+									DialogUtil.success( 'We reset your password successfully and new password is sent to your email!', function() {
 										var newUrl = clearUrlParameter(location.href, null);
 										newUrl += '?op=' + EnmOperation.LOGIN; 
 										openWindow(newUrl, true);
@@ -170,7 +168,7 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
   		var password = StringUtil.trim($("#txtPassword").val());
   		
   		if (userFirstName == '' || userLastName == '' || email == '' || password == '') {
-  			DialogUtil.showMessage(DialogUtil.MESSAGE_TYPE.WARNING, 'Warning', 'Please fill mandatory fields!');
+  			DialogUtil.warn('Please fill mandatory fields!');
   		} else {
   			var user = {
   				firstName : userFirstName,
@@ -193,7 +191,7 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
 							closeModal();
 							openWindow(redirectUrl, true);
 						} else {
-							location.reload();
+							reloadPage();
 						}
 					}
 				}
@@ -205,7 +203,7 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
   		var password = StringUtil.trim($("#txtPassword").val());
   		
   		if (email == '' || password == '') {
-  			DialogUtil.warn('Warning', 'Please fill mandatory fields!', 'OK', null);
+  			DialogUtil.warn( 'Please fill mandatory fields!');
   		} else {
   			var user = {
   				email : email,
@@ -223,7 +221,7 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
 							if (globalRedirectUrl != null) {
 								openWindow(globalRedirectUrl, true);
 							} else {
-								location.reload();
+								reloadPage();
 							}
 						}
 					}
@@ -252,14 +250,14 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
 								location.href = webApplicationUrlPrefix + "/pages/Main.xhtml";
 							}
 						} else {
-							DialogUtil.error('Error', 'Operation could not be completed!', 'OK', null);
+							DialogUtil.error('Operation could not be completed!');
 						}
 					} else {
-						DialogUtil.error('Error', 'Operation could not be completed!', 'OK', null);
+						DialogUtil.error('Operation could not be completed!');
 					}
 				}, function(errResponse) {
 					NProgress.done(true);
-					DialogUtil.error('Error', 'Operation could not be completed!', 'OK', null);
+					DialogUtil.error('Operation could not be completed!');
 				}); 
   	};
   	  
@@ -302,7 +300,7 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
   	        });
   	    	  
   	        }, function(error) {
-  	        	DialogUtil.error('Error', JSON.stringify(error, undefined, 2), 'OK', null);
+  	        	DialogUtil.error(JSON.stringify(error, undefined, 2));
   	        });
   	  };
   	  
@@ -380,10 +378,10 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
   		  };
   		complaintService.createComplaint(complaint, 
   			  function(complaintMap) {
-  				DialogUtil.info('Success', 'Your complaint has been reported to our team. ' 
-  						+ 'Necessary actions will be taken as soon as possible. Thanks for reporting.', 'OK', 
+  				DialogUtil.success('Your complaint has been reported to our team. ' 
+  						+ 'Necessary actions will be taken as soon as possible. Thanks for reporting.', 
   						function() {
-  							location.reload();
+  							reloadPage();
   						}
   				);
   	  		  }
@@ -424,14 +422,14 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
 		  	var email = StringUtil.trim($("#txtEmail").val());
 	  		
 	  		if (email == '') {
-	  			DialogUtil.warn('Warning', 'Please enter your email!', 'OK', null);
+	  			DialogUtil.warn( 'Please enter your email!', null);
 	  		} else {
-	  			DialogUtil.confirm('Confirm', 'Your password will be reset, do you want to continue ?', function(isAccepted) {
+	  			DialogUtil.confirm('Your password will be reset, do you want to continue ?', function(isAccepted) {
 	  				if (isAccepted) {
 	  					userService.sendResetPasswordEmail(email,
 								function(isSuccess) {
 									if (isSuccess) {
-										DialogUtil.info('Success', 'An email is sent to your mail address. Please follow the instructions in the mail to reset your password!', 'OK');
+										DialogUtil.success('An email is sent to your mail address. Please follow the instructions in the mail to reset your password!');
 									}
 								}
 						  );

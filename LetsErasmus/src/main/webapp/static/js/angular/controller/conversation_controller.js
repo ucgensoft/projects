@@ -11,8 +11,23 @@ App.controller('conversationCtrl', ['$scope', '$controller', 'messageService', '
     	  
     	  var messageThreadId = getUriParam('threadId');
     	  if (messageThreadId) {
-    		  self.getMessageThread(messageThreadId);
+    		  self.getMessageThread(messageThreadId, function() {
+    			  if(self.showReservationBox()) {
+    				  self.startTimer();
+    			  }
+    		  });
     	  }
+	 };
+	 
+	 self.startTimer = function() {
+		 var seconds_left = 10;
+		 var interval = setInterval(function() {
+			 var dateDiffString = getDateDiffString(new Date(self.messageThread.reservation.expireDate), new Date());
+		     $('#spanRemainingTime').html(dateDiffString);
+		     if (dateDiffString == '00:00:00') {
+		    	 clearInterval(interval);
+		     }
+		 }, 1000);
 	 };
 	 
 	 self.getMessageThread = function(threadId, callBack) {
@@ -100,25 +115,25 @@ App.controller('conversationCtrl', ['$scope', '$controller', 'messageService', '
   		}
 	 };
 	 
-	  	self.getFeeLabel = function() {
-	  		if (self.messageThread != null) {
-	  			if (self.messageThread.hostUserId == loginUserId) {
-	  				 return "Host Service Fee";
-	  			 } else {
-	  				 return "Tenant Service Fee";
-	  			 }
-	  		}
-		 };
-		 
-		  	self.getUserLabel = function() {
-		  		if (self.messageThread != null) {
-		  			if (self.messageThread.hostUserId == loginUserId) {
-		  				 return "Requested by ";
-		  			 } else {
-		  				 return "Hosted by ";
-		  			 }
-		  		}
-			 };
+  	self.getFeeLabel = function() {
+  		if (self.messageThread != null) {
+  			if (self.messageThread.hostUserId == loginUserId) {
+  				 return "Host Service Fee";
+  			 } else {
+  				 return "Tenant Service Fee";
+  			 }
+  		}
+	 };
+	 
+  	self.getUserLabel = function() {
+  		if (self.messageThread != null) {
+  			if (self.messageThread.hostUserId == loginUserId) {
+  				 return "Requested by ";
+  			 } else {
+  				 return "Hosted by ";
+  			 }
+  		}
+	 };
   	
   	self.sendMessage = function() {
   		var messageText = StringUtil.trim($('#txtMessage').val());
@@ -130,7 +145,7 @@ App.controller('conversationCtrl', ['$scope', '$controller', 'messageService', '
   		  		  }
   		  	  );
   		} else {
-  			DialogUtil.warn('Warning', 'Please type message text.', 'OK');
+  			DialogUtil.warn('Please type message text.');
   		}
   	};
   	
@@ -143,23 +158,21 @@ App.controller('conversationCtrl', ['$scope', '$controller', 'messageService', '
   	self.acceptReservation = function() {
   		var messageText = StringUtil.trim($('#txtNewMessage').val());
   		if (messageText != '' && $('#chbTerms').val()) {
-  			DialogUtil.confirm('Confirm', 'Reservation request will be accepted, dou you want to continue?', function(response) {
-  	  			if (response) {
-  	  				var reservationId = self.messageThread.reservation.id;
-  	  		  		var status = EnmReservationStatus.CONFIRMED;
-  	  		  		reservationService.updateReservation(reservationId, messageText, status,
-  	  					  function(isSuccess) {
-  	  						  if (isSuccess) {
-  	  							  DialogUtil.info('Sucess', 'Congratulations! Reservation request is accepted.', 'OK', function() {
-  	  								  location.reload();
-  	  							  });
-  	  						  }
-  	  			  		  }
-  	  			  	  );
-  	  			}
+  			DialogUtil.confirm('Reservation request will be accepted, dou you want to continue?', function() {
+  				var reservationId = self.messageThread.reservation.id;
+  		  		var status = EnmReservationStatus.CONFIRMED;
+  		  		reservationService.updateReservation(reservationId, messageText, status,
+  					  function(isSuccess) {
+  						  if (isSuccess) {
+  							  DialogUtil.success('Congratulations! Reservation request is accepted.', function() {
+  								  reloadPage();
+  							  });
+  						  }
+  			  		  }
+  			  	  );
   	  		});
   		} else {
-  			DialogUtil.warn('Warning', 'Please type a message to guest and confirm that you have read the terms.', 'OK');
+  			DialogUtil.warn('Please type a message to guest and confirm that you have read the terms.');
   		}
   	};
   	
@@ -172,23 +185,21 @@ App.controller('conversationCtrl', ['$scope', '$controller', 'messageService', '
   	self.declineReservation = function() {
   		var messageText = StringUtil.trim($('#txtNewMessage').val());
   		if (messageText != '') {
-  			DialogUtil.confirm('Confirm', 'Reservation request will be rejected, dou you want to continue?', function(response) {
-  	  			if (response) {
-  	  				var reservationId = self.messageThread.reservation.id;
-  	  		  		var status = EnmReservationStatus.DECLINED;
-  	  		  		reservationService.updateReservation(reservationId, messageText, status,
-  	  					  function(isSuccess) {
-  	  						  if (isSuccess) {
-  	  							  DialogUtil.info('Sucess', 'Reservation request is rejected.', 'OK', function() {
-  	  								  location.reload();
-  	  							  });
-  	  						  }
-  	  			  		  }
-  	  			  	  );
-  	  			}
+  			DialogUtil.confirm('Reservation request will be rejected, dou you want to continue?', function() {
+  				var reservationId = self.messageThread.reservation.id;
+  		  		var status = EnmReservationStatus.DECLINED;
+  		  		reservationService.updateReservation(reservationId, messageText, status,
+  					  function(isSuccess) {
+  						  if (isSuccess) {
+  							  DialogUtil.info('Reservation request is rejected.', function() {
+  								  reloadPage();
+  							  });
+  						  }
+  			  		  }
+  			  	  );
   	  		});
   		} else {
-  			DialogUtil.warn('Warning', 'Please type a message to guest.', 'OK');
+  			DialogUtil.warn('Please type a message to guest.');
   		}
   	};
   	
@@ -205,20 +216,18 @@ App.controller('conversationCtrl', ['$scope', '$controller', 'messageService', '
  	};
  	
  	self.sendBookingRequest = function() {
- 		DialogUtil.confirm('Confirm', 'Booking request will be sent to host, dou you want to continue?', function(response) {
-	  			if (response) {
-	  				var reservationId = self.messageThread.reservation.id;
-	  		  		var status = EnmReservationStatus.PENDING;
-	  		  		reservationService.updateReservation(reservationId, 'message', status,
-	  					  function(isSuccess) {
-	  						  if (isSuccess) {
-	  							  DialogUtil.info('Sucess', 'Congratulations! Booking request is sent to host.', 'OK', function() {
-	  								  location.reload();
-	  							  });
-	  						  }
-	  			  		  }
-	  			  	  );
-	  			}
+ 		DialogUtil.confirm('Booking request will be sent to host, dou you want to continue?', function() {
+ 			var reservationId = self.messageThread.reservation.id;
+	  		var status = EnmReservationStatus.PENDING;
+	  		reservationService.updateReservation(reservationId, 'message', status,
+				  function(isSuccess) {
+					  if (isSuccess) {
+						  DialogUtil.success('Congratulations! Booking request is sent to host.', function() {
+							  reloadPage();
+						  });
+					  }
+		  		  }
+		  	  );
 	  		});
   	};
   	
@@ -239,7 +248,34 @@ function acceptReservation() {
 	scope.ctrl.acceptReservation();
 }
 
+
 function declineReservation() {
 	var scope = angular.element( $('#divBody') ).scope();
 	scope.ctrl.declineReservation();
+}
+
+function getDateDiffString(dateFuture, datePast) {
+	if (dateFuture > datePast) {
+		var seconds = Math.floor((dateFuture - (datePast))/1000);
+		var minutes = Math.floor(seconds/60);
+		var hours = Math.floor(minutes/60);
+		var days = Math.floor(hours/24);
+
+		hours = hours-(days*24);
+		minutes = minutes-(days*24*60)-(hours*60);
+		seconds = seconds-(days*24*60*60)-(hours*60*60)-(minutes*60);
+
+		if (hours < 10) {
+			timeString = '0' + hours;
+		}
+		if (minutes < 10) {
+			minutes = '0' + minutes;
+		}
+		if (seconds < 10) {
+			seconds = '0' + seconds;
+		}
+		return hours + ':' + minutes + ':' + seconds;
+	} else {
+		return '00:00:00';
+	}
 }

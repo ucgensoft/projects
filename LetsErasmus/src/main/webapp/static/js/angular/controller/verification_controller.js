@@ -38,7 +38,7 @@ App.controller('verificationCtrl', ['$scope', 'userService', 'commonService',
         		  checkEmailTimer = setInterval(self.checkEmailVerification, 4000);
         	  }
     	  } else {
-    		DialogUtil.error('Error', 'Invalid operation parameter!', 'OK', function() {
+    		DialogUtil.error('Invalid operation parameter!', function() {
     			closeWindow();
     		});  
     	  }
@@ -67,7 +67,7 @@ App.controller('verificationCtrl', ['$scope', 'userService', 'commonService',
 	  	var msisdn = $('#txtMsisdn').val();
   	  	
 	  	if (prefix == null || StringUtil.trim(prefix) == '' || StringUtil.trim(msisdn) == '') {
-  			DialogUtil.warn('Warning', 'Select a country and type your phone number please!', 'OK', null);
+  			DialogUtil.warn( 'Select a country and type your phone number please!', null);
   			return;
   		}
   	  	
@@ -88,7 +88,7 @@ App.controller('verificationCtrl', ['$scope', 'userService', 'commonService',
   					function(isSuccess) {
   						if (isSuccess) {
   							if (emailVerified == 'N') {
-  								location.reload();
+  								reloadPage();
   							} else {
   								var url = self.getOperationUrl();
   	  							openWindow(url, true);
@@ -97,7 +97,7 @@ App.controller('verificationCtrl', ['$scope', 'userService', 'commonService',
   					}
   			  );
   		} else {
-  			DialogUtil.warn('Warning', 'Please type the verification code!', 'OK', null);
+  			DialogUtil.warn( 'Please type the verification code!', null);
   		}
   	};
   	
@@ -113,7 +113,7 @@ App.controller('verificationCtrl', ['$scope', 'userService', 'commonService',
   	self.sendEmailVerificationCode = function() {
   		userService.sendEmailVerificationCode(function(isSuccess) {
 					if (isSuccess) {
-						DialogUtil.info('Success', 'Verification code is sent to your email address. Please click the verification link in the mail.', 'OK');
+						DialogUtil.success( 'Verification code is sent to your email address. Please click the verification link in the mail.');
 					}
 		});
   	};

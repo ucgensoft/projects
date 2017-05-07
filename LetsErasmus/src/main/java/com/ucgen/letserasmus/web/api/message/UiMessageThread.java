@@ -32,6 +32,7 @@ public class UiMessageThread {
 	private List<TransactionLog> transactionLogList;
 	
 	private BigDecimal entityPrice;
+	private Date entityExpireDate;
 	private BigDecimal serviceFee;
 	private Integer currencyId;
 	
@@ -154,6 +155,12 @@ public class UiMessageThread {
 	}
 	public void setCurrencyId(Integer currencyId) {
 		this.currencyId = currencyId;
+	}
+	public Date getEntityExpireDate() {
+		return entityExpireDate;
+	}
+	public void setEntityExpireDate(Date entityExpireDate) {
+		this.entityExpireDate = entityExpireDate;
 	}
 	
 }

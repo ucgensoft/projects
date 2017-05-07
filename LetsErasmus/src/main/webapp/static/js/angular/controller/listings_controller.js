@@ -28,21 +28,23 @@ App.controller('listingsCtrl', ['$scope', '$controller', 'placeService', 'common
     		  message = 'Do you really want to delete this listing?';
     	  }
     	  
-    	  var callBack = function(answer) {
+    	  var callBack = function() {
 	    	  placeService.changePlaceStatus(placeId, status).then(function(operationResult) {
 			  		if (operationResult[OperationResult.resultCode] == EnmOperationResultCode.SUCCESS) {
-			  		  var resultMessage = null;
-			      	  if (status == EnmPlaceStatus.DEACTIVE) {
-			      		resultMessage = 'Your place definition is deactivated successfully!';
-			      	  } else if (status == EnmPlaceStatus.ACTIVE) {
-			      		resultMessage = 'Your place definition is activated successfully!';
-			      	  } else if (status == EnmPlaceStatus.DELETED) {
-			      		resultMessage = 'Your place definition is deleted successfully!';
-			      	  }
-			  			$.prompt(resultMessage);
-			  			location.reload();
+				  		  var resultMessage = null;
+				      	  if (status == EnmPlaceStatus.DEACTIVE) {
+				      		resultMessage = 'Your place definition is deactivated successfully!';
+				      	  } else if (status == EnmPlaceStatus.ACTIVE) {
+				      		resultMessage = 'Your place definition is activated successfully!';
+				      	  } else if (status == EnmPlaceStatus.DELETED) {
+				      		resultMessage = 'Your place definition is deleted successfully!';
+				      	  }
+				      	  DialogUtil.success(resultMessage, function() {
+				      		self.initialize();
+				      		  //reloadPage();
+				      	  });
 			  		} else {
-			  			$.prompt(operationResult.resultDesc);
+			  			 DialogUtil.error(resultMessage);
 			  		}
 	    		},
 				function(errResponse){
@@ -50,14 +52,7 @@ App.controller('listingsCtrl', ['$scope', '$controller', 'placeService', 'common
 				}
 	    	  );
   		};
-    	  
-    	  $.confirm(
-    			    "Confirm",
-    			    message,
-    			    "Yes",
-    			    "No",
-    			    callBack
-    			);
+    	DialogUtil.confirm(message, callBack);
       };
       
       self.generatePlacePhotoUrl = function(placeId, photoId, size) {

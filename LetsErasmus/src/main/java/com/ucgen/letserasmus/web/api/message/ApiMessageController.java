@@ -226,12 +226,10 @@ public class ApiMessageController extends BaseApiController {
 									newUiMessage.setMessageText("Booking request declined");
 								} else if (currentLog.getOperationId().equals(EnmTransaction.RESERVATION_RECALL.getId())) {
 									newUiMessage.setMessageText("Booking request recalled");
-								} else if (currentLog.getOperationId().equals(EnmTransaction.RESERVATION_CANCEL.getId())) {
-									if (currentLog.getUserId().equals(reservation.getClientUserId())) {
-										newUiMessage.setMessageText("Booking request cancelled by client");
-									} else {
-										newUiMessage.setMessageText("Booking request cancelled by host");
-									}
+								} else if (currentLog.getOperationId().equals(EnmTransaction.RESERVATION_CLIENT_CANCELLED.getId())) {
+									newUiMessage.setMessageText("Booking request cancelled by client");
+								} else if (currentLog.getOperationId().equals(EnmTransaction.RESERVATION_HOST_CANCELLED.getId())) {
+									newUiMessage.setMessageText("Booking request cancelled by host");
 								}
 								newUiMessage.setCreatedDate(currentLog.getOperationDate());
 								logListIndex += 1;
@@ -253,6 +251,7 @@ public class ApiMessageController extends BaseApiController {
 												
 						uiMessageThread.setCurrencyId(reservation.getCurrencyId());
 						uiMessageThread.setEntityPrice(reservation.getPlacePrice());
+						
 						if (isHost) {
 							uiMessageThread.setServiceFee(reservation.getCommissionFee().multiply(new BigDecimal(-1)));
 						} else {
@@ -417,7 +416,7 @@ public class ApiMessageController extends BaseApiController {
 				uiPlace.setCoverPhotoUrl(coverPhotoUrl);
 				reservation.setPlace(uiPlace);
 				newUiMessageThread.setReservation(reservation);
-				newUiMessageThread.setReservationPriceText(NumberUtil.format(reservation.getPlacePrice(), ',', '.', 2));
+				newUiMessageThread.setReservationPriceText(NumberUtil.format(reservation.getPlacePrice(), ",", ".", 2));
 			}
 		}
 				

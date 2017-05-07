@@ -60,4 +60,20 @@
 		<welcome-file>/pages/Main.xhtml</welcome-file>
 	</welcome-file-list>
 
+	<!--
+	<error-page>
+        <location>/general-error.html</location>
+    </error-page>
+	-->
+	
+	<error-page>
+    	<error-code>404</error-code>
+	    <location>/pages/Notfound.xhtml</location>
+	</error-page>
+	
+	<error-page>
+    	<error-code>500</error-code>
+	    <location>/pages/Notfound.xhtml</location>
+	</error-page>
+	
 </web-app>

@@ -285,7 +285,7 @@ App.controller('placeDetailCtrl', ['$scope', '$controller', 'placeService', 'res
 					 }
 				 });
 		 } else {
-			 DialogUtil.warn('Warning', '\'Guest number\', \'Check In\' and \'Check Out\' are mandatory parameters for booking.');
+			 DialogUtil.warn( '\'Guest number\', \'Check In\' and \'Check Out\' are mandatory parameters for booking.');
 		 }
 	 };
 	 
@@ -412,11 +412,12 @@ App.controller('placeDetailCtrl', ['$scope', '$controller', 'placeService', 'res
 				 };
 				 
 				 reservationService.createInquiry(reservation, function() {
-					 DialogUtil.info('Success', 'Your message has been successfully sent to host!', 'OK');
-					 location.reload();
+					 DialogUtil.success( 'Your message has been successfully sent to host!', function() {
+						 reloadPage()
+					 });
 				 });
 		 } else {
-			 DialogUtil.warn('Warning', 'Please fill mandatory parameters!', 'OK');
+			 DialogUtil.warn( 'Please fill mandatory parameters!');
 		 } 
      };
      

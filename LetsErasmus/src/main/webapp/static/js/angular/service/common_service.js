@@ -26,15 +26,11 @@ App.factory('commonService', ['$http', '$q', function($http, $q){
 					}
 				};
 				return $http.get(webApplicationUrlPrefix + '/api/simpleobject/listcountry', config).then(function(response) {
-						var result = isResultSuccess(response.data, true);
-						if (callBack) {
+						var result = isResultSuccess(response.data, true, function() {
 							callBack(response.data.objectList);
-						}
+						}, false);
 					}, function(errResponse) {
-						DialogUtil.error('Error', errResponse, 'OK');
-						if (callBack) {
-							callBack(false);
-						}
+						DialogUtil.error(errResponse);
 					});
 			},
 			
@@ -51,15 +47,11 @@ App.factory('commonService', ['$http', '$q', function($http, $q){
 				};
 				return $http.get(webApplicationUrlPrefix + '/api/simpleobject/listquestiongroup', config).then(function(response) {
 						NProgress.done(true);
-						var result = isResultSuccess(response.data, true);
-						if (result && callBack) {
+						var result = isResultSuccess(response.data, true, function() {
 							callBack(response.data.objectList);
-						}
+						}, false);
 					}, function(errResponse) {
-						DialogUtil.error('Error', errResponse, 'OK');
-						if (callBack) {
-							callBack(false);
-						}
+						DialogUtil.error(errResponse);
 					});
 			},
 			
@@ -78,15 +70,11 @@ App.factory('commonService', ['$http', '$q', function($http, $q){
 				};
 				return $http.get(webApplicationUrlPrefix + '/api/simpleobject/listquestion', config).then(function(response) {
 						NProgress.done(true);
-						var result = isResultSuccess(response.data, true);
-						if (result && callBack) {
+						var result = isResultSuccess(response.data, true, function() {
 							callBack(response.data.objectList);
-						}
+						}, false);
 					}, function(errResponse) {
-						DialogUtil.error('Error', errResponse, 'OK');
-						if (callBack) {
-							callBack(false);
-						}
+						DialogUtil.error(errResponse);
 					});
 			},
 			
@@ -111,12 +99,11 @@ App.factory('commonService', ['$http', '$q', function($http, $q){
 					
 					return $http.get(webApplicationUrlPrefix + '/api/' + objectType + '/gettokenobject', config).then(function(response) {
 							NProgress.done(true);
-							var result = isResultSuccess(response.data, true);
-							if (result && callBack) {
+							var result = isResultSuccess(response.data, true, function() {
 								callBack(response.data.resultValue);
-							}
+							}, false);
 						}, function(errResponse) {
-							DialogUtil.error('Error', errResponse, 'OK');
+							DialogUtil.error(errResponse);
 						});
 				}
 	};

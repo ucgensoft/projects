@@ -34,15 +34,15 @@ App.controller('reservationListCtrl', ['$scope', '$controller', 'reservationServ
   	self.acceptReservation = function() {
   		var messageText = StringUtil.trim($('#txtNewMessage').val());
   		if (messageText != '' && $('#chbTerms').val()) {
-  			DialogUtil.confirm('Confirm', 'Reservation request will be accepted, dou you want to continue?', function(response) {
+  			DialogUtil.confirm('Reservation request will be accepted, dou you want to continue?', function(response) {
   	  			if (response) {
   	  				var reservationId = activeReservationId;
   	  		  		var status = EnmReservationStatus.CONFIRMED;
   	  		  		reservationService.updateReservation(reservationId, messageText, status,
   	  					  function(isSuccess) {
   	  						  if (isSuccess) {
-  	  							  DialogUtil.info('Sucess', 'Congratulations! Reservation request is accepted.', 'OK', function() {
-  	  								  location.reload();
+  	  							  DialogUtil.success('Congratulations! Reservation request is accepted.', function() {
+  	  								  reloadPage();
   	  							  });
   	  						  }
   	  			  		  }
@@ -50,7 +50,7 @@ App.controller('reservationListCtrl', ['$scope', '$controller', 'reservationServ
   	  			}
   	  		});
   		} else {
-  			DialogUtil.warn('Warning', 'Please type a message to guest and confirm that you have read the terms.', 'OK');
+  			DialogUtil.warn( 'Please type a message to guest and confirm that you have read the terms.');
   		}
   	};
   	
@@ -71,15 +71,15 @@ App.controller('reservationListCtrl', ['$scope', '$controller', 'reservationServ
   	self.cancelReservation = function() {
   		var messageText = StringUtil.trim($('#txtNewMessage').val());
   		if (messageText != '') {
-  			DialogUtil.confirm('Confirm', 'Reservation request will be cancelled, dou you want to continue?', function(response) {
+  			DialogUtil.confirm('Reservation request will be cancelled, dou you want to continue?', function(response) {
   	  			if (response) {
   	  				var reservationId = activeReservationId;
   	  		  		var status = EnmReservationStatus.HOST_CANCELLED;
   	  		  		reservationService.updateReservation(reservationId, messageText, status,
   	  					  function(isSuccess) {
   	  						  if (isSuccess) {
-  	  							  DialogUtil.info('Sucess', 'Reservation request is cancelled.', 'OK', function() {
-  	  								  location.reload();
+  	  							  DialogUtil.success('Reservation request is cancelled.', function() {
+  	  								  reloadPage();
   	  							  });
   	  						  }
   	  			  		  }
@@ -87,22 +87,22 @@ App.controller('reservationListCtrl', ['$scope', '$controller', 'reservationServ
   	  			}
   	  		});
   		} else {
-  			DialogUtil.warn('Warning', 'Please type a message to guest.', 'OK');
+  			DialogUtil.warn( 'Please type a message to guest.');
   		}
   	};
   	
   	self.declineReservation = function() {
   		var messageText = StringUtil.trim($('#txtNewMessage').val());
   		if (messageText != '') {
-  			DialogUtil.confirm('Confirm', 'Reservation request will be declined, dou you want to continue?', function(response) {
+  			DialogUtil.confirm('Reservation request will be declined, dou you want to continue?', function(response) {
   	  			if (response) {
   	  				var reservationId = activeReservationId;
   	  		  		var status = EnmReservationStatus.DECLINED;
   	  		  		reservationService.updateReservation(reservationId, messageText, status,
   	  					  function(isSuccess) {
   	  						  if (isSuccess) {
-  	  							  DialogUtil.info('Sucess', 'Reservation request is declined.', 'OK', function() {
-  	  								  location.reload();
+  	  							  DialogUtil.success('Reservation request is declined.', function() {
+  	  								  reloadPage();
   	  							  });
   	  						  }
   	  			  		  }
@@ -110,7 +110,7 @@ App.controller('reservationListCtrl', ['$scope', '$controller', 'reservationServ
   	  			}
   	  		});
   		} else {
-  			DialogUtil.warn('Warning', 'Please type a message to guest.', 'OK');
+  			DialogUtil.warn( 'Please type a message to guest.');
   		}
   	};
   	
@@ -167,14 +167,14 @@ App.controller('reservationListCtrl', ['$scope', '$controller', 'reservationServ
 	  		reviewService.createReview(review,
 				  function(isSuccess) {
 					  if (isSuccess) {
-						  DialogUtil.info('Sucess', 'Your review is sent succesfully.', 'OK', function() {
-							  location.reload();
+						  DialogUtil.success('Your review is sent succesfully.', function() {
+							  reloadPage();
 						  });
 					  }
 		  		  }
 		  	  );
   		} else {
-  			DialogUtil.warn('Warning', 'Please type description and choose a rank!', 'OK');
+  			DialogUtil.warn( 'Please type description and choose a rank!');
   		}
   	};
   	

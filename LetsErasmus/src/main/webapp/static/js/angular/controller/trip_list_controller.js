@@ -41,15 +41,15 @@ App.controller('tripListCtrl', ['$scope', '$controller', 'reservationService', '
   	self.cancelReservation = function() {
   		var messageText = StringUtil.trim($('#txtNewMessage').val());
   		if (messageText != '') {
-  			DialogUtil.confirm('Confirm', 'Reservation request will be cancelled, dou you want to continue?', function(response) {
+  			DialogUtil.confirm('Reservation request will be cancelled, dou you want to continue?', function(response) {
   	  			if (response) {
   	  				var reservationId = activeReservationId;
   	  		  		var status = EnmReservationStatus.CLIENT_CANCELLED;
   	  		  		reservationService.updateReservation(reservationId, messageText, status,
   	  					  function(isSuccess) {
   	  						  if (isSuccess) {
-  	  							  DialogUtil.info('Sucess', 'Reservation request is cancelled.', 'OK', function() {
-  	  								  location.reload();
+  	  							  DialogUtil.success('Reservation request is cancelled.', function() {
+  	  								  reloadPage();
   	  							  });
   	  						  }
   	  			  		  }
@@ -57,7 +57,7 @@ App.controller('tripListCtrl', ['$scope', '$controller', 'reservationService', '
   	  			}
   	  		});
   		} else {
-  			DialogUtil.warn('Warning', 'Please type a message to guest.', 'OK');
+  			DialogUtil.warn( 'Please type a message to guest.');
   		}
   	};
   	
@@ -71,15 +71,15 @@ App.controller('tripListCtrl', ['$scope', '$controller', 'reservationService', '
   	self.recallReservation = function() {
   		var messageText = StringUtil.trim($('#txtNewMessage').val());
   		if (messageText != '') {
-  			DialogUtil.confirm('Confirm', 'Reservation request will be recalled, dou you want to continue?', function(response) {
+  			DialogUtil.confirm('Reservation request will be recalled, dou you want to continue?', function(response) {
   	  			if (response) {
   	  				var reservationId = activeReservationId;
   	  		  		var status = EnmReservationStatus.RECALLED;
   	  		  		reservationService.updateReservation(reservationId, messageText, status,
   	  					  function(isSuccess) {
   	  						  if (isSuccess) {
-  	  							  DialogUtil.info('Sucess', 'Reservation request is recalled.', 'OK', function() {
-  	  								  location.reload();
+  	  							  DialogUtil.success('Reservation request is recalled.', function() {
+  	  								  reloadPage();
   	  							  });
   	  						  }
   	  			  		  }
@@ -87,7 +87,7 @@ App.controller('tripListCtrl', ['$scope', '$controller', 'reservationService', '
   	  			}
   	  		});
   		} else {
-  			DialogUtil.warn('Warning', 'Please type a message to guest.', 'OK');
+  			DialogUtil.warn( 'Please type a message to guest.');
   		}
   	};
   	
@@ -138,14 +138,14 @@ App.controller('tripListCtrl', ['$scope', '$controller', 'reservationService', '
 	  		reviewService.createReview(review,
 				  function(isSuccess) {
 					  if (isSuccess) {
-						  DialogUtil.info('Sucess', 'Your review is sent succesfully.', 'OK', function() {
-							  location.reload();
+						  DialogUtil.success('Your review is sent succesfully.', function() {
+							  reloadPage();
 						  });
 					  }
 		  		  }
 		  	  );
   		} else {
-  			DialogUtil.warn('Warning', 'Please type description and choose a rank!', 'OK');
+  			DialogUtil.warn( 'Please type description and choose a rank!');
   		}
   	};
   	

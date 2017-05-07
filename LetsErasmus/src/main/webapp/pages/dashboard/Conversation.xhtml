@@ -42,7 +42,7 @@
 														<span> Respond within
 															<span>
 																<span class="countdown hasCountdown">
-																	<span class="countdown_row countdown_amount">00:00:00</span>
+																	<span id="spanRemainingTime" class="countdown_row countdown_amount"></span>
 																</span>
 															</span>
 														to maintain your response rate.
@@ -63,23 +63,6 @@
 													<button type="button" class="btn btn-block"
 														ng-click="ctrl.openDeclineReservationWindow()">
 														<span>Decline</span>
-													</button>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div ng-if="ctrl.showBookingBox()" class="space-6">
-								<div class="panel action-status contextual-padding">
-									<div class="panel-body">
-										<div>
-											<div class="row row-condensed space-top-3">
-												<div class="col-lg-4 space-sm-2 space-md-2">
-													<button type="button"
-														class="btn btn-block btn-primary contextual-primary-btn"
-														ng-click="ctrl.sendBookingRequest()">
-														<span>Send Booking Request</span>
 													</button>
 												</div>
 											</div>

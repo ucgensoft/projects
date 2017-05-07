@@ -4,7 +4,7 @@ public interface AppConstants {
 
 	String USER_NOT_LOGGED_IN = "You are not logged in or session is expired. Please login first.";
 	
-	String MISSING_MANDATORY_PARAM = "Request could not be completed because of missing mandatory parameters";
+	String MISSING_MANDATORY_PARAM = "Request could not be completed because of missing or invalid parameters";
 	
 	String UNAUTHORIZED_OPERATION = "You are not authorized for this operation!";
 	

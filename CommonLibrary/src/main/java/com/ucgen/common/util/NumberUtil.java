@@ -11,8 +11,8 @@ import org.apache.commons.lang3.StringUtils;
 
 public class NumberUtil {
 
-	public static char DEFAULT_GROUP_SEPERATOR = '.';
-	public static char DEFAULT_DECIMAL_SEPERATOR = ',';
+	public static String DEFAULT_GROUP_SEPERATOR = ".";
+	public static String DEFAULT_DECIMAL_SEPERATOR = ",";
 
 	public static boolean isInteger(String value) {
 		if (value != null && !value.isEmpty()) {
@@ -30,12 +30,12 @@ public class NumberUtil {
 		}
 	}
 
-	public static String format(BigDecimal value, char groupSeperator,
-			char decimalSeperator, int decimalDigit) {
+	public static String format(BigDecimal value, String groupSeperator,
+			String decimalSeperator, int decimalDigit) {
 		DecimalFormatSymbols decimalFormatSymbols = DecimalFormatSymbols
 				.getInstance();
-		decimalFormatSymbols.setDecimalSeparator(decimalSeperator);
-		decimalFormatSymbols.setGroupingSeparator(groupSeperator);
+		decimalFormatSymbols.setDecimalSeparator(decimalSeperator.charAt(0));
+		decimalFormatSymbols.setGroupingSeparator(groupSeperator.charAt(0));
 
 		DecimalFormat decimalFormat = (DecimalFormat) DecimalFormat
 				.getInstance(Locale.ENGLISH);
@@ -54,12 +54,12 @@ public class NumberUtil {
 
 class NumberToText {
 
-	public static final String[] birler = { "", "BÄ°R", "IKI", "ÃœÃ‡", "DÃ–RT",
-			"BEÅž", "ALTI", "YEDÄ°", "SEKÄ°Z", "DOKUZ" };
-	public static final String[] onlar = { "", "ON", "YÄ°RMÄ°", "OTUZ", "KIRK",
-			"ELLÄ°", "ALTMIÅž", "YETMÄ°Åž", "SEKSEN", "DOKSAN" };
-	public static final String[] gruplar = { "", "BÄ°N", "MÄ°LYON", "MÄ°LYAR",
-			"TRÄ°LYON", "KATRÄ°LYON" };
+	public static final String[] birler = { "", "Bir", "IKI", "ÜÇ‡", "DÖRT",
+			"BEÞ", "ALTI", "YEDÝ°", "SEKÝZ", "DOKUZ" };
+	public static final String[] onlar = { "", "ON", "YÝRMÝ", "OTUZ", "KIRK",
+			"ELLÝ", "ALTMIÞ", "YETMÝÞ", "SEKSEN", "DOKSAN" };
+	public static final String[] gruplar = { "", "BÝN", "MÝLYON", "MÝLYAR",
+			"TRÝLYON", "KATRÝLYON" };
 
 	public static String convertCurreny(BigDecimal number,
 			String exactPartString, String decimalPartString) {

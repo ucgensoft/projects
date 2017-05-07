@@ -27,7 +27,7 @@ App.controller('trustAndverificationCtrl', ['$scope', 'userService', 'commonServ
   	self.removeMsisdn = function() {
   		userService.removeMsisdn(function(isSuccess) {
 					if (isSuccess) {
-						location.reload();
+						reloadPage();
 					}
 				}
 		  );
@@ -39,7 +39,7 @@ App.controller('trustAndverificationCtrl', ['$scope', 'userService', 'commonServ
   			var prefix = $('#divCountryPrefix')[0].innerText;
   	  		var msisdn = $('#txtMsisdn').val();
 	  	  	if (prefix == null || prefix == '' || StringUtil.trim(msisdn) == '') {
-	  			DialogUtil.warn('Warning', 'Select a country and type your phone number please!', 'OK', null);
+	  			DialogUtil.warn( 'Select a country and type your phone number please!', null);
 	  			return;
 	  		} else {
 	  			phoneNumber = prefix + msisdn;
@@ -73,12 +73,12 @@ App.controller('trustAndverificationCtrl', ['$scope', 'userService', 'commonServ
   			userService.verifyMsisdnCode(code,
   					function(isSuccess) {
   						if (isSuccess) {
-  							location.reload();
+  							reloadPage();
   						}
   					}
   			  );
   		} else {
-  			DialogUtil.warn('Warning', 'Please type the verification code!', 'OK', null);
+  			DialogUtil.warn( 'Please type the verification code!', null);
   		}
   	};
   	
@@ -103,12 +103,12 @@ App.controller('trustAndverificationCtrl', ['$scope', 'userService', 'commonServ
   				userService.connectGoogleAccount(user,
   	  					function(isSuccess) {
   	  						if (isSuccess) {
-  	  							location.reload();
+  	  							reloadPage();
   	  						}
   	  					}
   	  			  );
   			} else {
-  				DialogUtil.warn('Warning', 'Google email and ID are mandatory!');
+  				DialogUtil.warn( 'Google email and ID are mandatory!');
   			}
   		}
   	};
@@ -117,7 +117,7 @@ App.controller('trustAndverificationCtrl', ['$scope', 'userService', 'commonServ
   		userService.disconnectGoogleAccount(
 				function(isSuccess) {
 					if (isSuccess) {
-						location.reload();
+						reloadPage();
 					}
 				}
 		  );
@@ -162,7 +162,7 @@ App.controller('trustAndverificationCtrl', ['$scope', 'userService', 'commonServ
 		        	userService.connectFacebookAccount(
 		    				function(isSuccess) {
 		    					if (isSuccess) {
-		    						location.reload();
+		    						reloadPage();
 		    					}
 		    				}
 		    		  );
@@ -177,7 +177,7 @@ App.controller('trustAndverificationCtrl', ['$scope', 'userService', 'commonServ
   		userService.disconnectFacebookAccount(
 				function(isSuccess) {
 					if (isSuccess) {
-						location.reload();
+						reloadPage();
 					}
 				}
 		  );

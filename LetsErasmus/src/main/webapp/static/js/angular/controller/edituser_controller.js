@@ -131,10 +131,10 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
   		
   		if (StringUtil.trim(password) != '' && password != defaultPasswordText) {
   			if (passwordConfirm == '') {
-	  				DialogUtil.warn('Warning', 'Please confirm your password!', 'OK', null);
+	  				DialogUtil.warn( 'Please confirm your password!', null);
 	  				return;
 	  			} else if (password != passwordConfirm) {
-	  				DialogUtil.warn('Warning', 'Two passwords do not match!', 'OK', null);
+	  				DialogUtil.warn( 'Two passwords do not match!', null);
 	  				return;
 	  			}	
   		} else {
@@ -142,7 +142,7 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
   		}
   		
   		if (userFirstName == '' || userLastName == '' || email == '') {
-  			DialogUtil.warn('Warning', 'Please fill mandatory fields!', 'OK');
+  			DialogUtil.warn( 'Please fill mandatory fields!');
   		} else {
   			var user = {
   				firstName : userFirstName,
@@ -172,8 +172,8 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
   			userService.updateUser(user, (self.photo != null ? self.photo : newUserPhoto),
 					function(isSuccess) {
 						if (isSuccess) {
-							DialogUtil.info('Success', 'Your profile is updated successfully!', 'OK', function() {
-								location.reload();
+							DialogUtil.success( 'Your profile is updated successfully!', function() {
+								reloadPage();
 							});
 						}
 					}
@@ -195,12 +195,14 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
   	};
   	
   	self.removeMsisdn = function() {
-  		userService.removeMsisdn(function(isSuccess) {
+  		DialogUtil.confirm('Your verified phone number will be deleted. Do you want to continue?', function() {
+  			userService.removeMsisdn(function(isSuccess) {
 					if (isSuccess) {
-						location.reload();
+						reloadPage();
 					}
-				}
-		  );
+  				}
+  			);
+  		});
   	};
   	
   	self.sendMsisdnVerificationCode = function() {
@@ -211,7 +213,7 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
   			var prefix = $('#divCountryPrefix')[0].innerText;
   	  		var msisdn = $('#txtMsisdn').val();
 	  	  	if (prefix == null || prefix == '' || StringUtil.trim(msisdn) == '') {
-	  			DialogUtil.warn('Warning', 'Select a country and type your phone number please!', 'OK', null);
+	  			DialogUtil.warn( 'Select a country and type your phone number please!', null);
 	  			return;
 	  		}
   		}
@@ -234,12 +236,14 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
   			userService.verifyMsisdnCode(code,
   					function(isSuccess) {
   						if (isSuccess) {
-  							location.reload();
+  							DialogUtil.success('Your phone number is verified successfully!', function() {
+  								reloadPage();
+  							});
   						}
   					}
   			  );
   		} else {
-  			DialogUtil.warn('Warning', 'Please type the verification code!', 'OK', null);
+  			DialogUtil.warn( 'Please type the verification code!', null);
   		}
   	};
   	
@@ -259,11 +263,11 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
   	};
   	
   	self.deactivateUser = function() {
-  		DialogUtil.confirm('Confirm', 'Your profile will be deactivated and you will be logged out. Do you wish to proceed?', function(response) {
+  		DialogUtil.confirm('Your profile will be deactivated and you will be logged out. Do you wish to proceed?', function(response) {
 	  			if (response) {
 	  		  		userService.deactivateUser(function(isSuccess) {
 	  						  if (isSuccess) {
-	  							  DialogUtil.info('Sucess', 'Your profile is deactivated!', 'OK', function() {
+	  							  DialogUtil.success('Your profile is deactivated!', function() {
 	  								openWindow(webApplicationUrlPrefix + "/pages/Main.xhtml", true);
 	  							  });
 	  						  }

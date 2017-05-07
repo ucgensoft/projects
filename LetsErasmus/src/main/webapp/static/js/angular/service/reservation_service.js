@@ -14,15 +14,11 @@ App.factory('reservationService', ['$http', '$q', function($http, $q){
 			NProgress.start(3000, 5);
 			return $http.post(webApplicationUrlPrefix + '/api/reservation/start', reservation, config).then(function(response) {
 				NProgress.done(true);
-				var result = isResultSuccess(response.data, true);
-				if (callBack) {
+				var result = isResultSuccess(response.data, true, function() {
 					callBack(response.data.resultValue);
-				}
+				}, false);
 			}, function(errResponse) {
-				DialogUtil.error('Error', errResponse, 'OK');
-				if (callBack) {
-					callBack(false);
-				}
+				DialogUtil.error(errResponse);
 			});
 		},
 		
@@ -36,15 +32,11 @@ App.factory('reservationService', ['$http', '$q', function($http, $q){
 			NProgress.start(3000, 5);
 			return $http.post(webApplicationUrlPrefix + '/api/reservation/finish', reservation, config).then(function(response) {
 				NProgress.done(true);
-				var result = isResultSuccess(response.data, true);
-				if (callBack) {
-					callBack(result);
-				}
+				var result = isResultSuccess(response.data, true, function() {
+					callBack(true);
+				}, false);
 			}, function(errResponse) {
-				DialogUtil.error('Error', errResponse, 'OK');
-				if (callBack) {
-					callBack(false);
-				}
+				DialogUtil.error(errResponse);
 			});
 		},
 		
@@ -58,15 +50,11 @@ App.factory('reservationService', ['$http', '$q', function($http, $q){
 			NProgress.start(3000, 5);
 			return $http.post(webApplicationUrlPrefix + '/api/reservation/createinquiry', reservation, config).then(function(response) {
 				NProgress.done(true);
-				var result = isResultSuccess(response.data, true);
-				if (result && callBack) {
+				var result = isResultSuccess(response.data, true, function() {
 					callBack();
-				}
+				}, false);
 			}, function(errResponse) {
-				DialogUtil.error('Error', errResponse, 'OK');
-				if (callBack) {
-					callBack(false);
-				}
+				DialogUtil.error(errResponse);
 			});
 		},
 		
@@ -86,15 +74,11 @@ App.factory('reservationService', ['$http', '$q', function($http, $q){
 			NProgress.start(3000, 5);
 			return $http.post(webApplicationUrlPrefix + '/api/reservation/update', reservation, config).then(function(response) {
 				NProgress.done(true);
-				var result = isResultSuccess(response.data, true);
-				if (callBack) {
-					callBack(result);
-				}
+				var result = isResultSuccess(response.data, true, function() {
+					callBack(true);
+				}, false);
 			}, function(errResponse) {
-				DialogUtil.error('Error', errResponse, 'OK');
-				if (callBack) {
-					callBack(false);
-				}
+				DialogUtil.error(errResponse);
 			});
 		},
 		
@@ -113,12 +97,11 @@ App.factory('reservationService', ['$http', '$q', function($http, $q){
 			NProgress.start(3000, 5);
 			return $http.get(webApplicationUrlPrefix + '/api/reservation/list', config).then(function(response) {
 				NProgress.done(true);
-				var result = isResultSuccess(response.data, true);
-				if (result && callBack) {
+				var result = isResultSuccess(response.data, true, function() {
 					callBack(response.data.resultValue);
-				}
+				}, false);
 			}, function(errResponse) {
-				DialogUtil.error('Error', errResponse, 'OK');
+				DialogUtil.error(errResponse);
 			});
 		},
 		
@@ -137,12 +120,11 @@ App.factory('reservationService', ['$http', '$q', function($http, $q){
 			NProgress.start(3000, 5);
 			return $http.get(webApplicationUrlPrefix + '/api/reservation/listtrips', config).then(function(response) {
 				NProgress.done(true);
-				var result = isResultSuccess(response.data, true);
-				if (result && callBack) {
+				var result = isResultSuccess(response.data, true, function() {
 					callBack(response.data.resultValue);
-				}
+				}, false);
 			}, function(errResponse) {
-				DialogUtil.error('Error', errResponse, 'OK');
+				DialogUtil.error(errResponse);
 			});
 		}
 	}

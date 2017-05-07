@@ -34,7 +34,7 @@ App.controller('wishListCtrl', ['$scope', '$controller', 'favoriteService',
   	self.removeFavorite = function(entityType, placeId) {
   		removeFavorite(entityType, placeId, function(result) {
  			 if (result) {
- 				 location.reload();
+ 				 reloadPage();
  			 } 
  		  });
     };

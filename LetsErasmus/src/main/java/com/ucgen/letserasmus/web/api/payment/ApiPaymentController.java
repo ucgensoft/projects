@@ -213,6 +213,7 @@ public class ApiPaymentController extends BaseApiController {
 						&& EnmVendorEntityType.getEntityType(uiPayoutMethod.getVendorEntityType()) != null
 						&& uiPayoutMethod.getVendorLastName() != null && !uiPayoutMethod.getVendorLastName().trim().isEmpty()
 						&& uiPayoutMethod.getVendorFirstName() != null && !uiPayoutMethod.getVendorFirstName().trim().isEmpty()
+						&& uiPayoutMethod.getVendorBirthDate() != null
 						&& uiPayoutMethod.getVendorCountry() != null && !uiPayoutMethod.getVendorCountry().trim().isEmpty()
 						&& uiPayoutMethod.getVendorCity() != null && !uiPayoutMethod.getVendorCity().trim().isEmpty()
 						&& uiPayoutMethod.getVendorZip() != null && !uiPayoutMethod.getVendorZip().trim().isEmpty()
@@ -225,11 +226,14 @@ public class ApiPaymentController extends BaseApiController {
 						payoutMethod.setVendorEmail(user.getEmail());
 						payoutMethod.setVendorFirstName(uiPayoutMethod.getVendorFirstName());
 						payoutMethod.setVendorLastName(uiPayoutMethod.getVendorLastName());
+						payoutMethod.setVendorBirthDate(uiPayoutMethod.getVendorBirthDate());
 						payoutMethod.setVendorCountry(uiPayoutMethod.getVendorCountry());
 						payoutMethod.setVendorCity(uiPayoutMethod.getVendorCity());
 						payoutMethod.setVendorZip(uiPayoutMethod.getVendorZip());
 						payoutMethod.setVendorAddress(uiPayoutMethod.getVendorAddress());
-						payoutMethod.setVendorAddress2(uiPayoutMethod.getVendorAddress2());
+						if (uiPayoutMethod.getVendorAddress2() != null && !uiPayoutMethod.getVendorAddress2().trim().isEmpty()) {
+							payoutMethod.setVendorAddress2(uiPayoutMethod.getVendorAddress2());
+						}
 						
 						payoutMethod.setCreatedBy(user.getFullName());
 						payoutMethod.setCreatedDate(new Date());

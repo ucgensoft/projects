@@ -36,6 +36,8 @@ public class ReservationRowMapper extends BaseRowMapper<Reservation> {
 	public static final String COL_TRANSACTION_ID = "TRANSACTION_ID";
 	public static final String COL_PAYMENT_TRANSACTION_ID = "PAYMENT_TRANSACTION_ID";
 	public static final String COL_PAYMENT_STATUS = "PAYMENT_STATUS";
+	public static final String COL_EXPIRE_DATE = "EXPIRE_DATE";
+	
 	
 	public static final String FKEY_PLACE = "PLACE";
 	public static final String FKEY_USER_HOST = "USER_HOST";
@@ -100,6 +102,7 @@ public class ReservationRowMapper extends BaseRowMapper<Reservation> {
 		reservation.setTransactionId(super.getString(rs, COL_TRANSACTION_ID));
 		reservation.setPaymentTransactionId(super.getString(rs, COL_PAYMENT_TRANSACTION_ID));
 		reservation.setPaymentStatus(super.getInteger(rs, COL_PAYMENT_STATUS));
+		reservation.setExpireDate(super.getTimestamp(rs, COL_EXPIRE_DATE));
 		
 		reservation.setCreatedBy(super.getString(rs, COL_CREATED_BY));		
 		reservation.setCreatedDate(super.getTimestamp(rs, COL_CREATED_DATE));
@@ -158,6 +161,7 @@ public class ReservationRowMapper extends BaseRowMapper<Reservation> {
 		super.addColumn(COL_TRANSACTION_ID);
 		super.addColumn(COL_PAYMENT_TRANSACTION_ID);
 		super.addColumn(COL_PAYMENT_STATUS);
+		super.addColumn(COL_EXPIRE_DATE);
 	}
 	
 }
