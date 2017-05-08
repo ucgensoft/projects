@@ -1691,6 +1691,16 @@ div.panel-help {
 	}
 }
 
+.cancellation.twentyfour li.full {
+	width: 100%
+}
+
+@media ( max-width :768px) {
+	.cancellation.twentyfour li.full {
+		width: 100%
+	}
+}
+
 .cancellation.moderate li.full {
 	width: 40%
 }
