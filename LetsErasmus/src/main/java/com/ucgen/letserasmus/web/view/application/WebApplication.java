@@ -31,8 +31,8 @@ public class WebApplication extends BaseController {
 
 	private String urlPrefix;
 	
-	private String emailVerificationUrl;
-	private String resetPasswordUrl;
+	//private String emailVerificationUrl;
+	//private String resetPasswordUrl;
 	
 	private String rootUserPhotoPath;
 	private String rootPlacePhotoPath;
@@ -72,8 +72,8 @@ public class WebApplication extends BaseController {
 			
 			urlPrefix = this.parameterService.getParameterValue(EnmParameter.LETSERASMUS_URL_PREFIX.getId());
 			
-			emailVerificationUrl = urlPrefix + "/pages/Main.xhtml?user=#paramUserId#&code=#paramCode#&op=10";
-			resetPasswordUrl = urlPrefix + "/pages/Main.xhtml?user=#paramUserId#&code=#paramCode#&op=12";
+			//emailVerificationUrl = urlPrefix + "/pages/Main.xhtml?user=#paramUserId#&code=#paramCode#&op=10";
+			//resetPasswordUrl = urlPrefix + "/pages/Main.xhtml?user=#paramUserId#&code=#paramCode#&op=12";
 			
 			String placeImageSubUrl = this.parameterService.getParameterValue(EnmParameter.PLACE_IMAGE_SUB_URL.getId());
 			String userImageSubUrl = this.parameterService.getParameterValue(EnmParameter.USER_IMAGE_SUB_URL.getId());
@@ -135,6 +135,7 @@ public class WebApplication extends BaseController {
 		return rootPlaceImageUrl;
 	}
 
+	/*
 	public String getEmailVerificationUrl() {
 		return emailVerificationUrl;
 	}
@@ -146,6 +147,7 @@ public class WebApplication extends BaseController {
 	public String getResetPasswordUrl() {
 		return resetPasswordUrl;
 	}
+	*/
 
 	public String getRootUserPhotoPath() {
 		return this.rootUserPhotoPath;

@@ -114,12 +114,12 @@ public class LogDao extends JdbcDaoSupport implements ILogDao {
 		
 		List<Object> argList = new ArrayList<Object>();
 				
-		if (integrationLog.getRequest() != null && integrationLog.getRequest().length() > 1000) {
-			integrationLog.setRequest(integrationLog.getRequest().substring(0, 1000));
+		if (integrationLog.getRequest() != null && integrationLog.getRequest().length() > 4000) {
+			integrationLog.setRequest(integrationLog.getRequest().substring(0, 4000));
 		}
 		
-		if (integrationLog.getResponse() != null && integrationLog.getResponse().length() > 1000) {
-			integrationLog.setResponse(integrationLog.getResponse().substring(0, 1000));
+		if (integrationLog.getResponse() != null && integrationLog.getResponse().length() > 4000) {
+			integrationLog.setResponse(integrationLog.getResponse().substring(0, 4000));
 		}
 		
 		argList.add(integrationLog.getUserId());

@@ -21,6 +21,7 @@ import com.ucgen.letserasmus.library.log.dao.ILogDao;
 import com.ucgen.letserasmus.library.log.enumeration.EnmExternalSystem;
 import com.ucgen.letserasmus.library.log.enumeration.EnmTransaction;
 import com.ucgen.letserasmus.library.log.model.TransactionLog;
+import com.ucgen.letserasmus.library.mail.service.IMailService;
 import com.ucgen.letserasmus.library.message.dao.IMessageDao;
 import com.ucgen.letserasmus.library.message.model.Message;
 import com.ucgen.letserasmus.library.message.model.MessageThread;
@@ -28,6 +29,9 @@ import com.ucgen.letserasmus.library.payment.enumeration.EnmPaymentStatus;
 import com.ucgen.letserasmus.library.payment.model.PaymentMethod;
 import com.ucgen.letserasmus.library.payment.model.PayoutMethod;
 import com.ucgen.letserasmus.library.payment.service.IPaymentService;
+import com.ucgen.letserasmus.library.place.enumeration.EnmHomeType;
+import com.ucgen.letserasmus.library.place.enumeration.EnmPlaceType;
+import com.ucgen.letserasmus.library.place.model.Place;
 import com.ucgen.letserasmus.library.reservation.dao.IReservationDao;
 import com.ucgen.letserasmus.library.reservation.enumeration.EnmReservationStatus;
 import com.ucgen.letserasmus.library.reservation.model.Reservation;
@@ -35,6 +39,8 @@ import com.ucgen.letserasmus.library.reservation.service.IReservationService;
 import com.ucgen.letserasmus.library.simpleobject.model.CancelPolicyRule;
 import com.ucgen.letserasmus.library.simpleobject.service.ISimpleObjectService;
 import com.ucgen.letserasmus.library.stripe.service.IStripePaymentService;
+import com.ucgen.letserasmus.library.user.model.User;
+import com.ucgen.letserasmus.library.user.service.IUserService;
 
 @Service
 public class ReservationService implements IReservationService {
@@ -46,6 +52,8 @@ public class ReservationService implements IReservationService {
 	private ISimpleObjectService simpleObjectService;
 	private IStripePaymentService stripePaymentService;
 	private IPaymentService paymentService;
+	private IMailService mailService;
+	private IUserService userService;
 	
 	@Autowired
 	public void setReservationDao(IReservationDao reservationDao) {
@@ -81,10 +89,20 @@ public class ReservationService implements IReservationService {
 	public void setPaymentService(IPaymentService paymentService) {
 		this.paymentService = paymentService;
 	}
+	
+	@Autowired
+	public void setMailService(IMailService mailService) {
+		this.mailService = mailService;
+	}
+
+	@Autowired
+	public void setUserService(IUserService userService) {
+		this.userService = userService;
+	}
 
 	@Override
 	@Transactional
-	public OperationResult insert(Long userId, Reservation reservation, PaymentMethod paymentMethod, PayoutMethod payoutMethod) throws OperationResultException {
+	public OperationResult insert(User user, Reservation reservation, PaymentMethod paymentMethod, PayoutMethod payoutMethod) throws OperationResultException {
 		OperationResult operationResult = new OperationResult();
 		if (reservation.getMessageThread() != null) {
 			MessageThread messageThread = reservation.getMessageThread();
@@ -132,7 +150,7 @@ public class ReservationService implements IReservationService {
 					ValueOperationResult<String> sendPaymentResult = null;
 					
 					if (payoutMethod.getExternalSystemId().equals(EnmExternalSystem.BLUESNAP.getId())) {
-						sendPaymentResult = this.extPaymentService.paymentAuth(userId, paymentMethod, payoutMethod, reservation.getCreatedBy());
+						sendPaymentResult = this.extPaymentService.paymentAuth(user.getId(), paymentMethod, payoutMethod, reservation.getCreatedBy());
 					} else if (payoutMethod.getExternalSystemId().equals(EnmExternalSystem.STRIPE.getId())) {
 						sendPaymentResult = this.stripePaymentService.charge(payoutMethod, paymentMethod, reservation.getCreatedBy());
 					}
@@ -142,10 +160,20 @@ public class ReservationService implements IReservationService {
 						reservation.setPaymentTransactionId(paymentTransactionId);
 						reservation.setPaymentStatus(EnmPaymentStatus.AUTH.getId());
 						this.reservationDao.update(reservation);
+						
+						Place place = reservation.getPlace();
+						
+						this.mailService.sendBokingRequestMail(user.getEmail(), place.getUser().getEmail(), place.getTitle(), place.getUrl(), 
+								place.getCoverPhotoUrl(), EnmHomeType.getHomeType(place.getHomeTypeId()).getText(), EnmPlaceType.getPlaceType(place.getPlaceTypeId()).getText(), 
+								reservation.getStartDate(), reservation.getEndDate());
+						
 					} else {
 						sendPaymentResult.setResultDesc("Payment information could not be sent to BlueSnap system. Error:" + OperationResult.getResultDesc(sendPaymentResult));
 						throw new OperationResultException(sendPaymentResult);
 					}
+				} else {
+					User hostUser = this.userService.getUser(new User(reservation.getHostUserId()));
+					this.mailService.sendNewMessageMail(hostUser.getEmail(), reservation.getMessageThread().getThreadTitle(), reservation.getMessageThread().getMessageList().get(0).getMessageText());
 				}
 				
 				operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
@@ -280,5 +308,6 @@ public class ReservationService implements IReservationService {
 			return updateReservationResult;
 		}
 	}
-
+	
+	
 }

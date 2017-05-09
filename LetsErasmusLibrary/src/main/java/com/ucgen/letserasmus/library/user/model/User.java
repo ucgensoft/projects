@@ -12,6 +12,7 @@ import com.ucgen.letserasmus.library.favorite.model.Favorite;
 import com.ucgen.letserasmus.library.file.model.FileModel;
 import com.ucgen.letserasmus.library.payment.model.PayoutMethod;
 import com.ucgen.letserasmus.library.place.model.Place;
+import com.ucgen.letserasmus.library.user.enumeration.EnmLoginType;
 
 public class User extends BaseModel {
 	
@@ -363,5 +364,19 @@ public class User extends BaseModel {
 				this.addComplaint(complaint);
 			}
 		}
+	}
+	
+	public String getLoginEmail() {
+		String tmpEmail = null;
+		if (this.getLoginType() != null) {
+			if (this.loginType.equals(EnmLoginType.LOCAL_ACCOUNT.getId())) {
+				tmpEmail = this.email;
+			} else if (this.loginType.equals(EnmLoginType.GOOGLE.getId())) {
+				tmpEmail = this.googleEmail;
+			} else if (this.loginType.equals(EnmLoginType.GOOGLE.getId())) {
+				tmpEmail = this.facebookEmail;
+			}
+		}
+		return tmpEmail;
 	}
 }

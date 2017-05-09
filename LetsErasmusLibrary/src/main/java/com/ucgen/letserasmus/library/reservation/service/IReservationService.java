@@ -9,10 +9,11 @@ import com.ucgen.letserasmus.library.message.model.Message;
 import com.ucgen.letserasmus.library.payment.model.PaymentMethod;
 import com.ucgen.letserasmus.library.payment.model.PayoutMethod;
 import com.ucgen.letserasmus.library.reservation.model.Reservation;
+import com.ucgen.letserasmus.library.user.model.User;
 
 public interface IReservationService {
 
-	OperationResult insert(Long userId, Reservation reservation, PaymentMethod paymentMethod, PayoutMethod payoutMethod) throws OperationResultException;
+	OperationResult insert(User user, Reservation reservation, PaymentMethod paymentMethod, PayoutMethod payoutMethod) throws OperationResultException;
 	
 	List<Reservation> list(Reservation reservation, boolean placeFlag, boolean hostUserFlag, boolean clientUserFlag);
 	

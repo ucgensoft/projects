@@ -33,7 +33,7 @@ public class MessageService implements IMessageService {
 	}
 	
 	@Override
-	public OperationResult insertMessage(Message message) {
+	public OperationResult insertMessage(Message message, boolean sendInfoMail) {
 		return this.messageDao.insertMessage(message);
 	}
 

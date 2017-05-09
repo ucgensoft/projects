@@ -52,6 +52,7 @@ public class Place extends BaseModel {
 	private List<FileModel> photoList;
 
 	private String coverPhotoUrl;
+	private String url;
 	
 	private List<Review> reviewList;
 	
@@ -277,4 +278,11 @@ public class Place extends BaseModel {
 	public void setCoverPhotoUrl(String coverPhotoUrl) {
 		this.coverPhotoUrl = coverPhotoUrl;
 	}
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
+	
 }

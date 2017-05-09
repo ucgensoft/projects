@@ -40,6 +40,7 @@ import com.ucgen.letserasmus.library.place.model.Place;
 import com.ucgen.letserasmus.library.reservation.model.Reservation;
 import com.ucgen.letserasmus.library.reservation.service.IReservationService;
 import com.ucgen.letserasmus.library.user.model.User;
+import com.ucgen.letserasmus.library.user.service.IUserService;
 import com.ucgen.letserasmus.web.api.BaseApiController;
 import com.ucgen.letserasmus.web.view.application.AppConstants;
 import com.ucgen.letserasmus.web.view.application.WebApplication;
@@ -50,6 +51,7 @@ public class ApiMessageController extends BaseApiController {
 	private IMessageService messageService;
 	private IReservationService reservationService;
 	private ILogService logService;
+	private IUserService userService;
 	
 	private WebApplication webApplication;
 	
@@ -315,8 +317,13 @@ public class ApiMessageController extends BaseApiController {
 							message.setCreatedDate(new Date());
 							message.setCreatedBy(user.getFullName());
 													
-							OperationResult insertMessageResult = this.messageService.insertMessage(message);
+							OperationResult insertMessageResult = this.messageService.insertMessage(message, true);
 							if (OperationResult.isResultSucces(insertMessageResult)) {
+								
+								User receiverUser = this.userService.getUser(new User(message.getReceiverUserId()));
+								
+								this.mailService.sendNewMessageMail(receiverUser.getEmail(), dbMessageThread.getThreadTitle(), message.getMessageText());
+								
 								operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 								
 								UiMessage createdMessage = new UiMessage();

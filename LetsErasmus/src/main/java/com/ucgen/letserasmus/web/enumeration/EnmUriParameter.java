@@ -3,7 +3,8 @@ package com.ucgen.letserasmus.web.enumeration;
 public enum EnmUriParameter {
 
 	OPERATION("op"),
-	OPERATION_TOKEN("opToken");
+	OPERATION_TOKEN("opToken"),
+	PLACE_ID("placeId");
 	
 	String name;
 

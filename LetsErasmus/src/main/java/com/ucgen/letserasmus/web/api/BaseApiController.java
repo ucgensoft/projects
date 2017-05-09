@@ -12,6 +12,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.ucgen.common.util.SecurityUtil;
 import com.ucgen.letserasmus.library.log.enumeration.EnmOperation;
+import com.ucgen.letserasmus.library.mail.service.IMailService;
 import com.ucgen.letserasmus.library.parameter.enumeration.EnmParameter;
 import com.ucgen.letserasmus.library.parameter.service.IParameterService;
 import com.ucgen.letserasmus.library.user.model.User;
@@ -20,12 +21,18 @@ import com.ucgen.letserasmus.web.view.application.EnmSession;
 public abstract class BaseApiController {
 
 	protected IParameterService parameterService;
+	protected IMailService mailService;
 	
 	@Autowired
 	public void setParameterService(IParameterService parameterService) {
 		this.parameterService = parameterService;
 	}
 	
+	@Autowired
+	public void setMailService(IMailService mailService) {
+		this.mailService = mailService;
+	}
+
 	public HttpSession getSession() {
 		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 		return attr.getRequest().getSession();

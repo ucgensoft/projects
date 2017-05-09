@@ -4,11 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -32,11 +29,9 @@ import com.ucgen.common.operationresult.ListOperationResult;
 import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.common.operationresult.ValueOperationResult;
 import com.ucgen.common.util.CommonUtil;
-import com.ucgen.common.util.DateUtil;
 import com.ucgen.common.util.FileLogger;
 import com.ucgen.common.util.FileUtil;
 import com.ucgen.common.util.ImageUtil;
-import com.ucgen.common.util.MailUtil;
 import com.ucgen.common.util.SecurityUtil;
 import com.ucgen.letserasmus.library.common.enumeration.EnmBoolStatus;
 import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
@@ -67,7 +62,6 @@ import com.ucgen.letserasmus.web.view.application.WebApplication;
 @RestController
 public class ApiUserController extends BaseApiController {
 
-	private MailUtil mailUtil;
 	private IUserService userService;
 	private IPlaceService placeService;
 	private WebApplication webApplication;
@@ -98,11 +92,6 @@ public class ApiUserController extends BaseApiController {
 	@Autowired
 	public void setParameterService(IParameterService parameterService) {
 		this.parameterService = parameterService;
-	}
-
-	@Autowired
-	public void setMailUtil(MailUtil mailUtil) {
-		this.mailUtil = mailUtil;
 	}
 
 	@Autowired
@@ -259,7 +248,7 @@ public class ApiUserController extends BaseApiController {
 						if (OperationResult.isResultSucces(createUserResult)) {
 							operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 							this.processLogin(session, newUser, EnmLoginType.LOCAL_ACCOUNT);
-							this.sendWelcomeMail(newUser, EnmLoginType.LOCAL_ACCOUNT);
+							this.mailService.sendEmailVerificationMail(newUser, newUser.getEmail());
 						} else {
 							operationResult = createUserResult;
 						}
@@ -344,7 +333,7 @@ public class ApiUserController extends BaseApiController {
 						if (OperationResult.isResultSucces(createUserResult)) {
 							operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 							this.processLogin(session, newUser, EnmLoginType.GOOGLE);
-							this.sendWelcomeMail(newUser, EnmLoginType.GOOGLE);
+							this.mailService.sendEmailVerificationMail(newUser, newUser.getGoogleEmail());
 						} else {
 							operationResult = createUserResult;
 						}
@@ -441,7 +430,7 @@ public class ApiUserController extends BaseApiController {
 						if (OperationResult.isResultSucces(createUserResult)) {
 							operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 							this.processLogin(session, newUser, EnmLoginType.FACEBOOK);
-							this.sendWelcomeMail(newUser, EnmLoginType.FACEBOOK);
+							this.mailService.sendEmailVerificationMail(newUser, newUser.getFacebookEmail());
 						} else {
 							operationResult = createUserResult;
 						}
@@ -586,7 +575,7 @@ public class ApiUserController extends BaseApiController {
 							user = this.userService.getUser(user);
 							this.processLogin(session, user, EnmLoginType.getLoginType(sessionUser.getLoginType()));
 							if (!sessionUser.getEmail().equals(user.getEmail())) {
-								this.sendEmailVerificationMail(user);
+								this.mailService.sendEmailVerificationMail(user, user.getEmail());
 							}
 							if (profilePhotoDeleted || profilePhotoChanged) {
 								try {
@@ -861,7 +850,7 @@ public class ApiUserController extends BaseApiController {
 					if (OperationResult.isResultSucces(updateResult)) {
 						user.setEmailVerified(updatedUser.getEmailVerified());
 						user.setUserActivationKeyEmail(updatedUser.getUserActivationKeyEmail());
-						this.sendEmailVerificationMail(user);
+						this.mailService.sendEmailVerificationMail(user, user.getLoginEmail());
 						
 						operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 					} else {
@@ -1386,7 +1375,7 @@ public class ApiUserController extends BaseApiController {
 							ValueOperationResult<Integer> updateUserResult = this.userService.updateUser(user, false, null);
 							if (OperationResult.isResultSucces(updateUserResult)) {
 								dbUser.setResetPasswordToken(resetPasswordCode);
-								sendResetPasswordMail(dbUser);
+								this.mailService.sendResetPasswordMail(dbUser);
 								operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 							} else {
 								operationResult.setResultCode(EnmResultCode.ERROR.getValue());
@@ -1450,7 +1439,7 @@ public class ApiUserController extends BaseApiController {
 								sessionUser.setPassword(newPassword);
 								sessionUser.setResetPasswordToken(null);
 							}
-							sendNewPasswordMail(dbUser);
+							this.mailService.sendNewPasswordMail(dbUser);
 							operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 						} else {
 							operationResult.setResultCode(EnmResultCode.ERROR.getValue());
@@ -1527,93 +1516,12 @@ public class ApiUserController extends BaseApiController {
 		session.invalidate();
 	}
 
-	private void sendEmailVerificationMail(User user) throws UnsupportedEncodingException {
-		String htmlFilePath = FileUtil.concatPath(this.webApplication.getLocalAppPath(), "static", "html", "mail", "VerifyEmail.html");	
-		
-		List<String> toList = new ArrayList<String>();
-		toList.add(user.getEmail());
-		
-		String emailVerificationUrl = this.webApplication.getEmailVerificationUrl();
-		emailVerificationUrl = emailVerificationUrl.replaceAll("#paramUserId#", user.getId().toString());
-		emailVerificationUrl = emailVerificationUrl.replaceAll("#paramCode#", user.getUserActivationKeyEmail());
-		
-		//String emailVerificationUrlEncoded = URLEncoder.encode(emailVerificationUrl, "UTF-8");
-		
-		Map<String, String> paramMap = new HashMap<String, String>();
-		paramMap.put("#paramUserName#", user.getFirstName());
-		paramMap.put("#paramEmailVerificationUrl#", emailVerificationUrl);
-		//paramMap.put("#paramEmailVerificationUrlEncoded#", emailVerificationUrlEncoded);
-		this.mailUtil.sendMailFromTemplate(htmlFilePath, paramMap, toList, null, "LetsErasmus Email Verifitcation", null);
-	}
-	
-	private void sendWelcomeMail(User user, EnmLoginType loginType) throws UnsupportedEncodingException {
-		String htmlFilePath = FileUtil.concatPath(this.webApplication.getLocalAppPath(), "static", "html", "mail", "VerifyEmail.html");
-		String email = null;
-		
-		if (loginType == EnmLoginType.LOCAL_ACCOUNT) {
-			email = user.getEmail();
-		} else if (loginType == EnmLoginType.GOOGLE) {
-			email = user.getGoogleEmail();
-		} else if (loginType == EnmLoginType.FACEBOOK) {
-			email = user.getFacebookEmail();
-		}
-		
-		List<String> toList = new ArrayList<String>();
-		toList.add(email);
-		
-		String emailVerificationUrl = this.webApplication.getEmailVerificationUrl();
-		emailVerificationUrl = emailVerificationUrl.replaceAll("#paramUserId#", user.getId().toString());
-		emailVerificationUrl = emailVerificationUrl.replaceAll("#paramCode#", user.getUserActivationKeyEmail());
-		
-		//String emailVerificationUrlEncoded = URLEncoder.encode(emailVerificationUrl, "UTF-8");
-		
-		Map<String, String> paramMap = new HashMap<String, String>();
-		paramMap.put("#paramUserName#", user.getFirstName());
-		paramMap.put("#paramEmailVerificationUrl#", emailVerificationUrl);
-		//paramMap.put("#paramEmailVerificationUrlEncoded#", emailVerificationUrlEncoded);
-		this.mailUtil.sendMailFromTemplate(htmlFilePath, paramMap, toList, null, "LetsErasmus Email Verifitcation", null);
-	}
-		
 	private OperationResult sendVerifyMsisdnSms(User user, String verificationCode) throws UnsupportedEncodingException {
 		
 		String smsTemplate = this.parameterService.getParameterValue(EnmParameter.TWILIO_VERIFICATION_MESSAGE_TEMPLATE.getId());
 		String smsText = smsTemplate.replace("#paramCode#", verificationCode);
 		
 		return this.smsService.sendSms(user.getId(), smsText, user.getMsisdnCountryCode() + user.getMsisdn(), user.getFullName());
-	}
-	
-	private void sendResetPasswordMail(User user) throws UnsupportedEncodingException {
-		String htmlFilePath = FileUtil.concatPath(this.webApplication.getLocalAppPath(), "static", "html", "mail", "ResetPassword.html");	
-		
-		List<String> toList = new ArrayList<String>();
-		toList.add(user.getEmail());
-		
-		String resetPasswordUrl = this.webApplication.getResetPasswordUrl();
-		resetPasswordUrl = resetPasswordUrl.replaceAll("#paramUserId#", user.getId().toString());
-		resetPasswordUrl = resetPasswordUrl.replaceAll("#paramCode#", user.getResetPasswordToken());
-		
-		//String emailVerificationUrlEncoded = URLEncoder.encode(resetPasswordUrl, "UTF-8");
-		
-		Map<String, String> paramMap = new HashMap<String, String>();
-		paramMap.put("#paramUserName#", user.getFirstName());
-		paramMap.put("#paramResetPasswordUrl#", resetPasswordUrl);
-		paramMap.put("#paramTimeStamp#", DateUtil.format(new Date(), DateUtil.LONG_DATE_FORMAT_H24));
-		this.mailUtil.sendMailFromTemplate(htmlFilePath, paramMap, toList, null, "LetsErasmus Reset Password", null);
-	}
-	
-	private void sendNewPasswordMail(User user) throws UnsupportedEncodingException {
-		String htmlFilePath = FileUtil.concatPath(this.webApplication.getLocalAppPath(), "static", "html", "mail", "NewPassword.html");	
-		
-		List<String> toList = new ArrayList<String>();
-		toList.add(user.getEmail());
-				
-		//String emailVerificationUrlEncoded = URLEncoder.encode(resetPasswordUrl, "UTF-8");
-		
-		Map<String, String> paramMap = new HashMap<String, String>();
-		paramMap.put("#paramUserName#", user.getFirstName());
-		paramMap.put("#newPassword#", user.getPassword());
-		paramMap.put("#paramTimeStamp#", DateUtil.format(new Date(), DateUtil.LONG_DATE_FORMAT_H24));
-		this.mailUtil.sendMailFromTemplate(htmlFilePath, paramMap, toList, null, "LetsErasmus New Password", null);
 	}
 	
 }

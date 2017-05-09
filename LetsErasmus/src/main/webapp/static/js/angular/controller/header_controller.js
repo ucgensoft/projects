@@ -59,7 +59,9 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
 							});
 	   			  }
 	       	  } else if (paramOp == EnmOperation.LOGIN) {
-	       		  openLoginWindow();
+	       		  if (loginUserId == null || loginUserId == '') {
+	       			openLoginWindow();
+	       		  }
 	       	  } else if (paramOp == EnmOperation.RESET_PASSWORD) {
 	       		  var userId = getUriParam("user");
 	   			  var code = getUriParam("code");
@@ -191,7 +193,14 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
 							closeModal();
 							openWindow(redirectUrl, true);
 						} else {
-							reloadPage();
+							var reloadUrl = location.href;
+							var paramOp = getUriParam('op'); 
+					   	  	if (paramOp != null) {
+					   	  		if (paramOp == EnmOperation.LOGIN) {
+					   	  			reloadUrl = clearUrlParameter(reloadUrl, 'op');
+					   	  		}
+					   	  	}	  
+						   	openWindow(reloadUrl, true);
 						}
 					}
 				}
@@ -221,7 +230,14 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
 							if (globalRedirectUrl != null) {
 								openWindow(globalRedirectUrl, true);
 							} else {
-								reloadPage();
+								var reloadUrl = location.href;
+								var paramOp = getUriParam('op'); 
+						   	  	if (paramOp != null) {
+						   	  		if (paramOp == EnmOperation.LOGIN) {
+						   	  			reloadUrl = clearUrlParameter(reloadUrl, 'op');
+						   	  		}
+						   	  	}	  
+							   	openWindow(reloadUrl, true);
 							}
 						}
 					}

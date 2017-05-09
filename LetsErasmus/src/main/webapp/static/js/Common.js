@@ -166,17 +166,16 @@ var clearUrlParameter = function (url, paramName) {
 	            } else {
 	            	urlParamName = paramValuePair;
 	            }
-	            if (newUrl.indexOf('?') < 0) {
-	            	newUrl += '?';
-	            }
                 if (urlParamName.toLowerCase() != paramName.toLowerCase()) {
+                	if (newUrl.indexOf('?') < 0) {
+    	            	newUrl += '?';
+    	            }
                 	newUrl += paramValuePair;
                 }	            
 	        }
 	    }
-	} else {
-		return newUrl;
 	}
+	return newUrl;
 };
 
 var newOperationResult = function (resultCode, resultDesc, resultObj) {
@@ -196,7 +195,11 @@ function openModal(url, elementId) {
 
 function openWindow (url, isSelf) {
 	if (isSelf) {
-		document.location.href = url;
+		if (document.location.href == url) {
+			location.reload();
+		} else {
+			document.location.href = url;
+		}
 	} else {
 		window.open(url, '_blank');
 	}
@@ -606,5 +609,5 @@ function reloadPage() {
 	if (url.indexOf('#') > -1) {
 		url = url.substring(0, url.indexOf('#'));
 	}
-	window.open(url, '_self')
+	openWindow(url, true);
 }

@@ -6,6 +6,8 @@ import java.nio.charset.Charset;
 
 public class WebUtil {
 
+	public static final String URL_SEPERATOR = "/";
+	
 	public static final int HTTP_SUCCESS = 200;
 	public static final int HTTP_CREATED = 201;
 	public static final int HTTP_ACCEPTED = 202;
@@ -29,6 +31,17 @@ public class WebUtil {
 		}
 		
 		return uriBuilder.toString();
+	}
+	
+	public static String concatUrl(String url, String... subUrlArr) {
+		for (String subPath : subUrlArr) {
+			if (!url.endsWith(URL_SEPERATOR)) {
+				url += URL_SEPERATOR;
+			}
+			url += subPath;
+		}
+		
+		return url;
 	}
 	
 }

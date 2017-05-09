@@ -13,7 +13,7 @@ public interface IMessageService {
 	
 	OperationResult updateMessageThread(MessageThread messageThread);
 	
-	OperationResult insertMessage(Message message);
+	OperationResult insertMessage(Message messagesendInfoMail, boolean sendInfoMail);
 	
 	List<Message> listMessage(Message message, boolean senderUserFlag, boolean receiverUserFlag);
 	

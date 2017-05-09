@@ -25,6 +25,7 @@ import com.ucgen.common.operationresult.ValueOperationResult;
 import com.ucgen.common.util.CommonUtil;
 import com.ucgen.common.util.DateUtil;
 import com.ucgen.common.util.FileLogger;
+import com.ucgen.common.util.WebUtil;
 import com.ucgen.letserasmus.library.common.enumeration.EnmBoolStatus;
 import com.ucgen.letserasmus.library.common.enumeration.EnmCurrency;
 import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
@@ -123,6 +124,8 @@ public class ApiReservationController extends BaseApiController {
 					Reservation reservation = new Reservation();
 					
 					reservation.setClientUserId(user.getId());
+					
+					reservation.setPlace(place);
 					
 					reservation.setPlaceId(place.getId());
 					reservation.setPlacePrice(place.getPrice());
@@ -256,7 +259,17 @@ public class ApiReservationController extends BaseApiController {
 						paymentMethod.setCardHolderZipCode(uiPaymentMethod.getZipCode());
 						paymentMethod.setPayment(payment);
 						
-						OperationResult createResult = this.reservationService.insert(user.getId(), reservation, paymentMethod, hostPayoutMethod);
+						//Place place = this.placeService.getPlace(reservation.getPlaceId()).getResultValue();
+						Place place = reservation.getPlace();
+						String placeCoverPhotoUrl = this.webApplication.getPlacePhotoUrl(place.getId(), place.getCoverPhotoId(), EnmSize.SMALL.getValue());
+
+						String placeUrl = WebUtil.concatUrl(this.webApplication.getUrlPrefix(), "/pages/PlaceDetail.xhtml");
+						placeUrl = WebUtil.addUriParam(placeUrl, EnmUriParameter.PLACE_ID.getName(), place.getId());
+						
+						place.setCoverPhotoUrl(placeCoverPhotoUrl);
+						place.setUrl(placeUrl);
+						
+						OperationResult createResult = this.reservationService.insert(user, reservation, paymentMethod, hostPayoutMethod);
 						
 						if (!OperationResult.isResultSucces(createResult)) {
 							FileLogger.log(Level.ERROR, "Reservation could not be saved. UserId:" + user.getId() + ", Error:" + OperationResult.getResultDesc(createResult));
@@ -683,7 +696,7 @@ public class ApiReservationController extends BaseApiController {
 						
 						reservation.setMessageThread(messageThread);
 						
-						OperationResult createResult = this.reservationService.insert(user.getId(), reservation, null, null);
+						OperationResult createResult = this.reservationService.insert(user, reservation, null, null);
 						
 						if (!OperationResult.isResultSucces(createResult)) {
 							FileLogger.log(Level.ERROR, "Contact host operation could not be completed. UserId:" + user.getId() + ", Error:" + OperationResult.getResultDesc(createResult));
