@@ -66,5 +66,10 @@ public class LocationService implements ILocationService {
 		location.setLatitude(new BigDecimal(newLongitude));
 		
 	}
+
+	@Override
+	public Location get(Long id) {
+		return this.locationDao.get(id);
+	}
 	
 }

@@ -22,6 +22,10 @@ public interface IMailConstants {
 	
 	String MAIL_SUBJECT_HOST_RESERVATION_EXPIRE = "Booking request is expired for #paramPlaceDetailTitle#";
 	
+	String MAIL_SUBJECT_HOST_RESERVATION_RECALL = "Booking request is recalled for #paramPlaceDetailTitle#";
+	
+	String MAIL_SUBJECT_GUEST_RESERVATION_CANCEL = "Reservation is cancelled for  #paramPlaceDetailTitle#";
+	
 	String MAIL_SUBJECT_NEW_MESSAGE = "New message for #paramPlaceDetailTitle#";
 	
 }

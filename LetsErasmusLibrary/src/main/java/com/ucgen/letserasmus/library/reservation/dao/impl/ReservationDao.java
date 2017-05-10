@@ -24,8 +24,8 @@ public class ReservationDao extends JdbcDaoSupport implements IReservationDao {
 
 	private static final String INSERT_RESERVATION_SQL = "INSERT INTO RESERVATION (PLACE_ID, HOST_USER_ID, CLIENT_USER_ID, START_DATE, "
 			+ " END_DATE, GUEST_NUMBER, PLACE_PRICE, SERVICE_RATE, SERVICE_FEE, COMMISSION_RATE, COMMISSION_FEE, CURRENCY_ID, STATUS,"
-			+ " CREATED_BY, CREATED_DATE, MESSAGE_THREAD_ID, TRANSACTION_ID, PAYMENT_TRANSACTION_ID, PAYMENT_STATUS, CANCELLATION_POLICY_ID, EXPIRE_DATE)" 
-			+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";	
+			+ " CREATED_BY, CREATED_DATE, MESSAGE_THREAD_ID, TRANSACTION_ID, PAYMENT_TRANSACTION_ID, PAYMENT_STATUS, CANCELLATION_POLICY_ID, EXPIRE_DATE, STRIPE_VENDOR_TRANSFER_ID)" 
+			+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";	
 	
 	private static final String UPDATE_RESERVATION_SQL = " UPDATE RESERVATION SET $1 WHERE ID=? ";
 	
@@ -69,6 +69,7 @@ public class ReservationDao extends JdbcDaoSupport implements IReservationDao {
 		argList.add(reservation.getPaymentStatus());
 		argList.add(reservation.getCancellationPolicyId());
 		argList.add(reservation.getExpireDate());
+		argList.add(reservation.getStripeVendorTransferId());
 		
 		this.getJdbcTemplate().update(INSERT_RESERVATION_SQL, argList.toArray());
 		
@@ -175,6 +176,11 @@ public class ReservationDao extends JdbcDaoSupport implements IReservationDao {
 		if (reservation.getExpireDate() != null) {
 			StringUtil.append(updateFields, "EXPIRE_DATE = ?", ",");
 			argList.add(reservation.getExpireDate());
+		}
+		
+		if (reservation.getStripeVendorTransferId() != null) {
+			StringUtil.append(updateFields, "STRIPE_VENDOR_TRANSFER_ID = ?", ",");
+			argList.add(reservation.getStripeVendorTransferId());
 		}
 		
 		if (reservation.getModifiedBy() != null) {

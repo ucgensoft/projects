@@ -52,6 +52,7 @@ public class User extends BaseModel {
 	
 	private String profileImageUrl;
 	private Integer loginType;
+	private String url;
 	
 	private PayoutMethod payoutMethod;
 	
@@ -291,6 +292,14 @@ public class User extends BaseModel {
 		}
 	}
 	
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
 	public Map<Integer, Map<Long, Favorite>> getFavoriteMap() {
 		return favoriteMap;
 	}

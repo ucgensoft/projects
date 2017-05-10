@@ -37,6 +37,7 @@ public class Reservation extends BaseModel {
 	private Integer paymentStatus;
 	private Integer cancellationPolicyId;
 	private Date expireDate;
+	private String stripeVendorTransferId;
 	
 	private Place place;
 	private User hostUser;
@@ -213,6 +214,12 @@ public class Reservation extends BaseModel {
 	}
 	public void setExpireDate(Date expireDate) {
 		this.expireDate = expireDate;
+	}
+	public String getStripeVendorTransferId() {
+		return stripeVendorTransferId;
+	}
+	public void setStripeVendorTransferId(String stripeVendorTransferId) {
+		this.stripeVendorTransferId = stripeVendorTransferId;
 	}
 	
 }

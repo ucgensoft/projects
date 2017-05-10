@@ -23,7 +23,7 @@ import com.ucgen.letserasmus.library.location.model.Location;
 @Repository
 public class LocationDao extends JdbcDaoSupport implements ILocationDao {
 
-	private static final String LIST_LOCATION_SQL = "SELECT ID, NAME, LATITUDE, LONGITUDE FROM LOCATION WHERE 1=1";
+	private static final String LIST_LOCATION_SQL = "SELECT * FROM LOCATION WHERE 1=1";
 	
 	private static final String INSERT_LOCATION_SQL = "INSERT INTO `LOCATION`(`USER_ADDRESS`, `NAME`, `LATITUDE`, `LONGITUDE`, "
 			+ " `FORMATTED_ADDRESS`, `LOCATION_TYPE`, `ROUTE`, `STREET_NUMBER`, `POSTAL_CODE`, `LOCALITY`, `SUB_LOCALITY`, `COUNTRY`, "
@@ -56,8 +56,8 @@ public class LocationDao extends JdbcDaoSupport implements ILocationDao {
 		List<Object> argList = new ArrayList<Object>();
 		
 		if (idList != null && idList.size() > 0) {
-			String strIdList = StringUtils.join(idList, ",");
-			sqlBuilder.append(" AND ID IN(" + strIdList + ")");
+			String strIdArgs = StringUtils.repeat("?", ",", idList.size());
+			sqlBuilder.append(" AND ID IN(" + strIdArgs + ")");
 			argList.addAll(idList);
 		}
 		
@@ -163,6 +163,21 @@ public class LocationDao extends JdbcDaoSupport implements ILocationDao {
 		operationResult.setResultValue(updatedRowCount);
 		
 		return operationResult;
+	}
+
+	@Override
+	public Location get(Long id) {
+		List<Long> idList = new ArrayList<>();
+		idList.add(id);
+		
+		ListOperationResult<Location> listResult = this.list(idList);
+		
+		if (OperationResult.isResultSucces(listResult) 
+				&& listResult.getObjectList() != null &&  listResult.getObjectList().size() > 0) {
+			return listResult.getObjectList().get(0);
+		} else {
+			return null;
+		}
 	}
 
 }
