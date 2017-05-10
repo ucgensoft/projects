@@ -12,6 +12,7 @@ public class DateUtil {
 
 	public static final int DAY_IN_MILISECONDS = 1000 * 60 * 60 * 24;
 	
+	public static final String READABLE_DATE_FORMAT = "MMM dd, yyyy";
 	public static final String SHORT_DATE_FORMAT = "dd.MM.yyyy";
 	public static final String SHORT_DATE_NO_SEPERATIR_FORMAT = "ddMMyyyy";
 	public static final String LONG_DATE_FORMAT = "dd.MM.yyyy HH:mm:ss";
