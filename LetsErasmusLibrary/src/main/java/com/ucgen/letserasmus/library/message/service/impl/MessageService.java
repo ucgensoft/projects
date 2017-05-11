@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.ucgen.common.exception.operation.OperationResultException;
 import com.ucgen.common.operationresult.OperationResult;
+import com.ucgen.letserasmus.library.mail.service.IMailService;
 import com.ucgen.letserasmus.library.message.dao.IMessageDao;
 import com.ucgen.letserasmus.library.message.model.Message;
 import com.ucgen.letserasmus.library.message.model.MessageThread;
@@ -16,10 +17,16 @@ import com.ucgen.letserasmus.library.message.service.IMessageService;
 public class MessageService implements IMessageService {
 
 	private IMessageDao messageDao;
+	private IMailService mailService;
 	
 	@Autowired
 	public void setMessageDao(IMessageDao messageDao) {
 		this.messageDao = messageDao;
+	}
+
+	@Autowired
+	public void setMailService(IMailService mailService) {
+		this.mailService = mailService;
 	}
 
 	@Override
@@ -34,7 +41,11 @@ public class MessageService implements IMessageService {
 	
 	@Override
 	public OperationResult insertMessage(Message message, boolean sendInfoMail) {
-		return this.messageDao.insertMessage(message);
+		OperationResult insertResult = this.messageDao.insertMessage(message);
+		if (sendInfoMail && message.getReceiverUser() != null) {
+			this.mailService.sendNewMessageMail(message.getReceiverUser().getEmail(), message.getMessageThread().getThreadTitle(), message.getMessageText());
+		}
+		return insertResult;
 	}
 
 	@Override

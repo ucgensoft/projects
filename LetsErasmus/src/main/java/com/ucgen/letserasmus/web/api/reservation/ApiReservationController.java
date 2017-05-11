@@ -707,6 +707,7 @@ public class ApiReservationController extends BaseApiController {
 						reservation.setPlaceId(place.getId());
 						reservation.setPlacePrice(place.getPrice());
 						reservation.setHostUserId(place.getHostUserId());
+						reservation.setHostUser(place.getUser());
 						
 						reservation.setServiceRate(serviceFeeRate);
 						reservation.setServiceFee(serviceFeeRate.multiply(place.getPrice()));

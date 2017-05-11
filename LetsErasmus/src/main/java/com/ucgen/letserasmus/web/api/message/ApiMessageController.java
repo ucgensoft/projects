@@ -40,7 +40,6 @@ import com.ucgen.letserasmus.library.place.model.Place;
 import com.ucgen.letserasmus.library.reservation.model.Reservation;
 import com.ucgen.letserasmus.library.reservation.service.IReservationService;
 import com.ucgen.letserasmus.library.user.model.User;
-import com.ucgen.letserasmus.library.user.service.IUserService;
 import com.ucgen.letserasmus.web.api.BaseApiController;
 import com.ucgen.letserasmus.web.view.application.AppConstants;
 import com.ucgen.letserasmus.web.view.application.WebApplication;
@@ -51,7 +50,6 @@ public class ApiMessageController extends BaseApiController {
 	private IMessageService messageService;
 	private IReservationService reservationService;
 	private ILogService logService;
-	private IUserService userService;
 	
 	private WebApplication webApplication;
 	
@@ -298,7 +296,7 @@ public class ApiMessageController extends BaseApiController {
 					messageThread.setId(uiMessage.getMessageThreadId());
 					messageThread.setEntityType(EnmEntityType.RESERVATION.getId());
 					
-					MessageThread dbMessageThread = this.messageService.getMessageThread(messageThread, false, false, false);
+					MessageThread dbMessageThread = this.messageService.getMessageThread(messageThread, false, true, true);
 					
 					if (dbMessageThread != null) {
 						if (user.getId().equals(dbMessageThread.getHostUserId()) 
@@ -309,20 +307,20 @@ public class ApiMessageController extends BaseApiController {
 							message.setSenderUserId(user.getId());
 							if (user.getId().equals(dbMessageThread.getHostUserId())) {
 								message.setReceiverUserId(dbMessageThread.getClientUserId());
+								message.setReceiverUser(dbMessageThread.getClientUser());
 							} else {
 								message.setReceiverUserId(dbMessageThread.getHostUserId());
+								message.setReceiverUser(dbMessageThread.getHostUser());
 							}
 							message.setMessageText(uiMessage.getMessageText());
 							message.setStatus(EnmMessageStatus.NOT_READ.getId());
 							message.setCreatedDate(new Date());
 							message.setCreatedBy(user.getFullName());
+							
+							message.setMessageThread(dbMessageThread);
 													
 							OperationResult insertMessageResult = this.messageService.insertMessage(message, true);
 							if (OperationResult.isResultSucces(insertMessageResult)) {
-								
-								User receiverUser = this.userService.getUser(new User(message.getReceiverUserId()));
-								
-								this.mailService.sendNewMessageMail(receiverUser.getEmail(), dbMessageThread.getThreadTitle(), message.getMessageText());
 								
 								operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 								

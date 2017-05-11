@@ -15,6 +15,7 @@ public class Message extends BaseModel {
 	private String messageText;
 	private Integer status;
 	
+	private MessageThread messageThread;
 	private User senderUser;
 	private User receiverUser;
 	
@@ -71,6 +72,12 @@ public class Message extends BaseModel {
 	}
 	public void setReceiverUser(User receiverUser) {
 		this.receiverUser = receiverUser;
+	}
+	public MessageThread getMessageThread() {
+		return messageThread;
+	}
+	public void setMessageThread(MessageThread messageThread) {
+		this.messageThread = messageThread;
 	}
 	
 }
