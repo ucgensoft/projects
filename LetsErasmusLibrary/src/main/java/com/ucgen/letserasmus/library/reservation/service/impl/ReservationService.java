@@ -163,7 +163,7 @@ public class ReservationService implements IReservationService {
 						
 						Place place = reservation.getPlace();
 						
-						this.mailService.sendBokingRequestMail(user.getEmail(), place.getUser().getEmail(), place.getTitle(), place.getUrl(), 
+						this.mailService.sendBookingRequestMail(user.getEmail(), place.getUser().getEmail(), place.getTitle(), place.getUrl(), 
 								place.getCoverPhotoUrl(), EnmHomeType.getHomeType(place.getHomeTypeId()).getText(), EnmPlaceType.getPlaceType(place.getPlaceTypeId()).getText(), 
 								reservation.getStartDate(), reservation.getEndDate());
 						
@@ -221,83 +221,102 @@ public class ReservationService implements IReservationService {
 				OperationResult insertMessageresult = this.messageDao.insertMessage(message);
 				if (OperationResult.isResultSucces(insertMessageresult)) {
 					OperationResult createLogResult = this.logDao.insertTransactionLog(transactionLog);
-					if (OperationResult.isResultSucces(createLogResult)) {
-						if (reservation.getStatus() != null && reservationOldStatus != null 
-								&& !reservation.getStatus().equals(reservationOldStatus)) {
-							PayoutMethod hostPayoutMethod = this.paymentService.getPayoutMethod(new PayoutMethod(reservation.getHostUserId()));
-							if ((reservation.getStatus().equals(EnmReservationStatus.DECLINED.getId()) && !reservationOldStatus.equals(EnmReservationStatus.DECLINED.getId()))
-									|| (reservation.getStatus().equals(EnmReservationStatus.EXPIRED.getId()) && !reservationOldStatus.equals(EnmReservationStatus.EXPIRED.getId()))
-									|| (reservation.getStatus().equals(EnmReservationStatus.RECALLED) && !reservationOldStatus.equals(EnmReservationStatus.RECALLED.getId()))) {
-								OperationResult authPaymentReverseResult = null;
-								if (hostPayoutMethod.getExternalSystemId().equals(EnmExternalSystem.BLUESNAP.getId())) {
-									authPaymentReverseResult = this.extPaymentService.paymentAuthReversal(reservation.getClientUserId(), 
-											reservation.getPaymentTransactionId(), reservation.getModifiedBy());
-								} else if (hostPayoutMethod.getExternalSystemId().equals(EnmExternalSystem.STRIPE.getId())) {
-									authPaymentReverseResult = this.stripePaymentService.refund(reservation.getClientUserId(), reservation.getPaymentTransactionId(), null, null, reservation.getModifiedBy());
-								}
-								if (!OperationResult.isResultSucces(authPaymentReverseResult)) {
-									updateReservationResult.setResultDesc("Payment auth reversal failed. Error:" + OperationResult.getResultDesc(authPaymentReverseResult));
-									throw new OperationResultException(updateReservationResult);
-								}
-							}
-							if (reservation.getStatus().equals(EnmReservationStatus.ACCEPTED.getId()) 
-									&& !reservationOldStatus.equals(EnmReservationStatus.ACCEPTED.getId())) {
-								OperationResult capturePaymentResult = null;
-								if (hostPayoutMethod.getExternalSystemId().equals(EnmExternalSystem.BLUESNAP.getId())) {
-									capturePaymentResult = this.extPaymentService.paymentCapture(reservation.getClientUserId(), 
-											reservation.getPaymentTransactionId(), reservation.getModifiedBy());
-								} else if (hostPayoutMethod.getExternalSystemId().equals(EnmExternalSystem.STRIPE.getId())) {
-									capturePaymentResult = this.stripePaymentService.capture(reservation.getClientUserId(), reservation.getPaymentTransactionId(), reservation.getModifiedBy());
-								}
-								if (!OperationResult.isResultSucces(capturePaymentResult)) {
-									updateReservationResult.setResultDesc("Payment capture operation failed. Error:" + OperationResult.getResultDesc(capturePaymentResult));
-									throw new OperationResultException(updateReservationResult);
-								}
-							}
-							if (reservation.getStatus().equals(EnmReservationStatus.HOST_CANCELLED) && !reservationOldStatus.equals(EnmReservationStatus.HOST_CANCELLED.getId())) {
-								OperationResult authPaymentReverseResult = null;
-								if (hostPayoutMethod.getExternalSystemId().equals(EnmExternalSystem.BLUESNAP.getId())) {
-									authPaymentReverseResult = this.extPaymentService.refund(reservation.getClientUserId(), 
-											reservation.getPaymentTransactionId(), null, null, reservation.getModifiedBy());
-								} else if (hostPayoutMethod.getExternalSystemId().equals(EnmExternalSystem.STRIPE.getId())) {
-									authPaymentReverseResult = this.stripePaymentService.refund(reservation.getClientUserId(), reservation.getPaymentTransactionId(), null, null, reservation.getModifiedBy());
-								}
-								if (!OperationResult.isResultSucces(authPaymentReverseResult)) {
-									updateReservationResult.setResultDesc("Payment auth reversal failed. Error:" + OperationResult.getResultDesc(authPaymentReverseResult));
-									throw new OperationResultException(updateReservationResult);
-								}
-							}
-							if (reservation.getStatus().equals(EnmReservationStatus.CLIENT_CANCELLED) && !reservationOldStatus.equals(EnmReservationStatus.CLIENT_CANCELLED.getId())) {
-								Long resRemainingDays = DateUtil.dateDiff(reservation.getStartDate(), new Date(), Calendar.DATE);
-								TreeMap<Integer, CancelPolicyRule> entityTypeCancelRuleMap = this.simpleObjectService.listCancelPolicyRule(EnmEntityType.RESERVATION.getId());
-								CancelPolicyRule cancelPolicyRule = null;
-								for (Integer ruleRemainingDays : entityTypeCancelRuleMap.keySet()) {
-									cancelPolicyRule = entityTypeCancelRuleMap.get(ruleRemainingDays);
-									if (ruleRemainingDays > resRemainingDays) {
-										break;
-									}
-								}
-								
-								BigDecimal clientRefundAmount = reservation.getPlacePrice().multiply(cancelPolicyRule.getRefundRate());
-								BigDecimal vendorAmount = reservation.getPlacePrice().subtract(clientRefundAmount).subtract(reservation.getCommissionFee());
-								
-								OperationResult authPaymentReverseResult = null;
-								if (hostPayoutMethod.getExternalSystemId().equals(EnmExternalSystem.BLUESNAP.getId())) {
-									authPaymentReverseResult = this.extPaymentService.refund(reservation.getClientUserId(), 
-											reservation.getPaymentTransactionId(), clientRefundAmount, vendorAmount, reservation.getModifiedBy());
-								} else if (hostPayoutMethod.getExternalSystemId().equals(EnmExternalSystem.STRIPE.getId())) {
-									authPaymentReverseResult = this.stripePaymentService.refund(reservation.getClientUserId(), reservation.getPaymentTransactionId(), null, null, reservation.getModifiedBy());
-								}
-								if (!OperationResult.isResultSucces(authPaymentReverseResult)) {
-									updateReservationResult.setResultDesc("Payment auth reversal failed. Error:" + OperationResult.getResultDesc(authPaymentReverseResult));
-									throw new OperationResultException(updateReservationResult);
-								}
-							}
-						}
-						return updateReservationResult;
-					} else {
+					if (!OperationResult.isResultSucces(createLogResult)) {
 						throw new OperationResultException(createLogResult);
 					}
+					if (reservation.getStatus() != null && reservationOldStatus != null 
+							&& !reservation.getStatus().equals(reservationOldStatus)) {
+						PayoutMethod hostPayoutMethod = this.paymentService.getPayoutMethod(new PayoutMethod(reservation.getHostUserId()));
+						if ((reservation.getStatus().equals(EnmReservationStatus.DECLINED.getId()) && !reservationOldStatus.equals(EnmReservationStatus.DECLINED.getId()))
+								|| (reservation.getStatus().equals(EnmReservationStatus.EXPIRED.getId()) && !reservationOldStatus.equals(EnmReservationStatus.EXPIRED.getId()))
+								|| (reservation.getStatus().equals(EnmReservationStatus.RECALLED) && !reservationOldStatus.equals(EnmReservationStatus.RECALLED.getId()))) {
+							OperationResult authPaymentReverseResult = null;
+							if (hostPayoutMethod.getExternalSystemId().equals(EnmExternalSystem.BLUESNAP.getId())) {
+								authPaymentReverseResult = this.extPaymentService.paymentAuthReversal(reservation.getClientUserId(), 
+										reservation.getPaymentTransactionId(), reservation.getModifiedBy());
+							} else if (hostPayoutMethod.getExternalSystemId().equals(EnmExternalSystem.STRIPE.getId())) {
+								authPaymentReverseResult = this.stripePaymentService.refund(reservation.getClientUserId(), reservation.getPaymentTransactionId(), null, null, reservation.getModifiedBy());
+							}
+							if (!OperationResult.isResultSucces(authPaymentReverseResult)) {
+								updateReservationResult.setResultDesc("Payment auth reversal failed. Error:" + OperationResult.getResultDesc(authPaymentReverseResult));
+								throw new OperationResultException(updateReservationResult);
+							} else {
+								if (reservation.getStatus().equals(EnmReservationStatus.DECLINED.getId())) {
+									this.mailService.sendBookingRequestDeclineMail(reservation.getClientUser().getEmail(), reservation.getClientUser().getFirstName(), reservation.getPlace().getTitle());
+								} else if (reservation.getStatus().equals(EnmReservationStatus.EXPIRED.getId())) {
+									this.mailService.sendBookingRequestExpiredMail(reservation.getClientUser().getEmail(), reservation.getClientUser().getFirstName(), 
+											reservation.getHostUser().getEmail(), reservation.getHostUser().getFirstName(), reservation.getPlace().getTitle());
+								} else if (reservation.getStatus().equals(EnmReservationStatus.RECALLED.getId())) {
+									this.mailService.sendBookingRequestRecallMail(reservation.getHostUser().getEmail(), reservation.getHostUser().getFirstName(), reservation.getPlace().getTitle());
+								}
+									
+							}
+						}
+						if (reservation.getStatus().equals(EnmReservationStatus.ACCEPTED.getId()) 
+								&& !reservationOldStatus.equals(EnmReservationStatus.ACCEPTED.getId())) {
+							OperationResult capturePaymentResult = null;
+							if (hostPayoutMethod.getExternalSystemId().equals(EnmExternalSystem.BLUESNAP.getId())) {
+								capturePaymentResult = this.extPaymentService.paymentCapture(reservation.getClientUserId(), 
+										reservation.getPaymentTransactionId(), reservation.getModifiedBy());
+							} else if (hostPayoutMethod.getExternalSystemId().equals(EnmExternalSystem.STRIPE.getId())) {
+								capturePaymentResult = this.stripePaymentService.capture(reservation.getClientUserId(), reservation.getPaymentTransactionId(), reservation.getModifiedBy());
+							}
+							if (!OperationResult.isResultSucces(capturePaymentResult)) {
+								updateReservationResult.setResultDesc("Payment capture operation failed. Error:" + OperationResult.getResultDesc(capturePaymentResult));
+								throw new OperationResultException(updateReservationResult);
+							} else {
+								this.mailService.sendBookingRequestAcceptMail(reservation.getClientUser(), reservation.getHostUser(), reservation.getPlace(), 
+										EnmHomeType.getHomeType(reservation.getPlace().getHomeTypeId()).getText(), EnmPlaceType.getPlaceType(reservation.getPlace().getPlaceTypeId()).getText(), 
+										reservation, null, null);
+							}
+						}
+						if (reservation.getStatus().equals(EnmReservationStatus.HOST_CANCELLED.getId()) && !reservationOldStatus.equals(EnmReservationStatus.HOST_CANCELLED.getId())) {
+							OperationResult authPaymentReverseResult = null;
+							if (hostPayoutMethod.getExternalSystemId().equals(EnmExternalSystem.BLUESNAP.getId())) {
+								authPaymentReverseResult = this.extPaymentService.refund(reservation.getClientUserId(), 
+										reservation.getPaymentTransactionId(), null, null, reservation.getModifiedBy());
+							} else if (hostPayoutMethod.getExternalSystemId().equals(EnmExternalSystem.STRIPE.getId())) {
+								authPaymentReverseResult = this.stripePaymentService.refund(reservation.getClientUserId(), reservation.getPaymentTransactionId(), null, null, reservation.getModifiedBy());
+							}
+							if (!OperationResult.isResultSucces(authPaymentReverseResult)) {
+								updateReservationResult.setResultDesc("Payment auth reversal failed. Error:" + OperationResult.getResultDesc(authPaymentReverseResult));
+								throw new OperationResultException(updateReservationResult);
+							} else {
+								User clientUser = reservation.getClientUser();
+								Place place = reservation.getPlace();
+								this.mailService.sendBookingRequestCancelMail(clientUser.getEmail(), place.getTitle(), place.getUrl(), place.getCoverPhotoUrl(), 
+										EnmHomeType.getHomeType(place.getHomeTypeId()).getText(), EnmPlaceType.getPlaceType(place.getPlaceTypeId()).getText(), 
+										reservation.getStartDate(), reservation.getEndDate(), reservation.getPlacePrice(), reservation.getCurrencyId());
+							}
+						}
+						if (reservation.getStatus().equals(EnmReservationStatus.CLIENT_CANCELLED) && !reservationOldStatus.equals(EnmReservationStatus.CLIENT_CANCELLED.getId())) {
+							Long resRemainingDays = DateUtil.dateDiff(reservation.getStartDate(), new Date(), Calendar.DATE);
+							TreeMap<Integer, CancelPolicyRule> entityTypeCancelRuleMap = this.simpleObjectService.listCancelPolicyRule(EnmEntityType.RESERVATION.getId());
+							CancelPolicyRule cancelPolicyRule = null;
+							for (Integer ruleRemainingDays : entityTypeCancelRuleMap.keySet()) {
+								cancelPolicyRule = entityTypeCancelRuleMap.get(ruleRemainingDays);
+								if (ruleRemainingDays > resRemainingDays) {
+									break;
+								}
+							}
+							
+							BigDecimal clientRefundAmount = reservation.getPlacePrice().multiply(cancelPolicyRule.getRefundRate());
+							BigDecimal vendorAmount = reservation.getPlacePrice().subtract(clientRefundAmount).subtract(reservation.getCommissionFee());
+							
+							OperationResult authPaymentReverseResult = null;
+							if (hostPayoutMethod.getExternalSystemId().equals(EnmExternalSystem.BLUESNAP.getId())) {
+								authPaymentReverseResult = this.extPaymentService.refund(reservation.getClientUserId(), 
+										reservation.getPaymentTransactionId(), clientRefundAmount, vendorAmount, reservation.getModifiedBy());
+							} else if (hostPayoutMethod.getExternalSystemId().equals(EnmExternalSystem.STRIPE.getId())) {
+								authPaymentReverseResult = this.stripePaymentService.refund(reservation.getClientUserId(), reservation.getPaymentTransactionId(), null, null, reservation.getModifiedBy());
+							}
+							if (!OperationResult.isResultSucces(authPaymentReverseResult)) {
+								updateReservationResult.setResultDesc("Payment auth reversal failed. Error:" + OperationResult.getResultDesc(authPaymentReverseResult));
+								throw new OperationResultException(updateReservationResult);
+							}
+						}
+					}
+					return updateReservationResult;
 				} else {
 					throw new OperationResultException(insertMessageresult);
 				}

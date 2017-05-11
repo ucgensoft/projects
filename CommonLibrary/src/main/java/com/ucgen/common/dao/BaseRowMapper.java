@@ -6,6 +6,7 @@ import java.math.BigInteger;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -276,7 +277,12 @@ public abstract class BaseRowMapper<T> implements RowMapper<T>{
 	public Date getTimestamp(ResultSet rs, String colName) throws SQLException {
 		String columnName = this.getColumnName(colName);
 		if (this.colExist(columnName)) {
-			return rs.getTimestamp(columnName);
+			Timestamp timestamp = rs.getTimestamp(columnName);
+			if (timestamp != null) {
+				return new java.util.Date(timestamp.getTime());
+			} else {
+				return null;
+			}
 		} else {
 			return null;
 		}

@@ -22,6 +22,8 @@ public class MessageThread extends BaseModel {
 	private User clientUser;
 	private Object entity;
 	
+	private String url;
+	
 	private List<Message> messageList;
 	private List<TransactionLog> transactionLogList;
 	
@@ -84,6 +86,12 @@ public class MessageThread extends BaseModel {
 	}
 	public void setEntity(Object entity) {
 		this.entity = entity;
+	}
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
 	}
 	public void addMessage(Message message) {
 		if (message != null) {

@@ -32,6 +32,7 @@ import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
 import com.ucgen.letserasmus.library.common.enumeration.EnmErrorCode;
 import com.ucgen.letserasmus.library.common.enumeration.EnmSize;
 import com.ucgen.letserasmus.library.location.model.Location;
+import com.ucgen.letserasmus.library.location.service.ILocationService;
 import com.ucgen.letserasmus.library.log.enumeration.EnmExternalSystem;
 import com.ucgen.letserasmus.library.log.enumeration.EnmOperation;
 import com.ucgen.letserasmus.library.log.enumeration.EnmTransaction;
@@ -70,6 +71,7 @@ public class ApiReservationController extends BaseApiController {
 	private IReviewService reviewService;
 	private IUserService userService;
 	private IPaymentService paymentService;
+	private ILocationService locationService;
 	
 	@Autowired
 	public void setReviewService(IReviewService reviewService) {
@@ -99,6 +101,11 @@ public class ApiReservationController extends BaseApiController {
 	@Autowired
 	public void setWebApplication(WebApplication webApplication) {
 		this.webApplication = webApplication;
+	}
+
+	@Autowired
+	public void setLocationService(ILocationService locationService) {
+		this.locationService = locationService;
 	}
 
 	@RequestMapping(value = "/api/reservation/start", method = RequestMethod.POST)
@@ -313,7 +320,7 @@ public class ApiReservationController extends BaseApiController {
 					Reservation reservation = new Reservation();
 					reservation.setId(uiReservation.getId());
 					
-					List<Reservation> dbReservationList = this.reservationService.list(reservation, false, false, false);
+					List<Reservation> dbReservationList = this.reservationService.list(reservation, true, true, true);
 					
 					if (dbReservationList != null && dbReservationList.size() > 0) {
 						reservation = dbReservationList.get(0);
@@ -346,26 +353,26 @@ public class ApiReservationController extends BaseApiController {
 							
 							if (uiReservation.getStatus().equals(EnmReservationStatus.DECLINED.getId()) 
 									|| uiReservation.getStatus().equals(EnmReservationStatus.ACCEPTED.getId())) {
-								if (dbReservationList.get(0).getStatus().equals(EnmReservationStatus.PENDING.getId())) {
+								if (reservation.getStatus().equals(EnmReservationStatus.PENDING.getId())) {
 									statusSuitable = true;
 								}
 							}
 							
 							if (uiReservation.getStatus().equals(EnmReservationStatus.HOST_CANCELLED.getId()) 
 									|| uiReservation.getStatus().equals(EnmReservationStatus.CLIENT_CANCELLED.getId())) {
-								if (dbReservationList.get(0).getStatus().equals(EnmReservationStatus.ACCEPTED.getId())) {
+								if (reservation.getStatus().equals(EnmReservationStatus.ACCEPTED.getId())) {
 									statusSuitable = true;
 								}
 							}
 							
 							if (uiReservation.getStatus().equals(EnmReservationStatus.RECALLED.getId())) {
-								if (dbReservationList.get(0).getStatus().equals(EnmReservationStatus.PENDING.getId())) {
+								if (reservation.getStatus().equals(EnmReservationStatus.PENDING.getId())) {
 									statusSuitable = true;
 								}
 							}
 							
 							if (uiReservation.getStatus().equals(EnmReservationStatus.PENDING.getId())) {
-								if (dbReservationList.get(0).getStatus().equals(EnmReservationStatus.INQUIRY.getId())) {
+								if (reservation.getStatus().equals(EnmReservationStatus.INQUIRY.getId())) {
 									statusSuitable = true;
 								}
 							}
@@ -376,11 +383,20 @@ public class ApiReservationController extends BaseApiController {
 								
 								Message message = null;
 								
-								if (!dbReservationList.get(0).getStatus().equals(EnmReservationStatus.PENDING.getId())) {
+								if (uiReservation.getMessageText() != null 
+										&& !uiReservation.getMessageText().trim().isEmpty()) {
+									
+									Long receiverUserId = null;
+									if (reservation.getClientUserId().equals(user.getId())) {
+										receiverUserId = reservation.getHostUserId();
+									} else {
+										receiverUserId = reservation.getClientUserId();
+									}
+									
 									message = new Message();
-									message.setMessageThreadId(dbReservationList.get(0).getMessageThreadId());
+									message.setMessageThreadId(reservation.getMessageThreadId());
 									message.setSenderUserId(user.getId());
-									message.setReceiverUserId(dbReservationList.get(0).getClientUserId());
+									message.setReceiverUserId(receiverUserId);
 									message.setMessageText(uiReservation.getMessageText());
 									message.setCreatedBy(createdBy);
 									message.setCreatedDate(operationDate);
@@ -424,6 +440,39 @@ public class ApiReservationController extends BaseApiController {
 									operationResult.setResultCode(EnmResultCode.WARNING.getValue());
 									operationResult.setResultDesc(AppConstants.RESERV_REQUEST_OUTDATED);
 								} else {
+									if ((reservation.getStatus().equals(EnmReservationStatus.ACCEPTED.getId()) 
+											&& !oldReservationStatus.equals(EnmReservationStatus.ACCEPTED.getId()))
+											|| (reservation.getStatus().equals(EnmReservationStatus.HOST_CANCELLED.getId()) 
+													&& !oldReservationStatus.equals(EnmReservationStatus.HOST_CANCELLED.getId()))) {
+										Place place = reservation.getPlace();
+										String placeCoverPhotoUrl = this.webApplication.getPlacePhotoUrl(place.getId(), place.getCoverPhotoId(), EnmSize.SMALL.getValue());
+
+										String placeUrl = WebUtil.concatUrl(this.webApplication.getUrlPrefix(), "pages/PlaceDetail.xhtml");
+										placeUrl = WebUtil.addUriParam(placeUrl, EnmUriParameter.PLACE_ID.getName(), place.getId());
+										
+										place.setCoverPhotoUrl(placeCoverPhotoUrl);
+										place.setUrl(placeUrl);
+										
+										Location location = this.locationService.get(place.getLocationId());
+										place.setLocation(location);
+										
+										User clientUser = reservation.getClientUser();
+										String clientUserUrl = WebUtil.concatUrl(this.webApplication.getUrlPrefix(), "pages/dashboard/DisplayUser.xhtml?userId=" + clientUser.getId());
+										String clientProfilePhotoUrl = this.webApplication.getUserPhotoUrl(clientUser.getId(), clientUser.getProfilePhotoId(), EnmSize.SMALL.getValue());
+										clientUser.setUrl(clientUserUrl);
+										clientUser.setProfileImageUrl(clientProfilePhotoUrl);
+										
+										User hostUser = reservation.getHostUser();
+										String hostUserUrl = WebUtil.concatUrl(this.webApplication.getUrlPrefix(), "pages/dashboard/DisplayUser.xhtml?userId=" + hostUser.getId());
+										String hostProfilePhotoUrl = this.webApplication.getUserPhotoUrl(hostUser.getId(), hostUser.getProfilePhotoId(), EnmSize.SMALL.getValue());
+										hostUser.setUrl(hostUserUrl);
+										hostUser.setProfileImageUrl(hostProfilePhotoUrl);
+										
+										String conversationUrl = WebUtil.concatUrl(this.webApplication.getUrlPrefix(), "pages/dashboard/Conversation.xhtml?threadId=" + reservation.getMessageThreadId());
+										MessageThread messageThread = new MessageThread();
+										messageThread.setUrl(conversationUrl);
+										reservation.setMessageThread(messageThread);
+									}
 									OperationResult createResult = this.reservationService.update(reservation, message, tLog, oldReservationStatus);
 									
 									if (!OperationResult.isResultSucces(createResult)) {

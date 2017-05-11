@@ -8,6 +8,8 @@ import com.ucgen.letserasmus.library.location.model.Location;
 
 public interface ILocationService {
 
+	Location get(Long id);
+	
 	OperationResult insert(Location location);
 	
 	ListOperationResult<Location> list(Location location);

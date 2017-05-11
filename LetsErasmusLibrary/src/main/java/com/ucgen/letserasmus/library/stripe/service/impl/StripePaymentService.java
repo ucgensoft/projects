@@ -344,8 +344,8 @@ public class StripePaymentService implements IStripePaymentService {
 	}
 	
 	@Override
-	public OperationResult capture(Long userId, String chargeId, String operationBy) {
-		OperationResult operationResult = new OperationResult();
+	public ValueOperationResult<String> capture(Long userId, String chargeId, String operationBy) {
+		ValueOperationResult<String> operationResult = new ValueOperationResult<String>();
 		
 		StringBuilder request = new StringBuilder();
 		StringBuilder response = new StringBuilder();
@@ -370,10 +370,11 @@ public class StripePaymentService implements IStripePaymentService {
 		    charge = charge.capture();
 		    
 			responseCode = "0";
-			operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 			endDate = new Date();
-			
 			response.append(objectMapper.writeValueAsString(charge)); 
+			
+			operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+			operationResult.setResultValue(charge.getTransfer());
 			
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
