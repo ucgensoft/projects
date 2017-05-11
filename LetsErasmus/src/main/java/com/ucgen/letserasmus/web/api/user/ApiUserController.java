@@ -402,6 +402,7 @@ public class ApiUserController extends BaseApiController {
 						newUser = new User();
 						
 						newUser.setEmail(uiUser.getFacebookEmail());
+						newUser.setFacebookEmail(uiUser.getFacebookEmail());
 						newUser.setFacebookId(uiUser.getFacebookId());
 						newUser.setFacebookTokenId(uiUser.getFacebookTokenId());
 						newUser.setEmail(uiUser.getFacebookEmail());

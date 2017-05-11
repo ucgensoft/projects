@@ -136,26 +136,30 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
 		        	var loginType = EnmLoginType.FACEBOOK;
 		        	var profileImageUrl = resp.picture.data.url;
 		        	
-		        	if (resp.gender) {
-		        		if (resp.gender.toUpperCase() == 'MALE') {
-		        			gender = 'M';
-		        		} else if (resp.gender.toUpperCase() == 'FEMALE') {
-		        			gender = 'F';
-		        		}
+		        	if (resp.email) {
+		        		if (resp.gender) {
+			        		if (resp.gender.toUpperCase() == 'MALE') {
+			        			gender = 'M';
+			        		} else if (resp.gender.toUpperCase() == 'FEMALE') {
+			        			gender = 'F';
+			        		}
+			        	}
+			        	
+			        	var user = {
+			        			firstName : firstName,
+			        			lastName : lastName,
+			        			facebookEmail : email,
+			        			gender : gender,
+			        			facebookId : facebookId,
+			        			facebookTokenId : facebookTokenId,
+			        			profileImageUrl : profileImageUrl,
+			        			loginType : loginType
+			        	};
+			        	self.signup(user);
+		        	} else {
+		        		DialogUtil.warn('Your facebook account is not verified. Only verified accounts are allowed to login!');
 		        	}
 		        	
-		        	var user = {
-		        			firstName : firstName,
-		        			lastName : lastName,
-		        			facebookEmail : email,
-		        			gender : gender,
-		        			facebookId : facebookId,
-		        			facebookTokenId : facebookTokenId,
-		        			profileImageUrl : profileImageUrl,
-		        			loginType : loginType
-		        	};
-		        	self.signup(user);
-    				
     				});
     		} else {
     			//FB.login(self.facebookLoginCallback, {scope: 'public_profile, email'});
