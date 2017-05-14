@@ -24,14 +24,14 @@ public class DateUtil {
 	
 	private static DateFormat createSimpleDateFormat(String format) {
 		DateFormat dateFormat =  DateFormat.getDateInstance(DateFormat.FULL, new Locale("en-US"));
-		dateFormat.setTimeZone(TimeZone.getTimeZone("Turkey"));
+		//dateFormat.setTimeZone(TimeZone.getTimeZone("Turkey"));
 		return dateFormat;
 	}
 	
 	public static String format(Date date, String format) {
 		if (date != null) {
 			SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
-			simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Turkey"));
+			//simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Turkey"));
 			return simpleDateFormat.format(date);
 		} else {
 			return "";
@@ -40,7 +40,7 @@ public class DateUtil {
 
 	public static Date valueOf(String date, String format) throws ParseException {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
-		simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Turkey"));
+		//simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Turkey"));
 		return simpleDateFormat.parse(date);
 	}
 	
@@ -58,7 +58,8 @@ public class DateUtil {
 	}
 	
 	public static Calendar getCalendar(Date date) {
-		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Turkey"), new Locale("tr", "TR"));
+		//Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Turkey"), new Locale("tr", "TR"));
+		Calendar cal = Calendar.getInstance();
 		if (date != null) {
 			cal.setTime(date);
 		} else {
@@ -98,11 +99,6 @@ public class DateUtil {
 	
 	public static String accountPeriodToString(String accountingPeriod, String seperator) {
 		return accountingPeriod.substring(4) + seperator + accountingPeriod.substring(0, 4);
-	}
-	
-	public static Date accountPeriodToDate(String accountingPeriod) throws ParseException {
-		String strDate = "01" + DOT_SEPERATOR + accountingPeriod.substring(4) + DOT_SEPERATOR + accountingPeriod.substring(0, 4); 
-		return DateUtil.valueOf(strDate, SHORT_DATE_FORMAT);
 	}
 	
 	public static boolean before(Date sourceDate, Date destDate, int dateFormat) {
