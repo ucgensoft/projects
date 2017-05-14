@@ -116,5 +116,7 @@ public interface AppConstants {
 	
 	String BLUESNAP_CREATE_VENDOR_FAILES = "Bluesnap vendor creation failed!";
 	
+	String CREATE_PAYMENT_ACCOUNT_FAILES = "Payment account creation failed!";
+	
 }
 

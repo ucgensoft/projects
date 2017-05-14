@@ -1,6 +1,7 @@
 package com.ucgen.letserasmus.library.stripe.service;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import com.stripe.model.Charge;
 import com.stripe.model.Reversal;
@@ -12,7 +13,7 @@ import com.ucgen.letserasmus.library.payment.model.PayoutMethod;
 
 public interface IStripePaymentService {
 
-	ValueOperationResult<String> createManagedAccount(PayoutMethod payoutMethod);
+	ValueOperationResult<String> createManagedAccount(PayoutMethod payoutMethod, String tosAcceptIp, Date tosAcceptDate);
 	
 	ValueOperationResult<Charge> createCharge(PayoutMethod payoutMethod, PaymentMethod paymentMethod, String operationBy);
 	

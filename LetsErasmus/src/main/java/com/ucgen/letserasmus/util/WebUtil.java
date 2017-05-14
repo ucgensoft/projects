@@ -1,6 +1,7 @@
 package com.ucgen.letserasmus.util;
 
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 public class WebUtil {
@@ -23,5 +24,5 @@ public class WebUtil {
 			return null;
 		}
 	}
-
+	
 }

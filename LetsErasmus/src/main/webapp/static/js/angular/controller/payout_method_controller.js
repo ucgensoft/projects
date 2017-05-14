@@ -36,6 +36,9 @@ App.controller('payoutMethodCtrl', ['$scope', '$controller', 'paymentService', '
 	 };
 	 
 	 self.displayPayoutMethod = function(payoutMethod) {
+		 
+		 self.payoutMethod = payoutMethod;
+		 
 		 $('#txtFirstName').val(payoutMethod.vendorFirstName);
 		 $('#txtLastName').val(payoutMethod.vendorLastName);
 		 if (payoutMethod.vendorBirthDate) {
@@ -52,10 +55,10 @@ App.controller('payoutMethodCtrl', ['$scope', '$controller', 'paymentService', '
 		 $('#txtAddress2').val(payoutMethod.vendorAddress2);
 		 $('#txtPostalCode').val(payoutMethod.vendorZip);
 		 
-		 if (payoutMethod.bankAccountClass) {
-			 if (payoutMethod.bankAccountClass == 'PERSONAL') {
+		 if (payoutMethod.vendorEntityType) {
+			 if (payoutMethod.vendorEntityType == 'P') {
 				 $("#rdAccountClassPersonal")[0].checked = true;
-			 } else if (payoutMethod.bankAccountClass == 'BUSINESS') {
+			 } else if (payoutMethod.vendorEntityType == 'B') {
 				 $("#rdAccountClassBusiness")[0].checked = true;
 			 }
 		 }

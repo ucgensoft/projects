@@ -94,9 +94,9 @@ App.factory('paymentService', ['$http', '$q', function($http, $q){
 				}
 			};
 			
-			NProgress.start(3000, 5);
+			NProgress.start(3000, 5, true);
 			return $http.post(webApplicationUrlPrefix + '/api/payout/createdraft', payoutMethod, config).then(function(response) {
-				NProgress.done(true);
+				NProgress.done(true, true);
 				var result = isResultSuccess(response.data, true, function() {
 					callBack();
 				}, false);	
@@ -116,7 +116,7 @@ App.factory('paymentService', ['$http', '$q', function($http, $q){
 			return $http.post(webApplicationUrlPrefix + '/api/payout/update', payoutMethod, config).then(function(response) {
 				NProgress.done(true);
 				var result = isResultSuccess(response.data, true, function() {
-					callBack();
+					callBack(true);
 				}, false);	
 			}, function(errResponse) {
 				DialogUtil.error(errResponse);

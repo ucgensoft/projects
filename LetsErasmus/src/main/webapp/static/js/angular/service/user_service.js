@@ -10,10 +10,10 @@ App.factory('userService', ['$http', '$q', function($http, $q){
 				}
 			};
 			
-			NProgress.start(3000, 5);
+			NProgress.start(3000, 5, true);
 			self = this;
 			return $http.post(webApplicationUrlPrefix + '/api/user/signup', user, config).then(function(response) {
-				NProgress.done(true);
+				NProgress.done(true, true);
 				var result = isResultSuccess(response.data, true, function() {
 					if (response.data != null && response.data.errorCode == EnmErrorCode.USER_DEACTIVE) {
 						DialogUtil.confirm(response.data.resultDesc, function() {
@@ -26,6 +26,7 @@ App.factory('userService', ['$http', '$q', function($http, $q){
 					}
 				}, false);
 			}, function(errResponse) {
+				NProgress.done(true, true);
 				DialogUtil.error(errResponse);
 			});
 		},

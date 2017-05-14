@@ -10,7 +10,6 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import com.ucgen.common.dao.UtilityDao;
-import com.ucgen.common.exception.operation.OperationResultException;
 import com.ucgen.common.operationresult.EnmResultCode;
 import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.letserasmus.library.log.dao.ILogDao;
@@ -23,7 +22,7 @@ import com.ucgen.letserasmus.library.review.dao.ReviewRowMapper;
 public class LogDao extends JdbcDaoSupport implements ILogDao {
 		
 	private static final String INSERT_TRANSACTION_SQL = "INSERT INTO TRANSACTION_LOG (USER_ID, OPERATION_ID, OPERATION_DATE, ENTITY_TYPE, ENTITY_ID, " 
-			+ " CREATED_BY, CREATED_DATE) VALUES (?, ?, ?, ?, ?, ?, ?)";
+			+ " IP, CREATED_BY, CREATED_DATE) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 	
 	private static final String INSERT_INTEGRATION_SQL = "INSERT INTO INTEGRATION_LOG (USER_ID, EXT_SYSTEM_ID, OPERATION_ID, OPERATION_DATE, DURATION, " 
 			+ " REQUEST, RESPONSE, RESPONSE_CODE, CREATED_BY, CREATED_DATE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -42,7 +41,7 @@ public class LogDao extends JdbcDaoSupport implements ILogDao {
 	}
 	
 	@Override
-	public OperationResult insertTransactionLog(TransactionLog transactionLog) throws OperationResultException {
+	public OperationResult insertTransactionLog(TransactionLog transactionLog) {
 		OperationResult operationResult = new OperationResult();
 		
 		List<Object> argList = new ArrayList<Object>();
@@ -52,6 +51,7 @@ public class LogDao extends JdbcDaoSupport implements ILogDao {
 		argList.add(transactionLog.getOperationDate());
 		argList.add(transactionLog.getEntityType());
 		argList.add(transactionLog.getEntityId());
+		argList.add(transactionLog.getIp());
 		argList.add(transactionLog.getCreatedBy());
 		argList.add(transactionLog.getCreatedDate());
 		

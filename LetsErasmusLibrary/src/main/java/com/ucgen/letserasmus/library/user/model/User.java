@@ -33,7 +33,6 @@ public class User extends BaseModel {
 	private String userActivationKeyMsisdn;
 	private Long profilePhotoId;
 	private String facebookTokenId;
-	private String ip;
 	private String googleId;
 	private String facebookId;
 	private String jobTitle;
@@ -133,13 +132,6 @@ public class User extends BaseModel {
 	public void setFacebookTokenId(String facebookTokenId) {
 		this.facebookTokenId = facebookTokenId;
 	}
-	public String getIp() {
-		return ip;
-	}
-	public void setIp(String ip) {
-		this.ip = ip;
-	}
-	
 	public String getGender() {
 		return gender;
 	}

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ucgen.common.exception.operation.OperationResultException;
 import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.letserasmus.library.log.dao.ILogDao;
 import com.ucgen.letserasmus.library.log.model.IntegrationLog;
@@ -25,7 +24,7 @@ public class LogService implements ILogService {
 	}
 
 	@Override
-	public OperationResult insertTransactionLog(TransactionLog transactionLog) throws OperationResultException {
+	public OperationResult insertTransactionLog(TransactionLog transactionLog) {
 		return this.logDao.insertTransactionLog(transactionLog);
 	}
 

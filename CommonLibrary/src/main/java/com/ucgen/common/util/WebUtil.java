@@ -4,6 +4,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 
+import javax.servlet.http.HttpServletRequest;
+
 public class WebUtil {
 
 	public static final String URL_SEPERATOR = "/";
@@ -42,6 +44,14 @@ public class WebUtil {
 		}
 		
 		return url;
+	}
+	
+	public static String getClientIp(HttpServletRequest request) {
+		String ipAddress = request.getHeader("X-FORWARDED-FOR");
+		if (ipAddress == null) {
+			ipAddress = request.getRemoteAddr();
+		}
+		return ipAddress;
 	}
 	
 }

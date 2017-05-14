@@ -52,7 +52,7 @@ public class StripePaymentService implements IStripePaymentService {
 	}
 
 	@Override
-	public ValueOperationResult<String> createManagedAccount(PayoutMethod payoutMethod) {
+	public ValueOperationResult<String> createManagedAccount(PayoutMethod payoutMethod, String tosAcceptIp, Date tosAcceptDate) {
 		ValueOperationResult<String> operationResult = new ValueOperationResult<String>();
 		
 		StringBuilder request = new StringBuilder();
@@ -91,11 +91,16 @@ public class StripePaymentService implements IStripePaymentService {
 			Map<String, Object> payoutScheduleParams = new HashMap<String, Object>();
 			payoutScheduleParams.put("interval", "manual");
 			
+			Map<String, Object> tosParams = new HashMap<String, Object>();
+			tosParams.put("ip", tosAcceptIp);
+			tosParams.put("date", Math.abs(tosAcceptDate.getTime() / 1000));
+			
 			Map<String, Object> accountParams = new HashMap<String, Object>();
 			accountParams.put("country", payoutMethod.getVendorCountry());
 			accountParams.put("managed", true);
 			accountParams.put("legal_entity", legalEntityParams);
 			accountParams.put("payout_schedule", payoutScheduleParams);
+			accountParams.put("tos_acceptance", tosParams);
 
 			ObjectMapper objectMapper = new ObjectMapper();
 		    
