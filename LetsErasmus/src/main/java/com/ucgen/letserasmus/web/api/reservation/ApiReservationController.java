@@ -582,7 +582,8 @@ public class ApiReservationController extends BaseApiController {
 							List<Review> reviewList = this.reviewService.listReview(review, null, false, false, false);
 							tmpReservation.setReviewList(reviewList);
 							*/
-							if (DateUtil.truncate(tmpReservation.getStartDate()).getTime() > currentDate.getTime()) {
+							if (tmpReservation.getStatus().equals(EnmReservationStatus.PENDING.getId()) 
+									|| DateUtil.truncate(tmpReservation.getStartDate()).getTime() > currentDate.getTime()) {
 								upcomingList.add(tmpReservation);
 							} else if (DateUtil.truncate(tmpReservation.getEndDate()).getTime() < currentDate.getTime()) {
 								oldList.add(tmpReservation);

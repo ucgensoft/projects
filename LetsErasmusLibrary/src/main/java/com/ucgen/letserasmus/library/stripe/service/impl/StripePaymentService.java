@@ -13,7 +13,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.stripe.Stripe;
 import com.stripe.model.Account;
 import com.stripe.model.Charge;
+import com.stripe.model.Payout;
 import com.stripe.model.Refund;
+import com.stripe.model.Reversal;
+import com.stripe.model.Transfer;
 import com.ucgen.common.operationresult.EnmResultCode;
 import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.common.operationresult.ValueOperationResult;
@@ -33,6 +36,8 @@ import com.ucgen.letserasmus.library.stripe.service.IStripePaymentService;
 @Service
 public class StripePaymentService implements IStripePaymentService {
 
+	private static final BigDecimal CENT_MULTIPLIER = new BigDecimal(100);
+	
 	private IParameterService parameterService;
 	private ILogService logService;
 	
@@ -96,9 +101,9 @@ public class StripePaymentService implements IStripePaymentService {
 		    
 		    String strAccountParameters = objectMapper.writeValueAsString(accountParams);
 		    		     
-		    request.append("private key : " + stripePrivateKey);
-		    request.append(System.lineSeparator());
-		    request.append("request : " + strAccountParameters);
+		    //request.append("private key : " + stripePrivateKey);
+		    //request.append(System.lineSeparator());
+		    request.append(strAccountParameters);
 		    
 		    startDate = new Date();
 			Account newAccount = Account.create(accountParams);
@@ -138,8 +143,8 @@ public class StripePaymentService implements IStripePaymentService {
 	}
 	
 	@Override
-	public ValueOperationResult<String> charge(PayoutMethod payoutMethod, PaymentMethod paymentMethod, String operationBy) {
-		ValueOperationResult<String> operationResult = new ValueOperationResult<String>();
+	public ValueOperationResult<Charge> createCharge(PayoutMethod payoutMethod, PaymentMethod paymentMethod, String operationBy) {
+		ValueOperationResult<Charge> operationResult = new ValueOperationResult<Charge>();
 		
 		StringBuilder request = new StringBuilder();
 		StringBuilder response = new StringBuilder();
@@ -151,10 +156,8 @@ public class StripePaymentService implements IStripePaymentService {
 			String stripePrivateKey = this.parameterService.getParameterValue(EnmParameter.STRIPE_PRIVATE_KEY.getId());
 			Stripe.apiKey = stripePrivateKey;
 			
-			BigDecimal centMultiplier = new BigDecimal(100);
-			
-			Integer chargeAmount = paymentMethod.getPayment().getEntityPrice().add(paymentMethod.getPayment().getServiceFee()).multiply(centMultiplier).intValue();
-			Integer destinationAmount = paymentMethod.getPayment().getEntityPrice().subtract(paymentMethod.getPayment().getCommissionFee()).multiply(centMultiplier).intValue();
+			Integer chargeAmount = paymentMethod.getPayment().getEntityPrice().add(paymentMethod.getPayment().getServiceFee()).multiply(CENT_MULTIPLIER).intValue();
+			Integer destinationAmount = paymentMethod.getPayment().getEntityPrice().subtract(paymentMethod.getPayment().getCommissionFee()).multiply(CENT_MULTIPLIER).intValue();
 			
 			Map<String, Object> destinationParams = new HashMap<String, Object>();
 			destinationParams.put("account", payoutMethod.getStripeAccountId());
@@ -172,15 +175,17 @@ public class StripePaymentService implements IStripePaymentService {
 		    
 		    String strChargeParameters = objectMapper.writeValueAsString(chargeParams);
 		    		     
-		    request.append("private key : " + stripePrivateKey);
-		    request.append(System.lineSeparator());
+		    //request.append("private key : " + stripePrivateKey);
+		    //request.append(System.lineSeparator());
 		    request.append("request : " + strChargeParameters);
 		    
 		    startDate = new Date();
 			Charge newCharge = Charge.create(chargeParams);
 			responseCode = "0";
+			
 			operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
-			operationResult.setResultValue(newCharge.getId());
+			operationResult.setResultValue(newCharge);
+			
 			endDate = new Date();
 			
 			response.append(objectMapper.writeValueAsString(newCharge)); 
@@ -198,7 +203,7 @@ public class StripePaymentService implements IStripePaymentService {
 				IntegrationLog integrationLog = new IntegrationLog();
 				integrationLog.setUserId(paymentMethod.getUserId());
 				integrationLog.setExtSystemId(EnmExternalSystem.STRIPE.getId());
-				integrationLog.setOperationId(EnmOperation.STRIPE_CHARGE.getId());
+				integrationLog.setOperationId(EnmOperation.STRIPE_CREATE_CHARGE.getId());
 				integrationLog.setOperationDate(startDate);
 				integrationLog.setDuration(endDate.getTime() - startDate.getTime());
 				integrationLog.setRequest(request.toString());
@@ -227,8 +232,6 @@ public class StripePaymentService implements IStripePaymentService {
 			String stripePrivateKey = this.parameterService.getParameterValue(EnmParameter.STRIPE_PRIVATE_KEY.getId());
 			Stripe.apiKey = stripePrivateKey;
 			
-			BigDecimal centMultiplier = new BigDecimal(100);
-			
 			ValueOperationResult<Charge> getChargeResult = this.getCharge(userId, chargeId, operationBy);
 			
 			if (OperationResult.isResultSucces(getChargeResult)) {
@@ -236,16 +239,14 @@ public class StripePaymentService implements IStripePaymentService {
 				Map<String, Object> updateParams = new HashMap<String, Object>();
 				updateParams.put("description", "Charge for andrew.miller@example.com");
 
-				request.append("private key : " + stripePrivateKey);
-			    request.append(System.lineSeparator());
+				//request.append("private key : " + stripePrivateKey);
+			    //request.append(System.lineSeparator());
 			    request.append("request : " + null);
 				
 				startDate = new Date();
 				Charge responseCharge = charge.update(updateParams);
 				
 				ObjectMapper objectMapper = new ObjectMapper();
-			    
-			    String strChargeParameters = objectMapper.writeValueAsString(updateParams);
 			    
 				responseCode = "0";
 				operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
@@ -270,7 +271,7 @@ public class StripePaymentService implements IStripePaymentService {
 				IntegrationLog integrationLog = new IntegrationLog();
 				integrationLog.setUserId(userId);
 				integrationLog.setExtSystemId(EnmExternalSystem.STRIPE.getId());
-				integrationLog.setOperationId(EnmOperation.STRIPE_CHARGE.getId());
+				integrationLog.setOperationId(EnmOperation.STRIPE_UPDATE_CHARGE.getId());
 				integrationLog.setOperationDate(startDate);
 				integrationLog.setDuration(endDate.getTime() - startDate.getTime());
 				integrationLog.setRequest(request.toString());
@@ -299,9 +300,9 @@ public class StripePaymentService implements IStripePaymentService {
 			String stripePrivateKey = this.parameterService.getParameterValue(EnmParameter.STRIPE_PRIVATE_KEY.getId());
 			Stripe.apiKey = stripePrivateKey;
 			
-			request.append("private key : " + stripePrivateKey);
-		    request.append(System.lineSeparator());
-		    request.append("request : " + chargeId);
+			//request.append("private key : " + stripePrivateKey);
+		    //request.append(System.lineSeparator());
+		    request.append(chargeId);
 		    
 		    startDate = new Date();
 			Charge charge = Charge.retrieve(chargeId);
@@ -360,9 +361,9 @@ public class StripePaymentService implements IStripePaymentService {
 			ObjectMapper objectMapper = new ObjectMapper();
 		    
 		    		     
-		    request.append("private key : " + stripePrivateKey);
-		    request.append(System.lineSeparator());
-		    request.append("request : " + chargeId);
+		    //request.append("private key : " + stripePrivateKey);
+		    //request.append(System.lineSeparator());
+		    request.append(chargeId);
 		    
 		    startDate = new Date();
 		    
@@ -405,7 +406,7 @@ public class StripePaymentService implements IStripePaymentService {
 	}
 	
 	@Override
-	public OperationResult refund(Long userId, String chargeId, BigDecimal refundAmount, BigDecimal vendorAmount, String operationBy) {
+	public OperationResult refund(Long userId, String chargeId, String transferId, BigDecimal clientRefundAmount, BigDecimal vendorRefundAmount, String operationBy) {
 		OperationResult operationResult = new OperationResult();
 		
 		StringBuilder request = new StringBuilder();
@@ -422,15 +423,27 @@ public class StripePaymentService implements IStripePaymentService {
 
 			Map<String, Object> refundParams = new HashMap<String, Object>();
 			refundParams.put("charge", chargeId);
-			refundParams.put("reverse_transfer", true);
 			
-			if (refundAmount != null) {
-				refundParams.put("amount", refundAmount);
+			if (clientRefundAmount != null) {
+				refundParams.put("amount", clientRefundAmount.multiply(CENT_MULTIPLIER));
 			}
-		    		     
-		    request.append("private key : " + stripePrivateKey);
-		    request.append(System.lineSeparator());
-		    request.append("request : " + chargeId);
+			
+			Charge stripeCharge = Charge.retrieve(chargeId);
+			if (stripeCharge.getCaptured()) {
+				ValueOperationResult<Reversal> reversalResult = this.createReverseTransfer(userId, transferId, vendorRefundAmount, operationBy);
+				if (!OperationResult.isResultSucces(reversalResult)) {
+					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+					operationResult.setResultDesc("Reverse transfer operation failed. Error: " + reversalResult.getResultDesc());
+					return operationResult;
+				}
+				refundParams.put("reverse_transfer", false);
+			} else {
+				refundParams.put("reverse_transfer", true);
+			}
+			
+		    //request.append("private key : " + stripePrivateKey);
+		    //request.append(System.lineSeparator());
+		    request.append(objectMapper.writeValueAsString(refundParams));
 		    
 		    startDate = new Date();
 		    
@@ -456,6 +469,190 @@ public class StripePaymentService implements IStripePaymentService {
 				integrationLog.setUserId(userId);
 				integrationLog.setExtSystemId(EnmExternalSystem.STRIPE.getId());
 				integrationLog.setOperationId(EnmOperation.STRIPE_REFUND.getId());
+				integrationLog.setOperationDate(startDate);
+				integrationLog.setDuration(endDate.getTime() - startDate.getTime());
+				integrationLog.setRequest(request.toString());
+				integrationLog.setResponse(response.toString());
+				integrationLog.setResponseCode(responseCode);
+				integrationLog.setCreatedBy(operationBy);
+				integrationLog.setCreatedDate(new Date());
+				this.logService.insertIntegrationLog(integrationLog);
+			}
+		}
+		
+		return operationResult;
+	}
+	
+	@Override
+	public OperationResult createPayout(Long userId, BigDecimal payoutAmount, String currencyCode, String operationBy) {
+		OperationResult operationResult = new OperationResult();
+		
+		StringBuilder request = new StringBuilder();
+		StringBuilder response = new StringBuilder();
+		String responseCode = null;
+		Date startDate = null;
+		Date endDate = null;
+		
+		try {
+			String stripePrivateKey = this.parameterService.getParameterValue(EnmParameter.STRIPE_PRIVATE_KEY.getId());
+			Stripe.apiKey = stripePrivateKey;
+															
+			ObjectMapper objectMapper = new ObjectMapper();
+
+			Map<String, Object> payoutParams = new HashMap<String, Object>();
+			payoutParams.put("amount", payoutAmount);
+			payoutParams.put("currency", currencyCode);
+
+			//request.append("private key : " + stripePrivateKey);
+		    //request.append(System.lineSeparator());
+		    request.append("request : " + objectMapper.writeValueAsString(payoutParams));
+			
+			startDate = new Date();
+			Payout newPayout = Payout.create(payoutParams);
+		    
+			responseCode = "0";
+			operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+			endDate = new Date();
+			
+			response.append(objectMapper.writeValueAsString(newPayout)); 
+			
+		} catch (Exception e) {
+			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
+			operationResult.setResultDesc(CommonUtil.getExceptionMessage(e));
+			responseCode = "-1";
+			response.append(CommonUtil.getExceptionMessage(e));
+		}  finally {
+			if (startDate != null && request != null) {
+				if (endDate == null) {
+					endDate = new Date();
+				}
+				IntegrationLog integrationLog = new IntegrationLog();
+				integrationLog.setUserId(userId);
+				integrationLog.setExtSystemId(EnmExternalSystem.STRIPE.getId());
+				integrationLog.setOperationId(EnmOperation.STRIPE_CREATE_PAYOUT.getId());
+				integrationLog.setOperationDate(startDate);
+				integrationLog.setDuration(endDate.getTime() - startDate.getTime());
+				integrationLog.setRequest(request.toString());
+				integrationLog.setResponse(response.toString());
+				integrationLog.setResponseCode(responseCode);
+				integrationLog.setCreatedBy(operationBy);
+				integrationLog.setCreatedDate(new Date());
+				this.logService.insertIntegrationLog(integrationLog);
+			}
+		}
+		
+		return operationResult;
+	}
+
+	
+	@Override
+	public ValueOperationResult<Transfer> getTransfer(Long userId, String transferId, String operationBy) {
+		ValueOperationResult<Transfer> operationResult = new ValueOperationResult<Transfer>();
+		
+		StringBuilder request = new StringBuilder();
+		StringBuilder response = new StringBuilder();
+		String responseCode = null;
+		Date startDate = null;
+		Date endDate = null;
+		
+		try {
+			String stripePrivateKey = this.parameterService.getParameterValue(EnmParameter.STRIPE_PRIVATE_KEY.getId());
+			Stripe.apiKey = stripePrivateKey;
+			
+			//request.append("private key : " + stripePrivateKey);
+		    //request.append(System.lineSeparator());
+		    request.append(transferId);
+		    
+		    startDate = new Date();
+			Transfer transfer = Transfer.retrieve(transferId);
+
+			ObjectMapper objectMapper = new ObjectMapper();
+			
+			responseCode = "0";
+			operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+			operationResult.setResultValue(transfer);
+			endDate = new Date();
+			
+			response.append(objectMapper.writeValueAsString(transfer)); 
+			
+		} catch (Exception e) {
+			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
+			operationResult.setResultDesc(CommonUtil.getExceptionMessage(e));
+			responseCode = "-1";
+			response.append(CommonUtil.getExceptionMessage(e));
+		}  finally {
+			if (startDate != null && request != null) {
+				if (endDate == null) {
+					endDate = new Date();
+				}
+				IntegrationLog integrationLog = new IntegrationLog();
+				integrationLog.setUserId(userId);
+				integrationLog.setExtSystemId(EnmExternalSystem.STRIPE.getId());
+				integrationLog.setOperationId(EnmOperation.STRIPE_GET_CHARGE.getId());
+				integrationLog.setOperationDate(startDate);
+				integrationLog.setDuration(endDate.getTime() - startDate.getTime());
+				integrationLog.setRequest(request.toString());
+				integrationLog.setResponse(response.toString());
+				integrationLog.setResponseCode(responseCode);
+				integrationLog.setCreatedBy(operationBy);
+				integrationLog.setCreatedDate(new Date());
+				this.logService.insertIntegrationLog(integrationLog);
+			}
+		}
+		
+		return operationResult;
+	}
+
+	
+	@Override
+	public ValueOperationResult<Reversal> createReverseTransfer(Long userId, String transferId, BigDecimal amount,
+			String operationBy) {
+		ValueOperationResult<Reversal> operationResult = new ValueOperationResult<Reversal>();
+		
+		StringBuilder request = new StringBuilder();
+		StringBuilder response = new StringBuilder();
+		String responseCode = null;
+		Date startDate = null;
+		Date endDate = null;
+		
+		try {
+			String stripePrivateKey = this.parameterService.getParameterValue(EnmParameter.STRIPE_PRIVATE_KEY.getId());
+			Stripe.apiKey = stripePrivateKey;
+			
+			//request.append("private key : " + stripePrivateKey);
+		    //request.append(System.lineSeparator());
+		    request.append(transferId);
+		    
+		    startDate = new Date();
+		    
+		    Map<String, Object> reverseParams = new HashMap<String, Object>();
+		    reverseParams.put("amount", amount.multiply(CENT_MULTIPLIER));
+			Transfer transfer = this.getTransfer(userId, transferId, operationBy).getResultValue();
+			Reversal reversal = transfer.getReversals().create(reverseParams);
+
+			ObjectMapper objectMapper = new ObjectMapper();
+			
+			responseCode = "0";
+			operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+			operationResult.setResultValue(reversal);
+			endDate = new Date();
+			
+			response.append(objectMapper.writeValueAsString(reversal)); 
+			
+		} catch (Exception e) {
+			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
+			operationResult.setResultDesc(CommonUtil.getExceptionMessage(e));
+			responseCode = "-1";
+			response.append(CommonUtil.getExceptionMessage(e));
+		}  finally {
+			if (startDate != null && request != null) {
+				if (endDate == null) {
+					endDate = new Date();
+				}
+				IntegrationLog integrationLog = new IntegrationLog();
+				integrationLog.setUserId(userId);
+				integrationLog.setExtSystemId(EnmExternalSystem.STRIPE.getId());
+				integrationLog.setOperationId(EnmOperation.STRIPE_CREATE_REVERSE_TRANSFER.getId());
 				integrationLog.setOperationDate(startDate);
 				integrationLog.setDuration(endDate.getTime() - startDate.getTime());
 				integrationLog.setRequest(request.toString());

@@ -10,11 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.stripe.model.Charge;
 import com.ucgen.common.exception.operation.OperationResultException;
 import com.ucgen.common.operationresult.EnmResultCode;
 import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.common.operationresult.ValueOperationResult;
 import com.ucgen.common.util.DateUtil;
+import com.ucgen.common.util.enumeration.EnmCompareResult;
 import com.ucgen.letserasmus.library.bluesnap.service.IExtPaymentService;
 import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
 import com.ucgen.letserasmus.library.log.dao.ILogDao;
@@ -152,7 +154,11 @@ public class ReservationService implements IReservationService {
 					if (payoutMethod.getExternalSystemId().equals(EnmExternalSystem.BLUESNAP.getId())) {
 						sendPaymentResult = this.extPaymentService.paymentAuth(user.getId(), paymentMethod, payoutMethod, reservation.getCreatedBy());
 					} else if (payoutMethod.getExternalSystemId().equals(EnmExternalSystem.STRIPE.getId())) {
-						sendPaymentResult = this.stripePaymentService.charge(payoutMethod, paymentMethod, reservation.getCreatedBy());
+						ValueOperationResult<Charge> stripePaymentResult = this.stripePaymentService.createCharge(payoutMethod, paymentMethod, reservation.getCreatedBy());
+						reservation.setStripeVendorTransferId(stripePaymentResult.getResultValue().getTransfer());
+						sendPaymentResult = new ValueOperationResult<String>();
+						sendPaymentResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+						sendPaymentResult.setResultValue(stripePaymentResult.getResultValue().getId());
 					}
 							
 					if (OperationResult.isResultSucces(sendPaymentResult)) {
@@ -235,7 +241,7 @@ public class ReservationService implements IReservationService {
 								authPaymentReverseResult = this.extPaymentService.paymentAuthReversal(reservation.getClientUserId(), 
 										reservation.getPaymentTransactionId(), reservation.getModifiedBy());
 							} else if (hostPayoutMethod.getExternalSystemId().equals(EnmExternalSystem.STRIPE.getId())) {
-								authPaymentReverseResult = this.stripePaymentService.refund(reservation.getClientUserId(), reservation.getPaymentTransactionId(), null, null, reservation.getModifiedBy());
+								authPaymentReverseResult = this.stripePaymentService.refund(reservation.getClientUserId(), reservation.getPaymentTransactionId(), reservation.getStripeVendorTransferId(), null, null, reservation.getModifiedBy());
 							}
 							if (!OperationResult.isResultSucces(authPaymentReverseResult)) {
 								updateReservationResult.setResultDesc("Payment auth reversal failed. Error:" + OperationResult.getResultDesc(authPaymentReverseResult));
@@ -249,7 +255,6 @@ public class ReservationService implements IReservationService {
 								} else if (reservation.getStatus().equals(EnmReservationStatus.RECALLED.getId())) {
 									this.mailService.sendBookingRequestRecallMail(reservation.getHostUser().getEmail(), reservation.getHostUser().getFirstName(), reservation.getPlace().getTitle());
 								}
-									
 							}
 						}
 						if (reservation.getStatus().equals(EnmReservationStatus.ACCEPTED.getId()) 
@@ -259,7 +264,10 @@ public class ReservationService implements IReservationService {
 								capturePaymentResult = this.extPaymentService.paymentCapture(reservation.getClientUserId(), 
 										reservation.getPaymentTransactionId(), reservation.getModifiedBy());
 							} else if (hostPayoutMethod.getExternalSystemId().equals(EnmExternalSystem.STRIPE.getId())) {
-								capturePaymentResult = this.stripePaymentService.capture(reservation.getClientUserId(), reservation.getPaymentTransactionId(), reservation.getModifiedBy());
+								ValueOperationResult<String> stripeCapturePaymentResult = this.stripePaymentService.capture(reservation.getClientUserId(), reservation.getPaymentTransactionId(), reservation.getModifiedBy());
+								reservation.setStripeVendorTransferId(stripeCapturePaymentResult.getResultValue());
+								this.reservationDao.update(reservation);
+								capturePaymentResult = new OperationResult(EnmResultCode.SUCCESS.getValue(), null);
 							}
 							if (!OperationResult.isResultSucces(capturePaymentResult)) {
 								updateReservationResult.setResultDesc("Payment capture operation failed. Error:" + OperationResult.getResultDesc(capturePaymentResult));
@@ -270,13 +278,16 @@ public class ReservationService implements IReservationService {
 										reservation, null, null);
 							}
 						}
-						if (reservation.getStatus().equals(EnmReservationStatus.HOST_CANCELLED.getId()) && !reservationOldStatus.equals(EnmReservationStatus.HOST_CANCELLED.getId())) {
+						if (reservation.getStatus().equals(EnmReservationStatus.HOST_CANCELLED.getId()) 
+								&& !reservationOldStatus.equals(EnmReservationStatus.HOST_CANCELLED.getId())) {
 							OperationResult authPaymentReverseResult = null;
 							if (hostPayoutMethod.getExternalSystemId().equals(EnmExternalSystem.BLUESNAP.getId())) {
 								authPaymentReverseResult = this.extPaymentService.refund(reservation.getClientUserId(), 
 										reservation.getPaymentTransactionId(), null, null, reservation.getModifiedBy());
 							} else if (hostPayoutMethod.getExternalSystemId().equals(EnmExternalSystem.STRIPE.getId())) {
-								authPaymentReverseResult = this.stripePaymentService.refund(reservation.getClientUserId(), reservation.getPaymentTransactionId(), null, null, reservation.getModifiedBy());
+								authPaymentReverseResult = this.stripePaymentService.refund(reservation.getClientUserId(), reservation.getPaymentTransactionId(), 
+										reservation.getStripeVendorTransferId(), reservation.getPlacePrice().add(reservation.getServiceFee()), 
+										reservation.getPlacePrice().subtract(reservation.getCommissionFee()), reservation.getModifiedBy());
 							}
 							if (!OperationResult.isResultSucces(authPaymentReverseResult)) {
 								updateReservationResult.setResultDesc("Payment auth reversal failed. Error:" + OperationResult.getResultDesc(authPaymentReverseResult));
@@ -289,7 +300,7 @@ public class ReservationService implements IReservationService {
 										reservation.getStartDate(), reservation.getEndDate(), reservation.getPlacePrice(), reservation.getCurrencyId());
 							}
 						}
-						if (reservation.getStatus().equals(EnmReservationStatus.CLIENT_CANCELLED) && !reservationOldStatus.equals(EnmReservationStatus.CLIENT_CANCELLED.getId())) {
+						if (reservation.getStatus().equals(EnmReservationStatus.CLIENT_CANCELLED.getId()) && !reservationOldStatus.equals(EnmReservationStatus.CLIENT_CANCELLED.getId())) {
 							Long resRemainingDays = DateUtil.dateDiff(reservation.getStartDate(), new Date(), Calendar.DATE);
 							TreeMap<Integer, CancelPolicyRule> entityTypeCancelRuleMap = this.simpleObjectService.listCancelPolicyRule(EnmEntityType.RESERVATION.getId());
 							CancelPolicyRule cancelPolicyRule = null;
@@ -301,14 +312,22 @@ public class ReservationService implements IReservationService {
 							}
 							
 							BigDecimal clientRefundAmount = reservation.getPlacePrice().multiply(cancelPolicyRule.getRefundRate());
-							BigDecimal vendorAmount = reservation.getPlacePrice().subtract(clientRefundAmount).subtract(reservation.getCommissionFee());
+							BigDecimal vendorAmount = reservation.getPlacePrice().subtract(reservation.getCommissionFee());
+							BigDecimal vendorRefundAmount = null;
+							
+							if (vendorAmount.compareTo(clientRefundAmount) == EnmCompareResult.GREATER.getValue()) {
+								vendorRefundAmount = clientRefundAmount;
+							} else {
+								vendorRefundAmount = vendorAmount;
+							}
+							
 							
 							OperationResult authPaymentReverseResult = null;
 							if (hostPayoutMethod.getExternalSystemId().equals(EnmExternalSystem.BLUESNAP.getId())) {
 								authPaymentReverseResult = this.extPaymentService.refund(reservation.getClientUserId(), 
-										reservation.getPaymentTransactionId(), clientRefundAmount, vendorAmount, reservation.getModifiedBy());
+										reservation.getPaymentTransactionId(), clientRefundAmount, vendorRefundAmount, reservation.getModifiedBy());
 							} else if (hostPayoutMethod.getExternalSystemId().equals(EnmExternalSystem.STRIPE.getId())) {
-								authPaymentReverseResult = this.stripePaymentService.refund(reservation.getClientUserId(), reservation.getPaymentTransactionId(), null, null, reservation.getModifiedBy());
+								authPaymentReverseResult = this.stripePaymentService.refund(reservation.getClientUserId(), reservation.getPaymentTransactionId(), reservation.getStripeVendorTransferId(), clientRefundAmount, vendorRefundAmount, reservation.getModifiedBy());
 							}
 							if (!OperationResult.isResultSucces(authPaymentReverseResult)) {
 								updateReservationResult.setResultDesc("Payment auth reversal failed. Error:" + OperationResult.getResultDesc(authPaymentReverseResult));

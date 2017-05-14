@@ -16,22 +16,22 @@
 					<div class="row">
 						<div class="col-1 space-top-2">
 							<input id="chbTerms" name="tos_confirm" type="checkbox"
-								checked="checked" />
+								checked="checked" onchange="$('#chbTerms')[0].checked ? $('#btnConfirmAccept').attr('disabled', false) : $('#btnConfirmAccept').attr('disabled', true)"/>
 						</div>
 						<div class="col-11">
 							<label class="label-inline" for="tos_confirm">By
 								checking this box, I agree to the
-								<a href="http://localhost:8080/pages/Policies.xhtml" target="_blank">Terms of Service</a> 
-								<a href="http://localhost:8080/pages/Policies.xhtml" target="_blank">Refund Policy</a>
+								<a href="/pages/Policies.xhtml" target="_blank">Terms of Service</a> 
+								<a href="/pages/Policies.xhtml" target="_blank">Refund Policy</a>
 								, and 
-								<a href="http://localhost:8080/pages/Policies.xhtml" target="_blank">Cancellation Policies</a>.
+								<a href="/pages/Policies.xhtml" target="_blank">Cancellation Policies</a>.
 							</label>
 						</div>
 					</div>
 				</div>
 				<div class="panel-footer">
 					<input type="hidden" name="decision" value="accept" />
-					<input class="btn btn-primary" id="accept_submit" name="commit" 
+					<input class="btn btn-primary" id="btnConfirmAccept" name="commit" 
 						type="button" value="Accept" onclick="acceptReservation()"/>
 					<button class="btn" data-behavior="modal-close" onclick="closeModal()">Close</button>
 				</div>

@@ -386,12 +386,13 @@ var DialogUtil = {
 		swal({
 	      	  title: title,
 	      	  text: message,
-	      	  type: "warning",
+	      	  //type: "warning",
 	      	  showCancelButton: true,
 	      	  confirmButtonColor: "#DD6B55",
 	      	  confirmButtonText: confirmText,
 	      	  cancelButtonText : cancelText,
-	      	  closeOnConfirm: false
+	      	  closeOnConfirm: false,
+	      	  imageUrl : '/static/images/confirm.png'
 	      	},
 	      	callback);
 	}

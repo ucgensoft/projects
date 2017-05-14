@@ -32,7 +32,11 @@ public class CancelPolicyRule extends BaseModel {
 		this.remainingDays = remainingDays;
 	}
 	public BigDecimal getRefundRate() {
-		return refundRate;
+		if (this.refundRate != null) {
+			return refundRate.divide(new BigDecimal(100));
+		} else {
+			return null;
+		}
 	}
 	public void setRefundRate(BigDecimal refundRate) {
 		this.refundRate = refundRate;
