@@ -141,28 +141,33 @@ public class ApiFavoriteController extends BaseApiController {
 							}
 							
 							if (hostUserId != null) {
-								Favorite newFavorite = new Favorite();
-								
-								newFavorite.setUserId(user.getId());
-								newFavorite.setHostUserId(hostUserId);
-								newFavorite.setEntityType(favorite.getEntityType());
-								newFavorite.setEntityId(favorite.getEntityId());
-								
-								newFavorite.setCreatedBy(user.getFullName());
-								newFavorite.setCreatedDate(new Date());
-								OperationResult createResult = this.favoriteService.insertFavorite(newFavorite);
-								if (OperationResult.isResultSucces(createResult)) {
+								if (!hostUserId.equals(user.getId())) {
+									Favorite newFavorite = new Favorite();
 									
-									BaseModel entity = this.favoriteService.getEntityDetails(newFavorite.getEntityType(), newFavorite.getEntityId());
+									newFavorite.setUserId(user.getId());
+									newFavorite.setHostUserId(hostUserId);
+									newFavorite.setEntityType(favorite.getEntityType());
+									newFavorite.setEntityId(favorite.getEntityId());
 									
-									newFavorite.setEntity(entity);
-									
-									user.addFavorite(newFavorite);
-									operationResult.setResultValue(user.getFavoriteMap());
-									operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+									newFavorite.setCreatedBy(user.getFullName());
+									newFavorite.setCreatedDate(new Date());
+									OperationResult createResult = this.favoriteService.insertFavorite(newFavorite);
+									if (OperationResult.isResultSucces(createResult)) {
+										
+										BaseModel entity = this.favoriteService.getEntityDetails(newFavorite.getEntityType(), newFavorite.getEntityId());
+										
+										newFavorite.setEntity(entity);
+										
+										user.addFavorite(newFavorite);
+										operationResult.setResultValue(user.getFavoriteMap());
+										operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+									} else {
+										operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+										operationResult.setResultDesc(AppConstants.OPERATION_FAIL);
+									}
 								} else {
-									operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-									operationResult.setResultDesc(AppConstants.OPERATION_FAIL);
+									operationResult.setResultCode(EnmResultCode.WARNING.getValue());
+									operationResult.setResultDesc("This is your own listing. You can not add to favorite!");
 								}
 							} else {
 								operationResult.setResultCode(EnmResultCode.WARNING.getValue());

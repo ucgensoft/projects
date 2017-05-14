@@ -34,6 +34,7 @@ import com.ucgen.letserasmus.library.payment.service.IPaymentService;
 import com.ucgen.letserasmus.library.place.enumeration.EnmHomeType;
 import com.ucgen.letserasmus.library.place.enumeration.EnmPlaceType;
 import com.ucgen.letserasmus.library.place.model.Place;
+import com.ucgen.letserasmus.library.place.service.IPlaceService;
 import com.ucgen.letserasmus.library.reservation.dao.IReservationDao;
 import com.ucgen.letserasmus.library.reservation.enumeration.EnmReservationStatus;
 import com.ucgen.letserasmus.library.reservation.model.Reservation;
@@ -56,6 +57,7 @@ public class ReservationService implements IReservationService {
 	private IPaymentService paymentService;
 	private IMailService mailService;
 	private IUserService userService;
+	private IPlaceService placeService;
 	
 	@Autowired
 	public void setReservationDao(IReservationDao reservationDao) {
@@ -100,6 +102,11 @@ public class ReservationService implements IReservationService {
 	@Autowired
 	public void setUserService(IUserService userService) {
 		this.userService = userService;
+	}
+
+	@Autowired
+	public void setPlaceService(IPlaceService placeService) {
+		this.placeService = placeService;
 	}
 
 	@Override
@@ -267,6 +274,9 @@ public class ReservationService implements IReservationService {
 								ValueOperationResult<String> stripeCapturePaymentResult = this.stripePaymentService.capture(reservation.getClientUserId(), reservation.getPaymentTransactionId(), reservation.getModifiedBy());
 								reservation.setStripeVendorTransferId(stripeCapturePaymentResult.getResultValue());
 								this.reservationDao.update(reservation);
+								Place dbPlace = this.placeService.getPlace(reservation.getPlaceId()).getResultValue();
+								dbPlace.setStartDate(DateUtil.addTime(reservation.getEndDate(), Calendar.DATE, 1));
+								this.placeService.updatePlace(dbPlace, null, null, null);
 								capturePaymentResult = new OperationResult(EnmResultCode.SUCCESS.getValue(), null);
 							}
 							if (!OperationResult.isResultSucces(capturePaymentResult)) {
