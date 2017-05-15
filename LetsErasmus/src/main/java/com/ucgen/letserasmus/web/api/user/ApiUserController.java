@@ -217,6 +217,7 @@ public class ApiUserController extends BaseApiController {
 					&& uiUser.getEmail().trim().length() > 0
 					&& uiUser.getPassword() != null
 					&& uiUser.getPassword().trim().length() > 0) {
+								
 				User newUser = new User();
 				newUser.setEmail(uiUser.getEmail());
 				newUser.setPassword(uiUser.getPassword());
@@ -486,164 +487,154 @@ public class ApiUserController extends BaseApiController {
 	
     @RequestMapping(value = "/api/user/update", method = RequestMethod.POST)
     public ResponseEntity<OperationResult> updateUser(@RequestBody User uiUser, HttpSession session) throws JsonParseException, JsonMappingException, IOException, ParseException {
-		HttpStatus httpStatus = null;
 		OperationResult operationResult = new OperationResult();
 		try {			
-			Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
-			if (activeOperation != null && activeOperation.equals(EnmOperation.UPDATE_USER)) {
-				User sessionUser = super.getSessionUser(session);
-				if (sessionUser != null) {
-					boolean isValid = true;
-					if (!sessionUser.getEmail().equals(uiUser.getEmail())) {
-						User tmpUser = new User();
-						tmpUser.setEmail(uiUser.getEmail());
-						tmpUser = this.userService.getUser(tmpUser);
+			User sessionUser = super.getSessionUser(session);
+			if (sessionUser != null) {
+				boolean isValid = true;
+				if (!sessionUser.getEmail().equals(uiUser.getEmail())) {
+					User tmpUser = new User();
+					tmpUser.setEmail(uiUser.getEmail());
+					tmpUser = this.userService.getUser(tmpUser);
+				}
+				if (isValid) {
+					Date operationDate = new Date();
+					MultipartFile profilePhoto = (MultipartFile) session.getAttribute(EnmSession.USER_PHOTO.getId());
+					session.removeAttribute(EnmSession.USER_PHOTO.getId());
+					
+					boolean profilePhotoChanged = false;
+					boolean profilePhotoDeleted = false;
+					
+					if (profilePhoto != null) {
+						if (profilePhoto.getOriginalFilename().equalsIgnoreCase("deleted")) {
+							profilePhotoDeleted = true;
+						} else if (!profilePhoto.getOriginalFilename().equalsIgnoreCase("dummy")) {
+							profilePhotoChanged = true;
+						}
 					}
-					if (isValid) {
-						Date operationDate = new Date();
-						MultipartFile profilePhoto = (MultipartFile) session.getAttribute(EnmSession.USER_PHOTO.getId());
-						session.removeAttribute(EnmSession.USER_PHOTO.getId());
+					
+					String modifiedBy = sessionUser.getFullName();
+					Long oldProfilePhotoId = sessionUser.getProfilePhotoId();
+					Long deleteProfilePhotoId = null;
+					
+					if (profilePhotoDeleted) {
+						deleteProfilePhotoId = oldProfilePhotoId; 
+					}
+					User user = new User();
+					user.setId(sessionUser.getId());
+					
+					user = this.userService.getUser(user);
+					user.setProfilePhoto(null);
+					
+					if (uiUser.getFirstName() != null && uiUser.getFirstName().trim().length() > 0) {
+						user.setFirstName(uiUser.getFirstName());
+					}
+					if (uiUser.getLastName() != null && uiUser.getLastName().trim().length() > 0) {
+						user.setLastName(uiUser.getLastName());
+					}
+					if (uiUser.getGender() != null && EnmGender.getGender(uiUser.getGender()) != null) {
+						user.setGender(EnmGender.getGender(uiUser.getGender()).getId());
+					}
+					if (uiUser.getPassword() != null && uiUser.getPassword().trim().length() > 0) {
+						user.setPassword(uiUser.getPassword());
+					}
+					if (user.getGoogleId() != null || user.getFacebookId() != null) {
+						user.setEmail(uiUser.getEmail());
 						
-						boolean profilePhotoChanged = false;
-						boolean profilePhotoDeleted = false;
-						
-						if (profilePhoto != null) {
-							if (profilePhoto.getOriginalFilename().equalsIgnoreCase("deleted")) {
-								profilePhotoDeleted = true;
-							} else if (!profilePhoto.getOriginalFilename().equalsIgnoreCase("dummy")) {
-								profilePhotoChanged = true;
-							}
+						if (sessionUser.getEmail() == null || !sessionUser.getEmail().equals(user.getEmail())) {
+							String verificationCode = SecurityUtil.generateUUID();
+							
+							user.setEmailVerified(EnmBoolStatus.NO.getId());
+							user.setUserActivationKeyEmail(verificationCode);
 						}
+					}
+					user.setResidenceLocationName(uiUser.getResidenceLocationName());
+					user.setDescription(uiUser.getDescription());
+					user.setJobTitle(uiUser.getJobTitle());
+					user.setSchoolName(uiUser.getSchoolName());
+					user.setLanguages(uiUser.getLanguages());
+					//user.setMsisdn(uiUser.getMsisdn());
+					user.setBirthDate(uiUser.getBirthDate());
+										
+					if (profilePhotoDeleted) {
+						user.setProfilePhotoId(null);
+					}
+					user.setModifiedDate(operationDate);
+					user.setModifiedBy(modifiedBy);
+					
+					if (profilePhotoChanged) {
+						String fileSuffix = profilePhoto.getContentType().split("/")[1];
+						String fileName = profilePhoto.getOriginalFilename().split("\\.")[0];
+						Photo photo = new Photo();
+						photo.setFileName(fileName);
+						photo.setFileSize(profilePhoto.getSize());
+						photo.setEntityType(EnmEntityType.USER.getId());
+						photo.setEntityId(user.getId());
+						photo.setCreatedBy(modifiedBy);
+						photo.setCreatedDate(operationDate);
+						photo.setFileType(EnmFileType.getFileTypeWithSuffix(fileSuffix).getValue());
 						
-						String modifiedBy = sessionUser.getFullName();
-						Long oldProfilePhotoId = sessionUser.getProfilePhotoId();
-						Long deleteProfilePhotoId = null;
-						
-						if (profilePhotoDeleted) {
-							deleteProfilePhotoId = oldProfilePhotoId; 
-						}
-						User user = new User();
-						user.setId(sessionUser.getId());
-						
+						user.setProfilePhoto(photo);
+					}
+					
+					OperationResult updateResult = this.userService.updateUser(user, true, deleteProfilePhotoId);
+					if (OperationResult.isResultSucces(updateResult)) {
 						user = this.userService.getUser(user);
-						user.setProfilePhoto(null);
-						
-						if (uiUser.getFirstName() != null && uiUser.getFirstName().trim().length() > 0) {
-							user.setFirstName(uiUser.getFirstName());
+						this.processLogin(session, user, EnmLoginType.getLoginType(sessionUser.getLoginType()));
+						if (!sessionUser.getEmail().equals(user.getEmail())) {
+							this.mailService.sendEmailVerificationMail(user, user.getEmail());
 						}
-						if (uiUser.getLastName() != null && uiUser.getLastName().trim().length() > 0) {
-							user.setLastName(uiUser.getLastName());
-						}
-						if (uiUser.getGender() != null && EnmGender.getGender(uiUser.getGender()) != null) {
-							user.setGender(EnmGender.getGender(uiUser.getGender()).getId());
-						}
-						if (uiUser.getPassword() != null && uiUser.getPassword().trim().length() > 0) {
-							user.setPassword(uiUser.getPassword());
-						}
-						if (user.getGoogleId() != null || user.getFacebookId() != null) {
-							user.setEmail(uiUser.getEmail());
-							
-							if (sessionUser.getEmail() == null || !sessionUser.getEmail().equals(user.getEmail())) {
-								String verificationCode = SecurityUtil.generateUUID();
+						if (profilePhotoDeleted || profilePhotoChanged) {
+							try {
 								
-								user.setEmailVerified(EnmBoolStatus.NO.getId());
-								user.setUserActivationKeyEmail(verificationCode);
-							}
-						}
-						user.setResidenceLocationName(uiUser.getResidenceLocationName());
-						user.setDescription(uiUser.getDescription());
-						user.setJobTitle(uiUser.getJobTitle());
-						user.setSchoolName(uiUser.getSchoolName());
-						user.setLanguages(uiUser.getLanguages());
-						//user.setMsisdn(uiUser.getMsisdn());
-						user.setBirthDate(uiUser.getBirthDate());
-											
-						if (profilePhotoDeleted) {
-							user.setProfilePhotoId(null);
-						}
-						user.setModifiedDate(operationDate);
-						user.setModifiedBy(modifiedBy);
-						
-						if (profilePhotoChanged) {
-							String fileSuffix = profilePhoto.getContentType().split("/")[1];
-							String fileName = profilePhoto.getOriginalFilename().split("\\.")[0];
-							Photo photo = new Photo();
-							photo.setFileName(fileName);
-							photo.setFileSize(profilePhoto.getSize());
-							photo.setEntityType(EnmEntityType.USER.getId());
-							photo.setEntityId(user.getId());
-							photo.setCreatedBy(modifiedBy);
-							photo.setCreatedDate(operationDate);
-							photo.setFileType(EnmFileType.getFileTypeWithSuffix(fileSuffix).getValue());
-							
-							user.setProfilePhoto(photo);
-						}
-						
-						OperationResult updateResult = this.userService.updateUser(user, true, deleteProfilePhotoId);
-						if (OperationResult.isResultSucces(updateResult)) {
-							user = this.userService.getUser(user);
-							this.processLogin(session, user, EnmLoginType.getLoginType(sessionUser.getLoginType()));
-							if (!sessionUser.getEmail().equals(user.getEmail())) {
-								this.mailService.sendEmailVerificationMail(user, user.getEmail());
-							}
-							if (profilePhotoDeleted || profilePhotoChanged) {
-								try {
-									
-									String rootPhotoFolder = this.webApplication.getRootUserPhotoPath();
-									String userPhotoFolder = FileUtil.concatPath(rootPhotoFolder, user.getId().toString()); 
-									
-									FileModel photo = user.getProfilePhoto();
-									
-									String fileName = profilePhoto.getOriginalFilename();
-									
-									if (oldProfilePhotoId != null) {
-										FileUtil.cleanDirectory(userPhotoFolder, false);
-									}
-									
-									if (!profilePhotoDeleted) {
-										String tmpPhotoPath = FileUtil.concatPath(rootPhotoFolder, user.getId().toString(), "tmp", fileName);
-										
-										String newSmallFilePath = this.webApplication.getUserPhotoPath(user.getId(), photo.getId(), EnmSize.SMALL.getValue());
-										String newMediumFilePath = this.webApplication.getUserPhotoPath(user.getId(), photo.getId(), EnmSize.MEDIUM.getValue());
-										
-										File tmpFile = new File(tmpPhotoPath);
-
-										ImageUtil.resizeImage(tmpFile, newMediumFilePath, this.webApplication.getMediumUserPhotoSize());
-										ImageUtil.resizeImage(tmpFile, newSmallFilePath, this.webApplication.getSmallUserPhotoSize());
-										
-										String tmpFolder = tmpPhotoPath.substring(0, tmpPhotoPath.lastIndexOf(File.separator));
-										
-										FileUtil.cleanDirectory(tmpFolder, true);
-									}
-									
-								} catch (Exception e) {
-									System.out.println(CommonUtil.getExceptionMessage(e));
+								String rootPhotoFolder = this.webApplication.getRootUserPhotoPath();
+								String userPhotoFolder = FileUtil.concatPath(rootPhotoFolder, user.getId().toString()); 
+								
+								FileModel photo = user.getProfilePhoto();
+								
+								String fileName = profilePhoto.getOriginalFilename();
+								
+								if (oldProfilePhotoId != null) {
+									FileUtil.cleanDirectory(userPhotoFolder, false);
 								}
+								
+								if (!profilePhotoDeleted) {
+									String tmpPhotoPath = FileUtil.concatPath(rootPhotoFolder, user.getId().toString(), "tmp", fileName);
+									
+									String newSmallFilePath = this.webApplication.getUserPhotoPath(user.getId(), photo.getId(), EnmSize.SMALL.getValue());
+									String newMediumFilePath = this.webApplication.getUserPhotoPath(user.getId(), photo.getId(), EnmSize.MEDIUM.getValue());
+									
+									File tmpFile = new File(tmpPhotoPath);
+
+									ImageUtil.resizeImage(tmpFile, newMediumFilePath, this.webApplication.getMediumUserPhotoSize());
+									ImageUtil.resizeImage(tmpFile, newSmallFilePath, this.webApplication.getSmallUserPhotoSize());
+									
+									String tmpFolder = tmpPhotoPath.substring(0, tmpPhotoPath.lastIndexOf(File.separator));
+									
+									FileUtil.cleanDirectory(tmpFolder, true);
+								}
+								
+							} catch (Exception e) {
+								System.out.println(CommonUtil.getExceptionMessage(e));
 							}
 						}
-						operationResult = updateResult;
-					} else {
-						operationResult.setResultCode(EnmResultCode.WARNING.getValue());
-						operationResult.setResultDesc(AppConstants.MAIL_IN_USE_FAIL);
 					}
+					operationResult = updateResult;
 				} else {
-					operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
-					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
+					operationResult.setResultCode(EnmResultCode.WARNING.getValue());
+					operationResult.setResultDesc(AppConstants.MAIL_IN_USE_FAIL);
 				}
 			} else {
+				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc(AppConstants.UNAUTHORIZED_OPERATION);
-			}
-			
-			httpStatus = HttpStatus.OK;			
+				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
+			}		
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
 			operationResult.setResultDesc(AppConstants.CREATE_OPERATION_FAIL);
-			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 			FileLogger.log(Level.ERROR, "ApiUserController-updateUser()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
-		return new ResponseEntity<OperationResult>(operationResult, httpStatus);
+		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);
     }
     
     @RequestMapping(value = "/api/user/confirmemail", method = RequestMethod.POST)
@@ -757,72 +748,64 @@ public class ApiUserController extends BaseApiController {
 		try {
 			User user = super.getSessionUser(session);
 			if (user != null) {
-				Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
-				if (activeOperation.equals(EnmOperation.UPDATE_USER) 
-						|| activeOperation.equals(EnmOperation.TRUST_AND_VERIFICATION)
-						|| activeOperation.equals(EnmOperation.VERIFICATION)) {
-					if (EnmBoolStatus.NO.getId().equals(user.getMsisdnVerified())) {
-						if ((msisdn != null && msisdnCountryCode == null) 
-								|| (msisdn == null && msisdnCountryCode != null)) {
-							operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-							operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
-							operationResult.setResultDesc(AppConstants.VERIFICATION_PARAM_FAIL);
-						} else {
-							boolean msisdnSent = false;
-							if (msisdn != null && !msisdn.equals("X") 
-									&& msisdnCountryCode != null && !msisdnCountryCode.equals("X")) {
-								msisdnSent = true;
-							}
-							if (msisdnSent || user.getMsisdn() != null) {
-								
-								session.removeAttribute(EnmSession.MSISDN_VERIFICATION_CODE.getId());
-								
-								if (msisdnSent) {
-									User updatedUser = new User();
-									updatedUser.setId(user.getId());
-									updatedUser.setMsisdn(msisdn);
-									updatedUser.setMsisdnCountryCode(msisdnCountryCode);
-									updatedUser.setMsisdnVerified(EnmBoolStatus.NO.getId());
-									
-									OperationResult updateResult = this.userService.updateUser(updatedUser, false, null);
-									if (OperationResult.isResultSucces(updateResult)) {
-										
-										user.setMsisdn(msisdn);
-										user.setMsisdnCountryCode(msisdnCountryCode);
-										user.setMsisdnVerified(EnmBoolStatus.NO.getId());
-									} else {
-										operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-										operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
-										operationResult.setResultDesc(AppConstants.USER_UPDATE_FAIL);
-										throw new OperationResultException(operationResult);
-									}
-								}
-								
-								String msisdnVerificationCode = SecurityUtil.generateNumericCode(4);
-								
-								OperationResult sendSmsResult = sendVerifyMsisdnSms(user, msisdnVerificationCode);
-								if (OperationResult.isResultSucces(sendSmsResult)) {
-									session.setAttribute(EnmSession.MSISDN_VERIFICATION_CODE.getId(), msisdnVerificationCode);
-									operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
-								} else {
-									operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-									operationResult.setResultDesc("Sms send failed. Please check your msisdn.");
-								}
-								
-							} else {
-								operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-								operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
-								operationResult.setResultDesc(AppConstants.MSISDN_REQUIRED);
-							}	
-						}
-					} else {
+				if (EnmBoolStatus.NO.getId().equals(user.getMsisdnVerified())) {
+					if ((msisdn != null && msisdnCountryCode == null) 
+							|| (msisdn == null && msisdnCountryCode != null)) {
 						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 						operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
-						operationResult.setResultDesc(AppConstants.MSISDN_DOUBLE_VERIFICATION);
+						operationResult.setResultDesc(AppConstants.VERIFICATION_PARAM_FAIL);
+					} else {
+						boolean msisdnSent = false;
+						if (msisdn != null && !msisdn.equals("X") 
+								&& msisdnCountryCode != null && !msisdnCountryCode.equals("X")) {
+							msisdnSent = true;
+						}
+						if (msisdnSent || user.getMsisdn() != null) {
+							
+							session.removeAttribute(EnmSession.MSISDN_VERIFICATION_CODE.getId());
+							
+							if (msisdnSent) {
+								User updatedUser = new User();
+								updatedUser.setId(user.getId());
+								updatedUser.setMsisdn(msisdn);
+								updatedUser.setMsisdnCountryCode(msisdnCountryCode);
+								updatedUser.setMsisdnVerified(EnmBoolStatus.NO.getId());
+								
+								OperationResult updateResult = this.userService.updateUser(updatedUser, false, null);
+								if (OperationResult.isResultSucces(updateResult)) {
+									
+									user.setMsisdn(msisdn);
+									user.setMsisdnCountryCode(msisdnCountryCode);
+									user.setMsisdnVerified(EnmBoolStatus.NO.getId());
+								} else {
+									operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+									operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
+									operationResult.setResultDesc(AppConstants.USER_UPDATE_FAIL);
+									throw new OperationResultException(operationResult);
+								}
+							}
+							
+							String msisdnVerificationCode = SecurityUtil.generateNumericCode(4);
+							
+							OperationResult sendSmsResult = sendVerifyMsisdnSms(user, msisdnVerificationCode);
+							if (OperationResult.isResultSucces(sendSmsResult)) {
+								session.setAttribute(EnmSession.MSISDN_VERIFICATION_CODE.getId(), msisdnVerificationCode);
+								operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+							} else {
+								operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+								operationResult.setResultDesc("Sms send failed. Please check your msisdn.");
+							}
+							
+						} else {
+							operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+							operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
+							operationResult.setResultDesc(AppConstants.MSISDN_REQUIRED);
+						}	
 					}
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc(AppConstants.UNAUTHORIZED_OPERATION);
+					operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
+					operationResult.setResultDesc(AppConstants.MSISDN_DOUBLE_VERIFICATION);
 				}
 			} else {
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
@@ -847,29 +830,22 @@ public class ApiUserController extends BaseApiController {
 		try {
 			User user = super.getSessionUser(session);
 			if (user != null) {
-				Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
-				if (activeOperation.equals(EnmOperation.TRUST_AND_VERIFICATION) 
-						|| activeOperation.equals(EnmOperation.VERIFICATION)) {
-					User updatedUser = new User();
-					updatedUser.setId(user.getId());
-					updatedUser.setEmailVerified(EnmBoolStatus.NO.getId());
-					updatedUser.setUserActivationKeyEmail(SecurityUtil.generateUUID());
+				User updatedUser = new User();
+				updatedUser.setId(user.getId());
+				updatedUser.setEmailVerified(EnmBoolStatus.NO.getId());
+				updatedUser.setUserActivationKeyEmail(SecurityUtil.generateUUID());
+				
+				OperationResult updateResult = this.userService.updateUser(updatedUser, false, null);
+				if (OperationResult.isResultSucces(updateResult)) {
+					user.setEmailVerified(updatedUser.getEmailVerified());
+					user.setUserActivationKeyEmail(updatedUser.getUserActivationKeyEmail());
+					this.mailService.sendEmailVerificationMail(user, user.getLoginEmail());
 					
-					OperationResult updateResult = this.userService.updateUser(updatedUser, false, null);
-					if (OperationResult.isResultSucces(updateResult)) {
-						user.setEmailVerified(updatedUser.getEmailVerified());
-						user.setUserActivationKeyEmail(updatedUser.getUserActivationKeyEmail());
-						this.mailService.sendEmailVerificationMail(user, user.getLoginEmail());
-						
-						operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
-					} else {
-						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-						operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
-						operationResult.setResultDesc(AppConstants.USER_UPDATE_FAIL);
-					}
+					operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc(AppConstants.UNAUTHORIZED_OPERATION);
+					operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
+					operationResult.setResultDesc(AppConstants.USER_UPDATE_FAIL);
 				}
 			} else {
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
@@ -891,19 +867,12 @@ public class ApiUserController extends BaseApiController {
 		try {
 			User user = super.getSessionUser(session);
 			if (user != null) {
-				Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
-				if (activeOperation.equals(EnmOperation.VERIFICATION)) {
-					
-					if (user.getEmailVerified().equals(EnmBoolStatus.YES.getId())) {
-						operationResult.setResultValue(true);
-					} else {
-						operationResult.setResultValue(false);
-					}
-					operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+				if (user.getEmailVerified().equals(EnmBoolStatus.YES.getId())) {
+					operationResult.setResultValue(true);
 				} else {
-					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc(AppConstants.UNAUTHORIZED_OPERATION);
+					operationResult.setResultValue(false);
 				}
+				operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 			} else {
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
@@ -924,41 +893,33 @@ public class ApiUserController extends BaseApiController {
 		try {
 			User user = super.getSessionUser(session);
 			if (user != null) {
-				Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
-				if (activeOperation.equals(EnmOperation.UPDATE_USER)
-						|| activeOperation.equals(EnmOperation.TRUST_AND_VERIFICATION)
-						|| activeOperation.equals(EnmOperation.VERIFICATION)) {
-					Object sessionCode = session.getAttribute(EnmSession.MSISDN_VERIFICATION_CODE.getId());
-					
-					if (sessionCode != null) {
-						if (sessionCode.toString().equals(code)) {
-							User updatedUser = new User();
-							updatedUser.setId(user.getId());
-							updatedUser.setMsisdnVerified(EnmBoolStatus.YES.getId());
-							
-							OperationResult updateResult = this.userService.updateUser(updatedUser, false, null);
-							if (OperationResult.isResultSucces(updateResult)) {
-								user.setMsisdnVerified(EnmBoolStatus.YES.getId());
-								operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
-								session.removeAttribute(EnmSession.MSISDN_VERIFICATION_CODE.getId());
-							} else {
-								operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-								operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
-								operationResult.setResultDesc(AppConstants.USER_UPDATE_FAIL);
-							}
+				Object sessionCode = session.getAttribute(EnmSession.MSISDN_VERIFICATION_CODE.getId());
+				
+				if (sessionCode != null) {
+					if (sessionCode.toString().equals(code)) {
+						User updatedUser = new User();
+						updatedUser.setId(user.getId());
+						updatedUser.setMsisdnVerified(EnmBoolStatus.YES.getId());
+						
+						OperationResult updateResult = this.userService.updateUser(updatedUser, false, null);
+						if (OperationResult.isResultSucces(updateResult)) {
+							user.setMsisdnVerified(EnmBoolStatus.YES.getId());
+							operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+							session.removeAttribute(EnmSession.MSISDN_VERIFICATION_CODE.getId());
 						} else {
 							operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 							operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
-							operationResult.setResultDesc(AppConstants.VERIFICATION_CODE_FAIL);
+							operationResult.setResultDesc(AppConstants.USER_UPDATE_FAIL);
 						}
 					} else {
 						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 						operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
-						operationResult.setResultDesc(AppConstants.MSISDN_VERIFICATION_FAIL);
+						operationResult.setResultDesc(AppConstants.VERIFICATION_CODE_FAIL);
 					}
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc(AppConstants.UNAUTHORIZED_OPERATION);
+					operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
+					operationResult.setResultDesc(AppConstants.MSISDN_VERIFICATION_FAIL);
 				}
 			} else {
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
@@ -1188,31 +1149,23 @@ public class ApiUserController extends BaseApiController {
 		try {
 			User user = this.getSessionUser(session);
 			if (user != null) {
-				Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
-				if (activeOperation.equals(EnmOperation.UPDATE_USER)
-						|| activeOperation.equals(EnmOperation.TRUST_AND_VERIFICATION)) {
-					
-					User updatedUser = new User();
-					updatedUser.setId(user.getId());
-					
-					updatedUser = this.userService.getUser(updatedUser);
-					
-					updatedUser.setMsisdn(null);
-					updatedUser.setMsisdnVerified(EnmBoolStatus.NO.getId());
-					
-					OperationResult updateResult = this.userService.updateUser(updatedUser, true, null);
-					if (OperationResult.isResultSucces(updateResult)) {
-						user.setMsisdnVerified(EnmBoolStatus.NO.getId());
-						user.setMsisdn(null);
-						operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
-					} else {
-						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-						operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
-						operationResult.setResultDesc(AppConstants.USER_UPDATE_FAIL);
-					}
+				User updatedUser = new User();
+				updatedUser.setId(user.getId());
+				
+				updatedUser = this.userService.getUser(updatedUser);
+				
+				updatedUser.setMsisdn(null);
+				updatedUser.setMsisdnVerified(EnmBoolStatus.NO.getId());
+				
+				OperationResult updateResult = this.userService.updateUser(updatedUser, true, null);
+				if (OperationResult.isResultSucces(updateResult)) {
+					user.setMsisdnVerified(EnmBoolStatus.NO.getId());
+					user.setMsisdn(null);
+					operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc(AppConstants.UNAUTHORIZED_OPERATION);
+					operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
+					operationResult.setResultDesc(AppConstants.USER_UPDATE_FAIL);
 				}
 			} else {
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());

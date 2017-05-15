@@ -42,4 +42,26 @@ public class StringUtil {
 	public static boolean isEmpty(String value) {
 		return (value == null || value.trim().isEmpty());
 	}
+	
+	public static void addNewLine(StringBuilder strBuilder, String newLine) {
+		if (newLine != null && !newLine.isEmpty()) {
+			if (strBuilder.length() > 0) {
+				String lineSeparator = System.getProperty("line.separator");
+				strBuilder.append(lineSeparator);
+			}
+			strBuilder.append(newLine);
+		}
+	}
+	
+	public static String addNewLine(String text, String newLine) {
+		if (newLine != null && !newLine.isEmpty()) {
+			if (text.length() > 0) {
+				String lineSeparator = System.getProperty("line.separator");
+				text += lineSeparator;
+			}
+			text += newLine;
+		}
+		return text;
+	}
+	
 }
