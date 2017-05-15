@@ -79,9 +79,7 @@ public class ApiMessageController extends BaseApiController {
 		
 		try {
 			User user = super.getSessionUser(session);
-			if (user != null) {
-				//Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
-				
+			if (user != null) {				
 				if (messageType != null && (messageType.equals(1) || messageType.equals(2))) {
 					
 					

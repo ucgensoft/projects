@@ -560,42 +560,6 @@ public class ApiReservationController extends BaseApiController {
 		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);
     }
 	
-	//@RequestMapping(value = "/api/reservation/get", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
-    public ResponseEntity<ValueOperationResult<Reservation>> getReservation(@RequestParam("reservationId") Long reservationId, HttpSession session) {
-		ValueOperationResult<Reservation> operationResult = new ValueOperationResult<Reservation>();		
-		try {
-			User user = super.getSessionUser(session);
-			if (user != null) {
-				Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
-				if (activeOperation != null && activeOperation.equals(EnmOperation.CREATE_PLACE)) {
-					Reservation reservation = new Reservation();
-					reservation.setId(reservationId);
-					
-					List<Reservation> reservationList = this.reservationService.list(reservation, true, true, true);
-					
-					operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
-					if (reservationList != null && reservationList.size() > 0) {
-						operationResult.setResultValue(reservationList.get(0));
-					} else {
-						operationResult.setResultDesc(AppConstants.RESERV_NOT_FOUND);
-					}
-				} else {
-					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc(AppConstants.UNAUTHORIZED_OPERATION);
-				}
-			} else {
-				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
-				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
-			}
-		} catch (Exception e) {
-			FileLogger.log(Level.ERROR, "ApiReservationController-getReservation()-Error: " + CommonUtil.getExceptionMessage(e));
-			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
-			operationResult.setResultDesc(AppConstants.GET_RESERV_NOT_COMPLETED);
-		}
-		return new ResponseEntity<ValueOperationResult<Reservation>>(operationResult, HttpStatus.OK);
-    }
-	
 	@RequestMapping(value = "/api/reservation/list", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public ResponseEntity<ValueOperationResult<Map<String, List<Reservation>>>> listReservation(HttpSession session) {
 		ValueOperationResult<Map<String, List<Reservation>>> operationResult = new ValueOperationResult<Map<String, List<Reservation>>>();		

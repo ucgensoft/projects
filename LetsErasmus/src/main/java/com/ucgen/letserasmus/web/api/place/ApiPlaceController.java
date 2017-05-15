@@ -229,7 +229,6 @@ public class ApiPlaceController extends BaseApiController {
 		try {
 			User user = super.getSessionUser(session);
 			if (user != null) {
-				//Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
 				boolean isValid = true;
 				
 				if (place == null || place.getCurrencyId() == null || !place.getCurrencyId().equals(EnmCurrency.EURO.getId())) {
@@ -616,68 +615,59 @@ public class ApiPlaceController extends BaseApiController {
 	
 	@RequestMapping(value = "/api/place/updateplacestatus", method = RequestMethod.POST)
     public ResponseEntity<OperationResult> updatePlaceStatus(@RequestBody Place place, HttpSession session) throws JsonParseException, JsonMappingException, IOException, ParseException {
-		HttpStatus httpStatus = null;
 		OperationResult operationResult = new OperationResult();
 		
 		try {
 			Date modifiedDate = new Date();
 			User user = super.getSessionUser(session);
 			if (user != null) {
-				Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
-				if (activeOperation != null && activeOperation.equals(EnmOperation.LIST_USER_PLACE)) {
-					Long placeId = place.getId();
-					Integer newStatus = place.getStatus();
-					if (placeId != null && newStatus != null) {
-						ValueOperationResult<Place> getPlaceResult = this.placeService.getPlace(placeId);
-						if (OperationResult.isResultSucces(getPlaceResult)) {
-							Place dbPlace = getPlaceResult.getResultValue();
-							if (dbPlace != null) {
-								if (dbPlace.getHostUserId().equals(user.getId())) {
-									if (dbPlace.getStatus().equals(EnmPlaceStatus.ACTIVE.getValue()) 
-											|| dbPlace.getStatus().equals(EnmPlaceStatus.DEACTIVE.getValue())) {
-										Place updatedPlace = new Place();
-										updatedPlace.setId(placeId);
-										updatedPlace.setStatus(newStatus);
-										updatedPlace.setModifiedBy(user.getFullName());
-										updatedPlace.setModifiedDate(modifiedDate);
-										
-										operationResult = this.placeService.updatePlace(updatedPlace, null, null, null);
-									} else {
-										operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-										operationResult.setResultDesc(AppConstants.LIST_STATUS_FAIL);
-									}
+				Long placeId = place.getId();
+				Integer newStatus = place.getStatus();
+				if (placeId != null && newStatus != null) {
+					ValueOperationResult<Place> getPlaceResult = this.placeService.getPlace(placeId);
+					if (OperationResult.isResultSucces(getPlaceResult)) {
+						Place dbPlace = getPlaceResult.getResultValue();
+						if (dbPlace != null) {
+							if (dbPlace.getHostUserId().equals(user.getId())) {
+								if (dbPlace.getStatus().equals(EnmPlaceStatus.ACTIVE.getValue()) 
+										|| dbPlace.getStatus().equals(EnmPlaceStatus.DEACTIVE.getValue())) {
+									Place updatedPlace = new Place();
+									updatedPlace.setId(placeId);
+									updatedPlace.setStatus(newStatus);
+									updatedPlace.setModifiedBy(user.getFullName());
+									updatedPlace.setModifiedDate(modifiedDate);
+									
+									operationResult = this.placeService.updatePlace(updatedPlace, null, null, null);
 								} else {
 									operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-									operationResult.setResultDesc(AppConstants.UNAUTHORIZED_OPERATION);
+									operationResult.setResultDesc(AppConstants.LIST_STATUS_FAIL);
 								}
 							} else {
-								operationResult.setResultCode(EnmResultCode.WARNING.getValue());
-								operationResult.setResultDesc(AppConstants.PLACE_LIST_NOT_FOUND);
+								operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+								operationResult.setResultDesc(AppConstants.UNAUTHORIZED_OPERATION);
 							}
 						} else {
-							operationResult = getPlaceResult;
+							operationResult.setResultCode(EnmResultCode.WARNING.getValue());
+							operationResult.setResultDesc(AppConstants.PLACE_LIST_NOT_FOUND);
 						}
 					} else {
-						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-						operationResult.setResultDesc(AppConstants.PLACE_LIST_MANDATORY_PARAM);
+						operationResult = getPlaceResult;
 					}
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-					operationResult.setResultDesc(AppConstants.UNAUTHORIZED_OPERATION);
+					operationResult.setResultDesc(AppConstants.PLACE_LIST_MANDATORY_PARAM);
 				}
 			} else {
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
 			}
-			httpStatus = HttpStatus.OK;			
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
 			operationResult.setResultDesc(AppConstants.CREATE_OPERATION_FAIL);
-			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 			FileLogger.log(Level.ERROR, "ApiPlaceController-updatePlaceStatus()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
-		return new ResponseEntity<OperationResult>(operationResult, httpStatus);
+		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);
     }
 	
 	
