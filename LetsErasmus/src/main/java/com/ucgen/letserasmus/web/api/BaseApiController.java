@@ -83,6 +83,17 @@ public abstract class BaseApiController {
 		}
 	}
 	
+	public <T> void removeOperationToken(String tokenId, EnmOperation operation) {
+		HttpSession session = this.getSession();
+		if (session != null) {
+			Map<Integer, Map<String, Object>> sessionOperationTokenMap = (HashMap<Integer, Map<String, Object>>) session.getAttribute(EnmSession.OPERATION_TOKEN.getId());;
+			Object operationTokenMap = session.getAttribute(EnmSession.OPERATION_TOKEN.getId());
+			if (sessionOperationTokenMap != null && sessionOperationTokenMap.containsKey(operation.getId())) { 
+				sessionOperationTokenMap.get(operation.getId()).remove(tokenId);
+			}
+		}
+	}
+	
 	public <T> T getObjectForToken(String tokenId, Integer operationId) {
 		HttpSession session = this.getSession();
 		if (session != null) {

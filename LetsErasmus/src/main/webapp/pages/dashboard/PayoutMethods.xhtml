@@ -30,7 +30,7 @@
 						</div>
 					</div>
 					
-					<div class="row">
+					<div class="row" style="margin-top: 5px;">
 						<div class="col-sm-10">
 							<ul class="tabs tabs--inbox">
 								<li id="tabPersonalInfo">
@@ -54,7 +54,8 @@
 							</ul>
 						</div>
 						<div class="col-sm-2" ng-if="ctrl.payoutMethod != null">
-							<button class="btn btn-primary pull-right" id="btnSaveChanges">Save Changes</button>
+							<button class="btn btn-primary pull-right" id="btnSaveChanges"
+								ng-click="ctrl.onSaveBtnClick()">Save Changes</button>
 						</div>
 					</div>
 					<div class="row panel">
@@ -187,7 +188,7 @@
 			 						<button class="btn btn-large pull-left" id="btnBack2"
 			 							ng-click="ctrl.displayTab('divAddressInfo', 'lnkAddressInfo')">&lt;- Back</button>
 			 						<button class="btn btn-primary pull-right" id="btnSave"
-			 							ng-click="ctrl.onSaveBtnClick()">Save</button>
+			 							ng-click="ctrl.onSaveBtnClick()" ng-if="ctrl.payoutMethod == null">Save</button>
 			 					</div>
 			 				</div>
 			 			</div>

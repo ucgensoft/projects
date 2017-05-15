@@ -124,70 +124,95 @@ public class ApiReservationController extends BaseApiController {
 					BigDecimal serviceFeeRate = (new BigDecimal(paramServiceFeeRate)).divide(new BigDecimal(100));
 					BigDecimal commissionFeeRate = (new BigDecimal(paramCommissionFeeRate)).divide(new BigDecimal(100));
 					
-					ValueOperationResult<Place> getOperationResult = this.placeService.getPlace(uiReservation.getPlaceId());
+					Reservation listReservation = new Reservation();
+					listReservation.setPlaceId(uiReservation.getPlaceId());
+					listReservation.setClientUserId(user.getId());
 					
-					Place place = getOperationResult.getResultValue();
-					
-					Reservation reservation = new Reservation();
-					
-					reservation.setClientUserId(user.getId());
-					
-					reservation.setPlace(place);
-					
-					reservation.setPlaceId(place.getId());
-					reservation.setPlacePrice(place.getPrice());
-					reservation.setHostUserId(place.getHostUserId());
-					
-					reservation.setServiceRate(serviceFeeRate);
-					reservation.setServiceFee(serviceFeeRate.multiply(place.getPrice()));
-					
-					reservation.setCommissionRate(commissionFeeRate);
-					reservation.setCommissionFee(commissionFeeRate.multiply(place.getPrice()));
-					
-					reservation.setGuestNumber(uiReservation.getGuestNumber());
-					reservation.setCurrencyId(place.getCurrencyId());
-					reservation.setStartDate(uiReservation.getStartDate());
-					reservation.setEndDate(uiReservation.getEndDate());
-					
-					reservation.setStatus(EnmReservationStatus.PENDING.getId());
-					reservation.setCancellationPolicyId(place.getCancellationPolicyId());
-					
-					MessageThread messageThread = new MessageThread();
-					messageThread.setHostUserId(place.getHostUserId());
-					messageThread.setClientUserId(user.getId());
-					messageThread.setEntityType(EnmEntityType.RESERVATION.getId());
-					messageThread.setEntityId(place.getId());
-					messageThread.setThreadTitle(place.getTitle());
-					
-					Message message = new Message();
-					
-					message.setSenderUserId(user.getId());
-					message.setReceiverUserId(place.getHostUserId());
-					message.setStatus(EnmMessageStatus.NOT_READ.getId());
-					//message.setMessageText(uiReservation.getMessageText());
-					
-					messageThread.addMessage(message);
-					
-					reservation.setMessageThread(messageThread);
-					
-					String operationToken = this.generateOperationToken();
-					
-					this.saveOperationToken(operationToken, EnmOperation.CREATE_RESERVATION, reservation);
-					
-					operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
-					String nextUrl = null;
-					
-					String uriParams = EnmUriParameter.OPERATION_TOKEN.getName() + "=" + operationToken 
-							+ "&" + EnmUriParameter.OPERATION.getName() + "=" + EnmOperation.CREATE_RESERVATION.getId();
-					
-					if (user.getMsisdnVerified().equals(EnmBoolStatus.YES.getId()) 
-							&& user.getEmailVerified().equals(EnmBoolStatus.YES.getId())) {
-						nextUrl = this.webApplication.getUrlPrefix() + "/pages/Payment.xhtml";
-					} else {
-						nextUrl = this.webApplication.getUrlPrefix() + "/pages/Verification.xhtml";
+					List<Reservation> currentReserList = this.reservationService.list(listReservation, false, false, false);
+					boolean userHasActiveReservation = false;
+					if (currentReserList != null && currentReserList.size() > 0) {
+						for (Reservation tmpReservation : currentReserList) {
+							if (tmpReservation.getStatus().equals(EnmReservationStatus.PENDING.getId()) 
+									|| tmpReservation.getStatus().equals(EnmReservationStatus.ACCEPTED.getId())
+									|| tmpReservation.getStatus().equals(EnmReservationStatus.WAITING_PAYMENT.getId())) {
+								userHasActiveReservation = true;
+							}
+						}
 					}
-					nextUrl = nextUrl + "?" + uriParams;
-					operationResult.setResultValue(nextUrl);
+					if (!userHasActiveReservation) {
+						ValueOperationResult<Place> getOperationResult = this.placeService.getPlace(uiReservation.getPlaceId());
+						
+						Place place = getOperationResult.getResultValue();
+						
+						if (!place.getHostUserId().equals(user.getId())) {
+							Reservation reservation = new Reservation();
+							
+							reservation.setClientUserId(user.getId());
+							
+							reservation.setPlace(place);
+							
+							reservation.setPlaceId(place.getId());
+							reservation.setPlacePrice(place.getPrice());
+							reservation.setHostUserId(place.getHostUserId());
+							
+							reservation.setServiceRate(serviceFeeRate);
+							reservation.setServiceFee(serviceFeeRate.multiply(place.getPrice()));
+							
+							reservation.setCommissionRate(commissionFeeRate);
+							reservation.setCommissionFee(commissionFeeRate.multiply(place.getPrice()));
+							
+							reservation.setGuestNumber(uiReservation.getGuestNumber());
+							reservation.setCurrencyId(place.getCurrencyId());
+							reservation.setStartDate(uiReservation.getStartDate());
+							reservation.setEndDate(uiReservation.getEndDate());
+							
+							reservation.setStatus(EnmReservationStatus.PENDING.getId());
+							reservation.setCancellationPolicyId(place.getCancellationPolicyId());
+							
+							MessageThread messageThread = new MessageThread();
+							messageThread.setHostUserId(place.getHostUserId());
+							messageThread.setClientUserId(user.getId());
+							messageThread.setEntityType(EnmEntityType.RESERVATION.getId());
+							messageThread.setEntityId(place.getId());
+							messageThread.setThreadTitle(place.getTitle());
+							
+							Message message = new Message();
+							
+							message.setSenderUserId(user.getId());
+							message.setReceiverUserId(place.getHostUserId());
+							message.setStatus(EnmMessageStatus.NOT_READ.getId());
+							//message.setMessageText(uiReservation.getMessageText());
+							
+							messageThread.addMessage(message);
+							
+							reservation.setMessageThread(messageThread);
+							
+							String operationToken = this.generateOperationToken();
+							
+							this.saveOperationToken(operationToken, EnmOperation.CREATE_RESERVATION, reservation);
+							
+							operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+							String nextUrl = null;
+							
+							String uriParams = EnmUriParameter.OPERATION_TOKEN.getName() + "=" + operationToken 
+									+ "&" + EnmUriParameter.OPERATION.getName() + "=" + EnmOperation.CREATE_RESERVATION.getId();
+							
+							if (user.getMsisdnVerified().equals(EnmBoolStatus.YES.getId()) 
+									&& user.getEmailVerified().equals(EnmBoolStatus.YES.getId())) {
+								nextUrl = this.webApplication.getUrlPrefix() + "/pages/Payment.xhtml";
+							} else {
+								nextUrl = this.webApplication.getUrlPrefix() + "/pages/Verification.xhtml";
+							}
+							nextUrl = nextUrl + "?" + uriParams;
+							operationResult.setResultValue(nextUrl);
+						} else {
+							operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+							operationResult.setResultDesc("Come on, do you really want to reserve your own place :)");
+						}
+					} else {
+						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+						operationResult.setResultDesc("You already have an active reservation for this place!");
+					}
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 					operationResult.setResultDesc(AppConstants.MISSING_MANDATORY_PARAM);
@@ -218,74 +243,98 @@ public class ApiReservationController extends BaseApiController {
 						&& uiPaymentMethod.getCardHolderFirstName() != null && !uiPaymentMethod.getCardHolderFirstName().trim().isEmpty()
 						&& uiPaymentMethod.getCardHolderLastName() != null && !uiPaymentMethod.getCardHolderLastName().trim().isEmpty()
 						&& uiPaymentMethod.getZipCode() != null && !uiPaymentMethod.getZipCode().trim().isEmpty()) {
+					
 					Reservation reservation = this.getObjectForToken(uiReservation.getOperationToken(), EnmOperation.CREATE_RESERVATION.getId());
 					
-					PayoutMethod hostPayoutMethod = this.paymentService.getPayoutMethod(new PayoutMethod(reservation.getHostUserId()));
+					Reservation listReservation = new Reservation();
+					listReservation.setPlaceId(reservation.getPlaceId());
+					listReservation.setClientUserId(user.getId());
 					
-					String paymentToken = null;
-					if (hostPayoutMethod.getExternalSystemId().equals(EnmExternalSystem.BLUESNAP.getId())) {
-						paymentToken = this.getPaymentToken(uiReservation.getOperationToken());
-					} else if (hostPayoutMethod.getExternalSystemId().equals(EnmExternalSystem.STRIPE.getId())) {
-						paymentToken = uiReservation.getUiPaymentMethod().getCardInfoToken();
+					List<Reservation> currentReserList = this.reservationService.list(listReservation, false, false, false);
+					boolean userHasActiveReservation = false;
+					if (currentReserList != null && currentReserList.size() > 0) {
+						for (Reservation tmpReservation : currentReserList) {
+							if (tmpReservation.getStatus().equals(EnmReservationStatus.PENDING.getId()) 
+									|| tmpReservation.getStatus().equals(EnmReservationStatus.ACCEPTED.getId())
+									|| tmpReservation.getStatus().equals(EnmReservationStatus.WAITING_PAYMENT.getId())) {
+								userHasActiveReservation = true;
+							}
+						}
 					}
-					if (paymentToken != null) {
+					
+					if (!userHasActiveReservation) {
+						PayoutMethod hostPayoutMethod = this.paymentService.getPayoutMethod(new PayoutMethod(reservation.getHostUserId()));
 						
-						Integer parameterReserPendingDuration = Integer.valueOf(this.parameterService.getParameterValue(EnmParameter.RESERVATION_PENDING_DURATION.getId()));
-						
-						Date createdDate = new Date();
-						String createdBy = user.getFullName();
-						
-						reservation.setStatus(EnmReservationStatus.PENDING.getId());
-						reservation.setExpireDate(new Date(createdDate.getTime() + parameterReserPendingDuration * 60 * 60 * 1000));
-						reservation.setCreatedBy(createdBy);
-						reservation.setCreatedDate(createdDate);
-						
-						MessageThread messageThread = reservation.getMessageThread();
-						
-						messageThread.setCreatedBy(createdBy);
-						messageThread.setCreatedDate(createdDate);
-						
-						if (reservation.getMessageThread().getMessageList() != null 
-								&& reservation.getMessageThread().getMessageList().size() > 0) {
-							Message message = reservation.getMessageThread().getMessageList().get(0);
-							message.setCreatedDate(createdDate);
-							message.setMessageText(uiReservation.getMessageText());
+						String paymentToken = null;
+						if (hostPayoutMethod.getExternalSystemId().equals(EnmExternalSystem.BLUESNAP.getId())) {
+							paymentToken = this.getPaymentToken(uiReservation.getOperationToken());
+						} else if (hostPayoutMethod.getExternalSystemId().equals(EnmExternalSystem.STRIPE.getId())) {
+							paymentToken = uiReservation.getUiPaymentMethod().getCardInfoToken();
 						}
-						
-						Payment payment = new Payment();
-						payment.setCommissionFee(reservation.getCommissionFee());
-						payment.setServiceFee(reservation.getServiceFee());
-						payment.setEntityPrice(reservation.getPlacePrice());
-						payment.setCardInfoToken(paymentToken);
-						payment.setCurrencyCode(EnmCurrency.getCurrency(reservation.getCurrencyId()).getBlueSnapCode());
-						
-						PaymentMethod paymentMethod = new PaymentMethod();
-						paymentMethod.setUserId(reservation.getClientUserId());
-						paymentMethod.setCardHolderFirstName(uiPaymentMethod.getCardHolderFirstName());
-						paymentMethod.setCardHolderLastName(uiPaymentMethod.getCardHolderLastName());
-						paymentMethod.setCardHolderZipCode(uiPaymentMethod.getZipCode());
-						paymentMethod.setPayment(payment);
-						
-						//Place place = this.placeService.getPlace(reservation.getPlaceId()).getResultValue();
-						Place place = reservation.getPlace();
-						String placeCoverPhotoUrl = this.webApplication.getPlacePhotoUrl(place.getId(), place.getCoverPhotoId(), EnmSize.SMALL.getValue());
+						if (paymentToken != null) {
+							
+							Integer parameterReserPendingDuration = Integer.valueOf(this.parameterService.getParameterValue(EnmParameter.RESERVATION_PENDING_DURATION.getId()));
+							
+							Date createdDate = new Date();
+							String createdBy = user.getFullName();
+							
+							reservation.setStatus(EnmReservationStatus.PENDING.getId());
+							reservation.setExpireDate(new Date(createdDate.getTime() + parameterReserPendingDuration * 60 * 60 * 1000));
+							reservation.setCreatedBy(createdBy);
+							reservation.setCreatedDate(createdDate);
+							
+							MessageThread messageThread = reservation.getMessageThread();
+							
+							messageThread.setCreatedBy(createdBy);
+							messageThread.setCreatedDate(createdDate);
+							
+							if (reservation.getMessageThread().getMessageList() != null 
+									&& reservation.getMessageThread().getMessageList().size() > 0) {
+								Message message = reservation.getMessageThread().getMessageList().get(0);
+								message.setCreatedDate(createdDate);
+								message.setMessageText(uiReservation.getMessageText());
+							}
+							
+							Payment payment = new Payment();
+							payment.setCommissionFee(reservation.getCommissionFee());
+							payment.setServiceFee(reservation.getServiceFee());
+							payment.setEntityPrice(reservation.getPlacePrice());
+							payment.setCardInfoToken(paymentToken);
+							payment.setCurrencyCode(EnmCurrency.getCurrency(reservation.getCurrencyId()).getBlueSnapCode());
+							
+							PaymentMethod paymentMethod = new PaymentMethod();
+							paymentMethod.setUserId(reservation.getClientUserId());
+							paymentMethod.setCardHolderFirstName(uiPaymentMethod.getCardHolderFirstName());
+							paymentMethod.setCardHolderLastName(uiPaymentMethod.getCardHolderLastName());
+							paymentMethod.setCardHolderZipCode(uiPaymentMethod.getZipCode());
+							paymentMethod.setPayment(payment);
+							
+							//Place place = this.placeService.getPlace(reservation.getPlaceId()).getResultValue();
+							Place place = reservation.getPlace();
+							String placeCoverPhotoUrl = this.webApplication.getPlacePhotoUrl(place.getId(), place.getCoverPhotoId(), EnmSize.SMALL.getValue());
 
-						String placeUrl = WebUtil.concatUrl(this.webApplication.getUrlPrefix(), "/pages/PlaceDetail.xhtml");
-						placeUrl = WebUtil.addUriParam(placeUrl, EnmUriParameter.PLACE_ID.getName(), place.getId());
-						
-						place.setCoverPhotoUrl(placeCoverPhotoUrl);
-						place.setUrl(placeUrl);
-						
-						OperationResult createResult = this.reservationService.insert(user, reservation, paymentMethod, hostPayoutMethod);
-						
-						if (!OperationResult.isResultSucces(createResult)) {
-							FileLogger.log(Level.ERROR, "Reservation could not be saved. UserId:" + user.getId() + ", Error:" + OperationResult.getResultDesc(createResult));
-							createResult.setResultDesc("Reservation could not be saved. Please try again later!");
+							String placeUrl = WebUtil.concatUrl(this.webApplication.getUrlPrefix(), "/pages/PlaceDetail.xhtml");
+							placeUrl = WebUtil.addUriParam(placeUrl, EnmUriParameter.PLACE_ID.getName(), place.getId());
+							
+							place.setCoverPhotoUrl(placeCoverPhotoUrl);
+							place.setUrl(placeUrl);
+							
+							OperationResult createResult = this.reservationService.insert(user, reservation, paymentMethod, hostPayoutMethod);
+							
+							if (!OperationResult.isResultSucces(createResult)) {
+								FileLogger.log(Level.ERROR, "Reservation could not be saved. UserId:" + user.getId() + ", Error:" + OperationResult.getResultDesc(createResult));
+								createResult.setResultDesc("Reservation could not be saved. Please try again later!");
+							} else {
+								super.removeOperationToken(uiReservation.getOperationToken(), EnmOperation.CREATE_RESERVATION);
+							}
+							operationResult = createResult;
+						} else {
+							operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+							operationResult.setResultDesc(AppConstants.OPERATION_FAIL);
 						}
-						operationResult = createResult;
 					} else {
 						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-						operationResult.setResultDesc(AppConstants.OPERATION_FAIL);
+						operationResult.setResultDesc("You already have an active reservation for this place!");
 					}
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
@@ -701,60 +750,65 @@ public class ApiReservationController extends BaseApiController {
 						
 						Place place = getOperationResult.getResultValue();
 						
-						Reservation reservation = new Reservation();
-						
-						reservation.setClientUserId(user.getId());
-						
-						reservation.setPlaceId(place.getId());
-						reservation.setPlacePrice(place.getPrice());
-						reservation.setHostUserId(place.getHostUserId());
-						reservation.setHostUser(place.getUser());
-						
-						reservation.setServiceRate(serviceFeeRate);
-						reservation.setServiceFee(serviceFeeRate.multiply(place.getPrice()));
-						
-						reservation.setCommissionRate(commissionFeeRate);
-						reservation.setCommissionFee(commissionFeeRate.multiply(place.getPrice()));
-						
-						reservation.setGuestNumber(uiReservation.getGuestNumber());
-						reservation.setCurrencyId(place.getCurrencyId());
-						reservation.setStartDate(uiReservation.getStartDate());
-						reservation.setEndDate(uiReservation.getEndDate());
-						
-						reservation.setStatus(EnmReservationStatus.INQUIRY.getId());
-						reservation.setCreatedDate(operationDate);
-						reservation.setCreatedBy(createdBy);
-						
-						MessageThread messageThread = new MessageThread();
-						messageThread.setHostUserId(place.getHostUserId());
-						messageThread.setClientUserId(user.getId());
-						messageThread.setEntityType(EnmEntityType.RESERVATION.getId());
-						messageThread.setEntityId(-1l);
-						messageThread.setThreadTitle(place.getTitle());
-						messageThread.setCreatedDate(operationDate);
-						messageThread.setCreatedBy(createdBy);
-						
-						Message message = new Message();
-						
-						message.setSenderUserId(user.getId());
-						message.setReceiverUserId(place.getHostUserId());
-						message.setMessageText(uiReservation.getMessageText());
-						message.setStatus(EnmMessageStatus.NOT_READ.getId());
-						message.setCreatedDate(operationDate);
-						message.setCreatedBy(createdBy);
-						
-						messageThread.addMessage(message);
-						
-						reservation.setMessageThread(messageThread);
-						
-						OperationResult createResult = this.reservationService.insert(user, reservation, null, null);
-						
-						if (!OperationResult.isResultSucces(createResult)) {
-							FileLogger.log(Level.ERROR, "Contact host operation could not be completed. UserId:" + user.getId() + ", Error:" + OperationResult.getResultDesc(createResult));
-							createResult.setResultDesc("Reservation could not be saved. Please try again later!");
+						if (!place.getHostUserId().equals(user.getId())) {
+							Reservation reservation = new Reservation();
+							
+							reservation.setClientUserId(user.getId());
+							
+							reservation.setPlaceId(place.getId());
+							reservation.setPlacePrice(place.getPrice());
+							reservation.setHostUserId(place.getHostUserId());
+							reservation.setHostUser(place.getUser());
+							
+							reservation.setServiceRate(serviceFeeRate);
+							reservation.setServiceFee(serviceFeeRate.multiply(place.getPrice()));
+							
+							reservation.setCommissionRate(commissionFeeRate);
+							reservation.setCommissionFee(commissionFeeRate.multiply(place.getPrice()));
+							
+							reservation.setGuestNumber(uiReservation.getGuestNumber());
+							reservation.setCurrencyId(place.getCurrencyId());
+							reservation.setStartDate(uiReservation.getStartDate());
+							reservation.setEndDate(uiReservation.getEndDate());
+							
+							reservation.setStatus(EnmReservationStatus.INQUIRY.getId());
+							reservation.setCreatedDate(operationDate);
+							reservation.setCreatedBy(createdBy);
+							
+							MessageThread messageThread = new MessageThread();
+							messageThread.setHostUserId(place.getHostUserId());
+							messageThread.setClientUserId(user.getId());
+							messageThread.setEntityType(EnmEntityType.RESERVATION.getId());
+							messageThread.setEntityId(-1l);
+							messageThread.setThreadTitle(place.getTitle());
+							messageThread.setCreatedDate(operationDate);
+							messageThread.setCreatedBy(createdBy);
+							
+							Message message = new Message();
+							
+							message.setSenderUserId(user.getId());
+							message.setReceiverUserId(place.getHostUserId());
+							message.setMessageText(uiReservation.getMessageText());
+							message.setStatus(EnmMessageStatus.NOT_READ.getId());
+							message.setCreatedDate(operationDate);
+							message.setCreatedBy(createdBy);
+							
+							messageThread.addMessage(message);
+							
+							reservation.setMessageThread(messageThread);
+							
+							OperationResult createResult = this.reservationService.insert(user, reservation, null, null);
+							
+							if (!OperationResult.isResultSucces(createResult)) {
+								FileLogger.log(Level.ERROR, "Contact host operation could not be completed. UserId:" + user.getId() + ", Error:" + OperationResult.getResultDesc(createResult));
+								createResult.setResultDesc("Reservation could not be saved. Please try again later!");
+							}
+							
+							operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+						} else {
+							operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+							operationResult.setResultDesc("Come on, do you really want to send message to yourself :)");
 						}
-						
-						operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 					} else {
 						operationResult.setResultCode(EnmResultCode.WARNING.getValue());
 						operationResult.setErrorCode(EnmErrorCode.ALREADY_CONTACTED.getId());

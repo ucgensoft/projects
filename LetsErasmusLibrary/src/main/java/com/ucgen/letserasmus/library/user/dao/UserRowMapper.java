@@ -30,7 +30,6 @@ public class UserRowMapper extends BaseRowMapper<User> {
 	public static final String COL_USER_ACTIVATION_KEY_MSISDN = "USER_ACTIVATION_KEY_MSISDN";
 	public static final String COL_PROFILE_PHOTO_ID = "PROFILE_PHOTO_ID";
 	public static final String COL_FACEBOOK_TOKEN_ID = "FACEBOOK_TOKEN_ID";
-	public static final String COL_IP = "IP";	
 	public static final String COL_GOOGLE_ID = "GOOGLE_ID";
 	public static final String COL_FACEBOOK_ID = "FACEBOOK_ID";
 	public static final String COL_JOB_TITLE = "JOB_TITLE";
@@ -73,7 +72,6 @@ public class UserRowMapper extends BaseRowMapper<User> {
 		user.setUserActivationKeyMsisdn(super.getString(rs, COL_USER_ACTIVATION_KEY_MSISDN));
 		user.setProfilePhotoId(super.getLong(rs, COL_PROFILE_PHOTO_ID));
 		user.setFacebookTokenId(super.getString(rs, COL_FACEBOOK_TOKEN_ID));
-		user.setIp(super.getString(rs, COL_IP));
 		user.setCreatedBy(super.getString(rs, COL_CREATED_BY));		
 		user.setCreatedDate(super.getTimestamp(rs, COL_CREATED_DATE));
 		user.setCreatedDateGmt(super.getTimestamp(rs, COL_CREATED_DATE_GMT));		
@@ -126,7 +124,6 @@ public class UserRowMapper extends BaseRowMapper<User> {
 		super.addColumn(COL_FACEBOOK_TOKEN_ID);
 		super.addColumn(COL_PROFILE_PHOTO_ID);
 		super.addColumn(COL_FIRST_NAME);
-		super.addColumn(COL_IP);
 		super.addColumn(COL_LAST_NAME);
 		super.addColumn(COL_MODIFIED_BY);
 		super.addColumn(COL_MODIFIED_DATE);

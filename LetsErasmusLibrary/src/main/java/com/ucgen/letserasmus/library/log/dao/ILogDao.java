@@ -9,7 +9,7 @@ import com.ucgen.letserasmus.library.log.model.TransactionLog;
 
 public interface ILogDao {
 
-	OperationResult insertTransactionLog(TransactionLog transactionLog) throws OperationResultException;
+	OperationResult insertTransactionLog(TransactionLog transactionLog);
 	
 	List<TransactionLog> listTransactionLog(TransactionLog transactionLog, boolean entityFlag, boolean userFlag);
 	

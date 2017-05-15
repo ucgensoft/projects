@@ -29,13 +29,14 @@ App.factory('reservationService', ['$http', '$q', function($http, $q){
 				}
 			};
 			
-			NProgress.start(3000, 5);
+			NProgress.start(3000, 5, true);
 			return $http.post(webApplicationUrlPrefix + '/api/reservation/finish', reservation, config).then(function(response) {
-				NProgress.done(true);
+				NProgress.done(true, true);
 				var result = isResultSuccess(response.data, true, function() {
 					callBack(true);
 				}, false);
 			}, function(errResponse) {
+				NProgress.done(true, true);
 				DialogUtil.error(errResponse);
 			});
 		},
@@ -71,13 +72,14 @@ App.factory('reservationService', ['$http', '$q', function($http, $q){
 				status : status
 			};
 			
-			NProgress.start(3000, 5);
+			NProgress.start(3000, 5, true);
 			return $http.post(webApplicationUrlPrefix + '/api/reservation/update', reservation, config).then(function(response) {
-				NProgress.done(true);
+				NProgress.done(true, true);
 				var result = isResultSuccess(response.data, true, function() {
 					callBack(true);
 				}, false);
 			}, function(errResponse) {
+				NProgress.done(true, true);
 				DialogUtil.error(errResponse);
 			});
 		},

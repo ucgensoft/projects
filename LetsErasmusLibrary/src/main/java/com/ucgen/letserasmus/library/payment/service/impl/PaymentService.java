@@ -1,5 +1,6 @@
 package com.ucgen.letserasmus.library.payment.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,11 @@ import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.common.operationresult.ValueOperationResult;
 import com.ucgen.letserasmus.library.bluesnap.service.IExtPaymentService;
 import com.ucgen.letserasmus.library.common.enumeration.EnmBoolStatus;
+import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
 import com.ucgen.letserasmus.library.log.enumeration.EnmExternalSystem;
+import com.ucgen.letserasmus.library.log.enumeration.EnmTransaction;
+import com.ucgen.letserasmus.library.log.model.TransactionLog;
+import com.ucgen.letserasmus.library.log.service.ILogService;
 import com.ucgen.letserasmus.library.payment.dao.IPaymentDao;
 import com.ucgen.letserasmus.library.payment.model.PaymentMethod;
 import com.ucgen.letserasmus.library.payment.model.PayoutMethod;
@@ -27,6 +32,7 @@ public class PaymentService implements IPaymentService {
 	private IPaymentDao paymentDao;
 	private IStripePaymentService stripePaymentService;
 	private ISimpleObjectService simpleObjectService;
+	private ILogService logService;
 	
 	@Autowired
 	public void setPaymentDao(IPaymentDao paymentDao) {
@@ -46,6 +52,11 @@ public class PaymentService implements IPaymentService {
 	@Autowired
 	public void setSimpleObjectService(ISimpleObjectService simpleObjectService) {
 		this.simpleObjectService = simpleObjectService;
+	}
+
+	@Autowired
+	public void setLogService(ILogService logService) {
+		this.logService = logService;
 	}
 
 	@Override
@@ -84,7 +95,17 @@ public class PaymentService implements IPaymentService {
 		
 		if (vendorCountry != null) {
 			if (vendorCountry.getStripeSupportFlag().equals(EnmBoolStatus.YES.getId())) {
-				ValueOperationResult<String> createAccountResult = this.stripePaymentService.createManagedAccount(payoutMethod);
+				String tosAcceptIp = null;
+				Date tosAcceptDate = null;
+				TransactionLog transactionLog = new TransactionLog(EnmTransaction.USER_CREATE.getId(), EnmEntityType.USER.getId(), payoutMethod.getUserId());
+				List<TransactionLog> transLogList = this.logService.listTransactionLog(transactionLog, false, false);
+				if (transLogList != null && transLogList.size() > 0) {
+					transactionLog = transLogList.get(0);
+					tosAcceptIp = transactionLog.getIp();
+					tosAcceptDate = transactionLog.getOperationDate();
+				}
+				
+				ValueOperationResult<String> createAccountResult = this.stripePaymentService.createManagedAccount(payoutMethod, tosAcceptIp, tosAcceptDate);
 				if (OperationResult.isResultSucces(createAccountResult)) {
 					payoutMethod.setExternalSystemId(EnmExternalSystem.STRIPE.getId());
 					payoutMethod.setStripeAccountId(createAccountResult.getResultValue());

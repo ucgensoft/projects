@@ -11,8 +11,12 @@ import com.ucgen.common.operationresult.EnmResultCode;
 import com.ucgen.common.operationresult.ListOperationResult;
 import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.common.operationresult.ValueOperationResult;
+import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
 import com.ucgen.letserasmus.library.file.model.FileModel;
 import com.ucgen.letserasmus.library.file.service.IFileService;
+import com.ucgen.letserasmus.library.log.enumeration.EnmTransaction;
+import com.ucgen.letserasmus.library.log.model.TransactionLog;
+import com.ucgen.letserasmus.library.log.service.ILogService;
 import com.ucgen.letserasmus.library.place.enumeration.EnmPlaceStatus;
 import com.ucgen.letserasmus.library.place.model.Place;
 import com.ucgen.letserasmus.library.place.service.IPlaceService;
@@ -26,6 +30,7 @@ public class UserService implements IUserService{
 	private IUserDao userDao;
 	private IFileService fileService;
 	private IPlaceService placeService;
+	private ILogService logService;
 
 	public IUserDao getUserDao() {
 		return userDao;
@@ -46,14 +51,40 @@ public class UserService implements IUserService{
 		this.placeService = placeService;
 	}
 
+	@Autowired
+	public void setLogService(ILogService logService) {
+		this.logService = logService;
+	}
+
 	@Override
 	public User getUser(User user) {
 		return this.getUserDao().getUser(user);
 	}
 
 	@Override
-	public OperationResult insertUser(User user) {
-		return this.getUserDao().insertUser(user);
+	public OperationResult insertUser(User user, String createdBy) throws OperationResultException {
+		OperationResult insertUserResult = this.getUserDao().insertUser(user);
+		if (OperationResult.isResultSucces(insertUserResult)) {
+			TransactionLog tLog = new TransactionLog();
+			tLog.setUserId(user.getId());
+			tLog.setOperationId(EnmTransaction.USER_CREATE.getId());
+			tLog.setOperationDate(new Date());
+			tLog.setEntityType(EnmEntityType.USER.getId());
+			tLog.setEntityId(user.getId());
+			tLog.setIp(user.getIp());
+			
+			tLog.setCreatedBy(createdBy);
+			tLog.setCreatedDate(user.getCreatedDate());
+			
+			OperationResult createLogResult = this.logService.insertTransactionLog(tLog);
+			if (OperationResult.isResultSucces(createLogResult)) {
+				return insertUserResult;
+			} else {
+				throw new OperationResultException(createLogResult);
+			}
+		} else {
+			return insertUserResult;
+		}
 	}
 
 	@Override

@@ -9,7 +9,7 @@ public interface IUserService {
 	
 	User getUser(User user);
 	
-	OperationResult insertUser(User user);
+	OperationResult insertUser(User user, String createdBy) throws OperationResultException;
 	
 	ValueOperationResult<Integer> updateUser(User user, boolean setNull, Long deleteProfilePhotoId) throws OperationResultException;
 

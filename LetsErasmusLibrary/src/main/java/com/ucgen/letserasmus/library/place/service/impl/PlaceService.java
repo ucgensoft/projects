@@ -15,6 +15,7 @@ import com.ucgen.letserasmus.library.file.model.FileModel;
 import com.ucgen.letserasmus.library.file.service.IFileService;
 import com.ucgen.letserasmus.library.location.model.LocationSearchCriteria;
 import com.ucgen.letserasmus.library.location.service.ILocationService;
+import com.ucgen.letserasmus.library.log.service.ILogService;
 import com.ucgen.letserasmus.library.place.dao.IPlaceDao;
 import com.ucgen.letserasmus.library.place.model.Place;
 import com.ucgen.letserasmus.library.place.service.IPlaceService;
@@ -25,6 +26,7 @@ public class PlaceService implements IPlaceService{
 	private ILocationService locationService;
 	private IPlaceDao placeDao;
 	private IFileService fileService;
+	private ILogService logService;
 	
 	@Autowired
 	public void setPlaceDao(IPlaceDao placeDao) {
@@ -39,6 +41,11 @@ public class PlaceService implements IPlaceService{
 	@Autowired
 	public void setFileService(IFileService fileService) {
 		this.fileService = fileService;
+	}
+
+	@Autowired
+	public void setLogService(ILogService logService) {
+		this.logService = logService;
 	}
 
 	@Override

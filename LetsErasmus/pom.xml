@@ -17,7 +17,7 @@
 		<mail.version>1.5.2</mail.version>
 
 		<jackson.version>2.5.3</jackson.version>
-		<jdk.version>1.7</jdk.version>
+		<jdk.version>1.8</jdk.version>
 	</properties>
 
 	<dependencies>

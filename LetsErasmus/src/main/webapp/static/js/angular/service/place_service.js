@@ -72,7 +72,7 @@ App.factory('placeService', ['$http', '$q', function($http, $q) {
 				},
 
 				savePlace : function(place, photoList, callBack) {
-					NProgress.start(4000, 10);
+					NProgress.start(4000, 10, true);
 					this.savePhoto(photoList).then(
     					function(operationResult) {
     						if (isResultSuccess(operationResult, true)) {
@@ -85,7 +85,7 @@ App.factory('placeService', ['$http', '$q', function($http, $q) {
     							
     							$http.post(webApplicationUrlPrefix + '/api/place/create', place, config).then(
     								function(response) {
-	    								NProgress.done(true);
+	    								NProgress.done(true, true);
 	    								var isSuccess = false;
 	    								if (isResultSuccess(operationResult, true)) {
 	    									isSuccess = true;
@@ -94,15 +94,15 @@ App.factory('placeService', ['$http', '$q', function($http, $q) {
 	    									callBack(isSuccess);
 	    								}
 	    							}, function(errResponse) {
-	    								NProgress.done(true);
+	    								NProgress.done(true, true);
 	    								DialogUtil.error(errResponse);
 	    							}
 	    						);
     						} else {
-    							NProgress.done(true);
+    							NProgress.done(true, true);
     						}
     					}, function(errResponse) {
-    						NProgress.done(true);
+    						NProgress.done(true, true);
     						DialogUtil.error(errResponse);
     					});
 				},
@@ -137,7 +137,7 @@ App.factory('placeService', ['$http', '$q', function($http, $q) {
 				},
 				
 				updatePlace : function(place, photoList, callBack) {
-					NProgress.start(4000, 10);
+					NProgress.start(4000, 10, true);
 					this.savePhoto(photoList).then(
     					function(operationResult) {
     						if (isResultSuccess(operationResult, true)) {
@@ -150,7 +150,7 @@ App.factory('placeService', ['$http', '$q', function($http, $q) {
     							
     							$http.post(webApplicationUrlPrefix + '/api/place/update', place, config).then(
     								function(response) {
-    									NProgress.done(true);
+    									NProgress.done(true, true);
 	    								var isSuccess = false;
 	    								if (isResultSuccess(response.data, true)) {
 	    									isSuccess = true;
@@ -159,7 +159,7 @@ App.factory('placeService', ['$http', '$q', function($http, $q) {
 	    									callBack(isSuccess);
 	    								}
 	    							}, function(errResponse) {
-	    								NProgress.done(true);
+	    								NProgress.done(true, true);
 	    								console.error('Error while creating place');
 	    								if (callBack) {
 	    									callBack(false);
@@ -167,13 +167,13 @@ App.factory('placeService', ['$http', '$q', function($http, $q) {
 	    							}
 	    						);
     						} else {
-    							NProgress.done(true);
+    							NProgress.done(true, true);
     							if (callBack) {
 									callBack(false);
 								}
     						}
     					}, function(errResponse) {
-    						NProgress.done(true);
+    						NProgress.done(true, true);
     						DialogUtil.error(errResponse);
     					});
 				},

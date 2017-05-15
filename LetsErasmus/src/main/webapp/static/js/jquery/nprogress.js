@@ -106,27 +106,31 @@
    *     NProgress.start();
    *
    */
-  NProgress.start = function(estimatedTotalTime, trickleCount) {
-	  if (estimatedTotalTime && trickleCount) {
-		  NProgress.settings.trickleRate =  trickleCount / estimatedTotalTime;
-		  NProgress.settings.trickleSpeed = estimatedTotalTime / trickleCount;
+  NProgress.start = function(estimatedTotalTime, trickleCount, shadow) {
+	  if (!shadow) {
+		  if (estimatedTotalTime && trickleCount) {
+			  NProgress.settings.trickleRate =  trickleCount / estimatedTotalTime;
+			  NProgress.settings.trickleSpeed = estimatedTotalTime / trickleCount;
+		  } else {
+			  NProgress.settings.trickleRate = 0.2;
+			  NProgress.settings.trickleSpeed = 500;
+		  }
+	    if (!NProgress.status) NProgress.set(0);
+
+	    var work = function() {
+	      setTimeout(function() {
+	        if (!NProgress.status) return;
+	        NProgress.trickle();
+	        work();
+	      }, Settings.trickleSpeed);
+	    };
+
+	    if (Settings.trickle) work();
+
+	    return this;
 	  } else {
-		  NProgress.settings.trickleRate = 0.2;
-		  NProgress.settings.trickleSpeed = 500;
+		  $('#divCommonProcessing').removeClass('hidden-force');
 	  }
-    if (!NProgress.status) NProgress.set(0);
-
-    var work = function() {
-      setTimeout(function() {
-        if (!NProgress.status) return;
-        NProgress.trickle();
-        work();
-      }, Settings.trickleSpeed);
-    };
-
-    if (Settings.trickle) work();
-
-    return this;
   };
 
   /**
@@ -141,10 +145,13 @@
    *     NProgress.done(true);
    */
 
-  NProgress.done = function(force) {
-    if (!force && !NProgress.status) return this;
-
-    return NProgress.inc(0.3 + 0.5 * Math.random()).set(1);
+  NProgress.done = function(force, shadow) {
+	  if (!shadow) {
+		  if (!force && !NProgress.status) return this;
+		  return NProgress.inc(0.3 + 0.5 * Math.random()).set(1);
+	  } else {
+		  $('#divCommonProcessing').addClass('hidden-force');
+	  }
   };
 
   /**

@@ -333,8 +333,8 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
   			  function(favoriteMap) {
   				userFavoriteMap = favoriteMap;
   				if (callBack) {
-  					callBack(result);
-  				  }
+  					callBack(true);
+  				 }
   	  		  }
   	  	  );
   	  };

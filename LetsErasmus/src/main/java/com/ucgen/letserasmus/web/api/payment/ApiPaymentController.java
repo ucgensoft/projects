@@ -243,7 +243,7 @@ public class ApiPaymentController extends BaseApiController {
 							operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 						} else {
 							operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-							operationResult.setResultDesc(AppConstants.BLUESNAP_CREATE_VENDOR_FAILES);
+							operationResult.setResultDesc(AppConstants.CREATE_PAYMENT_ACCOUNT_FAILES);
 						}
 					} else {
 						operationResult.setResultCode(EnmResultCode.ERROR.getValue());

@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
@@ -33,6 +34,7 @@ import com.ucgen.common.util.FileLogger;
 import com.ucgen.common.util.FileUtil;
 import com.ucgen.common.util.ImageUtil;
 import com.ucgen.common.util.SecurityUtil;
+import com.ucgen.common.util.WebUtil;
 import com.ucgen.letserasmus.library.common.enumeration.EnmBoolStatus;
 import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
 import com.ucgen.letserasmus.library.common.enumeration.EnmErrorCode;
@@ -100,7 +102,7 @@ public class ApiUserController extends BaseApiController {
 	}
 
 	@RequestMapping(value = "/api/user/signup", method = RequestMethod.POST)
-    public ResponseEntity<OperationResult> signup(@RequestBody User user, HttpSession session) {
+    public ResponseEntity<OperationResult> signup(@RequestBody User user, HttpServletRequest request) {
 		HttpStatus httpStatus = null;
 		OperationResult operationResult = new OperationResult();
 		
@@ -108,11 +110,11 @@ public class ApiUserController extends BaseApiController {
 			EnmLoginType loginType = EnmLoginType.getLoginType(user.getLoginType());
 			if (loginType != null) {
 				if (loginType == EnmLoginType.LOCAL_ACCOUNT) {
-					operationResult = this.signupWithLocalAccount(user, session);	
+					operationResult = this.signupWithLocalAccount(user, request);	
 				} else if (loginType == EnmLoginType.GOOGLE) {
-					operationResult = this.signupWithGoogleAccount(user, session);
+					operationResult = this.signupWithGoogleAccount(user, request);
 				} else if (loginType == EnmLoginType.FACEBOOK) {
-					operationResult = this.signupWithFacebookAccount(user, session);
+					operationResult = this.signupWithFacebookAccount(user, request);
 				}
 			} else {
 				operationResult.setResultCode(EnmResultCode.WARNING.getValue());
@@ -207,9 +209,9 @@ public class ApiUserController extends BaseApiController {
 		return operationResult;
     }
 	
-    public OperationResult signupWithLocalAccount(User uiUser, HttpSession session) {
+    public OperationResult signupWithLocalAccount(User uiUser, HttpServletRequest request) {
 		OperationResult operationResult = new OperationResult();
-		
+		HttpSession session = request.getSession();
 		try {
 			if (uiUser != null && uiUser.getEmail() != null 
 					&& uiUser.getEmail().trim().length() > 0
@@ -231,6 +233,8 @@ public class ApiUserController extends BaseApiController {
 						String verificationCode = SecurityUtil.generateUUID();
 						newUser = new User();
 						
+						newUser.setIp(WebUtil.getClientIp(request));
+						
 						newUser.setEmail(uiUser.getEmail());
 						newUser.setPassword(uiUser.getPassword());
 						newUser.setFirstName(uiUser.getFirstName());
@@ -243,7 +247,7 @@ public class ApiUserController extends BaseApiController {
 						
 						newUser.setCreatedDate(new Date());
 						
-						OperationResult createUserResult = this.userService.insertUser(newUser);
+						OperationResult createUserResult = this.userService.insertUser(newUser, newUser.getFullName());
 						
 						if (OperationResult.isResultSucces(createUserResult)) {
 							operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
@@ -282,9 +286,9 @@ public class ApiUserController extends BaseApiController {
 		return operationResult;
     }
 	
-    public OperationResult signupWithGoogleAccount(User uiUser, HttpSession session) {
+    public OperationResult signupWithGoogleAccount(User uiUser, HttpServletRequest request) {
 		OperationResult operationResult = new OperationResult();
-		
+		HttpSession session = request.getSession();
 		try {
 			if (uiUser.getGoogleId() != null && uiUser.getGoogleEmail() != null) {
 				User newUser = new User();
@@ -305,6 +309,8 @@ public class ApiUserController extends BaseApiController {
 						
 						newUser = new User();
 
+						newUser.setIp(WebUtil.getClientIp(request));
+						
 						newUser.setEmail(uiUser.getGoogleEmail());
 						newUser.setGoogleId(uiUser.getGoogleId());
 						newUser.setGoogleEmail(uiUser.getGoogleEmail());
@@ -328,7 +334,7 @@ public class ApiUserController extends BaseApiController {
 						
 						newUser.setCreatedDate(new Date());
 						
-						OperationResult createUserResult = this.userService.insertUser(newUser);
+						OperationResult createUserResult = this.userService.insertUser(newUser, newUser.getFullName());
 						
 						if (OperationResult.isResultSucces(createUserResult)) {
 							operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
@@ -378,9 +384,9 @@ public class ApiUserController extends BaseApiController {
 		return operationResult;
     }
     
-    public OperationResult signupWithFacebookAccount(User uiUser, HttpSession session) {
+    public OperationResult signupWithFacebookAccount(User uiUser, HttpServletRequest request) {
 		OperationResult operationResult = new OperationResult();
-		
+		HttpSession session = request.getSession();
 		try {
 			if (uiUser.getFacebookId() != null && uiUser.getFacebookEmail() != null) {
 				User newUser = new User();
@@ -400,6 +406,8 @@ public class ApiUserController extends BaseApiController {
 					if(registeredUser == null) {
 						String verificationCode = SecurityUtil.generateUUID();
 						newUser = new User();
+						
+						newUser.setIp(WebUtil.getClientIp(request));
 						
 						newUser.setEmail(uiUser.getFacebookEmail());
 						newUser.setFacebookEmail(uiUser.getFacebookEmail());
@@ -426,7 +434,7 @@ public class ApiUserController extends BaseApiController {
 						
 						newUser.setCreatedDate(new Date());
 						
-						OperationResult createUserResult = this.userService.insertUser(newUser);
+						OperationResult createUserResult = this.userService.insertUser(newUser, newUser.getFullName());
 						
 						if (OperationResult.isResultSucces(createUserResult)) {
 							operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());

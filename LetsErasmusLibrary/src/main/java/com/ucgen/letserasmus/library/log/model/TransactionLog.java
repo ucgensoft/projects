@@ -19,6 +19,16 @@ public class TransactionLog extends BaseModel {
 	private User user;
 	private BaseModel entity;
 	
+	public TransactionLog() {
+		this(null, null, null);
+	}
+	
+	public TransactionLog(Integer operationId, Integer entityType, Long entityId) {
+		this.operationId = operationId;
+		this.entityType = entityType;
+		this.entityId = entityId;
+	}
+	
 	public Long getId() {
 		return id;
 	}

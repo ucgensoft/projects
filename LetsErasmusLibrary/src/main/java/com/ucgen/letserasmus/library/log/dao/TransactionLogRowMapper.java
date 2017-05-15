@@ -20,6 +20,7 @@ public class TransactionLogRowMapper extends BaseRowMapper<TransactionLog> {
 	public static final String COL_OPERATION_DATE = "OPERATION_DATE";
 	public static final String COL_ENTITY_TYPE = "ENTITY_TYPE";
 	public static final String COL_ENTITY_ID = "ENTITY_ID";
+	public static final String COL_IP = "IP";
 	
 	public static final String FKEY_USER = "USER";
 	public static final String FKEY_ENTITY = "ENTITY";
@@ -59,6 +60,7 @@ public class TransactionLogRowMapper extends BaseRowMapper<TransactionLog> {
 		transactionLog.setOperationDate(super.getTimestamp(rs, COL_OPERATION_DATE));
 		transactionLog.setEntityType(super.getInteger(rs, COL_ENTITY_TYPE));
 		transactionLog.setEntityId(super.getLong(rs, COL_ENTITY_ID));
+		transactionLog.setIp(super.getString(rs, COL_IP));
 		
 		transactionLog.setCreatedBy(super.getString(rs, COL_CREATED_BY));		
 		transactionLog.setCreatedDate(super.getTimestamp(rs, COL_CREATED_DATE));
@@ -78,7 +80,8 @@ public class TransactionLogRowMapper extends BaseRowMapper<TransactionLog> {
 		super.addColumn(COL_OPERATION_ID);
 		super.addColumn(COL_OPERATION_DATE);
 		super.addColumn(COL_ENTITY_TYPE);
-		super.addColumn(COL_ENTITY_ID);		
+		super.addColumn(COL_ENTITY_ID);
+		super.addColumn(COL_IP);
 		super.addColumn(COL_CREATED_DATE);		
 	}
 	
