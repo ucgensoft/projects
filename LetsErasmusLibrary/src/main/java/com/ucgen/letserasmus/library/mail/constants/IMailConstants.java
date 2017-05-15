@@ -2,13 +2,13 @@ package com.ucgen.letserasmus.library.mail.constants;
 
 public interface IMailConstants {
 
-	String MAIL_SUBJECT_EMAIL_VERIFICATION = "Let's Erasmus - Please confirm your e-mail address";
+	String MAIL_SUBJECT_EMAIL_VERIFICATION = "Welcome to Let's Erasmus - Please confirm your e-mail address";
 	
-	String MAIL_SUBJECT_RESET_PASSWORD = "LetsErasmus Reset Password";
+	String MAIL_SUBJECT_RESET_PASSWORD = "Let's Erasmus - Reset Password";
 	
 	String MAIL_SUBJECT_NEW_PASSWORD = "Let's Erasmus - New Password";
 	
-	String MAIL_SUBJECT_GUEST_BOOKING_REQUEST = "Booking request sent for #paramPlaceDetailTitle#";
+	String MAIL_SUBJECT_GUEST_BOOKING_REQUEST = "Booking request is sent for #paramPlaceDetailTitle#";
 	
 	String MAIL_SUBJECT_HOST_BOOKING_REQUEST = "New booking request for #paramPlaceDetailTitle#";
 	
