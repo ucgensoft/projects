@@ -20,6 +20,6 @@ public interface ISimpleObjectService {
 	
 	String generateTransactionId();
 	
-	TreeMap<Integer, CancelPolicyRule> listCancelPolicyRule(Integer entityType);
+	TreeMap<Integer, CancelPolicyRule> listCancelPolicyRule(Integer entityType, Integer policyId);
 	
 }

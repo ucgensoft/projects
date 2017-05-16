@@ -314,7 +314,7 @@ public class ReservationService implements IReservationService {
 						}
 						if (reservation.getStatus().equals(EnmReservationStatus.CLIENT_CANCELLED.getId()) && !reservationOldStatus.equals(EnmReservationStatus.CLIENT_CANCELLED.getId())) {
 							Long resRemainingDays = DateUtil.dateDiff(reservation.getStartDate(), new Date(), Calendar.DATE)+1;
-							TreeMap<Integer, CancelPolicyRule> entityTypeCancelRuleMap = this.simpleObjectService.listCancelPolicyRule(EnmEntityType.RESERVATION.getId());
+							TreeMap<Integer, CancelPolicyRule> entityTypeCancelRuleMap = this.simpleObjectService.listCancelPolicyRule(EnmEntityType.RESERVATION.getId(), reservation.getCancellationPolicyId());
 							CancelPolicyRule cancelPolicyRule = null;
 							List<CancelPolicyRule> policyList = new ArrayList<CancelPolicyRule>();
 							for (Integer ruleRemainingDays : entityTypeCancelRuleMap.keySet()) {

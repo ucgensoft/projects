@@ -31,7 +31,7 @@ public class SimpleObjectDao extends JdbcDaoSupport implements ISimpleObjectDao,
 	
 	private List<Country> countryList;
 	private Map<String, Country> countryMapIso2;
-	private Map<Integer, TreeMap<Integer, CancelPolicyRule>> cancelPolicyRuleMap;
+	private Map<Integer, Map<Integer, TreeMap<Integer, CancelPolicyRule>>> cancelPolicyRuleMap;
 	
 	@Autowired
 	public SimpleObjectDao(DataSource dataSource) {
@@ -121,23 +121,29 @@ public class SimpleObjectDao extends JdbcDaoSupport implements ISimpleObjectDao,
 	}
 
 	@Override
-	public TreeMap<Integer, CancelPolicyRule> listCancelPolicyRule(Integer entityType) {
+	public TreeMap<Integer, CancelPolicyRule> listCancelPolicyRule(Integer entityType, Integer policyId) {
 		if (this.cancelPolicyRuleMap == null) {
 			this.refreshCancelPolicyMap();
 		}
-		return this.cancelPolicyRuleMap.get(entityType);
+		return this.cancelPolicyRuleMap.get(entityType).get(policyId);
 	}
 	
 	private synchronized void refreshCancelPolicyMap() {
 		if (this.cancelPolicyRuleMap == null) {
 			List<CancelPolicyRule> cancelPlicyRuleList = this.getJdbcTemplate().query(LIST_CANCEL_POLICY_RULE_SQL, new CancelPolicyRuleRowMapper());
-			this.cancelPolicyRuleMap = new HashMap<Integer, TreeMap<Integer, CancelPolicyRule>>();
+			this.cancelPolicyRuleMap = new HashMap<Integer, Map<Integer, TreeMap<Integer, CancelPolicyRule>>>();
 			for (CancelPolicyRule cancelPolicyRule : cancelPlicyRuleList) {
-				if (!this.cancelPolicyRuleMap.containsKey(cancelPolicyRule.getEntityType())) {
+				if (!this.cancelPolicyRuleMap.containsKey(cancelPolicyRule.getEntityType())) {	
+					Map<Integer, TreeMap<Integer, CancelPolicyRule>> policyIdMap = new HashMap<Integer, TreeMap<Integer, CancelPolicyRule>>();					
+					this.cancelPolicyRuleMap.put(cancelPolicyRule.getEntityType(), policyIdMap);
+				} 
+				
+				if (!this.cancelPolicyRuleMap.get(cancelPolicyRule.getEntityType()).containsKey(cancelPolicyRule.getPolicyId())) {
 					TreeMap<Integer, CancelPolicyRule> entityCancelPlicyRuleMap = new TreeMap<Integer, CancelPolicyRule>();
-					this.cancelPolicyRuleMap.put(cancelPolicyRule.getEntityType(), entityCancelPlicyRuleMap);
+					this.cancelPolicyRuleMap.get(cancelPolicyRule.getEntityType()).put(cancelPolicyRule.getPolicyId(), entityCancelPlicyRuleMap);
 				}
-				this.cancelPolicyRuleMap.get(cancelPolicyRule.getEntityType()).put(cancelPolicyRule.getRemainingDays(), cancelPolicyRule);
+				
+				this.cancelPolicyRuleMap.get(cancelPolicyRule.getEntityType()).get(cancelPolicyRule.getPolicyId()).put(cancelPolicyRule.getRemainingDays(), cancelPolicyRule);
 			}
 		}
 	}

@@ -38,7 +38,7 @@ public class ReservationRowMapper extends BaseRowMapper<Reservation> {
 	public static final String COL_PAYMENT_STATUS = "PAYMENT_STATUS";
 	public static final String COL_EXPIRE_DATE = "EXPIRE_DATE";
 	public static final String COL_STRIPE_VENDOR_TRANSFER_ID = "STRIPE_VENDOR_TRANSFER_ID";
-	
+	public static final String COL_CANCELLATION_POLICY_ID = "CANCELLATION_POLICY_ID";
 	
 	public static final String FKEY_PLACE = "PLACE";
 	public static final String FKEY_USER_HOST = "USER_HOST";
@@ -105,6 +105,7 @@ public class ReservationRowMapper extends BaseRowMapper<Reservation> {
 		reservation.setPaymentStatus(super.getInteger(rs, COL_PAYMENT_STATUS));
 		reservation.setExpireDate(super.getTimestamp(rs, COL_EXPIRE_DATE));
 		reservation.setStripeVendorTransferId(super.getString(rs, COL_STRIPE_VENDOR_TRANSFER_ID));
+		reservation.setCancellationPolicyId(super.getInteger(rs, COL_CANCELLATION_POLICY_ID));
 		
 		reservation.setCreatedBy(super.getString(rs, COL_CREATED_BY));		
 		reservation.setCreatedDate(super.getTimestamp(rs, COL_CREATED_DATE));
@@ -165,6 +166,7 @@ public class ReservationRowMapper extends BaseRowMapper<Reservation> {
 		super.addColumn(COL_PAYMENT_STATUS);
 		super.addColumn(COL_EXPIRE_DATE);
 		super.addColumn(COL_STRIPE_VENDOR_TRANSFER_ID);
+		super.addColumn(COL_CANCELLATION_POLICY_ID);
 	}
 	
 }

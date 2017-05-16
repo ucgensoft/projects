@@ -72,8 +72,8 @@ public class SimpleObjectService implements ISimpleObjectService {
 	}
 
 	@Override
-	public TreeMap<Integer, CancelPolicyRule> listCancelPolicyRule(Integer entityType) {
-		return this.simpleObjectDao.listCancelPolicyRule(entityType);
+	public TreeMap<Integer, CancelPolicyRule> listCancelPolicyRule(Integer entityType, Integer policyId) {
+		return this.simpleObjectDao.listCancelPolicyRule(entityType, policyId);
 	}
 	
 }

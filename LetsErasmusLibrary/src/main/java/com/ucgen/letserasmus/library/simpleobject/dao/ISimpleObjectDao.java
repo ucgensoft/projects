@@ -24,6 +24,6 @@ public interface ISimpleObjectDao {
 	
 	OperationResult insertTransactionId(String transactionId);
 
-	TreeMap<Integer, CancelPolicyRule> listCancelPolicyRule(Integer entityType);
+	TreeMap<Integer, CancelPolicyRule> listCancelPolicyRule(Integer entityType, Integer policyId);
 	
 }
