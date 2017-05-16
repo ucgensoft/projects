@@ -161,8 +161,8 @@ public class StripePaymentService implements IStripePaymentService {
 			String stripePrivateKey = this.parameterService.getParameterValue(EnmParameter.STRIPE_PRIVATE_KEY.getId());
 			Stripe.apiKey = stripePrivateKey;
 			
-			Integer chargeAmount = paymentMethod.getPayment().getEntityPrice().add(paymentMethod.getPayment().getServiceFee()).multiply(CENT_MULTIPLIER).intValue();
-			Integer destinationAmount = paymentMethod.getPayment().getEntityPrice().subtract(paymentMethod.getPayment().getCommissionFee()).multiply(CENT_MULTIPLIER).intValue();
+			Long chargeAmount = this.getAbsAmount(paymentMethod.getPayment().getEntityPrice().add(paymentMethod.getPayment().getServiceFee()));
+			Long destinationAmount = this.getAbsAmount(paymentMethod.getPayment().getEntityPrice().subtract(paymentMethod.getPayment().getCommissionFee()));
 			
 			Map<String, Object> destinationParams = new HashMap<String, Object>();
 			destinationParams.put("account", payoutMethod.getStripeAccountId());
@@ -430,7 +430,7 @@ public class StripePaymentService implements IStripePaymentService {
 			refundParams.put("charge", chargeId);
 			
 			if (clientRefundAmount != null) {
-				refundParams.put("amount", clientRefundAmount.multiply(CENT_MULTIPLIER));
+				refundParams.put("amount", this.getAbsAmount(clientRefundAmount));
 			}
 			
 			Charge stripeCharge = Charge.retrieve(chargeId);
@@ -505,7 +505,7 @@ public class StripePaymentService implements IStripePaymentService {
 			ObjectMapper objectMapper = new ObjectMapper();
 
 			Map<String, Object> payoutParams = new HashMap<String, Object>();
-			payoutParams.put("amount", payoutAmount);
+			payoutParams.put("amount", this.getAbsAmount(payoutAmount));
 			payoutParams.put("currency", currencyCode);
 
 			//request.append("private key : " + stripePrivateKey);
@@ -631,7 +631,7 @@ public class StripePaymentService implements IStripePaymentService {
 		    startDate = new Date();
 		    
 		    Map<String, Object> reverseParams = new HashMap<String, Object>();
-		    reverseParams.put("amount", amount.multiply(CENT_MULTIPLIER));
+		    reverseParams.put("amount", this.getAbsAmount(amount));
 			Transfer transfer = this.getTransfer(userId, transferId, operationBy).getResultValue();
 			Reversal reversal = transfer.getReversals().create(reverseParams);
 
@@ -670,6 +670,10 @@ public class StripePaymentService implements IStripePaymentService {
 		}
 		
 		return operationResult;
+	}
+	
+	private Long getAbsAmount(BigDecimal amount) {
+		return amount.multiply(CENT_MULTIPLIER).abs().longValue();
 	}
 
 }
