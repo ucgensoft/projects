@@ -322,15 +322,13 @@ public class ReservationService implements IReservationService {
 							}
 							
 							BigDecimal clientRefundAmount = reservation.getPlacePrice().multiply(cancelPolicyRule.getRefundRate());
-							BigDecimal vendorAmount = reservation.getPlacePrice().subtract(reservation.getCommissionFee());
-							BigDecimal vendorRefundAmount = null;
 							
-							if (vendorAmount.compareTo(clientRefundAmount) == EnmCompareResult.GREATER.getValue()) {
-								vendorRefundAmount = clientRefundAmount;
-							} else {
-								vendorRefundAmount = vendorAmount;
-							}
+							BigDecimal oldVendorAmount = reservation.getPlacePrice().subtract(reservation.getCommissionFee());
+							BigDecimal newPlacePrice = reservation.getPlacePrice().multiply(BigDecimal.ONE.subtract(cancelPolicyRule.getRefundRate()));
+							BigDecimal newCommissionFee = newPlacePrice.multiply(reservation.getCommissionRate());
+							BigDecimal newVendorAmount = newPlacePrice.subtract(newCommissionFee);
 							
+							BigDecimal vendorRefundAmount = oldVendorAmount.subtract(newVendorAmount);							
 							
 							OperationResult authPaymentReverseResult = null;
 							if (hostPayoutMethod.getExternalSystemId().equals(EnmExternalSystem.BLUESNAP.getId())) {
