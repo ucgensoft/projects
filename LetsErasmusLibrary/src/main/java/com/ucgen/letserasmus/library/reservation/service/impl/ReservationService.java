@@ -1,7 +1,9 @@
 package com.ucgen.letserasmus.library.reservation.service.impl;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.TreeMap;
@@ -314,9 +316,16 @@ public class ReservationService implements IReservationService {
 							Long resRemainingDays = DateUtil.dateDiff(reservation.getStartDate(), new Date(), Calendar.DATE)+1;
 							TreeMap<Integer, CancelPolicyRule> entityTypeCancelRuleMap = this.simpleObjectService.listCancelPolicyRule(EnmEntityType.RESERVATION.getId());
 							CancelPolicyRule cancelPolicyRule = null;
+							List<CancelPolicyRule> policyList = new ArrayList<CancelPolicyRule>();
 							for (Integer ruleRemainingDays : entityTypeCancelRuleMap.keySet()) {
-								cancelPolicyRule = entityTypeCancelRuleMap.get(ruleRemainingDays);
-								if (ruleRemainingDays < resRemainingDays) {
+								policyList.add(entityTypeCancelRuleMap.get(ruleRemainingDays));
+							}
+							
+							Collections.reverse(policyList);
+							
+							for (CancelPolicyRule tmpRule : policyList) {								
+								cancelPolicyRule = tmpRule;
+								if (tmpRule.getRemainingDays() <= resRemainingDays) {
 									break;
 								}
 							}
