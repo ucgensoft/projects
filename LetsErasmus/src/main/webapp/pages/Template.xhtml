@@ -33,13 +33,8 @@
 			<link rel="stylesheet" type="text/css" href="#{webApplication.urlPrefix}/static/css/header.css" />
 			<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
 			<link rel="stylesheet" type="text/css" href="#{webApplication.urlPrefix}/static/css/app.css" />
-			<link rel="stylesheet" type="text/css" href="http://t4t5.github.io/sweetalert/dist/sweetalert.css" />
+			<link rel="stylesheet" type="text/css" href="#{webApplication.urlPrefix}/static/css/sweetalert.css" />
 			
-			<!-- 
-			<link rel="stylesheet" type="text/css" href="#{webApplication.urlPrefix}/static/css/main/main.css" />
-			<link rel="stylesheet" type="text/css" href="#{webApplication.urlPrefix}/static/css/header.css" />
-			 -->
-
 		<script>
 			var webApplicationUrlPrefix = '#{webApplication.urlPrefix}';
 			var rootPlaceImageFolder = '#{webApplication.urlPrefix}' + '/place/images/';
@@ -160,11 +155,6 @@
 					}
 					
 					$(document).ready(function(){
-						$( document ).ajaxStart(function() {
-						  //$( "#loading" ).show();
-							$('#divCommonProcessing').fadeIn(300);
-						});
-						
 						$('a[href^="#"]').click(function(e) {
 							if (!e.currentTarget.href.endsWith('#')) {
 								e.preventDefault();
