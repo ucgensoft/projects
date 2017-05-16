@@ -311,35 +311,36 @@ public class ReservationService implements IReservationService {
 							}
 						}
 						if (reservation.getStatus().equals(EnmReservationStatus.CLIENT_CANCELLED.getId()) && !reservationOldStatus.equals(EnmReservationStatus.CLIENT_CANCELLED.getId())) {
-							Long resRemainingDays = DateUtil.dateDiff(reservation.getStartDate(), new Date(), Calendar.DATE);
+							Long resRemainingDays = DateUtil.dateDiff(reservation.getStartDate(), new Date(), Calendar.DATE)+1;
 							TreeMap<Integer, CancelPolicyRule> entityTypeCancelRuleMap = this.simpleObjectService.listCancelPolicyRule(EnmEntityType.RESERVATION.getId());
 							CancelPolicyRule cancelPolicyRule = null;
 							for (Integer ruleRemainingDays : entityTypeCancelRuleMap.keySet()) {
 								cancelPolicyRule = entityTypeCancelRuleMap.get(ruleRemainingDays);
-								if (ruleRemainingDays > resRemainingDays) {
+								if (ruleRemainingDays < resRemainingDays) {
 									break;
 								}
 							}
 							
 							BigDecimal clientRefundAmount = reservation.getPlacePrice().multiply(cancelPolicyRule.getRefundRate());
-							
-							BigDecimal oldVendorAmount = reservation.getPlacePrice().subtract(reservation.getCommissionFee());
-							BigDecimal newPlacePrice = reservation.getPlacePrice().multiply(BigDecimal.ONE.subtract(cancelPolicyRule.getRefundRate()));
-							BigDecimal newCommissionFee = newPlacePrice.multiply(reservation.getCommissionRate());
-							BigDecimal newVendorAmount = newPlacePrice.subtract(newCommissionFee);
-							
-							BigDecimal vendorRefundAmount = oldVendorAmount.subtract(newVendorAmount);							
-							
-							OperationResult authPaymentReverseResult = null;
-							if (hostPayoutMethod.getExternalSystemId().equals(EnmExternalSystem.BLUESNAP.getId())) {
-								authPaymentReverseResult = this.extPaymentService.refund(reservation.getClientUserId(), 
-										reservation.getPaymentTransactionId(), clientRefundAmount, vendorRefundAmount, reservation.getModifiedBy());
-							} else if (hostPayoutMethod.getExternalSystemId().equals(EnmExternalSystem.STRIPE.getId())) {
-								authPaymentReverseResult = this.stripePaymentService.refund(reservation.getClientUserId(), reservation.getPaymentTransactionId(), reservation.getStripeVendorTransferId(), clientRefundAmount, vendorRefundAmount, reservation.getModifiedBy());
-							}
-							if (!OperationResult.isResultSucces(authPaymentReverseResult)) {
-								updateReservationResult.setResultDesc("Payment auth reversal failed. Error:" + OperationResult.getResultDesc(authPaymentReverseResult));
-								throw new OperationResultException(updateReservationResult);
+							if (clientRefundAmount.compareTo(BigDecimal.ZERO) == EnmCompareResult.GREATER.getValue()) {
+								BigDecimal oldVendorAmount = reservation.getPlacePrice().subtract(reservation.getCommissionFee());
+								BigDecimal newPlacePrice = reservation.getPlacePrice().multiply(BigDecimal.ONE.subtract(cancelPolicyRule.getRefundRate()));
+								BigDecimal newCommissionFee = newPlacePrice.multiply(reservation.getCommissionRate());
+								BigDecimal newVendorAmount = newPlacePrice.subtract(newCommissionFee);
+								
+								BigDecimal vendorRefundAmount = oldVendorAmount.subtract(newVendorAmount);							
+								
+								OperationResult authPaymentReverseResult = null;
+								if (hostPayoutMethod.getExternalSystemId().equals(EnmExternalSystem.BLUESNAP.getId())) {
+									authPaymentReverseResult = this.extPaymentService.refund(reservation.getClientUserId(), 
+											reservation.getPaymentTransactionId(), clientRefundAmount, vendorRefundAmount, reservation.getModifiedBy());
+								} else if (hostPayoutMethod.getExternalSystemId().equals(EnmExternalSystem.STRIPE.getId())) {
+									authPaymentReverseResult = this.stripePaymentService.refund(reservation.getClientUserId(), reservation.getPaymentTransactionId(), reservation.getStripeVendorTransferId(), clientRefundAmount, vendorRefundAmount, reservation.getModifiedBy());
+								}
+								if (!OperationResult.isResultSucces(authPaymentReverseResult)) {
+									updateReservationResult.setResultDesc("Payment auth reversal failed. Error:" + OperationResult.getResultDesc(authPaymentReverseResult));
+									throw new OperationResultException(updateReservationResult);
+								}	
 							}
 						}
 					}
