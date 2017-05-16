@@ -122,14 +122,16 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
   				onSelect : function(selectedDate, cal) {
   					self.validateSearch();
   					setTimeout(function() {
-  						$("#txtEndDatePicker").focus()
+  						
+  						var minDate = $('#txtStartDatePicker').datepicker('getDate');
+  			            $("#txtEndDatePicker").datepicker( "option", "minDate", minDate.addMonths(1).addDays(-1));
+  			            $("#txtEndDatePicker").focus()
+  			            self.validateSearch();
   					}, 200);
   				}
   			});
-
-			$("#txtStartDatePicker").datepicker().val(self.selectedStartDate);
 			
-	      	$("#txtEndDatePicker").datepicker(
+			$("#txtEndDatePicker").datepicker(
   			{
   				minDate: '+1m',
   				dateFormat : "dd.mm.yy",
@@ -137,9 +139,18 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
   					self.validateSearch();
   				}
   			});
-	      	
-	      	$("#txtEndDatePicker").datepicker().val(self.selectedEndDate);
-	      	
+
+			if (self.selectedStartDate != null && self.selectedStartDate != '') {
+				var tmpStartDate = Date.parse(self.selectedStartDate);
+				$("#txtStartDatePicker").datepicker('setDate', tmpStartDate);
+				
+				 $("#txtEndDatePicker").datepicker( "option", "minDate", tmpStartDate.addMonths(1)).addDays(-1); 
+				 
+				 if (self.selectedEndDate != null && self.selectedEndDate != '') {
+					 var tmpEndDate = Date.parse(self.selectedEndDate);
+					 $("#txtEndDatePicker").datepicker('setDate', tmpEndDate);
+				 }
+			}
 	      	
       	    $( "#divPriceSlider" ).slider({
       	      range: true,
@@ -255,11 +266,9 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
       };
       	
       self.search = function() {
-    	var startDate = $.datepicker.formatDate('d.m.yy', $(
-			"#txtStartDatePicker").datepicker("getDate"));
+    	var startDate = $.datepicker.formatDate('dd.mm.yy', $("#txtStartDatePicker").datepicker("getDate"));
     	
-		var endDate = $.datepicker.formatDate('d.m.yy', $("#txtEndDatePicker")
-					.datepicker("getDate"));
+		var endDate = $.datepicker.formatDate('dd.mm.yy', $("#txtEndDatePicker").datepicker("getDate"));
 		
 		openWindow(webApplicationUrlPrefix + '/pages/SearchResult.xhtml' 
 				+ '?' + EnmUriParam.LOCATION + '=' + self.selectedPlaceName
@@ -399,10 +408,8 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
       };
       
       self.validateSearch = function() {
-	      	var startDate = $.datepicker.formatDate('d.m.yy', $("#txtStartDatePicker")
-	      			.datepicker("getDate"));
-	      	var endDate = $.datepicker.formatDate('d.m.yy', $("#txtEndDatePicker")
-	      			.datepicker("getDate"));
+	      	var startDate = $.datepicker.formatDate('dd.mm.yy', $("#txtStartDatePicker").datepicker("getDate"));
+	      	var endDate = $.datepicker.formatDate('dd.mm.yy', $("#txtEndDatePicker").datepicker("getDate"));
 
 	      	if (self.selectedPlaceName == null || self.selectedPlaceName == ''
 	      			|| startDate == null || startDate == '' || endDate == null
@@ -423,7 +430,12 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
 	    	self.selectedLng = result.geometry.location.lng();
 	    	self.selectedLocationId = result.place_id;
 	    	setTimeout(function() {
-				$("#txtStartDatePicker").focus()
+	    		if ($("#txtStartDatePicker").datepicker("getDate") == null) {
+	      			$("#txtStartDatePicker").focus();
+	      		} else if ($("#txtEndDatePicker").datepicker("getDate") == null) {
+	      			$("#txtEndDatePicker").focus();
+	      		}
+				self.validateSearch();
 			}, 100);
 	    };
 	    

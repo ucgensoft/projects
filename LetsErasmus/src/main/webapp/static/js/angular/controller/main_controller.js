@@ -20,6 +20,8 @@ App.controller('mainCtrl', ['$scope', '$controller', 'userService', function($sc
   				onSelect : function(selectedDate, cal) {
   					self.validateSearch();
   					setTimeout(function() {
+  						var minDate = $('#txtStartDatePicker').datepicker('getDate');
+  			            $("#txtEndDatePicker").datepicker( "option", "minDate", minDate.addMonths(1).addDays(-1));
   						$("#txtEndDatePicker").focus()
   					}, 200);
   				}
@@ -45,14 +47,18 @@ App.controller('mainCtrl', ['$scope', '$controller', 'userService', function($sc
       	selectedLocationId = result.place_id;
       	
       	setTimeout(function() {
-				$("#txtStartDatePicker").focus()
+	      		if ($("#txtStartDatePicker").datepicker("getDate") == null) {
+	      			$("#txtStartDatePicker").focus();
+	      		} else if ($("#txtEndDatePicker").datepicker("getDate") == null) {
+	      			$("#txtEndDatePicker").focus();
+	      		}
+				self.validateSearch();
 			}, 100);
       };
 
       self.search = function() {
-    	var startDate = $.datepicker.formatDate('d.m.yy', $(
-			"#txtStartDatePicker").datepicker("getDate"));
-		var endDate = $.datepicker.formatDate('d.m.yy', $("#txtEndDatePicker")
+    	var startDate = $.datepicker.formatDate('dd.mm.yy', $("#txtStartDatePicker").datepicker("getDate"));
+		var endDate = $.datepicker.formatDate('dd.mm.yy', $("#txtEndDatePicker")
 					.datepicker("getDate"));
 		
 		openWindow(webApplicationUrlPrefix + '/pages/SearchResult.xhtml' 

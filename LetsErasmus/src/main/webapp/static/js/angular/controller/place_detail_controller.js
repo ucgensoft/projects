@@ -30,31 +30,39 @@ App.controller('placeDetailCtrl', ['$scope', '$controller', 'placeService', 'res
     		  
     		  $("#txtStartDatePicker").datepicker(
 				{
-					minDate : new Date(),
+					minDate : '+0',
+					dateFormat : "dd.mm.yy",
+					onSelect : function(selectedDate, cal) {
+						var minDate = $('#txtStartDatePicker').datepicker('getDate');
+  			            $("#txtEndDatePicker").datepicker( "option", "minDate", minDate.addMonths(1).addDays(-1));
+					}
+				});
+    		  
+    		  $("#txtEndDatePicker").datepicker(
+				{
+					minDate : '+1m',
 					dateFormat : "dd.mm.yy",
 					onSelect : function(selectedDate, cal) {
 						
 					}
 				});
     		  
-	    	  $("#txtEndDatePicker").datepicker(
-				{
-					minDate : new Date(),
-					dateFormat : "dd.mm.yy",
-					onSelect : function(selectedDate, cal) {
-						
-					}
-				});
-	    	  
-	    	  var checkinDate = getUriParam(EnmUriParam.CHECKIN_DATE);
+    		  var checkinDate = getUriParam(EnmUriParam.CHECKIN_DATE);
         	  var checkoutDate = getUriParam(EnmUriParam.CHECKOUT_DATE);
         	  
         	  if (checkinDate != null && checkinDate != '') {
-        		  $("#txtStartDatePicker").datepicker().val(checkinDate);
+        		  var tmpStartDate = Date.parse(checkinDate);
+  				  $("#txtStartDatePicker").datepicker('setDate', tmpStartDate);
+  				
+  				  $("#txtEndDatePicker").datepicker( "option", "minDate", tmpStartDate.addMonths(1).addDays(-1)); 
+  				 
+  				 if (checkoutDate != null && checkoutDate!= '') {
+  					 var tmpEndDate = Date.parse(checkoutDate);
+  					 $("#txtEndDatePicker").datepicker('setDate', tmpEndDate);
+  				 }
+  				 
         	  }
-        	  if (checkoutDate != null && checkoutDate != '') {
-        		  $("#txtEndDatePicker").datepicker().val(checkoutDate);
-        	  }
+        	  
         	  
         	  /*
         	  reviewService.listPlaceReview(placeId,

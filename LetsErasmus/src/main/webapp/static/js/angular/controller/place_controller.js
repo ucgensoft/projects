@@ -36,7 +36,8 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
 					minDate: '+0',
 					dateFormat : "dd.mm.yy",
 					onSelect : function(selectedDate, cal) {
-						
+						var minDate = $('#txtStartDatePicker').datepicker('getDate');
+  			            $("#txtEndDatePicker").datepicker( "option", "minDate", minDate.addMonths(1).addDays(-1));
 					}
 				});
 	    	  
