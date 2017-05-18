@@ -206,8 +206,9 @@ public class ReservationService implements IReservationService {
 		return this.reservationDao.list(reservation, placeFlag, hostUserFlag, clientUserFlag);
 	}
 
+	// if "rollbackfor" attribute is not set, rollback not working.
 	@Override
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public OperationResult update(Reservation reservation, Message message, TransactionLog transactionLog, Integer reservationOldStatus) throws OperationResultException {
 		if (reservation.getStatus() != null && reservationOldStatus != null 
 				&& !reservation.getStatus().equals(reservationOldStatus)) {
