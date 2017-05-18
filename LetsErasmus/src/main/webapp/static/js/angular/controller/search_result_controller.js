@@ -665,6 +665,18 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
     	  openWindow(placeDetailUrl, false);
       };
       
+      self.getPlaceDetailUrl = function(placeId) {
+    	  var startDate = getUriParam(EnmUriParam.CHECKIN_DATE);
+    	  var endDate = getUriParam(EnmUriParam.CHECKOUT_DATE);
+    	  
+    	  var placeDetailUrl = webApplicationUrlPrefix + '/pages/PlaceDetail.xhtml' 
+    	  	+ '?' + EnmUriParam.PLACE_ID + '=' + placeId
+    	  	+ '&' + EnmUriParam.CHECKIN_DATE + '=' + startDate
+    	  	+ '&' + EnmUriParam.CHECKOUT_DATE + '=' + endDate;
+    	  
+    	  return placeDetailUrl;
+      };
+      
       self.onFavoriteIconClicked = function(placeId) {
     	  if ($('#favouriteIcon_' + placeId).hasClass('FavouriteItem-icon--active')) {
     		  removeFavorite(EnmEntityType.PLACE, placeId, function(result) {
@@ -694,7 +706,22 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
       self.generatePlacePhotoUrl = function(placeId, photoId, size) {
   		return generatePlacePhotoUrl(placeId, photoId, size);
   	  };
+  	  
+  	  self.getFunctionName = function(placeId) {
+  		 return 'onFavoriteIconClicked(' + placeId + ')'; 
+  	  }
       	
       initialize();
       
   }]);
+
+function openPlaceDetailWindow(placeId) {
+	var scope = angular.element( $('#divBody') ).scope();
+	scope.ctrl.openPlaceDetailWindow(placeId);
+}
+
+function onFavoriteIconClicked(divId) {
+	var placeId = divId.substring(divId.indexOf('_') + 1);
+	var scope = angular.element( $('#divBody') ).scope();
+	scope.ctrl.onFavoriteIconClicked(placeId);
+}

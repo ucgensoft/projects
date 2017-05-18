@@ -228,7 +228,7 @@
 											class="image-gallery-content">
 											<span class="image-gallery-left-nav" ng-click="ctrl.changePhoto(p, -1)"></span>
 											<span class="image-gallery-right-nav" ng-click="ctrl.changePhoto(p, 1)"></span>
-											<a href="#" ng-click="ctrl.openPlaceDetailWindow(p.id)">
+											<a href="{{ctrl.getPlaceDetailUrl(p.id)}}" target="_blank">
 												<div>
 													<div class="image-gallery-slides">
 														<div class="image-gallery-slide center"
@@ -257,7 +257,7 @@
 											<div class="FavouriteItem">
 												<div id="favouriteIcon_{{p.id}}"
 													class="FavouriteItem-icon beicon-heart {{(ctrl.isPlaceFavorite(p.id) ? 'FavouriteItem-icon--active' : '')}}"
-													ng-click="ctrl.onFavoriteIconClicked(p.id)">
+													onclick="onFavoriteIconClicked(this.id)">
 												</div>
 											</div>
 										</div>
