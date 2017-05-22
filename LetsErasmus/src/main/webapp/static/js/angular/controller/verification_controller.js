@@ -122,9 +122,9 @@ App.controller('verificationCtrl', ['$scope', 'userService', 'commonService',
   		var url = null;
   		var parameters = document.location.href.substring(document.location.href.indexOf('?') + 1);
   		if (activeOperation == EnmOperation.CREATE_PLACE) {
-  			url = webApplicationUrlPrefix + '/pages/Place.xhtml?' + parameters;
+  			url = webApplicationUrlPrefix + '/pages/Place.html' + parameters;
   		} else if (activeOperation == EnmOperation.CREATE_RESERVATION) {
-  			url = webApplicationUrlPrefix + '/pages/Payment.xhtml?' + parameters;
+  			url = webApplicationUrlPrefix + '/pages/Payment.html' + parameters;
   		}
 		
   		return url;

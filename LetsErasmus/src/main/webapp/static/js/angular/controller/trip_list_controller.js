@@ -26,14 +26,14 @@ App.controller('tripListCtrl', ['$scope', '$controller', 'reservationService', '
   	  	
   	self.openCancelReservationWindow = function(reservationId) {
   		activeReservationId = reservationId;
-  		ajaxHtml(webApplicationUrlPrefix + '/static/html/CancelReservation.html', 'divCommonModal', function() {
+  		ajaxHtml(webApplicationUrlPrefix + '/static/html/CancelReservation.htm', 'divCommonModal', function() {
   			$('#divCommonModal').css('display', '');
     	});
   	};
   	
   	self.openCancelReservationWindow = function(reservationId) {
   		activeReservationId = reservationId;
-  		ajaxHtml(webApplicationUrlPrefix + '/static/html/CancelReservation.html', 'divCommonModal', function() {
+  		ajaxHtml(webApplicationUrlPrefix + '/static/html/CancelReservation.htm', 'divCommonModal', function() {
   			$('#divCommonModal').css('display', '');
     	});
   	};
@@ -63,7 +63,7 @@ App.controller('tripListCtrl', ['$scope', '$controller', 'reservationService', '
   	
   	self.openRecallReservationWindow = function(reservationId) {
   		activeReservationId = reservationId;
-  		ajaxHtml(webApplicationUrlPrefix + '/static/html/RecallReservation.html', 'divCommonModal', function() {
+  		ajaxHtml(webApplicationUrlPrefix + '/static/html/RecallReservation.htm', 'divCommonModal', function() {
   			$('#divCommonModal').css('display', '');
     	});
   	};
@@ -113,7 +113,7 @@ App.controller('tripListCtrl', ['$scope', '$controller', 'reservationService', '
   	
   	self.openReviewWindow = function(reservation) {
   		activeReservationId = reservation.id;
-  		ajaxHtml(webApplicationUrlPrefix + '/static/html/Review.html', 'divCommonModal', function() {
+  		ajaxHtml(webApplicationUrlPrefix + '/static/html/Review.htm', 'divCommonModal', function() {
   			$('#divCommonModal').css('display', '');
     	});
   	};

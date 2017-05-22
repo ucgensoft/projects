@@ -18,7 +18,7 @@ App.controller('placeDetailCtrl', ['$scope', '$controller', 'placeService', 'res
       self.initialize = function() {
     	  var placeId = getUriParam('placeId');
     	  if (placeId == null || placeId == "") {
-    		  openWindow(webApplicationUrlPrefix + "/pages/Main.xhtml");
+    		  openWindow(webApplicationUrlPrefix + "/pages/Main.html");
     	  } else {
     		  placeService.getPlace(placeId).then(function(operationResult) {
         	  		self.displayPlaceDetails(operationResult.resultValue)
@@ -356,7 +356,7 @@ App.controller('placeDetailCtrl', ['$scope', '$controller', 'placeService', 'res
      
      self.onContactHostBtnClicked = function() {
     	 if (loginUserId != '') {
-    		 ajaxHtml(webApplicationUrlPrefix + '/static/html/ContactHost.html', 'divCommonModal', function() {
+    		 ajaxHtml(webApplicationUrlPrefix + '/static/html/ContactHost.htm', 'divCommonModal', function() {
         		 $('#headerContactHost').html(self.place.user.firstName);
         		 $('#lnkContactHostUser').attr('href', $('#lnkHostUser').attr('href'));
         		 $('#imgContactHostUser').attr('src', $('#imgHostUser').attr('src'));

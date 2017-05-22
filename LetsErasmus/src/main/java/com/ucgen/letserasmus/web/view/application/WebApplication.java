@@ -72,8 +72,8 @@ public class WebApplication extends BaseController {
 			
 			urlPrefix = this.parameterService.getParameterValue(EnmParameter.LETSERASMUS_URL_PREFIX.getId());
 			
-			//emailVerificationUrl = urlPrefix + "/pages/Main.xhtml?user=#paramUserId#&code=#paramCode#&op=10";
-			//resetPasswordUrl = urlPrefix + "/pages/Main.xhtml?user=#paramUserId#&code=#paramCode#&op=12";
+			//emailVerificationUrl = urlPrefix + "//PAGES/Main.html?user=#paramUserId#&code=#paramCode#&op=10";
+			//resetPasswordUrl = urlPrefix + "//PAGES/Main.html?user=#paramUserId#&code=#paramCode#&op=12";
 			
 			String placeImageSubUrl = this.parameterService.getParameterValue(EnmParameter.PLACE_IMAGE_SUB_URL.getId());
 			String userImageSubUrl = this.parameterService.getParameterValue(EnmParameter.USER_IMAGE_SUB_URL.getId());
@@ -208,41 +208,41 @@ public class WebApplication extends BaseController {
 			return "mainCtrl";
 		} else {
 			requestUrl = requestUrl.toUpperCase();
-			if (requestUrl.contains("PAGES/MAIN.XHTML")) {
+			if (requestUrl.contains("PAGES/MAIN.HTML")) {
 				return "mainCtrl";
-			} else if (requestUrl.contains("PAGES/SEARCHRESULT.XHTML")) {
+			} else if (requestUrl.contains("PAGES/SEARCHRESULT.HTML")) {
 				return "searchResultCtrl";
-			} else if (requestUrl.contains("PAGES/PLACE.XHTML")) {
+			} else if (requestUrl.contains("PAGES/PLACE.HTML")) {
 				return "placeCtrl";
-			} else if (requestUrl.contains("PAGES/PLACEDETAIL.XHTML")) {
+			} else if (requestUrl.contains("PAGES/PLACEDETAIL.HTML")) {
 				return "placeDetailCtrl";
-			} else if (requestUrl.contains("PAGES/DASHBOARD/EDITUSER.XHTML")) {
+			} else if (requestUrl.contains("PAGES/DASHBOARD/EDITUSER.HTML")) {
 				return "editUserCtrl";
-			} else if (requestUrl.contains("PAGES/DASHBOARD/DISPLAYUSER.XHTML")) {
+			} else if (requestUrl.contains("PAGES/DASHBOARD/DISPLAYUSER.HTML")) {
 				return "displayUserCtrl";
-			} else if (requestUrl.contains("PAGES/DASHBOARD/LISTINGS.XHTML")) {
+			} else if (requestUrl.contains("PAGES/DASHBOARD/LISTINGS.HTML")) {
 				return "listingsCtrl";
-			} else if (requestUrl.contains("PAGES/DASHBOARD/TRUSTANDVERIFICATION.XHTML")) {
+			} else if (requestUrl.contains("PAGES/DASHBOARD/TRUSTANDVERIFICATION.HTML")) {
 				return "trustAndverificationCtrl";
-			} else if (requestUrl.contains("PAGES/VERIFICATION.XHTML")) {
+			} else if (requestUrl.contains("PAGES/VERIFICATION.HTML")) {
 				return "verificationCtrl";
-			} else if (requestUrl.contains("PAGES/PAYMENT.XHTML")) {
+			} else if (requestUrl.contains("PAGES/PAYMENT.HTML")) {
 				return "paymentCtrl";
-			} else if (requestUrl.contains("PAGES/DASHBOARD/MESSAGELIST.XHTML")) {
+			} else if (requestUrl.contains("PAGES/DASHBOARD/MESSAGELIST.HTML")) {
 				return "messageListCtrl";
-			} else if (requestUrl.contains("PAGES/DASHBOARD/CONVERSATION.XHTML")) {
+			} else if (requestUrl.contains("PAGES/DASHBOARD/CONVERSATION.HTML")) {
 				return "conversationCtrl";
-			} else if (requestUrl.contains("PAGES/DASHBOARD/RESERVATIONLIST.XHTML")) {
+			} else if (requestUrl.contains("PAGES/DASHBOARD/RESERVATIONLIST.HTML")) {
 				return "reservationListCtrl";
-			} else if (requestUrl.contains("PAGES/DASHBOARD/TRIPLIST.XHTML")) {
+			} else if (requestUrl.contains("PAGES/DASHBOARD/TRIPLIST.HTML")) {
 				return "tripListCtrl";
-			} else if (requestUrl.contains("PAGES/DASHBOARD/WISHLIST.XHTML")) {
+			} else if (requestUrl.contains("PAGES/DASHBOARD/WISHLIST.HTML")) {
 				return "wishListCtrl";
-			} else if (requestUrl.contains("PAGES/HELP/HELP.XHTML")) {
+			} else if (requestUrl.contains("PAGES/HELP/HELP.HTML")) {
 				return "helpCtrl";
-			} else if (requestUrl.contains("PAGES/DASHBOARD/PAYMENTMETHODS.XHTML")) {
+			} else if (requestUrl.contains("PAGES/DASHBOARD/PAYMENTMETHODS.HTML")) {
 				return "paymentMethodCtrl";
-			} else if (requestUrl.contains("PAGES/DASHBOARD/PAYOUTMETHODS.XHTML")) {
+			} else if (requestUrl.contains("PAGES/DASHBOARD/PAYOUTMETHODS.HTML")) {
 				return "payoutMethodCtrl";
 			} else {
 				return "";
@@ -352,8 +352,8 @@ public class WebApplication extends BaseController {
 	public boolean isFooterVisible() {
 		String requestUrl = super.getRequest().getRequestURL().toString();
 		requestUrl = requestUrl.trim().replace(this.urlPrefix, "").toUpperCase();
-		if (requestUrl.contains("PAGES/PLACE.XHTML") 
-				|| requestUrl.contains("PAGES/SEARCHRESULT.XHTML")) {
+		if (requestUrl.contains("PAGES/PLACE.HTML") 
+				|| requestUrl.contains("PAGES/SEARCHRESULT.HTML")) {
 			return false;
 		} else {
 			return true;

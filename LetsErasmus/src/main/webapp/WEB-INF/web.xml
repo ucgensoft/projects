@@ -21,11 +21,7 @@
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>Faces Servlet</servlet-name>
-		<url-pattern>*.jsf</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>Faces Servlet</servlet-name>
-		<url-pattern>*.xhtml</url-pattern>
+		<url-pattern>*.html</url-pattern>
 	</servlet-mapping>
 	<context-param>
 		<param-name>javax.faces.PRODUCTION</param-name>
@@ -57,7 +53,7 @@
 	</context-param>
 
 	<welcome-file-list>
-		<welcome-file>/pages/Main.xhtml</welcome-file>
+		<welcome-file>/pages/Main.html</welcome-file>
 	</welcome-file-list>
 
 	<!--
@@ -68,12 +64,12 @@
 	
 	<error-page>
     	<error-code>404</error-code>
-	    <location>/pages/Notfound.xhtml</location>
+	    <location>/pages/Notfound.html</location>
 	</error-page>
 	
 	<error-page>
     	<error-code>500</error-code>
-	    <location>/pages/Notfound.xhtml</location>
+	    <location>/pages/Notfound.html</location>
 	</error-page>
 	
 </web-app>

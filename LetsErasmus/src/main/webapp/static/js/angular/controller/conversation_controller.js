@@ -150,7 +150,7 @@ App.controller('conversationCtrl', ['$scope', '$controller', 'messageService', '
   	};
   	
   	self.openAcceptReservationWindow = function() {
-  		ajaxHtml(webApplicationUrlPrefix + '/static/html/AcceptReservation.html', 'divCommonModal', function() {
+  		ajaxHtml(webApplicationUrlPrefix + '/static/html/AcceptReservation.htm', 'divCommonModal', function() {
   			$('#divCommonModal').css('display', '');
     	});
   	};
@@ -177,7 +177,7 @@ App.controller('conversationCtrl', ['$scope', '$controller', 'messageService', '
   	};
   	
   	self.openDeclineReservationWindow = function() {
-  		ajaxHtml(webApplicationUrlPrefix + '/static/html/DeclineReservation.html', 'divCommonModal', function() {
+  		ajaxHtml(webApplicationUrlPrefix + '/static/html/DeclineReservation.htm', 'divCommonModal', function() {
   			$('#divCommonModal').css('display', '');
     	});
   	};

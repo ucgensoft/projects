@@ -462,7 +462,7 @@ function handleAjaxError(operationResult, callBack) {
 			}
 			DialogUtil.error(operationResult.resultDesc, function() {
 				if (operationResult.errorCode == EnmErrorCode.UNAUTHORIZED_OPERATION) {
-					location.href = webApplicationUrlPrefix + '/pages/Unauthorized.xhtml';
+					location.href = webApplicationUrlPrefix + '/pages/Unauthorized.html';
 				} else {
 					callBack();
 				}

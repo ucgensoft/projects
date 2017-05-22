@@ -62,7 +62,7 @@
 									<div class="col-sm-9 col-md-3 thread-author">
 										<div class="row row-table">
 											<div class="thread-avatar col-md-5">
-												<a class="" href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.xhtml?userId={{ctrl.isHost ? t.clientUserId : t.hostUserId}}" target="_blank">
+												<a class="" href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId={{ctrl.isHost ? t.clientUserId : t.hostUserId}}" target="_blank">
 													<img src="{{ctrl.isHost ? t.clientUserProfilePhotoUrl : t.hostUserProfilePhotoUrl}}"
 													alt="{{ctrl.isHost ? t.clientUserFirstName : t.hostUserFirstName}}" height="50" width="50"
 													class="media-round media-photo" />
@@ -75,7 +75,7 @@
 										</div>
 									</div>
 									<a
-										href="#{webApplication.urlPrefix}/pages/dashboard/Conversation.xhtml?threadId={{t.id}}"
+										href="#{webApplication.urlPrefix}/pages/dashboard/Conversation.html?threadId={{t.id}}"
 										class="thread-link link-reset text-muted"><div
 											class="col-sm-7 col-md-5 col-lg-6 thread-body">
 											<div class="h4 thread__listing text-muted show-lg">

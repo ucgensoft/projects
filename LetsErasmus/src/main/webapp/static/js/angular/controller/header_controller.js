@@ -84,20 +84,20 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
       
       self.openSignUpWindow = function() {
     	  /*
-    	  getHtml(webApplicationUrlPrefix + '/pages/Signup.xhtml', function(html) {
+    	  getHtml(webApplicationUrlPrefix + '/pages/Signup.html', function(html) {
     		  $('#divModalContent').html(sce.trustAsHtml(html));
     		});
     		*/
     	  //var htmlcontent = $('#divModalContent');
-    	  //htmlcontent.load(webApplicationUrlPrefix + '/pages/Signup.xhtml');
+    	  //htmlcontent.load(webApplicationUrlPrefix + '/pages/Signup.html');
     	  //compile(htmlcontent.contents())($scope);
     	  
-    	  ajaxHtml(webApplicationUrlPrefix + '/pages/Signup.xhtml', 'divModalContent', function() {
+    	  ajaxHtml(webApplicationUrlPrefix + '/pages/Signup.html', 'divModalContent', function() {
     		  self.attachGoogleSignin('linkGoogleSignin', self.signup);
     		  openModal();  
     	  });
     	  /*
-    	  getHtml(webApplicationUrlPrefix + '/pages/Signup.xhtml', function(html) {
+    	  getHtml(webApplicationUrlPrefix + '/pages/Signup.html', function(html) {
     		  self.html = html;
         	  setTimeout(function() {
         	compile(htmlcontent.contents())($scope);
@@ -109,7 +109,7 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
       
       self.openLoginWindow = function() {
     	  if (auth2 != null) {
-    		  ajaxHtml(webApplicationUrlPrefix + '/pages/Login.xhtml', 'divModalContent', function() {
+    		  ajaxHtml(webApplicationUrlPrefix + '/pages/Login.html', 'divModalContent', function() {
         		  self.attachGoogleSignin('linkGoogleSignin', self.signup);
         		  openModal();  
         	  });
@@ -259,15 +259,15 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
 							if (loginType == EnmLoginType.GOOGLE) {
 								$('#frameGoogleLogout').attr('src', 'https://accounts.google.com/logout');
 								setTimeout(function() {
-									location.href = webApplicationUrlPrefix + "/pages/Main.xhtml";
+									location.href = webApplicationUrlPrefix + "/pages/Main.html";
 								}, 500);
 							} else if (loginType == EnmLoginType.FACEBOOK) {
 								$('#frameGoogleLogout').attr('src', 'https://www.facebook.com/logout.php?next='+ urlEncodedUrlPrefix + '&access_token=' + facebookTokenId);
 								setTimeout(function() {
-									location.href = webApplicationUrlPrefix + "/pages/Main.xhtml";
+									location.href = webApplicationUrlPrefix + "/pages/Main.html";
 								}, 500);
 							} else {
-								location.href = webApplicationUrlPrefix + "/pages/Main.xhtml";
+								location.href = webApplicationUrlPrefix + "/pages/Main.html";
 							}
 						} else {
 							DialogUtil.error('Operation could not be completed!');
@@ -377,7 +377,7 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
 	  
 	  self.openComplaintWindow = function(entityType, entityId) {
 		  if (loginUserId != null) {
-			  ajaxHtml(webApplicationUrlPrefix + '/static/html/Complaint.html', 'divCommonModal', function() {
+			  ajaxHtml(webApplicationUrlPrefix + '/static/html/Complaint.htm', 'divCommonModal', function() {
 		   		     $('#hiddenComplaintEntityType').val(entityType);
 		   		     $('#hiddenComplaintEntityId').val(entityId);
 		    		 $('#divCommonModal').css('display', '');
@@ -424,7 +424,7 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
 	  };
 	  
 	  self.onBecomeHostClicked = function() {
-		  var placeUrl = webApplicationUrlPrefix + '/pages/Place.xhtml';
+		  var placeUrl = webApplicationUrlPrefix + '/pages/Place.html';
 		  if (loginUserId == '') {
 			  globalRedirectUrl = null;
 			  self.openLoginWindow();
@@ -432,7 +432,7 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
 			  if (globalIsUserVerified) {
 				  openWindow(placeUrl, true);
 			  } else {
-				  var verificationUrl = webApplicationUrlPrefix + '/pages/Verification.xhtml?op=' + EnmOperation.CREATE_PLACE;
+				  var verificationUrl = webApplicationUrlPrefix + '/pages/Verification.html?op=' + EnmOperation.CREATE_PLACE;
 				  openWindow(verificationUrl, true);
 			  }
 		  }

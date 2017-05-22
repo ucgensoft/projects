@@ -61,7 +61,7 @@ App.controller('mainCtrl', ['$scope', '$controller', 'userService', function($sc
 		var endDate = $.datepicker.formatDate('dd.mm.yy', $("#txtEndDatePicker")
 					.datepicker("getDate"));
 		
-		openWindow(webApplicationUrlPrefix + '/pages/SearchResult.xhtml' 
+		openWindow(webApplicationUrlPrefix + '/pages/SearchResult.html' 
 				+ '?' + EnmUriParam.LOCATION + '=' + selectedPlaceName 
 				+ "&" + EnmUriParam.CHECKIN_DATE + "=" + startDate 
 				+ "&" + EnmUriParam.CHECKOUT_DATE + "=" + endDate

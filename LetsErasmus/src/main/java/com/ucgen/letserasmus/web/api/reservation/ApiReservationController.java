@@ -199,9 +199,9 @@ public class ApiReservationController extends BaseApiController {
 							
 							if (user.getMsisdnVerified().equals(EnmBoolStatus.YES.getId()) 
 									&& user.getEmailVerified().equals(EnmBoolStatus.YES.getId())) {
-								nextUrl = this.webApplication.getUrlPrefix() + "/pages/Payment.xhtml";
+								nextUrl = this.webApplication.getUrlPrefix() + "/pages/Payment.html";
 							} else {
-								nextUrl = this.webApplication.getUrlPrefix() + "/pages/Verification.xhtml";
+								nextUrl = this.webApplication.getUrlPrefix() + "/pages/Verification.html";
 							}
 							nextUrl = nextUrl + "?" + uriParams;
 							operationResult.setResultValue(nextUrl);
@@ -313,7 +313,7 @@ public class ApiReservationController extends BaseApiController {
 							Place place = reservation.getPlace();
 							String placeCoverPhotoUrl = this.webApplication.getPlacePhotoUrl(place.getId(), place.getCoverPhotoId(), EnmSize.SMALL.getValue());
 
-							String placeUrl = WebUtil.concatUrl(this.webApplication.getUrlPrefix(), "/pages/PlaceDetail.xhtml");
+							String placeUrl = WebUtil.concatUrl(this.webApplication.getUrlPrefix(), "/pages/PlaceDetail.html");
 							placeUrl = WebUtil.addUriParam(placeUrl, EnmUriParameter.PLACE_ID.getName(), place.getId());
 							
 							place.setCoverPhotoUrl(placeCoverPhotoUrl);
@@ -496,7 +496,7 @@ public class ApiReservationController extends BaseApiController {
 										Place place = reservation.getPlace();
 										String placeCoverPhotoUrl = this.webApplication.getPlacePhotoUrl(place.getId(), place.getCoverPhotoId(), EnmSize.SMALL.getValue());
 
-										String placeUrl = WebUtil.concatUrl(this.webApplication.getUrlPrefix(), "pages/PlaceDetail.xhtml");
+										String placeUrl = WebUtil.concatUrl(this.webApplication.getUrlPrefix(), "pages/PlaceDetail.html");
 										placeUrl = WebUtil.addUriParam(placeUrl, EnmUriParameter.PLACE_ID.getName(), place.getId());
 										
 										place.setCoverPhotoUrl(placeCoverPhotoUrl);
@@ -506,18 +506,18 @@ public class ApiReservationController extends BaseApiController {
 										place.setLocation(location);
 										
 										User clientUser = reservation.getClientUser();
-										String clientUserUrl = WebUtil.concatUrl(this.webApplication.getUrlPrefix(), "pages/dashboard/DisplayUser.xhtml?userId=" + clientUser.getId());
+										String clientUserUrl = WebUtil.concatUrl(this.webApplication.getUrlPrefix(), "pages/dashboard/DisplayUser.html?userId=" + clientUser.getId());
 										String clientProfilePhotoUrl = this.webApplication.getUserPhotoUrl(clientUser.getId(), clientUser.getProfilePhotoId(), EnmSize.SMALL.getValue());
 										clientUser.setUrl(clientUserUrl);
 										clientUser.setProfileImageUrl(clientProfilePhotoUrl);
 										
 										User hostUser = reservation.getHostUser();
-										String hostUserUrl = WebUtil.concatUrl(this.webApplication.getUrlPrefix(), "pages/dashboard/DisplayUser.xhtml?userId=" + hostUser.getId());
+										String hostUserUrl = WebUtil.concatUrl(this.webApplication.getUrlPrefix(), "pages/dashboard/DisplayUser.html?userId=" + hostUser.getId());
 										String hostProfilePhotoUrl = this.webApplication.getUserPhotoUrl(hostUser.getId(), hostUser.getProfilePhotoId(), EnmSize.SMALL.getValue());
 										hostUser.setUrl(hostUserUrl);
 										hostUser.setProfileImageUrl(hostProfilePhotoUrl);
 										
-										String conversationUrl = WebUtil.concatUrl(this.webApplication.getUrlPrefix(), "pages/dashboard/Conversation.xhtml?threadId=" + reservation.getMessageThreadId());
+										String conversationUrl = WebUtil.concatUrl(this.webApplication.getUrlPrefix(), "pages/dashboard/Conversation.html?threadId=" + reservation.getMessageThreadId());
 										MessageThread messageThread = new MessageThread();
 										messageThread.setUrl(conversationUrl);
 										reservation.setMessageThread(messageThread);
@@ -777,7 +777,7 @@ public class ApiReservationController extends BaseApiController {
 						operationResult.setResultCode(EnmResultCode.WARNING.getValue());
 						operationResult.setErrorCode(EnmErrorCode.ALREADY_CONTACTED.getId());
 						operationResult.setResultDesc(AppConstants.MESSAGE_DOUBLE);
-						String conversationPageUrl = AppUtil.concatPath(this.webApplication.getUrlPrefix(), "/pages/dashboard/Conversation.xhtml?threadId="+ dbReservationList.get(0).getMessageThreadId());
+						String conversationPageUrl = AppUtil.concatPath(this.webApplication.getUrlPrefix(), "/pages/dashboard/Conversation.html?threadId="+ dbReservationList.get(0).getMessageThreadId());
 						operationResult.setResultValue(conversationPageUrl);
 					}
 				} else {

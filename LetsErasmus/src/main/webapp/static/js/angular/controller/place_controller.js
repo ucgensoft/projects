@@ -658,7 +658,7 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
   	  					function(isSuccess) {
   	  						if (isSuccess) {
   	  							DialogUtil.success( 'Congratulations! Your place is saved successfully!', function() {
-  	  								document.location.href = webApplicationUrlPrefix + '/pages/dashboard/Listings.xhtml';
+  	  								document.location.href = webApplicationUrlPrefix + '/pages/dashboard/Listings.html';
   	  							});
   	  						}
   	  					}
@@ -706,7 +706,7 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     		  placeService.updatePlace(newPlace, self.photoList,
   					function(isSuccess) {
 	    			  DialogUtil.success( 'Congratulations! Your place is updated successfully!', function() {
-							document.location.href = webApplicationUrlPrefix + '/pages/dashboard/Listings.xhtml';
+							document.location.href = webApplicationUrlPrefix + '/pages/dashboard/Listings.html';
 						});
   					}
     		  );

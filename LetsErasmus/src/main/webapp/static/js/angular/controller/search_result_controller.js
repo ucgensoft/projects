@@ -270,7 +270,7 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
     	
 		var endDate = $.datepicker.formatDate('dd.mm.yy', $("#txtEndDatePicker").datepicker("getDate"));
 		
-		openWindow(webApplicationUrlPrefix + '/pages/SearchResult.xhtml' 
+		openWindow(webApplicationUrlPrefix + '/pages/SearchResult.html' 
 				+ '?' + EnmUriParam.LOCATION + '=' + self.selectedPlaceName
 				+ "&" + EnmUriParam.CHECKIN_DATE + "=" + startDate 
 				+ "&" + EnmUriParam.CHECKOUT_DATE + "=" + endDate
@@ -657,7 +657,7 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
     	  var startDate = getUriParam(EnmUriParam.CHECKIN_DATE);
     	  var endDate = getUriParam(EnmUriParam.CHECKOUT_DATE);
     	  
-    	  var placeDetailUrl = webApplicationUrlPrefix + '/pages/PlaceDetail.xhtml' 
+    	  var placeDetailUrl = webApplicationUrlPrefix + '/pages/PlaceDetail.html' 
     	  	+ '?' + EnmUriParam.PLACE_ID + '=' + placeId
     	  	+ '&' + EnmUriParam.CHECKIN_DATE + '=' + startDate
     	  	+ '&' + EnmUriParam.CHECKOUT_DATE + '=' + endDate;
@@ -669,7 +669,7 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
     	  var startDate = getUriParam(EnmUriParam.CHECKIN_DATE);
     	  var endDate = getUriParam(EnmUriParam.CHECKOUT_DATE);
     	  
-    	  var placeDetailUrl = webApplicationUrlPrefix + '/pages/PlaceDetail.xhtml' 
+    	  var placeDetailUrl = webApplicationUrlPrefix + '/pages/PlaceDetail.html' 
     	  	+ '?' + EnmUriParam.PLACE_ID + '=' + placeId
     	  	+ '&' + EnmUriParam.CHECKIN_DATE + '=' + startDate
     	  	+ '&' + EnmUriParam.CHECKOUT_DATE + '=' + endDate;

@@ -26,7 +26,7 @@ App.controller('reservationListCtrl', ['$scope', '$controller', 'reservationServ
   	  	
   	self.openAcceptReservationWindow = function(reservationId) {
   		activeReservationId = reservationId;
-  		ajaxHtml(webApplicationUrlPrefix + '/static/html/AcceptReservation.html', 'divCommonModal', function() {
+  		ajaxHtml(webApplicationUrlPrefix + '/static/html/AcceptReservation.htm', 'divCommonModal', function() {
   			$('#divCommonModal').css('display', '');
     	});
   	};
@@ -56,14 +56,14 @@ App.controller('reservationListCtrl', ['$scope', '$controller', 'reservationServ
   	
   	self.openDeclineReservationWindow = function(reservationId) {
   		activeReservationId = reservationId;
-  		ajaxHtml(webApplicationUrlPrefix + '/static/html/DeclineReservation.html', 'divCommonModal', function() {
+  		ajaxHtml(webApplicationUrlPrefix + '/static/html/DeclineReservation.htm', 'divCommonModal', function() {
   			$('#divCommonModal').css('display', '');
     	});
   	};
   	
   	self.openCancelReservationWindow = function(reservationId) {
   		activeReservationId = reservationId;
-  		ajaxHtml(webApplicationUrlPrefix + '/static/html/CancelReservation.html', 'divCommonModal', function() {
+  		ajaxHtml(webApplicationUrlPrefix + '/static/html/CancelReservation.htm', 'divCommonModal', function() {
   			$('#divCommonModal').css('display', '');
     	});
   	};
@@ -142,7 +142,7 @@ App.controller('reservationListCtrl', ['$scope', '$controller', 'reservationServ
   	
   	self.openReviewWindow = function(reservation) {
   		activeReservationId = reservation.id;
-  		ajaxHtml(webApplicationUrlPrefix + '/static/html/Review.html', 'divCommonModal', function() {
+  		ajaxHtml(webApplicationUrlPrefix + '/static/html/Review.htm', 'divCommonModal', function() {
   			$('#divCommonModal').css('display', '');
     	});
   	};

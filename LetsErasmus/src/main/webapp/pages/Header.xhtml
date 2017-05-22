@@ -32,7 +32,7 @@
 				</div>
 			</div>
 			<a id="help-button"
-				href="#{webApplication.urlPrefix}/pages/help/help.xhtml"
+				href="#{webApplication.urlPrefix}/pages/help/help.html"
 				class="nav-top--right--link hidden-sm-down"> <span>Help</span>
 			</a>
 			<ui:fragment
@@ -53,7 +53,7 @@
 			<ui:fragment
 				rendered="#{webApplication.user != null}">
 				<div id="divHeaderTabUser" class="dropdown--wrapper">
-					<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.xhtml?userId=#{webApplication.user.id}" rel=""
+					<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId=#{webApplication.user.id}" rel=""
 						class="nav-top--right--link nav-top--right--link__dropdown">
 						<div class="nav-top--username">#{webApplication.user.firstName}</div>
 						<div style="margin-left: 15px;" class="nav-top--avatar" title="Go to your dashboard">
@@ -66,23 +66,23 @@
 						</div>
 					</a>
 					<div style="margin-top: -5px" id="divDropDownUser" class="panel tooltip-top-right drop-down-menu avatar-tooltip--new">
-						<a href="" onclick="openWindow('#{webApplication.urlPrefix}/pages/dashboard/EditUser.xhtml', true)"
+						<a href="" onclick="openWindow('#{webApplication.urlPrefix}/pages/dashboard/EditUser.html', true)"
 							class="js-your-trips-item panel-body link-reset hover-item">
 							<div class="hover-item__content">Edit Profile</div>
 						</a>
-						<a href="" onclick="openWindow('#{webApplication.urlPrefix}/pages/dashboard/Listings.xhtml', true)"
+						<a href="" onclick="openWindow('#{webApplication.urlPrefix}/pages/dashboard/Listings.html', true)"
 							class="travel-credit-item panel-body link-reset hover-item">
 							<div class="hover-item__content">Your Listings</div>
 						</a>
-						<a href="" onclick="openWindow('#{webApplication.urlPrefix}/pages/dashboard/MessageList.xhtml', true)"
+						<a href="" onclick="openWindow('#{webApplication.urlPrefix}/pages/dashboard/MessageList.html', true)"
 							class="panel-body link-reset hover-item no-crawl">
 							<div class="hover-item__content">Messages</div>
 						</a>
-						<a href="" onclick="openWindow('#{webApplication.urlPrefix}/pages/dashboard/WishList.xhtml', true)"
+						<a href="" onclick="openWindow('#{webApplication.urlPrefix}/pages/dashboard/WishList.html', true)"
 							class=" panel-body link-reset hover-item no-crawl">
 							<div class="hover-item__content">Your Wish List</div>
 						</a>
-						<a href="" onclick="openWindow('#{webApplication.urlPrefix}/pages/dashboard/TripList.xhtml', true)"
+						<a href="" onclick="openWindow('#{webApplication.urlPrefix}/pages/dashboard/TripList.html', true)"
 							class="travel-credit-item panel-body link-reset hover-item">
 							<div class="hover-item__content">Your Trips</div>
 						</a>

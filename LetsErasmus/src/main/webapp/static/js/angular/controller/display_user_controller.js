@@ -47,7 +47,7 @@ App.controller('displayUserCtrl', ['$scope', '$controller', 'placeService', 'rev
 	 };
 	 
 	 self.openComplaintWindow = function() {
-    	 ajaxHtml(webApplicationUrlPrefix + '/static/html/Complaint.html', 'divCommonModal', function() {
+    	 ajaxHtml(webApplicationUrlPrefix + '/static/html/Complaint.htm', 'divCommonModal', function() {
    		     $('#hiddenComplaintEntityType').val(EnmEntityType.USER);
    		     $('#hiddenComplaintEntityId').val(self.userId);
     		 $('#divCommonModal').css('display', '');

@@ -54,8 +54,8 @@ public class MailService implements IMailService, IMailConstants {
 		this.localAppPath = this.parameterService.getParameterValue(EnmParameter.LOCAL_APP_ROOT_PATH.getId());
 		urlPrefix = this.parameterService.getParameterValue(EnmParameter.LETSERASMUS_URL_PREFIX.getId());
 		
-		emailVerificationUrl = urlPrefix + "/pages/Main.xhtml?user=#paramUserId#&code=#paramCode#&op=10";
-		resetPasswordUrl = urlPrefix + "/pages/Main.xhtml?user=#paramUserId#&code=#paramCode#&op=12";
+		emailVerificationUrl = urlPrefix + "/pages/Main.html?user=#paramUserId#&code=#paramCode#&op=10";
+		resetPasswordUrl = urlPrefix + "/pages/Main.html?user=#paramUserId#&code=#paramCode#&op=12";
 	}
 	
 	private String getMailTemplatePath(String templateName) {

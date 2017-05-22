@@ -51,18 +51,18 @@
 													<button  class="btn btn-primary btn-small space-top-1 space-2" ng-if="r.status == 1" ng-click="ctrl.openRecallReservationWindow(r.id)">Recall</button>
 												</td>
 												<td>{{r.startDate | date:'MMM dd, yyyy'}} - {{r.endDate | date:'MMM dd, yyyy'}} <br/> 
-													<a href="#{webApplication.urlPrefix}/pages/PlaceDetail.xhtml?placeId={{r.placeId}}&amp;checkinDate={{r.startDate | date:'dd.MM.yyyy'}}&amp;checkoutDate={{r.endDate | date:'dd.MM.yyyy'}}" locale="en" target="_blank">{{r.place.title}}</a> 
+													<a href="#{webApplication.urlPrefix}/pages/PlaceDetail.html?placeId={{r.placeId}}&amp;checkinDate={{r.startDate | date:'dd.MM.yyyy'}}&amp;checkoutDate={{r.endDate | date:'dd.MM.yyyy'}}" locale="en" target="_blank">{{r.place.title}}</a> 
 												</td>
 												<td>
 													<div class="media va-container">
-														<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.xhtml?userId={{r.hostUserId}}"
+														<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId={{r.hostUserId}}"
 															class="pull-left media-photo media-round" target="_blank"> 
 															<img alt="{{r.hostUser.firstName}}" height="50"
 															src="{{ctrl.generateUserProfilePhotoUrl(r.hostUserId, r.hostUser.profilePhotoId, 'small')}}"
 															title="{{r.hostUser.firstName}}" width="50" /></a>
 													</div>
 													<div class="va-top">
-														<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.xhtml?userId={{r.hostUserId}}"
+														<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId={{r.hostUserId}}"
 															class="text-normal" style="padding-left: 15px;" target="_blank">{{r.hostUser.firstName}}</a> <br/>
 													</div>
 												</td>
@@ -70,7 +70,7 @@
 												<td>{{r.placePrice}} {{ctrl.getCurrencySymbol(r.currencyId)}} total
 													<ul class="list-unstyled">
 														<li>
-															<a target="_blank" href="#{webApplication.urlPrefix}/pages/dashboard/Conversation.xhtml?threadId={{r.messageThreadId}}">Message History</a></li>
+															<a target="_blank" href="#{webApplication.urlPrefix}/pages/dashboard/Conversation.html?threadId={{r.messageThreadId}}">Message History</a></li>
 													</ul>
 												</td>
 											</tr>
@@ -110,18 +110,18 @@
 													<button  class="btn btn-primary btn-small space-top-1 space-2" ng-if="r.status == 2" ng-click="ctrl.openCancelReservationWindow(r.id)">Cancel</button>
 												</td>
 												<td>{{r.startDate | date:'MMM dd, yyyy'}} - {{r.endDate | date:'MMM dd, yyyy'}} <br/> 
-													<a href="#{webApplication.urlPrefix}/pages/PlaceDetail.xhtml?placeId={{r.placeId}}&amp;checkinDate={{r.startDate | date:'dd.MM.yyyy'}}&amp;checkoutDate={{r.endDate | date:'dd.MM.yyyy'}}" locale="en" target="_blank">{{r.place.title}}</a> 
+													<a href="#{webApplication.urlPrefix}/pages/PlaceDetail.html?placeId={{r.placeId}}&amp;checkinDate={{r.startDate | date:'dd.MM.yyyy'}}&amp;checkoutDate={{r.endDate | date:'dd.MM.yyyy'}}" locale="en" target="_blank">{{r.place.title}}</a> 
 												</td>
 												<td>
 													<div class="media va-container">
-														<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.xhtml?userId={{r.hostUserId}}"
+														<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId={{r.hostUserId}}"
 															class="pull-left media-photo media-round" target="_blank"> 
 															<img alt="{{r.hostUser.firstName}}" height="50"
 															src="{{ctrl.generateUserProfilePhotoUrl(r.hostUserId, r.hostUser.profilePhotoId, 'small')}}"
 															title="{{r.hostUser.firstName}}" width="50" /></a>
 													</div>
 													<div class="va-top">
-														<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.xhtml?userId={{r.hostUserId}}"
+														<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId={{r.hostUserId}}"
 															class="text-normal" style="padding-left: 15px;"  target="_blank">{{r.hostUser.firstName}}</a> <br/>
 													</div>
 												</td>
@@ -129,7 +129,7 @@
 												<td>{{r.placePrice}} {{ctrl.getCurrencySymbol(r.currencyId)}} total
 													<ul class="list-unstyled">
 														<li>
-															<a target="_blank" href="#{webApplication.urlPrefix}/pages/dashboard/Conversation.xhtml?threadId={{r.messageThreadId}}">Message History</a></li>
+															<a target="_blank" href="#{webApplication.urlPrefix}/pages/dashboard/Conversation.html?threadId={{r.messageThreadId}}">Message History</a></li>
 													</ul>
 												</td>
 											</tr>
@@ -169,18 +169,18 @@
 													<button class="btn btn-primary btn-small space-top-1 space-2" ng-if="ctrl.isReviewed(r) == false" ng-click="ctrl.openReviewWindow(r)">Review Place and Host</button>
 												</td>
 												<td>{{r.startDate | date:'MMM dd, yyyy'}} - {{r.endDate | date:'MMM dd, yyyy'}} <br/> 
-													<a href="#{webApplication.urlPrefix}/pages/PlaceDetail.xhtml?placeId={{r.placeId}}&amp;checkinDate={{r.startDate | date:'dd.MM.yyyy'}}&amp;checkoutDate={{r.endDate | date:'dd.MM.yyyy'}}" locale="en" target="_blank">{{r.place.title}}</a> 
+													<a href="#{webApplication.urlPrefix}/pages/PlaceDetail.html?placeId={{r.placeId}}&amp;checkinDate={{r.startDate | date:'dd.MM.yyyy'}}&amp;checkoutDate={{r.endDate | date:'dd.MM.yyyy'}}" locale="en" target="_blank">{{r.place.title}}</a> 
 												</td>
 												<td>
 													<div class="media va-container">
-														<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.xhtml?userId={{r.hostUserId}}"
+														<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId={{r.hostUserId}}"
 															class="pull-left media-photo media-round" target="_blank"> 
 															<img alt="{{r.hostUser.firstName}}" height="50"
 															src="{{ctrl.generateUserProfilePhotoUrl(r.hostUserId, r.hostUser.profilePhotoId, 'small')}}"
 															title="{{r.hostUser.firstName}}" width="50" /></a>
 													</div>
 													<div class="va-top">
-														<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.xhtml?userId={{r.hostUserId}}"
+														<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId={{r.hostUserId}}"
 															class="text-normal" style="padding-left: 15px;" target="_blank">{{r.hostUser.firstName}}</a> <br/>
 													</div>
 												</td>
@@ -188,7 +188,7 @@
 												<td>{{r.placePrice}} {{ctrl.getCurrencySymbol(r.currencyId)}} total
 													<ul class="list-unstyled">
 														<li>
-															<a target="_blank" href="#{webApplication.urlPrefix}/pages/dashboard/Conversation.xhtml?threadId={{r.messageThreadId}}">Message History</a></li>
+															<a target="_blank" href="#{webApplication.urlPrefix}/pages/dashboard/Conversation.html?threadId={{r.messageThreadId}}">Message History</a></li>
 													</ul>
 												</td>
 											</tr>
