@@ -112,7 +112,7 @@ public class ReservationService implements IReservationService {
 	}
 
 	@Override
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public OperationResult insert(User user, Reservation reservation, PaymentMethod paymentMethod, PayoutMethod payoutMethod) throws OperationResultException {
 		OperationResult operationResult = new OperationResult();
 		if (reservation.getMessageThread() != null) {

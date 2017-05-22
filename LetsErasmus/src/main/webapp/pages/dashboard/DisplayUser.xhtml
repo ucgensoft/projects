@@ -6,7 +6,7 @@
 
 	<ui:define name="head">
 		<link rel="stylesheet" type="text/css"
-			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css" />
+			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css?ver=#{webApplication.staticFileVersion}" />
 	</ui:define>
 
 	<ui:define name="body">
@@ -225,9 +225,9 @@
 			<div id="staged-photos"></div>
 
 		</main>
-		<script src="#{webApplication.urlPrefix}/static/js/angular/service/place_service.js"></script>
-		<script src="#{webApplication.urlPrefix}/static/js/angular/service/review_service.js"></script>
-		<script src="#{webApplication.urlPrefix}/static/js/angular/service/user_service.js"></script>
-		<script src="#{webApplication.urlPrefix}/static/js/angular/controller/display_user_controller.js"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/service/place_service.js?ver=#{webApplication.staticFileVersion}"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/service/review_service.js?ver=#{webApplication.staticFileVersion}"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/service/user_service.js?ver=#{webApplication.staticFileVersion}"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/controller/display_user_controller.js?ver=#{webApplication.staticFileVersion}"></script>
 	</ui:define>
 </ui:composition>

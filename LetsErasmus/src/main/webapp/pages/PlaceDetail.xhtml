@@ -6,9 +6,9 @@
 
 	<ui:define name="head">
 		<link rel="stylesheet" type="text/css"
-			href="#{webApplication.urlPrefix}/static/css/place_detail.css" />
+			href="#{webApplication.urlPrefix}/static/css/place_detail.css?ver=#{webApplication.staticFileVersion}" />
 		<link rel="stylesheet" type="text/css"
-			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css" />
+			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css?ver=#{webApplication.staticFileVersion}" />
 		<link rel="stylesheet"
 			href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
 
@@ -796,14 +796,14 @@
 		</h:form>
 		<div id="divPlaceModal" class="clsModal"></div>
 		<script
-			src="#{webApplication.urlPrefix}/static/js/angular/service/place_service.js"></script>
+			src="#{webApplication.urlPrefix}/static/js/angular/service/place_service.js?ver=#{webApplication.staticFileVersion}"></script>
 		<script
-			src="#{webApplication.urlPrefix}/static/js/angular/service/enumeration_service.js"></script>
+			src="#{webApplication.urlPrefix}/static/js/angular/service/enumeration_service.js?ver=#{webApplication.staticFileVersion}"></script>
 		<script
-			src="#{webApplication.urlPrefix}/static/js/angular/service/reservation_service.js"></script>
+			src="#{webApplication.urlPrefix}/static/js/angular/service/reservation_service.js?ver=#{webApplication.staticFileVersion}"></script>
 		<script
-			src="#{webApplication.urlPrefix}/static/js/angular/service/review_service.js"></script>
+			src="#{webApplication.urlPrefix}/static/js/angular/service/review_service.js?ver=#{webApplication.staticFileVersion}"></script>
 		<script
-			src="#{webApplication.urlPrefix}/static/js/angular/controller/place_detail_controller.js"></script>
+			src="#{webApplication.urlPrefix}/static/js/angular/controller/place_detail_controller.js?ver=#{webApplication.staticFileVersion}"></script>
 	</ui:define>
 </ui:composition>
