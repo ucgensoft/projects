@@ -312,7 +312,7 @@ public class MailService implements IMailService, IMailConstants {
 			paramMap.put("#paramHostProfilePictureUrl#", hostUser.getProfileImageUrl());
 			paramMap.put("#paramHostName#", hostUser.getFullName());
 			paramMap.put("#paramReservationMessageUrl#", reservation.getMessageThread().getUrl());
-			paramMap.put("#paramHostPhoneNumber#", hostUser.getMsisdn());
+			paramMap.put("#paramHostPhoneNumber#", hostUser.getMsisdnCountryCode() + hostUser.getMsisdn());
 			paramMap.put("#paramTimeStamp#", DateUtil.format(new Date(), DateUtil.READABLE_DATE_FORMAT));
 			
 			String guestSubject = MAIL_SUBJECT_GUEST_RESERVATION_ACCEPT.replace("#paramPlaceDetailTitle#", place.getTitle());
@@ -331,7 +331,7 @@ public class MailService implements IMailService, IMailConstants {
 			paramMap.put("#paramGuestName#", guestUser.getFullName());
 			paramMap.put("#paramGuestDisplayProfileUrl#", guestUser.getUrl());
 			paramMap.put("#paramGuestProfilePictureUrl#", guestUser.getProfileImageUrl());
-			paramMap.put("#paramGuestPhoneNumber#", guestUser.getMsisdn());
+			paramMap.put("#paramGuestPhoneNumber#", guestUser.getMsisdnCountryCode() + guestUser.getMsisdn());
 			
 			this.mailUtil.sendMailFromTemplate(hostHtmlFilePath, paramMap, hostToList, null, hostSubject, null);
 			
