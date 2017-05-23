@@ -682,12 +682,14 @@
 																<span><i class="icon {{ctrl.place.user.msisdnVerified == 'Y' ? 'icon-ok-fill' : 'icon-sad-face'}} h3"></i></span>
 																<strong><span>Phone number {{ctrl.place.user.msisdnVerified == 'Y' ? 'is' : 'is not'}} verified</span></strong>
 															</div>
-														</div>														
+														</div>		
+														<!-- 	 review part is removed for now 											
 														<div class="space-top-3">
 															<div class="badge-container space-4">
 																<a class="link-reset" target="_blank"
 																	rel="noopener noreferrer nofollow"
-																	href="https://www.airbnb.com/users/show/39933518#reviews"><div
+																	href=href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.xhtml?userId={{ctrl.place.user.id}}">
+																	<div
 																		class="text-center text-wrap">
 																		<div class="badge-pill h3">
 																			<span class="badge-pill-count">0</span>
@@ -699,6 +701,7 @@
 																	</div></a>
 															</div>
 														</div>
+														 -->
 														<div class="">
 															<button type="button" class="btn btn-primary btn-small"
 																 ng-click="ctrl.onContactHostBtnClicked()">
