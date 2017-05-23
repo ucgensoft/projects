@@ -5,9 +5,9 @@
 	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
 	<ui:define name="head">
 		<link rel="stylesheet" type="text/css"
-			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css" />
+			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css?ver=#{webApplication.staticFileVersion}" />
 		<link rel="stylesheet" type="text/css"
-			href="#{webApplication.urlPrefix}/static/css/message_list.css" />
+			href="#{webApplication.urlPrefix}/static/css/message_list.css?ver=#{webApplication.staticFileVersion}" />
 		<script>
 			var activeDashboardTab = 2;
 		</script>
@@ -106,8 +106,8 @@
 			</div>
 		</div>
 		</main>
-		<script src="#{webApplication.urlPrefix}/static/js/dashboard.js"></script>
-		<script src="#{webApplication.urlPrefix}/static/js/angular/service/message_service.js"></script>
-		<script src="#{webApplication.urlPrefix}/static/js/angular/controller/message_list_controller.js"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/dashboard.js?ver=#{webApplication.staticFileVersion}"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/service/message_service.js?ver=#{webApplication.staticFileVersion}"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/angular/controller/message_list_controller.js?ver=#{webApplication.staticFileVersion}"></script>
 	</ui:define>
 </ui:composition>

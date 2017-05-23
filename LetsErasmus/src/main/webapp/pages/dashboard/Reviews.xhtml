@@ -6,7 +6,7 @@
 
 	<ui:define name="head">
 		<link rel="stylesheet" type="text/css"
-			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css" />
+			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css?ver=#{webApplication.staticFileVersion}" />
 			
 		<script>
 			var activeDashboardTab = 1;
@@ -125,6 +125,6 @@
 			</div>
 		</div>
 		</main>
-		<script src="#{webApplication.urlPrefix}/static/js/dashboard.js"></script>
+		<script src="#{webApplication.urlPrefix}/static/js/dashboard.js?ver=#{webApplication.staticFileVersion}"></script>
 	</ui:define>
 </ui:composition>

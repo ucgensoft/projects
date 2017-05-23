@@ -54,6 +54,8 @@ public class WebApplication extends BaseController {
 	
 	private Size smallPlacePhotoSize;
 	private Size mediumPlacePhotoSize;
+	
+	private Integer staticFileVersion;
 		
 	private IParameterService parameterService;
 	
@@ -71,6 +73,7 @@ public class WebApplication extends BaseController {
 			googleAppId = this.parameterService.getParameterValue(EnmParameter.GOOGLE_APP_ID.getId());
 			
 			urlPrefix = this.parameterService.getParameterValue(EnmParameter.LETSERASMUS_URL_PREFIX.getId());
+			staticFileVersion = Integer.valueOf(this.parameterService.getParameterValue(EnmParameter.STATIC_FILE_VERSION.getId()));
 			
 			//emailVerificationUrl = urlPrefix + "//PAGES/Main.html?user=#paramUserId#&code=#paramCode#&op=10";
 			//resetPasswordUrl = urlPrefix + "//PAGES/Main.html?user=#paramUserId#&code=#paramCode#&op=12";
@@ -195,6 +198,10 @@ public class WebApplication extends BaseController {
 
 	public String getPlacePhotoUrlTemplate() {
 		return placePhotoUrlTemplate;
+	}
+
+	public Integer getStaticFileVersion() {
+		return staticFileVersion;
 	}
 
 	public WebApplication() {
