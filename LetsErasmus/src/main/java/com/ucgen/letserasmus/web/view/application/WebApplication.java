@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.ucgen.common.model.Size;
 import com.ucgen.common.util.FileUtil;
+import com.ucgen.common.util.MailUtil;
 import com.ucgen.letserasmus.library.common.enumeration.EnmBoolStatus;
 import com.ucgen.letserasmus.library.common.enumeration.EnmSize;
 import com.ucgen.letserasmus.library.log.enumeration.EnmOperation;
@@ -23,6 +24,8 @@ import com.ucgen.letserasmus.web.view.BaseController;
 @Service
 @Scope("singleton")
 public class WebApplication extends BaseController {
+	
+	private MailUtil mailUtil;
 	
 	public String facebookAppId;
 	public String googleAppId;
@@ -63,6 +66,11 @@ public class WebApplication extends BaseController {
 	@Autowired
 	public void setParameterService(IParameterService parameterService) {
 		this.parameterService = parameterService;
+	}
+
+	@Autowired
+	public void setMailUtil(MailUtil mailUtil) {
+		this.mailUtil = mailUtil;
 	}
 
 	@PostConstruct
@@ -115,6 +123,11 @@ public class WebApplication extends BaseController {
 			
 			smallPlacePhotoSize = new Size(new Float(smallPlaceImageDimensions[0]), new Float(smallPlaceImageDimensions[1]));
 			mediumPlacePhotoSize = new Size(new Float(mediumPlaceImageDimensions[0]), new Float(mediumPlaceImageDimensions[1]));
+			
+			this.mailUtil.setAdminEmail(this.parameterService.getParameterValue(EnmParameter.ADMIN_EMAIL.getId()));
+			this.mailUtil.setAdminEmailPassword(this.parameterService.getParameterValue(EnmParameter.ADMIN_EMAIL_PASSWORD.getId()));
+			this.mailUtil.setSmtpServer(this.parameterService.getParameterValue(EnmParameter.SMTP_SERVER.getId()));
+			
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -216,51 +229,54 @@ public class WebApplication extends BaseController {
 	
 	public String getNgController() {
 		String requestUrl = super.getRequest().getRequestURL().toString();
+		requestUrl = requestUrl.toUpperCase();
+		if (requestUrl.contains("PAGES/MAIN.HTML")) {
+			return "mainCtrl";
+		} else if (requestUrl.contains("PAGES/SEARCHRESULT.HTML")) {
+			return "searchResultCtrl";
+		} else if (requestUrl.contains("PAGES/PLACE.HTML")) {
+			return "placeCtrl";
+		} else if (requestUrl.contains("PAGES/PLACEDETAIL.HTML")) {
+			return "placeDetailCtrl";
+		} else if (requestUrl.contains("PAGES/DASHBOARD/EDITUSER.HTML")) {
+			return "editUserCtrl";
+		} else if (requestUrl.contains("PAGES/DASHBOARD/DISPLAYUSER.HTML")) {
+			return "displayUserCtrl";
+		} else if (requestUrl.contains("PAGES/DASHBOARD/LISTINGS.HTML")) {
+			return "listingsCtrl";
+		} else if (requestUrl.contains("PAGES/DASHBOARD/TRUSTANDVERIFICATION.HTML")) {
+			return "trustAndverificationCtrl";
+		} else if (requestUrl.contains("PAGES/VERIFICATION.HTML")) {
+			return "verificationCtrl";
+		} else if (requestUrl.contains("PAGES/PAYMENT.HTML")) {
+			return "paymentCtrl";
+		} else if (requestUrl.contains("PAGES/DASHBOARD/MESSAGELIST.HTML")) {
+			return "messageListCtrl";
+		} else if (requestUrl.contains("PAGES/DASHBOARD/CONVERSATION.HTML")) {
+			return "conversationCtrl";
+		} else if (requestUrl.contains("PAGES/DASHBOARD/RESERVATIONLIST.HTML")) {
+			return "reservationListCtrl";
+		} else if (requestUrl.contains("PAGES/DASHBOARD/TRIPLIST.HTML")) {
+			return "tripListCtrl";
+		} else if (requestUrl.contains("PAGES/DASHBOARD/WISHLIST.HTML")) {
+			return "wishListCtrl";
+		} else if (requestUrl.contains("PAGES/HELP/HELP.HTML")) {
+			return "helpCtrl";
+		} else if (requestUrl.contains("PAGES/DASHBOARD/PAYMENTMETHODS.HTML")) {
+			return "paymentMethodCtrl";
+		} else if (requestUrl.contains("PAGES/DASHBOARD/PAYOUTMETHODS.HTML")) {
+			return "payoutMethodCtrl";
+		} else {
+			return "mainCtrl";
+		}	
+		/*
 		requestUrl = requestUrl.trim().replace(this.urlPrefix, "");
 		if (requestUrl.isEmpty() || requestUrl.equals("/")) {
 			return "mainCtrl";
 		} else {
-			requestUrl = requestUrl.toUpperCase();
-			if (requestUrl.contains("PAGES/MAIN.HTML")) {
-				return "mainCtrl";
-			} else if (requestUrl.contains("PAGES/SEARCHRESULT.HTML")) {
-				return "searchResultCtrl";
-			} else if (requestUrl.contains("PAGES/PLACE.HTML")) {
-				return "placeCtrl";
-			} else if (requestUrl.contains("PAGES/PLACEDETAIL.HTML")) {
-				return "placeDetailCtrl";
-			} else if (requestUrl.contains("PAGES/DASHBOARD/EDITUSER.HTML")) {
-				return "editUserCtrl";
-			} else if (requestUrl.contains("PAGES/DASHBOARD/DISPLAYUSER.HTML")) {
-				return "displayUserCtrl";
-			} else if (requestUrl.contains("PAGES/DASHBOARD/LISTINGS.HTML")) {
-				return "listingsCtrl";
-			} else if (requestUrl.contains("PAGES/DASHBOARD/TRUSTANDVERIFICATION.HTML")) {
-				return "trustAndverificationCtrl";
-			} else if (requestUrl.contains("PAGES/VERIFICATION.HTML")) {
-				return "verificationCtrl";
-			} else if (requestUrl.contains("PAGES/PAYMENT.HTML")) {
-				return "paymentCtrl";
-			} else if (requestUrl.contains("PAGES/DASHBOARD/MESSAGELIST.HTML")) {
-				return "messageListCtrl";
-			} else if (requestUrl.contains("PAGES/DASHBOARD/CONVERSATION.HTML")) {
-				return "conversationCtrl";
-			} else if (requestUrl.contains("PAGES/DASHBOARD/RESERVATIONLIST.HTML")) {
-				return "reservationListCtrl";
-			} else if (requestUrl.contains("PAGES/DASHBOARD/TRIPLIST.HTML")) {
-				return "tripListCtrl";
-			} else if (requestUrl.contains("PAGES/DASHBOARD/WISHLIST.HTML")) {
-				return "wishListCtrl";
-			} else if (requestUrl.contains("PAGES/HELP/HELP.HTML")) {
-				return "helpCtrl";
-			} else if (requestUrl.contains("PAGES/DASHBOARD/PAYMENTMETHODS.HTML")) {
-				return "paymentMethodCtrl";
-			} else if (requestUrl.contains("PAGES/DASHBOARD/PAYOUTMETHODS.HTML")) {
-				return "payoutMethodCtrl";
-			} else {
-				return "";
-			}	
+			
 		}
+		*/
 	}
 	
 	public User getUser() {

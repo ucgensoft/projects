@@ -19,8 +19,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class MailUtil {
 	
-	private final String SYSTEM_EMAIL = "ucgensoft@gmail.com";
-	private final String SYSTEM_EMAIL_PASSWORD = "LetsErasmus";
+	//private final String SYSTEM_EMAIL = "ucgensoft@gmail.com";
+	//private final String SYSTEM_EMAIL_PASSWORD = "LetsErasmus";
+	
+	private String adminEmail;
+	private String adminEmailPassword;
+	private String smtpServer;
 	
 	private JavaMailSender mailSender;
 	
@@ -31,7 +35,31 @@ public class MailUtil {
 	public void setMailSender(JavaMailSender mailSender) {
 		this.mailSender = mailSender;
 	}
-	
+		
+	public String getAdminEmail() {
+		return adminEmail;
+	}
+
+	public void setAdminEmail(String adminEmail) {
+		this.adminEmail = adminEmail;
+	}
+
+	public String getAdminEmailPassword() {
+		return adminEmailPassword;
+	}
+
+	public void setAdminEmailPassword(String adminEmailPassword) {
+		this.adminEmailPassword = adminEmailPassword;
+	}
+
+	public String getSmtpServer() {
+		return smtpServer;
+	}
+
+	public void setSmtpServer(String smtpServer) {
+		this.smtpServer = smtpServer;
+	}
+
 	public void sendMailFromTemplate(String templateFilePath, Map<String, String> paramMap, List<String> toList, List<String> ccList, String subject, File file) throws MailParseException {
 		String verificationEmailContent = FileUtil.readFileAsString(templateFilePath);
 		
@@ -52,7 +80,7 @@ public class MailUtil {
 		try {
 			MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
-			helper.setFrom(SYSTEM_EMAIL);
+			helper.setFrom(this.adminEmail);
 			for (String email : toList) {
 				helper.addTo(email);
 			}
@@ -77,8 +105,10 @@ public class MailUtil {
 	}
 	
 	private synchronized void initializeMailSender() {
-		String paramHost = "smtp.gmail.com";
-		String paramPort = "587";
+		String[] smptpServerIpPort = this.smtpServer.split(":");
+		
+		String paramHost = smptpServerIpPort[0]; //"smtp.gmail.com";
+		String paramPort = smptpServerIpPort[1]; //"587";
 		String paramTimeout = "20000";
 		
 		JavaMailSenderImpl sender = new JavaMailSenderImpl();
@@ -96,8 +126,8 @@ public class MailUtil {
 		props.setProperty("mail.smtp.auth", "true");
 		props.setProperty("mail.smtp.starttls.enable", "true");
         
-		sender.setUsername(SYSTEM_EMAIL);
-		sender.setPassword(SYSTEM_EMAIL_PASSWORD);
+		sender.setUsername(this.adminEmail);
+		sender.setPassword(this.adminEmailPassword);
 		
 		sender.setJavaMailProperties(props);
 		
