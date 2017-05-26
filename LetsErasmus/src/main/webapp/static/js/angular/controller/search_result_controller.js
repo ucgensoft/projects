@@ -327,7 +327,7 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
     		
     		if (isMatching) {
     			var bathroomType = $('#cmbBathroomType').val();
-    			if (bathroomType != '-1' && parseInt(bathroomType) != place.bathroomType) {
+    			if (bathroomType != '-1' && parseInt(bathroomType) != place.bathRoomType) {
     				isMatching = false;
     			}
     		}

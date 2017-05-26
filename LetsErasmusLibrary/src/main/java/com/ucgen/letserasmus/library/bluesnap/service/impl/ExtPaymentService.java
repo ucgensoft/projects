@@ -256,7 +256,7 @@ public class ExtPaymentService implements IExtPaymentService {
 		    Payment payment = paymentMethod.getPayment();
 		    
 		    ExtVendorInfo vendorInfo = new ExtVendorInfo(payoutMethod.getBlueSnapVendorId());
-		    vendorInfo.setCommissionAmount(payment.getCommissionFee());
+		    vendorInfo.setCommissionAmount(payment.getCommissionFee().add(payment.getServiceFee()));
 		    
 		    ExtPaymentInfo paymentInfo = new ExtPaymentInfo();
 		    paymentInfo.setAmount(payment.getEntityPrice().add(payment.getServiceFee()));

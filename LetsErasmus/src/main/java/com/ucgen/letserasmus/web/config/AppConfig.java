@@ -36,11 +36,10 @@ public class AppConfig implements TransactionManagementConfigurer {
 		dataSource.setPassword("root");
 		
 		/*
-		dataSource.setUrl("jdbc:mysql://dbletserasmus.cknhbnlsvkjo.us-west-2.rds.amazonaws.com:1234/letserasmus_db");
-		dataSource.setUsername("admin");
-		dataSource.setPassword("LetsErasmus");
+		dataSource.setUrl("jdbc:mysql://letserasmusdb.caidndq6n0sz.eu-west-1.rds.amazonaws.com:23101/letserasmus_db");
+		dataSource.setUsername("erasmus_admin");
+		dataSource.setPassword("zUgFA5Ye42U*LNXD");
 		*/
-		
 		return dataSource;
 	}
 	
@@ -60,7 +59,7 @@ public class AppConfig implements TransactionManagementConfigurer {
         return multipartConfigElement;
     }
  
-    private static final String LOCATION = "d:\\tmp\\upload_file"; // Temporary location where files will be stored
+    private static final String LOCATION = "/var/lib/tomcat8/webapps/ROOT/tmp/upload_file"; // Temporary location where files will be stored
  
     private static final long MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB : Max file size.
                                                         

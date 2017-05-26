@@ -159,7 +159,7 @@ App.controller('trustAndverificationCtrl', ['$scope', 'userService', 'commonServ
 		        			profileImageUrl : profileImageUrl,
 		        			loginType : loginType
 		        	};
-		        	userService.connectFacebookAccount(
+		        	userService.connectFacebookAccount(user,
 		    				function(isSuccess) {
 		    					if (isSuccess) {
 		    						reloadPage();

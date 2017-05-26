@@ -26,6 +26,7 @@ public class WebApplication extends BaseController {
 	
 	public String facebookAppId;
 	public String googleAppId;
+	public String googleApiKey;
 	
 	public String localAppPath;
 
@@ -71,6 +72,7 @@ public class WebApplication extends BaseController {
 			
 			facebookAppId = this.parameterService.getParameterValue(EnmParameter.FACEBOOK_APP_ID.getId());
 			googleAppId = this.parameterService.getParameterValue(EnmParameter.GOOGLE_APP_ID.getId());
+			googleApiKey = this.parameterService.getParameterValue(EnmParameter.GOOGLE_API_KEY.getId());
 			
 			urlPrefix = this.parameterService.getParameterValue(EnmParameter.LETSERASMUS_URL_PREFIX.getId());
 			staticFileVersion = Integer.valueOf(this.parameterService.getParameterValue(EnmParameter.STATIC_FILE_VERSION.getId()));
@@ -126,6 +128,10 @@ public class WebApplication extends BaseController {
 		return facebookAppId;
 	}
 		
+	public String getGoogleApiKey() {
+		return googleApiKey;
+	}
+
 	public String getUrlPrefix() {
 		return urlPrefix;
 	}

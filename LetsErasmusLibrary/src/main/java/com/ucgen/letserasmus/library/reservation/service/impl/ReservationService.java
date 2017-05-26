@@ -245,7 +245,7 @@ public class ReservationService implements IReservationService {
 						PayoutMethod hostPayoutMethod = this.paymentService.getPayoutMethod(new PayoutMethod(reservation.getHostUserId()));
 						if ((reservation.getStatus().equals(EnmReservationStatus.DECLINED.getId()) && !reservationOldStatus.equals(EnmReservationStatus.DECLINED.getId()))
 								|| (reservation.getStatus().equals(EnmReservationStatus.EXPIRED.getId()) && !reservationOldStatus.equals(EnmReservationStatus.EXPIRED.getId()))
-								|| (reservation.getStatus().equals(EnmReservationStatus.RECALLED) && !reservationOldStatus.equals(EnmReservationStatus.RECALLED.getId()))) {
+								|| (reservation.getStatus().equals(EnmReservationStatus.RECALLED.getId()) && !reservationOldStatus.equals(EnmReservationStatus.RECALLED.getId()))) {
 							OperationResult authPaymentReverseResult = null;
 							if (hostPayoutMethod.getExternalSystemId().equals(EnmExternalSystem.BLUESNAP.getId())) {
 								authPaymentReverseResult = this.extPaymentService.paymentAuthReversal(reservation.getClientUserId(), 

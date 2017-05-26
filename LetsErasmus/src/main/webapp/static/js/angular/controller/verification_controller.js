@@ -120,7 +120,7 @@ App.controller('verificationCtrl', ['$scope', 'userService', 'commonService',
   	
   	self.getOperationUrl = function() {
   		var url = null;
-  		var parameters = document.location.href.substring(document.location.href.indexOf('?') + 1);
+  		var parameters = document.location.href.substring(document.location.href.indexOf('?'));
   		if (activeOperation == EnmOperation.CREATE_PLACE) {
   			url = webApplicationUrlPrefix + '/pages/Place.html' + parameters;
   		} else if (activeOperation == EnmOperation.CREATE_RESERVATION) {

@@ -536,3 +536,8 @@ function onResetPasswordBtnClicked() {
 	var scope = angular.element( $('#divPageHeader') ).scope();
 	scope.ctrl.onResetPasswordBtnClicked();
 }
+
+function onBecomeHostClicked() {
+	var scope = angular.element( $('#divPageHeader') ).scope();
+	scope.ctrl.onBecomeHostClicked();
+}
