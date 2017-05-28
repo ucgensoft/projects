@@ -59,18 +59,6 @@ public class MailUtil {
 	public void setSmtpServer(String smtpServer) {
 		this.smtpServer = smtpServer;
 	}
-
-	public void sendMailFromTemplate(String templateFilePath, Map<String, String> paramMap, List<String> toList, List<String> ccList, String subject, File file) throws MailParseException {
-		String verificationEmailContent = FileUtil.readFileAsString(templateFilePath);
-		
-		if (paramMap != null && paramMap.size() >0) {
-			for (Entry<String, String> paramEntry : paramMap.entrySet()) {
-				verificationEmailContent = verificationEmailContent.replaceAll(paramEntry.getKey(), paramEntry.getValue());
-			}
-		}
-		
-		this.sendMail(verificationEmailContent, toList, ccList, subject, file);
-	}
 	
 	public void sendMail(String content, List<String> toList, List<String> ccList, String subject, File file) throws MailParseException {
 

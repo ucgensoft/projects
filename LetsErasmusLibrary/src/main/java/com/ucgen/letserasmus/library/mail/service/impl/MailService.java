@@ -1,15 +1,18 @@
 package com.ucgen.letserasmus.library.mail.service.impl;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailParseException;
 import org.springframework.stereotype.Service;
 
 import com.ucgen.common.operationresult.EnmResultCode;
@@ -18,9 +21,11 @@ import com.ucgen.common.util.CommonUtil;
 import com.ucgen.common.util.DateUtil;
 import com.ucgen.common.util.FileUtil;
 import com.ucgen.common.util.MailUtil;
+import com.ucgen.letserasmus.library.batch.EmailSender;
 import com.ucgen.letserasmus.library.common.enumeration.EnmCurrency;
 import com.ucgen.letserasmus.library.location.model.Location;
 import com.ucgen.letserasmus.library.mail.constants.IMailConstants;
+import com.ucgen.letserasmus.library.mail.model.Email;
 import com.ucgen.letserasmus.library.mail.service.IMailService;
 import com.ucgen.letserasmus.library.parameter.enumeration.EnmParameter;
 import com.ucgen.letserasmus.library.parameter.service.IParameterService;
@@ -36,6 +41,7 @@ public class MailService implements IMailService, IMailConstants {
 	private String emailVerificationUrl;
 	private String resetPasswordUrl;
 	
+	private EmailSender emailSender;
 	private MailUtil mailUtil;
 	private IParameterService parameterService;
 	
@@ -49,6 +55,11 @@ public class MailService implements IMailService, IMailConstants {
 		this.parameterService = parameterService;
 	}
 
+	@Autowired
+	public void setEmailSender(EmailSender emailSender) {
+		this.emailSender = emailSender;
+	}
+
 	@PostConstruct
 	public void initialize() {
 		this.localAppPath = this.parameterService.getParameterValue(EnmParameter.LOCAL_APP_ROOT_PATH.getId());
@@ -60,6 +71,22 @@ public class MailService implements IMailService, IMailConstants {
 	
 	private String getMailTemplatePath(String templateName) {
 		return FileUtil.concatPath(this.localAppPath, "static", "html", "mail", templateName);	
+	}
+	
+	public void sendMailFromTemplate(String templateFilePath, Map<String, String> paramMap, List<String> toList, List<String> ccList, String subject, File file, boolean directSend) throws MailParseException {
+		String emailContent = FileUtil.readFileAsString(templateFilePath);
+		
+		if (paramMap != null && paramMap.size() >0) {
+			for (Entry<String, String> paramEntry : paramMap.entrySet()) {
+				emailContent = emailContent.replaceAll(paramEntry.getKey(), paramEntry.getValue());
+			}
+		}
+		if (directSend) {
+			this.mailUtil.sendMail(emailContent, toList, ccList, subject, file);
+		} else {
+			Email email = new Email(subject, emailContent, toList, ccList, file);
+			this.emailSender.addEmail(email);
+		}
 	}
 	
 	public OperationResult sendNewMessageMail(String email, String placeTitle, String messageText) {
@@ -77,7 +104,7 @@ public class MailService implements IMailService, IMailConstants {
 			
 			String subject = MAIL_SUBJECT_NEW_MESSAGE.replace("#paramPlaceDetailTitle#", placeTitle);
 			
-			this.mailUtil.sendMailFromTemplate(htmlFilePath, paramMap, toList, null, subject, null);
+			this.sendMailFromTemplate(htmlFilePath, paramMap, toList, null, subject, null, false);
 			operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
@@ -103,7 +130,7 @@ public class MailService implements IMailService, IMailConstants {
 			paramMap.put("#paramUserName#", user.getFirstName());
 			paramMap.put("#paramEmailVerificationUrl#", tmpEmailVerificationUrl);
 			paramMap.put("#paramTimeStamp#", DateUtil.format(new Date(), DateUtil.READABLE_DATE_FORMAT));
-			this.mailUtil.sendMailFromTemplate(htmlFilePath, paramMap, toList, null, MAIL_SUBJECT_EMAIL_VERIFICATION, null);
+			this.sendMailFromTemplate(htmlFilePath, paramMap, toList, null, MAIL_SUBJECT_EMAIL_VERIFICATION, null, false);
 			
 			operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 		} catch (Exception e) {
@@ -130,7 +157,7 @@ public class MailService implements IMailService, IMailConstants {
 			paramMap.put("#paramUserName#", user.getFirstName());
 			paramMap.put("#paramResetPasswordUrl#", tmpResetPasswordUrl);
 			paramMap.put("#paramTimeStamp#", DateUtil.format(new Date(), DateUtil.READABLE_DATE_FORMAT));
-			this.mailUtil.sendMailFromTemplate(htmlFilePath, paramMap, toList, null, MAIL_SUBJECT_RESET_PASSWORD, null);
+			this.sendMailFromTemplate(htmlFilePath, paramMap, toList, null, MAIL_SUBJECT_RESET_PASSWORD, null, false);
 			
 			operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 		} catch (Exception e) {
@@ -152,7 +179,7 @@ public class MailService implements IMailService, IMailConstants {
 			paramMap.put("#paramUserName#", user.getFirstName());
 			paramMap.put("#paramNewPassword#", user.getPassword());
 			paramMap.put("#paramTimeStamp#", DateUtil.format(new Date(), DateUtil.READABLE_DATE_FORMAT));
-			this.mailUtil.sendMailFromTemplate(htmlFilePath, paramMap, toList, null, MAIL_SUBJECT_NEW_PASSWORD, null);
+			this.sendMailFromTemplate(htmlFilePath, paramMap, toList, null, MAIL_SUBJECT_NEW_PASSWORD, null, false);
 			
 			operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 		} catch (Exception e) {
@@ -181,13 +208,13 @@ public class MailService implements IMailService, IMailConstants {
 			String guestHtmlFilePath = this.getMailTemplatePath("GuestBookingRequest.html");
 			List<String> guestToList = new ArrayList<String>();
 			guestToList.add(guestEmail);
-			this.mailUtil.sendMailFromTemplate(guestHtmlFilePath, paramMap, guestToList, null, guestSubject, null);
+			this.sendMailFromTemplate(guestHtmlFilePath, paramMap, guestToList, null, guestSubject, null, false);
 			
 			String hostSubject = MAIL_SUBJECT_HOST_BOOKING_REQUEST.replace("#paramPlaceDetailTitle#", placeTitle);
 			String hostHtmlFilePath = this.getMailTemplatePath("HostBookingRequest.html");
 			List<String> hostToList = new ArrayList<String>();
 			hostToList.add(hostEmail);
-			this.mailUtil.sendMailFromTemplate(hostHtmlFilePath, paramMap, hostToList, null, hostSubject, null);
+			this.sendMailFromTemplate(hostHtmlFilePath, paramMap, hostToList, null, hostSubject, null, false);
 			
 			operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 		} catch (Exception e) {
@@ -211,7 +238,7 @@ public class MailService implements IMailService, IMailConstants {
 			
 			String subject = MAIL_SUBJECT_GUEST_RESERVATION_DECLINE.replace("#paramPlaceDetailTitle#", placeTitle);
 			
-			this.mailUtil.sendMailFromTemplate(htmlFilePath, paramMap, toList, null, subject, null);
+			this.sendMailFromTemplate(htmlFilePath, paramMap, toList, null, subject, null, false);
 			
 			operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 		} catch (Exception e) {
@@ -236,7 +263,7 @@ public class MailService implements IMailService, IMailConstants {
 			String guestHtmlFilePath = this.getMailTemplatePath("RequestExpiredForGuest.html");
 			List<String> guestToList = new ArrayList<String>();
 			guestToList.add(guestEmail);
-			this.mailUtil.sendMailFromTemplate(guestHtmlFilePath, guestParamMap, guestToList, null, guestSubject, null);
+			this.sendMailFromTemplate(guestHtmlFilePath, guestParamMap, guestToList, null, guestSubject, null, false);
 			
 			Map<String, String> hostParamMap = new HashMap<String, String>();
 			guestParamMap.put("#paramUserName#", hostFirstName);
@@ -246,7 +273,7 @@ public class MailService implements IMailService, IMailConstants {
 			String hostHtmlFilePath = this.getMailTemplatePath("RequestExpiredForHost.html");
 			List<String> hostToList = new ArrayList<String>();
 			hostToList.add(hostEmail);
-			this.mailUtil.sendMailFromTemplate(hostHtmlFilePath, hostParamMap, hostToList, null, hostSubject, null);
+			this.sendMailFromTemplate(hostHtmlFilePath, hostParamMap, hostToList, null, hostSubject, null, false);
 			
 			operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 		} catch (Exception e) {
@@ -271,7 +298,7 @@ public class MailService implements IMailService, IMailConstants {
 			
 			String subject = MAIL_SUBJECT_HOST_RESERVATION_RECALL.replace("#paramPlaceDetailTitle#", placeTitle);
 			
-			this.mailUtil.sendMailFromTemplate(htmlFilePath, paramMap, toList, null, subject, null);
+			this.sendMailFromTemplate(htmlFilePath, paramMap, toList, null, subject, null, false);
 			
 			operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 		} catch (Exception e) {
@@ -317,7 +344,7 @@ public class MailService implements IMailService, IMailConstants {
 			
 			String guestSubject = MAIL_SUBJECT_GUEST_RESERVATION_ACCEPT.replace("#paramPlaceDetailTitle#", place.getTitle());
 			
-			this.mailUtil.sendMailFromTemplate(guestHtmlFilePath, paramMap, toList, null, guestSubject, null);
+			this.sendMailFromTemplate(guestHtmlFilePath, paramMap, toList, null, guestSubject, null, false);
 			
 			
 			String hostHtmlFilePath = this.getMailTemplatePath("RequestAcceptedForHost.html");	
@@ -333,7 +360,7 @@ public class MailService implements IMailService, IMailConstants {
 			paramMap.put("#paramGuestProfilePictureUrl#", guestUser.getProfileImageUrl());
 			paramMap.put("#paramGuestPhoneNumber#", guestUser.getMsisdnCountryCode() + guestUser.getMsisdn());
 			
-			this.mailUtil.sendMailFromTemplate(hostHtmlFilePath, paramMap, hostToList, null, hostSubject, null);
+			this.sendMailFromTemplate(hostHtmlFilePath, paramMap, hostToList, null, hostSubject, null, false);
 			
 			operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 		} catch (Exception e) {
@@ -363,7 +390,7 @@ public class MailService implements IMailService, IMailConstants {
 			String guestHtmlFilePath = this.getMailTemplatePath("ReservationCancelledForGuest.html");
 			List<String> guestToList = new ArrayList<String>();
 			guestToList.add(guestEmail);
-			this.mailUtil.sendMailFromTemplate(guestHtmlFilePath, paramMap, guestToList, null, guestSubject, null);
+			this.sendMailFromTemplate(guestHtmlFilePath, paramMap, guestToList, null, guestSubject, null, false);
 			
 			operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 		} catch (Exception e) {
