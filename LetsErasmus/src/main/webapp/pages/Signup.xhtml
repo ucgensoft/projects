@@ -59,7 +59,7 @@
 			<input id="txtPassword" class="form-control" type="password" 
 				placeholder='Choose a password' required="required">
 			</input>
-			<div class="help-block">Please pick a secure password, of at least 8 characters.</div>
+			<div class="help-block">Please pick a secure password, of at least #{webApplication.getParameterValue("MIN_USER_PASSWORD_LENGTH")} characters.</div>
 		</div>
 	
 		<input id="btnSignup" type="button" onclick="signup()" value='Sign up' class="btn-brand btn-block" />

@@ -34,6 +34,7 @@ public class WebApplication extends BaseController {
 	public String localAppPath;
 
 	private String urlPrefix;
+	private String protocol;
 	
 	//private String emailVerificationUrl;
 	//private String resetPasswordUrl;
@@ -83,6 +84,7 @@ public class WebApplication extends BaseController {
 			googleApiKey = this.parameterService.getParameterValue(EnmParameter.GOOGLE_API_KEY.getId());
 			
 			urlPrefix = this.parameterService.getParameterValue(EnmParameter.LETSERASMUS_URL_PREFIX.getId());
+			protocol = urlPrefix.substring(0, urlPrefix.indexOf(":"));
 			staticFileVersion = Integer.valueOf(this.parameterService.getParameterValue(EnmParameter.STATIC_FILE_VERSION.getId()));
 			
 			//emailVerificationUrl = urlPrefix + "//PAGES/Main.html?user=#paramUserId#&code=#paramCode#&op=10";
@@ -147,6 +149,10 @@ public class WebApplication extends BaseController {
 
 	public String getUrlPrefix() {
 		return urlPrefix;
+	}
+	
+	public String getProtocol() {
+		return this.protocol;
 	}
 	
 	public String getEncodedUrlPrefix() throws UnsupportedEncodingException {

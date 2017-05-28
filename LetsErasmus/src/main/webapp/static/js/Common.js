@@ -386,15 +386,40 @@ var DialogUtil = {
 		swal({
 	      	  title: title,
 	      	  text: message,
-	      	  //type: "warning",
 	      	  showCancelButton: true,
 	      	  confirmButtonColor: "#DD6B55",
 	      	  confirmButtonText: confirmText,
 	      	  cancelButtonText : cancelText,
-	      	  closeOnConfirm: false,
+	      	  closeOnConfirm: true,
 	      	  imageUrl : '/static/images/confirm.png'
 	      	},
 	      	callback);
+	},
+	
+	prompt : function (message, callback, title) {
+		if (!title) {
+			title = 'Input Value';
+		}
+		
+		swal({
+			  title: title,
+			  text: message,
+			  type: "input",
+			  showCancelButton: true,
+			  closeOnConfirm: false,
+			  animation: "slide-from-top",
+			  inputPlaceholder: ""
+			},
+			function(inputValue){
+			  if (inputValue === false) return false;
+			  
+			  if (inputValue === "") {
+			    swal.showInputError("Please fill input field!");
+			    return false
+			  }
+			  
+			  callback(inputValue);
+			});
 	}
 	
 };

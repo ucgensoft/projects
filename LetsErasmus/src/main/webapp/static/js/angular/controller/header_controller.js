@@ -82,7 +82,7 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
 	   	  } 
 	 };
       
-      self.openSignUpWindow = function() {
+      self.openSignUpWindow = function(callBack) {
     	  /*
     	  getHtml(webApplicationUrlPrefix + '/pages/Signup.html', function(html) {
     		  $('#divModalContent').html(sce.trustAsHtml(html));
@@ -94,7 +94,10 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
     	  
     	  ajaxHtml(webApplicationUrlPrefix + '/pages/Signup.html', 'divModalContent', function() {
     		  self.attachGoogleSignin('linkGoogleSignin', self.signup);
-    		  openModal();  
+    		  if (callBack) {
+    			  callBack();
+    		  }
+    		  openModal();
     	  });
     	  /*
     	  getHtml(webApplicationUrlPrefix + '/pages/Signup.html', function(html) {
@@ -136,28 +139,34 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
 		        	var loginType = EnmLoginType.FACEBOOK;
 		        	var profileImageUrl = resp.picture.data.url;
 		        	
+		        	if (resp.gender) {
+		        		if (resp.gender.toUpperCase() == 'MALE') {
+		        			gender = 'M';
+		        		} else if (resp.gender.toUpperCase() == 'FEMALE') {
+		        			gender = 'F';
+		        		}
+		        	}
+		        	
+		        	var user = {
+	        			firstName : firstName,
+	        			lastName : lastName,
+	        			facebookEmail : email,
+	        			gender : gender,
+	        			facebookId : facebookId,
+	        			facebookTokenId : facebookTokenId,
+	        			profileImageUrl : profileImageUrl,
+	        			loginType : loginType
+		        	};
+		        	
 		        	if (resp.email) {
-		        		if (resp.gender) {
-			        		if (resp.gender.toUpperCase() == 'MALE') {
-			        			gender = 'M';
-			        		} else if (resp.gender.toUpperCase() == 'FEMALE') {
-			        			gender = 'F';
-			        		}
-			        	}
-			        	
-			        	var user = {
-			        			firstName : firstName,
-			        			lastName : lastName,
-			        			facebookEmail : email,
-			        			gender : gender,
-			        			facebookId : facebookId,
-			        			facebookTokenId : facebookTokenId,
-			        			profileImageUrl : profileImageUrl,
-			        			loginType : loginType
-			        	};
 			        	self.signup(user);
 		        	} else {
-		        		DialogUtil.warn('Your facebook account is not verified. Only verified accounts are allowed to login!');
+		        		DialogUtil.confirm('Your facebook email is not verified. Do you wish to create a local LetsErasmus account!', function() {
+		        			self.openSignUpWindow(function() {
+			        			$('#txtFirstName').val(firstName);
+			        			$('#txtLastName').val(lastName);
+			        		});
+		        		});
 		        	}
 		        	
     				});
@@ -165,6 +174,10 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
     			//FB.login(self.facebookLoginCallback, {scope: 'public_profile, email'});
     		}
     	};
+    	
+      self.facebookLogin = function() {
+    	  
+      }
       
       self.signupWithLocalAccount = function() {
     	  
