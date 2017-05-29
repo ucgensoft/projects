@@ -123,7 +123,7 @@
 					<iframe id="frameGoogleLogout" src="" style="display: none"></iframe>
 				</div>
 				<div id="divAjaxProgressBar"></div>
-				<div id="divBody" class="clsContent"  ng-controller="#{webApplication.ngController} as ctrl">
+				<div id="divBody" class="clsContent hidden-force"  ng-controller="#{webApplication.ngController} as ctrl">
 					<ui:insert name="body" />
 				</div>
 				<ui:fragment rendered="#{webApplication.footerVisible}">
@@ -136,6 +136,7 @@
 			    </script>
 				
 				<script>
+					$('#divBody').removeClass('hidden-force');
 					//showMessage("error", "title", "message");
 					var modal = document.getElementById('divModal');
 					if(document.getElementById('divModalContent').children.length == 0) {
