@@ -16,6 +16,10 @@ App.controller('placeDetailCtrl', ['$scope', '$controller', 'placeService', 'res
       self.reviewList = [];
                   
       self.initialize = function() {
+    	  if(isMobile()) {
+    		  $('#sendResReqWrapper').removeClass();
+    		  $('#sendResReqDiv').removeClass();
+    	  }
     	  var placeId = getUriParam('placeId');
     	  if (placeId == null || placeId == "") {
     		  openWindow(webApplicationUrlPrefix + "/pages/Main.html");

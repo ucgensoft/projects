@@ -58,19 +58,19 @@
 										style="cursor: pointer;">×</div>
 							</div>
 						</div>
-						<div style="height: 30px; margin-top:2px">
-							<div class="DateInput" style="height: 30px;">
+						<div id="searchDateDiv" style="height: 30px; margin-top:2px">
+							<div id="startDateDiv" class="DateInput" style="height: 30px;">
 								<input type="text" id="txtStartDatePicker" class="DateInput__input"
 									placeholder="Start date" readonly="true"/> 
 							</div>
 							
-							<div class="DateInput" style="height: 30px;">
+							<div id="endDateDiv" class="DateInput" style="height: 30px;">
 								<input type="text" id="txtEndDatePicker" class="DateInput__input"
 									placeholder="End date" readonly="true"/> 
 							</div>
 						</div>
 						<input type="button" class="FilterToolBar-showExtended u-button" id="btnSearch"
-							value="Search" ng-click="ctrl.search();" style="height: 30px; margin-top: 2px; margin-left: 5px">
+							value="Search" ng-click="ctrl.search();" style="height: 30px;">
 						</input>
 
 					</div>

@@ -108,3 +108,10 @@ body, #mainWrapper {
 	border-radius: 4px;
 	padding : 5px;
 }
+
+/*Mobile classes*/
+@media ( max-width :47.9em) {
+	.clsWideScreen {
+		display:none !important;
+	}
+}

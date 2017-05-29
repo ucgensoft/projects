@@ -88,7 +88,7 @@
 									class="cover-img-container">
 										<div class="cover-img">
 											<div id="divPhotoSlider"
-												style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; margin: auto; width: 100%; max-width: 1000px; height: 100%; max-height: 600px; background-size: cover;">
+												style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; margin: auto; width: 100%; max-width: 1000px; height: 100%; max-height: 600px; background-size: cover; background-position: center;">
 												<input type="hidden" id="hiddenPhotoIndexMainSlider"
 													value="0" /> <span ng-click="ctrl.changePhoto(-1)"
 													ng-if="ctrl.place.photoList.length > 1" class="jssora02l"
@@ -108,7 +108,7 @@
 							<div class="page-container-responsive">
 								<div class="row">
 									<div class="col-lg-8">
-										<div class="row hide-md">
+										<div class="row hide-md clsWideScreen">
 											<div>
 												<div>
 													<noscript></noscript>
@@ -236,9 +236,9 @@
 										</div>
 									</div>
 									<div class="col-lg-4">
-										<div style="margin-top: 0px"
+										<div id="sendResReqWrapper" style="margin-top: 0px"
 											class="book-it js-book-it book-it--inNewStickyExperiment">
-											<div
+											<div id="sendResReqDiv"
 												class="book-it__container js-book-it-container book-it__container--inNewStickyExperiment"
 												style="top: 0px;">
 												<div>

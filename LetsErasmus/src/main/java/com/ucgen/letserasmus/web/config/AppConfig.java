@@ -58,7 +58,7 @@ public class AppConfig implements TransactionManagementConfigurer {
         return multipartConfigElement;
     }
  
-    private static final String LOCATION = "/var/lib/tomcat8/webapps/ROOT/tmp/upload_file"; // Temporary location where files will be stored
+	private static final String LOCATION = "D:\\tmp\\upload_file";//"/var/lib/tomcat8/webapps/ROOT/tmp/upload_file"; // Temporary location where files will be stored
  
     private static final long MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB : Max file size.
                                                         
