@@ -30,15 +30,16 @@ public class AppConfig implements TransactionManagementConfigurer {
 		BasicDataSource dataSource = new BasicDataSource();
 		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
 		
+		/*
 		dataSource.setUrl("jdbc:mysql://localhost:3306/letserasmus_db");
 		dataSource.setUsername("root");
 		dataSource.setPassword("root");
+		*/
 		
-		/*
 		dataSource.setUrl("jdbc:mysql://letserasmusdb.caidndq6n0sz.eu-west-1.rds.amazonaws.com:23101/letserasmus_db");
 		dataSource.setUsername("erasmus_admin");
 		dataSource.setPassword("zUgFA5Ye42U*LNXD");
-		*/
+		
 		return dataSource;
 	}
 	
@@ -58,8 +59,10 @@ public class AppConfig implements TransactionManagementConfigurer {
         return multipartConfigElement;
     }
  
-	private static final String LOCATION = "D:\\tmp\\upload_file";//"/var/lib/tomcat8/webapps/ROOT/tmp/upload_file"; // Temporary location where files will be stored
+	//private static final String LOCATION = "D:\\tmp\\upload_file";//"/var/lib/tomcat8/webapps/ROOT/tmp/upload_file"; // Temporary location where files will be stored
  
+	private static final String LOCATION = "/var/lib/tomcat8/webapps/ROOT/tmp/upload_file"; // Temporary location where files will be stored
+	
     private static final long MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB : Max file size.
                                                         
     private static final long MAX_REQUEST_SIZE = 20 * 1024 * 1024; // 20MB : Total request size containing Multi part.
