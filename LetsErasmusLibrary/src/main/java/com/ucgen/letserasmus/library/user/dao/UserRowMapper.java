@@ -41,6 +41,7 @@ public class UserRowMapper extends BaseRowMapper<User> {
 	public static final String COL_GOOGLE_EMAIL = "GOOGLE_EMAIL";
 	public static final String COL_FACEBOOK_EMAIL = "FACEBOOK_EMAIL";
 	public static final String COL_RESET_PASSWORD_TOKEN = "RESET_PASSWORD_TOKEN";
+	public static final String COL_ADMIN_FLAG = "ADMIN_FLAG";
 	
 	public static final String FKEY_FILE = "FILE";
 
@@ -90,6 +91,7 @@ public class UserRowMapper extends BaseRowMapper<User> {
 		user.setGoogleEmail(super.getString(rs, COL_GOOGLE_EMAIL));
 		user.setFacebookEmail(super.getString(rs, COL_FACEBOOK_EMAIL));
 		user.setResetPasswordToken(super.getString(rs, COL_RESET_PASSWORD_TOKEN));
+		user.setAdminFlag(super.getString(rs, COL_ADMIN_FLAG));
 		
 		if (user.getProfilePhotoId() != null && 
 				this.getfKeyMap() != null && this.getfKeyMap().containsKey(FKEY_FILE)) {
@@ -148,6 +150,7 @@ public class UserRowMapper extends BaseRowMapper<User> {
 		super.addColumn(COL_GOOGLE_EMAIL);
 		super.addColumn(COL_FACEBOOK_EMAIL);
 		super.addColumn(COL_RESET_PASSWORD_TOKEN);
+		super.addColumn(COL_ADMIN_FLAG);
 	}
 
 }

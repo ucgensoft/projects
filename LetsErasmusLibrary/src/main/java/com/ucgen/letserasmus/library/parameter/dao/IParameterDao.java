@@ -5,4 +5,6 @@ public interface IParameterDao
 
 	public String getParameterValue(Integer parameterId);
 
+	public void refreshCache();
+	
 }

@@ -21,6 +21,7 @@ import com.ucgen.common.operationresult.ValueOperationResult;
 import com.ucgen.common.util.CommonUtil;
 import com.ucgen.common.util.FileLogger;
 import com.ucgen.common.util.FileUtil;
+import com.ucgen.letserasmus.library.common.enumeration.EnmBoolStatus;
 import com.ucgen.letserasmus.library.common.enumeration.EnmErrorCode;
 import com.ucgen.letserasmus.library.parameter.enumeration.EnmParameter;
 import com.ucgen.letserasmus.library.parameter.service.IParameterService;
@@ -32,6 +33,7 @@ import com.ucgen.letserasmus.library.simpleobject.service.ISimpleObjectService;
 import com.ucgen.letserasmus.library.user.model.User;
 import com.ucgen.letserasmus.web.api.BaseApiController;
 import com.ucgen.letserasmus.web.view.application.AppConstants;
+import com.ucgen.letserasmus.web.view.application.WebApplication;
 
 @RestController
 public class ApiSimpleObjectController extends BaseApiController {
@@ -39,6 +41,7 @@ public class ApiSimpleObjectController extends BaseApiController {
 	private ISimpleObjectService simpleObjectService;
 	private IParameterService parameterService;
 	private ISimpleObjectDao simpleObjectDao;
+	private WebApplication webApplication;
 	
 	@Autowired
 	public void setParameterService(IParameterService parameterService) {
@@ -53,6 +56,11 @@ public class ApiSimpleObjectController extends BaseApiController {
 	@Autowired
 	public void setSimpleObjectDao(ISimpleObjectDao simpleObjectDao) {
 		this.simpleObjectDao = simpleObjectDao;
+	}
+
+	@Autowired
+	public void setWebApplication(WebApplication webApplication) {
+		this.webApplication = webApplication;
 	}
 
 	@RequestMapping(value = "/api/simpleobject/listcountry", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
@@ -141,6 +149,26 @@ public class ApiSimpleObjectController extends BaseApiController {
 			}
 			this.simpleObjectDao.updateCountry(countryList);
 			
+			operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+		} catch (Exception e) {
+			FileLogger.log(Level.ERROR, "ApiSimpleObjectController-updateCountry()-Error: " + CommonUtil.getExceptionMessage(e));
+			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+			operationResult.setResultDesc(CommonUtil.getExceptionMessage(e));
+		}
+		
+		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);
+    }
+	
+	@RequestMapping(value = "/api/parameter/refresh", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public ResponseEntity<OperationResult> refreshParameterCache(HttpSession session) {
+		OperationResult operationResult = new OperationResult();
+		try {
+			User sessionUser = super.getSessionUser(session);
+			if (sessionUser  != null && sessionUser.getAdminFlag() != null 
+					&& sessionUser.getAdminFlag().equals(EnmBoolStatus.YES.getId())) {
+				this.parameterService.refreshCache();
+				webApplication.initialize();
+			}
 			operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 		} catch (Exception e) {
 			FileLogger.log(Level.ERROR, "ApiSimpleObjectController-updateCountry()-Error: " + CommonUtil.getExceptionMessage(e));

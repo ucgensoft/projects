@@ -19,5 +19,10 @@ public class ParameterService implements IParameterService {
 	public String getParameterValue(Integer parameterId) {
 		return parameterDao.getParameterValue(parameterId);		
 	}
+
+	@Override
+	public void refreshCache() {
+		this.parameterDao.refreshCache();
+	}
 	
 }

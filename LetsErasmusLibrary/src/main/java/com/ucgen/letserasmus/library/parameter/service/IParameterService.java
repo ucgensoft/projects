@@ -5,4 +5,6 @@ public interface IParameterService
 	
 	public String getParameterValue(Integer parameterId);
 	
+	public void refreshCache();
+	
 }

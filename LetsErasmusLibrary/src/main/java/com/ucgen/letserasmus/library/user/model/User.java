@@ -44,6 +44,7 @@ public class User extends BaseModel {
 	private String googleEmail;
 	private String facebookEmail;
 	private String resetPasswordToken;
+	private String adminFlag;
 	
 	private FileModel profilePhoto;
 	private List<Place> placeList;
@@ -268,6 +269,14 @@ public class User extends BaseModel {
 
 	public void setPlaceListingCount(Integer placeListingCount) {
 		this.placeListingCount = placeListingCount;
+	}
+
+	public String getAdminFlag() {
+		return adminFlag;
+	}
+
+	public void setAdminFlag(String adminFlag) {
+		this.adminFlag = adminFlag;
 	}
 
 	public String getFullName() {
