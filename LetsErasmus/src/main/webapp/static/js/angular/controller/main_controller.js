@@ -10,8 +10,10 @@ App.controller('mainCtrl', ['$scope', '$controller', 'userService', function($sc
 
       self.initialize = function() {
     	  
-    	  var height = (typeof window.outerHeight != 'undefined')?Math.max(window.outerHeight, $(window).height()):$(window).height();
-    	  $('#homeFirstScreenDiv').css('height', height);
+    	  if (isMobile()) {
+    		  var height = (typeof window.outerHeight != 'undefined')?Math.max(window.outerHeight, $(window).height()):$(window).height();
+        	  $('#homeFirstScreenDiv').css('height', height);
+    	  }
     	  
     	  $("#txtSearchPlace").geocomplete().bind("geocode:result", function(event, result) {
   				self.onPlaceChange(event, result);

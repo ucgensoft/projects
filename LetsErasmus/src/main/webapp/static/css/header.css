@@ -1863,6 +1863,23 @@ ul.panel-body>li>*:last-child, ol.panel-body>li>*:last-child {
 	
 }
 
+.drop-down-menu-left {
+	position: absolute;
+	z-index: 3001;
+	top: 61px;
+	left: 8px;
+	right: auto;
+	display: none;
+	min-width: 282px;
+	max-width: 460px;
+	line-height: normal;
+	-webkit-border-radius: 0 0 2px 2px;
+	-moz-border-radius: 0 0 2px 2px;
+	border-radius: 10px;
+	
+}
+
+
 .drop-down-menu .hover-item {
 	display: block
 }
@@ -2021,4 +2038,13 @@ ul.panel-body>li>*:last-child, ol.panel-body>li>*:last-child {
 
 .link-reset {
     color: inherit;
+}
+
+/*Mobile classes*/
+@media ( max-width :47.9em) {
+	
+	
+	.nav-top {
+		padding-right: 5px;
+	}
 }

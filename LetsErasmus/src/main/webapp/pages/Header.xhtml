@@ -7,93 +7,122 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
 	
 	<script>
+	if (!isMobile()) {
 		$('#divHeaderTabUser').on("mouseover", function() {
 			$('#divDropDownUser').css('display', 'block');
 		})
 		$('#divHeaderTabUser').on("mouseout", function() {
 			$('#divDropDownUser').css('display', 'none');
-		})
+		})	
+	} else {
+		$('#divDropDownUser').css('right', 'auto');
+		$('#divDropDownUser').css('left', '8px');
+		
+	}
+	
+	function displayMenu() {
+		if ($('#divDropDownUser').css('display') != 'none') {
+			$('#divDropDownUser').css('display', 'none');	
+		} else {
+			$('#divDropDownUser').css('display', 'block');
+		}
+	}
+	
 	</script>
+	
 	<h:form>
 		<header id="top" class="nav-top nav-top__home"
 			style="margin: auto;
 			background-color: rgba(0, 0, 0, 0.7);">
-		<a href="#{webApplication.urlPrefix}" class="nav-top--logo"> <img
-			id="imgSiteIcon"
-			src="#{webApplication.urlPrefix}/static/images/optimized_logo.png"></img>
-		</a> <nav id="n-l-nav" class="nav-top--right-wrapper"> <nav
-			class="nav-top--right">
-		<div class="nav-top--right">
-			<div>
-				<div class="nav-top--list-room-btn"
-					id="btnSubmitRoom" ng-click="ctrl.onBecomeHostClicked()">
-					<span class="hidden-sm-down">Become a Host</span> 
-					<span class="hidden-md-up uppercase">Rent out</span>
-				</div>
-			</div>
-			<a id="help-button"
-				href="#{webApplication.urlPrefix}/pages/help/help.html"
-				class="nav-top--right--link hidden-sm-down"> <span>Help</span>
-			</a>
-			<ui:fragment
-				rendered="#{webApplication.user == null}">
-				<a id="a-register" ng-click="ctrl.openSignUpWindow()"
-					href=""
-					class="nav-top--right--link hidden-sm-down"> <span>Sign up</span>
-				</a>
-			</ui:fragment>
-			<ui:fragment
-				rendered="#{webApplication.user == null}">
-				<a id="a-login"
-					ng-click="ctrl.openLoginWindow()"
-					href=""
-					class="nav-top--right--link hidden-sm-down m-r-1"> <span>Log in </span>
-				</a>
-			</ui:fragment>
-			<ui:fragment
-				rendered="#{webApplication.user != null}">
-				<div id="divHeaderTabUser" class="dropdown--wrapper">
-					<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId=#{webApplication.user.id}" rel=""
-						class="nav-top--right--link nav-top--right--link__dropdown">
-						<div class="nav-top--username">#{webApplication.user.firstName}</div>
-						<div style="margin-left: 15px;" class="nav-top--avatar" title="Go to your dashboard">
-							<input id="hiddenActiveUserProfileImageUrl" type="hidden" 
-								value="#{webApplication.getUserPhotoUrl(webApplication.user.id, webApplication.user.profilePhotoId, 'small')}" />
-							<div id="divHeaderUserProfileImage" class="avatar--img"
-								style="background-size: cover; width: 100%; height: 100%; 
-								background-image: url(#{webApplication.getUserPhotoUrl(webApplication.user.id, webApplication.user.profilePhotoId, 'small')});">
+		<a href="#{webApplication.urlPrefix}" class="nav-top--logo" style="margin-left: 20px;"> 
+			<img id="imgSiteIcon" style="width: 32px; height:32px; border-radius: .2rem;" src="#{webApplication.urlPrefix}/static/images/home.ico" />
+			<img id="imgSiteIcon" src="#{webApplication.urlPrefix}/static/images/optimized_logo.png"></img>
+		</a> 
+		
+		<nav id="n-l-nav" class="nav-top--right-wrapper"> 
+			<nav class="nav-top--right">
+				<div class="nav-top--right">
+					<div>
+						<div class="nav-top--list-room-btn"
+							id="btnSubmitRoom" ng-click="ctrl.onBecomeHostClicked()">
+							<span class="hidden-sm-down">Become a Host</span> 
+							<span class="hidden-md-up uppercase">Rent out</span>
+						</div>
+					</div>
+					<a id="help-button"
+						href="#{webApplication.urlPrefix}/pages/help/help.html"
+						class="nav-top--right--link hidden-sm-down"> <span>Help</span>
+					</a>
+					<ui:fragment
+						rendered="#{webApplication.user == null}">
+						<a id="a-register" ng-click="ctrl.openSignUpWindow()"
+							href=""
+							class="nav-top--right--link hidden-sm-down"> <span>Sign up</span>
+						</a>
+					</ui:fragment>
+					<ui:fragment
+						rendered="#{webApplication.user == null}">
+						<a id="a-login"
+							ng-click="ctrl.openLoginWindow()"
+							href=""
+							class="nav-top--right--link hidden-sm-down m-r-1"> <span>Log in </span>
+						</a>
+					</ui:fragment>
+					<ui:fragment
+						rendered="#{webApplication.user != null}">
+						<div id="divHeaderTabUser" class="dropdown--wrapper">
+							<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId=#{webApplication.user.id}" rel=""
+								class="nav-top--right--link nav-top--right--link__dropdown">
+								<div class="nav-top--username">#{webApplication.user.firstName}</div>
+								<div style="margin-left: 15px;" class="nav-top--avatar" title="Go to your dashboard">
+									<input id="hiddenActiveUserProfileImageUrl" type="hidden" 
+										value="#{webApplication.getUserPhotoUrl(webApplication.user.id, webApplication.user.profilePhotoId, 'small')}" />
+									<div id="divHeaderUserProfileImage" class="avatar--img"
+										style="background-size: cover; width: 100%; height: 100%; 
+										background-image: url(#{webApplication.getUserPhotoUrl(webApplication.user.id, webApplication.user.profilePhotoId, 'small')});">
+									</div>
+								</div>
+							</a>
+							<div style="margin-top: -5px" id="divDropDownUser" class="panel tooltip-top-left drop-down-menu avatar-tooltip--new">
+								<a href="" onclick="openWindow('#{webApplication.urlPrefix}/pages/dashboard/EditUser.html', true)"
+									class="js-your-trips-item panel-body link-reset hover-item">
+									<div class="hover-item__content">Edit Profile</div>
+								</a>
+								<a href="" onclick="openWindow('#{webApplication.urlPrefix}/pages/dashboard/Listings.html', true)"
+									class="travel-credit-item panel-body link-reset hover-item">
+									<div class="hover-item__content">Your Listings</div>
+								</a>
+								<a href="" onclick="openWindow('#{webApplication.urlPrefix}/pages/dashboard/MessageList.html', true)"
+									class="panel-body link-reset hover-item no-crawl">
+									<div class="hover-item__content">Messages</div>
+								</a>
+								<a href="" onclick="openWindow('#{webApplication.urlPrefix}/pages/dashboard/WishList.html', true)"
+									class=" panel-body link-reset hover-item no-crawl">
+									<div class="hover-item__content">Your Wish List</div>
+								</a>
+								<a href="" onclick="openWindow('#{webApplication.urlPrefix}/pages/dashboard/TripList.html', true)"
+									class="travel-credit-item panel-body link-reset hover-item">
+									<div class="hover-item__content">Your Trips</div>
+								</a>
+								<a href="" ng-click="ctrl.logout()"
+									class=" panel-body link-reset hover-item no-crawl">
+									<div class="hover-item__content">Log Out</div>
+								</a>
 							</div>
 						</div>
-					</a>
-					<div style="margin-top: -5px" id="divDropDownUser" class="panel tooltip-top-right drop-down-menu avatar-tooltip--new">
-						<a href="" onclick="openWindow('#{webApplication.urlPrefix}/pages/dashboard/EditUser.html', true)"
-							class="js-your-trips-item panel-body link-reset hover-item">
-							<div class="hover-item__content">Edit Profile</div>
-						</a>
-						<a href="" onclick="openWindow('#{webApplication.urlPrefix}/pages/dashboard/Listings.html', true)"
-							class="travel-credit-item panel-body link-reset hover-item">
-							<div class="hover-item__content">Your Listings</div>
-						</a>
-						<a href="" onclick="openWindow('#{webApplication.urlPrefix}/pages/dashboard/MessageList.html', true)"
-							class="panel-body link-reset hover-item no-crawl">
-							<div class="hover-item__content">Messages</div>
-						</a>
-						<a href="" onclick="openWindow('#{webApplication.urlPrefix}/pages/dashboard/WishList.html', true)"
-							class=" panel-body link-reset hover-item no-crawl">
-							<div class="hover-item__content">Your Wish List</div>
-						</a>
-						<a href="" onclick="openWindow('#{webApplication.urlPrefix}/pages/dashboard/TripList.html', true)"
-							class="travel-credit-item panel-body link-reset hover-item">
-							<div class="hover-item__content">Your Trips</div>
-						</a>
-						<a href="" ng-click="ctrl.logout()"
-							class=" panel-body link-reset hover-item no-crawl">
-							<div class="hover-item__content">Log Out</div>
-						</a>
-					</div>
+					</ui:fragment>
+					<ui:fragment rendered="#{webApplication.user != null}">	
+						<div id="divMobileMenu" style="margin-left: 10px; border-radius: .4rem; margin-top: 7px;" onclick="displayMenu()" ng-show="ctrl.isMobile()">
+							<!-- 
+							<img class="hidden-md-up" src="#{webApplication.urlPrefix}/static/images/site_icon_32.jpg"></img>
+							-->
+							<img id="imgMenu" class="hidden-md-up" src="#{webApplication.urlPrefix}/static/images/menu_blue.png" 
+								style="width: 32px; height:32px; border-radius: .2rem;"></img>
+						</div>
+					</ui:fragment>
 				</div>
-			</ui:fragment>
-		</div>
-		</nav> </nav> </header>
+			</nav> 
+		</nav> 
+	</header>
 	</h:form>	
 </ui:composition>

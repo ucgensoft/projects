@@ -153,6 +153,9 @@
 					    if (event.target == modal || $(event.target).hasClass('modal-cell')) {
 					    	closeModal();
 					    }
+					    if (event.target.id != 'imgMenu') {
+					    	$('#divDropDownUser').css('display', 'none');	
+					    }
 					}
 					
 					$(document).ready(function(){

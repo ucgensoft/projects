@@ -9,6 +9,27 @@
 		<link rel="stylesheet" type="text/css" href="#{webApplication.urlPrefix}/static/css/main/main.css?ver=#{webApplication.staticFileVersion}" />
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
 	</ui:define>
+	
+	<style>
+		.flex-vertical-middle, .separator-vertical {
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	-ms-flex-pack: center;
+	justify-content: center
+}
+
+.flex-space-between-middle, .flex-vertical-middle, .separator-vertical {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex
+}
+	</style>
 
 	<ui:define name="body">
 		<h:form id="mainSearchForm">

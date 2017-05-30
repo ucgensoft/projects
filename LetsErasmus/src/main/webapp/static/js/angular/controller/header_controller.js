@@ -5,7 +5,16 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
       var auth2 = null;
       var facebookLoginResponse = null;
       
+      self.isMobile = function() {
+    	  return isMobile();
+      }
+      
       self.initialize = function() {
+    	  /*
+    	  if (isMobile()) {
+    		  $('#imgSiteIcon').css('display', 'none');
+    	  }
+    	  */
     	  if (loginType != '') {
     		  self.listFavorite(
     				  function(favoriteMap) {
