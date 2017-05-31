@@ -32,6 +32,9 @@
 		<script>
 			var searchResultPageSize = #{webApplication.getParameterValue("PLACE_SEARCH_PAGE_SIZE")};
 			var minMapEdgeLength = #{webApplication.getParameterValue("MAP_MIN_DISPLAY_DISTANCE")}
+			if (isMobile()) {
+				minMapEdgeLength = minMapEdgeLength * 2;
+			} 
 		</script>
 	</ui:define>
 

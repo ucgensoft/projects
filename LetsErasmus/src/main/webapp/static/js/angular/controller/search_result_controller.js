@@ -31,6 +31,10 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
       
       initialize = function() {
     	  
+    	  if (isMobile()) {
+    		  
+    	  }
+    	  
     	  	self.selectedPlaceName = getUriParam(EnmUriParam.LOCATION);
 	    	self.selectedStartDate = getUriParam(EnmUriParam.CHECKIN_DATE);
 	    	self.selectedEndDate = getUriParam(EnmUriParam.CHECKOUT_DATE);
@@ -62,20 +66,22 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
 	                	 map.setZoom(15);
 	                }
 	                
-	                var point1 = new google.maps.LatLng(self.locSearchCriteria.lat1, self.locSearchCriteria.lng1);
-	                var point2 = new google.maps.LatLng(self.locSearchCriteria.lat2, self.locSearchCriteria.lng2);
-	                
-	                var bounds = new google.maps.LatLngBounds();
-	                
-	                bounds.extend(point1);
-	                bounds.extend(point2);
-	              	
-	                map.fitBounds(bounds);
-	                
-	                self.locSearchCriteria.lat1 =  map.getBounds().getNorthEast().lat();
-	                self.locSearchCriteria.lng1 = map.getBounds().getNorthEast().lng();
-	                self.locSearchCriteria.lat2 =  map.getBounds().getSouthWest().lat();
-	                self.locSearchCriteria.lng2 = map.getBounds().getSouthWest().lng();
+	                if (!isMobile()) {
+	                	var point1 = new google.maps.LatLng(self.locSearchCriteria.lat1, self.locSearchCriteria.lng1);
+		                var point2 = new google.maps.LatLng(self.locSearchCriteria.lat2, self.locSearchCriteria.lng2);
+		                
+		                var bounds = new google.maps.LatLngBounds();
+		                
+		                bounds.extend(point1);
+		                bounds.extend(point2);
+		              	
+		                map.fitBounds(bounds);
+		                
+		                self.locSearchCriteria.lat1 =  map.getBounds().getNorthEast().lat();
+		                self.locSearchCriteria.lng1 = map.getBounds().getNorthEast().lng();
+		                self.locSearchCriteria.lat2 =  map.getBounds().getSouthWest().lat();
+		                self.locSearchCriteria.lng2 = map.getBounds().getSouthWest().lng();
+	                }
 	                
 	                self.selectedLat = result.geometry.location.lat();
 	    	    	self.selectedLng = result.geometry.location.lng();
