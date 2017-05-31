@@ -115,12 +115,12 @@ public class ApiComplaintController extends BaseApiController {
 							ValueOperationResult<Place> getOperationResult = this.placeService.getPlace(complaint.getEntityId());
 							hostUserId = getOperationResult.getResultValue().getHostUserId();
 							if (hostUserId.equals(user.getId())) {
-								operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+								operationResult.setResultCode(EnmResultCode.WARNING.getValue());
 								operationResult.setResultDesc("I admire your honesty. This is your own place :)");
 							}
 						} else if (complaint.getEntityType().equals(EnmEntityType.USER.getId())) {
 							if(complaint.getEntityId().equals(user.getId())) {
-								operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+								operationResult.setResultCode(EnmResultCode.WARNING.getValue());
 								operationResult.setResultDesc("I admire your honesty. You can not report yourself :)");
 							}
 						}
