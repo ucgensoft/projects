@@ -27,7 +27,43 @@
 	        .jssora02r.jssora02rdn { background-position: -63px -33px; }
 	        .jssora02l.jssora02lds { background-position: -3px -33px; opacity: .3; pointer-events: none; }
 	        .jssora02r.jssora02rds { background-position: -63px -33px; opacity: .3; pointer-events: none; }
-	        
+	        	        
+	       .filter-element-4 {
+	       		min-width: 180px;
+	       }
+	        	        
+	    	@media ( max-width :60em) {
+	    		.u-select-wrapper, .filter-element-4 {
+	    			display:inline !important;
+	    		}
+	    		
+	    		.full-width {
+	    			width: 100%;
+	    		}
+	    		
+	    		.filter-element-4 {
+	    			margin-top: 4px;
+	    		}
+	    		
+	    		.clsInlineMobile{
+	    			display:inline-block;
+	    		}
+	    		
+	    		.RoomFilters {
+	    			padding-bottom: 10px;
+	    			padding-top: 10px;
+	    		}
+	    		
+	    		.FeaturesFilters {
+	    			padding-bottom: 10px;
+	    			padding-top: 10px;
+	    		}
+	    		
+	    		.clsFilterLabel {
+	    			width: 120px;
+	    		}
+	    	}
+	    
 	    </style>
 		<script>
 			var searchResultPageSize = #{webApplication.getParameterValue("PLACE_SEARCH_PAGE_SIZE")};
@@ -111,20 +147,20 @@
 					<div id="divExtendedSearchFields" style="width: 100%;" class="hidden-force">
 						<div class="RoomFilters u-borderTop">
 							<p class="RoomFilters-title u-filterLabel">Guest</p>
-							<div class="filter-element-4">
-								<div>
+							<div class="filter-element-4 full-width">
+								<div class="clsInlineMobile clsFilterLabel">
 									<span>Number</span>
 								</div>
-								<div class="top-2">
+								<div class="top-2 clsInlineMobile">
 									<input id="txtGuestNumber" type="number" min="0" class="form-input" placeholder="Guest Number" />
 								</div>
 							</div>
-							<div class="filter-element-4">
-								<div>
+							<div class="filter-element-4 full-width">
+								<div class="clsInlineMobile clsFilterLabel">
 									<span>Gender</span>
 								</div>
-								<div class="top-2">
-									<select id="cmbGuestGender" class="">
+								<div class="top-2 clsInlineMobile">
+									<select id="cmbGuestGender">
 										<option selected="" value="-1" disabled="">Select One</option>
 										<option value="M">Male</option>
 										<option value="F">Female</option>
@@ -132,11 +168,11 @@
 									</select>
 								</div>
 							</div>
-							<div class="filter-element-4">
-								<div>
+							<div class="filter-element-4 full-width">
+								<div class="clsInlineMobile clsFilterLabel">
 									<span style="visibility:hidden">Dummy</span>
 								</div>
-								<div class="top-2">
+								<div class="top-2 clsInlineMobile clsFilterLabel">
 									<input type="checkbox" id="chbLgbtFriendly"
 										class="AmenityFilterItem-checkbox u-checkbox form-input" />
 									<span class="AmenityFilterItem-text">LGBT Friendly</span>
@@ -145,11 +181,11 @@
 						</div>
 						<div class="RoomFilters u-borderTop">
 							<p class="RoomFilters-title u-filterLabel">Room</p>
-							<div class="filter-element-4">
-								<label class="h4 text-gray text-normal">
+							<div class="filter-element-4 full-width">
+								<label class="h4 text-gray text-normal clsFilterLabel clsInlineMobile">
 									<span>Bathroom Type</span>
 								</label>
-								<div class="u-select-wrapper top-2">
+								<div class="u-select-wrapper top-2 clsInlineMobile">
 									<select id="cmbBathroomType">
 										<option selected="" value="-1" disabled="">Select One</option>
 										<option value="1">Private</option>
@@ -157,11 +193,11 @@
 									</select>
 								</div>
 							</div>
-							<div class="filter-element-4">
-								<div>
+							<div class="filter-element-4 full-width">
+								<div class="clsFilterLabel clsInlineMobile">
 									<span>Number Of Beds</span>
 								</div>
-								<div class="top-2">
+								<div class="top-2 clsInlineMobile">
 									<input id="txtBedNumber" type="number" min="0" class="form-input" placeholder="Bed Number" />
 								</div>
 							</div>
@@ -188,7 +224,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="FeaturesFilters  u-borderTop">
+						<div class="FeaturesFilters  u-borderTop" style="margin-bottom: 80px;">
 							<p class="FeaturesFilters-title u-filterLabel">Rules</p>
 							<div class="FeaturesFilters-element">
 								<div ng-repeat="r in ctrl.ruleList" class="AmenityFilterItem top-2 filter-element-4">

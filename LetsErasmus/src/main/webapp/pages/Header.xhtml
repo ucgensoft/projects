@@ -7,18 +7,6 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
 	
 	<script>
-	if (!isMobile()) {
-		$('#divHeaderTabUser').on("mouseover", function() {
-			$('#divDropDownUser').css('display', 'block');
-		})
-		$('#divHeaderTabUser').on("mouseout", function() {
-			$('#divDropDownUser').css('display', 'none');
-		})	
-	} else {
-		$('#divDropDownUser').css('right', 'auto');
-		$('#divDropDownUser').css('left', '8px');
-		
-	}
 	
 	function displayMenu() {
 		if ($('#divDropDownUser').css('display') != 'none') {
@@ -34,8 +22,8 @@
 		<header id="top" class="nav-top nav-top__home"
 			style="margin: auto;
 			background-color: rgba(0, 0, 0, 0.7);">
-		<a href="#{webApplication.urlPrefix}" class="nav-top--logo" style="margin-left: 20px;"> 
-			<img id="imgSiteIcon" style="width: 32px; height:32px; border-radius: .2rem;" src="#{webApplication.urlPrefix}/static/images/home.ico" />
+		<a id="headerSiteIconArea" href="#{webApplication.urlPrefix}" class="nav-top--logo"> 
+			<img id="imgHome" src="#{webApplication.urlPrefix}/static/images/home.ico" />
 			<img id="imgSiteIcon" src="#{webApplication.urlPrefix}/static/images/optimized_logo.png"></img>
 		</a> 
 		
@@ -70,7 +58,7 @@
 						<a id="a-login"
 							ng-click="ctrl.openLoginWindow()"
 							href=""
-							class="nav-top--right--link m-r-1"> <span>Log in </span>
+							class="nav-top--right--link"> <span>Log in </span>
 						</a>
 					</ui:fragment>
 					<ui:fragment
@@ -88,7 +76,7 @@
 									</div>
 								</div>
 							</a>
-							<div style="margin-top: -5px" id="divDropDownUser" class="panel tooltip-top-left drop-down-menu avatar-tooltip--new">
+							<div style="margin-top: -5px" id="divDropDownUser" class="panel tooltip-top-right drop-down-menu avatar-tooltip--new">
 								<a href="" onclick="openWindow('#{webApplication.urlPrefix}/pages/dashboard/EditUser.html', true)"
 									class="js-your-trips-item panel-body link-reset hover-item">
 									<div class="hover-item__content">Edit Profile</div>
@@ -117,12 +105,8 @@
 						</div>
 					</ui:fragment>
 					<ui:fragment rendered="#{webApplication.user != null}">	
-						<div id="divMobileMenu" style="margin-left: 10px; border-radius: .4rem; margin-top: 7px;" onclick="displayMenu()" ng-show="ctrl.isMobile()">
-							<!-- 
-							<img class="hidden-md-up" src="#{webApplication.urlPrefix}/static/images/site_icon_32.jpg"></img>
-							-->
-							<img id="imgMenu" class="hidden-md-up" src="#{webApplication.urlPrefix}/static/images/menu_blue.png" 
-								style="width: 32px; height:32px; border-radius: .2rem;"></img>
+						<div id="divMobileMenu" class="nav-top--right--link" onclick="displayMenu()" style="padding: 1px">
+							<img id="imgMenu" src="#{webApplication.urlPrefix}/static/images/menu_blue_32.png" ></img>
 						</div>
 					</ui:fragment>
 				</div>
