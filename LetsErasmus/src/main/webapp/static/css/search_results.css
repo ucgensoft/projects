@@ -722,14 +722,14 @@ p {
 
 @media only screen and (max-width:320px) {
 	.DateInput{
-		width: 100px;
-	    margin-left: 15px;
+		width: 100%;
+		margin-top: 5px;
 	}
 }
 
 @media only screen and (min-width:321px) and (max-width:768px) {
 	.DateInput{
-		width: 90px;
+		width: 46%;
 	}
 }
 
@@ -2512,14 +2512,11 @@ p {
 /*Mobile styles*/
 @media ( max-width :47.9em) {
 	#searchDateDiv {
+		height: auto;
 		width: 100%;
+		margin-top:2px;
 	}
-	#startDateDiv{
-		width: 47%;
-	}
-	#endDateDiv{
-		width: 47%;
-	}
+	
 	#btnSearch{
 		margin-top: 10px;
 	}
@@ -2529,5 +2526,9 @@ p {
 	#btnSearch{
 		margin-top: 2px; 
 		margin-left: 5p;
+	}
+	#searchDateDiv {
+		height: 30px;
+		width: 100%;
 	}
 }
