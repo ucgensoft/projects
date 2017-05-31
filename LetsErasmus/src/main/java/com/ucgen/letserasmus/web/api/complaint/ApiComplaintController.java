@@ -114,27 +114,37 @@ public class ApiComplaintController extends BaseApiController {
 						if (complaint.getEntityType().equals(EnmEntityType.PLACE.getId())) {
 							ValueOperationResult<Place> getOperationResult = this.placeService.getPlace(complaint.getEntityId());
 							hostUserId = getOperationResult.getResultValue().getHostUserId();
+							if (hostUserId.equals(user.getId())) {
+								operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+								operationResult.setResultDesc("I admire your honesty. This is your own place :)");
+							}
+						} else if (complaint.getEntityType().equals(EnmEntityType.USER.getId())) {
+							if(complaint.getEntityId().equals(user.getId())) {
+								operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+								operationResult.setResultDesc("I admire your honesty. You can not report yourself :)");
+							}
 						}
-						
-						userComplaint.setHostUserId(hostUserId);
-						userComplaint.setDescription(complaint.getDescription());
-						userComplaint.setEntityType(complaint.getEntityType());
-						userComplaint.setEntityId(complaint.getEntityId());
-						userComplaint.setStatus(EnmComplaintStatus.OPEN.getId());
-						
-						userComplaint.setCreatedBy(user.getFullName());
-						userComplaint.setCreatedDate(new Date());
-						
-						OperationResult createResult = this.complaintService.insertComplaint(userComplaint);
-						if (OperationResult.isResultSucces(createResult)) {
-							user.addComplaint(userComplaint);
+						if (operationResult == null || operationResult.getResultCode() == null) {
+							userComplaint.setHostUserId(hostUserId);
+							userComplaint.setDescription(complaint.getDescription());
+							userComplaint.setEntityType(complaint.getEntityType());
+							userComplaint.setEntityId(complaint.getEntityId());
+							userComplaint.setStatus(EnmComplaintStatus.OPEN.getId());
 							
-							operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
-							operationResult.setResultValue(user.getComplaintMap());
+							userComplaint.setCreatedBy(user.getFullName());
+							userComplaint.setCreatedDate(new Date());
 							
-						} else {
-							operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-							operationResult.setResultDesc(AppConstants.CREATE_OPERATION_FAIL);
+							OperationResult createResult = this.complaintService.insertComplaint(userComplaint);
+							if (OperationResult.isResultSucces(createResult)) {
+								user.addComplaint(userComplaint);
+								
+								operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+								operationResult.setResultValue(user.getComplaintMap());
+								
+							} else {
+								operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+								operationResult.setResultDesc(AppConstants.CREATE_OPERATION_FAIL);
+							}
 						}
 					} else {
 						operationResult.setResultCode(EnmResultCode.WARNING.getValue());

@@ -49,6 +49,11 @@
 							<span class="hidden-md-up uppercase">Rent out</span>
 						</div>
 					</div>
+					<!--
+					<ui:fragment rendered="#{webApplication.user == null}">
+						<img id="imgLogin" class="hidden-md-up" style="width: 32px; height:32px; border-radius: .4rem;" src="#{webApplication.urlPrefix}/static/images/login.png" />
+					</ui:fragment>
+					 -->
 					<a id="help-button"
 						href="#{webApplication.urlPrefix}/pages/help/help.html"
 						class="nav-top--right--link hidden-sm-down"> <span>Help</span>
@@ -65,7 +70,7 @@
 						<a id="a-login"
 							ng-click="ctrl.openLoginWindow()"
 							href=""
-							class="nav-top--right--link hidden-sm-down m-r-1"> <span>Log in </span>
+							class="nav-top--right--link m-r-1"> <span>Log in </span>
 						</a>
 					</ui:fragment>
 					<ui:fragment
