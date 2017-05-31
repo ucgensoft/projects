@@ -5,7 +5,7 @@
 	xmlns:h="http://java.sun.com/jsf/html">
 	<i class="fa fa-close closeModal hidden-sm-up" onclick="closeModal()"></i>
 	
-	<form>
+	<form action="/" method="GET" onsubmit="alert('here')">
 		<div class="loginSignupTabs">
 			<a id="tab-login" class="active disabled"
 				href=""
@@ -33,13 +33,13 @@
 
 		<div class="form-group">
 			<label class="sr-only" for="email">E-mail address</label> 
-			 <input type="email" id="txtEmail" class="form-control"
+			 <input type="email" id="txtEmail" class="form-control loginFormInput"
 			 	placeholder='E-mail address' required="required" />
 		</div>
 
 		<div class="form-group" kemal="test">
 			<label class="sr-only" for="password">Password</label>
-			<input type="password" class="form-control"  id="txtPassword" 
+			<input type="password" class="form-control loginFormInput"  id="txtPassword" 
 				placeholder='Password' required="required" />
 			<p class="text-right small">
 				<a href="#" data-event="Clicked Forgot password"

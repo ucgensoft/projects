@@ -37,26 +37,26 @@
 			value="#{webApplication.urlPrefix}"> </input>
 		<div class="form-group">
 			<label class="sr-only" for="name">First name *</label> 
-			<input id="txtFirstName" class="form-control" type="text"
+			<input id="txtFirstName" class="form-control signupFormInput" type="text"
 				placeholder='First name' autocomplete="given-first-name"/>
 		</div>
 	
 		<div class="form-group">
 			<label class="sr-only">Last name *</label> 
-			<input id="txtLastName" class="form-control" type="text"
+			<input id="txtLastName" class="form-control signupFormInput" type="text"
 				placeholder='Last name' autocomplete="given-last-name" required="required" />
 		</div>
 	
 		<div class="form-group">
 			<label class="sr-only" for="email">E-mail address *</label> 
-			<input id="txtEmail" class="form-control" type="email"
+			<input id="txtEmail" class="form-control signupFormInput" type="email"
 				placeholder='E-mail address' required="required" autocomplete="email" />
 			<div class="help-block">Please enter your e-mail address.</div>
 		</div>
 	
 		<div class="form-group">
 			<label class="sr-only" for="password">Choose a password *</label> 
-			<input id="txtPassword" class="form-control" type="password" 
+			<input id="txtPassword" class="form-control signupFormInput" type="password" 
 				placeholder='Choose a password' required="required">
 			</input>
 			<div class="help-block">Please pick a secure password, of at least #{webApplication.getParameterValue("MIN_USER_PASSWORD_LENGTH")} characters.</div>

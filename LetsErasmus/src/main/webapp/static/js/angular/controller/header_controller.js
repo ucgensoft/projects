@@ -106,6 +106,11 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
     		  if (callBack) {
     			  callBack();
     		  }
+    		  $('.signupFormInput').keypress(function(e) {
+  			    if(e.which == 13) {
+  			    	self.signupWithLocalAccount();
+  			    }
+  			});
     		  openModal();
     	  });
     	  /*
@@ -123,6 +128,11 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
     	  if (auth2 != null) {
     		  ajaxHtml(webApplicationUrlPrefix + '/pages/Login.html', 'divModalContent', function() {
         		  self.attachGoogleSignin('linkGoogleSignin', self.signup);
+        		  $('.loginFormInput').keypress(function(e) {
+        			    if(e.which == 13) {
+        			    	self.loginWithLocalAccount();
+        			    }
+        			});
         		  openModal();  
         	  });
     	  } else {
