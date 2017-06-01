@@ -28,6 +28,10 @@
 				.filter-element-4 {
 					width: 100%;
 				}
+				
+				h2 {
+					font-size:20px;
+				}
 			}
 			
 		</style>
@@ -41,11 +45,10 @@
 				class="page-container page-container-responsive space-top-4 space-8">
 				<div class="row">
 					<div class="col-lg-3 col-md-4">
-						<div id="user" class="space-4 ">
+						<div id="user" class="row hide-md space-4 ">
 							<div>
 								<div class="space-2" id="user-media-container">
 									<div id="slideshow" class="slideshow" style="text-align: center;">
-										<div class="slideshow-preload"></div>
 										<ul class="slideshow-images" style="padding-left: 0px;">
 											<li class="active media-photo media-photo-block">
 												<img id="imgProfileImage" 
@@ -59,68 +62,25 @@
 								</div>
 							</div>
 						</div>
-	
-						<div class="panel space-4">
-							<div class="panel-header">Verified info</div>
+						
+						<div class="panel hidden-md-up">
 							<div class="panel-body">
-								<ul class="list-unstyled space-3">
-									<li class="row row-table space-2">
-										<div class="col-12 col-middle clsInline">Email address</div>
-										<div class="col-3 col-middle clsInline">
-											<i class="icon {{ctrl.user.emailVerified == 'Y' ? 'icon-ok' : 'icon-remove'}} h3"></i>
-										</div>
-									</li>
-									<li class="row row-table space-2">
-										<div class="col-12 col-middle clsInline">Phone number</div>
-										<div class="col-3 col-middle clsInline">
-											<i class="icon {{ctrl.user.msisdnVerified == 'Y' ? 'icon-ok' : 'icon-remove'}} h3"></i>
-										</div>
-									</li>
-								</ul>
-							</div>
-						</div>
-	
-						<div class="panel space-4">
-							<div class="panel-header">Connected accounts</div>
-							<div class="panel-body">
-								<ul class="list-unstyled space-3">
-									<li class="row row-table space-2">
-										<div class="col-12 col-middle clsInline">Facebook</div>
-										<div class="col-3 col-middle clsInline">
-											<i class="icon {{ctrl.user.facebookId != null ? 'icon-ok' : 'icon-remove'}} h3"></i>
-										</div>
-									</li>
-									<li class="row row-table space-2">
-										<div class="col-12 col-middle clsInline">Google</div>
-										<div class="col-3 col-middle clsInline">
-											<i class="icon {{ctrl.user.googleId != null ? 'icon-ok' : 'icon-remove'}} h3"></i>
-										</div>
-									</li>
-								</ul>
-	
-							</div>
-						</div>
-	
-						<div class="panel space-4">
-							<div class="panel-header">About me</div>
-							<div class="panel-body">
-								<dl>
-									<dt>School</dt>
-									<dd>{{ctrl.user.schoolName}}</dd>
-								</dl>
-							</div>
-						</div>
-					</div>
-	
-					<div class="col-lg-9 col-md-8 col-sm-12">
-						<div class="row space-4">
-							<div class="col-sm-8 col-md-12 col-lg-12">
-								<h1>Hey, I’m {{ctrl.user.firstName}}!</h1>
+								<h3>Hey, I’m {{ctrl.user.firstName}}!</h3>
 								<div class="h5 space-top-2">
 									<span class="text-normal">{{ctrl.user.residenceLocationName}} {{ctrl.user.residenceLocationName ? '.' : ''}} 
 										Joined in {{ctrl.user.createdDate | date:'MMMM dd, yyyy'}}</span>
 								</div>
-								<div class="text-muted space-top-2">
+								<div class="text-center text-wrap space-top-2" id="verified-id-icon"
+									ng-if="ctrl.isUserVerified()">
+									<img alt="Verified"
+										src="#{webApplication.urlPrefix}/static/images/verified.png"
+										width="32" height="32" /> 
+									<br class="show-sm" />
+									<div class="va-middle show-inline-block">
+										<span class="badge-pill-label">Verified</span>
+									</div>
+								</div>
+							<div class="text-muted space-top-2">
 									<div data-hypernova-key="user_flag_controlbundlejs">
 										<div>
 											<div class="flag-widget  {{ctrl.isUserComplainted() || ctrl.userId == loginUserId ? 'hidden-force' : ''}}">
@@ -141,41 +101,152 @@
 								</div>
 							</div>
 						</div>
+	
+						<div class="panel space-4">
+							<div class="panel-header">Verified info</div>
+							<div class="panel-body">
+								<ul class="list-unstyled space-3">
+									<li class="row row-table space-2">
+										<div class="col-12 col-middle clsInline">Email address</div>
+										<div class="col-3 col-middle clsInline">
+											<img alt="Not Verified" title="Not Verified" 
+													ng-show="ctrl.user.emailVerified == 'Y'"
+													src="#{webApplication.urlPrefix}/static/images/success.png"
+													class="cls-img-20 right" />
+											<img alt="Verified" title="Verified" 
+													ng-show="ctrl.user.emailVerified != 'Y'"
+													src="#{webApplication.urlPrefix}/static/images/delete.png"
+													class="cls-img-20 right"/>
+										</div>
+									</li>
+									<li class="row row-table space-2">
+										<div class="col-12 col-middle clsInline">Phone number</div>
+										<div class="col-3 col-middle clsInline">
+											<img alt="Not Verified" title="Not Verified" 
+													ng-show="ctrl.user.msisdnVerified == 'Y'"
+													src="#{webApplication.urlPrefix}/static/images/success.png"
+													class="cls-img-20 right"/>
+											<img alt="Verified" title="Verified" 
+													ng-show="ctrl.user.msisdnVerified != 'Y'"
+													src="#{webApplication.urlPrefix}/static/images/delete.png"
+													class="cls-img-20 right"/>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+	
+						<div class="panel space-4">
+							<div class="panel-header">Connected accounts</div>
+							<div class="panel-body">
+								<ul class="list-unstyled space-3">
+									<li class="row row-table space-2">
+										<div class="col-12 col-middle clsInline">Facebook</div>
+										<div class="col-3 col-middle clsInline">
+											<img alt="Connected" title="Verified" 
+													ng-show="ctrl.user.facebookId == null"
+													src="#{webApplication.urlPrefix}/static/images/success.png"
+													class="cls-img-20 right"/>
+											<img alt="Not Connected" title="Not Connected" 
+													ng-show="ctrl.user.facebookId != null"
+													src="#{webApplication.urlPrefix}/static/images/delete.png"
+													class="cls-img-20 right"/>
+										</div>
+									</li>
+									<li class="row row-table space-2">
+										<div class="col-12 col-middle clsInline">Google</div>
+										<div class="col-3 col-middle clsInline">
+											<img alt="Not Connected" title="Not Connected" 
+													ng-show="ctrl.user.googleId != null"
+													src="#{webApplication.urlPrefix}/static/images/delete.png"
+													class="cls-img-20 right"/>
+											<img alt="Connected" title="Connected" 
+													ng-show="ctrl.user.googleId == null"
+													src="#{webApplication.urlPrefix}/static/images/success.png"
+													class="cls-img-20 right"/>
+										</div>
+									</li>
+								</ul>
+	
+							</div>
+						</div>
+	
+						<div class="panel space-4">
+							<div class="panel-header">About me</div>
+							<div class="panel-body">
+								<dl>
+									<dt>School</dt>
+									<dd>{{ctrl.user.schoolName}}</dd>
+								</dl>
+							</div>
+						</div>
+					</div>
+	
+					<div class="col-lg-9 col-md-8 col-sm-12">
+						<div class="row space-4 clsWideScreen">
+							<div class="col-sm-8 col-md-12 col-lg-12">
+								<h2>Hey, I’m {{ctrl.user.firstName}}!</h2>
+								<div class="h5 space-top-2">
+									<span class="text-normal">{{ctrl.user.residenceLocationName}} {{ctrl.user.residenceLocationName ? '.' : ''}} 
+										Joined in {{ctrl.user.createdDate | date:'MMMM dd, yyyy'}}</span>
+								</div>
+								<div class="text-muted space-top-2">
+									<div>
+										<div>
+											<div class="flag-widget  {{ctrl.isUserComplainted() || ctrl.userId == loginUserId ? 'hidden-force' : ''}}">
+												<a href="#" class="link-reset" title="Report this user"
+													ng-click="ctrl.openComplaintWindow()">
+													<i class="icon icon-flag h4"></i>
+													<span>Report this user</span>
+												</a>
+											</div>
+											<div class="flag-widget  {{ctrl.isUserComplainted() ? '' : 'hidden-force'}}">
+												<i class="icon icon-flag h4"></i>
+												<span class="clsRed">You have reported this user</span>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="edit_profile_container space-3 {{ctrl.isActiveUser() ? '' : 'hidden-force'}}">
+									<a href="#{webApplication.urlPrefix}/pages/dashboard/EditUser.html">Edit Profile</a>
+								</div>
+							</div>
+						</div>
 						<div class="space-top-2">
 							<p></p>
 						</div>
 	
-						<div data-hypernova-key="user_profile_badgesbundlejs">
-							<div class="space-6 space-top-2" data-reactroot=""
-								data-reactid="1" data-react-checksum="-360670237">
-								<div class="badge-container space-top-4" data-reactid="2">
+						<div>
+							<div class="space-6 space-top-2">
+								<div class="badge-container space-top-4">
 									<a class="link-reset" target="_blank"
 										rel="noopener noreferrer nofollow"
-										href="#reviews" data-reactid="3"><div
-											class="text-center text-wrap" data-reactid="4">
-											<div class="badge-pill h3" data-reactid="5">
-												<span class="badge-pill-count" data-reactid="6">{{ctrl.reviewCount}}</span>
+										href="#reviews">
+										<div class="text-center text-wrap">
+											<div class="badge-pill h3">
+												<span class="badge-pill-count">{{ctrl.reviewCount}}</span>
 											</div>
-											<br class="show-sm"/><div
-													class="va-middle show-inline-block" data-reactid="8">
-													<span class="badge-pill-label" data-reactid="9">Review</span>
-												</div>
-										</div></a>
+											<br class="show-sm"/>
+											<div class="va-middle show-inline-block">
+												<span class="badge-pill-label">Review</span>
+											</div>
+										</div>
+									</a>
 								</div>
-								<div class="badge-container space-top-4" data-reactid="10">
-									<div data-reactid="11">
+								<div class="badge-container space-top-4 clsWideScreen">
+									<div>
 										<a class="link-reset" target="_blank"
-											rel="noopener noreferrer nofollow" data-reactid="12"><div
-												class="text-center text-wrap" id="verified-id-icon"
-												data-reactid="13">
+											rel="noopener noreferrer nofollow">
+											<div class="text-center text-wrap" id="verified-id-icon">
 												<img alt="Verified"
 													src="#{webApplication.urlPrefix}/static/images/verified.png"
-													width="32" height="32" data-reactid="14" /><br
-													class="show-sm" />
-													<div class="va-middle show-inline-block" data-reactid="16">
-															<span class="badge-pill-label" data-reactid="17">Verified</span>
-														</div>
-											</div></a>
+													width="32" height="32" />
+												<br class="show-sm" />
+												<div class="va-middle show-inline-block">
+													<span class="badge-pill-label">Verified</span>
+												</div>
+											</div>
+										</a>
 									</div>
 								</div>
 							</div>
@@ -207,7 +278,7 @@
 														<span class="show-sm"> 
 															<span class="text-muted date">{{r.createdDate | date:'MMMM dd, yyyy'}}</span>
 															<span class="sm-review-date-divider">·</span>
-															<span class="review-flag" data-sm-review-flag-id="76962436"></span>
+															<span class="review-flag"></span>
 														</span>
 													</div>
 												</div>
@@ -221,8 +292,8 @@
 														</div>
 														<span class="text-muted date hide-sm pull-left"> 
 															<span>{{r.createdDate | date:'MMMM dd, yyyy'}} &nbsp;·&nbsp; </span>
-															<span class="review-flag" data-review-flag-id="76962436">
-																<button data-reactroot="" class="btn-link btn-link--icon" type="button">
+															<span class="review-flag">
+																<button class="btn-link btn-link--icon" type="button">
 																	<span><i class="icon icon-flag"></i>
 																	</span>
 																</button>
@@ -246,9 +317,6 @@
 					</div>
 				</div>
 			</div>
-	
-			<div id="staged-photos"></div>
-
 		</main>
 		<script src="#{webApplication.urlPrefix}/static/js/angular/service/place_service.js?ver=#{webApplication.staticFileVersion}"></script>
 		<script src="#{webApplication.urlPrefix}/static/js/angular/service/review_service.js?ver=#{webApplication.staticFileVersion}"></script>

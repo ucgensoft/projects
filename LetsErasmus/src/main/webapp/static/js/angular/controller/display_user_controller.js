@@ -77,6 +77,15 @@ App.controller('displayUserCtrl', ['$scope', '$controller', 'placeService', 'rev
     		return false;
     	}
      };
+     
+     self.isUserVerified = function() {
+    	 if (self.user != null && self.user.msisdnVerified == 'Y' 
+    		 && self.user.emailVerified == 'Y') {
+    		 return true;
+    	 } else {
+    		 return false;
+    	 }
+     };
   	
     self.initialize();
       

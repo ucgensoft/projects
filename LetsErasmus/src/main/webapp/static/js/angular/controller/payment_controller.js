@@ -10,7 +10,11 @@ App.controller('paymentCtrl', ['$scope', 'reservationService', 'commonService', 
       var validateListener = null;
         
       self.initialize = function() {
-    	  
+    	  window.onbeforeunload = function(){
+    		  if (step != null && step > 1) {
+    			  return confirm('Do you want to leave without save?');
+    		  }
+    		};
     	  operationId = getUriParam(EnmUriParam.OPERATION);
     	  operationToken = getUriParam(EnmUriParam.OPERATION_TOKEN);
     	  

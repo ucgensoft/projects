@@ -109,6 +109,15 @@ body, #mainWrapper {
 	padding : 5px;
 }
 
+.cls-img-20{
+	height:20px;
+	width:20px;
+}
+
+.right {
+	float:right;
+}
+
 /*Mobile classes*/
 @media ( max-width :47.9em) {
 	.clsWideScreen {

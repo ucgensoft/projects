@@ -30,6 +30,12 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
       	  };
            
       self.initialize = function() {
+    	  window.onbeforeunload = function(){
+    		  if (step != null && step > 1) {
+    			  return confirm('Do you want to leave without save?');
+    		  }
+    		};
+    	  
     	  if (loginType != '') {
     		  $("#txtStartDatePicker").datepicker(
 				{

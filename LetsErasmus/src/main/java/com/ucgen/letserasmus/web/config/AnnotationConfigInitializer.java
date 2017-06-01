@@ -4,6 +4,7 @@ import javax.servlet.Filter;
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletRegistration;
 
+import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import com.ucgen.letserasmus.web.filter.SecurityFilter;
@@ -22,7 +23,7 @@ public class AnnotationConfigInitializer extends AbstractAnnotationConfigDispatc
         return new String[] { "/" };
     }
     
-    protected Filter[] getServletFilters() {
+    protected Filter[] getServletFilters() {    	
     	Filter [] singleton = { new SecurityFilter() };
     	return singleton;
 	}
@@ -37,7 +38,7 @@ public class AnnotationConfigInitializer extends AbstractAnnotationConfigDispatc
         return multipartConfigElement;
     }
  
-    //private static final String LOCATION = "D:\\tmp\\upload_file";//"/var/lib/tomcat8/webapps/ROOT/tmp/upload_file"; // Temporary location where files will be stored
+    //private static final String LOCATION = "D:\\tmp\\upload_file";
     
    	private static final String LOCATION = "/var/lib/tomcat8/webapps/ROOT/tmp/upload_file"; // Temporary location where files will be stored
  
