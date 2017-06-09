@@ -23,10 +23,9 @@ public class CharacterEncodingFilter implements Filter {
 
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         request.setCharacterEncoding(encoding);
-
         filterChain.doFilter(servletRequest, servletResponse);
     }
-
+    
     public void destroy() {
         encoding = null;
     }

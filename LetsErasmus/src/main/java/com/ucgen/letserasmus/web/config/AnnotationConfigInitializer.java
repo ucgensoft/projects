@@ -4,13 +4,12 @@ import javax.servlet.Filter;
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletRegistration;
 
-import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import com.ucgen.letserasmus.web.filter.SecurityFilter;
 
 public class AnnotationConfigInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
- 
+
 	protected Class<?>[] getRootConfigClasses() {
         return new Class[] { SpringMVCConfiguration.class };
     }
@@ -20,13 +19,14 @@ public class AnnotationConfigInitializer extends AbstractAnnotationConfigDispatc
     }
   
     protected String[] getServletMappings() {
-        return new String[] { "/" };
+    	return new String[] { "/" };
     }
     
     protected Filter[] getServletFilters() {    	
     	Filter [] singleton = { new SecurityFilter() };
     	return singleton;
 	}
+    
     
     @Override
     protected void customizeRegistration(ServletRegistration.Dynamic registration) {

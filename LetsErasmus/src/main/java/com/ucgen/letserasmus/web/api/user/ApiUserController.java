@@ -485,10 +485,10 @@ public class ApiUserController extends BaseApiController {
 		return operationResult;
     }
 	
-    @RequestMapping(value = "/api/user/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/user/update", method = RequestMethod.POST, produces="application/json; charset=utf-8")
     public ResponseEntity<OperationResult> updateUser(@RequestBody User uiUser, HttpSession session) throws JsonParseException, JsonMappingException, IOException, ParseException {
 		OperationResult operationResult = new OperationResult();
-		try {			
+		try {
 			User sessionUser = super.getSessionUser(session);
 			if (sessionUser != null) {
 				boolean isValid = true;
@@ -525,7 +525,7 @@ public class ApiUserController extends BaseApiController {
 					
 					user = this.userService.getUser(user);
 					user.setProfilePhoto(null);
-					
+										
 					if (uiUser.getFirstName() != null && uiUser.getFirstName().trim().length() > 0) {
 						user.setFirstName(uiUser.getFirstName());
 					}

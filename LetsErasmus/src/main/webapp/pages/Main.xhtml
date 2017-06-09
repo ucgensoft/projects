@@ -42,23 +42,23 @@
 			<div id="homeFirstScreenDiv" class="home-first-screen" style="height: 762.45px;">
 	
 				<div class="flex-grow-1 flex-vertical-middle">
-					<div style="margin: auto; background-color: rgba(0, 0, 0, 0.5); border-radius: 10px;">
+					<div class="mainGreyDiv" style="margin: auto; background-color: rgba(0, 0, 0, 0.5); border-radius: 10px;padding:10px;">
 						<h1 class="landing-h1">Where will you stay next semester ?</h1>
 						<h3 class="landing-h2">Rent your new home from locals online</h3>
 						<div class="staticForm home--search">
 							<div class="formErrors" style="display: none;"></div>
 							<input id="txtSearchPlace" readonly=""
-								class="geo-autocomplete-city home--search--input form-control"
+								class="home--search--input form-control"
 								type="text" name="city" placeholder="Where will you go?"
 								data-event="Selected search field" autocomplete="off" ng-blur="ctrl.validateSearch()" />
 							 
 							<div id="HomeSearchDates" style="margin-left: 4px">
-								<div class="home-search--dates">
+								<div class="home-search--dates" style="max-width: 300px;">
 									<input type="text" id="txtStartDatePicker" class="form-control"
 										placeholder="Start date" value="" readonly="true" /> 
-									<input type="text" id="txtEndDatePicker" class="form-control" 
+									<input type="text" id="txtEndDatePicker" class="form-control"
 										placeholder="End date" value=""
-										readonly="true" style="margin-left: 4px;" />
+										readonly="true" />
 								</div>
 							</div>
 							 

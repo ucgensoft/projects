@@ -425,7 +425,8 @@
 }
 
 .home--search--input {
-	width: auto
+	width: auto;
+	min-width: 120px;
 }
 
 @media ( min-width :48em) {
@@ -434,7 +435,8 @@
 		-webkit-box-flex: 1;
 		-webkit-flex-grow: 1;
 		-ms-flex-positive: 1;
-		flex-grow: 1
+		flex-grow: 1;
+		min-width: 0px;
 	}
 }
 
@@ -806,4 +808,31 @@
 
 .ui-widget-header .ui-state-highlight a {
 	color: #363636
+}
+
+.mainGreyDiv {
+
+}
+
+#txtStartDatePicker, #txtEndDatePicker {
+	width: 50%;
+}
+
+#txtEndDatePicker {
+	width: 50%;
+	margin-left: 4px;
+}
+
+@media ( max-width :33.9em) {
+	.mainGreyDiv {
+		min-height: 0px;
+	}
+	#txtStartDatePicker, #txtEndDatePicker {
+		width: 50%;
+	}
+	
+	#txtEndDatePicker {
+		width: 50%;
+		margin-left: 0px;
+	}
 }

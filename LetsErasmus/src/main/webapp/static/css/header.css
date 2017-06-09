@@ -69,9 +69,10 @@
 
 
 #imgSiteIcon {
-	margin-left: 10px;
+	margin-left: 0px;
+	margin-top: 5px;
 	width: 161px;
-	height: 40px
+	height: 32px
 }
 
 *, :after, :before {
@@ -759,7 +760,7 @@ body.body--has-sidebar .nav-top {
 	-webkit-justify-content: center;
 	-ms-flex-pack: center;
 	justify-content: center;
-	width: 161px;
+	width: auto;
 	height: 100%;
 	background: #283544;
 }
