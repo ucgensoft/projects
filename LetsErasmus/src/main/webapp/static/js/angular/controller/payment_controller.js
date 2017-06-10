@@ -85,7 +85,7 @@ App.controller('paymentCtrl', ['$scope', 'reservationService', 'commonService', 
   			validationTimer = setTimeout(function() {
   				NProgress.done(true);
   	  			DialogUtil.warn( 'Please fill mandatory parameters!');
-  	  		}, 1500);
+  	  		}, 5000);
   		} else {
   			DialogUtil.warn('Please fill mandatory fields.');
   		}

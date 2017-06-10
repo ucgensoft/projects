@@ -67,7 +67,7 @@ App.controller('mainCtrl', ['$scope', '$controller', 'userService', function($sc
 					.datepicker("getDate"));
 		
 		openWindow(webApplicationUrlPrefix + '/pages/SearchResult.html' 
-				+ '?' + EnmUriParam.LOCATION + '=' + selectedPlaceName 
+				+ '?' + EnmUriParam.LOCATION + '=' + encodeURIComponent(selectedPlaceName)
 				+ "&" + EnmUriParam.CHECKIN_DATE + "=" + startDate 
 				+ "&" + EnmUriParam.CHECKOUT_DATE + "=" + endDate
 				+ "&" + EnmUriParam.LOCATION_ID + "=" + selectedLocationId, true);

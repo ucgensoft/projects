@@ -810,29 +810,37 @@
 	color: #363636
 }
 
-.mainGreyDiv {
-
-}
-
-#txtStartDatePicker, #txtEndDatePicker {
-	width: 50%;
-}
-
-#txtEndDatePicker {
-	width: 50%;
-	margin-left: 4px;
-}
-
-@media ( max-width :33.9em) {
-	.mainGreyDiv {
-		min-height: 0px;
+@media ( min-width :700px) {
+	#divDates {
+		max-width: 300px;
 	}
+	
 	#txtStartDatePicker, #txtEndDatePicker {
 		width: 50%;
 	}
 	
 	#txtEndDatePicker {
+		margin-left: 4px;
+	}
+}
+
+@media ( max-width :700px) {
+	.mainGreyDiv {
+		min-height: 0px;
+	}
+	
+	#txtStartDatePicker, #txtEndDatePicker {
 		width: 50%;
 		margin-left: 0px;
+	}
+	
+	#txtStartDatePicker {
+		margin-left: 0px;
+	}
+	#divDates {
+		max-width: 100%;
+	}
+	#HomeSearchDates {
+		width: 100%;
 	}
 }

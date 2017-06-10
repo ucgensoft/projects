@@ -10,11 +10,7 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
       }
       
       self.initialize = function() {
-    	  /*
-    	  if (isMobile()) {
-    		  $('#imgSiteIcon').css('display', 'none');
-    	  }
-    	  */
+    	
     	  if (loginType != '') {
     		  self.listFavorite(
     				  function(favoriteMap) {
@@ -22,12 +18,12 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
 			  		  }
 			  	  );
     	  }
-		  gapi.load('auth2', function() {
+		  gapi.load('client:auth2', function() {
     	      auth2 = gapi.auth2.init({
-    	        client_id: googleId,
-    	        cookiepolicy: 'single_host_origin',
-    	        // Request scopes in addition to 'profile' and 'email'
-    	        //scope: 'additional_scope'
+    	        apiKey: googleApiKey,
+                clientId: googleId,
+                scope: 'profile',
+                immediate: false
     	      });
     	      // some pages use google library in body part.
     	      if (typeof onGoogleLibraryLoaded == 'function') {
@@ -315,45 +311,47 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
   	  
   	self.attachGoogleSignin = function(elementId, callBack) {
   	  var element = $('#' + elementId)[0];
-  	      auth2.attachClickHandler(element, {},
-  	        function(googleUser) {
-  	  	    	gapi.client.load('plus', 'v1', function () {
-  		            var request = gapi.client.plus.people.get({
-  		                'userId': 'me'
-  		            });
-  		            request.execute(function (resp) {
-  		            	var email = resp.emails[0].value;
-  			        	var firstName = resp.name.givenName;
-  			        	var lastName = resp.name.familyName;
-  			        	var gender = null;
-  			        	var googleId = resp.id;
-  			        	var loginType = EnmLoginType.GOOGLE;
-  			        	var profileImageUrl = resp.image.url;
-  			        	
-  			        	if (resp.gender) {
-  			        		if (resp.gender.toUpperCase() == 'MALE') {
-  			        			gender = 'M';
-  			        		} else if (resp.gender.toUpperCase() == 'FEMALE') {
-  			        			gender = 'F';
-  			        		}
-  			        	}
-  			        	
-  			        	var user = {
-  			        			firstName : firstName,
-  			        			lastName : lastName,
-  			        			googleEmail : email,
-  			        			gender : gender,
-  			        			googleId : googleId,
-  			        			profileImageUrl : profileImageUrl,
-  			        			loginType : loginType
-  			        	};
-  			        	callBack(user);
-  		        });
-  	        });
-  	    	  
-  	        }, function(error) {
-  	        	DialogUtil.error(JSON.stringify(error, undefined, 2));
-  	        });
+  	  
+      auth2.attachClickHandler(element, {},
+        function(googleUser) {
+  	    	gapi.client.load('plus', 'v1', function () {
+	            var request = gapi.client.plus.people.get({
+	                'userId': 'me'
+	            });
+	            request.execute(function (resp) {
+	            	var email = resp.emails[0].value;
+		        	var firstName = resp.name.givenName;
+		        	var lastName = resp.name.familyName;
+		        	var gender = null;
+		        	var googleId = resp.id;
+		        	var loginType = EnmLoginType.GOOGLE;
+		        	var profileImageUrl = resp.image.url;
+		        	
+		        	if (resp.gender) {
+		        		if (resp.gender.toUpperCase() == 'MALE') {
+		        			gender = 'M';
+		        		} else if (resp.gender.toUpperCase() == 'FEMALE') {
+		        			gender = 'F';
+		        		}
+		        	}
+		        	
+		        	var user = {
+		        			firstName : firstName,
+		        			lastName : lastName,
+		        			googleEmail : email,
+		        			gender : gender,
+		        			googleId : googleId,
+		        			profileImageUrl : profileImageUrl,
+		        			loginType : loginType
+		        	};
+		        	callBack(user);
+	        });
+        });
+    	  
+        }, function(error) {
+        	DialogUtil.error('Operation could not be completed!');
+        });
+        
   	  };
   	  
   	  self.addFavorite = function(entityType, entityId, callBack) {
