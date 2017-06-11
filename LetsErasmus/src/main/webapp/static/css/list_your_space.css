@@ -2441,9 +2441,11 @@ keyframes 'balloon-pop '{ 0%{
 	}
 }
 
+/* removed for firefox
 .lys-address-form__input {
 	padding: 20px
 }
+*/
 
 .geocomplete .pac-container {
 	-webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.04);

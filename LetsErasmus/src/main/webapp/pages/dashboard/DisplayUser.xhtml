@@ -144,11 +144,11 @@
 										<div class="col-12 col-middle clsInline">Facebook</div>
 										<div class="col-3 col-middle clsInline">
 											<img alt="Connected" title="Verified" 
-													ng-show="ctrl.user.facebookId == null"
+													ng-show="ctrl.user.facebookId != null"
 													src="#{webApplication.urlPrefix}/static/images/success.png"
 													class="cls-img-20 right"/>
 											<img alt="Not Connected" title="Not Connected" 
-													ng-show="ctrl.user.facebookId != null"
+													ng-show="ctrl.user.facebookId == null"
 													src="#{webApplication.urlPrefix}/static/images/delete.png"
 													class="cls-img-20 right"/>
 										</div>
@@ -157,11 +157,11 @@
 										<div class="col-12 col-middle clsInline">Google</div>
 										<div class="col-3 col-middle clsInline">
 											<img alt="Not Connected" title="Not Connected" 
-													ng-show="ctrl.user.googleId != null"
+													ng-show="ctrl.user.googleId == null"
 													src="#{webApplication.urlPrefix}/static/images/delete.png"
 													class="cls-img-20 right"/>
 											<img alt="Connected" title="Connected" 
-													ng-show="ctrl.user.googleId == null"
+													ng-show="ctrl.user.googleId != null"
 													src="#{webApplication.urlPrefix}/static/images/success.png"
 													class="cls-img-20 right"/>
 										</div>
