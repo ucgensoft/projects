@@ -7,7 +7,6 @@
 	<ui:define name="head">
 		<link rel="stylesheet" type="text/css" href="#{webApplication.urlPrefix}/static/css/search_results.css?ver=#{webApplication.staticFileVersion}" />
 		<link rel="stylesheet" type="text/css" href="#{webApplication.urlPrefix}/static/css/app.css?ver=#{webApplication.staticFileVersion}" />
-		
 		<style>
 	        .jssora02l, .jssora02r {
 	            display: block;
@@ -27,44 +26,9 @@
 	        .jssora02r.jssora02rdn { background-position: -63px -33px; }
 	        .jssora02l.jssora02lds { background-position: -3px -33px; opacity: .3; pointer-events: none; }
 	        .jssora02r.jssora02rds { background-position: -63px -33px; opacity: .3; pointer-events: none; }
-	        	        
-	       .filter-element-4 {
-	       		min-width: 180px;
-	       }
-	        	        
-	    	@media ( max-width :60em) {
-	    		.u-select-wrapper, .filter-element-4 {
-	    			display:inline !important;
-	    		}
-	    		
-	    		.full-width {
-	    			width: 100%;
-	    		}
-	    		
-	    		.filter-element-4 {
-	    			margin-top: 4px;
-	    		}
-	    		
-	    		.clsInlineMobile{
-	    			display:inline-block;
-	    		}
-	    		
-	    		.RoomFilters {
-	    			padding-bottom: 10px;
-	    			padding-top: 10px;
-	    		}
-	    		
-	    		.FeaturesFilters {
-	    			padding-bottom: 10px;
-	    			padding-top: 10px;
-	    		}
-	    		
-	    		.clsFilterLabel {
-	    			width: 120px;
-	    		}
-	    	}
-	    
+	       
 	    </style>
+	     
 		<script>
 			var searchResultPageSize = #{webApplication.getParameterValue("PLACE_SEARCH_PAGE_SIZE")};
 			var minMapEdgeLength = #{webApplication.getParameterValue("MAP_MIN_DISPLAY_DISTANCE")}
@@ -80,71 +44,71 @@
 			<div class="SearchApp">
 				<div id="filterResultId" class="FilterResult">
 					<section class="ListFilters">
-					<div class="SearchTitle">
-						<h1>Housing Results in {{ctrl.selectedPlaceName}}</h1>
-					</div>
-					<div class="MainFilter">
-						<p class="MainFilter-title u-filterLabel">Destination</p>
-						<div class="SearchPlaceBox">
-							<div class="SearchPlaceBox-container">
-								<div class="SearchPlaceBoxLabelInside SearchPlaceBox-labelInside">
-									<icon class="icon-location SearchPlaceBox-labelInside-icon"></icon>
-									<div class="SearchPlaceBoxLabelInside-label" title="{{ctrl.selectedPlaceName}}">{{ctrl.selectedPlaceName}}</div>
+						<div class="SearchTitle">
+							<h1>Housing Results in {{ctrl.selectedPlaceName}}</h1>
+						</div>
+						<div class="MainFilter">
+							<p class="MainFilter-title u-filterLabel">Destination</p>
+							<div class="SearchPlaceBox">
+								<div class="SearchPlaceBox-container">
+									<div class="SearchPlaceBoxLabelInside SearchPlaceBox-labelInside">
+										<icon class="icon-location SearchPlaceBox-labelInside-icon"></icon>
+										<div class="SearchPlaceBoxLabelInside-label" title="{{ctrl.selectedPlaceName}}">{{ctrl.selectedPlaceName}}</div>
+									</div>
+									<input id="txtSearchPlace" class="SearchPlaceBox-input" value=""
+										placeholder="Search by university or city"/>
+									<div class="SearchPlaceBox-close CloseButton"
+											style="cursor: pointer;">×</div>
 								</div>
-								<input id="txtSearchPlace" class="SearchPlaceBox-input" value=""
-									placeholder="Search by university or city"/>
-								<div class="SearchPlaceBox-close CloseButton"
-										style="cursor: pointer;">×</div>
 							</div>
-						</div>
-						<div id="searchDateDiv">
-							<div id="startDateDiv" class="DateInput" style="height: 30px;">
-								<input type="text" id="txtStartDatePicker" class="DateInput__input"
-									placeholder="Start date" readonly="true"/> 
-							</div>
-							
-							<div id="endDateDiv" class="DateInput" style="height: 30px;">
-								<input type="text" id="txtEndDatePicker" class="DateInput__input"
-									placeholder="End date" readonly="true"/> 
-							</div>
-						</div>
-						<input type="button" class="FilterToolBar-showExtended u-button" id="btnSearch"
-							value="Search" ng-click="ctrl.search();" style="height: 30px;">
-						</input>
-
-					</div>
-					<div class="AccomodationFilter u-borderTop">
-						<p class="AccomodationFilter-title u-filterLabel"
-							data-reactid="499">Housing Type</p>
-						<div class="AccomodationFilter-element">
-							<div class="IconFilter u-textCenter">
-								<icon id="iconPlaceTypeId_1" class="IconFilter-icon icon-entire-place"
-									ng-click="ctrl.onFilterElementClick($event, 'IconFilter-icon--enabled'); ctrl.basicSearch();"></icon>
-								<p >Entire Place</p>
-							</div>
-							<div class="IconFilter u-textCenter">
-								<icon id="iconPlaceTypeId_2" class="IconFilter-icon icon-private-room"
-									ng-click="ctrl.onFilterElementClick($event, 'IconFilter-icon--enabled'); ctrl.basicSearch();"></icon>
-								<p>Private Room</p>
-							</div>
-							<div class="IconFilter u-textCenter">
-								<icon id="iconPlaceTypeId_3" class="IconFilter-icon icon-shared-room"
-									ng-click="ctrl.onFilterElementClick($event, 'IconFilter-icon--enabled'); ctrl.basicSearch();"></icon>
-								<p>Shared Room</p>
-							</div>
-						</div>
-					</div>
-					<div id="PriceFilterId" class="PriceFilter u-borderTop">
-						<div class="PriceFilter-title u-filterLabel">Budget</div>
-						<div class="PriceFilter-box">
-							<span id="spanMinPrice" class="PriceFilter-minValue">0</span>
-							<div id="divPriceSlider" class="PriceFilter-boxSlider">
+							<div id="searchDateDiv">
+								<div id="startDateDiv" class="DateInput" style="height: 30px;">
+									<input type="text" id="txtStartDatePicker" class="DateInput__input"
+										placeholder="Start date" readonly="true"/> 
+								</div>
 								
+								<div id="endDateDiv" class="DateInput" style="height: 30px;">
+									<input type="text" id="txtEndDatePicker" class="DateInput__input"
+										placeholder="End date" readonly="true"/> 
+								</div>
 							</div>
-							<span id="spanMaxPrice" class="PriceFilter-maxValue">500</span>
+							<input type="button" class="FilterToolBar-showExtended u-button" id="btnSearch"
+								value="Search" ng-click="ctrl.search();" style="height: 30px;">
+							</input>
+	
 						</div>
-					</div>
-					<div id="divExtendedSearchFields" style="width: 100%;" class="hidden-force">
+						<div class="AccomodationFilter u-borderTop">
+							<p class="AccomodationFilter-title u-filterLabel"
+								data-reactid="499">Housing Type</p>
+							<div class="AccomodationFilter-element">
+								<div class="IconFilter u-textCenter">
+									<icon id="iconPlaceTypeId_1" class="IconFilter-icon icon-entire-place"
+										ng-click="ctrl.onFilterElementClick($event, 'IconFilter-icon--enabled'); ctrl.basicSearch();"></icon>
+									<p >Entire Place</p>
+								</div>
+								<div class="IconFilter u-textCenter">
+									<icon id="iconPlaceTypeId_2" class="IconFilter-icon icon-private-room"
+										ng-click="ctrl.onFilterElementClick($event, 'IconFilter-icon--enabled'); ctrl.basicSearch();"></icon>
+									<p>Private Room</p>
+								</div>
+								<div class="IconFilter u-textCenter">
+									<icon id="iconPlaceTypeId_3" class="IconFilter-icon icon-shared-room"
+										ng-click="ctrl.onFilterElementClick($event, 'IconFilter-icon--enabled'); ctrl.basicSearch();"></icon>
+									<p>Shared Room</p>
+								</div>
+							</div>
+						</div>
+						<div id="PriceFilterId" class="PriceFilter u-borderTop">
+							<div class="PriceFilter-title u-filterLabel">Budget</div>
+							<div class="PriceFilter-box">
+								<span id="spanMinPrice" class="PriceFilter-minValue">0</span>
+								<div id="divPriceSlider" class="PriceFilter-boxSlider">
+									
+								</div>
+								<span id="spanMaxPrice" class="PriceFilter-maxValue">500</span>
+							</div>
+						</div>
+						<div id="divExtendedSearchFields" style="width: 100%;" class="hidden-force">
 						<div class="RoomFilters u-borderTop">
 							<p class="RoomFilters-title u-filterLabel">Guest</p>
 							<div class="filter-element-4 full-width">
@@ -336,15 +300,15 @@
 					</div>
 				</div>
 				<section id="searchMapId" class="SearchMap">
-				<div id="mapa" class="mapa" itemscope=""
-					itemtype="http://schema.org/Map" style="position: relative; overflow: hidden;">
-					<div
-						style="height: 100%; width: 100%; position: absolute; background-color: rgb(229, 227, 223);">
-						<div class="gm-style" style="height: 100%; width: 100%;">
-							<div id="divMap" style="height: 100%; width: 100%;"></div>
+					<div id="mapa" class="mapa" itemscope=""
+						itemtype="http://schema.org/Map" style="position: relative; overflow: hidden;">
+						<div
+							style="height: 100%; width: 100%; position: absolute; background-color: rgb(229, 227, 223);">
+							<div class="gm-style" style="height: 100%; width: 100%;">
+								<div id="divMap" style="height: 100%; width: 100%;"></div>
+							</div>
 						</div>
 					</div>
-				</div>
 				</section>
 				<div style="display: none">
 					<div ng-repeat="p in ctrl.placeList" id="divMapMarker_{{p.id}}" style="position: absolute; z-index: 1;">

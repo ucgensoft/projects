@@ -55,13 +55,13 @@ App.controller('placeDetailCtrl', ['$scope', '$controller', 'placeService', 'res
         	  var checkoutDate = getUriParam(EnmUriParam.CHECKOUT_DATE);
         	  
         	  if (checkinDate != null && checkinDate != '') {
-        		  var tmpStartDate = Date.parse(checkinDate);
+        		  var tmpStartDate = DateUtil.toDate(checkinDate);
   				  $("#txtStartDatePicker").datepicker('setDate', tmpStartDate);
   				
   				  $("#txtEndDatePicker").datepicker( "option", "minDate", tmpStartDate.addMonths(1).addDays(-1)); 
   				 
   				 if (checkoutDate != null && checkoutDate!= '') {
-  					 var tmpEndDate = Date.parse(checkoutDate);
+  					 var tmpEndDate = DateUtil.toDate(checkoutDate);
   					 $("#txtEndDatePicker").datepicker('setDate', tmpEndDate);
   				 }
   				 

@@ -633,86 +633,11 @@ p {
 	text-align: center
 }
 
-
-.ConditionsFilters {
-	display: -webkit-box;
-	display: -webkit-flex;
-	box-sizing: border-box;
-	display: -ms-flexbox;
-	display: box;
-	display: flex;
-	-webkit-box-lines: multiple;
-	-moz-box-lines: multiple;
-	-o-box-lines: multiple;
-	-ms-flex-wrap: wrap;
-	flex-wrap: wrap;
-	-webkit-box-orient: vertical;
-	-o-box-orient: vertical;
-	-ms-flex-direction: column;
-	flex-direction: column;
-	font-size: .75rem;
-	padding: 2em 0 2em 1em
-}
-
-@media only screen and (min-width:680px) {
-	.ConditionsFilters {
-		-webkit-box-lines: single;
-		-moz-box-lines: single;
-		-o-box-lines: single;
-		-ms-flex-wrap: nowrap;
-		flex-wrap: nowrap;
-		-webkit-box-orient: horizontal;
-		-o-box-orient: horizontal;
-		-ms-flex-direction: row;
-		flex-direction: row
-	}
-}
-
-
-.ConditionsFilters-title {
-	padding-bottom: 1em;
-	color: #777875;
-	min-width: 9em
-}
-
-.ConditionsFilters-container {
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: box;
-	display: flex;
-	-webkit-box-pack: justify;
-	-o-box-pack: justify;
-	-ms-flex-pack: justify;
-	justify-content: space-between
-}
-
-
-.ConditionsFilters-element {
-	margin-left: 1em;
-	margin-right: 3em
-}
-
-
-.ConditionsFilters-element-title {
-	white-space: nowrap;
-	margin-right: .5em;
-	margin-left: .5em
-}
-
-.ConditionsFilters-element--minimumStay {
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: box;
-	display: flex
-}
-
 .DateInput {
 	font-weight: 200;
 	font-size: 18px;
 	line-height: 24px;
 	color: #757575;
-	margin: 0;
-	padding: 8px;
 	background: #fff;
 	position: relative;
 	display: inline-block;
@@ -720,32 +645,9 @@ p {
 	vertical-align: middle
 }
 
-@media only screen and (max-width:320px) {
-	.DateInput{
-		width: 100%;
-		margin-top: 5px;
-	}
-}
-
-@media only screen and (min-width:321px) and (max-width:768px) {
-	.DateInput{
-		width: 46%;
-	}
-}
-
-
-.CheckInOutDouble .DateInput {
-	font-size: .875rem;
-	padding: 0;
-	min-width: 100px;
-	width: 100%
-}
-
-
 .MainFilter .DateInput {
 	color: #777875
 }
-
 
 .DateInput__input {
 	opacity: 0px;
@@ -767,8 +669,6 @@ p {
 .DateInput__input {
 	cursor: pointer
 }
-
-
 
 .FavouriteItem {
 	position: absolute;
@@ -967,15 +867,6 @@ p {
 	.FilterToolBar--expanded {
 		width: 56vw
 	}
-}
-
-.gm-style-iw {
-	left: 25px !important;
-	top: 25px !important
-}
-
-.hideNav {
-	display: none
 }
 
 .IconFilter {
@@ -2180,61 +2071,6 @@ p {
 	padding-left: .75em
 }
 
-.SelectOptionNumber {
-	box-sizing: border-box;
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: box;
-	display: flex;
-	-webkit-box-lines: multiple;
-	-moz-box-lines: multiple;
-	-o-box-lines: multiple;
-	-ms-flex-wrap: wrap;
-	flex-wrap: wrap;
-	-webkit-box-pack: center;
-	-o-box-pack: center;
-	-ms-flex-pack: center;
-	justify-content: center;
-	text-align: center
-}
-
-.SelectOptionNumber-element {
-	border: 1px solid #b9bbb9;
-	color: #777875;
-	cursor: pointer;
-	padding: 3px;
-	text-decoration: none;
-	width: 2.5em;
-	height: 2.5em
-}
-
-.SelectOptionNumber-element:nth-child(n+2) {
-	border-left: 0 none
-}
-
-@media only screen and (min-width:1000px) {
-	.SelectOptionNumber-element {
-		width: 2em;
-		height: 2em
-	}
-}
-
-.SelectOptionNumber-element:first-child {
-	border-bottom-left-radius: 4px;
-	border-top-left-radius: 4px
-}
-
-.SelectOptionNumber-element:last-child {
-	border-bottom-right-radius: 4px;
-	border-top-right-radius: 4px
-}
-
-.SelectOptionNumber-element--selected {
-	background: #03a9f4;
-	border-color: #03a9f4;
-	color: #fff
-}
-
 .u-borderTop {
 	border-top: 1px solid #b9bbb9
 }
@@ -2295,125 +2131,6 @@ p {
 .u-textCenter {
 	text-align: center
 }
-
-
-.WholeApartmentFilter {
-	display: -webkit-box;
-	display: -webkit-flex;
-	box-sizing: border-box;
-	display: -ms-flexbox;
-	display: box;
-	display: flex;
-	-webkit-box-lines: multiple;
-	-moz-box-lines: multiple;
-	-o-box-lines: multiple;
-	-ms-flex-wrap: wrap;
-	flex-wrap: wrap;
-	-webkit-box-orient: vertical;
-	-o-box-orient: vertical;
-	-ms-flex-direction: column;
-	flex-direction: column;
-	font-size: .75rem;
-	padding: 2em 0 2em 1em
-}
-
-@media only screen and (min-width:680px) {
-	.WholeApartmentFilter {
-		-webkit-box-lines: single;
-		-moz-box-lines: single;
-		-o-box-lines: single;
-		-ms-flex-wrap: nowrap;
-		flex-wrap: nowrap;
-		-webkit-box-orient: horizontal;
-		-o-box-orient: horizontal;
-		-ms-flex-direction: row;
-		flex-direction: row
-	}
-}
-
-.WholeApartmentFilter-title {
-	padding-bottom: 1em;
-	color: #777875;
-	min-width: 9em
-}
-
-.WholeApartmentFilter-container {
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: box;
-	display: flex;
-	-webkit-box-pack: justify;
-	-o-box-pack: justify;
-	-ms-flex-pack: justify;
-	justify-content: space-between
-}
-
-.WholeApartmentFilter-element {
-	margin-left: 1em;
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: box;
-	display: flex;
-	-webkit-box-lines: multiple;
-	-moz-box-lines: multiple;
-	-o-box-lines: multiple;
-	-ms-flex-wrap: wrap;
-	flex-wrap: wrap;
-	margin-bottom: 1em
-}
-
-@media only screen and (min-width:680px) {
-	.WholeApartmentFilter-element {
-		margin-bottom: 0
-	}
-}
-
-.WholeApartmentFilter-element-icon {
-	font-size: 2.5em;
-	color: filterLabelColor;
-	margin-right: .5em
-}
-
-.WholeApartmentFilter-element-title {
-	display: none
-}
-
-@media only screen and (min-width:680px) {
-	.WholeApartmentFilter-element-title {
-		display: inherit;
-		text-align: center;
-		width: 100%;
-		height: 100%
-	}
-}
-
-.WholeApartmentFilter-element--livingRoom {
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: box;
-	display: flex
-}
-
-.WholeApartmentFilter-element--livingRoom icon {
-	-webkit-box-ordinal-group: -1;
-	-o-box-ordinal-group: -1;
-	-ms-flex-order: -1;
-	order: -1
-}
-
-@media only screen and (min-width:table) {
-	.WholeApartmentFilter-element--livingRoom icon {
-		-webkit-box-ordinal-group: 1;
-		-o-box-ordinal-group: 1;
-		-ms-flex-order: 1;
-		order: 1
-	}
-}
-
-.WholeApartmentFilter-element--livingRoom input {
-	margin-right: 1em
-}
-
 
 .Pagination {
 	box-sizing: border-box;
@@ -2509,26 +2226,91 @@ p {
 	content: '\f1a5';
 }
 
-/*Mobile styles*/
-@media ( max-width :47.9em) {
-	#searchDateDiv {
-		height: auto;
-		width: 100%;
-		margin-top:2px;
+#searchDateDiv, #startDateDiv, #endDateDiv, #btnSearch {
+	height: 34px;
+	min-width: 80px;
+}
+
+@media only screen and (max-width:320px) {
+	#searchDateDiv{
+		width: 100%; 		
 	}
-	
-	#btnSearch{
-		margin-top: 10px;
+	#startDateDiv, #endDateDiv, #btnSearch {
+		width: 100%;
+		margin-top: 5px;
+	}
+	#endDateDiv {
+		right: 0px;
 	}
 }
 
-@media ( min-width :47.9em) {
-	#btnSearch{
-		margin-top: 2px; 
-		margin-left: 5p;
+@media only screen and (min-width:321px) and (max-width:700px) {
+	#searchDateDiv{
+		width: 110%; 		
 	}
-	#searchDateDiv {
-		height: 30px;
+	#startDateDiv, #endDateDiv {
+		width: 45%;
+	}
+	#endDateDiv {
+		margin-right: 0px;
+	}
+}
+
+@media only screen and ( max-width :700px) {
+	#btnSearch {
+		width: 100%;
+		margin-top: 5px;
+	}
+	
+	.u-select-wrapper, .filter-element-4 {
+		display:inline !important;
+	}
+	
+	.full-width {
 		width: 100%;
 	}
+	
+	.filter-element-4 {
+		margin-top: 4px;
+	}
+	
+	.clsInlineMobile{
+		display:inline-block;
+	}
+	
+	.RoomFilters {
+		padding-bottom: 10px;
+		padding-top: 10px;
+	}
+	
+	.FeaturesFilters {
+		padding-bottom: 10px;
+		padding-top: 10px;
+	}
+	
+	.clsFilterLabel {
+		width: 120px;
+	}
+}
+
+@media only screen and ( min-width :701px) {
+	#searchDateDiv{
+		width: 35%; 	
+		min-width: 150px;	
+	}
+	#startDateDiv, #endDateDiv {
+		width: 48%;
+		min-width: 70px;
+	}
+	#endDateDiv {
+		margin-left: 2px;
+	}
+	#btnSearch{
+		margin-top: 0px; 
+		margin-left: 5px;
+	}
+}
+
+.filter-element-4 {
+	min-width: 180px;
 }

@@ -147,13 +147,13 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
   			});
 
 			if (self.selectedStartDate != null && self.selectedStartDate != '') {
-				var tmpStartDate = Date.parse(self.selectedStartDate);
+				var tmpStartDate = DateUtil.toDate(self.selectedStartDate);
 				$("#txtStartDatePicker").datepicker('setDate', tmpStartDate);
 				
 				 $("#txtEndDatePicker").datepicker( "option", "minDate", tmpStartDate.addMonths(1).addDays(-1)); 
 				 
 				 if (self.selectedEndDate != null && self.selectedEndDate != '') {
-					 var tmpEndDate = Date.parse(self.selectedEndDate);
+					 var tmpEndDate = DateUtil.toDate(self.selectedEndDate);
 					 $("#txtEndDatePicker").datepicker('setDate', tmpEndDate);
 				 }
 			}
