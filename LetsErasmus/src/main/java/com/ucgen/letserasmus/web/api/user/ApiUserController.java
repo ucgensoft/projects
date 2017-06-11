@@ -867,7 +867,10 @@ public class ApiUserController extends BaseApiController {
 		try {
 			User user = super.getSessionUser(session);
 			if (user != null) {
-				if (user.getEmailVerified().equals(EnmBoolStatus.YES.getId())) {
+				User dbUser = new User(user.getId());
+				dbUser = this.userService.getUser(dbUser);
+				if (dbUser.getEmailVerified().equals(EnmBoolStatus.YES.getId())) {
+					user.setEmailVerified(EnmBoolStatus.YES.getId());
 					operationResult.setResultValue(true);
 				} else {
 					operationResult.setResultValue(false);
@@ -917,7 +920,7 @@ public class ApiUserController extends BaseApiController {
 						operationResult.setResultDesc(AppConstants.VERIFICATION_CODE_FAIL);
 					}
 				} else {
-					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+					operationResult.setResultCode(EnmResultCode.WARNING.getValue());
 					operationResult.setErrorCode(EnmErrorCode.UNDEFINED_ERROR.getId());
 					operationResult.setResultDesc(AppConstants.MSISDN_VERIFICATION_FAIL);
 				}
@@ -1005,7 +1008,7 @@ public class ApiUserController extends BaseApiController {
 				if (user.getGoogleId() != null && user.getGoogleEmail() != null 
 						&& ((user.getEmail() != null && user.getPassword() != null) 
 								|| (user.getFacebookEmail() != null && user.getFacebookId() != null))) {
-					User updatedUser = this.userService.getUser(user);
+					User updatedUser = this.userService.getUser(new User(user.getId()));
 					
 					updatedUser.setGoogleEmail(null);
 					updatedUser.setGoogleId(null);

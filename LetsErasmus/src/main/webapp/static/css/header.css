@@ -2066,6 +2066,12 @@ ul.panel-body>li>*:last-child, ol.panel-body>li>*:last-child {
 	border-style:solid;
 }
 
+
+@media ( max-width : 350px) {
+	#divUserImagePart {
+		display: none;
+	}
+}
 /*Mobile classes*/
 @media ( max-width :47.9em) {
 	

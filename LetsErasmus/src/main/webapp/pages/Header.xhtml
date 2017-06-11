@@ -67,7 +67,7 @@
 							<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId=#{webApplication.user.id}" rel=""
 								class="nav-top--right--link nav-top--right--link__dropdown">
 								<div class="nav-top--username">#{webApplication.user.firstName}</div>
-								<div style="margin-left: 15px;" class="nav-top--avatar" title="Go to your dashboard">
+								<div id="divUserImagePart" style="margin-left: 15px;" class="nav-top--avatar" title="Go to your dashboard">
 									<input id="hiddenActiveUserProfileImageUrl" type="hidden" 
 										value="#{webApplication.getUserPhotoUrl(webApplication.user.id, webApplication.user.profilePhotoId, 'small')}" />
 									<div id="divHeaderUserProfileImage" class="avatar--img"

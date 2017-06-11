@@ -268,7 +268,13 @@ button:active {
 			var firstName = document.getElementById('txtCardHolderFirstName').value;
 			var lastName = document.getElementById('txtCardHolderLastName').value;
 			var zipCode = document.getElementById('txtZipCode').value;
-			return true;
+			if (firstName && firstName.length > 0
+					&& lastName && lastName.length > 0
+					&& zipCode && zipCode.length > 0) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 		
 		function initializeForm(firstName, lastName) {

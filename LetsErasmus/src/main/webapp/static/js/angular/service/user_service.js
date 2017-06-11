@@ -39,7 +39,8 @@ App.factory('userService', ['$http', '$q', function($http, $q){
 						
 						var config = {
 							headers : {
-								'Accept' : 'application/json'
+								'Accept' : 'application/json',
+								'Accept-Charset': 'UTF-8'
 							}
 						};
 						
@@ -101,7 +102,7 @@ App.factory('userService', ['$http', '$q', function($http, $q){
 				}
 			};
 			NProgress.start(3000, 5);
-			self = this;
+			var self = this;
 			return $http.post(webApplicationUrlPrefix + '/api/user/login', user, config).then(function(response) {
 				NProgress.done(true);
 				

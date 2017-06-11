@@ -145,7 +145,6 @@
 				<script src="https://apis.google.com/js/client.js" />
 				
 				<script>
-					$('#divBody').removeClass('hidden-force');
 					//showMessage("error", "title", "message");
 					var modal = document.getElementById('divModal');
 					if(document.getElementById('divModalContent').children.length == 0) {
@@ -168,7 +167,7 @@
 					}
 					
 					$(document).ready(function(){
-						
+						$('#divBody').removeClass('hidden-force');
 						onPageLoadHeader()
 						
 						$('a[href^="#"]').click(function(e) {
