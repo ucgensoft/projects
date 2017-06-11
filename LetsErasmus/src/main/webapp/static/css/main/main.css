@@ -709,7 +709,7 @@
 	background-position: center -460px;
 }
 
-@media ( min-width : 744px) and (max-width: 1127px) {
+@media (min-width : 744px) and (max-width : 1127px) {
 	.how-it-works__image {
 		height: 180px;
 	}
@@ -721,11 +721,51 @@
 	}
 }
 
+
+@media (min-width : 320px) and (max-width : 374px) {
+	.how-it-works__image {
+		    height: 350px;
+	}
+	.how-it-works__step-two .how-it-works__image {
+		background-position-y: -650px;
+	}
+	.how-it-works__step-three .how-it-works__image {
+		background-position-y: -350px;
+	}
+}
+
+@media (min-width : 375px) and (max-width : 413px) {
+	.how-it-works__image {
+		    height: 350px;
+	}
+	.how-it-works__step-two .how-it-works__image {
+		background-position-y: -710px;
+	}
+	.how-it-works__step-three .how-it-works__image {
+		background-position-y: -400px;
+	}
+}
+
+@media (min-width : 414px) and (max-width : 743px) {
+	.how-it-works__image {
+		    height: 400px;
+	}
+	.how-it-works__step-two .how-it-works__image {
+		background-position-y: -800px;
+	}
+	.how-it-works__step-three .how-it-works__image {
+		background-position-y: -450px;
+	}
+}
+
+
+
 @media ( max-width : 743px) {
 	.how-it-works__image {
 		min-width: 283px;
 	}
 }
+
 
 .panel-body-how {
 	position: relative;
