@@ -11,15 +11,18 @@
 		<style>
 		
 			#imgProfileImage {
-				width: 100%;
-				height: 100%;
+				width: auto;
+				height: 225px;
 			}		
 			/*Mobile classes*/
 			@media ( max-width :47.9em) {
+				
+				/* removed for proper profile pic
 				#imgProfileImage {
-					max-width: 100%;
-					max-height: 100%;
+					max-width: 225px;
+					max-height: 225px;
 				}
+				*/
 				
 				.clsInline {
 					display: inline !important;
@@ -47,9 +50,9 @@
 					<div class="col-lg-3 col-md-4">
 						<div id="user" class="panel space-4">
 							<div>
-								<div class="space-2" id="user-media-container">
+								<div class="space-2" id="user-media-container" style="margin-bottom: 0px">
 									<div id="slideshow" class="slideshow" style="text-align: center;">
-										<ul class="slideshow-images" style="padding-left: 0px;">
+										<ul class="slideshow-images" style="padding-left: 0px; margin-bottom: 0px;">
 											<li class="active media-photo media-photo-block">
 												<img id="imgProfileImage" 
 													alt="{{ctrl.user.firstName}}" 
