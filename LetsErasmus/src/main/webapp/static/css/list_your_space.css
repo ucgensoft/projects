@@ -5790,7 +5790,7 @@ h3.no-margin-padding {
 
 @media ( max-width : 743px) {
 	.btn-progress-back {
-		border-top: solid 1px #bbb;
+		border: solid 1px #bbb;
 		text-align: center;
 		height: 66px;
 		padding-right: 0

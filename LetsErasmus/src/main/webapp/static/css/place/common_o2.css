@@ -5003,7 +5003,6 @@ input[type="checkbox"]:checked:before {
 	display: inline-block;
 	vertical-align: bottom;
 	overflow: hidden;
-	background-color: #bbb
 }
 
 .media-photo-block {
