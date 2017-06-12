@@ -168,9 +168,6 @@ App.factory('placeService', ['$http', '$q', function($http, $q) {
 	    						);
     						} else {
     							NProgress.done(true, true);
-    							if (callBack) {
-									callBack(false);
-								}
     						}
     					}, function(errResponse) {
     						NProgress.done(true, true);
