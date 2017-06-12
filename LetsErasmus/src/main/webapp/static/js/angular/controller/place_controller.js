@@ -443,6 +443,8 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
 	  self.validate = function(step) {
 		  var isValid = true;
 		  
+		  var operationResult = newOperationResult(null, null, null);
+		  
 		  if (step == null || step == 1) {
     		  if ($("#rdPlaceTypeEntirePlace")[0].checked == false 
         			  && $("#rdPlaceTypePrivateRoom")[0].checked == false
@@ -500,7 +502,11 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
 		  
 		  if (step == null || step == 6) {
     		  if (self.photoList.length == 0) {
+    			  operationResult[OperationResult.resultDesc] = 'Please upload photo of your place. Minimum 1 photo is mandatory.';
     			  isValid = false;
+    		  } else if (self.photoList.length > maxPhotoCount) {
+    			  operationResult[OperationResult.resultDesc] = 'Maximum photo number for a place definition is: ' + maxPhotoCount;
+    			  isValid = false;  
     		  }
     	  } 
 		  
@@ -524,14 +530,18 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     			  isValid = false;
     		  }
     	  }
-		  
-		  return isValid;
+		  if (isValid) {
+			  operationResult[OperationResult.resultCode] = EnmOperationResultCode.SUCCESS;
+		  } else {
+			  operationResult[OperationResult.resultCode] = EnmOperationResultCode.WARNING;
+		  }
+		  return operationResult;
 	  };
       
       self.next = function(step) {
-    	  var isValid = self.validate(step);
+    	  var operationResult = self.validate(step);
     	  
-    	  if (isValid) {
+    	  if (operationResult[OperationResult.resultCode] == EnmOperationResultCode.SUCCESS) {
     		  $('#divProgress' + step).addClass('progress-section--completed');
     		  
     		  if (step == 9) {
@@ -554,7 +564,11 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
             	  }
     		  }
     	  } else {
-    		  DialogUtil.warn( "Please fill required fields!");
+    		  if (operationResult[OperationResult.resultDesc] != null) {
+    			  DialogUtil.warn(operationResult[OperationResult.resultDesc]);
+    		  } else {
+    			  DialogUtil.warn('Please fill required fields!');
+    		  }
     		  return false;
     	  }  
       };
@@ -711,9 +725,11 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     	  } else {
     		  placeService.updatePlace(newPlace, self.photoList,
   					function(isSuccess) {
-	    			  DialogUtil.success( 'Congratulations! Your place is updated successfully!', function() {
-							document.location.href = webApplicationUrlPrefix + '/pages/dashboard/Listings.html';
-						});
+    			  		if (isSuccess) {
+    			  			DialogUtil.success( 'Congratulations! Your place is updated successfully!', function() {
+    							document.location.href = webApplicationUrlPrefix + '/pages/dashboard/Listings.html';
+    						});
+    			  		}
   					}
     		  );
     	  }    	  

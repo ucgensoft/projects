@@ -539,39 +539,45 @@ public class ApiPlaceController extends BaseApiController {
 				if (this.webApplication.isUserVerified(sessionUser)) {
 					Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
 					if (activeOperation != null && (activeOperation.equals(EnmOperation.CREATE_PLACE) || activeOperation.equals(EnmOperation.EDIT_PLACE))) {
-						String placeId = null;
-						if (activeOperation.equals(EnmOperation.CREATE_PLACE)) {
-							placeId = "tmp_" + Double.valueOf((Math.random() * 100000000)).longValue();
-							session.removeAttribute(EnmSession.TMP_PHOTO_PLACE_ID.getId());
-							session.setAttribute(EnmSession.TMP_PHOTO_PLACE_ID.getId(), placeId);
-						} else {
-							Place place = (Place) session.getAttribute(EnmSession.ACTIVE_PLACE.getId());
-							placeId = place.getId().toString();
-						}
-						
-						String rootPhotoFolder = this.webApplication.getRootPlacePhotoPath();
-						
-						String placeTmpPhotoFolderPath = FileUtil.concatPath(rootPhotoFolder, placeId.toString(), "tmp");
-						File placeTmpPhotoFolder = new File(placeTmpPhotoFolderPath);
-						if (placeTmpPhotoFolder.exists()) {
-							FileUtils.cleanDirectory(placeTmpPhotoFolder);
-						} else {
-							placeTmpPhotoFolder.mkdirs();	
-						}
-						for (int i = 0; i < fileArr.length; i++) {
-							MultipartFile multipartFile = fileArr[i];
-							String fileName = multipartFile.getOriginalFilename();
-							if (!fileName.toUpperCase().startsWith("DUMMY_")) {
-								String tmpPhotoPath = FileUtil.concatPath(placeTmpPhotoFolderPath, fileName);
-								File tmpFile = new File(tmpPhotoPath);
-								multipartFile.transferTo(tmpFile);
+						Integer paramMaxPhoto = Integer.valueOf(this.parameterService.getParameterValue(EnmParameter.MAX_PLACE_PHOTO_COUNT.getId()).toString());
+						if (fileArr != null && fileArr.length <= paramMaxPhoto) {
+							String placeId = null;
+							if (activeOperation.equals(EnmOperation.CREATE_PLACE)) {
+								placeId = "tmp_" + Double.valueOf((Math.random() * 100000000)).longValue();
+								session.removeAttribute(EnmSession.TMP_PHOTO_PLACE_ID.getId());
+								session.setAttribute(EnmSession.TMP_PHOTO_PLACE_ID.getId(), placeId);
+							} else {
+								Place place = (Place) session.getAttribute(EnmSession.ACTIVE_PLACE.getId());
+								placeId = place.getId().toString();
 							}
+							
+							String rootPhotoFolder = this.webApplication.getRootPlacePhotoPath();
+							
+							String placeTmpPhotoFolderPath = FileUtil.concatPath(rootPhotoFolder, placeId.toString(), "tmp");
+							File placeTmpPhotoFolder = new File(placeTmpPhotoFolderPath);
+							if (placeTmpPhotoFolder.exists()) {
+								FileUtils.cleanDirectory(placeTmpPhotoFolder);
+							} else {
+								placeTmpPhotoFolder.mkdirs();	
+							}
+							for (int i = 0; i < fileArr.length; i++) {
+								MultipartFile multipartFile = fileArr[i];
+								String fileName = multipartFile.getOriginalFilename();
+								if (!fileName.toUpperCase().startsWith("DUMMY_")) {
+									String tmpPhotoPath = FileUtil.concatPath(placeTmpPhotoFolderPath, fileName);
+									File tmpFile = new File(tmpPhotoPath);
+									multipartFile.transferTo(tmpFile);
+								}
+							}
+							
+							session.removeAttribute(EnmSession.PLACE_PHOTO_LIST.getId());
+							session.setAttribute(EnmSession.PLACE_PHOTO_LIST.getId(), fileArr);
+							
+							operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+						} else {
+							operationResult.setResultCode(EnmResultCode.WARNING.getValue());
+							operationResult.setResultDesc("Max photo count in a place definition is: " + paramMaxPhoto);
 						}
-						
-						session.removeAttribute(EnmSession.PLACE_PHOTO_LIST.getId());
-						session.setAttribute(EnmSession.PLACE_PHOTO_LIST.getId(), fileArr);
-						
-						operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 					} else {
 						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 						operationResult.setResultDesc("You are not authorized for this operation!");

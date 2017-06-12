@@ -17,6 +17,7 @@ import com.ucgen.letserasmus.library.common.enumeration.EnmBoolStatus;
 import com.ucgen.letserasmus.library.common.enumeration.EnmSize;
 import com.ucgen.letserasmus.library.log.enumeration.EnmOperation;
 import com.ucgen.letserasmus.library.parameter.enumeration.EnmParameter;
+import com.ucgen.letserasmus.library.parameter.model.Parameters;
 import com.ucgen.letserasmus.library.parameter.service.IParameterService;
 import com.ucgen.letserasmus.library.user.model.User;
 import com.ucgen.letserasmus.web.view.BaseController;
@@ -24,6 +25,8 @@ import com.ucgen.letserasmus.web.view.BaseController;
 @Service
 @Scope("singleton")
 public class WebApplication extends BaseController {
+	
+	private Parameters parameters;
 	
 	private MailUtil mailUtil;
 	
@@ -77,6 +80,11 @@ public class WebApplication extends BaseController {
 	@PostConstruct
 	public void initialize() {
 		try {
+			parameters = new Parameters();
+			
+			String paramMaxPlacePhotoCount = this.parameterService.getParameterValue(EnmParameter.MAX_PLACE_PHOTO_COUNT.getId());
+			parameters.setMaxPlacePhotoCount(Integer.valueOf(paramMaxPlacePhotoCount));
+			
 			localAppPath = this.parameterService.getParameterValue(EnmParameter.LOCAL_APP_ROOT_PATH.getId());
 			
 			facebookAppId = this.parameterService.getParameterValue(EnmParameter.FACEBOOK_APP_ID.getId());
@@ -416,6 +424,10 @@ public class WebApplication extends BaseController {
 		return (user != null 
 				&& user.getEmailVerified() != null && user.getEmailVerified().equals(EnmBoolStatus.YES.getId())
 				&& user.getMsisdnVerified() != null && user.getMsisdnVerified().equals(EnmBoolStatus.YES.getId()));
+	}
+
+	public Parameters getParameters() {
+		return parameters;
 	}
 	
 }
