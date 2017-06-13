@@ -116,9 +116,9 @@ public class ApiPlaceController extends BaseApiController {
 					}
 					
 					if (isValid) {
-						MultipartFile[] photoList = (MultipartFile[]) session.getAttribute(EnmSession.PLACE_PHOTO_LIST.getId());
+						List<Photo> photoList = (List<Photo>) session.getAttribute(EnmSession.PLACE_PHOTO_LIST.getId());
 						session.removeAttribute(EnmSession.PLACE_PHOTO_LIST.getId());
-						if (photoList != null && photoList.length > 0) {
+						if (photoList != null && photoList.size() > 0) {
 							Date createdDate = new Date();
 							String createdBy = user.getFullName();
 							
@@ -130,8 +130,9 @@ public class ApiPlaceController extends BaseApiController {
 							place.getLocation().setCreatedDate(createdDate);
 							place.getLocation().setCreatedBy(createdBy);
 							
-							if (photoList != null && photoList.length > 0) {
-								for (MultipartFile multipartFile : photoList) {
+							if (photoList != null && photoList.size() > 0) {
+								for (Photo draftPhoto : photoList) {
+									MultipartFile multipartFile = draftPhoto.getFile(); 
 									String fileSuffix = multipartFile.getContentType().split("/")[1];
 									String fileName = multipartFile.getOriginalFilename().split("\\.")[0];
 									Photo photo = new Photo();
@@ -143,7 +144,7 @@ public class ApiPlaceController extends BaseApiController {
 									photo.setCreatedDate(createdDate);
 									
 									photo.setFile(multipartFile);
-									
+									photo.setRotationDegree(draftPhoto.getRotationDegree());
 									place.addPhoto(photo);
 								}
 							}
@@ -174,8 +175,8 @@ public class ApiPlaceController extends BaseApiController {
 																	
 									File tmpFile = new File(tmpPhotoPath);
 									
-									ImageUtil.resizeImage(tmpFile, mediumPhotoPath, this.webApplication.getMediumPlacePhotoSize());
-									ImageUtil.resizeImage(tmpFile, smallPhotoPath, this.webApplication.getSmallPlacePhotoSize());
+									ImageUtil.resizeImage(tmpFile, mediumPhotoPath, this.webApplication.getMediumPlacePhotoSize(), null);
+									ImageUtil.resizeImage(tmpFile, smallPhotoPath, this.webApplication.getSmallPlacePhotoSize(), null);
 									tmpFile.delete();
 								}
 								(new File(tmpPhotoDirPath)).delete();
@@ -236,9 +237,9 @@ public class ApiPlaceController extends BaseApiController {
 				}
 				
 				if (isValid) {
-					MultipartFile[] photoList = (MultipartFile[]) session.getAttribute(EnmSession.PLACE_PHOTO_LIST.getId());
+					List<Photo> photoList = (List<Photo>) session.getAttribute(EnmSession.PLACE_PHOTO_LIST.getId());
 					session.removeAttribute(EnmSession.PLACE_PHOTO_LIST.getId());
-					if (photoList != null && photoList.length > 0) {
+					if (photoList != null && photoList.size() > 0) {
 						Date createdDate = new Date();
 						String createdBy = user.getFullName();
 						
@@ -260,9 +261,10 @@ public class ApiPlaceController extends BaseApiController {
 						List<FileModel> newPhotoList = new ArrayList<>();
 						List<Long> deletePhotoList = new ArrayList<Long>();
 						
-						if (photoList != null && photoList.length > 0) {
-							for (int i = 0; i < photoList.length; i++) {
-								MultipartFile multipartFile = photoList[i];
+						if (photoList != null && photoList.size() > 0) {
+							for (int i = 0; i < photoList.size(); i++) {
+								Photo draftPhoto = photoList.get(i);
+								MultipartFile multipartFile = draftPhoto.getFile();
 								String fileName = multipartFile.getOriginalFilename();
 								if (!fileName.toUpperCase().startsWith("DUMMY_")) {
 									String fileSuffix = multipartFile.getContentType().split("/")[1];
@@ -275,6 +277,7 @@ public class ApiPlaceController extends BaseApiController {
 									photo.setCreatedBy(createdBy);
 									photo.setFileType(EnmFileType.getFileTypeWithSuffix(fileSuffix).getValue());
 									photo.setCreatedDate(createdDate);
+									photo.setRotationDegree(draftPhoto.getRotationDegree());
 									
 									photo.setFile(multipartFile);
 									
@@ -291,8 +294,9 @@ public class ApiPlaceController extends BaseApiController {
 								}
 							}
 							for (FileModel oldPhoto : activePlace.getPhotoList()) {
-								for (int i = 0; i< photoList.length; i++) {
-									MultipartFile multipartFile = photoList[i];
+								for (int i = 0; i< photoList.size(); i++) {
+									Photo draftPhoto = photoList.get(i);
+									MultipartFile multipartFile = draftPhoto.getFile();
 									String fileName = multipartFile.getOriginalFilename();
 									if (fileName.toUpperCase().startsWith("DUMMY_")) {
 										Long tmpFileId = Long.valueOf(fileName.substring(fileName.indexOf("_") + 1));
@@ -300,7 +304,7 @@ public class ApiPlaceController extends BaseApiController {
 											break;
 										}
 									}
-									if (i == (photoList.length -1)) {
+									if (i == (photoList.size() -1)) {
 										deletePhotoList.add(oldPhoto.getId());
 									}
 								}
@@ -330,7 +334,7 @@ public class ApiPlaceController extends BaseApiController {
 								}
 
 								for (int i = 0; i < newPhotoList.size(); i++) {
-									FileModel photo = newPhotoList.get(i);
+									Photo photo = (Photo)newPhotoList.get(i);
 									MultipartFile multipartFile = photo.getFile();
 									String fileName = multipartFile.getOriginalFilename();
 									if (!fileName.toUpperCase().startsWith("DUMMY_")) {
@@ -341,8 +345,8 @@ public class ApiPlaceController extends BaseApiController {
 										String smallPhotoPath = this.webApplication.getPlacePhotoPath(place.getId(), photo.getId(), EnmSize.SMALL.getValue());
 										String mediumPhotoPath = this.webApplication.getPlacePhotoPath(place.getId(), photo.getId(), EnmSize.MEDIUM.getValue());
 										
-										ImageUtil.resizeImage(tmpFile, mediumPhotoPath, this.webApplication.getMediumPlacePhotoSize());
-										ImageUtil.resizeImage(tmpFile, smallPhotoPath, this.webApplication.getSmallPlacePhotoSize());
+										ImageUtil.resizeImage(tmpFile, mediumPhotoPath, this.webApplication.getMediumPlacePhotoSize(), photo.getRotationDegree());
+										ImageUtil.resizeImage(tmpFile, smallPhotoPath, this.webApplication.getSmallPlacePhotoSize(), photo.getRotationDegree());
 										
 										tmpFile.delete();
 									}
@@ -531,7 +535,8 @@ public class ApiPlaceController extends BaseApiController {
     }
 		
 	@RequestMapping(value = "/api/place/savephoto", method = RequestMethod.POST)
-    public ResponseEntity<OperationResult> savePhoto(@RequestParam("photoList") MultipartFile[] fileArr, HttpSession session) {
+    public ResponseEntity<OperationResult> savePhoto(@RequestParam("photoList") MultipartFile[] fileArr, 
+    		@RequestParam("rotateAngleList") Integer[] rotateAngleList, HttpSession session) {
 		OperationResult operationResult = new OperationResult();
 		try {
 			User sessionUser = super.getSessionUser(session);
@@ -560,6 +565,7 @@ public class ApiPlaceController extends BaseApiController {
 							} else {
 								placeTmpPhotoFolder.mkdirs();	
 							}
+							List<Photo> placePhotoList = new ArrayList<Photo>();
 							for (int i = 0; i < fileArr.length; i++) {
 								MultipartFile multipartFile = fileArr[i];
 								String fileName = multipartFile.getOriginalFilename();
@@ -568,10 +574,15 @@ public class ApiPlaceController extends BaseApiController {
 									File tmpFile = new File(tmpPhotoPath);
 									multipartFile.transferTo(tmpFile);
 								}
+								
+								Photo photo = new Photo();
+								photo.setFile(multipartFile);
+								photo.setRotationDegree(rotateAngleList[i]);
+								placePhotoList.add(photo);
 							}
 							
 							session.removeAttribute(EnmSession.PLACE_PHOTO_LIST.getId());
-							session.setAttribute(EnmSession.PLACE_PHOTO_LIST.getId(), fileArr);
+							session.setAttribute(EnmSession.PLACE_PHOTO_LIST.getId(), placePhotoList);
 							
 							operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 						} else {

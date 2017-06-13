@@ -660,3 +660,16 @@ DateUtil = {
 			return new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);
 		}
 };
+
+ImageUtil = {
+	rotate : function(elementId, photo, rotationAmount) {
+  		if (photo != null) {
+  			photo.angle = (photo.angle + rotationAmount) % 360;
+  			$('#' + elementId).css('transform','rotate(' + photo.angle + 'deg)');
+  		} else {
+  			var currentAngle = $(elementId).css('transform');
+  			currentAngle += rotationAmount;
+  			$('#' + elementId).css('transform','rotate(' + currentAngle + 'deg)');
+  		}
+  	}
+};

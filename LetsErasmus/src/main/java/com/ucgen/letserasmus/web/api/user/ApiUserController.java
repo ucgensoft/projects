@@ -46,7 +46,6 @@ import com.ucgen.letserasmus.library.favorite.service.IFavoriteService;
 import com.ucgen.letserasmus.library.file.enumeration.EnmFileType;
 import com.ucgen.letserasmus.library.file.model.FileModel;
 import com.ucgen.letserasmus.library.file.model.Photo;
-import com.ucgen.letserasmus.library.log.enumeration.EnmOperation;
 import com.ucgen.letserasmus.library.parameter.enumeration.EnmParameter;
 import com.ucgen.letserasmus.library.parameter.service.IParameterService;
 import com.ucgen.letserasmus.library.place.model.Place;
@@ -499,16 +498,16 @@ public class ApiUserController extends BaseApiController {
 				}
 				if (isValid) {
 					Date operationDate = new Date();
-					MultipartFile profilePhoto = (MultipartFile) session.getAttribute(EnmSession.USER_PHOTO.getId());
+					Photo profilePhoto = (Photo) session.getAttribute(EnmSession.USER_PHOTO.getId());
 					session.removeAttribute(EnmSession.USER_PHOTO.getId());
 					
 					boolean profilePhotoChanged = false;
 					boolean profilePhotoDeleted = false;
 					
 					if (profilePhoto != null) {
-						if (profilePhoto.getOriginalFilename().equalsIgnoreCase("deleted")) {
+						if (profilePhoto.getFile().getOriginalFilename().equalsIgnoreCase("deleted")) {
 							profilePhotoDeleted = true;
-						} else if (!profilePhoto.getOriginalFilename().equalsIgnoreCase("dummy")) {
+						} else if (!profilePhoto.getFile().getOriginalFilename().equalsIgnoreCase("dummy")) {
 							profilePhotoChanged = true;
 						}
 					}
@@ -563,11 +562,11 @@ public class ApiUserController extends BaseApiController {
 					user.setModifiedBy(modifiedBy);
 					
 					if (profilePhotoChanged) {
-						String fileSuffix = profilePhoto.getContentType().split("/")[1];
-						String fileName = profilePhoto.getOriginalFilename().split("\\.")[0];
+						String fileSuffix = profilePhoto.getFile().getContentType().split("/")[1];
+						String fileName = profilePhoto.getFile().getOriginalFilename().split("\\.")[0];
 						Photo photo = new Photo();
 						photo.setFileName(fileName);
-						photo.setFileSize(profilePhoto.getSize());
+						photo.setFileSize(profilePhoto.getFile().getSize());
 						photo.setEntityType(EnmEntityType.USER.getId());
 						photo.setEntityId(user.getId());
 						photo.setCreatedBy(modifiedBy);
@@ -592,7 +591,7 @@ public class ApiUserController extends BaseApiController {
 								
 								FileModel photo = user.getProfilePhoto();
 								
-								String fileName = profilePhoto.getOriginalFilename();
+								String fileName = profilePhoto.getFile().getOriginalFilename();
 								
 								if (oldProfilePhotoId != null) {
 									FileUtil.cleanDirectory(userPhotoFolder, false);
@@ -606,8 +605,8 @@ public class ApiUserController extends BaseApiController {
 									
 									File tmpFile = new File(tmpPhotoPath);
 
-									ImageUtil.resizeImage(tmpFile, newMediumFilePath, this.webApplication.getMediumUserPhotoSize());
-									ImageUtil.resizeImage(tmpFile, newSmallFilePath, this.webApplication.getSmallUserPhotoSize());
+									ImageUtil.resizeImage(tmpFile, newMediumFilePath, this.webApplication.getMediumUserPhotoSize(), profilePhoto.getRotationDegree());
+									ImageUtil.resizeImage(tmpFile, newSmallFilePath, this.webApplication.getSmallUserPhotoSize(), profilePhoto.getRotationDegree());
 									
 									String tmpFolder = tmpPhotoPath.substring(0, tmpPhotoPath.lastIndexOf(File.separator));
 									
@@ -693,46 +692,45 @@ public class ApiUserController extends BaseApiController {
     }
     
     @RequestMapping(value = "/api/user/savephoto", method = RequestMethod.POST)
-    public ResponseEntity<OperationResult> savePhoto(@RequestParam("profilePhoto") MultipartFile prifilePhoto, HttpSession session) {
+    public ResponseEntity<OperationResult> savePhoto(@RequestParam("profilePhoto") MultipartFile prifilePhoto,
+    		@RequestParam("rotateAngle") Integer rotateAngle, HttpSession session) {
 		OperationResult operationResult = new OperationResult();
 		try {
-			Object activeOperation = super.getSession().getAttribute(EnmSession.ACTIVE_OPERATION.getId());
-			if (activeOperation != null && (activeOperation.equals(EnmOperation.CREATE_USER) || activeOperation.equals(EnmOperation.UPDATE_USER))) {
-				String userId = null;
-				if (activeOperation.equals(EnmOperation.CREATE_USER)) {
-					userId = "tmp_" + Double.valueOf((Math.random() * 100000000)).longValue();
-					session.removeAttribute(EnmSession.TMP_USER_PLACE_ID.getId());
-					session.setAttribute(EnmSession.TMP_USER_PLACE_ID.getId(), userId);
-				} else {
-					User user = super.getSessionUser(session);
-					userId = user.getId().toString();
-				}
-				
-				String rootPhotoFolder = this.webApplication.getRootUserPhotoPath();
-				
-				String userTmpPhotoFolderPath = FileUtil.concatPath(rootPhotoFolder, userId, "tmp");
-				File userTmpPhotoFolder = new File(userTmpPhotoFolderPath);
-				if (userTmpPhotoFolder.exists()) {
-					FileUtils.cleanDirectory(userTmpPhotoFolder);
-				} else {
-					userTmpPhotoFolder.mkdirs();	
-				}
-				
-				String fileName = prifilePhoto.getOriginalFilename();
-				if (!fileName.toUpperCase().startsWith("DUMMY_")) {
-					String tmpPhotoPath = FileUtil.concatPath(userTmpPhotoFolderPath, fileName);
-					File tmpFile = new File(tmpPhotoPath);
-					prifilePhoto.transferTo(tmpFile);
-				}
-				
-				session.removeAttribute(EnmSession.USER_PHOTO.getId());
-				session.setAttribute(EnmSession.USER_PHOTO.getId(), prifilePhoto);
-				
-				operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+			User user = super.getSessionUser(session);
+			String userId = null;
+			if (user == null) {
+				userId = "tmp_" + Double.valueOf((Math.random() * 100000000)).longValue();
+				session.removeAttribute(EnmSession.TMP_USER_PLACE_ID.getId());
+				session.setAttribute(EnmSession.TMP_USER_PLACE_ID.getId(), userId);
 			} else {
-				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc(AppConstants.UNAUTHORIZED_OPERATION);
+				userId = user.getId().toString();
 			}
+			
+			String rootPhotoFolder = this.webApplication.getRootUserPhotoPath();
+			
+			String userTmpPhotoFolderPath = FileUtil.concatPath(rootPhotoFolder, userId, "tmp");
+			File userTmpPhotoFolder = new File(userTmpPhotoFolderPath);
+			if (userTmpPhotoFolder.exists()) {
+				FileUtils.cleanDirectory(userTmpPhotoFolder);
+			} else {
+				userTmpPhotoFolder.mkdirs();	
+			}
+			
+			String fileName = prifilePhoto.getOriginalFilename();
+			if (!fileName.toUpperCase().startsWith("DUMMY_")) {
+				String tmpPhotoPath = FileUtil.concatPath(userTmpPhotoFolderPath, fileName);
+				File tmpFile = new File(tmpPhotoPath);
+				prifilePhoto.transferTo(tmpFile);
+			}
+			
+			Photo uploadedPhoto = new Photo();
+			uploadedPhoto.setFile(prifilePhoto);
+			uploadedPhoto.setRotationDegree(rotateAngle);
+			
+			session.removeAttribute(EnmSession.USER_PHOTO.getId());
+			session.setAttribute(EnmSession.USER_PHOTO.getId(), uploadedPhoto);
+			
+			operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
 			operationResult.setResultDesc(CommonUtil.getExceptionMessage(e));

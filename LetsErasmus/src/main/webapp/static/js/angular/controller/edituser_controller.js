@@ -51,6 +51,7 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
 	   	  var fileupload = document.getElementById('filePhoto');
 	
 	   	  fileupload.onchange = function() {
+	   		$('#imgProfilePhoto').css('transform', 'rotate(' + 0 + 'deg)');
 	   	  	readfiles(this.files);
 	   	  };
 	
@@ -59,10 +60,11 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
 	   	  		if (acceptedPhotoTypes[file.type] === true) {
 	   	  			var reader = new FileReader();
 	       	  		reader.onload = function(event) {
-	       	  			self.photo = { 'file': file, 'src': event.target.result};
+	       	  			self.photo = { 'file': file, 'angle':0, 'src': event.target.result};
 	       	  			$('#imgProfilePhoto').attr('src', self.photo.src);
 	       	  			$('#divPhotoPreview').removeClass('hidden-force');
 	       	  			$('#photoHolder').addClass('hidden-force');
+	       	  			refreshAngularScope($scope)
 	       	  			NProgress.done(true);
 	       	  			fileupload.value = '';
 	       	  		};
@@ -278,6 +280,10 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
 	  			  	  );
 	  			}
 	  		});
+  	};
+  	
+  	self.rotatePhoto = function() {
+  		ImageUtil.rotate('imgProfilePhoto', self.photo, 90);
   	};
   	
     self.initialize();
