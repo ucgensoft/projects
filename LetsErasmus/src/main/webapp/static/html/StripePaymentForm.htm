@@ -2,11 +2,12 @@
 <head>
 <style>
 * {
-	font-family: "Helvetica Neue", Helvetica, sans-serif;
+	font-family: Circular, "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size: 15px;
 	font-variant: normal;
 	padding: 0;
 	margin: 0;
+	font-weight: bold;
 }
 
 html {
@@ -14,20 +15,18 @@ html {
 }
 
 body {
-	background: #F6F9FC;
 	display: flex;
 	align-items: center;
 	min-height: 100%;
 }
 
 form {
-	width: 480px;
+	width: auto;
 	margin: 20px auto;
 }
 
 label {
 	position: relative;
-	color: #6A7C94;
 	font-weight: 400;
 	height: 48px;
 	line-height: 48px;
@@ -37,6 +36,7 @@ label {
 
 label>span {
 	float: left;
+	margin-left: 5px;
 }
 
 .field {
@@ -51,7 +51,7 @@ label>span {
 	line-height: 48px;
 	padding: 0 20px;
 	cursor: text;
-	width: 76%;
+	width: 100%;
 	float: right;
 }
 
@@ -130,7 +130,7 @@ button:active {
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 </head>
 
-<body style="max-width: 440px;">
+<body>
 	<div style="width: 95%; height: 100%">
 		<div class="row">
 			<form>
