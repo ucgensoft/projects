@@ -58,7 +58,7 @@
 														ng-if="r.status == 1"
 														ng-click="ctrl.openRecallReservationWindow(r.id)">Recall</button>
 												</td>
-												<td data-label="Dates and Listing">{{r.startDate |
+												<td data-label="Dates">{{r.startDate |
 													date:'MMM dd, yyyy'}} - {{r.endDate | date:'MMM dd, yyyy'}}
 													<br /> <a
 													href="#{webApplication.urlPrefix}/pages/PlaceDetail.html?placeId={{r.placeId}}&amp;checkinDate={{r.startDate | date:'dd.MM.yyyy'}}&amp;checkoutDate={{r.endDate | date:'dd.MM.yyyy'}}"
@@ -132,7 +132,7 @@
 														ng-if="r.status == 2"
 														ng-click="ctrl.openCancelReservationWindow(r.id)">Cancel</button>
 												</td>
-												<td data-label="Dates and Listing">{{r.startDate |
+												<td data-label="Dates">{{r.startDate |
 													date:'MMM dd, yyyy'}} - {{r.endDate | date:'MMM dd, yyyy'}}
 													<br /> <a
 													href="#{webApplication.urlPrefix}/pages/PlaceDetail.html?placeId={{r.placeId}}&amp;checkinDate={{r.startDate | date:'dd.MM.yyyy'}}&amp;checkoutDate={{r.endDate | date:'dd.MM.yyyy'}}"
@@ -207,7 +207,7 @@
 														ng-if="ctrl.isReviewed(r) == false"
 														ng-click="ctrl.openReviewWindow(r)">Review Place
 														and Host</button></td>
-												<td data-label="Dates and Listing">{{r.startDate |
+												<td data-label="Dates">{{r.startDate |
 													date:'MMM dd, yyyy'}} - {{r.endDate | date:'MMM dd, yyyy'}}
 													<br /> <a
 													href="#{webApplication.urlPrefix}/pages/PlaceDetail.html?placeId={{r.placeId}}&amp;checkinDate={{r.startDate | date:'dd.MM.yyyy'}}&amp;checkoutDate={{r.endDate | date:'dd.MM.yyyy'}}"
