@@ -109,6 +109,7 @@ App.factory('placeService', ['$http', '$q', function($http, $q) {
 				
 				savePhoto : function(photoList) {
 					var formData = new FormData();
+					var rotateAngleList = [];
 					for (var i = 0; i < photoList.length; i++) {
 						var placePhoto = photoList[i];
 						if (!placePhoto.file) {
@@ -117,9 +118,11 @@ App.factory('placeService', ['$http', '$q', function($http, $q) {
 					          ];
 				
 							placePhoto.file = new File(parts, 'dummy_' + placePhoto.photoId, {});
+							rotateAngleList.push(placePhoto.angle);
 						}
 						
 						formData.append('photoList', placePhoto.file);
+						formData.append('rotateAngleList', placePhoto.angle);
 					}					
 					
 					var config = {

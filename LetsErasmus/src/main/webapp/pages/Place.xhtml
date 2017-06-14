@@ -836,18 +836,17 @@
 															class="media-photo media-photo-block photos-list__canvas"
 															style="height: 179.33333333333334px;">
 															<div class="media-cover text-center img-with-border">
-																<img class="img-responsive-height img-preview-1483265761528"
+																<img id="imgPlacePhoto_{{p.photoId}}" class="img-responsive-height img-preview-1483265761528"
 																	src="{{p.src}}" />
+																<img id="btnRotate" src ="#{webApplication.urlPrefix}/static/images/rotate.ico" 
+																	class="photo-preview__title-badge not-always-show" 
+																	style="right: 0px; z-index:2; top: 40px;"
+																	ng-click="ctrl.rotatePhoto(p)" 
+																	ng-show="ctrl.photoList[ctrl.photoList.indexOf(p)].file != null"></img>
 															</div>
 														</div>
 													</div>
-													<div class="col-sm-24">
-														<div class="row">
-															<textarea class="photo-preview__caption-textarea"
-																placeholder="Add a caption"
-																style="height: 45px;"></textarea>
-														</div>
-													</div>
+													
 												</div>
 											</div>
 																						

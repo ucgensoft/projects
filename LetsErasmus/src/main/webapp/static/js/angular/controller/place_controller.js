@@ -132,7 +132,7 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     	  var photoIndex = 0;
 			for(var i = 0; i < self.place.photoList.length; i++) {
 				var photo = self.place.photoList[i];
-				self.photoList.push({ 'photoId': photo.id, 'file': null, 'src': generatePlacePhotoUrl(self.place.id, photo.id, EnmImageSize.SMALL) });
+				self.photoList.push({ 'photoId': photo.id, 'file': null, 'src': generatePlacePhotoUrl(self.place.id, photo.id, EnmImageSize.SMALL), 'angle': 0 });
 			}
     	  
     	  self.place.amentyMap = {};
@@ -335,14 +335,8 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     	  		if (acceptedPhotoTypes[file.type] === true) {
     	  			var reader = new FileReader();
         	  		reader.onload = function(event) {
-        	  			/*
-        	  			var image = new Image();
-        	  			image.src = event.target.result;
-        	  			image.width = 200;
-        	  			divPhotoContainer.appendChild(image);
-        	  			*/
         	  			var photoId = generateRandomValue(100, 1000000);
-        	  			self.photoList.push({ 'photoId':photoId, 'file': file, 'src': event.target.result});
+        	  			self.photoList.push({ 'photoId':photoId, 'file': file, 'src': event.target.result, 'angle' : 0});
         	  			commonService.fakeAjaxCall();
         	  			NProgress.done(true);
         	  			fileupload.value = '';
@@ -741,7 +735,11 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     	  
     	  self.photoList[photoIndex-1] = currentPhoto;
     	  self.photoList[photoIndex] = prevPhoto;
-    	  $scope.$apply(function() {});
+    	  //$scope.$apply(function() {});
+      };
+      
+      self.rotatePhoto = function(photo) {
+    	  ImageUtil.rotate('imgPlacePhoto_' + photo.photoId, photo, 90);
       };
       
       self.initialize();
