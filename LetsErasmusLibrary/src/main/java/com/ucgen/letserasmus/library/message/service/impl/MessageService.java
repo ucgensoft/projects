@@ -55,14 +55,19 @@ public class MessageService implements IMessageService {
 
 	@Override
 	public List<MessageThread> listMessageThread(MessageThread messageThread, boolean entityFlag, boolean hostUserFlag,
-			boolean clientUserFlag) {
-		return this.messageDao.listMessageThread(messageThread, entityFlag, hostUserFlag, clientUserFlag);
+			boolean clientUserFlag, boolean lastMessageFlag) {
+		return this.messageDao.listMessageThread(messageThread, entityFlag, hostUserFlag, clientUserFlag, lastMessageFlag);
 	}
 
 	@Override
 	public MessageThread getMessageThread(MessageThread messageThread, boolean entityFlag, boolean hostUserFlag,
 			boolean clientUserFlag) {
 		return this.messageDao.getMessageThread(messageThread, entityFlag, hostUserFlag, clientUserFlag);
+	}
+
+	@Override
+	public Message getLastMessage(Long messageThreadId) {
+		return this.messageDao.getLastMessage(messageThreadId);
 	}
 	
 }

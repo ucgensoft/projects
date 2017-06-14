@@ -17,8 +17,11 @@ public interface IMessageService {
 	
 	List<Message> listMessage(Message message, boolean senderUserFlag, boolean receiverUserFlag);
 	
-	List<MessageThread> listMessageThread(MessageThread messageThread, boolean entityFlag, boolean hostUserFlag, boolean clientUserFlag);
+	List<MessageThread> listMessageThread(MessageThread messageThread, boolean entityFlag, boolean hostUserFlag, 
+			boolean clientUserFlag, boolean lastMessageFlag);
 	
 	MessageThread getMessageThread(MessageThread messageThread, boolean entityFlag, boolean hostUserFlag, boolean clientUserFlag);
+	
+	Message getLastMessage(Long messageThreadId);
 	
 }

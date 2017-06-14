@@ -33,6 +33,8 @@ public class MessageDao extends JdbcDaoSupport implements IMessageDao {
 	
 	private static final String UPDATE_MESSAGE_THREAD_SQL = "UPDATE MESSAGE_THREAD SET $1 WHERE ID = ? ";
 	
+	private static final String GET_LAST_MESSAGE_SQL = "SELECT * FROM MESSAGE WHERE MESSAGE_THREAD_ID = ? ORDER BY ID DESC LIMIT 1";
+	
 	private UtilityDao utilityDao;
 	
 	@Autowired
@@ -183,7 +185,8 @@ public class MessageDao extends JdbcDaoSupport implements IMessageDao {
 	}
 	
 	@Override
-	public List<MessageThread> listMessageThread(MessageThread messageThread, boolean entityFlag, boolean hostUserFlag, boolean clientUserFlag) {
+	public List<MessageThread> listMessageThread(MessageThread messageThread, boolean entityFlag, boolean hostUserFlag, 
+			boolean clientUserFlag, boolean lastMessageFlag) {
 		StringBuilder sqlBuilder = new StringBuilder();
 		List<Object> argList = new ArrayList<Object>();
 		
@@ -224,7 +227,13 @@ public class MessageDao extends JdbcDaoSupport implements IMessageDao {
 			}
 		}
 				
-		List<MessageThread> messageThreadList = super.getJdbcTemplate().query(sqlBuilder.toString(), argList.toArray(), messageThreadRowMapper);		
+		List<MessageThread> messageThreadList = super.getJdbcTemplate().query(sqlBuilder.toString(), argList.toArray(), messageThreadRowMapper);
+		if (lastMessageFlag) {
+			for (MessageThread dbMessageThread : messageThreadList) {
+				Message lastMessage = this.getLastMessage(dbMessageThread.getId());
+				dbMessageThread.addMessage(lastMessage);
+			}
+		}
 				
 		return messageThreadList;
 	}
@@ -233,7 +242,7 @@ public class MessageDao extends JdbcDaoSupport implements IMessageDao {
 	public MessageThread getMessageThread(MessageThread messageThread, boolean entityFlag, boolean hostUserFlag,
 			boolean clientUserFlag) {
 		
-		List<MessageThread> messageThreadList = this.listMessageThread(messageThread, entityFlag, hostUserFlag, clientUserFlag);		
+		List<MessageThread> messageThreadList = this.listMessageThread(messageThread, entityFlag, hostUserFlag, clientUserFlag, false);		
 		if (messageThreadList != null && messageThreadList.size() > 0) {
 			return messageThreadList.get(0);
 		} else {
@@ -241,4 +250,16 @@ public class MessageDao extends JdbcDaoSupport implements IMessageDao {
 		}
 	}
 
+	@Override
+	public Message getLastMessage(Long messageThreadId) {
+		List<Message> messageList = this.getJdbcTemplate().query(GET_LAST_MESSAGE_SQL, new Object[] { messageThreadId }, new MessageRowMapper(null));
+		if (messageList != null && messageList.size() > 0) {
+			return messageList.get(0);
+		} else {
+			return null;
+		}
+	}
+
+	
+	
 }

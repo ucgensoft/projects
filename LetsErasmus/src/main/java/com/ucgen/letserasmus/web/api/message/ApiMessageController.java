@@ -116,7 +116,7 @@ public class ApiMessageController extends BaseApiController {
 					hostMessageThread.setEntityType(entityType);
 					hostMessageThread.setHostUserId(user.getId());
 					
-					List<MessageThread> hostMessageThreadList = this.messageService.listMessageThread(hostMessageThread, true, false, true);
+					List<MessageThread> hostMessageThreadList = this.messageService.listMessageThread(hostMessageThread, true, false, true, true);
 					List<UiMessageThread> uiMessageThreadList = this.convertToUiMessageThreadList(user, hostMessageThreadList, true, true);
 					messageThreadMap.put("hostThreadList", uiMessageThreadList);
 				}
@@ -126,7 +126,7 @@ public class ApiMessageController extends BaseApiController {
 					clientMessageThread.setEntityType(entityType);
 					clientMessageThread.setClientUserId(user.getId());
 					
-					List<MessageThread> clientMessageThreadList = this.messageService.listMessageThread(clientMessageThread, true, true, false);
+					List<MessageThread> clientMessageThreadList = this.messageService.listMessageThread(clientMessageThread, true, true, false, true);
 					
 					List<UiMessageThread> uiMessageThreadList = this.convertToUiMessageThreadList(user, clientMessageThreadList, false, true);
 					messageThreadMap.put("clientThreadList", uiMessageThreadList);
@@ -405,8 +405,17 @@ public class ApiMessageController extends BaseApiController {
 		newUiMessageThread.setHostUserProfilePhotoUrl(hostUserProfilePhotoUrl);
 		newUiMessageThread.setHostUserProfilePhotoUrlMedium(hostUserProfilePhotoUrlMedium);
 						
-		newUiMessageThread.setMessageText("This is a test");
-		newUiMessageThread.setMessageDate(new Date());
+		if (messageThread.getMessageList() != null 
+				&& messageThread.getMessageList().size() > 0) {
+			String lastMessageText = messageThread.getMessageList().get(0).getMessageText();
+			if (lastMessageText != null) {
+				if (lastMessageText.length() > 100) {
+					lastMessageText = lastMessageText.substring(0, 100) + "...";
+				}
+				newUiMessageThread.setMessageText(lastMessageText);
+			}
+			newUiMessageThread.setMessageDate(messageThread.getCreatedDate());
+		}
 		
 		if (getReservation) {
 			Reservation reservation = new Reservation();
