@@ -289,6 +289,10 @@ public class ApiMessageController extends BaseApiController {
 				if (uiMessage.getMessageThreadId() != null 
 						&& uiMessage.getMessageText() != null 
 						&& !uiMessage.getMessageText().trim().isEmpty()) {
+					
+					Date operationDate = new Date();
+					String operationBy = user.getFullName();
+					
 					MessageThread messageThread = new MessageThread();
 					
 					messageThread.setId(uiMessage.getMessageThreadId());
@@ -312,8 +316,11 @@ public class ApiMessageController extends BaseApiController {
 							}
 							message.setMessageText(uiMessage.getMessageText());
 							message.setStatus(EnmMessageStatus.NOT_READ.getId());
-							message.setCreatedDate(new Date());
-							message.setCreatedBy(user.getFullName());
+							message.setCreatedDate(operationDate);
+							message.setCreatedBy(operationBy);
+							
+							dbMessageThread.setModifiedBy(operationBy);
+							dbMessageThread.setModifiedDate(operationDate);
 							
 							message.setMessageThread(dbMessageThread);
 													

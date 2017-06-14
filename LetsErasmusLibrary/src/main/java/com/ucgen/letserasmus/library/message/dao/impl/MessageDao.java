@@ -8,6 +8,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ucgen.common.dao.UtilityDao;
 import com.ucgen.common.exception.operation.OperationResultException;
@@ -29,7 +30,7 @@ public class MessageDao extends JdbcDaoSupport implements IMessageDao {
 			+ " MESSAGE_TITLE, MESSAGE_TEXT, STATUS, CREATED_BY, CREATED_DATE) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";	
 		
 	private static final String INSERT_MESSAGE_THREAD_SQL = "INSERT INTO MESSAGE_THREAD (ENTITY_TYPE, ENTITY_ID, HOST_USER_ID, CLIENT_USER_ID, " 
-			+ " THREAD_TITLE, CREATED_BY, CREATED_DATE) VALUES (?, ?, ?, ?, ?, ?, ?)";
+			+ " THREAD_TITLE, CREATED_BY, CREATED_DATE, MODIFIED_BY, MODIFIED_DATE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	
 	private static final String UPDATE_MESSAGE_THREAD_SQL = "UPDATE MESSAGE_THREAD SET $1 WHERE ID = ? ";
 	
@@ -59,6 +60,8 @@ public class MessageDao extends JdbcDaoSupport implements IMessageDao {
 		argList.add(messageThread.getHostUserId());
 		argList.add(messageThread.getClientUserId());
 		argList.add(messageThread.getThreadTitle());
+		argList.add(messageThread.getCreatedBy());
+		argList.add(messageThread.getCreatedDate());
 		argList.add(messageThread.getCreatedBy());
 		argList.add(messageThread.getCreatedDate());
 				
@@ -118,6 +121,7 @@ public class MessageDao extends JdbcDaoSupport implements IMessageDao {
 	}
 	
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public OperationResult insertMessage(Message message) {
 		OperationResult operationResult = new OperationResult();
 		
@@ -226,7 +230,9 @@ public class MessageDao extends JdbcDaoSupport implements IMessageDao {
 				argList.add(messageThread.getEntityId());
 			}
 		}
-				
+		
+		sqlBuilder.append(" ORDER BY " + messageThreadRowMapper.getCriteriaColumnName(MessageThreadRowMapper.COL_MODIFIED_DATE) + " DESC");
+		
 		List<MessageThread> messageThreadList = super.getJdbcTemplate().query(sqlBuilder.toString(), argList.toArray(), messageThreadRowMapper);
 		if (lastMessageFlag) {
 			for (MessageThread dbMessageThread : messageThreadList) {

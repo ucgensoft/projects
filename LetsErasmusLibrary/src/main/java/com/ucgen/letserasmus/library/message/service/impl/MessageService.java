@@ -42,6 +42,9 @@ public class MessageService implements IMessageService {
 	@Override
 	public OperationResult insertMessage(Message message, boolean sendInfoMail) {
 		OperationResult insertResult = this.messageDao.insertMessage(message);
+		if (message.getMessageThread() != null) {
+			this.messageDao.updateMessageThread(message.getMessageThread());
+		}
 		if (sendInfoMail && message.getReceiverUser() != null) {
 			this.mailService.sendNewMessageMail(message.getReceiverUser().getEmail(), message.getMessageThread().getThreadTitle(), message.getMessageText());
 		}
