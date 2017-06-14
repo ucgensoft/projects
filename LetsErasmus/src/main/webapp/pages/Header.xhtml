@@ -85,6 +85,11 @@
 									class="travel-credit-item panel-body link-reset hover-item">
 									<div class="hover-item__content">Your Listings</div>
 								</a>
+								<a href="" onclick="openWindow('#{webApplication.urlPrefix}/pages/dashboard/ReservationList.html', true)"
+									class="travel-credit-item panel-body link-reset hover-item"
+									ng-show="ctrl.isHost()">
+									<div class="hover-item__content">Your Reservations</div>
+								</a>
 								<a href="" onclick="openWindow('#{webApplication.urlPrefix}/pages/dashboard/MessageList.html', true)"
 									class="panel-body link-reset hover-item no-crawl">
 									<div class="hover-item__content">Messages</div>

@@ -486,7 +486,11 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
 	  				}
 	  			});
 	  		}
-	  }
+	  };
+	  
+	  self.isHost = function() {
+		  return placeListingExist;
+	  };
 	  
      //self.initialize();
       
