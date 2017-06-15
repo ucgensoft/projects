@@ -9,6 +9,8 @@
 			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css?ver=#{webApplication.staticFileVersion}" />
 		<link rel="stylesheet" type="text/css"
 			href="#{webApplication.urlPrefix}/static/css/message_list.css?ver=#{webApplication.staticFileVersion}" />
+		<link rel="stylesheet" type="text/css"
+			href="#{webApplication.urlPrefix}/static/css/payout_methods.css?ver=#{webApplication.staticFileVersion}" />
 		<script>
 			var activeDashboardTab = 1;
 			var activeLeftMenuLink = 4;			
@@ -18,11 +20,11 @@
 	<ui:define name="body">
 		<main id="site-content" role="main">				 
 		<ui:include src="DashboardHeader.html" />
-		<div class="page-container-responsive page-container-inbox space-7 space-top-2">
+		<div class="page-container-responsive page-container-inbox space-top-2">
 			<div class="row">
 				<ui:include src="ProfileLeftMenu.html" />
-				<div class="col-sm-9">
-					<div class="row">
+				<div id="divFormContainer" class="col-sm-9">
+					<div id="divWarningMessage" class="row">
 						<div class="panel panel-primary">
 							<div class="panel-body">
 								<span class="clsRed">Please make sure you have filled all mandatory fields (*)</span>
@@ -32,20 +34,20 @@
 					
 					<div class="row" style="margin-top: 5px;">
 						<div class="col-sm-10">
-							<ul class="tabs tabs--inbox">
-								<li id="tabPersonalInfo">
+							<ul id="listFieldGroup" class="tabs tabs--inbox">
+								<li id="tabPersonalInfo" class="form-tab">
 									<a id="lnkPersonalInfo" href="#" class="tab-item inbox-filter-form__tab"
 										ng-click="ctrl.displayTab('divPersonalInfo', 'lnkPersonalInfo')">
 										<span>Personal Info</span>
 									</a>
 								</li>
-								<li id="tabAddress">
+								<li id="tabAddress" class="form-tab">
 									<a id="lnkAddressInfo" href="#" class="tab-item inbox-filter-form__tab"
 										ng-click="ctrl.displayTab('divAddressInfo', 'lnkAddressInfo')">
 										<span>Address Info</span>
 									</a>
 								</li>
-								<li id="tabBankAccount">
+								<li id="tabBankAccount" class="form-tab">
 									<a id="lnkBankAccountInfo" href="#" class="tab-item inbox-filter-form__tab"
 										aria-selected="true" ng-click="ctrl.displayTab('divBankAccountInfo', 'lnkBankAccountInfo')">
 										<span>Bank Account Info</span>
@@ -55,7 +57,7 @@
 						</div>
 						<div class="col-sm-2" ng-if="ctrl.payoutMethod != null">
 							<button class="btn btn-primary pull-right" id="btnSaveChanges"
-								ng-click="ctrl.onSaveBtnClick()">Save Changes</button>
+								ng-click="ctrl.onSaveBtnClick()">Save</button>
 						</div>
 					</div>
 					<div class="row panel">

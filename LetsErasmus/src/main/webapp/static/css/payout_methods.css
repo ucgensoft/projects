@@ -1,0 +1,29 @@
+
+@media ( max-width : 744px) {
+	#divFormContainer {
+		width: 95% !important;
+		margin-left: 3%;
+		margin-right: 6%;
+	}
+	
+	#divWarningMessage {
+		display: none;
+	}
+	
+	.form-tab {
+		width: 30% !important;
+	}
+	
+	#listFieldGroup {
+		display:none;
+	}
+}
+
+@media ( max-width : 350px) {
+	.form-tab {
+		
+	}
+	.form-tab {
+		
+	}
+}
