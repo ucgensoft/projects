@@ -637,7 +637,8 @@
 
 .messaging-thread-container .send-message-box .panel-quote,
 	.messaging-thread-container .post .panel-quote {
-	position: relative
+	position: relative;
+	margin-top: 5px;
 }
 
 .messaging-thread-container .send-message-box .panel-quote:before,
@@ -723,10 +724,11 @@
 	border-color: #f5f5f5
 }
 
+/*
 .messaging-thread-container .send-message-textarea {
 	border: 0
 }
-
+*/
 .messaging-thread-container .send-message-textarea.decline-reason {
 	border: 1px solid #c4c4c4
 }

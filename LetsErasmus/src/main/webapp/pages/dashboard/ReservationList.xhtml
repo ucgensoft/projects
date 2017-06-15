@@ -7,7 +7,8 @@
 	<ui:define name="head">
 		<link rel="stylesheet" type="text/css"
 			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css?ver=#{webApplication.staticFileVersion}" />
-
+		<link rel="stylesheet" type="text/css"
+			href="#{webApplication.urlPrefix}/static/css/triplist.css?ver=#{webApplication.staticFileVersion}" />
 		<script>
 			var activeDashboardTab = 3;
 			var activeLeftMenuLink = 2;
@@ -25,58 +26,78 @@
 						<div class="panel-header">
 							<div class="row row-table">
 								<div class="col-md-6 col-middle">Upcoming Reservations</div>
-								<div class="col-md-6 col-middle">
-								</div>
+								<div class="col-md-6 col-middle"></div>
 							</div>
 						</div>
 						<div class="panel-body" ng-if="ctrl.upcomingList.length == 0">
 							<p>You have no upcoming reservations.</p>
 						</div>
-						<ul class="list-unstyled list-layout" ng-if="ctrl.upcomingList.length > 0">
+						<ul class="list-unstyled list-layout"
+							ng-if="ctrl.upcomingList.length > 0">
 							<li class="listing panel-body" ng-repeat="r in ctrl.upcomingList">
 								<div class="table-responsive">
 									<table class="table panel-body space-1"
-										style="background-color: white">
-										<tbody>
+										style="background-color: white; border: 2px solid #dce0e0;">
+										<thead>
 											<tr>
 												<th>Status</th>
 												<th>Dates and Location</th>
 												<th>Guest</th>
 												<th>Details</th>
 											</tr>
+										</thead>
+										<tbody>
 											<tr class="reservation">
-												<td>
-													<span class="label label-orange label-warning">{{ctrl.getReservationStatus(r.status)}}</span>
+												<td data-label="Status"><span
+													class="label label-orange label-warning">{{ctrl.getReservationStatus(r.status)}}</span>
 													<div class="countdown text-lead"></div>
-													<button  class="btn btn-primary btn-small space-top-1 space-2" ng-if="r.status == 1" ng-click="ctrl.openAcceptReservationWindow(r.id)">Accept</button>
-													<button  class="btn btn-primary btn-small space-top-1 space-2" ng-if="r.status == 1" ng-click="ctrl.openDeclineReservationWindow(r.id)">Decline</button>
-													<button  class="btn btn-primary btn-small space-top-1 space-2" ng-if="r.status == 2" ng-click="ctrl.openCancelReservationWindow(r.id)">Cancel</button>
+													<button
+														class="btn btn-primary btn-small space-top-1 space-2"
+														ng-if="r.status == 1"
+														ng-click="ctrl.openAcceptReservationWindow(r.id)">Accept</button>
+													<button
+														class="btn btn-primary btn-small space-top-1 space-2"
+														ng-if="r.status == 1"
+														ng-click="ctrl.openDeclineReservationWindow(r.id)">Decline</button>
+													<button
+														class="btn btn-primary btn-small space-top-1 space-2"
+														ng-if="r.status == 2"
+														ng-click="ctrl.openCancelReservationWindow(r.id)">Cancel</button>
 												</td>
-												<td>{{r.startDate | date:'MMM dd, yyyy'}} - {{r.endDate | date:'MMM dd, yyyy'}} <br/> 
-													<a href="#{webApplication.urlPrefix}/pages/PlaceDetail.html?placeId={{r.placeId}}&amp;checkinDate={{r.startDate | date:'dd.MM.yyyy'}}&amp;checkoutDate={{r.endDate | date:'dd.MM.yyyy'}}" locale="en" target="_blank">{{r.place.title}}</a> 
+												<td data-label="Dates">{{r.startDate |
+													date:'MMM dd, yyyy'}} - {{r.endDate | date:'MMM dd, yyyy'}}
+													<br /> <a
+													href="#{webApplication.urlPrefix}/pages/PlaceDetail.html?placeId={{r.placeId}}&amp;checkinDate={{r.startDate | date:'dd.MM.yyyy'}}&amp;checkoutDate={{r.endDate | date:'dd.MM.yyyy'}}"
+													locale="en" target="_blank">{{r.place.title}}</a>
 												</td>
-												<td>
+												<td data-label="Guest">
 													<div class="media va-container">
-														<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId={{r.clientUserId}}"
-															class="pull-left media-photo media-round" target="_blank"> 
+														<a
+															href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId={{r.clientUserId}}"
+															class="pull-left media-photo media-round" target="_blank">
 															<img alt="{{r.clientUser.firstName}}" height="50"
 															src="{{ctrl.generateUserProfilePhotoUrl(r.clientUserId, r.clientUser.profilePhotoId, 'small')}}"
-															title="{{r.clientUser.firstName}}" width="50" /></a>
+															title="{{r.clientUser.firstName}}" width="50" />
+														</a>
 													</div>
-													<div class="va-top">
-														<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId={{r.clientUserId}}"
-															class="text-normal" style="padding-left: 10px;" target="_blank">{{r.clientUser.firstName}}</a> <br/>
-													</div>
-												</td>
-		
-												<td>{{r.placePrice}} {{ctrl.getCurrencySymbol(r.currencyId)}} total
 													<ul class="list-unstyled">
-														<li>
-															<a target="_blank" href="#{webApplication.urlPrefix}/pages/dashboard/Conversation.html?threadId={{r.messageThreadId}}">Message History</a></li>
+														<li><a
+															href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId={{r.clientUserId}}"
+															class="text-normal" style="padding-left: 10px;"
+															target="_blank">{{r.clientUser.firstName}}</a> <br /></li>
+													</ul>
+												</td>
+
+												<td data-label="Details">{{r.placePrice}}
+													{{ctrl.getCurrencySymbol(r.currencyId)}} total
+													<ul class="list-unstyled">
+														<li><a target="_blank"
+															href="#{webApplication.urlPrefix}/pages/dashboard/Conversation.html?threadId={{r.messageThreadId}}">Message
+																History</a></li>
 													</ul>
 												</td>
 											</tr>
-		
+
 										</tbody>
 									</table>
 								</div>
@@ -84,58 +105,73 @@
 						</ul>
 					</div>
 				</div>
-				<div class="col-md-9 space-top-2" ng-if="ctrl.ongoingList.length > 0">
+				<div class="col-md-9 space-top-2"
+					ng-if="ctrl.ongoingList.length > 0">
 					<div class="panel">
 						<div class="panel-header">
 							<div class="row row-table">
 								<div class="col-md-6 col-middle">Ongoing Reservations</div>
-								<div class="col-md-6 col-middle">
-								</div>
+								<div class="col-md-6 col-middle"></div>
 							</div>
 						</div>
-						<ul class="list-unstyled list-layout" ng-if="ctrl.ongoingList.length > 0">
+						<ul class="list-unstyled list-layout"
+							ng-if="ctrl.ongoingList.length > 0">
 							<li class="listing panel-body" ng-repeat="r in ctrl.ongoingList">
 								<div class="table-responsive">
 									<table class="table panel-body space-1"
-										style="background-color: white">
-										<tbody>
+										style="background-color: white; border: 2px solid #dce0e0;">
+										<thead>
 											<tr>
 												<th>Status</th>
 												<th>Dates and Location</th>
 												<th>Guest</th>
 												<th>Details</th>
 											</tr>
+										</thead>
+										<tbody>
 											<tr class="reservation">
-												<td>
-													<span class="label label-orange label-warning">{{ctrl.getReservationStatus(r.status)}}</span>
+												<td data-label="Status"><span
+													class="label label-orange label-warning">{{ctrl.getReservationStatus(r.status)}}</span>
 													<div class="countdown text-lead"></div>
-													<button  class="btn btn-primary btn-small space-top-1 space-2" ng-if="r.status == 2" ng-click="ctrl.openCancelReservationWindow(r.id)">Cancel</button>
+													<button
+														class="btn btn-primary btn-small space-top-1 space-2"
+														ng-if="r.status == 2"
+														ng-click="ctrl.openCancelReservationWindow(r.id)">Cancel</button>
 												</td>
-												<td>{{r.startDate | date:'MMM dd, yyyy'}} - {{r.endDate | date:'MMM dd, yyyy'}} <br/> 
-													<a href="#{webApplication.urlPrefix}/pages/PlaceDetail.html?placeId={{r.placeId}}&amp;checkinDate={{r.startDate | date:'dd.MM.yyyy'}}&amp;checkoutDate={{r.endDate | date:'dd.MM.yyyy'}}" locale="en" target="_blank">{{r.place.title}}</a> 
+												<td data-label="Dates">{{r.startDate |
+													date:'MMM dd, yyyy'}} - {{r.endDate | date:'MMM dd, yyyy'}}
+													<br /> <a
+													href="#{webApplication.urlPrefix}/pages/PlaceDetail.html?placeId={{r.placeId}}&amp;checkinDate={{r.startDate | date:'dd.MM.yyyy'}}&amp;checkoutDate={{r.endDate | date:'dd.MM.yyyy'}}"
+													locale="en" target="_blank">{{r.place.title}}</a>
 												</td>
-												<td>
+												<td data-label="Guest">
 													<div class="media va-container">
-														<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId={{r.clientUserId}}"
-															class="pull-left media-photo media-round" target="_blank"> 
+														<a
+															href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId={{r.clientUserId}}"
+															class="pull-left media-photo media-round" target="_blank">
 															<img alt="{{r.clientUser.firstName}}" height="50"
 															src="{{ctrl.generateUserProfilePhotoUrl(r.clientUserId, r.clientUser.profilePhotoId, 'small')}}"
-															title="{{r.clientUser.firstName}}" width="50" /></a>
+															title="{{r.clientUser.firstName}}" width="50" />
+														</a>
 													</div>
-													<div class="va-top">
-														<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId={{r.clientUserId}}"
-															class="text-normal" style="padding-left: 10px;" target="_blank">{{r.clientUser.firstName}}</a> <br/>
-													</div>
-												</td>
-		
-												<td>{{r.placePrice}} {{ctrl.getCurrencySymbol(r.currencyId)}} total
 													<ul class="list-unstyled">
-														<li>
-															<a target="_blank" href="#{webApplication.urlPrefix}/pages/dashboard/Conversation.html?threadId={{r.messageThreadId}}">Message History</a></li>
+														<li><a
+															href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId={{r.clientUserId}}"
+															class="text-normal" style="padding-left: 10px;"
+															target="_blank">{{r.clientUser.firstName}}</a> <br /></li>
+													</ul>
+												</td>
+
+												<td data-label="Details">{{r.placePrice}}
+													{{ctrl.getCurrencySymbol(r.currencyId)}} total
+													<ul class="list-unstyled">
+														<li><a target="_blank"
+															href="#{webApplication.urlPrefix}/pages/dashboard/Conversation.html?threadId={{r.messageThreadId}}">Message
+																History</a></li>
 													</ul>
 												</td>
 											</tr>
-		
+
 										</tbody>
 									</table>
 								</div>
@@ -148,53 +184,67 @@
 						<div class="panel-header">
 							<div class="row row-table">
 								<div class="col-md-6 col-middle">Old Reservations</div>
-								<div class="col-md-6 col-middle">
-								</div>
+								<div class="col-md-6 col-middle"></div>
 							</div>
 						</div>
-						<ul class="list-unstyled list-layout" ng-if="ctrl.oldList.length > 0">
+						<ul class="list-unstyled list-layout"
+							ng-if="ctrl.oldList.length > 0">
 							<li class="listing panel-body" ng-repeat="r in ctrl.oldList">
 								<div class="table-responsive">
 									<table class="table panel-body space-1"
-										style="background-color: white">
-										<tbody>
+										style="background-color: white; border: 2px solid #dce0e0;">
+										<thead>
 											<tr>
 												<th>Status</th>
 												<th>Dates and Location</th>
 												<th>Guest</th>
 												<th>Details</th>
 											</tr>
+										</thead>
+										<tbody>
 											<tr class="reservation">
-												<td>
-													<span class="label label-orange label-warning">{{ctrl.getReservationStatus(r.status)}}</span>
+												<td data-label="Status"><span
+													class="label label-orange label-warning">{{ctrl.getReservationStatus(r.status)}}</span>
 													<div class="countdown text-lead"></div>
-													<button class="btn btn-primary btn-small space-top-1 space-2" ng-if="ctrl.isReviewed(r) == false" ng-click="ctrl.openReviewWindow(r)">Review Guest</button>
+													<button
+														class="btn btn-primary btn-small space-top-1 space-2"
+														ng-if="ctrl.isReviewed(r) == false"
+														ng-click="ctrl.openReviewWindow(r)">Review Guest</button>
 												</td>
-												<td>{{r.startDate | date:'MMM dd, yyyy'}} - {{r.endDate | date:'MMM dd, yyyy'}} <br/> 
-													<a href="#{webApplication.urlPrefix}/pages/PlaceDetail.html?placeId={{r.placeId}}&amp;checkinDate={{r.startDate | date:'dd.MM.yyyy'}}&amp;checkoutDate={{r.endDate | date:'dd.MM.yyyy'}}" locale="en" target="_blank">{{r.place.title}}</a> 
+												<td data-label="Dates">{{r.startDate |
+													date:'MMM dd, yyyy'}} - {{r.endDate | date:'MMM dd, yyyy'}}
+													<br /> <a
+													href="#{webApplication.urlPrefix}/pages/PlaceDetail.html?placeId={{r.placeId}}&amp;checkinDate={{r.startDate | date:'dd.MM.yyyy'}}&amp;checkoutDate={{r.endDate | date:'dd.MM.yyyy'}}"
+													locale="en" target="_blank">{{r.place.title}}</a>
 												</td>
-												<td>
+												<td data-label="Guest">
 													<div class="media va-container">
-														<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId={{r.clientUserId}}"
-															class="pull-left media-photo media-round" target="_blank"> 
+														<a
+															href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId={{r.clientUserId}}"
+															class="pull-left media-photo media-round" target="_blank">
 															<img alt="{{r.clientUser.firstName}}" height="50"
 															src="{{ctrl.generateUserProfilePhotoUrl(r.clientUserId, r.clientUser.profilePhotoId, 'small')}}"
-															title="{{r.clientUser.firstName}}" width="50" /></a>
+															title="{{r.clientUser.firstName}}" width="50" />
+														</a>
 													</div>
-													<div class="va-top">
-														<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId={{r.clientUserId}}"
-															class="text-normal" style="padding-left: 10px;" target="_blank">{{r.clientUser.firstName}}</a> <br/>
-													</div>
-												</td>
-		
-												<td>{{r.placePrice}} {{ctrl.getCurrencySymbol(r.currencyId)}} total
 													<ul class="list-unstyled">
-														<li>
-															<a target="_blank" href="#{webApplication.urlPrefix}/pages/dashboard/Conversation.html?threadId={{r.messageThreadId}}">Message History</a></li>
+														<li><a
+															href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId={{r.clientUserId}}"
+															class="text-normal" style="padding-left: 10px;"
+															target="_blank">{{r.clientUser.firstName}}</a> <br /></li>
+													</ul>
+												</td>
+
+												<td data-label="Details">{{r.placePrice}}
+													{{ctrl.getCurrencySymbol(r.currencyId)}} total
+													<ul class="list-unstyled">
+														<li><a target="_blank"
+															href="#{webApplication.urlPrefix}/pages/dashboard/Conversation.html?threadId={{r.messageThreadId}}">Message
+																History</a></li>
 													</ul>
 												</td>
 											</tr>
-		
+
 										</tbody>
 									</table>
 								</div>
@@ -205,10 +255,14 @@
 			</div>
 		</div>
 		</main>
-		<script src="#{webApplication.urlPrefix}/static/js/dashboard.js?ver=#{webApplication.staticFileVersion}"></script>
-		<script src="#{webApplication.urlPrefix}/static/js/angular/service/reservation_service.js?ver=#{webApplication.staticFileVersion}"></script>
-		<script src="#{webApplication.urlPrefix}/static/js/angular/service/review_service.js?ver=#{webApplication.staticFileVersion}"></script>
-		<script src="#{webApplication.urlPrefix}/static/js/angular/controller/reservation_list_controller.js?ver=#{webApplication.staticFileVersion}"></script>
-		
+		<script
+			src="#{webApplication.urlPrefix}/static/js/dashboard.js?ver=#{webApplication.staticFileVersion}"></script>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/angular/service/reservation_service.js?ver=#{webApplication.staticFileVersion}"></script>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/angular/service/review_service.js?ver=#{webApplication.staticFileVersion}"></script>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/angular/controller/reservation_list_controller.js?ver=#{webApplication.staticFileVersion}"></script>
+
 	</ui:define>
 </ui:composition>
