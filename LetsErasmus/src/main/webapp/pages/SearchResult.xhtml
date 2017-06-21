@@ -207,14 +207,12 @@
 							ng-click="ctrl.hideExtendedSearchFields();" value="Cancel" />
 						<input type="button" class="FilterToolBar-apply u-button" value="Apply" ng-click="ctrl.basicSearch()"/>
 					</div>
-					<div id="filterToolBarId" class="FilterToolBar u-borderTop"
-						data-reactid="532">
+					<div id="filterToolBarId" class="FilterToolBar u-borderTop">
 						<button class="FilterToolBar-showExtended u-button icon icon-filter"
-							data-reactid="533"
 							ng-click="ctrl.showExtendedSearchFields();">More
 							filters</button>
-						<div class="SearchCounter" data-reactid="534">
-							<h2 data-reactid="535" ng-if="ctrl.searchList == null">
+						<div class="SearchCounter">
+							<h2 ng-if="ctrl.searchList == null">
 								Show <b>{{ctrl.placeList.length}}</b> of <b>{{ctrl.getOriginalPlaceList().length}}</b> rooms available in <strong>{{ctrl.selectedPlaceName}}</strong>
 							</h2>
 							<h2 data-reactid="535" ng-if="ctrl.searchList != null">
@@ -236,7 +234,7 @@
 													<div class="image-gallery-slides">
 														<div class="image-gallery-slide center"
 															style="">
-															<img id="imgPlaceSlider_{{p.id}}" src="{{ctrl.generatePlacePhotoUrl(p.id, p.coverPhoto.id, 'small')}}" 
+															<img id="imgPlaceSlider_{{p.id}}" ng-src="{{ctrl.generatePlacePhotoUrl(p.id, p.coverPhoto.id, 'small')}}" 
 																role="presentation" itemprop="image" />
 															<input type="hidden" id="hiddenPlaceSliderPhotoIndex_{{p.id}}" value="0" />
 															<!-- 

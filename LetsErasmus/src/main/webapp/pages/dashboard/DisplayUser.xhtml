@@ -56,7 +56,7 @@
 											<li class="active media-photo media-photo-block">
 												<img id="imgProfileImage" 
 													alt="{{ctrl.user.firstName}}" 
-													src="{{ctrl.getUserProfilePhotoUrl()}}"
+													ng-src="{{ctrl.getUserProfilePhotoUrl()}}"
 													title="{{ctrl.user.firstName}}"/>
 											</li>
 											<li class="media-photo media-photo-block"></li>
@@ -273,7 +273,7 @@
 																<img alt="{{r.user.firstName}}" class="lazy"
 																	data-original="{{r.user.profileImageUrl}}"
 																	height="68"
-																	src="{{r.user.profileImageUrl}}"
+																	ng-src="{{r.user.profileImageUrl}}"
 																	title="{{r.user.firstName}}" width="68" style="display: inline;" />
 															</div>
 															<div class="text-center profile-name text-wrap">{{r.user.firstName}}</div>

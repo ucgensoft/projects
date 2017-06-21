@@ -121,7 +121,7 @@ public class ApiFavoriteController extends BaseApiController {
 					Favorite userFavorite = new Favorite();
 					userFavorite.setUserId(user.getId());
 					
-					List<Favorite> userFavoriteList = this.favoriteService.listFavorite(favorite, null, false, false, false);
+					List<Favorite> userFavoriteList = this.favoriteService.listFavorite(userFavorite, null, false, false, false);
 					
 					if (userFavoriteList.size() < 20) {
 						boolean itemAlreadyExist = false;

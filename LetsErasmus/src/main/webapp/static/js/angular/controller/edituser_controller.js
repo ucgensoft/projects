@@ -167,7 +167,7 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
   					newUserPhoto = { 'file': emptyFile, 'src': null};
   				} else {
   					var emptyFile = createEmptyFile('dummy');
-  					newUserPhoto = { 'file': emptyFile, 'src': null};
+  					newUserPhoto = { 'file': emptyFile, 'src': null, 'angle' : 0};
   				}
   			}
   			

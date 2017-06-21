@@ -29,6 +29,14 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
 
       var basicSearchFlag = false;
       
+      self.isMapVisible = function() {
+    	  if ($('#searchMapId').length > 0 && $('#searchMapId').css('display') != 'none') {
+    		  return true;
+    	  } else {
+    		  return false;
+    	  }
+      };
+      
       initialize = function() {
     	  
     	  if (isMobile()) {
@@ -40,34 +48,41 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
 	    	self.selectedEndDate = getUriParam(EnmUriParam.CHECKOUT_DATE);
 	    	self.selectedLocationId = getUriParam(EnmUriParam.LOCATION_ID);
 		  
-	    	var mapOptions = {
-					//zoom: 14,
-					//center: self.selectedLocation,
-					disableDefaultUI: true,
-					zoomControl: true,
-					zoomControlOptions: {
-			              position: google.maps.ControlPosition.TOP_LEFT
-			         }
-			};
-	    	
-	    	map = new google.maps.Map(document.getElementById('divMap'), mapOptions);
+	    	if (self.isMapVisible()) {
+	    		var mapOptions = {
+						//zoom: 14,
+						//center: self.selectedLocation,
+						disableDefaultUI: true,
+						zoomControl: true,
+						zoomControlOptions: {
+				              position: google.maps.ControlPosition.TOP_LEFT
+				         }
+				};
+		    	
+		    	map = new google.maps.Map(document.getElementById('divMap'), mapOptions);
+	    	}
 	    	
 	    	geocoder.geocode({'placeId': self.selectedLocationId}, function(results, status) {
 	            if (status === 'OK') {
 	              if (results[0]) {
 	            	var result = results[0]; 
 	               
-	                map.setCenter(result.geometry.location);
-	                
-	                self.locSearchCriteria = self.getDisplayArea(result.geometry.viewport);
-	                
-	                if (self.locSearchCriteria.lat1 != result.geometry.viewport.f.f 
-	                		&& self.locSearchCriteria.lng1 != result.geometry.viewport.b.b) {
-	                	 map.setZoom(15);
-	                }
-	                
-	                if (!isMobile()) {
-	                	var point1 = new google.maps.LatLng(self.locSearchCriteria.lat1, self.locSearchCriteria.lng1);
+	            	self.locSearchCriteria = self.getDisplayArea(result.geometry.viewport);
+	            	
+	            	self.selectedLat = result.geometry.location.lat();
+	    	    	self.selectedLng = result.geometry.location.lng();
+	    	    	
+	    	    	self.selectedLocation = new google.maps.LatLng(self.selectedLat, self.selectedLng);
+	            	
+	            	if (self.isMapVisible()) {
+	            		map.setCenter(result.geometry.location);
+		                
+		                if (self.locSearchCriteria.lat1 != result.geometry.viewport.f.f 
+		                		&& self.locSearchCriteria.lng1 != result.geometry.viewport.b.b) {
+		                	 map.setZoom(15);
+		                }
+		                
+		                var point1 = new google.maps.LatLng(self.locSearchCriteria.lat1, self.locSearchCriteria.lng1);
 		                var point2 = new google.maps.LatLng(self.locSearchCriteria.lat2, self.locSearchCriteria.lng2);
 		                
 		                var bounds = new google.maps.LatLngBounds();
@@ -81,26 +96,21 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
 		                self.locSearchCriteria.lng1 = map.getBounds().getNorthEast().lng();
 		                self.locSearchCriteria.lat2 =  map.getBounds().getSouthWest().lat();
 		                self.locSearchCriteria.lng2 = map.getBounds().getSouthWest().lng();
-	                }
+		                
+		                $('#divMapCheckbox').removeClass('hidden-force');
+		                
+		                marker = new google.maps.Marker({
+		    		        map: map,
+		    				draggable: false,
+		    		        position: self.selectedLocation
+		    		    });
+		    	    	
+		    	    	map.controls[google.maps.ControlPosition.TOP_LEFT].push($('#divMapCheckbox')[0]);
+		    	    	
+		    	    	map.addListener('zoom_changed', self.mapDisplayAreaChanged);
+		    	    	map.addListener('dragend', self.mapDisplayAreaChanged);
+	            	}
 	                
-	                self.selectedLat = result.geometry.location.lat();
-	    	    	self.selectedLng = result.geometry.location.lng();
-	    	    	
-	    	    	self.selectedLocation = new google.maps.LatLng(self.selectedLat, self.selectedLng);
-	    	    	
-	    	    	marker = new google.maps.Marker({
-	    		        map: map,
-	    				draggable: false,
-	    		        position: self.selectedLocation
-	    		    });
-	    	    	
-	    	    	map.controls[google.maps.ControlPosition.TOP_LEFT].push($('#divMapCheckbox')[0]);
-	    	    	
-	    	    	map.addListener('zoom_changed', self.mapDisplayAreaChanged);
-	    	    	map.addListener('dragend', self.mapDisplayAreaChanged);
-	    	    	
-	    	    	$('#divMapCheckbox').removeClass('hidden-force');
-	    	    	
 	    	    	self.listPlace(self.displayPlaceList);
 	              }
 	            } else {
@@ -475,20 +485,27 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
 	  };
 	  
 	  self.refreshMap = function() {
-		  map.customMarkerMap = [];
+		  if (self.isMapVisible()) {
+			  map.customMarkerMap = [];
+			  for(var i = 0; i < self.placeList.length; i++) {
+				  var place = self.placeList[i];
+				  var myLatlng = new google.maps.LatLng(place.location.latitude, place.location.longitude);
+				  var overlay = new CustomMarker(
+							myLatlng, 
+							map,
+							{
+								marker_id: place.id,
+								marker_element_id : "divMapMarker_" + place.id,
+								infoWindow: infoWindow
+							}
+						);
+				  map.customMarkerMap.push(overlay);
+				  self.calculateDistance(myLatlng, self.selectedLocation, place);
+			  }
+		  }
 		  for(var i = 0; i < self.placeList.length; i++) {
 			  var place = self.placeList[i];
 			  var myLatlng = new google.maps.LatLng(place.location.latitude, place.location.longitude);
-			  var overlay = new CustomMarker(
-						myLatlng, 
-						map,
-						{
-							marker_id: place.id,
-							marker_element_id : "divMapMarker_" + place.id,
-							infoWindow: infoWindow
-						}
-					);
-			  map.customMarkerMap.push(overlay);
 			  self.calculateDistance(myLatlng, self.selectedLocation, place);
 		  }
 	  };
