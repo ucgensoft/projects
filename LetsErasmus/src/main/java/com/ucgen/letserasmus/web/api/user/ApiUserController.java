@@ -495,6 +495,9 @@ public class ApiUserController extends BaseApiController {
 					User tmpUser = new User();
 					tmpUser.setEmail(uiUser.getEmail());
 					tmpUser = this.userService.getUser(tmpUser);
+					if (tmpUser != null) {
+						isValid = false;
+					}
 				}
 				if (isValid) {
 					Date operationDate = new Date();
