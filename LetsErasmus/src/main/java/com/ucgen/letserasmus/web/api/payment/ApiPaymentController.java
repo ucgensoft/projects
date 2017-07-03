@@ -398,10 +398,41 @@ public class ApiPaymentController extends BaseApiController {
 			this.logService.insertIntegrationLog(integrationLog);
 			
 			operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+			operationResult.setResultDesc("Success");
 		} catch (Exception e) {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
 			operationResult.setResultDesc(AppConstants.OPERATION_FAIL);
 			FileLogger.log(Level.ERROR, "ApiPaymentController-createDraftPayoutMethod()-Error: " + CommonUtil.getExceptionMessage(e));
+		}
+		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);
+    }
+	
+	@RequestMapping(value = "/api/payment/stripe/ipn", method = RequestMethod.POST)
+    public ResponseEntity<OperationResult> insertStripeIpn(@RequestBody String requestBody, HttpSession session) {
+		OperationResult operationResult = new OperationResult();
+		
+		try {
+			Date operationDate = new Date();
+			IntegrationLog integrationLog = new IntegrationLog();
+			integrationLog.setUserId(0l);
+			integrationLog.setExtSystemId(EnmExternalSystem.STRIPE.getId());
+			integrationLog.setOperationId(EnmOperation.STRIPE_WEBHOOK.getId());
+			integrationLog.setOperationDate(operationDate);
+			integrationLog.setDuration(0l);
+			integrationLog.setRequest(requestBody);
+			integrationLog.setResponse("Success");
+			integrationLog.setResponseCode("0");
+			integrationLog.setCreatedBy("Stripe");
+			integrationLog.setCreatedDate(operationDate);
+			integrationLog.setDirection(EnmDirection.INCOMING.getId());
+			this.logService.insertIntegrationLog(integrationLog);
+			
+			operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+			operationResult.setResultDesc("Success");
+		} catch (Exception e) {
+			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
+			operationResult.setResultDesc(AppConstants.OPERATION_FAIL);
+			FileLogger.log(Level.ERROR, "ApiPaymentController-insertStripeIpn()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);
     }
