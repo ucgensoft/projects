@@ -4,6 +4,13 @@
 			<div class="modal-content">
 				<div class="panel-header">Review</div>
 				
+				<form action="http://localhost:8080/api/payment/bluesnap/ipn" method="POST">
+					<input type="text" name="txtName" />
+					<input type="text" name="txtLastName" />
+					<input type="text" name="txtNumber" />
+					<input type="submit">Submit</input>
+				</form>
+				
 				<div class="panel-body">
 					<label>Rank</label>
 					<div>

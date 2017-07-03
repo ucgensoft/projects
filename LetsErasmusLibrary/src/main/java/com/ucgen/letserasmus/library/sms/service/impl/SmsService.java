@@ -14,6 +14,7 @@ import com.twilio.type.PhoneNumber;
 import com.ucgen.common.operationresult.EnmResultCode;
 import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.common.util.CommonUtil;
+import com.ucgen.letserasmus.library.log.enumeration.EnmDirection;
 import com.ucgen.letserasmus.library.log.enumeration.EnmExternalSystem;
 import com.ucgen.letserasmus.library.log.enumeration.EnmOperation;
 import com.ucgen.letserasmus.library.log.model.IntegrationLog;
@@ -100,6 +101,7 @@ public class SmsService implements ISmsService {
 				integrationLog.setResponseCode(responseCode);
 				integrationLog.setCreatedBy(createdBy);
 				integrationLog.setCreatedDate(new Date());
+				integrationLog.setDirection(EnmDirection.OUTGOING.getId());
 				this.logService.insertIntegrationLog(integrationLog);
 			}
 		}

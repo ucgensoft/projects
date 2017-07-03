@@ -25,7 +25,7 @@ public class LogDao extends JdbcDaoSupport implements ILogDao {
 			+ " IP, CREATED_BY, CREATED_DATE) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 	
 	private static final String INSERT_INTEGRATION_SQL = "INSERT INTO INTEGRATION_LOG (USER_ID, EXT_SYSTEM_ID, OPERATION_ID, OPERATION_DATE, DURATION, " 
-			+ " REQUEST, RESPONSE, RESPONSE_CODE, CREATED_BY, CREATED_DATE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			+ " REQUEST, RESPONSE, RESPONSE_CODE, DIRECTION, CREATED_BY, CREATED_DATE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	
 	private UtilityDao utilityDao;
 	
@@ -130,6 +130,7 @@ public class LogDao extends JdbcDaoSupport implements ILogDao {
 		argList.add(integrationLog.getRequest());
 		argList.add(integrationLog.getResponse());
 		argList.add(integrationLog.getResponseCode());
+		argList.add(integrationLog.getDirection());
 		argList.add(integrationLog.getCreatedBy());
 		argList.add(integrationLog.getCreatedDate());
 		

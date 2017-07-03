@@ -31,6 +31,7 @@ import com.ucgen.letserasmus.library.bluesnap.model.ExtCardHolderInfo;
 import com.ucgen.letserasmus.library.bluesnap.model.ExtPaymentInfo;
 import com.ucgen.letserasmus.library.bluesnap.model.ExtVendorInfo;
 import com.ucgen.letserasmus.library.bluesnap.service.IExtPaymentService;
+import com.ucgen.letserasmus.library.log.enumeration.EnmDirection;
 import com.ucgen.letserasmus.library.log.enumeration.EnmExternalSystem;
 import com.ucgen.letserasmus.library.log.enumeration.EnmOperation;
 import com.ucgen.letserasmus.library.log.model.IntegrationLog;
@@ -144,6 +145,7 @@ public class ExtPaymentService implements IExtPaymentService {
 				integrationLog.setResponseCode(responseCode);
 				integrationLog.setCreatedBy(operationBy);
 				integrationLog.setCreatedDate(new Date());
+				integrationLog.setDirection(EnmDirection.OUTGOING.getId());
 				this.logService.insertIntegrationLog(integrationLog);
 			}
 		}
@@ -223,6 +225,7 @@ public class ExtPaymentService implements IExtPaymentService {
 				integrationLog.setResponseCode(responseCode);
 				integrationLog.setCreatedBy(operationBy);
 				integrationLog.setCreatedDate(new Date());
+				integrationLog.setDirection(EnmDirection.OUTGOING.getId());
 				this.logService.insertIntegrationLog(integrationLog);
 			}
 		}
@@ -322,6 +325,7 @@ public class ExtPaymentService implements IExtPaymentService {
 				integrationLog.setResponseCode(responseCode);
 				integrationLog.setCreatedBy(operationBy);
 				integrationLog.setCreatedDate(new Date());
+				integrationLog.setDirection(EnmDirection.OUTGOING.getId());
 				this.logService.insertIntegrationLog(integrationLog);
 			}
 		}
@@ -401,6 +405,7 @@ public class ExtPaymentService implements IExtPaymentService {
 				integrationLog.setResponseCode(responseCode);
 				integrationLog.setCreatedBy(operationBy);
 				integrationLog.setCreatedDate(new Date());
+				integrationLog.setDirection(EnmDirection.OUTGOING.getId());
 				this.logService.insertIntegrationLog(integrationLog);
 			}
 		}
@@ -480,6 +485,7 @@ public class ExtPaymentService implements IExtPaymentService {
 				integrationLog.setResponseCode(responseCode);
 				integrationLog.setCreatedBy(operationBy);
 				integrationLog.setCreatedDate(new Date());
+				integrationLog.setDirection(EnmDirection.OUTGOING.getId());
 				this.logService.insertIntegrationLog(integrationLog);
 			}
 		}
@@ -559,6 +565,7 @@ public class ExtPaymentService implements IExtPaymentService {
 				integrationLog.setResponseCode(responseCode);
 				integrationLog.setCreatedBy(operationBy);
 				integrationLog.setCreatedDate(new Date());
+				integrationLog.setDirection(EnmDirection.OUTGOING.getId());
 				this.logService.insertIntegrationLog(integrationLog);
 			}
 		}

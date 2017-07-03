@@ -23,6 +23,11 @@ import com.ucgen.common.util.CommonUtil;
 import com.ucgen.common.util.FileLogger;
 import com.ucgen.letserasmus.library.bluesnap.service.IExtPaymentService;
 import com.ucgen.letserasmus.library.common.enumeration.EnmErrorCode;
+import com.ucgen.letserasmus.library.log.enumeration.EnmDirection;
+import com.ucgen.letserasmus.library.log.enumeration.EnmExternalSystem;
+import com.ucgen.letserasmus.library.log.enumeration.EnmOperation;
+import com.ucgen.letserasmus.library.log.model.IntegrationLog;
+import com.ucgen.letserasmus.library.log.service.ILogService;
 import com.ucgen.letserasmus.library.payment.enumeration.EnmVendorEntityType;
 import com.ucgen.letserasmus.library.payment.model.PaymentMethod;
 import com.ucgen.letserasmus.library.payment.model.PayoutMethod;
@@ -38,7 +43,13 @@ public class ApiPaymentController extends BaseApiController {
 	private IPaymentService paymentService;
 	private IExtPaymentService extPaymentService;
 	private IStripePaymentService stripePaymentService;
+	private ILogService logService;
 	
+	@Autowired
+	public void setLogService(ILogService logService) {
+		this.logService = logService;
+	}
+
 	@Autowired
 	public void setPaymentService(IPaymentService paymentService) {
 		this.paymentService = paymentService;
@@ -364,6 +375,35 @@ public class ApiPaymentController extends BaseApiController {
 			FileLogger.log(Level.ERROR, "ApiPaymentController-getPayoutMethod()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		return new ResponseEntity<ValueOperationResult<PayoutMethod>>(operationResult, HttpStatus.OK);
+    }
+	
+	@RequestMapping(value = "/api/payment/bluesnap/ipn", method = RequestMethod.POST)
+    public ResponseEntity<OperationResult> insertBlueSnapIpn(@RequestBody String requestBody, HttpSession session) {
+		OperationResult operationResult = new OperationResult();
+		
+		try {
+			Date operationDate = new Date();
+			IntegrationLog integrationLog = new IntegrationLog();
+			integrationLog.setUserId(0l);
+			integrationLog.setExtSystemId(EnmExternalSystem.BLUESNAP.getId());
+			integrationLog.setOperationId(EnmOperation.BLUESNAP_WEBHOOK.getId());
+			integrationLog.setOperationDate(operationDate);
+			integrationLog.setDuration(0l);
+			integrationLog.setRequest(requestBody);
+			integrationLog.setResponse("Success");
+			integrationLog.setResponseCode("0");
+			integrationLog.setCreatedBy("BlueSnap");
+			integrationLog.setCreatedDate(operationDate);
+			integrationLog.setDirection(EnmDirection.INCOMING.getId());
+			this.logService.insertIntegrationLog(integrationLog);
+			
+			operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+		} catch (Exception e) {
+			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
+			operationResult.setResultDesc(AppConstants.OPERATION_FAIL);
+			FileLogger.log(Level.ERROR, "ApiPaymentController-createDraftPayoutMethod()-Error: " + CommonUtil.getExceptionMessage(e));
+		}
+		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);
     }
 	
 }

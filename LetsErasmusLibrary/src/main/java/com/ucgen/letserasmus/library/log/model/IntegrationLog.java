@@ -18,6 +18,7 @@ public class IntegrationLog extends BaseModel {
 	private String request;
 	private String response;
 	private String responseCode;
+	private Integer direction;
 	
 	private User user;
 
@@ -99,6 +100,14 @@ public class IntegrationLog extends BaseModel {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public Integer getDirection() {
+		return direction;
+	}
+
+	public void setDirection(Integer direction) {
+		this.direction = direction;
 	}
 	
 }

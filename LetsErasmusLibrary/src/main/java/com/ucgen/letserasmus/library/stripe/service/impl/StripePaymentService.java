@@ -22,6 +22,7 @@ import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.common.operationresult.ValueOperationResult;
 import com.ucgen.common.util.CommonUtil;
 import com.ucgen.common.util.DateUtil;
+import com.ucgen.letserasmus.library.log.enumeration.EnmDirection;
 import com.ucgen.letserasmus.library.log.enumeration.EnmExternalSystem;
 import com.ucgen.letserasmus.library.log.enumeration.EnmOperation;
 import com.ucgen.letserasmus.library.log.model.IntegrationLog;
@@ -140,6 +141,7 @@ public class StripePaymentService implements IStripePaymentService {
 				integrationLog.setResponseCode(responseCode);
 				integrationLog.setCreatedBy(payoutMethod.getCreatedBy());
 				integrationLog.setCreatedDate(new Date());
+				integrationLog.setDirection(EnmDirection.OUTGOING.getId());
 				this.logService.insertIntegrationLog(integrationLog);
 			}
 		}
@@ -216,6 +218,7 @@ public class StripePaymentService implements IStripePaymentService {
 				integrationLog.setResponseCode(responseCode);
 				integrationLog.setCreatedBy(operationBy);
 				integrationLog.setCreatedDate(new Date());
+				integrationLog.setDirection(EnmDirection.OUTGOING.getId());
 				this.logService.insertIntegrationLog(integrationLog);
 			}
 		}
@@ -284,6 +287,7 @@ public class StripePaymentService implements IStripePaymentService {
 				integrationLog.setResponseCode(responseCode);
 				integrationLog.setCreatedBy(operationBy);
 				integrationLog.setCreatedDate(new Date());
+				integrationLog.setDirection(EnmDirection.OUTGOING.getId());
 				this.logService.insertIntegrationLog(integrationLog);
 			}
 		}
@@ -342,6 +346,7 @@ public class StripePaymentService implements IStripePaymentService {
 				integrationLog.setResponseCode(responseCode);
 				integrationLog.setCreatedBy(operationBy);
 				integrationLog.setCreatedDate(new Date());
+				integrationLog.setDirection(EnmDirection.OUTGOING.getId());
 				this.logService.insertIntegrationLog(integrationLog);
 			}
 		}
@@ -403,6 +408,7 @@ public class StripePaymentService implements IStripePaymentService {
 				integrationLog.setResponseCode(responseCode);
 				integrationLog.setCreatedBy(operationBy);
 				integrationLog.setCreatedDate(new Date());
+				integrationLog.setDirection(EnmDirection.OUTGOING.getId());
 				this.logService.insertIntegrationLog(integrationLog);
 			}
 		}
@@ -481,6 +487,7 @@ public class StripePaymentService implements IStripePaymentService {
 				integrationLog.setResponseCode(responseCode);
 				integrationLog.setCreatedBy(operationBy);
 				integrationLog.setCreatedDate(new Date());
+				integrationLog.setDirection(EnmDirection.OUTGOING.getId());
 				this.logService.insertIntegrationLog(integrationLog);
 			}
 		}
@@ -542,6 +549,7 @@ public class StripePaymentService implements IStripePaymentService {
 				integrationLog.setResponseCode(responseCode);
 				integrationLog.setCreatedBy(operationBy);
 				integrationLog.setCreatedDate(new Date());
+				integrationLog.setDirection(EnmDirection.OUTGOING.getId());
 				this.logService.insertIntegrationLog(integrationLog);
 			}
 		}
@@ -601,6 +609,7 @@ public class StripePaymentService implements IStripePaymentService {
 				integrationLog.setResponseCode(responseCode);
 				integrationLog.setCreatedBy(operationBy);
 				integrationLog.setCreatedDate(new Date());
+				integrationLog.setDirection(EnmDirection.OUTGOING.getId());
 				this.logService.insertIntegrationLog(integrationLog);
 			}
 		}
@@ -665,6 +674,7 @@ public class StripePaymentService implements IStripePaymentService {
 				integrationLog.setResponseCode(responseCode);
 				integrationLog.setCreatedBy(operationBy);
 				integrationLog.setCreatedDate(new Date());
+				integrationLog.setDirection(EnmDirection.OUTGOING.getId());
 				this.logService.insertIntegrationLog(integrationLog);
 			}
 		}
