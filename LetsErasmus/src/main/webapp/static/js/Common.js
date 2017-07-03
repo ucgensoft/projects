@@ -628,8 +628,8 @@ MapUtil = {
 			if ((lng1 > 0 && lng2 > 0) || lng1 < 0 && lng2 < 0) {
 	    		  lngDiff = (lng1 > lng2 ? (Math.abs(lng1) - Math.abs(lng2)) : (Math.abs(lng2) - Math.abs(lng1)));
 	    	} else {
-	    		var lngDiff1 = Math.abs(lat1) + Math.abs(lat2);
-	    		var lngDiff2 = (180 - Math.abs(lat1)) + (180 - Math.abs(lat2));
+	    		var lngDiff1 = Math.abs(lng1) + Math.abs(lng2);
+	    		var lngDiff2 = (180 - Math.abs(lng1)) + (180 - Math.abs(lng2));
 	    		if (lngDiff1 < lngDiff2) {
 	    			lngDiff = lngDiff1;
 	    		} else {
