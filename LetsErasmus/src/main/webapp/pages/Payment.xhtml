@@ -12,6 +12,16 @@
 		<script>
 			var fraudSessionId = '#{webApplication.paymentFraudSessionId}';
 		</script>
+		<script type="text/javascript">
+			//<![CDATA[ 
+			var tlJsHost = ((window.location.protocol == "https:") ? "https://secure.comodo.com/"
+					: "http://www.trustlogo.com/");
+			document
+					.write(unescape("%3Cscript src='"
+							+ tlJsHost
+							+ "trustlogo/javascript/trustlogo.js' type='text/javascript'%3E%3C/script%3E"));
+			//]]>
+		</script>
 	</ui:define>
 	<ui:define name="body">
 		<main id="site-content" role="main">
@@ -235,8 +245,13 @@
 								
 							</section>
 						</div>
-						<a style="float:right;"><img src="#{webApplication.urlPrefix}/static/images/comodo_secure.png" height="85px" width="100px"></img></a>
-					</div>
+						<!-- <a style="float:right;"><img src="#{webApplication.urlPrefix}/static/images/comodo_secure.png" height="85px" width="100px"></img></a> -->
+					<script language="JavaScript" type="text/javascript">
+						TrustLogo(
+								"https://www.letserasmus.com/static/images/comodo_secure.png",
+								"CL1", "none");
+					</script>
+				</div>
 				</div>
 			<!-- Bluesnap info is removed
 				<div ng-if="ctrl.reservation.hostUser.payoutMethod.externalSystemId == 2" id="divBlueSnapFooter" class="hide-sm text-center">
