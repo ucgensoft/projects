@@ -29,6 +29,7 @@ import com.ucgen.common.util.WebUtil;
 import com.ucgen.letserasmus.library.bluesnap.enumeration.ExtEnmTransactionType;
 import com.ucgen.letserasmus.library.bluesnap.model.ExtCardHolderInfo;
 import com.ucgen.letserasmus.library.bluesnap.model.ExtPaymentInfo;
+import com.ucgen.letserasmus.library.bluesnap.model.ExtTransactionFraudInfo;
 import com.ucgen.letserasmus.library.bluesnap.model.ExtVendorInfo;
 import com.ucgen.letserasmus.library.bluesnap.service.IExtPaymentService;
 import com.ucgen.letserasmus.library.log.enumeration.EnmDirection;
@@ -271,6 +272,11 @@ public class ExtPaymentService implements IExtPaymentService {
 		    paymentInfo.setPfToken(payment.getCardInfoToken());
 		    paymentInfo.setVendorInfo(vendorInfo);
 		    paymentInfo.setCardHolderInfo(cardHolderInfo);
+		    
+		    ExtTransactionFraudInfo transactionFraudInfo = new ExtTransactionFraudInfo();
+		    transactionFraudInfo.setFraudSessionId(paymentMethod.getFraudSessionId());
+		    
+		    paymentInfo.setTransactionFraudInfo(transactionFraudInfo);
 		    
 		    ObjectMapper objectMapper = new ObjectMapper();
 		    objectMapper.setSerializationInclusion(Include.NON_NULL);

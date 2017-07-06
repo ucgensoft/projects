@@ -308,6 +308,7 @@ public class ApiReservationController extends BaseApiController {
 							paymentMethod.setCardHolderLastName(uiPaymentMethod.getCardHolderLastName());
 							paymentMethod.setCardHolderZipCode(uiPaymentMethod.getZipCode());
 							paymentMethod.setPayment(payment);
+							paymentMethod.setFraudSessionId(uiReservation.getUiPaymentMethod().getFraudSessionId());
 							
 							//Place place = this.placeService.getPlace(reservation.getPlaceId()).getResultValue();
 							Place place = reservation.getPlace();

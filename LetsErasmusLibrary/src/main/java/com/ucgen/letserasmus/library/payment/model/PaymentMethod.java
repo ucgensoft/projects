@@ -16,6 +16,7 @@ public class PaymentMethod extends BaseModel {
 	private String cardHolderLastName;
 	private String cardHolderZipCode;
 	private String paymentToken;
+	private String fraudSessionId;
 	
 	private Payment payment;
 	
@@ -84,6 +85,12 @@ public class PaymentMethod extends BaseModel {
 	}
 	public void setPayment(Payment payment) {
 		this.payment = payment;
+	}
+	public String getFraudSessionId() {
+		return fraudSessionId;
+	}
+	public void setFraudSessionId(String fraudSessionId) {
+		this.fraudSessionId = fraudSessionId;
 	}
 	
 }

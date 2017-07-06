@@ -1,6 +1,10 @@
 'use strict';
 
-var App = angular.module('myApp', []);
+var App = angular.module('myApp', []).config(function($sceDelegateProvider) {
+	 $sceDelegateProvider.resourceUrlWhitelist([
+	                                     	   'self',
+	                                     	   'https://www.bluesnap.com/**']);
+	                                     	 });
 
 angular.module('myApp').directive('dynamic', function ($compile) {
   return {

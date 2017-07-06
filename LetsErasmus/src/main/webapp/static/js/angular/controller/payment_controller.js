@@ -102,7 +102,8 @@ App.controller('paymentCtrl', ['$scope', 'reservationService', 'commonService', 
   		var uiPaymentMethod = {
 			cardHolderFirstName : firstName,
 			cardHolderLastName : lastName,
-			zipCode : zipCode
+			zipCode : zipCode,
+			fraudSessionId : fraudSessionId
 		};
 			
 		var reservation = {
@@ -175,6 +176,22 @@ App.controller('paymentCtrl', ['$scope', 'reservationService', 'commonService', 
   		initializeListener = funcInitialize;
   		if (self.reservation != null && initializeListener != null) {
   			initializeListener(self.reservation.clientUser.firstName, self.reservation.clientUser.lastName);
+  		}
+  	};
+  	
+  	self.getBlueSnapFraudLink = function() {
+  		if (self.reservation != null && self.reservation.hostUser.payoutMethod.externalSystemId == 2) {
+  			return 'https://www.bluesnap.com/servlet/logo.htm?s=' + fraudSessionId;
+  		} else {
+  			return "";
+  		}
+  	};
+  	
+  	self.getBlueSnapFraudLogoLink = function() {
+  		if (self.reservation != null && self.reservation.hostUser.payoutMethod.externalSystemId == 2) {
+  			return 'https://www.bluesnap.com/servlet/logo.gif?s=' + fraudSessionId;
+  		} else {
+  			return "";
   		}
   	};
   	

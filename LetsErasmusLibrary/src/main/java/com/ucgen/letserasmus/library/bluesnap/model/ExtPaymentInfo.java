@@ -13,6 +13,7 @@ public class ExtPaymentInfo {
 	private ExtCardHolderInfo cardHolderInfo;
 	private ExtVendorInfo vendorInfo;
 	private String transactionId;
+	private ExtTransactionFraudInfo transactionFraudInfo; 
 	
 	public BigDecimal getAmount() {
 		return amount;
@@ -67,6 +68,12 @@ public class ExtPaymentInfo {
 	}
 	public void setTransactionId(String transactionId) {
 		this.transactionId = transactionId;
+	}
+	public ExtTransactionFraudInfo getTransactionFraudInfo() {
+		return transactionFraudInfo;
+	}
+	public void setTransactionFraudInfo(ExtTransactionFraudInfo transactionFraudInfo) {
+		this.transactionFraudInfo = transactionFraudInfo;
 	}
 	
 }

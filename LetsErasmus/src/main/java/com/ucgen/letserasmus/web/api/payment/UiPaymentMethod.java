@@ -6,6 +6,7 @@ public class UiPaymentMethod {
 	private String cardHolderLastName;
 	private String zipCode;
 	private String cardInfoToken;
+	private String fraudSessionId;
 		
 	public String getCardHolderFirstName() {
 		return cardHolderFirstName;
@@ -30,6 +31,12 @@ public class UiPaymentMethod {
 	}
 	public void setCardInfoToken(String cardInfoToken) {
 		this.cardInfoToken = cardInfoToken;
+	}
+	public String getFraudSessionId() {
+		return fraudSessionId;
+	}
+	public void setFraudSessionId(String fraudSessionId) {
+		this.fraudSessionId = fraudSessionId;
 	}
 	
 }

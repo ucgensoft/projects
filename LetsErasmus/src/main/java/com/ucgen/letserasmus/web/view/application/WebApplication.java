@@ -10,9 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import com.mysql.jdbc.Security;
 import com.ucgen.common.model.Size;
 import com.ucgen.common.util.FileUtil;
 import com.ucgen.common.util.MailUtil;
+import com.ucgen.common.util.SecurityUtil;
 import com.ucgen.letserasmus.library.common.enumeration.EnmBoolStatus;
 import com.ucgen.letserasmus.library.common.enumeration.EnmSize;
 import com.ucgen.letserasmus.library.log.enumeration.EnmOperation;
@@ -428,6 +430,10 @@ public class WebApplication extends BaseController {
 
 	public Parameters getParameters() {
 		return parameters;
+	}
+	
+	public String getPaymentFraudSessionId() {
+		return SecurityUtil.generateAlphaNumericCode(30);
 	}
 	
 }
