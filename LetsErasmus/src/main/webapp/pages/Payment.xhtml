@@ -128,17 +128,18 @@
 								</div>
 							</div>
 						</div>
-					</div>
+						</div>
 					<div id="content-container"
 						class="summary-card-page-content col-md-7 col-md-pull-5 space-top-4">
 						<div id="divBlueSnapPayment" 
 							ng-if="ctrl.reservation.hostUser.payoutMethod.externalSystemId == 2">
-							<!-- Bluesnap logo is removed
+							<!-- 
 							<div>
 								<p style="float: left;"><a href="https://home.bluesnap.com/" target="_blank"><img src="#{webApplication.urlPrefix}/static/images/BlueSnap_logo.png" height="30px" width="120px"></img></a></p>
     							<p style = "vertical-align: middle; padding-top: 5px">is an authorized Reseller for Let's Erasmus.</p>
+    							<p style="float: right;"><a href="https://home.bluesnap.com/" target="_blank"><img src="#{webApplication.urlPrefix}/static/images/comodo_secure.png" height="100px" width="85px"></img></a></p>
 							</div>
-							-->
+							 -->
 							<iframe width='1' height='1' frameborder='0' scrolling='no' ng-src="{{ctrl.getBlueSnapFraudLink()}}">
 							     <img width='1' height='1' ng-src="{{ctrl.getBlueSnapFraudLogoLink()}}" />
 							</iframe>
@@ -234,9 +235,10 @@
 								
 							</section>
 						</div>
+						<a href="https://home.bluesnap.com/" target="_blank" style="float:right;"><img src="#{webApplication.urlPrefix}/static/images/comodo_secure.png" height="85px" width="100px"></img></a>
 					</div>
 				</div>
-				<!-- Bluesnap info is removed
+			<!-- Bluesnap info is removed
 				<div ng-if="ctrl.reservation.hostUser.payoutMethod.externalSystemId == 2" id="divBlueSnapFooter" class="hide-sm text-center">
 					<p class="space-6 dls-title-1" style="margin-bottom: 12px;">For questions about your payment, please contact BlueSnap at <a href="mailto:shoppers@BlueSnap.com" target="_top">shoppers@BlueSnap.com</a>.</p>
 					<p class="space-6 dls-title-1" style="margin-bottom: 12px;">For technical or product related questions, please contact Let's Erasmus at <a href="support@letserasmus.com" target="_top">support@letserasmus.com</a>.</p>
