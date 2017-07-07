@@ -60,13 +60,17 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
 	   	  		if (acceptedPhotoTypes[file.type] === true) {
 	   	  			var reader = new FileReader();
 	       	  		reader.onload = function(event) {
-	       	  			self.photo = { 'file': file, 'angle':0, 'src': event.target.result};
-	       	  			$('#imgProfilePhoto').attr('src', self.photo.src);
-	       	  			$('#divPhotoPreview').removeClass('hidden-force');
-	       	  			$('#photoHolder').addClass('hidden-force');
-	       	  			refreshAngularScope($scope)
-	       	  			NProgress.done(true);
-	       	  			fileupload.value = '';
+		       	  		EXIF.getData(file, function () {
+		       	  			var defaultAngle = 360 - ImageUtil.getOrientationAngle(this.exifdata.Orientation);
+		    	   		    
+			       	  		self.photo = { 'file': file, 'angle':0, 'defaultAngle':defaultAngle, 'src': event.target.result};
+		       	  			$('#imgProfilePhoto').attr('src', self.photo.src);
+		       	  			$('#divPhotoPreview').removeClass('hidden-force');
+		       	  			$('#photoHolder').addClass('hidden-force');
+		       	  			refreshAngularScope($scope)
+		       	  			NProgress.done(true);
+		       	  			fileupload.value = '';
+		    	   		});
 	       	  		};
 	       	  		
 	       	  		NProgress.start(2000, 10);
@@ -167,7 +171,7 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
   					newUserPhoto = { 'file': emptyFile, 'src': null};
   				} else {
   					var emptyFile = createEmptyFile('dummy');
-  					newUserPhoto = { 'file': emptyFile, 'src': null, 'angle' : 0};
+  					newUserPhoto = { 'file': emptyFile, 'src': null, 'angle' : 0, 'defaultAngle' : 0};
   				}
   			}
   			

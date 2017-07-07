@@ -671,5 +671,49 @@ ImageUtil = {
   			currentAngle += rotationAmount;
   			$('#' + elementId).css('transform','rotate(' + currentAngle + 'deg)');
   		}
+  	},
+  	getRotateAngle : function(photo) {
+  		if (photo.angle && photo.defaultAngle) {
+  			if (photo.defaultAngle && photo.defaultAngle != 0
+  					&& photo.angle == 0) {
+  				return photo.defaultAngle;
+  			} else {
+  				return photo.angle;
+  			}
+  		} else {
+  			return 0;
+  		}
+  	},
+  	getOrientationAngle : function(orientation) {
+  		var defaultAngle = 0;
+  		if (orientation) {
+  			switch(orientation){
+	        case 2:
+	            // horizontal flip
+	        	defaultAngle = 0;
+	            break;
+	        case 3:
+	            // 180° rotate left
+	        	defaultAngle = 180;
+	            break;
+	        case 4:
+	            // vertical flip
+	            break;
+	        case 5:
+	            // vertical flip + 90 rotate right
+	        case 6:
+	            // 90° rotate right
+	        	defaultAngle = 270;
+	            break;
+	        case 7:
+	            // horizontal flip + 90 rotate right
+	            break;
+	        case 8:
+	            // 90° rotate left
+	        	defaultAngle = 90;
+	            break;
+			}
+  		}
+  		return defaultAngle;
   	}
 };

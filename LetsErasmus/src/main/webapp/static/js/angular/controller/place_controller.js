@@ -335,11 +335,16 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     	  		if (acceptedPhotoTypes[file.type] === true) {
     	  			var reader = new FileReader();
         	  		reader.onload = function(event) {
-        	  			var photoId = generateRandomValue(100, 1000000);
-        	  			self.photoList.push({ 'photoId':photoId, 'file': file, 'src': event.target.result, 'angle' : 0});
-        	  			commonService.fakeAjaxCall();
-        	  			NProgress.done(true);
-        	  			fileupload.value = '';
+        	  			EXIF.getData(file, function () {
+		       	  			var defaultAngle = 360 - ImageUtil.getOrientationAngle(this.exifdata.Orientation);
+		       	  			
+				       	  	var photoId = generateRandomValue(100, 1000000);
+	        	  			self.photoList.push({ 'photoId':photoId, 'file': file, 'src': event.target.result, 'angle' : 0, 'defaultAngle':defaultAngle});
+	        	  			commonService.fakeAjaxCall();
+	        	  			NProgress.done(true);
+	        	  			fileupload.value = '';
+			       	  		
+		    	   		});
         	  		};
         	  		
         	  		NProgress.start(2000, 10);

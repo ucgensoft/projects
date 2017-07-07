@@ -68,7 +68,7 @@ App.factory('userService', ['$http', '$q', function($http, $q){
 			var formData = new FormData();
 			
 			formData.append('profilePhoto', profilePhoto.file);		
-			formData.append('rotateAngle', profilePhoto.angle);	
+			formData.append('rotateAngle', ImageUtil.getRotateAngle(profilePhoto));
 			
 			var config = {
 				headers : {
