@@ -673,9 +673,8 @@ ImageUtil = {
   		}
   	},
   	getRotateAngle : function(photo) {
-  		if (photo.angle && photo.defaultAngle) {
-  			if (photo.defaultAngle && photo.defaultAngle != 0
-  					&& photo.angle == 0) {
+  		if (photo.angle != undefined && photo.defaultAngle != undefined) {
+  			if (photo.defaultAngle != 0 && photo.angle == 0) {
   				return photo.defaultAngle;
   			} else {
   				return photo.angle;
@@ -684,7 +683,7 @@ ImageUtil = {
   			return 0;
   		}
   	},
-  	getOrientationAngle : function(orientation) {
+  	getDefaultAngle : function(orientation) {
   		var defaultAngle = 0;
   		if (orientation) {
   			switch(orientation){
@@ -703,14 +702,14 @@ ImageUtil = {
 	            // vertical flip + 90 rotate right
 	        case 6:
 	            // 90° rotate right
-	        	defaultAngle = 270;
+	        	defaultAngle = 360 - 270;
 	            break;
 	        case 7:
 	            // horizontal flip + 90 rotate right
 	            break;
 	        case 8:
 	            // 90° rotate left
-	        	defaultAngle = 90;
+	        	defaultAngle = 360 - 90;
 	            break;
 			}
   		}

@@ -336,7 +336,7 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     	  			var reader = new FileReader();
         	  		reader.onload = function(event) {
         	  			EXIF.getData(file, function () {
-		       	  			var defaultAngle = 360 - ImageUtil.getOrientationAngle(this.exifdata.Orientation);
+		       	  			var defaultAngle = ImageUtil.getDefaultAngle(this.exifdata.Orientation);
 		       	  			
 				       	  	var photoId = generateRandomValue(100, 1000000);
 	        	  			self.photoList.push({ 'photoId':photoId, 'file': file, 'src': event.target.result, 'angle' : 0, 'defaultAngle':defaultAngle});
