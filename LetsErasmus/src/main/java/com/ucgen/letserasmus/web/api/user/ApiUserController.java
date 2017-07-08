@@ -617,7 +617,7 @@ public class ApiUserController extends BaseApiController {
 									
 									FileUtil.cleanDirectory(tmpFolder, true);
 								}
-								
+								FileUtil.deleteDirectory(FileUtil.concatPath(rootPhotoFolder, user.getId().toString(), "tmp"));
 							} catch (Exception e) {
 								System.out.println(CommonUtil.getExceptionMessage(e));
 							}

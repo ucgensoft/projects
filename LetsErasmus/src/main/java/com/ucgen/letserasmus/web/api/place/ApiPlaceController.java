@@ -329,6 +329,16 @@ public class ApiPlaceController extends BaseApiController {
 						
 						OperationResult createResult = this.placeService.updatePlace(place, coverPhoto, newPhotoList, deletePhotoList);
 						
+						if (deletePhotoList != null && deletePhotoList.size() > 0) {
+							for (Long photoId : deletePhotoList) {
+								String smallPhotoPath = this.webApplication.getPlacePhotoPath(place.getId(), photoId, EnmSize.SMALL.getValue());
+								String mediumPhotoPath = this.webApplication.getPlacePhotoPath(place.getId(), photoId, EnmSize.MEDIUM.getValue());
+								
+								FileUtil.deleteFile(smallPhotoPath);
+								FileUtil.deleteFile(mediumPhotoPath);
+							}
+						}
+						
 						if (coverPhoto != null) {
 							newPhotoList.add(0, coverPhoto);
 						}
@@ -348,7 +358,7 @@ public class ApiPlaceController extends BaseApiController {
 									MultipartFile multipartFile = photo.getFile();
 									String fileName = multipartFile.getOriginalFilename();
 									if (!fileName.toUpperCase().startsWith("DUMMY_")) {
-										String tmpPhotoPath = FileUtil.concatPath(rootPhotoFolder, place.getId().toString(), "tmp", fileName);
+										String tmpPhotoPath = FileUtil.concatPath(placePhotoFolderPath, "tmp", fileName);
 										
 										File tmpFile = new File(tmpPhotoPath);
 										
@@ -358,9 +368,10 @@ public class ApiPlaceController extends BaseApiController {
 										ImageUtil.resizeImage(tmpFile, mediumPhotoPath, this.webApplication.getMediumPlacePhotoSize(), photo.getRotationDegree());
 										ImageUtil.resizeImage(tmpFile, smallPhotoPath, this.webApplication.getSmallPlacePhotoSize(), photo.getRotationDegree());
 										
-										tmpFile.delete();
+										FileUtil.deleteFile(tmpPhotoPath);
 									}
 								}
+								FileUtil.deleteDirectory(FileUtil.concatPath(placePhotoFolderPath, "tmp"));
 							} catch (Exception e) {
 								System.out.println(CommonUtil.getExceptionMessage(e));
 							}
