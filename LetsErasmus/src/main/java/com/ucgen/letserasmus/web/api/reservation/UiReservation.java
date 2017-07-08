@@ -1,6 +1,5 @@
 package com.ucgen.letserasmus.web.api.reservation;
 
-import java.util.Date;
 import java.util.List;
 
 import com.ucgen.letserasmus.library.review.model.Review;
@@ -11,8 +10,8 @@ public class UiReservation extends BaseUiModel {
 
 	private Long id;
 	private Long placeId;
-	private Date startDate;
-	private Date endDate;
+	private String startDate;
+	private String endDate;
 	private Integer guestNumber;
 	private Integer status;
 	private String cardInfoToken;
@@ -38,19 +37,19 @@ public class UiReservation extends BaseUiModel {
 		this.placeId = placeId;
 	}
 
-	public Date getStartDate() {
+	public String getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(Date startDate) {
+	public void setStartDate(String startDate) {
 		this.startDate = startDate;
 	}
 
-	public Date getEndDate() {
+	public String getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(Date endDate) {
+	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
 

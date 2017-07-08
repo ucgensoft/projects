@@ -3,13 +3,20 @@ App.controller('verificationCtrl', ['$scope', 'userService', 'commonService',
       var self = this;
       
       self.countryList = [];
-      self.dummyModel = null;
+      self.dummyModel = {code: '', name: 'Select Country'};
       var checkEmailTimer = null;
       var activeOperation = null;
       var operationToken = null;
       
       
       self.initialize = function() {
+    	  
+    	  if (userCountryCode != '') {
+    		  self.dummyModel.code = userCountryCode;
+    	  }
+    	  if (userMsisdn != '') {
+				$('#txtMsisdn').val(userMsisdn);
+    	  }
     	  
     	  activeOperation = getUriParam(EnmUriParam.OPERATION);
     	  operationToken = getUriParam(EnmUriParam.OPERATION_TOKEN);
@@ -20,18 +27,18 @@ App.controller('verificationCtrl', ['$scope', 'userService', 'commonService',
         		  commonService.listCountry( function(countryList) {
     					if (countryList) {
     						self.countryList = countryList;
-    						if (userMsisdn != '') {
-    							$('#cmbCountry').val(userMsisdn);
-    						}
+    						setTimeout(function() {
+    							$('#cmbCountry')[0].options[0].value = '-1';
+    							$('#cmbCountry')[0].options[0].text = 'Select Country';
+    							if (userCountryCode != '') {
+    								$('#cmbCountry').val(userCountryCode);
+    							} else {
+    								$('#cmbCountry').val('-1');
+    							}
+    						}, 200);
     					}
     				}
         		  );
-        	  }
-        	  
-        	  if ($('#divVerifyMsisdn').length > 0) {
-        		  setTimeout(function() {
-        			  	$('#cmbCountry').val(userCountryCode);
-        			  }, 500);
         	  }
         	  
         	  if ($('#divVerifyEmail').length > 0) {
@@ -66,7 +73,7 @@ App.controller('verificationCtrl', ['$scope', 'userService', 'commonService',
   		var prefix = $('#cmbCountry').val();
 	  	var msisdn = $('#txtMsisdn').val();
   	  	
-	  	if (prefix == null || StringUtil.trim(prefix) == '' || StringUtil.trim(msisdn) == '') {
+	  	if (prefix == null || StringUtil.trim(prefix) == '' || StringUtil.trim(prefix) == '-1' || StringUtil.trim(msisdn) == '') {
   			DialogUtil.warn( 'Select a country and type your phone number please!', null);
   			return;
   		}

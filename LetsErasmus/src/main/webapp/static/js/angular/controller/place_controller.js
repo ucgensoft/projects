@@ -613,8 +613,10 @@ App.controller('placeCtrl', ['$scope', '$controller', 'placeService', 'commonSer
     	  }
     	  newPlace.currencyId = $("#cmbCurrencyId").val();
     	  newPlace.billsInclude = ($("#chbBillsIncluded")[0].checked ? 'Y' : 'N');
-    	  newPlace.startDate = $("#txtStartDatePicker").datepicker("getDate");
-    	  newPlace.endDate = $("#txtEndDatePicker").datepicker("getDate");
+    	  //newPlace.startDate = $("#txtStartDatePicker").datepicker("getDate");
+    	  //newPlace.endDate = $("#txtEndDatePicker").datepicker("getDate");
+    	  newPlace.strStartDate = $("#txtStartDatePicker").val();
+    	  newPlace.strEndDate = $("#txtEndDatePicker").val();
     	  newPlace.minimumStay = $("#txtMinStay").val();
     	  newPlace.maximumStay = $("#txtMaxStay").val();
     	  

@@ -122,6 +122,9 @@ public class ApiPlaceController extends BaseApiController {
 							Date createdDate = new Date();
 							String createdBy = user.getFullName();
 							
+							place.setStartDate(DateUtil.valueOf(place.getStrStartDate(), DateUtil.SHORT_DATE_FORMAT));
+							place.setEndDate(DateUtil.valueOf(place.getStrEndDate(), DateUtil.SHORT_DATE_FORMAT));
+							
 							place.setHostUserId(super.getSessionUser(session).getId());
 							place.setCreatedDate(createdDate);
 							place.setCreatedBy(createdBy);
@@ -164,7 +167,7 @@ public class ApiPlaceController extends BaseApiController {
 								String tmpPhotoDirPath = FileUtil.concatPath(rootPhotoFolder, tmpPlaceId);
 								
 								for (int i = 0; i < place.getPhotoList().size(); i++) {
-									FileModel photo = place.getPhotoList().get(i);
+									Photo photo = (Photo) place.getPhotoList().get(i);
 									MultipartFile multipartFile = photo.getFile();
 									String fileName = multipartFile.getOriginalFilename();
 									
@@ -175,8 +178,8 @@ public class ApiPlaceController extends BaseApiController {
 																	
 									File tmpFile = new File(tmpPhotoPath);
 									
-									ImageUtil.resizeImage(tmpFile, mediumPhotoPath, this.webApplication.getMediumPlacePhotoSize(), null);
-									ImageUtil.resizeImage(tmpFile, smallPhotoPath, this.webApplication.getSmallPlacePhotoSize(), null);
+									ImageUtil.resizeImage(tmpFile, mediumPhotoPath, this.webApplication.getMediumPlacePhotoSize(), photo.getRotationDegree());
+									ImageUtil.resizeImage(tmpFile, smallPhotoPath, this.webApplication.getSmallPlacePhotoSize(), photo.getRotationDegree());
 									tmpFile.delete();
 								}
 								(new File(tmpPhotoDirPath)).delete();
@@ -244,6 +247,13 @@ public class ApiPlaceController extends BaseApiController {
 						String createdBy = user.getFullName();
 						
 						Place activePlace = (Place) session.getAttribute(EnmSession.ACTIVE_PLACE.getId());
+						
+						if (place.getStrStartDate() != null && !place.getStrStartDate().trim().isEmpty()) {
+							place.setStartDate(DateUtil.valueOf(place.getStrStartDate(), DateUtil.SHORT_DATE_FORMAT));
+						}
+						if (place.getStrEndDate() != null && !place.getStrEndDate().trim().isEmpty()) {
+							place.setEndDate(DateUtil.valueOf(place.getStrEndDate(), DateUtil.SHORT_DATE_FORMAT));
+						}
 						
 						place.setId(activePlace.getId());
 						place.setHostUserId(super.getSessionUser(session).getId());

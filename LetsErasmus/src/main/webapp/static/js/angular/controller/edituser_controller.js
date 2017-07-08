@@ -129,7 +129,8 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
   		var schoolName = StringUtil.trim($("#txtSchoolName").val());
   		var jobTitle = StringUtil.trim($("#txtJobTitle").val());
   		var languages = StringUtil.trim($("#txtLanguages").val());
-  		var birthDate = $("#txtBirthDatePicker").datepicker("getDate")
+  		//var birthDate = $("#txtBirthDatePicker").datepicker("getDate")
+  		var birthDate = $("#txtBirthDatePicker").val()
   		
   		if (gender == '-1') {
   			gender = null;

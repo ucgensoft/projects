@@ -56,6 +56,9 @@ public class Place extends BaseModel {
 	
 	private List<Review> reviewList;
 	
+	private String strStartDate;
+	private String strEndDate;
+	
 	public Long getId() {
 		return id;
 	}
@@ -283,6 +286,19 @@ public class Place extends BaseModel {
 	}
 	public void setUrl(String url) {
 		this.url = url;
+	}
+	
+	public String getStrStartDate() {
+		return strStartDate;
+	}
+	public void setStrStartDate(String strStartDate) {
+		this.strStartDate = strStartDate;
+	}
+	public String getStrEndDate() {
+		return strEndDate;
+	}
+	public void setStrEndDate(String strEndDate) {
+		this.strEndDate = strEndDate;
 	}
 	
 }

@@ -30,6 +30,7 @@ import com.ucgen.common.operationresult.ListOperationResult;
 import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.common.operationresult.ValueOperationResult;
 import com.ucgen.common.util.CommonUtil;
+import com.ucgen.common.util.DateUtil;
 import com.ucgen.common.util.FileLogger;
 import com.ucgen.common.util.FileUtil;
 import com.ucgen.common.util.ImageUtil;
@@ -56,6 +57,7 @@ import com.ucgen.letserasmus.library.user.enumeration.EnmUserStatus;
 import com.ucgen.letserasmus.library.user.model.User;
 import com.ucgen.letserasmus.library.user.service.IUserService;
 import com.ucgen.letserasmus.web.api.BaseApiController;
+import com.ucgen.letserasmus.web.api.user.model.UiUser;
 import com.ucgen.letserasmus.web.view.application.AppConstants;
 import com.ucgen.letserasmus.web.view.application.EnmSession;
 import com.ucgen.letserasmus.web.view.application.WebApplication;
@@ -485,7 +487,7 @@ public class ApiUserController extends BaseApiController {
     }
 	
     @RequestMapping(value = "/api/user/update", method = RequestMethod.POST, produces="application/json; charset=utf-8")
-    public ResponseEntity<OperationResult> updateUser(@RequestBody User uiUser, HttpSession session) throws JsonParseException, JsonMappingException, IOException, ParseException {
+    public ResponseEntity<OperationResult> updateUser(@RequestBody UiUser uiUser, HttpSession session) throws JsonParseException, JsonMappingException, IOException, ParseException {
 		OperationResult operationResult = new OperationResult();
 		try {
 			User sessionUser = super.getSessionUser(session);
@@ -556,7 +558,7 @@ public class ApiUserController extends BaseApiController {
 					user.setSchoolName(uiUser.getSchoolName());
 					user.setLanguages(uiUser.getLanguages());
 					//user.setMsisdn(uiUser.getMsisdn());
-					user.setBirthDate(uiUser.getBirthDate());
+					user.setBirthDate(DateUtil.valueOf(uiUser.getBirthDate(), DateUtil.SHORT_DATE_FORMAT));
 										
 					if (profilePhotoDeleted) {
 						user.setProfilePhotoId(null);

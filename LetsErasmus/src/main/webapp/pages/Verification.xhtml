@@ -73,10 +73,12 @@
 														<div class="input-addon">
 															<div class="select input-prefix"
 																style="min-width: 150px; max-width: 150px;">
+																 
 																<select title="Phone country code 90"
 																	style="max-width: 100%; font-size: inherit;"
 																	id="cmbCountry" ng-model="ctrl.dummyModel"
-																	value="#{webApplication.user.msisdnCountryCode}">
+																	value="#{webApplication.user.msisdnCountryCode}" 
+																	placeholder="Select Country">
 																	<option ng-repeat="c in ctrl.countryList"
 																		value="+{{c.code}}">{{c.name}}(+{{c.code}})</option>
 																</select>

@@ -4057,7 +4057,7 @@ input[type=number].phone-number-verification {
 }
 
 .list-your-space__content {
-	padding-top: 20px
+	padding-top: 10px
 }
 
 .list-your-space__content .centered-content {
@@ -4249,13 +4249,13 @@ input[type=number].phone-number-verification {
 
 @media ( min-width : 744px) {
 	.panel-title {
-		padding: 30px 0
+		padding: 20px 0
 	}
 }
 
 @media ( max-width : 743px) {
 	.panel-title {
-		padding: 18px 0 30px
+		padding: 10px 0 20px
 	}
 }
 

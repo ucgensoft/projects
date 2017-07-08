@@ -278,8 +278,10 @@ App.controller('placeDetailCtrl', ['$scope', '$controller', 'placeService', 'res
 	 self.onBookBtnClick = function() {
 		 var placeId = self.place.id;
 		 var guestNumber = $('#cmbGuestNumber').val();
-		 var startDate = $("#txtStartDatePicker").datepicker("getDate");
-		 var endDate = $("#txtEndDatePicker").datepicker("getDate");
+		 //var startDate = $("#txtStartDatePicker").datepicker("getDate");
+		 //var endDate = $("#txtEndDatePicker").datepicker("getDate");
+		 var startDate = $("#txtStartDatePicker").val();
+		 var endDate = $("#txtEndDatePicker").val();
 		 
 		 if (guestNumber != null && guestNumber != '' 
 			 && startDate != null && startDate != ''
@@ -408,8 +410,10 @@ App.controller('placeDetailCtrl', ['$scope', '$controller', 'placeService', 'res
      self.contactHost = function() {
     	 var placeId = self.place.id;
 		 var guestNumber = $('#cmbContactHostGuestNumber').val();
-		 var startDate = $("#txtContactHostStartDatePicker").datepicker("getDate");
-		 var endDate = $("#txtContactHostEndDatePicker").datepicker("getDate");
+		 //var startDate = $("#txtContactHostStartDatePicker").datepicker("getDate");
+		 //var endDate = $("#txtContactHostEndDatePicker").datepicker("getDate");
+		 var startDate = $("#txtContactHostStartDatePicker").val();
+		 var endDate = $("#txtContactHostEndDatePicker").val();
 		 var message = StringUtil.trim($("#txtContactHostMessage").val());
 		 
 		 if (guestNumber != null && guestNumber != '' 

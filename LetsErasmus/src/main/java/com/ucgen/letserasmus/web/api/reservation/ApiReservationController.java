@@ -59,7 +59,6 @@ import com.ucgen.letserasmus.web.api.payment.UiPaymentMethod;
 import com.ucgen.letserasmus.web.enumeration.EnmUriParameter;
 import com.ucgen.letserasmus.web.view.application.AppConstants;
 import com.ucgen.letserasmus.web.view.application.AppUtil;
-import com.ucgen.letserasmus.web.view.application.EnmSession;
 import com.ucgen.letserasmus.web.view.application.WebApplication;
 
 @RestController
@@ -163,8 +162,8 @@ public class ApiReservationController extends BaseApiController {
 							
 							reservation.setGuestNumber(uiReservation.getGuestNumber());
 							reservation.setCurrencyId(place.getCurrencyId());
-							reservation.setStartDate(uiReservation.getStartDate());
-							reservation.setEndDate(uiReservation.getEndDate());
+							reservation.setStartDate(DateUtil.valueOf(uiReservation.getStartDate(), DateUtil.SHORT_DATE_FORMAT));
+							reservation.setEndDate(DateUtil.valueOf(uiReservation.getEndDate(), DateUtil.SHORT_DATE_FORMAT));
 							
 							reservation.setStatus(EnmReservationStatus.PENDING.getId());
 							reservation.setCancellationPolicyId(place.getCancellationPolicyId());
@@ -733,8 +732,8 @@ public class ApiReservationController extends BaseApiController {
 							
 							reservation.setGuestNumber(uiReservation.getGuestNumber());
 							reservation.setCurrencyId(place.getCurrencyId());
-							reservation.setStartDate(uiReservation.getStartDate());
-							reservation.setEndDate(uiReservation.getEndDate());
+							reservation.setStartDate(DateUtil.valueOf(uiReservation.getStartDate(), DateUtil.SHORT_DATE_FORMAT));
+							reservation.setEndDate(DateUtil.valueOf(uiReservation.getEndDate(), DateUtil.SHORT_DATE_FORMAT));
 							
 							reservation.setStatus(EnmReservationStatus.INQUIRY.getId());
 							reservation.setCreatedDate(operationDate);
