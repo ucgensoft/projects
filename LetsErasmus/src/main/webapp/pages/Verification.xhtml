@@ -166,12 +166,12 @@
 											</div>
 											<div class="space-2">
 												<label class="screen-reader-only"><span>Email Address</span></label>
-												<input type="email" id="txtEmail"
+												<input type="email" id="txtEmail" disabled="true"
 													class="text-center" value="#{webApplication.user.email}" />
 											</div>
 											<div>
 												<button type="button"
-													class="btn btn-primary btn-block space-2"
+													class="btn-link"
 													ng-click="ctrl.sendEmailVerificationCode()">
 													<span>Resend Email</span>
 												</button>
