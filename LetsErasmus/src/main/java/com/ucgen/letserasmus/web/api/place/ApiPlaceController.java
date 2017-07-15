@@ -36,6 +36,7 @@ import com.ucgen.common.util.FileLogger;
 import com.ucgen.common.util.FileUtil;
 import com.ucgen.common.util.ImageUtil;
 import com.ucgen.common.util.StringUtil;
+import com.ucgen.common.util.aws.AwsS3Util;
 import com.ucgen.letserasmus.library.common.enumeration.EnmCurrency;
 import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
 import com.ucgen.letserasmus.library.common.enumeration.EnmErrorCode;
@@ -122,8 +123,12 @@ public class ApiPlaceController extends BaseApiController {
 							Date createdDate = new Date();
 							String createdBy = user.getFullName();
 							
-							place.setStartDate(DateUtil.valueOf(place.getStrStartDate(), DateUtil.SHORT_DATE_FORMAT));
-							place.setEndDate(DateUtil.valueOf(place.getStrEndDate(), DateUtil.SHORT_DATE_FORMAT));
+							if (place.getStrStartDate() != null && !place.getStrStartDate().trim().isEmpty()) {
+								place.setStartDate(DateUtil.valueOf(place.getStrStartDate(), DateUtil.SHORT_DATE_FORMAT));
+							}
+							if (place.getStrEndDate() != null && !place.getStrEndDate().trim().isEmpty()) {
+								place.setEndDate(DateUtil.valueOf(place.getStrEndDate(), DateUtil.SHORT_DATE_FORMAT));
+							}
 							
 							place.setHostUserId(super.getSessionUser(session).getId());
 							place.setCreatedDate(createdDate);
@@ -155,36 +160,43 @@ public class ApiPlaceController extends BaseApiController {
 							OperationResult createResult = this.placeService.insertPlace(place);
 							
 							try {
-								String rootPhotoFolder = this.webApplication.getRootPlacePhotoPath();
-								String placePhotoFolderPath = FileUtil.concatPath(rootPhotoFolder, place.getId().toString()); 
-								File placePhotoFolder = new File(placePhotoFolderPath);
+								// Create place iþleminde SavePhoto adýmýnda placeId belli olmadýðý için random deðer oluþturuluyor. 
+								// Oluþturulan random deðer sessiondan okunuyor
+								String tmpPlaceId = session.getAttribute(EnmSession.TMP_PHOTO_PLACE_ID.getId()).toString();
+								String tmpLocalPhotoFolder = this.parameterService.getParameterValue(EnmParameter.TMP_FILE_PATH.getId());
+								String localPlacePhotoFolderPath = FileUtil.concatPath(tmpLocalPhotoFolder, "place", tmpPlaceId);
 								
-								if (!placePhotoFolder.exists()) {
-									placePhotoFolder.mkdirs();
-								}
-								
-								String tmpPlaceId = (String) session.getAttribute(EnmSession.TMP_PHOTO_PLACE_ID.getId());
-								String tmpPhotoDirPath = FileUtil.concatPath(rootPhotoFolder, tmpPlaceId);
+								String bucketName = this.parameterService.getParameterValue(EnmParameter.AWS_USER_FILES_BUCKET_NAME.getId());
 								
 								for (int i = 0; i < place.getPhotoList().size(); i++) {
 									Photo photo = (Photo) place.getPhotoList().get(i);
 									MultipartFile multipartFile = photo.getFile();
 									String fileName = multipartFile.getOriginalFilename();
 									
-									String tmpPhotoPath = FileUtil.concatPath(rootPhotoFolder, tmpPlaceId, "tmp", fileName);
+									String smallFileName = this.webApplication.getPlacePhotoName(place.getId(), photo.getId(), EnmSize.SMALL);
+									String mediumFileName = this.webApplication.getPlacePhotoName(place.getId(), photo.getId(), EnmSize.MEDIUM);
 									
-									String smallPhotoPath = this.webApplication.getPlacePhotoPath(place.getId(), photo.getId(), EnmSize.SMALL.getValue());
-									String mediumPhotoPath = this.webApplication.getPlacePhotoPath(place.getId(), photo.getId(), EnmSize.MEDIUM.getValue());
-																	
-									File tmpFile = new File(tmpPhotoPath);
+									String smallFilePath = FileUtil.concatPath(localPlacePhotoFolderPath, smallFileName);
+									String mediumFilePath = FileUtil.concatPath(localPlacePhotoFolderPath, mediumFileName);
 									
-									ImageUtil.resizeImage(tmpFile, mediumPhotoPath, this.webApplication.getMediumPlacePhotoSize(), photo.getRotationDegree());
-									ImageUtil.resizeImage(tmpFile, smallPhotoPath, this.webApplication.getSmallPlacePhotoSize(), photo.getRotationDegree());
-									tmpFile.delete();
+									String originalPhotoPath = FileUtil.concatPath(localPlacePhotoFolderPath, fileName);
+
+									ImageUtil.resizeImage(originalPhotoPath, smallFilePath, this.webApplication.getSmallUserPhotoSize(), photo.getRotationDegree());
+									ImageUtil.resizeImage(originalPhotoPath, mediumFilePath, this.webApplication.getMediumUserPhotoSize(), photo.getRotationDegree());
+									
+									String remoteSmallFilePath = this.webApplication.getPlacePhotoPath(place.getId(), photo.getId(), EnmSize.SMALL.getValue());
+									String remoteMediumFilePath = this.webApplication.getPlacePhotoPath(place.getId(), photo.getId(), EnmSize.MEDIUM.getValue());
+									
+									AwsS3Util.getInstance().uploadFile(bucketName, smallFilePath, remoteSmallFilePath.replace("\\", "/"));
+									AwsS3Util.getInstance().uploadFile(bucketName, mediumFilePath, remoteMediumFilePath.replace("\\", "/"));
+																																			
+									FileUtil.deleteFile(originalPhotoPath);
+									FileUtil.deleteFile(smallFilePath);
+									FileUtil.deleteFile(mediumFilePath);
 								}
-								(new File(tmpPhotoDirPath)).delete();
+								FileUtil.deleteDirectory(localPlacePhotoFolderPath);
 							} catch (Exception e) {
-								System.out.println(CommonUtil.getExceptionMessage(e));
+								FileLogger.log(Level.ERROR, "ApiPlaceController-createPlace()-Exception while resizing place images. Error: " + CommonUtil.getExceptionMessage(e));
 							}
 							
 							operationResult = createResult;
@@ -329,13 +341,15 @@ public class ApiPlaceController extends BaseApiController {
 						
 						OperationResult createResult = this.placeService.updatePlace(place, coverPhoto, newPhotoList, deletePhotoList);
 						
+						String bucketName = this.parameterService.getParameterValue(EnmParameter.AWS_USER_FILES_BUCKET_NAME.getId());
+						
 						if (deletePhotoList != null && deletePhotoList.size() > 0) {
 							for (Long photoId : deletePhotoList) {
-								String smallPhotoPath = this.webApplication.getPlacePhotoPath(place.getId(), photoId, EnmSize.SMALL.getValue());
-								String mediumPhotoPath = this.webApplication.getPlacePhotoPath(place.getId(), photoId, EnmSize.MEDIUM.getValue());
+								String remoteSmallFilePath = this.webApplication.getPlacePhotoPath(place.getId(), photoId, EnmSize.SMALL.getValue());
+								String remoteMediumFilePath = this.webApplication.getPlacePhotoPath(place.getId(), photoId, EnmSize.MEDIUM.getValue());
 								
-								FileUtil.deleteFile(smallPhotoPath);
-								FileUtil.deleteFile(mediumPhotoPath);
+								AwsS3Util.getInstance().deleteFile(bucketName, remoteSmallFilePath);
+								AwsS3Util.getInstance().deleteFile(bucketName, remoteMediumFilePath);
 							}
 						}
 						
@@ -345,35 +359,40 @@ public class ApiPlaceController extends BaseApiController {
 						
 						if (newPhotoList != null && newPhotoList.size() > 0) {
 							try {
-								String rootPhotoFolder = this.webApplication.getRootPlacePhotoPath();
-								String placePhotoFolderPath = FileUtil.concatPath(rootPhotoFolder, place.getId().toString()); 
-								File placePhotoFolder = new File(placePhotoFolderPath);
-								
-								if (!placePhotoFolder.exists()) {
-									placePhotoFolder.mkdirs();
-								}
-
+								String tmpLocalPhotoFolder = this.parameterService.getParameterValue(EnmParameter.TMP_FILE_PATH.getId());
+								String localPlacePhotoFolderPath = FileUtil.concatPath(tmpLocalPhotoFolder, "place", place.getId().toString());
+																
 								for (int i = 0; i < newPhotoList.size(); i++) {
 									Photo photo = (Photo)newPhotoList.get(i);
 									MultipartFile multipartFile = photo.getFile();
 									String fileName = multipartFile.getOriginalFilename();
 									if (!fileName.toUpperCase().startsWith("DUMMY_")) {
-										String tmpPhotoPath = FileUtil.concatPath(placePhotoFolderPath, "tmp", fileName);
 										
-										File tmpFile = new File(tmpPhotoPath);
+										String smallFileName = this.webApplication.getPlacePhotoName(place.getId(), photo.getId(), EnmSize.SMALL);
+										String mediumFileName = this.webApplication.getPlacePhotoName(place.getId(), photo.getId(), EnmSize.MEDIUM);
 										
-										String smallPhotoPath = this.webApplication.getPlacePhotoPath(place.getId(), photo.getId(), EnmSize.SMALL.getValue());
-										String mediumPhotoPath = this.webApplication.getPlacePhotoPath(place.getId(), photo.getId(), EnmSize.MEDIUM.getValue());
+										String smallFilePath = FileUtil.concatPath(localPlacePhotoFolderPath, smallFileName);
+										String mediumFilePath = FileUtil.concatPath(localPlacePhotoFolderPath, mediumFileName);
 										
-										ImageUtil.resizeImage(tmpFile, mediumPhotoPath, this.webApplication.getMediumPlacePhotoSize(), photo.getRotationDegree());
-										ImageUtil.resizeImage(tmpFile, smallPhotoPath, this.webApplication.getSmallPlacePhotoSize(), photo.getRotationDegree());
+										String originalPhotoPath = FileUtil.concatPath(localPlacePhotoFolderPath, fileName);
+
+										ImageUtil.resizeImage(originalPhotoPath, smallFilePath, this.webApplication.getSmallUserPhotoSize(), photo.getRotationDegree());
+										ImageUtil.resizeImage(originalPhotoPath, mediumFilePath, this.webApplication.getMediumUserPhotoSize(), photo.getRotationDegree());
 										
-										FileUtil.deleteFile(tmpPhotoPath);
+										String remoteSmallFilePath = this.webApplication.getPlacePhotoPath(place.getId(), photo.getId(), EnmSize.SMALL.getValue());
+										String remoteMediumFilePath = this.webApplication.getPlacePhotoPath(place.getId(), photo.getId(), EnmSize.MEDIUM.getValue());
+										
+										AwsS3Util.getInstance().uploadFile(bucketName, smallFilePath, remoteSmallFilePath.replace("\\", "/"));
+										AwsS3Util.getInstance().uploadFile(bucketName, mediumFilePath, remoteMediumFilePath.replace("\\", "/"));
+																																				
+										FileUtil.deleteFile(originalPhotoPath);
+										FileUtil.deleteFile(smallFilePath);
+										FileUtil.deleteFile(mediumFilePath);
 									}
 								}
-								FileUtil.deleteDirectory(FileUtil.concatPath(placePhotoFolderPath, "tmp"));
+								FileUtil.deleteDirectory(localPlacePhotoFolderPath);
 							} catch (Exception e) {
-								System.out.println(CommonUtil.getExceptionMessage(e));
+								FileLogger.log(Level.ERROR, "ApiPlaceController-updatePlace()-Exception while resizing place images. Error: " + CommonUtil.getExceptionMessage(e));
 							}
 						}
 						
@@ -577,21 +596,24 @@ public class ApiPlaceController extends BaseApiController {
 								placeId = place.getId().toString();
 							}
 							
-							String rootPhotoFolder = this.webApplication.getRootPlacePhotoPath();
+							String tmpLocalPhotoFolder = this.parameterService.getParameterValue(EnmParameter.TMP_FILE_PATH.getId());
+							String localPlacePhotoFolderPath = FileUtil.concatPath(tmpLocalPhotoFolder, "place", placeId.toString());
 							
-							String placeTmpPhotoFolderPath = FileUtil.concatPath(rootPhotoFolder, placeId.toString(), "tmp");
-							File placeTmpPhotoFolder = new File(placeTmpPhotoFolderPath);
-							if (placeTmpPhotoFolder.exists()) {
-								FileUtils.cleanDirectory(placeTmpPhotoFolder);
+							//String rootPhotoFolder = this.webApplication.getRootPlacePhotoPath();
+							
+							//String placeTmpPhotoFolderPath = FileUtil.concatPath(rootPhotoFolder, placeId.toString(), "tmp");
+							File localPlacePhotoFolder = new File(localPlacePhotoFolderPath);
+							if (localPlacePhotoFolder.exists()) {
+								FileUtils.cleanDirectory(localPlacePhotoFolder);
 							} else {
-								placeTmpPhotoFolder.mkdirs();	
+								localPlacePhotoFolder.mkdirs();	
 							}
 							List<Photo> placePhotoList = new ArrayList<Photo>();
 							for (int i = 0; i < fileArr.length; i++) {
 								MultipartFile multipartFile = fileArr[i];
 								String fileName = multipartFile.getOriginalFilename();
 								if (!fileName.toUpperCase().startsWith("DUMMY_")) {
-									String tmpPhotoPath = FileUtil.concatPath(placeTmpPhotoFolderPath, fileName);
+									String tmpPhotoPath = FileUtil.concatPath(localPlacePhotoFolderPath, fileName);
 									File tmpFile = new File(tmpPhotoPath);
 									multipartFile.transferTo(tmpFile);
 								}

@@ -36,6 +36,7 @@ import com.ucgen.common.util.FileUtil;
 import com.ucgen.common.util.ImageUtil;
 import com.ucgen.common.util.SecurityUtil;
 import com.ucgen.common.util.WebUtil;
+import com.ucgen.common.util.aws.AwsS3Util;
 import com.ucgen.letserasmus.library.common.enumeration.EnmBoolStatus;
 import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
 import com.ucgen.letserasmus.library.common.enumeration.EnmErrorCode;
@@ -558,7 +559,9 @@ public class ApiUserController extends BaseApiController {
 					user.setSchoolName(uiUser.getSchoolName());
 					user.setLanguages(uiUser.getLanguages());
 					//user.setMsisdn(uiUser.getMsisdn());
-					user.setBirthDate(DateUtil.valueOf(uiUser.getBirthDate(), DateUtil.SHORT_DATE_FORMAT));
+					if (uiUser.getBirthDate() != null && !uiUser.getBirthDate().trim().isEmpty()) {
+						user.setBirthDate(DateUtil.valueOf(uiUser.getBirthDate(), DateUtil.SHORT_DATE_FORMAT));
+					}
 										
 					if (profilePhotoDeleted) {
 						user.setProfilePhotoId(null);
@@ -590,36 +593,41 @@ public class ApiUserController extends BaseApiController {
 						}
 						if (profilePhotoDeleted || profilePhotoChanged) {
 							try {
+								String bucketName = this.parameterService.getParameterValue(EnmParameter.AWS_USER_FILES_BUCKET_NAME.getId());
+								String rootUserPhotoFolder = this.webApplication.getRootUserPhotoPath();
+								String tmpLocalPhotoFolder = this.parameterService.getParameterValue(EnmParameter.TMP_FILE_PATH.getId());
 								
-								String rootPhotoFolder = this.webApplication.getRootUserPhotoPath();
-								String userPhotoFolder = FileUtil.concatPath(rootPhotoFolder, user.getId().toString()); 
+								String remoteUserPhotoFolder = FileUtil.concatPath(rootUserPhotoFolder, user.getId().toString());
+								String localUserPhotoFolder = FileUtil.concatPath(tmpLocalPhotoFolder, "user", user.getId().toString()); 
 								
 								FileModel photo = user.getProfilePhoto();
 								
 								String fileName = profilePhoto.getFile().getOriginalFilename();
 								
-								if (oldProfilePhotoId != null) {
-									FileUtil.cleanDirectory(userPhotoFolder, false);
-								}
+								AwsS3Util.getInstance().deleteFolder(bucketName, remoteUserPhotoFolder.replace("\\", "/"));
 								
 								if (!profilePhotoDeleted) {
-									String tmpPhotoPath = FileUtil.concatPath(rootPhotoFolder, user.getId().toString(), "tmp", fileName);
+									String smallFileName = this.webApplication.getUserPhotoName(user.getId(), photo.getId(), EnmSize.SMALL);
+									String mediumFileName = this.webApplication.getUserPhotoName(user.getId(), photo.getId(), EnmSize.MEDIUM);
 									
-									String newSmallFilePath = this.webApplication.getUserPhotoPath(user.getId(), photo.getId(), EnmSize.SMALL.getValue());
-									String newMediumFilePath = this.webApplication.getUserPhotoPath(user.getId(), photo.getId(), EnmSize.MEDIUM.getValue());
+									String smallFilePath = FileUtil.concatPath(localUserPhotoFolder, smallFileName);
+									String mediumFilePath = FileUtil.concatPath(localUserPhotoFolder, mediumFileName);
 									
-									File tmpFile = new File(tmpPhotoPath);
+									String originalPhotoPath = FileUtil.concatPath(localUserPhotoFolder, fileName);
 
-									ImageUtil.resizeImage(tmpFile, newMediumFilePath, this.webApplication.getMediumUserPhotoSize(), profilePhoto.getRotationDegree());
-									ImageUtil.resizeImage(tmpFile, newSmallFilePath, this.webApplication.getSmallUserPhotoSize(), profilePhoto.getRotationDegree());
+									ImageUtil.resizeImage(originalPhotoPath, smallFilePath, this.webApplication.getSmallUserPhotoSize(), profilePhoto.getRotationDegree());
+									ImageUtil.resizeImage(originalPhotoPath, mediumFilePath, this.webApplication.getMediumUserPhotoSize(), profilePhoto.getRotationDegree());
 									
-									String tmpFolder = tmpPhotoPath.substring(0, tmpPhotoPath.lastIndexOf(File.separator));
+									String remoteSmallFilePath = this.webApplication.getUserPhotoPath(user.getId(), photo.getId(), EnmSize.SMALL.getValue());
+									String remoteMediumFilePath = this.webApplication.getUserPhotoPath(user.getId(), photo.getId(), EnmSize.MEDIUM.getValue());
 									
-									FileUtil.cleanDirectory(tmpFolder, true);
+									AwsS3Util.getInstance().uploadFile(bucketName, smallFilePath, remoteSmallFilePath.replace("\\", "/"));
+									AwsS3Util.getInstance().uploadFile(bucketName, mediumFilePath, remoteMediumFilePath.replace("\\", "/"));
 								}
-								FileUtil.deleteDirectory(FileUtil.concatPath(rootPhotoFolder, user.getId().toString(), "tmp"));
+								
+								FileUtil.cleanDirectory(localUserPhotoFolder, true);
 							} catch (Exception e) {
-								System.out.println(CommonUtil.getExceptionMessage(e));
+								FileLogger.log(Level.ERROR, "ApiUserController-updateUser()-Exception while resizing user images. Error: " + CommonUtil.getExceptionMessage(e));
 							}
 						}
 					}
@@ -711,10 +719,10 @@ public class ApiUserController extends BaseApiController {
 				userId = user.getId().toString();
 			}
 			
-			String rootPhotoFolder = this.webApplication.getRootUserPhotoPath();
+			String tmpLocalPhotoFolder = this.parameterService.getParameterValue(EnmParameter.TMP_FILE_PATH.getId());
+			String localUserPhotoFolder = FileUtil.concatPath(tmpLocalPhotoFolder, "user", user.getId().toString());
 			
-			String userTmpPhotoFolderPath = FileUtil.concatPath(rootPhotoFolder, userId, "tmp");
-			File userTmpPhotoFolder = new File(userTmpPhotoFolderPath);
+			File userTmpPhotoFolder = new File(localUserPhotoFolder);
 			if (userTmpPhotoFolder.exists()) {
 				FileUtils.cleanDirectory(userTmpPhotoFolder);
 			} else {
@@ -723,7 +731,7 @@ public class ApiUserController extends BaseApiController {
 			
 			String fileName = prifilePhoto.getOriginalFilename();
 			if (!fileName.toUpperCase().startsWith("DUMMY_")) {
-				String tmpPhotoPath = FileUtil.concatPath(userTmpPhotoFolderPath, fileName);
+				String tmpPhotoPath = FileUtil.concatPath(localUserPhotoFolder, fileName);
 				File tmpFile = new File(tmpPhotoPath);
 				prifilePhoto.transferTo(tmpFile);
 			}

@@ -1,6 +1,5 @@
 package com.ucgen.letserasmus.web.view.application;
 
-import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
-import com.mysql.jdbc.Security;
 import com.ucgen.common.model.Size;
 import com.ucgen.common.util.FileUtil;
 import com.ucgen.common.util.MailUtil;
@@ -38,6 +36,7 @@ public class WebApplication extends BaseController {
 	
 	public String localAppPath;
 
+	private String staticFileUrlPrefix;
 	private String urlPrefix;
 	private String protocol;
 	
@@ -95,6 +94,8 @@ public class WebApplication extends BaseController {
 			
 			urlPrefix = this.parameterService.getParameterValue(EnmParameter.LETSERASMUS_URL_PREFIX.getId());
 			protocol = urlPrefix.substring(0, urlPrefix.indexOf(":"));
+			staticFileUrlPrefix = this.parameterService.getParameterValue(EnmParameter.STATIC_FILE_URL_PREFIX.getId());
+			
 			staticFileVersion = Integer.valueOf(this.parameterService.getParameterValue(EnmParameter.STATIC_FILE_VERSION.getId()));
 			
 			//emailVerificationUrl = urlPrefix + "//PAGES/Main.html?user=#paramUserId#&code=#paramCode#&op=10";
@@ -103,11 +104,19 @@ public class WebApplication extends BaseController {
 			String placeImageSubUrl = this.parameterService.getParameterValue(EnmParameter.PLACE_IMAGE_SUB_URL.getId());
 			String userImageSubUrl = this.parameterService.getParameterValue(EnmParameter.USER_IMAGE_SUB_URL.getId());
 			
-			rootPlaceImageUrl = AppUtil.concatPath(urlPrefix, placeImageSubUrl);
-			rootUserImageUrl = AppUtil.concatPath(urlPrefix, userImageSubUrl);
+			rootPlaceImageUrl = AppUtil.concatPath(staticFileUrlPrefix, placeImageSubUrl);
+			rootUserImageUrl = AppUtil.concatPath(staticFileUrlPrefix, userImageSubUrl);
 			
-			rootPlacePhotoPath = localAppPath + placeImageSubUrl.replace("/", File.separator);
-			rootUserPhotoPath = localAppPath + userImageSubUrl.replace("/", File.separator);
+			if (placeImageSubUrl.startsWith("/")) {
+				rootPlacePhotoPath = placeImageSubUrl.substring(1);
+			} else {
+				rootPlacePhotoPath = placeImageSubUrl;
+			}
+			if (userImageSubUrl.startsWith("/")) {
+				rootUserPhotoPath = userImageSubUrl.substring(1);
+			} else {
+				rootUserPhotoPath = userImageSubUrl;
+			}
 			
 			String imageSufix = this.parameterService.getParameterValue(EnmParameter.IMAGE_SUFFIX.getId());
 			
@@ -161,6 +170,10 @@ public class WebApplication extends BaseController {
 		return urlPrefix;
 	}
 	
+	public String getStaticFileUrlPrefix() {
+		return staticFileUrlPrefix;
+	}
+
 	public String getProtocol() {
 		return this.protocol;
 	}
@@ -377,7 +390,7 @@ public class WebApplication extends BaseController {
 		String photoPath = this.userPhotoPath.replaceAll("#userId#", userId.toString());
 		photoPath = photoPath.replaceAll("#photoId#", photoId.toString());
 		photoPath = photoPath.replaceAll("#size#", EnmSize.getSize(size).getValue());
-		return photoPath;
+		return photoPath.replace("\\", "/");
 	}
 	
 	public String getPlacePhotoUrl(Long placeId, Long photoId, String size) {
@@ -391,7 +404,7 @@ public class WebApplication extends BaseController {
 		String photoPath = this.placePhotoPath.replaceAll("#placeId#", placeId.toString());
 		photoPath = photoPath.replaceAll("#photoId#", photoId.toString());
 		photoPath = photoPath.replaceAll("#size#", EnmSize.getSize(size).getValue());
-		return photoPath;
+		return photoPath.replace("\\", "/");
 	}
 	
 	public boolean isFooterVisible() {
