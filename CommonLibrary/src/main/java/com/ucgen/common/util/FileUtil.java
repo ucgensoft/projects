@@ -1,11 +1,13 @@
 package com.ucgen.common.util;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -224,6 +226,39 @@ public class FileUtil {
 
 		return sb.toString();
 
+	}
+	
+	public static void writeToFile(String filePath, List<String> fileLineList, boolean append) {
+		BufferedWriter bw = null;
+		FileWriter fw = null;
+		try {
+			File existingFile = new File(filePath);
+			if (!append) {
+				existingFile.delete();
+			}
+			fw = new FileWriter(filePath);
+			bw = new BufferedWriter(fw);
+			boolean isFirstLine = true;
+			for (String fileLine : fileLineList) {
+				if (!isFirstLine) {
+					bw.newLine();
+				} else {
+					isFirstLine = false;
+				}
+				bw.write(fileLine);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (bw != null)
+					bw.close();
+				if (fw != null)
+					fw.close();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
 	}
 	
 }
