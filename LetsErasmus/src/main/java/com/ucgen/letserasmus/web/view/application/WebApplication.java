@@ -5,10 +5,12 @@ import java.net.URLEncoder;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import com.google.common.html.HtmlEscapers;
 import com.ucgen.common.model.Size;
 import com.ucgen.common.util.FileUtil;
 import com.ucgen.common.util.MailUtil;
@@ -306,6 +308,60 @@ public class WebApplication extends BaseController {
 			
 		}
 		*/
+	}
+	
+	public String getPageTitle() {
+		String title = "Let's Erasmus - Safely book your new home online";
+		
+		User user = this.getUser();
+		
+		String requestUrl = super.getRequest().getRequestURL().toString();
+		requestUrl = requestUrl.toUpperCase();
+		if (requestUrl.contains("PAGES/MAIN.HTML")) {
+			
+		} else if (requestUrl.contains("PAGES/SEARCHRESULT.HTML")) {
+			
+		} else if (requestUrl.contains("PAGES/PLACE.HTML")) {
+			
+		} else if (requestUrl.contains("PAGES/PLACEDETAIL.HTML")) {
+			
+		} else if (requestUrl.contains("PAGES/DASHBOARD/EDITUSER.HTML")) {
+			
+		} else if (requestUrl.contains("PAGES/DASHBOARD/DISPLAYUSER.HTML")) {
+			
+		} else if (requestUrl.contains("PAGES/DASHBOARD/LISTINGS.HTML")) {
+			
+		} else if (requestUrl.contains("PAGES/DASHBOARD/TRUSTANDVERIFICATION.HTML")) {
+			
+		} else if (requestUrl.contains("PAGES/VERIFICATION.HTML")) {
+			
+		} else if (requestUrl.contains("PAGES/PAYMENT.HTML")) {
+			
+		} else if (requestUrl.contains("PAGES/DASHBOARD/MESSAGELIST.HTML")) {
+			
+		} else if (requestUrl.contains("PAGES/DASHBOARD/CONVERSATION.HTML")) {
+			if (user != null) {
+				title = "Conversation with " + StringEscapeUtils.escapeHtml4(user.getFirstName()) + " - Let's Erasmus";
+			} else {
+				title = "Conversation Page - Let's Erasmus";
+			}
+		} else if (requestUrl.contains("PAGES/DASHBOARD/RESERVATIONLIST.HTML")) {
+			
+		} else if (requestUrl.contains("PAGES/DASHBOARD/TRIPLIST.HTML")) {
+
+		} else if (requestUrl.contains("PAGES/DASHBOARD/WISHLIST.HTML")) {
+
+		} else if (requestUrl.contains("PAGES/HELP/HELP.HTML")) {
+			
+		} else if (requestUrl.contains("PAGES/DASHBOARD/PAYMENTMETHODS.HTML")) {
+			
+		} else if (requestUrl.contains("PAGES/DASHBOARD/PAYOUTMETHODS.HTML")) {
+			
+		} else {
+			
+		}
+		
+		return title;
 	}
 	
 	public User getUser() {

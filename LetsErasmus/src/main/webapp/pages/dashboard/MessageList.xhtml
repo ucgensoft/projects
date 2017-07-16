@@ -63,7 +63,7 @@
 										<div class="row row-table">
 											<div class="thread-avatar col-md-5">
 												<a class="" href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId={{ctrl.isHost ? t.clientUserId : t.hostUserId}}" target="_blank">
-													<img src="{{ctrl.isHost ? t.clientUserProfilePhotoUrl : t.hostUserProfilePhotoUrl}}"
+													<img ng-src="{{ctrl.isHost ? t.clientUserProfilePhotoUrl : t.hostUserProfilePhotoUrl}}"
 													alt="{{ctrl.isHost ? t.clientUserFirstName : t.hostUserFirstName}}" height="50" width="50"
 													class="media-round media-photo" />
 												</a>
