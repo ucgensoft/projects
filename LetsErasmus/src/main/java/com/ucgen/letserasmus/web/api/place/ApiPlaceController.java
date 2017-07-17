@@ -181,8 +181,8 @@ public class ApiPlaceController extends BaseApiController {
 									
 									String originalPhotoPath = FileUtil.concatPath(localPlacePhotoFolderPath, fileName);
 
-									ImageUtil.resizeImage(originalPhotoPath, smallFilePath, this.webApplication.getSmallUserPhotoSize(), photo.getRotationDegree());
-									ImageUtil.resizeImage(originalPhotoPath, mediumFilePath, this.webApplication.getMediumUserPhotoSize(), photo.getRotationDegree());
+									ImageUtil.resizeImage(originalPhotoPath, smallFilePath, this.webApplication.getSmallPlacePhotoSize(), photo.getRotationDegree());
+									ImageUtil.resizeImage(originalPhotoPath, mediumFilePath, this.webApplication.getMediumPlacePhotoSize(), photo.getRotationDegree());
 									
 									String remoteSmallFilePath = this.webApplication.getPlacePhotoPath(place.getId(), photo.getId(), EnmSize.SMALL.getValue());
 									String remoteMediumFilePath = this.webApplication.getPlacePhotoPath(place.getId(), photo.getId(), EnmSize.MEDIUM.getValue());
@@ -376,8 +376,8 @@ public class ApiPlaceController extends BaseApiController {
 										
 										String originalPhotoPath = FileUtil.concatPath(localPlacePhotoFolderPath, fileName);
 
-										ImageUtil.resizeImage(originalPhotoPath, smallFilePath, this.webApplication.getSmallUserPhotoSize(), photo.getRotationDegree());
-										ImageUtil.resizeImage(originalPhotoPath, mediumFilePath, this.webApplication.getMediumUserPhotoSize(), photo.getRotationDegree());
+										ImageUtil.resizeImage(originalPhotoPath, smallFilePath, this.webApplication.getSmallPlacePhotoSize(), photo.getRotationDegree());
+										ImageUtil.resizeImage(originalPhotoPath, mediumFilePath, this.webApplication.getMediumPlacePhotoSize(), photo.getRotationDegree());
 										
 										String remoteSmallFilePath = this.webApplication.getPlacePhotoPath(place.getId(), photo.getId(), EnmSize.SMALL.getValue());
 										String remoteMediumFilePath = this.webApplication.getPlacePhotoPath(place.getId(), photo.getId(), EnmSize.MEDIUM.getValue());
