@@ -311,6 +311,7 @@ public class WebApplication extends BaseController {
 	}
 	
 	public String getPageTitle() {
+		String siteName = "Let's Erasmus";
 		String title = "Let's Erasmus - Safely book your new home online";
 		
 		User user = this.getUser();
@@ -320,7 +321,10 @@ public class WebApplication extends BaseController {
 		if (requestUrl.contains("PAGES/MAIN.HTML")) {
 			
 		} else if (requestUrl.contains("PAGES/SEARCHRESULT.HTML")) {
-			
+			String searchedPlace = super.getRequestParameter("loc");
+			if (searchedPlace != null && !searchedPlace.trim().isEmpty()) {
+				title = "Housing Results in " + searchedPlace + " - " + siteName;
+			}
 		} else if (requestUrl.contains("PAGES/PLACE.HTML")) {
 			
 		} else if (requestUrl.contains("PAGES/PLACEDETAIL.HTML")) {
