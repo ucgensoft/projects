@@ -311,7 +311,7 @@ public class WebApplication extends BaseController {
 	}
 	
 	public String getPageTitle() {
-		String siteName = "Let's Erasmus";
+		String siteName = " - Let's Erasmus";
 		String title = "Let's Erasmus - Safely book your new home online";
 		
 		User user = this.getUser();
@@ -323,47 +323,43 @@ public class WebApplication extends BaseController {
 		} else if (requestUrl.contains("PAGES/SEARCHRESULT.HTML")) {
 			String searchedPlace = super.getRequestParameter("loc");
 			if (searchedPlace != null && !searchedPlace.trim().isEmpty()) {
-				title = "Housing Results in " + searchedPlace + " - " + siteName;
+				title = "Housing Results in " + searchedPlace + siteName;
 			}
 		} else if (requestUrl.contains("PAGES/PLACE.HTML")) {
-			
+			title = "Become a Host and Safely Rent Your Place Online" + siteName;
 		} else if (requestUrl.contains("PAGES/PLACEDETAIL.HTML")) {
 			
 		} else if (requestUrl.contains("PAGES/DASHBOARD/EDITUSER.HTML")) {
-			
+			title = "Edit Profile" + siteName;
 		} else if (requestUrl.contains("PAGES/DASHBOARD/DISPLAYUSER.HTML")) {
-			
+			title = "Profile" + siteName;
 		} else if (requestUrl.contains("PAGES/DASHBOARD/LISTINGS.HTML")) {
-			
+			title = "Your Listings" + siteName;
 		} else if (requestUrl.contains("PAGES/DASHBOARD/TRUSTANDVERIFICATION.HTML")) {
-			
+			title = "Profile Trust and Verification" + siteName;
 		} else if (requestUrl.contains("PAGES/VERIFICATION.HTML")) {
 			
 		} else if (requestUrl.contains("PAGES/PAYMENT.HTML")) {
 			
 		} else if (requestUrl.contains("PAGES/DASHBOARD/MESSAGELIST.HTML")) {
-			
+			title = "Message Inbox" + siteName;
 		} else if (requestUrl.contains("PAGES/DASHBOARD/CONVERSATION.HTML")) {
-			if (user != null) {
-				title = "Conversation with " + StringEscapeUtils.escapeHtml4(user.getFirstName()) + " - Let's Erasmus";
-			} else {
-				title = "Conversation Page - Let's Erasmus";
-			}
+			title = "Message Inbox" + siteName;
 		} else if (requestUrl.contains("PAGES/DASHBOARD/RESERVATIONLIST.HTML")) {
-			
+			title = "Your Reservations" + siteName;
 		} else if (requestUrl.contains("PAGES/DASHBOARD/TRIPLIST.HTML")) {
-
+			title = "Your Trips" + siteName;
 		} else if (requestUrl.contains("PAGES/DASHBOARD/WISHLIST.HTML")) {
-
+			title = "Your Wish List" + siteName;
 		} else if (requestUrl.contains("PAGES/HELP/HELP.HTML")) {
-			
+			title = "Help Center" + siteName;
 		} else if (requestUrl.contains("PAGES/DASHBOARD/PAYMENTMETHODS.HTML")) {
-			
+			title = "Payment Methods" + siteName;
 		} else if (requestUrl.contains("PAGES/DASHBOARD/PAYOUTMETHODS.HTML")) {
-			
-		} else {
-			
-		}
+			title = "Payout Methods" + siteName;
+		} else if (requestUrl.contains("PAGES/POLICIES.HTML")) {
+			title = "Terms and Policies" + siteName;
+		} 
 		
 		return title;
 	}
