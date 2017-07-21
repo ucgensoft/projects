@@ -266,7 +266,7 @@
 @media only screen and (min-width:1337px) and (max-width:1920px) {
 	.home-first-screen {
 		background-image:
-			url("/static/images/home/home_1920.jpg")
+			url("/static/images/home_1920.jpg")
 	}
 }
 
