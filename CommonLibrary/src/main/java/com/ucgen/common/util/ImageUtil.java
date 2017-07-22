@@ -7,11 +7,9 @@ import java.awt.RenderingHints;
 import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Iterator;
 
@@ -33,24 +31,17 @@ public class ImageUtil {
 			throws IOException {
 
 		BufferedImage originalImage = ImageIO.read(new File(originalImagePath));
-		resizeImage(originalImage, resizedImagePath, size, rotationDegree);
-	}
-
-	public static void resizeImage(InputStream originalFileStream, String resizedImagePath, Size size,
-			Integer rotationDegree) throws IOException {
-
-		BufferedImage originalImage = ImageIO.read(originalFileStream);
-		resizeImage(originalImage, resizedImagePath, size, rotationDegree);
+		resizeImage(originalImage, originalImagePath, resizedImagePath, size, rotationDegree);
 	}
 
 	public static void resizeImage(File originalFile, String resizedImagePath, Size size, Integer rotationDegree)
 			throws IOException {
 
 		BufferedImage originalImage = ImageIO.read(originalFile);
-		resizeImage(originalImage, resizedImagePath, size, rotationDegree);
+		resizeImage(originalImage, originalFile.getAbsolutePath(), resizedImagePath, size, rotationDegree);
 	}
 
-	private static void resizeImage(BufferedImage originalImage, String resizedImagePath, Size size,
+	private static void resizeImage(BufferedImage originalImage, String originalFilePath, String resizedImagePath, Size size,
 			Integer rotationDegree) throws IOException {
 		if (rotationDegree != null && rotationDegree > 0) {
 			if (rotationDegree == 90) {
@@ -63,29 +54,45 @@ public class ImageUtil {
 			//originalImage = rotate(originalImage, rotationDegree);
 		}
 		
-		Float IMG_NEW_WIDTH = size.getWidth();
-		Float IMG_NEW_HEIGHT = size.getHeight();
+		if (originalImage.getColorModel().hasAlpha()) {
+			originalImage = dropAlphaChannel(originalImage);
+		}
+		
+		Integer IMG_NEW_WIDTH = size.getWidth().intValue();
+		Integer IMG_NEW_HEIGHT = size.getHeight().intValue();
 
 		float widthRate = size.getWidth() / originalImage.getWidth();
 		float heightRate = size.getHeight() / originalImage.getHeight();
 		float appliedRate = 0;
 
-		if (widthRate <= heightRate) {
-			appliedRate = widthRate;
+		// Smaller size photo is uploaded.
+		if (widthRate > 1 && heightRate > 1) {
+			IMG_NEW_WIDTH = originalImage.getWidth();
+			IMG_NEW_HEIGHT = originalImage.getHeight();
 		} else {
-			appliedRate = heightRate;
+			if (widthRate <= heightRate) {
+				appliedRate = widthRate;
+			} else {
+				appliedRate = heightRate;
+			}
+			
+			IMG_NEW_WIDTH = new Float(originalImage.getWidth() * appliedRate).intValue();
+			IMG_NEW_HEIGHT = new Float(originalImage.getHeight() * appliedRate).intValue();
 		}
-
-		IMG_NEW_WIDTH = originalImage.getWidth() * appliedRate;
-		IMG_NEW_HEIGHT = originalImage.getHeight() * appliedRate;
 		
 		BufferedImage resizedImage = resizeAndCrop(originalImage, IMG_NEW_WIDTH.intValue(), IMG_NEW_HEIGHT.intValue());
-		
 		String fileSuffix = resizedImagePath.substring(resizedImagePath.lastIndexOf(".") + 1);
-		
 		ImageIO.write(resizedImage, fileSuffix, new File(resizedImagePath));
 		
 	}
+	
+	public static BufferedImage dropAlphaChannel(BufferedImage src) {
+		BufferedImage convertedImg = new BufferedImage(src.getWidth(), src.getHeight(), BufferedImage.TYPE_INT_RGB);
+		convertedImg.getGraphics().drawImage(src, 0, 0, null);
+
+		return convertedImg;
+	}
+	
 	/*
 	private static void resizeImage_old(BufferedImage originalImage, String resizedImagePath, Size size,
 			Integer rotationDegree) throws IOException {
