@@ -4,7 +4,7 @@ public enum EnmPlaceType {
 
 	ENTIRE_PLACE(1, "Entire Place"),
 	PRIVATE_ROOM(2, "Private Room"),
-	SHARED_PLACE(3, "Shared Place");
+	SHARED_PLACE(3, "Shared Room");
 	
 	private Integer id;
 	private String text;

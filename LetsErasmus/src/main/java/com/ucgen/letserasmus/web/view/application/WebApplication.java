@@ -5,12 +5,10 @@ import java.net.URLEncoder;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
-import com.google.common.html.HtmlEscapers;
 import com.ucgen.common.model.Size;
 import com.ucgen.common.util.FileUtil;
 import com.ucgen.common.util.MailUtil;
@@ -27,6 +25,8 @@ import com.ucgen.letserasmus.web.view.BaseController;
 @Service
 @Scope("singleton")
 public class WebApplication extends BaseController {
+	
+	public static final String DEFAULT_PAGE_TITLE = "Let's Erasmus - Safely book your new home online";
 	
 	private Parameters parameters;
 	
@@ -312,9 +312,8 @@ public class WebApplication extends BaseController {
 	
 	public String getPageTitle() {
 		String siteName = " - Let's Erasmus";
-		String title = "Let's Erasmus - Safely book your new home online";
 		
-		User user = this.getUser();
+		String title = DEFAULT_PAGE_TITLE;
 		
 		String requestUrl = super.getRequest().getRequestURL().toString();
 		requestUrl = requestUrl.toUpperCase();
@@ -503,6 +502,16 @@ public class WebApplication extends BaseController {
 	
 	public String getPaymentFraudSessionId() {
 		return SecurityUtil.generateAlphaNumericCode(30);
+	}
+	
+	public boolean hasCustomHeader() {
+		String requestUrl = super.getRequest().getRequestURL().toString();
+		requestUrl = requestUrl.toUpperCase();
+		if (requestUrl.contains("PAGES/PLACEDETAIL.HTML")) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 }
