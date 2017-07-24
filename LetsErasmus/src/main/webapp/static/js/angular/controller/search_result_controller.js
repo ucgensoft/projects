@@ -92,10 +92,10 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
 		              	
 		                map.fitBounds(bounds);
 		                
-		                self.locSearchCriteria.lat1 =  map.getBounds().getNorthEast().lat();
-		                self.locSearchCriteria.lng1 = map.getBounds().getNorthEast().lng();
-		                self.locSearchCriteria.lat2 =  map.getBounds().getSouthWest().lat();
-		                self.locSearchCriteria.lng2 = map.getBounds().getSouthWest().lng();
+		                self.locSearchCriteria.lat1 =  map.getBounds().getSouthWest().lat();
+		                self.locSearchCriteria.lng1 = map.getBounds().getSouthWest().lng();
+		                self.locSearchCriteria.lat2 =  map.getBounds().getNorthEast().lat();
+		                self.locSearchCriteria.lng2 = map.getBounds().getNorthEast().lng();
 		                
 		                $('#divMapCheckbox').removeClass('hidden-force');
 		                

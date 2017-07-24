@@ -363,8 +363,8 @@ public class PlaceDao extends JdbcDaoSupport implements IPlaceDao{
 				sqlBuilder.append(" AND " + LocationRowMapper.COL_LONGITUDE + " >= ? ");
 				sqlBuilder.append(" AND " + LocationRowMapper.COL_LONGITUDE + " <= ? ");
 			} else {
-				// lng2 is south-west (left), lng1 is north-east (right) 
-				if (locationSearchCriteria.getLng2().signum() == -1) {
+				// lng1 is south-west (left), lng2 is north-east (right) 
+				if (locationSearchCriteria.getLng1().signum() == -1) {
 					sqlBuilder.append(" AND " + LocationRowMapper.COL_LONGITUDE + " >= ? ");
 					sqlBuilder.append(" AND " + LocationRowMapper.COL_LONGITUDE + " <= ? ");
 				} else {
