@@ -27,6 +27,7 @@ import com.ucgen.letserasmus.web.view.BaseController;
 public class WebApplication extends BaseController {
 	
 	public static final String DEFAULT_PAGE_TITLE = "Let's Erasmus - Safely book your new home online";
+	public static final String DEFAULT_PAGE_DESCRIPTION = "The international student housing platform";
 	
 	private Parameters parameters;
 	

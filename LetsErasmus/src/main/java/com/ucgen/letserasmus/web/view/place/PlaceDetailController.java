@@ -114,4 +114,22 @@ public class PlaceDetailController extends BaseController {
 		}
 	}
 	
+	public String getPageDescription() {
+		try {
+			Place tmpPlace = this.getPlace();
+			if (tmpPlace != null) {
+				if (tmpPlace.getDescription().length() > 300) {
+					return tmpPlace.getDescription().substring(0, 300) + "...";
+				} else {
+					return tmpPlace.getDescription();
+				}
+			} else {
+				return WebApplication.DEFAULT_PAGE_DESCRIPTION;
+			}
+		} catch (Exception e) {
+			FileLogger.log(Level.ERROR, "PlaceDetailController-getPageTitle- Error: " + CommonUtil.getExceptionMessage(e));
+			return "https://www.letserasmus.com";
+		}
+	}
+	
 }

@@ -6,11 +6,11 @@
 
 	<ui:define name="head">
 		<ui:fragment rendered="#{webApplication.hasCustomHeader()}">
+			<meta property="og:image" content="#{webApplication.getPlacePhotoUrl(placeDetailController.place.id, placeDetailController.place.coverPhotoId, 'small')}" />
 			<title>#{placeDetailController.pageTitle}</title>
 			<meta property="og:url" content="#{placeDetailController.placeDetailUrl}" />
 			<meta property="og:title" content="#{placeDetailController.place.title}" />
-			<meta property="og:description" content="#{placeDetailController.place.description}" />
-			<meta property="og:image" content="#{webApplication.getPlacePhotoUrl(placeDetailController.place.id, placeDetailController.place.coverPhotoId, 'small')}" />
+			<meta property="og:description" content="#{placeDetailController.pageDescription}" />
 		</ui:fragment>
 		
 		<link rel="stylesheet" type="text/css"

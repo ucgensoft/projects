@@ -27,6 +27,89 @@
 	        .jssora02l.jssora02lds { background-position: -3px -33px; opacity: .3; pointer-events: none; }
 	        .jssora02r.jssora02rds { background-position: -63px -33px; opacity: .3; pointer-events: none; }
 	       
+	       
+	       .clsOpenMapContainer {
+				left: 0px !important;
+				right: 0px !important;
+				position: fixed !important;
+				opacity: 1 !important;
+				text-align: center !important;
+				-webkit-transition-property: opacity !important;
+				-moz-transition-property: opacity !important;
+				transition-property: opacity !important;
+				-webkit-transition-duration: 250ms !important;
+				transition-duration: 250ms !important;
+				-webkit-transition-timing-function: ease-out !important;
+				transition-timing-function: ease-out !important;
+				z-index: 100 !important;
+			}
+			
+			@media ( min-width : 1000px) {
+				.clsOpenMapContainer {
+					opacity: 0 !important;
+					display: none !important;
+				}
+			}
+			
+			.container_zxyhsm {
+				display: inline-block !important;
+			}
+			
+			@media ( min-width : 1000px) {
+				.container_zxyhsm {
+					margin-right: 0px !important;
+				}
+			}
+			
+			.wrapper_1iti0ju {
+				display: inline-block !important;
+				vertical-align: middle !important;
+			}
+			
+			.icon_1cxbk5g {
+				font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto,
+					Helvetica Neue, sans-serif !important;
+				font-size: 14px !important;
+				line-height: 18px !important;
+				letter-spacing: undefined !important;
+				padding-top: undefined !important;
+				padding-bottom: undefined !important;
+				color: #484848 !important;
+			}
+			
+			.button_kg85u1 {
+				font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto,
+					Helvetica Neue, sans-serif !important;
+				font-size: 12px !important;
+				line-height: 16px !important;
+				letter-spacing: 0.4px !important;
+				padding-top: 0px !important;
+				padding-bottom: 0px !important;
+				color: #484848 !important;
+				font-weight: 700 !important;
+				background-color: #ffffff !important;
+				padding: 8px 16px !important;
+				box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.14) !important;
+				border-radius: 80px !important;
+				border: none !important;
+				cursor: pointer !important;
+				text-transform: uppercase !important;
+			}
+			
+			.button_kg85u1::-moz-focus-inner {
+				border: 0px !important;
+				padding: 0px !important;
+				margin: 0px !important;
+			}
+			
+			#filterToolBarId_Extended {
+				z-index : 1000;
+			}
+			
+			#divPagination {
+				z-index : 1000;
+			}
+			
 	    </style>
 	     
 		<script>
@@ -35,6 +118,7 @@
 			if (isMobile()) {
 				minMapEdgeLength = minMapEdgeLength * 2;
 			} 
+			var map = null; 
 		</script>
 	</ui:define>
 
@@ -296,6 +380,37 @@
 						<button class="Pagination-element Pagination-element--specialButton {{ctrl.currentPageIndex == ctrl.totalPageNumber ? 'clsDisabledGrey' : ''}}" 
 							ng-click="ctrl.setCurrentPage(ctrl.totalPageNumber)">»</button>
 					</div>
+					<div id="divOpenMapIcon" class="clsOpenMapContainer"
+						aria-hidden="false"
+						style="bottom: 16px;">
+						<div class="container_zxyhsm">
+							<!-- 
+							<img src="#{webApplication.urlPrefix}/static/images/map_mini.jpg" 
+								ng-click="ctrl.onMapClick()"/>
+							 -->
+							<button type="button" class="button_kg85u1"
+								ng-click="ctrl.onOpenMapClick()">
+								<span class="wrapper_1iti0ju"><div
+										class="container_qtix31">
+										<div class="child_17u98ky">
+											<span>Map</span>
+										</div>
+										<div class="child_17u98ky">
+											<div style="margin-left: 6px;">
+												<div class="icon_1cxbk5g">
+													<svg viewBox="0 0 12 12" role="presentation"
+														aria-hidden="true" focusable="false"
+														style="display: block; fill: currentcolor; height: 1em; width: 1em;">
+													<path fill-rule="evenodd"
+														d="M10.377.76l-2.816.469L4.738.288a.753.753 0 0 0-.474 0l-3 1a.75.75 0 0 0-.513.711v9a.75.75 0 0 0 .987.711l2.763-.921 2.763.921c.154.051.32.051.474 0l3-1a.75.75 0 0 0 .513-.711v-8.5a.75.75 0 0 0-.873-.74l-.001.001zM2.25 9.959V2.54l1.5-.5v7.419l-1.5.5zm3-7.919l1.5.5v7.419l-1.5-.5V2.04zm3 .595l1.5-.25v7.074l-1.5.5V2.635z"></path></svg>
+												</div>
+											</div>
+										</div>
+									</div>
+								</span>
+							</button>
+						</div>
+					</div>
 				</div>
 				<section id="searchMapId" class="SearchMap">
 					<div id="mapa" class="mapa" itemscope=""
@@ -305,6 +420,22 @@
 							<div class="gm-style" style="height: 100%; width: 100%;">
 								<div id="divMap" style="height: 100%; width: 100%;"></div>
 							</div>
+						</div>
+					</div>
+					<div id="divCloseMapIcon" class="clsOpenMapContainer"
+						aria-hidden="false"
+						style="bottom: 16px;">
+						<div class="container_zxyhsm">
+							<button type="button" class="button_kg85u1"
+								ng-click="ctrl.onCloseMapClick()">
+								<span class="wrapper_1iti0ju"><div
+										class="container_qtix31">
+										<div class="child_17u98ky">
+											<span>Back To List</span>
+										</div>
+									</div>
+								</span>
+							</button>
 						</div>
 					</div>
 				</section>

@@ -1762,6 +1762,11 @@ p {
 	}
 }
 
+@media only screen and (max-width:1000px) {
+	.mapa {
+		width: 98vw
+	}
+}
 
 .SearchMapMarker {
 	display: -webkit-box;

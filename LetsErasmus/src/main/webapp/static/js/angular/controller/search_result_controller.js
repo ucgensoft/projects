@@ -2,7 +2,6 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
                                     function($scope, $controller, $http, placeService, commonService, enumerationService) {
       var self = this;
       
-      var map = null; 
       var infoWindow = null;
       self.selectedLocation = null;
       self.selectedLat = null;
@@ -39,28 +38,22 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
       
       initialize = function() {
     	  
-    	  if (isMobile()) {
-    		  
-    	  }
-    	  
     	  	self.selectedPlaceName = getUriParam(EnmUriParam.LOCATION);
 	    	self.selectedStartDate = getUriParam(EnmUriParam.CHECKIN_DATE);
 	    	self.selectedEndDate = getUriParam(EnmUriParam.CHECKOUT_DATE);
 	    	self.selectedLocationId = getUriParam(EnmUriParam.LOCATION_ID);
 		  
-	    	if (self.isMapVisible()) {
-	    		var mapOptions = {
-						//zoom: 14,
-						//center: self.selectedLocation,
-						disableDefaultUI: true,
-						zoomControl: true,
-						zoomControlOptions: {
-				              position: google.maps.ControlPosition.TOP_LEFT
-				         }
-				};
-		    	
-		    	map = new google.maps.Map(document.getElementById('divMap'), mapOptions);
-	    	}
+	    	var mapOptions = {
+					//zoom: 14,
+					//center: self.selectedLocation,
+					disableDefaultUI: true,
+					zoomControl: true,
+					zoomControlOptions: {
+			              position: google.maps.ControlPosition.TOP_LEFT
+			         }
+			};
+	    	
+	    	map = new google.maps.Map(document.getElementById('divMap'), mapOptions);
 	    	
 	    	geocoder.geocode({'placeId': self.selectedLocationId}, function(results, status) {
 	            if (status === 'OK') {
@@ -190,6 +183,80 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
 			}
 	      );
       };
+      
+      var isMapInitialized = false;
+      self.initializeMap = function() {
+    	  if (!isMapInitialized) {
+    	 
+	    	  var mapOptions = {
+						//zoom: 14,
+						//center: self.selectedLocation,
+						disableDefaultUI: true,
+						zoomControl: true,
+						zoomControlOptions: {
+				              position: google.maps.ControlPosition.TOP_LEFT
+				         }
+				};
+		    	
+		    	map = new google.maps.Map(document.getElementById('divMap'), mapOptions);
+	    	  
+	    	  geocoder.geocode({'placeId': self.selectedLocationId}, function(results, status) {
+		            if (status === 'OK') {
+		              if (results[0]) {
+		            	var result = results[0]; 
+		               
+		            	self.locSearchCriteria = self.getDisplayArea(result.geometry.viewport);
+		            	
+		            	self.selectedLat = result.geometry.location.lat();
+		    	    	self.selectedLng = result.geometry.location.lng();
+		    	    	
+		    	    	self.selectedLocation = new google.maps.LatLng(self.selectedLat, self.selectedLng);
+		            	
+		    	    	map.setCenter(result.geometry.location);
+		                
+		                if (self.locSearchCriteria.lat1 != result.geometry.viewport.f.f 
+		                		&& self.locSearchCriteria.lng1 != result.geometry.viewport.b.b) {
+		                	 map.setZoom(15);
+		                }
+		                
+		                var point1 = new google.maps.LatLng(self.locSearchCriteria.lat1, self.locSearchCriteria.lng1);
+		                var point2 = new google.maps.LatLng(self.locSearchCriteria.lat2, self.locSearchCriteria.lng2);
+		                
+		                var bounds = new google.maps.LatLngBounds();
+		                
+		                bounds.extend(point1);
+		                bounds.extend(point2);
+		              	
+		                map.fitBounds(bounds);
+		                
+		                self.locSearchCriteria.lat1 =  map.getBounds().getSouthWest().lat();
+		                self.locSearchCriteria.lng1 = map.getBounds().getSouthWest().lng();
+		                self.locSearchCriteria.lat2 =  map.getBounds().getNorthEast().lat();
+		                self.locSearchCriteria.lng2 = map.getBounds().getNorthEast().lng();
+		                
+		                $('#divMapCheckbox').removeClass('hidden-force');
+		                
+		                marker = new google.maps.Marker({
+		    		        map: map,
+		    				draggable: false,
+		    		        position: self.selectedLocation
+		    		    });
+		    	    	
+		    	    	map.controls[google.maps.ControlPosition.TOP_LEFT].push($('#divMapCheckbox')[0]);
+		    	    	
+		    	    	map.addListener('zoom_changed', self.mapDisplayAreaChanged);
+		    	    	map.addListener('dragend', self.mapDisplayAreaChanged);
+		                
+		    	    	self.listPlace(self.displayPlaceList);
+		              }
+		            } else {
+		              console.log('Geocoder failed due to: ' + status);
+		            }
+		          });
+	    	  
+	    	  isMapInitialized = true;
+    	  }
+   	  };
       
       self.mapDisplayAreaChanged = function() {
     	  if (document.getElementById('chbSearchOnMove').checked) {
@@ -732,8 +799,24 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
   	  
   	  self.getFunctionName = function(placeId) {
   		 return 'onFavoriteIconClicked(' + placeId + ')'; 
-  	  }
-      	
+  	  };
+      
+  	  var filterResultWidth = null;
+	 self.onOpenMapClick = function() {
+		$('#filterResultId').css('visibility', 'hidden');
+		filterResultWidth = $('#filterResultId').css('width');
+		$('#filterResultId').css('width', '1px');
+		$('#searchMapId').css('display', 'inherit');
+		self.initializeMap();
+	};
+	
+	self.onCloseMapClick = function() {
+		$('#filterResultId').css('visibility', '');
+		$('#filterResultId').css('width', filterResultWidth);
+		$('#searchMapId').css('display', '');
+		//self.initializeMap();
+	};
+  	  
       initialize();
       
   }]);
