@@ -2,16 +2,17 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html" 
-	template="/pages/Template.xhtml">
+	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
 
 	<ui:define name="head">
-		<link rel="stylesheet" type="text/css" href="#{webApplication.urlPrefix}/static/css/main/main.css?ver=#{webApplication.staticFileVersion}" />
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+		<link rel="stylesheet" type="text/css"
+			href="#{webApplication.urlPrefix}/static/css/main/main.css?ver=#{webApplication.staticFileVersion}" />
+		<link rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 	</ui:define>
-	
+
 	<style>
-		.flex-vertical-middle, .separator-vertical {
+.flex-vertical-middle, .separator-vertical {
 	-webkit-box-orient: vertical;
 	-webkit-box-direction: normal;
 	-webkit-flex-direction: column;
@@ -29,41 +30,49 @@
 	display: -ms-flexbox;
 	display: flex
 }
-	@media ( max-width :47.9em) {
-		#HomeSearchDates {
-			
-		}
+
+@media ( max-width :47.9em) {
+	#HomeSearchDates {
+		
 	}
-	
-	</style>
+}
+</style>
 
 	<ui:define name="body">
 		<h:form id="mainSearchForm">
-			<div id="homeFirstScreenDiv" class="home-first-screen" style="height: 762.45px;">
-	
+			<div id="homeFirstScreenDiv" class="home-first-screen"
+				style="height: 762.45px;">
+
 				<div class="flex-grow-1 flex-vertical-middle">
-					<div class="mainGreyDiv" style="margin: auto; background-color: rgba(0, 0, 0, 0.5); border-radius: 10px;padding:10px;">
+					<div class="mainGreyDiv"
+						style="margin: auto; background-color: rgba(0, 0, 0, 0.5); border-radius: 10px; padding: 10px;">
 						<h1 class="landing-h1">Everything you need for next semester</h1>
 						<h3 class="landing-h2">Safely book your new home online</h3>
 						<div class="staticForm home--search">
 							<div class="formErrors" style="display: none;"></div>
 							<input id="txtSearchPlace" readonly=""
-								class="home--search--input form-control"
-								type="text" name="city" placeholder="Where will you go?"
-								data-event="Selected search field" autocomplete="off" ng-blur="ctrl.validateSearch()" />
-							 
+								class="home--search--input form-control" type="text" name="city"
+								placeholder="Where will you go?"
+								data-event="Selected search field" autocomplete="off"
+								ng-blur="ctrl.validateSearch()" />
+
 							<div id="HomeSearchDates" style="margin-left: 4px">
 								<div id="divDates" class="home-search--dates">
 									<input type="text" id="txtStartDatePicker" class="form-control"
-										placeholder="Start date" value="" readonly="true" /> 
-									<input type="text" id="txtEndDatePicker" class="form-control"
-										placeholder="End date" value=""
-										readonly="true" />
+										placeholder="Start date" value="" readonly="true" /> <input
+										type="text" id="txtEndDatePicker" class="form-control"
+										placeholder="End date" value="" readonly="true" />
 								</div>
 							</div>
-							 
-							<input type="button" class="btn-brand home--search--btn" id="btnSearch"
-								value="search &amp; book" disabled="disabled" ng-click="ctrl.search();" />
+
+							<input type="button" class="btn-brand home--search--btn"
+								id="btnSearch" value="search &amp; book" disabled="disabled"
+								ng-click="ctrl.search();" />
+						</div>
+
+						<div class="popular-search">
+							<span class="highlighted">Popular Cities:</span> 
+							<span class=""><a href="https://www.letserasmus.com/pages/SearchResult.html?loc=Istanbul&amp;checkinDate=09.08.2017&amp;checkoutDate=08.09.2017&amp;locationId=ChIJawhoAASnyhQR0LABvJj-zOE">Istanbul</a> /</span> 
 						</div>
 					</div>
 				</div>
@@ -72,16 +81,17 @@
 		<section class="how-it-works">
 
 		<div class="page-container-responsive-main panel-contrast">
-					<!-- <h1 class="text-center" style='margin-bottom: 0px; font-size: 2em;'>See How it Works</h1> SEO OPTIMIZATION-->
-					<h2 class="text-center" style='margin-bottom: 0px; font-size: 2em;'>See How it Works</h2>
+			<!-- <h1 class="text-center" style='margin-bottom: 0px; font-size: 2em;'>See How it Works</h1> SEO OPTIMIZATION-->
+			<h2 class="text-center" style='margin-bottom: 0px; font-size: 2em;'>See
+				How it Works</h2>
 			<div class="row space-top-8 text-center" style="margin-top: 0px;">
 
 				<div class="how-it-works__step how-it-works__step-one col-md-a">
 					<div class="panel-body-how">
 						<div class="how-it-works__image"></div>
 						<h3>Discover Amazing Places</h3>
-						<p>Find accommodations like private rooms and entire homes from locals and students in Erasmus cities.
-							</p>
+						<p>Find accommodations like private rooms and entire homes
+							from locals and students in Erasmus cities.</p>
 					</div>
 				</div>
 
@@ -89,8 +99,8 @@
 					<div class="panel-body-how">
 						<div class="how-it-works__image"></div>
 						<h3>Book a Stay</h3>
-						<p>Connect with hosts, request to book and receive an answer in 2 days, and pay all
-							through Let's Erasmus’ trusted services.</p>
+						<p>Connect with hosts, request to book and receive an answer
+							in 2 days, and pay all through Let's Erasmus’ trusted services.</p>
 					</div>
 				</div>
 
@@ -98,9 +108,8 @@
 					<div class="panel-body-how">
 						<div class="how-it-works__image"></div>
 						<h3>Enjoy</h3>
-						<p>
-							Feel at home, anywhere you go in the world and enjoy the moment.
-						</p>
+						<p>Feel at home, anywhere you go in the world and enjoy the
+							moment.</p>
 					</div>
 				</div>
 			</div>
@@ -136,13 +145,14 @@
 					<div class="panel-body-how">
 						<span class="icon-size-cm icon-rausch fa fa-check-circle-o"></span>
 						<h4>Customer Support</h4>
-						<p>We are ready to help you
-							around the clock, anywhere in the world.</p>
+						<p>We are ready to help you around the clock, anywhere in the
+							world.</p>
 					</div>
 				</div>
 			</div>
 		</div>
-		</section>	
-		<script src="#{webApplication.urlPrefix}/static/js/angular/controller/main_controller.js?ver=#{webApplication.staticFileVersion}"></script>
+		</section>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/angular/controller/main_controller.js?ver=#{webApplication.staticFileVersion}"></script>
 	</ui:define>
 </ui:composition>

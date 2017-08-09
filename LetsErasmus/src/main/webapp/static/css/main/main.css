@@ -884,3 +884,26 @@
 		width: 100%;
 	}
 }
+
+.popular-search {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 18px;
+  //font-family: Circular, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}			
+
+
+.popular-search .highlighted {
+  /*border-bottom: 1px solid #FF523A;*/
+  color: #fff;
+}
+
+
+.popular-search a {
+  color: #fff;
+}
+
+
+.popular-search a:hover {
+  color: #03a9f4;
+}
+
