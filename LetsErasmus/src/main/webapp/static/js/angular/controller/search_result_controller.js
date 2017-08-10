@@ -193,6 +193,7 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
 						//center: self.selectedLocation,
 						disableDefaultUI: true,
 						zoomControl: true,
+						gestureHandling: 'greedy',
 						zoomControlOptions: {
 				              position: google.maps.ControlPosition.TOP_LEFT
 				         }
@@ -260,10 +261,10 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
       
       self.mapDisplayAreaChanged = function() {
     	  if (document.getElementById('chbSearchOnMove').checked) {
-    		  self.locSearchCriteria.lat1 =  map.getBounds().getNorthEast().lat();
-              self.locSearchCriteria.lng1 = map.getBounds().getNorthEast().lng();
-              self.locSearchCriteria.lat2 =  map.getBounds().getSouthWest().lat();
-              self.locSearchCriteria.lng2 = map.getBounds().getSouthWest().lng();
+    		  self.locSearchCriteria.lat1 = map.getBounds().getSouthWest().lat();
+              self.locSearchCriteria.lng1 = map.getBounds().getSouthWest().lng();
+              self.locSearchCriteria.lat2 =  map.getBounds().getNorthEast().lat();
+              self.locSearchCriteria.lng2 = map.getBounds().getNorthEast().lng();
         	  
         	  self.listPlace(function() {
         		  if (basicSearchFlag) {
@@ -668,7 +669,7 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
 	          avoidTolls: false
 	        }, function(response, status) {
 	          if (status == 'OK') {
-	        	  $("#spanPlaceDistance_" + place.id)[0].innerText = response.rows[0].elements[0].distance.text;
+	        	  //$("#spanPlaceDistance_" + place.id)[0].innerText = response.rows[0].elements[0].distance.text;
 	        	  place.distance = response.rows[0].elements[0].distance.text;
 	          }
 	        }); 
