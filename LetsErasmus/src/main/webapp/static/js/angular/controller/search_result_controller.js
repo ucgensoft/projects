@@ -536,7 +536,11 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
 			  
 			  self.placeList = [];
 			  for(var i = start; i < end; i++) {
-				  self.placeList.push(tmpPlaceList[i]);
+				  if (tmpPlaceList[i] != null && tmpPlaceList[i] != undefined) {
+					  self.placeList.push(tmpPlaceList[i]);
+				  } else {
+					  break;
+				  }
 			  }
 		  } else {
 			  self.placeList = tmpPlaceList;

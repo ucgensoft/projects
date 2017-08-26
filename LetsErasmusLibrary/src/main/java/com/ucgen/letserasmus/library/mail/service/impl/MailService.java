@@ -3,6 +3,7 @@ package com.ucgen.letserasmus.library.mail.service.impl;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.Map.Entry;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.log4j.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailParseException;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import com.ucgen.common.operationresult.EnmResultCode;
 import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.common.util.CommonUtil;
 import com.ucgen.common.util.DateUtil;
+import com.ucgen.common.util.FileLogger;
 import com.ucgen.common.util.FileUtil;
 import com.ucgen.common.util.MailUtil;
 import com.ucgen.letserasmus.library.batch.EmailSender;
@@ -87,6 +90,16 @@ public class MailService implements IMailService, IMailConstants {
 			Email email = new Email(subject, emailContent, toList, ccList, file);
 			this.emailSender.addEmail(email);
 		}
+		try {
+			String paramErasmusRespEmail = this.parameterService.getParameterValue(EnmParameter.LETSERASMUS_RESPONSIBLE_EMAIL.getId());
+			if (paramErasmusRespEmail != null && !paramErasmusRespEmail.trim().isEmpty()) {
+				List<String> emailList = Arrays.asList(paramErasmusRespEmail.split(","));
+				Email tmpEmail = new Email(subject, emailContent, emailList, null, file);
+				this.emailSender.addEmail(tmpEmail);
+			}
+		} catch (Exception e) {
+			FileLogger.log(Level.ERROR, "MessageService-insertMessage() - Error: " + CommonUtil.getExceptionMessage(e));
+		}
 	}
 	
 	public OperationResult sendNewMessageMail(String email, String placeTitle, String messageText) {
@@ -95,7 +108,9 @@ public class MailService implements IMailService, IMailConstants {
 			String htmlFilePath = this.getMailTemplatePath("NewMessage.html");	
 			
 			List<String> toList = new ArrayList<String>();
-			toList.add(email);
+			for (String tmpEmail : email.split(",")) {
+				toList.add(tmpEmail);
+			}
 			
 			Map<String, String> paramMap = new HashMap<String, String>();
 			paramMap.put("#paramPlaceDetailTitle#", placeTitle);

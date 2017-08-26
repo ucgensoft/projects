@@ -12,12 +12,14 @@ import com.ucgen.letserasmus.library.message.dao.IMessageDao;
 import com.ucgen.letserasmus.library.message.model.Message;
 import com.ucgen.letserasmus.library.message.model.MessageThread;
 import com.ucgen.letserasmus.library.message.service.IMessageService;
+import com.ucgen.letserasmus.library.parameter.service.IParameterService;
 
 @Service
 public class MessageService implements IMessageService {
 
 	private IMessageDao messageDao;
 	private IMailService mailService;
+	private IParameterService parameterService;
 	
 	@Autowired
 	public void setMessageDao(IMessageDao messageDao) {
@@ -27,6 +29,11 @@ public class MessageService implements IMessageService {
 	@Autowired
 	public void setMailService(IMailService mailService) {
 		this.mailService = mailService;
+	}
+
+	@Autowired
+	public void setParameterService(IParameterService parameterService) {
+		this.parameterService = parameterService;
 	}
 
 	@Override
