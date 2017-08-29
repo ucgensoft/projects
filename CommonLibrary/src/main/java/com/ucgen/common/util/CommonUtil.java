@@ -19,7 +19,7 @@ public class CommonUtil {
 	}
 	
 	public static String getExceptionMessage(Exception e) {
-		return "Hata Mesajý:" + e.getMessage() + ", Hata Yeri:" + ExceptionUtils.getStackTrace(e); 
+		return "Hata MesajÄ±:" + e.getMessage() + ", Hata Yeri:" + ExceptionUtils.getStackTrace(e); 
 	}
 	
 	public static String toJson(Object obj) throws JsonProcessingException {

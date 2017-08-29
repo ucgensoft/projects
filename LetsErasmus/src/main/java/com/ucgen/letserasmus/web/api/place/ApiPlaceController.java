@@ -160,8 +160,8 @@ public class ApiPlaceController extends BaseApiController {
 							OperationResult createResult = this.placeService.insertPlace(place);
 							
 							try {
-								// Create place iþleminde SavePhoto adýmýnda placeId belli olmadýðý için random deðer oluþturuluyor. 
-								// Oluþturulan random deðer sessiondan okunuyor
+								// Create place iï¿½leminde SavePhoto adï¿½mï¿½nda placeId belli olmadï¿½ï¿½ï¿½ iï¿½in random deï¿½er oluï¿½turuluyor. 
+								// Oluï¿½turulan random deï¿½er sessiondan okunuyor
 								String tmpPlaceId = session.getAttribute(EnmSession.TMP_PHOTO_PLACE_ID.getId()).toString();
 								String tmpLocalPhotoFolder = this.parameterService.getParameterValue(EnmParameter.TMP_FILE_PATH.getId());
 								String localPlacePhotoFolderPath = FileUtil.concatPath(tmpLocalPhotoFolder, "place", tmpPlaceId);
@@ -491,14 +491,21 @@ public class ApiPlaceController extends BaseApiController {
 			String paramLng1 = requestParams.get("lng1");
 			String paramLng2 = requestParams.get("lng2");
 			
-			if (StringUtil.isEmpty(paramStartDate) || StringUtil.isEmpty(paramEndDate)
-					|| StringUtil.isEmpty(paramLat1) || StringUtil.isEmpty(paramLat2)
+			if (StringUtil.isEmpty(paramLat1) || StringUtil.isEmpty(paramLat2)
 					|| StringUtil.isEmpty(paramLng1) || StringUtil.isEmpty(paramLng2)) {
 				listResult.setResultCode(EnmResultCode.WARNING.getValue());
 				listResult.setResultDesc("Mising mandatory parameter!");
 			} else {
-				Date startDate = DateUtil.valueOf(paramStartDate, DateUtil.SHORT_DATE_FORMAT);
-				Date endDate = DateUtil.valueOf(paramEndDate, DateUtil.SHORT_DATE_FORMAT);
+				Date startDate = null;
+				Date endDate = null;
+				
+				if (paramStartDate != null) {
+					startDate = DateUtil.valueOf(paramStartDate, DateUtil.SHORT_DATE_FORMAT);
+				}
+				
+				if (paramEndDate != null) {
+					endDate = DateUtil.valueOf(paramEndDate, DateUtil.SHORT_DATE_FORMAT);
+				}
 				
 				LocationSearchCriteria locSearchCriteria = new LocationSearchCriteria();
 				locSearchCriteria.setLat1(new BigDecimal(paramLat1));

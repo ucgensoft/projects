@@ -398,10 +398,10 @@ public class ImageUtil {
 	}
 
 	public static void main(String[] args) throws FileNotFoundException, IOException {
-		String path = "C:\\Users\\ttmbuyukasik\\Desktop\\LetsErasmus\\image\\source\\jpg.jpg";
+		String path = "C:\\Users\\ttmbuyukasik\\Desktop\\LetsErasmus\\image\\source\\turkcell_logo.jpg";
 		BufferedImage originalImage = ImageIO.read(new File(path));   
 		
-		originalImage = Scalr.rotate(originalImage, Rotation.CW_90, null);
+		//originalImage = Scalr.rotate(originalImage, Rotation.CW_90, null);
 		
 		Size size = new Size(1000f, 1000f);
 		
@@ -421,9 +421,11 @@ public class ImageUtil {
 		IMG_NEW_WIDTH = originalImage.getWidth() * appliedRate;
 		IMG_NEW_HEIGHT = originalImage.getHeight() * appliedRate;
 		
-		BufferedImage resizedImage = resizeAndCrop(originalImage, IMG_NEW_WIDTH.intValue(), IMG_NEW_HEIGHT.intValue());
+		BufferedImage resizedImage = Scalr.resize(originalImage, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_EXACT, originalImage.getWidth(), originalImage.getHeight());
 		
-		ImageIO.write(resizedImage, "jpg", new File("C:\\Users\\ttmbuyukasik\\Desktop\\LetsErasmus\\image\\dest\\jpg_resized.jpg"));
+		//BufferedImage resizedImage = resizeAndCrop(originalImage, originalImage.getWidth(), originalImage.getHeight());
+		
+		ImageIO.write(resizedImage, "jpg", new File("C:\\Users\\ttmbuyukasik\\Desktop\\LetsErasmus\\image\\dest\\turkcell_logo.jpg"));
 		
 		/*
 		String path = "C:\\Users\\ttmbuyukasik\\Desktop\\LetsErasmus\\image\\source\\jpeg.jpeg";
