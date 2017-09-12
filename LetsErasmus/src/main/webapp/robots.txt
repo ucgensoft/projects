@@ -1,0 +1,24 @@
+#                                                                                                                                                                                                                     
+#                                                    ''''''                                                                                                                                                           
+#	lllllll                              tttt           '::::'                      EEEEEEEEEEEEEEEEEEEEEE                                                                                                               
+#	l:::::l                           ttt:::t           '::::'                      E::::::::::::::::::::E                                                                                                               
+#	l:::::l                           t:::::t           ':::''                      E::::::::::::::::::::E                                                                                                               
+#	l:::::l                           t:::::t          ':::'                        EE::::::EEEEEEEEE::::E                                                                                                               
+#	 l::::l     eeeeeeeeeeee    ttttttt:::::ttttttt    ''''       ssssssssss          E:::::E       EEEEEErrrrr   rrrrrrrrr   aaaaaaaaaaaaa      ssssssssss      mmmmmmm    mmmmmmm   uuuuuu    uuuuuu      ssssssssss   
+#	 l::::l   ee::::::::::::ee  t:::::::::::::::::t             ss::::::::::s         E:::::E             r::::rrr:::::::::r  a::::::::::::a   ss::::::::::s   mm:::::::m  m:::::::mm u::::u    u::::u    ss::::::::::s  
+#	 l::::l  e::::::eeeee:::::eet:::::::::::::::::t           ss:::::::::::::s        E::::::EEEEEEEEEE   r:::::::::::::::::r aaaaaaaaa:::::ass:::::::::::::s m::::::::::mm::::::::::mu::::u    u::::u  ss:::::::::::::s 
+#	 l::::l e::::::e     e:::::etttttt:::::::tttttt           s::::::ssss:::::s       E:::::::::::::::E   rr::::::rrrrr::::::r         a::::as::::::ssss:::::sm::::::::::::::::::::::mu::::u    u::::u  s::::::ssss:::::s
+#	 l::::l e:::::::eeeee::::::e      t:::::t                  s:::::s  ssssss        E:::::::::::::::E    r:::::r     r:::::r  aaaaaaa:::::a s:::::s  ssssss m:::::mmm::::::mmm:::::mu::::u    u::::u   s:::::s  ssssss 
+#	 l::::l e:::::::::::::::::e       t:::::t                    s::::::s             E::::::EEEEEEEEEE    r:::::r     rrrrrrraa::::::::::::a   s::::::s      m::::m   m::::m   m::::mu::::u    u::::u     s::::::s      
+#	 l::::l e::::::eeeeeeeeeee        t:::::t                       s::::::s          E:::::E              r:::::r           a::::aaaa::::::a      s::::::s   m::::m   m::::m   m::::mu::::u    u::::u        s::::::s   
+#	 l::::l e:::::::e                 t:::::t    tttttt       ssssss   s:::::s        E:::::E       EEEEEE r:::::r          a::::a    a:::::assssss   s:::::s m::::m   m::::m   m::::mu:::::uuuu:::::u  ssssss   s:::::s 
+#	l::::::le::::::::e                t::::::tttt:::::t       s:::::ssss::::::s     EE::::::EEEEEEEE:::::E r:::::r          a::::a    a:::::as:::::ssss::::::sm::::m   m::::m   m::::mu:::::::::::::::uus:::::ssss::::::s
+#	l::::::l e::::::::eeeeeeee        tt::::::::::::::t       s::::::::::::::s      E::::::::::::::::::::E r:::::r          a:::::aaaa::::::as::::::::::::::s m::::m   m::::m   m::::m u:::::::::::::::us::::::::::::::s 
+#	l::::::l  ee:::::::::::::e          tt:::::::::::tt        s:::::::::::ss       E::::::::::::::::::::E r:::::r           a::::::::::aa:::as:::::::::::ss  m::::m   m::::m   m::::m  uu::::::::uu:::u s:::::::::::ss  
+#	llllllll    eeeeeeeeeeeeee            ttttttttttt           sssssssssss         EEEEEEEEEEEEEEEEEEEEEE rrrrrrr            aaaaaaaaaa  aaaa sssssssssss    mmmmmm   mmmmmm   mmmmmm    uuuuuuuu  uuuu  sssssssssss    
+                                                                                                                                                                                                                     
+                                                                                                                                                                                                                     
+User-Agent: *
+Disallow:
+
+Sitemap: https://www.letserasmus.com/sitemap.xml

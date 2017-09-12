@@ -40,6 +40,8 @@ public class SpringMVCConfiguration extends WebMvcConfigurerAdapter{
 		registry.addResourceHandler("/static/**").addResourceLocations("/static/");
 		registry.addResourceHandler("/place/**").addResourceLocations("/place/");
 		registry.addResourceHandler("/user/**").addResourceLocations("/user/");
+		registry.addResourceHandler("/sitemap.xml").addResourceLocations("/sitemap.xml");
+		registry.addResourceHandler("/robots.txt").addResourceLocations("/robots.txt");
 	}
 	
 }
