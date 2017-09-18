@@ -1,0 +1,409 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
+
+	<ui:define name="head">
+		<link rel="stylesheet" type="text/css"
+			href="#{webApplication.urlPrefix}/static/css/universities.css?ver=#{webApplication.staticFileVersion}" />
+		<style>
+#imgProfileImage {
+	width: auto;
+	height: 200px;
+}
+/*Mobile classes*/
+@media ( max-width :47.9em) {
+	/* removed for proper profile pic
+				#imgProfileImage {
+					max-width: 225px;
+					max-height: 225px;
+				}
+				*/
+	.clsInline {
+		display: inline !important;
+	}
+	.filter-element-4 {
+		width: 100%;
+	}
+	h2 {
+		font-size: 20px;
+	}
+}
+</style>
+	</ui:define>
+
+	<ui:define name="body">
+		<main id="site-content" role="main">
+		<div id="recommendation_container" class="clearfix container"></div>
+
+		<div
+			class="page-container page-container-responsive space-top-4 space-8">
+			<div class="row">
+				<div class="col-lg-3 col-md-4">
+					<div id="user" class="panel space-4">
+						<div>
+							<div class="space-2" id="user-media-container"
+								style="margin-bottom: 0px">
+								<div id="slideshow" class="slideshow"
+									style="text-align: center;">
+									<ul class="slideshow-images"
+										style="padding-left: 0px; margin-bottom: 0px;">
+										<li class="active media-photo media-photo-block"><img
+											id="imgProfileImage" alt="istanbul-technical-university-logo"
+											src="#{webApplication.urlPrefix}/static/images/universities/istanbul-technical-university.png" />
+										</li>
+										<li class="media-photo media-photo-block"></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="panel space-4">
+						<div class="panel-header">Location</div>
+						<div class="panel-body">
+							<ul class="list-unstyled space-3">
+								<li class="row row-table space-2">
+									<div class="col-12 col-middle clsInline">Country</div>
+									<div class="col-3 col-middle clsInline"
+										style="padding-left: 0px; padding-right: 12px; width: 60px; float: right;">
+										Turkey</div>
+								</li>
+								<li class="row row-table space-2">
+									<div class="col-12 col-middle clsInline">City</div>
+									<div class="col-3 col-middle clsInline"
+										style="padding-left: 0px; padding-right: 12px; width: 60px; float: right;">
+										Istanbul</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+
+					<div class="panel space-4" style="margin-bottom: 0px">
+
+						<div class="circle-block">
+							<div class="circle">
+								<div class="text">
+									<h2>#601-650</h2>
+									<span class="rankings_heading" style="font-size: 14px;">World
+										University Rankings</span>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="panel space-4" style="border: 0;">
+						<div id="buttons">
+							<a
+								href="https://www.letserasmus.com/pages/SearchResult.html?loc=Teknik%20%C3%9Cniversite&amp;locationId=ChIJmZWoyXC3yhQR-c1A6OH69fI"
+								target="_blank" class="btnhousing bluebtn">FIND HOMES NEAR
+								ISTANBUL TECHNICAL UNIVERSITY</a>
+						</div>
+
+					</div>
+
+				</div>
+				<div class="col-lg-9 col-md-8 col-sm-12">
+					<div class="row space-4 clsWideScreen"
+						style="display: block !important;">
+						<div class="col-sm-8 col-md-12 col-lg-12"
+							style="text-align: justify;">
+							<h1>Istanbul Technical University</h1>
+							<span class="text-normal">ITU was established in 1773,
+								during the time of the Ottoman Sultan Mustafa III. With its
+								original name "Muhendishane-i Bahr-i Humayun", The Royal School
+								of Naval Engineering, its responsibility was to educate chart
+								masters and ship builders. In 1795, the "Muhendishane-i Berr-i
+								Humayun", The Royal School of Military Engineering, was
+								established to educate the technical staff in the army. In 1847,
+								education in the field of architecture was also introduced.
+								Established in 1883, the School of Civil Engineering assumed the
+								name "Engineering Academy", with the aim of teaching essentials
+								skills needed in planning and implementing the countryï¿½s new
+								infrastructure projects. Gaining university status in 1928, the
+								Engineering Academy continued to provide education in the fields
+								of engineering and architecture until it was incorporated into
+								ITU in 1944. Finally, in 1946, ITU became an autonomous
+								university which included the Faculties of Architecture, Civil
+								Engineering, Mechanical Engineering, and Electrical and
+								Electronic Engineering. With a history stretching back over 238
+								years, providing technical education within a modern educational
+								environment and strong academic staff, ITU is strongly
+								identified with architectural and engineering education in
+								Turkey. Since its inception and foundation under Ottoman rule,
+								ITU has constantly lead the way in reform movements, and in...</span>
+						</div>
+
+
+						<div class="col-sm-8 col-md-12 col-lg-12">
+
+							<div class="panel-pane pane-block pane-qs-profiles-2">
+								<div class="pane-content">
+									<div class="desktop-tablet">
+										
+										<div id="uni-classifications" rel="294206">
+											<ul id="uni-info">
+												<li class="size">
+													<div class="visu size" data="XL">
+														<div class="wcon" style="display: block;">
+															<span class="s">S</span><span class="m">M</span><span
+																class="l">L</span><span class="xl active">XL</span>
+														</div>
+													</div>
+													<h4 class="l12 gray">
+														SIZE<span class="l10 blue right"
+															style="visibility: visible; display: none;"><span
+															class="sign"
+															style="display: inline; visibility: visible;">&gt;</span>30,000</span>
+													</h4>
+												</li>
+												<li class="age">
+													<div class="visu age" data="5">
+														<div class="wcon" style="display: inline-block;">
+															<span class="arrow"><span class="block"><span
+																	data="4" style="width: 100%;"></span></span><span
+																class="block"><span data="3" style="width: 100%;"></span></span><span
+																class="block"><span data="3" style="width: 100%;"></span></span><span
+																class="block"><span data="2" style="width: 100%;"></span></span><span
+																class="block"><span data="1" style="width: 100%;"></span></span><span
+																class="point"></span></span><span class="date first">1900</span><span
+																class="date last">2013</span>
+														</div>
+													</div>
+													<h4 class="l12 gray">
+														AGE<span class="l10 blue right"
+															style="visibility: visible; display: none;"><span
+															class="sign"
+															style="display: inline; visibility: visible;">&gt;</span>100
+															years</span>
+													</h4>
+												</li>
+												<li class="dstatus">
+													<div class="visu dstatus" data="A">
+														<div class="wcon">
+															<span
+																style="background-position: 0px -66px; display: block;"></span>
+														</div>
+														<h4 class="l12 gray">
+															STATUS <span class="l10 blue right"
+																style="visibility: visible; display: none;">Public</span>
+														</h4>
+													</div>
+												</li>
+												<li class="research">
+													<div class="visu research" data="VH">
+														<div class="wcon" style="display: block;">
+															<span class="graph"><span class="lo"></span><span
+																class="md"></span><span class="hi"></span><span
+																class="vh active"></span><span></span></span>
+														</div>
+													</div>
+													<h4 class="l12 gray">
+														RESEARCH <span class="l10 blue right"
+															style="visibility: visible; display: none;">Very
+															High</span>
+													</h4>
+												</li>
+												<li class="focus">
+													<div class="visu focus" data="FO">
+														<div class="wcon">
+															<span
+																style="background-position: 0px -134px; display: block;"></span>
+														</div>
+														<h4 class="l12 gray">
+															FOCUS <span class="l10 blue right"
+																style="visibility: visible; display: none;">Focused</span>
+														</h4>
+													</div>
+												</li>
+											</ul>
+										</div>
+									</div>
+
+									<div class="mobile-only">
+										
+										<div id="uni-classifications" rel="294206">
+											<div id="classification-carousel" class="carousel"
+												data-ride="carousel" data-interval="false" data-wrap="false">
+
+												<div id="uni-info" class="carousel-inner">
+													<div class="item active first">
+														<ul>
+															<li class="size">
+																<div class="size">
+																	<div class="visu size" data="XL">
+																		<div class="wcon" style="display: block;">
+																			<span class="s">S</span><span class="m">M</span><span
+																				class="l">L</span><span class="xl active">XL</span>
+																		</div>
+																	</div>
+																	<h4 class="l12 gray">
+																		SIZE<span class="l10 blue right"
+																			style="visibility: visible; display: none;"><span
+																			class="sign"
+																			style="display: inline; visibility: visible;">&gt;</span>30,000</span>
+																	</h4>
+																</div>
+															</li>
+														</ul>
+													</div>
+													<div class="item" id="uni-info">
+														<ul>
+															<li class="age">
+																<div class="age">
+																	<div class="visu age" data="5">
+																		<div class="wcon" style="display: inline-block;">
+																			<span class="arrow"><span class="block"><span
+																					data="4" style="width: 100%;"></span></span><span
+																				class="block"><span data="3"
+																					style="width: 100%;"></span></span><span class="block"><span
+																					data="3" style="width: 100%;"></span></span><span
+																				class="block"><span data="2"
+																					style="width: 100%;"></span></span><span class="block"><span
+																					data="1" style="width: 100%;"></span></span><span
+																				class="point"></span></span><span class="date first">1900</span><span
+																				class="date last">2013</span>
+																		</div>
+																	</div>
+																	<h4 class="l12 gray">
+																		AGE<span class="l10 blue right"
+																			style="visibility: visible; display: none;"><span
+																			class="sign"
+																			style="display: inline; visibility: visible;">&gt;</span>100
+																			years</span>
+																	</h4>
+																</div>
+															</li>
+														</ul>
+													</div>
+													<div class="item" id="uni-info">
+														<ul>
+															<li class="dstatus">
+																<div class="dstatus">
+																	<div class="visu dstatus" data="A">
+																		<div class="wcon">
+																			<span
+																				style="background-position: 0px -66px; display: block;"></span>
+																		</div>
+																		<h4 class="l12 gray">
+																			STATUS <span class="l10 blue right"
+																				style="visibility: visible; display: none;">Public</span>
+																		</h4>
+																	</div>
+																</div>
+															</li>
+														</ul>
+													</div>
+													<div class="item" id="uni-info">
+														<ul>
+															<li class="research">
+																<div class="research">
+																	<div class="visu research" data="VH">
+																		<div class="wcon" style="display: block;">
+																			<span class="graph"><span class="lo"></span><span
+																				class="md"></span><span class="hi"></span><span
+																				class="vh active"></span><span></span></span>
+																		</div>
+																	</div>
+																	<h4 class="l12 gray">
+																		RESEARCH <span class="l10 blue right"
+																			style="visibility: visible; display: none;">Very
+																			High</span>
+																	</h4>
+																</div>
+															</li>
+														</ul>
+													</div>
+													<div class="item last" id="uni-info">
+														<ul>
+															<li class="focus">
+																<div class="focus">
+																	<div class="visu focus" data="FO">
+																		<div class="wcon">
+																			<span
+																				style="background-position: 0px -134px; display: block;"></span>
+																		</div>
+																		<h4 class="l12 gray">
+																			FOCUS <span class="l10 blue right"
+																				style="visibility: visible; display: none;">Focused</span>
+																		</h4>
+																	</div>
+																</div>
+															</li>
+														</ul>
+													</div>
+												</div>
+
+												<a class="left carousel-control"
+													data-target="#classification-carousel" role="button"
+													data-slide="prev" style="display: block;">Previous</a> <a
+													class="right carousel-control"
+													data-target="#classification-carousel" role="button"
+													data-slide="next">Next</a>
+											</div>
+										</div>
+
+									</div>
+								</div>
+							</div>
+
+						</div>
+
+						<div class="col-sm-8 col-md-12 col-lg-12">
+							<div class="wrapper">
+								<div class="pie-charts">
+									<div class="pieID--micro-skills pie-chart--wrapper">
+										<h4>Number of academic faculty staff</h4>
+										<div class="pie-chart">
+											<div class="pie-chart__pie"></div>
+											<ul class="pie-chart__legend">
+												<li><em>Local</em><span>2357</span></li>
+												<li><em>International</em><span>53</span></li>
+											</ul>
+										</div>
+									</div>
+									<div class="pieID--categories pie-chart--wrapper">
+										<h4>Number of students</h4>
+										<div class="pie-chart">
+											<div class="pie-chart__pie"></div>
+											<ul class="pie-chart__legend">
+												<li><em>Postgraduate</em><span>15354</span></li>
+												<li><em>Undergraduate</em><span>23033</span></li>
+											</ul>
+										</div>
+									</div>
+									<div class="pieID--operations pie-chart--wrapper">
+										<h4>Number of international students</h4>
+										<div class="pie-chart">
+											<div class="pie-chart__pie"></div>
+											<ul class="pie-chart__legend">
+												<li><em>Postgraduate</em><span>826</span></li>
+												<li><em>Undergraduate</em><span>826</span></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+
+
+					</div>
+
+
+				</div>
+
+			</div>
+
+
+		</div>
+		</main>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/createPieCharts.js?ver=#{webApplication.staticFileVersion}"></script>
+		<script
+			src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script
+			src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	</ui:define>
+</ui:composition>

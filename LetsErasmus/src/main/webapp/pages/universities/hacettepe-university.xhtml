@@ -1,0 +1,399 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
+
+	<ui:define name="head">
+		<link rel="stylesheet" type="text/css"
+			href="#{webApplication.urlPrefix}/static/css/universities.css?ver=#{webApplication.staticFileVersion}" />
+		<style>
+#imgProfileImage {
+	width: auto;
+	height: 200px;
+}
+/*Mobile classes*/
+@media ( max-width :47.9em) {
+	/* removed for proper profile pic
+				#imgProfileImage {
+					max-width: 225px;
+					max-height: 225px;
+				}
+				*/
+	.clsInline {
+		display: inline !important;
+	}
+	.filter-element-4 {
+		width: 100%;
+	}
+	h2 {
+		font-size: 20px;
+	}
+}
+</style>
+	</ui:define>
+
+	<ui:define name="body">
+		<main id="site-content" role="main">
+		<div id="recommendation_container" class="clearfix container"></div>
+
+		<div
+			class="page-container page-container-responsive space-top-4 space-8">
+			<div class="row">
+				<div class="col-lg-3 col-md-4">
+					<div id="user" class="panel space-4">
+						<div>
+							<div class="space-2" id="user-media-container"
+								style="margin-bottom: 0px">
+								<div id="slideshow" class="slideshow"
+									style="text-align: center;">
+									<ul class="slideshow-images"
+										style="padding-left: 0px; margin-bottom: 0px;">
+										<li class="active media-photo media-photo-block"><img
+											id="imgProfileImage" alt="hacettepe-university-logo"
+											src="#{webApplication.urlPrefix}/static/images/universities/hacettepe-university.png" />
+										</li>
+										<li class="media-photo media-photo-block"></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="panel space-4">
+						<div class="panel-header">Location</div>
+						<div class="panel-body">
+							<ul class="list-unstyled space-3">
+								<li class="row row-table space-2">
+									<div class="col-12 col-middle clsInline">Country</div>
+									<div class="col-3 col-middle clsInline"
+										style="padding-left: 0px; padding-right: 12px; width: 60px; float: right;">
+										Turkey</div>
+								</li>
+								<li class="row row-table space-2">
+									<div class="col-12 col-middle clsInline">City</div>
+									<div class="col-3 col-middle clsInline"
+										style="padding-left: 0px; padding-right: 12px; width: 60px; float: right;">
+										Ankara</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+
+					<div class="panel space-4" style="margin-bottom: 0px">
+
+						<div class="circle-block">
+							<div class="circle">
+								<div class="text">
+									<h2>#751-800</h2>
+									<span class="rankings_heading" style="font-size: 14px;">World
+										University Rankings</span>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="panel space-4" style="border: 0;">
+						<div id="buttons">
+							<a
+								href="https://www.letserasmus.com/pages/SearchResult.html?loc=Hacettepe%20%C3%9Cniversitesi&amp;locationId=ChIJJacY_T9H0xQRBSc8ZGIM_Ek"
+								target="_blank" class="btnhousing bluebtn">FIND HOMES NEAR
+								HACETTEPE UNIVERSITY</a>
+						</div>
+
+					</div>
+
+				</div>
+				<div class="col-lg-9 col-md-8 col-sm-12">
+					<div class="row space-4 clsWideScreen"
+						style="display: block !important;">
+						<div class="col-sm-8 col-md-12 col-lg-12"
+							style="text-align: justify;">
+							<h1>Hacettepe University</h1>
+							<span class="text-normal">The Chair of Child Health,
+								deemed to be the origin of Hacettepe Faculty of Medicine, was
+								founded as part of the Faculty of Medicine, Ankara University by
+								Prof. Dr. ?hsan Do?ramac? on February 2, 1954. The foundation
+								stone of the university was laid in 1957 with the Child Health
+								Institute and Hospital within Hacettepe, which began its
+								training, education and research activities and public services
+								in 1958. Hacettepe University continues its activities with 14
+								Faculties, 14 Graduate Schools and Institutes , 2 Applied
+								Schools, 1 Conservatory, 6 Vocational Schools, and 92 Research
+								and Application Centers within the scope of the Law No: 2809 for
+								the Organization of Higher Education Institutions, enacted in
+								1982. Hacettepe University, as one of the leading universities
+								in the country, keeps contributing to social development and
+								universal values in the fields of science, technology and art.</span>
+						</div>
+
+
+						<div class="col-sm-8 col-md-12 col-lg-12">
+
+							<div class="panel-pane pane-block pane-qs-profiles-2">
+								<div class="pane-content">
+									<div class="desktop-tablet">
+										
+										<div id="uni-classifications" rel="297052">
+											<ul id="uni-info">
+												<li class="size">
+													<div class="visu size" data="XL">
+														<div class="wcon" style="display: block;">
+															<span class="s">S</span><span class="m">M</span><span
+																class="l">L</span><span class="xl active">XL</span>
+														</div>
+													</div>
+													<h4 class="l12 gray">
+														SIZE<span class="l10 blue right"
+															style="visibility: visible; display: none;"><span
+															class="sign"
+															style="display: inline; visibility: visible;">&gt;</span>30,000</span>
+													</h4>
+												</li>
+												<li class="age">
+													<div class="visu age" data="4">
+														<div class="wcon" style="display: inline-block;">
+															<span class="arrow"><span class="block"><span
+																	data="4" style="width: 0%"></span></span><span class="block"><span
+																	data="3" style="width: 100%;"></span></span><span
+																class="block"><span data="3" style="width: 100%;"></span></span><span
+																class="block"><span data="2" style="width: 100%;"></span></span><span
+																class="block"><span data="1" style="width: 100%;"></span></span><span
+																class="point"></span></span><span class="date first">1900</span><span
+																class="date last">2013</span>
+														</div>
+													</div>
+													<h4 class="l12 gray">
+														AGE<span class="l10 blue right"
+															style="visibility: visible; display: none;"><span
+															class="sign"
+															style="display: inline; visibility: visible;">&lt;</span>100
+															years</span>
+													</h4>
+												</li>
+												<li class="dstatus">
+													<div class="visu dstatus" data="A">
+														<div class="wcon">
+															<span
+																style="background-position: 0px -66px; display: block;"></span>
+														</div>
+														<h4 class="l12 gray">
+															STATUS <span class="l10 blue right"
+																style="visibility: visible; display: none;">Public</span>
+														</h4>
+													</div>
+												</li>
+												<li class="research">
+													<div class="visu research" data="HI">
+														<div class="wcon" style="display: block;">
+															<span class="graph"><span class="lo"></span><span
+																class="md"></span><span class="hi active"></span><span
+																class="vh"></span><span></span></span>
+														</div>
+													</div>
+													<h4 class="l12 gray">
+														RESEARCH <span class="l10 blue right"
+															style="visibility: visible; display: none;">High</span>
+													</h4>
+												</li>
+												<li class="focus">
+													<div class="visu focus" data="FC">
+														<div class="wcon">
+															<span
+																style="background-position: 0px -268px; display: block;"></span>
+														</div>
+														<h4 class="l12 gray">
+															FOCUS <span class="l10 blue right"
+																style="visibility: visible; display: none;">Comprehensive+</span>
+														</h4>
+													</div>
+												</li>
+											</ul>
+										</div>
+									</div>
+
+									<div class="mobile-only">
+										
+										<div id="uni-classifications" rel="297052">
+											<div id="classification-carousel" class="carousel"
+												data-ride="carousel" data-interval="false" data-wrap="false">
+
+												<div id="uni-info" class="carousel-inner">
+													<div class="item active first">
+														<ul>
+															<li class="size">
+																<div class="size">
+																	<div class="visu size" data="XL">
+																		<div class="wcon" style="display: block;">
+																			<span class="s">S</span><span class="m">M</span><span
+																				class="l">L</span><span class="xl active">XL</span>
+																		</div>
+																	</div>
+																	<h4 class="l12 gray">
+																		SIZE<span class="l10 blue right"
+																			style="visibility: visible; display: none;"><span
+																			class="sign"
+																			style="display: inline; visibility: visible;">&gt;</span>30,000</span>
+																	</h4>
+																</div>
+															</li>
+														</ul>
+													</div>
+													<div class="item" id="uni-info">
+														<ul>
+															<li class="age">
+																<div class="age">
+																	<div class="visu age" data="4">
+																		<div class="wcon" style="display: inline-block;">
+																			<span class="arrow"><span class="block"><span
+																					data="4" style="width: 0%"></span></span><span
+																				class="block"><span data="3"
+																					style="width: 100%;"></span></span><span class="block"><span
+																					data="3" style="width: 100%;"></span></span><span
+																				class="block"><span data="2"
+																					style="width: 100%;"></span></span><span class="block"><span
+																					data="1" style="width: 100%;"></span></span><span
+																				class="point"></span></span><span class="date first">1900</span><span
+																				class="date last">2013</span>
+																		</div>
+																	</div>
+																	<h4 class="l12 gray">
+																		AGE<span class="l10 blue right"
+																			style="visibility: visible; display: none;"><span
+																			class="sign"
+																			style="display: inline; visibility: visible;">&lt;</span>100
+																			years</span>
+																	</h4>
+																</div>
+															</li>
+														</ul>
+													</div>
+													<div class="item" id="uni-info">
+														<ul>
+															<li class="dstatus">
+																<div class="dstatus">
+																	<div class="visu dstatus" data="A">
+																		<div class="wcon">
+																			<span
+																				style="background-position: 0px -66px; display: block;"></span>
+																		</div>
+																		<h4 class="l12 gray">
+																			STATUS <span class="l10 blue right"
+																				style="visibility: visible; display: none;">Public</span>
+																		</h4>
+																	</div>
+																</div>
+															</li>
+														</ul>
+													</div>
+													<div class="item" id="uni-info">
+														<ul>
+															<li class="research">
+																<div class="research">
+																	<div class="visu research" data="HI">
+																		<div class="wcon" style="display: block;">
+																			<span class="graph"><span class="lo"></span><span
+																				class="md"></span><span class="hi active"></span><span
+																				class="vh"></span><span></span></span>
+																		</div>
+																	</div>
+																	<h4 class="l12 gray">
+																		RESEARCH <span class="l10 blue right"
+																			style="visibility: visible; display: none;">High</span>
+																	</h4>
+																</div>
+															</li>
+														</ul>
+													</div>
+													<div class="item last" id="uni-info">
+														<ul>
+															<li class="focus">
+																<div class="focus">
+																	<div class="visu focus" data="FC">
+																		<div class="wcon">
+																			<span
+																				style="background-position: 0px -268px; display: block;"></span>
+																		</div>
+																		<h4 class="l12 gray">
+																			FOCUS <span class="l10 blue right"
+																				style="visibility: visible; display: none;">Comprehensive+</span>
+																		</h4>
+																	</div>
+																</div>
+															</li>
+														</ul>
+													</div>
+												</div>
+
+												<a class="left carousel-control"
+													data-target="#classification-carousel" role="button"
+													data-slide="prev" style="display: block;">Previous</a> <a
+													class="right carousel-control"
+													data-target="#classification-carousel" role="button"
+													data-slide="next">Next</a>
+											</div>
+										</div>
+
+									</div>
+								</div>
+							</div>
+
+						</div>
+
+						<div class="col-sm-8 col-md-12 col-lg-12">
+							<div class="wrapper">
+								<div class="pie-charts">
+									<div class="pieID--micro-skills pie-chart--wrapper">
+										<h4>Number of academic faculty staff</h4>
+										<div class="pie-chart">
+											<div class="pie-chart__pie"></div>
+											<ul class="pie-chart__legend">
+												<li><em>Local</em><span>2048</span></li>
+												<li><em>International</em><span>55</span></li>
+											</ul>
+										</div>
+									</div>
+									<div class="pieID--categories pie-chart--wrapper">
+										<h4>Number of students</h4>
+										<div class="pie-chart">
+											<div class="pie-chart__pie"></div>
+											<ul class="pie-chart__legend">
+												<li><em>Postgraduate</em><span>13414</span></li>
+												<li><em>Undergraduate</em><span>32844</span></li>
+											</ul>
+										</div>
+									</div>
+									<div class="pieID--operations pie-chart--wrapper">
+										<h4>Number of international students</h4>
+										<div class="pie-chart">
+											<div class="pie-chart__pie"></div>
+											<ul class="pie-chart__legend">
+												<li><em>Postgraduate</em><span>838</span></li>
+												<li><em>Undergraduate</em><span>1208</span></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+
+
+					</div>
+
+
+				</div>
+
+			</div>
+
+
+		</div>
+		</main>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/createPieCharts.js?ver=#{webApplication.staticFileVersion}"></script>
+		<script
+			src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script
+			src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	</ui:define>
+</ui:composition>

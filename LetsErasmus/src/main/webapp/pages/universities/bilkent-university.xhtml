@@ -1,0 +1,411 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
+
+	<ui:define name="head">
+		<link rel="stylesheet" type="text/css"
+			href="#{webApplication.urlPrefix}/static/css/universities.css?ver=#{webApplication.staticFileVersion}" />
+		<style>
+#imgProfileImage {
+	width: auto;
+	height: 200px;
+}
+/*Mobile classes*/
+@media ( max-width :47.9em) {
+	/* removed for proper profile pic
+				#imgProfileImage {
+					max-width: 225px;
+					max-height: 225px;
+				}
+				*/
+	.clsInline {
+		display: inline !important;
+	}
+	.filter-element-4 {
+		width: 100%;
+	}
+	h2 {
+		font-size: 20px;
+	}
+}
+</style>
+	</ui:define>
+
+	<ui:define name="body">
+		<main id="site-content" role="main">
+		<div id="recommendation_container" class="clearfix container"></div>
+
+		<div
+			class="page-container page-container-responsive space-top-4 space-8">
+			<div class="row">
+				<div class="col-lg-3 col-md-4">
+					<div id="user" class="panel space-4">
+						<div>
+							<div class="space-2" id="user-media-container"
+								style="margin-bottom: 0px">
+								<div id="slideshow" class="slideshow"
+									style="text-align: center;">
+									<ul class="slideshow-images"
+										style="padding-left: 0px; margin-bottom: 0px;">
+										<li class="active media-photo media-photo-block"><img
+											id="imgProfileImage" alt="bilkent-university-logo"
+											src="#{webApplication.urlPrefix}/static/images/universities/bilkent.png" />
+										</li>
+										<li class="media-photo media-photo-block"></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="panel space-4">
+						<div class="panel-header">Location</div>
+						<div class="panel-body">
+							<ul class="list-unstyled space-3">
+								<li class="row row-table space-2">
+									<div class="col-12 col-middle clsInline">Country</div>
+									<div class="col-3 col-middle clsInline"
+										style="padding-left: 0px; padding-right: 12px; width: 60px; float: right;">
+										Turkey</div>
+								</li>
+								<li class="row row-table space-2">
+									<div class="col-12 col-middle clsInline">City</div>
+									<div class="col-3 col-middle clsInline"
+										style="padding-left: 0px; padding-right: 12px; width: 60px; float: right;">
+										Ankara</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+
+					<div class="panel space-4" style=" margin-bottom: 0px">
+
+						<div class="circle-block">
+							<div class="circle">
+								<div class="text">
+									<h2>#421-430</h2>
+									<span class="rankings_heading" style="font-size: 14px;">World
+										University Rankings</span>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="panel space-4" style="border: 0;">
+						<div id="buttons">
+							<a
+								href="https://www.letserasmus.com/pages/SearchResult.html?loc=Bilkent%20Kamp%C3%BCs%C3%BC&amp;locationId=ChIJffSddgFH0xQRUUqiRA-g-Mg"
+								target="_blank" class="btnhousing bluebtn">FIND HOMES NEAR
+								BILKENT UNIVERSITY</a>
+						</div>
+
+					</div>
+
+
+
+
+				</div>
+				<div class="col-lg-9 col-md-8 col-sm-12">
+					<div class="row space-4 clsWideScreen"
+						style="display: block !important;">
+						<div class="col-sm-8 col-md-12 col-lg-12"
+							style="text-align: justify;">
+							<h1>Bilkent University</h1>
+							<span class="text-normal">Bilkent University is recognized
+								and ranked internationally as the premier institution of higher
+								education in Turkey. Located in the country's capital city
+								Ankara, a vibrant metropolis of 4.5 million, Bilkent is a hub of
+								academic, social, and cultural activity. With world-renowned
+								scholars among its faculty and top-notch facilities throughout
+								its campus, Bilkent attracts the brightest students. The
+								University hosts 13,000 students seeking degrees in 32
+								undergraduate and 47 graduate programs. Over 40% of Bilkent
+								University’s student body benefits from a variety of generous
+								scholarships. International faculty members make up more than a
+								quarter of all academic staff and represent 40 different
+								countries. There is also a growing body of full-time
+								international students, as well as exchange students visiting
+								from more than 200 partner institutions worldwide. Bilkent
+								University is proud to provide an environment for learning and
+								intellectual growth encompassing the sciences, technology and
+								humanities, and will surely continue to rank amongst the finest
+								universities in the world.</span>
+						</div>
+
+
+						<div class="col-sm-8 col-md-12 col-lg-12">
+
+							<div class="panel-pane pane-block pane-qs-profiles-2">
+								<div class="pane-content">
+									<div class="desktop-tablet">
+										<div id="uni-classifications" rel="294598">
+											<ul id="uni-info">
+												<li class="size">
+													<div class="visu size" data="M">
+														<div class="wcon" style="display: block;">
+															<span class="s">S</span><span class="m active">M</span><span
+																class="l">L</span><span class="xl">XL</span>
+														</div>
+													</div>
+													<h4 class="l12 gray">
+														SIZE<span class="l10 blue right"
+															style="visibility: visible; display: none;"><span
+															class="sign"
+															style="display: inline; visibility: visible;">&lt;</span>12,000</span>
+													</h4>
+												</li>
+												<li class="age">
+													<div class="visu age" data="3">
+														<div class="wcon" style="display: inline-block;">
+															<span class="arrow"><span class="block"><span
+																	data="4" style="width: 0%"></span></span><span class="block"><span
+																	data="3" style="width: 0%"></span></span><span class="block"><span
+																	data="3" style="width: 0%"></span></span><span class="block"><span
+																	data="2" style="width: 100%;"></span></span><span
+																class="block"><span data="1" style="width: 100%;"></span></span><span
+																class="point"></span></span><span class="date first">1900</span><span
+																class="date last">2013</span>
+														</div>
+													</div>
+													<h4 class="l12 gray">
+														AGE<span class="l10 blue right"
+															style="visibility: visible; display: none;"><span
+															class="sign"
+															style="display: inline; visibility: visible;">&lt;</span>50
+															years</span>
+													</h4>
+												</li>
+												<li class="dstatus">
+													<div class="visu dstatus" data="B">
+														<div class="wcon">
+															<span
+																style="background-position: 0px -66px; display: block;"></span>
+														</div>
+														<h4 class="l12 gray">
+															STATUS <span class="l10 blue right"
+																style="visibility: visible; display: none;">Private</span>
+														</h4>
+													</div>
+												</li>
+												<li class="research">
+													<div class="visu research" data="VH">
+														<div class="wcon" style="display: block;">
+															<span class="graph"><span class="lo"></span><span
+																class="md"></span><span class="hi"></span><span
+																class="vh active"></span><span></span></span>
+														</div>
+													</div>
+													<h4 class="l12 gray">
+														RESEARCH <span class="l10 blue right"
+															style="visibility: visible; display: none;">Very
+															High</span>
+													</h4>
+												</li>
+												<li class="focus">
+													<div class="visu focus" data="CO">
+														<div class="wcon">
+															<span
+																style="background-position: 0px -201px; display: block;"></span>
+														</div>
+														<h4 class="l12 gray">
+															FOCUS <span class="l10 blue right"
+																style="visibility: visible; display: none;">Comprehensive</span>
+														</h4>
+													</div>
+												</li>
+											</ul>
+										</div>
+									</div>
+
+									<div class="mobile-only">
+										<div id="uni-classifications" rel="294598">
+											<div id="classification-carousel" class="carousel"
+												data-ride="carousel" data-interval="false" data-wrap="false">
+
+												<div id="uni-info" class="carousel-inner">
+													<div class="item first active">
+														<ul>
+															<li class="size">
+																<div class="size">
+																	<div class="visu size" data="M">
+																		<div class="wcon" style="display: block;">
+																			<span class="s">S</span><span class="m active">M</span><span
+																				class="l">L</span><span class="xl">XL</span>
+																		</div>
+																	</div>
+																	<h4 class="l12 gray">
+																		SIZE<span class="l10 blue right"
+																			style="visibility: visible; display: none;"><span
+																			class="sign"
+																			style="display: inline; visibility: visible;">&lt;</span>12,000</span>
+																	</h4>
+																</div>
+															</li>
+														</ul>
+													</div>
+													<div class="item" id="uni-info">
+														<ul>
+															<li class="age">
+																<div class="age">
+																	<div class="visu age" data="3">
+																		<div class="wcon" style="display: inline-block;">
+																			<span class="arrow"><span class="block"><span
+																					data="4" style="width: 0%"></span></span><span
+																				class="block"><span data="3"
+																					style="width: 0%"></span></span><span class="block"><span
+																					data="3" style="width: 0%"></span></span><span
+																				class="block"><span data="2"
+																					style="width: 100%;"></span></span><span class="block"><span
+																					data="1" style="width: 100%;"></span></span><span
+																				class="point"></span></span><span class="date first">1900</span><span
+																				class="date last">2013</span>
+																		</div>
+																	</div>
+																	<h4 class="l12 gray">
+																		AGE<span class="l10 blue right"
+																			style="visibility: visible; display: none;"><span
+																			class="sign"
+																			style="display: inline; visibility: visible;">&lt;</span>50
+																			years</span>
+																	</h4>
+																</div>
+															</li>
+														</ul>
+													</div>
+													<div class="item" id="uni-info">
+														<ul>
+															<li class="dstatus">
+																<div class="dstatus">
+																	<div class="visu dstatus" data="B">
+																		<div class="wcon">
+																			<span
+																				style="background-position: 0px -66px; display: block;"></span>
+																		</div>
+																		<h4 class="l12 gray">
+																			STATUS <span class="l10 blue right"
+																				style="visibility: visible; display: none;">Private</span>
+																		</h4>
+																	</div>
+																</div>
+															</li>
+														</ul>
+													</div>
+													<div class="item" id="uni-info">
+														<ul>
+															<li class="research">
+																<div class="research">
+																	<div class="visu research" data="VH">
+																		<div class="wcon" style="display: block;">
+																			<span class="graph"><span class="lo"></span><span
+																				class="md"></span><span class="hi"></span><span
+																				class="vh active"></span><span></span></span>
+																		</div>
+																	</div>
+																	<h4 class="l12 gray">
+																		RESEARCH <span class="l10 blue right"
+																			style="visibility: visible; display: none;">Very
+																			High</span>
+																	</h4>
+																</div>
+															</li>
+														</ul>
+													</div>
+													<div class="item last" id="uni-info">
+														<ul>
+															<li class="focus">
+																<div class="focus">
+																	<div class="visu focus" data="CO">
+																		<div class="wcon">
+																			<span
+																				style="background-position: 0px -201px; display: block;"></span>
+																		</div>
+																		<h4 class="l12 gray">
+																			FOCUS <span class="l10 blue right"
+																				style="visibility: visible; display: none;">Comprehensive</span>
+																		</h4>
+																	</div>
+																</div>
+															</li>
+														</ul>
+													</div>
+												</div>
+												<a class="left carousel-control"
+													data-target="#classification-carousel" role="button"
+													data-slide="prev" style="display: block;">Previous</a> <a
+													class="right carousel-control"
+													data-target="#classification-carousel" role="button"
+													data-slide="next" style="display: block;">Next</a>
+
+											</div>
+
+
+
+										</div>
+
+									</div>
+								</div>
+							</div>
+
+
+
+						</div>
+
+						<div class="col-sm-8 col-md-12 col-lg-12">
+							<div class="wrapper">
+								<div class="pie-charts">
+									<div class="pieID--micro-skills pie-chart--wrapper">
+										<h4>Number of academic faculty staff</h4>
+										<div class="pie-chart">
+											<div class="pie-chart__pie"></div>
+											<ul class="pie-chart__legend">
+												<li><em>Local</em><span>549</span></li>
+												<li><em>International</em><span>163</span></li>
+											</ul>
+										</div>
+									</div>
+									<div class="pieID--categories pie-chart--wrapper">
+										<h4>Number of students</h4>
+										<div class="pie-chart">
+											<div class="pie-chart__pie"></div>
+											<ul class="pie-chart__legend">
+												<li><em>Postgraduate</em><span>1490</span></li>
+												<li><em>Undergraduate</em><span>9149</span></li>
+											</ul>
+										</div>
+									</div>
+									<div class="pieID--operations pie-chart--wrapper">
+										<h4>Number of international students</h4>
+										<div class="pie-chart">
+											<div class="pie-chart__pie"></div>
+											<ul class="pie-chart__legend">
+												<li><em>Postgraduate</em><span>194</span></li>
+												<li><em>Undergraduate</em><span>581</span></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+
+
+					</div>
+
+
+				</div>
+
+			</div>
+
+
+		</div>
+		</main>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/createPieCharts.js?ver=#{webApplication.staticFileVersion}"></script>
+		<script
+			src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script
+			src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	</ui:define>
+</ui:composition>
