@@ -313,8 +313,8 @@ public class ApiReservationController extends BaseApiController {
 							Place place = reservation.getPlace();
 							String placeCoverPhotoUrl = this.webApplication.getPlacePhotoUrl(place.getId(), place.getCoverPhotoId(), EnmSize.SMALL.getValue());
 
-							String placeUrl = WebUtil.concatUrl(this.webApplication.getUrlPrefix(), "/pages/PlaceDetail.html");
-							placeUrl = WebUtil.addUriParam(placeUrl, EnmUriParameter.PLACE_ID.getName(), place.getId());
+							String placeUrl = WebUtil.concatUrl(this.webApplication.getUrlPrefix(), "room", place.getId().toString());
+							//placeUrl = WebUtil.addUriParam(placeUrl, EnmUriParameter.PLACE_ID.getName(), place.getId());
 							
 							place.setCoverPhotoUrl(placeCoverPhotoUrl);
 							place.setUrl(placeUrl);
@@ -360,7 +360,7 @@ public class ApiReservationController extends BaseApiController {
 		try {
 			User user = super.getSessionUser(session);
 			if (user != null) {
-				// inquiry statüdeki rezervasyon güncellenemez, þimdilik
+				// inquiry statï¿½deki rezervasyon gï¿½ncellenemez, ï¿½imdilik
 				if (uiReservation.getId() != null 
 						&& !uiReservation.getStatus().equals(EnmReservationStatus.INQUIRY.getId())
 						&& uiReservation.getStatus() != null && EnmReservationStatus.getReservationStatus(uiReservation.getStatus()) != null
@@ -496,8 +496,8 @@ public class ApiReservationController extends BaseApiController {
 										Place place = reservation.getPlace();
 										String placeCoverPhotoUrl = this.webApplication.getPlacePhotoUrl(place.getId(), place.getCoverPhotoId(), EnmSize.SMALL.getValue());
 
-										String placeUrl = WebUtil.concatUrl(this.webApplication.getUrlPrefix(), "pages/PlaceDetail.html");
-										placeUrl = WebUtil.addUriParam(placeUrl, EnmUriParameter.PLACE_ID.getName(), place.getId());
+										String placeUrl = WebUtil.concatUrl(this.webApplication.getUrlPrefix(), "room", place.getId().toString());
+										//placeUrl = WebUtil.addUriParam(placeUrl, EnmUriParameter.PLACE_ID.getName(), place.getId());
 										
 										place.setCoverPhotoUrl(placeCoverPhotoUrl);
 										place.setUrl(placeUrl);
@@ -506,13 +506,13 @@ public class ApiReservationController extends BaseApiController {
 										place.setLocation(location);
 										
 										User clientUser = reservation.getClientUser();
-										String clientUserUrl = WebUtil.concatUrl(this.webApplication.getUrlPrefix(), "pages/dashboard/DisplayUser.html?userId=" + clientUser.getId());
+										String clientUserUrl = WebUtil.concatUrl(this.webApplication.getUrlPrefix(), "profile", clientUser.getId().toString());
 										String clientProfilePhotoUrl = this.webApplication.getUserPhotoUrl(clientUser.getId(), clientUser.getProfilePhotoId(), EnmSize.SMALL.getValue());
 										clientUser.setUrl(clientUserUrl);
 										clientUser.setProfileImageUrl(clientProfilePhotoUrl);
 										
 										User hostUser = reservation.getHostUser();
-										String hostUserUrl = WebUtil.concatUrl(this.webApplication.getUrlPrefix(), "pages/dashboard/DisplayUser.html?userId=" + hostUser.getId());
+										String hostUserUrl = WebUtil.concatUrl(this.webApplication.getUrlPrefix(), "profile", hostUser.getId().toString());
 										String hostProfilePhotoUrl = this.webApplication.getUserPhotoUrl(hostUser.getId(), hostUser.getProfilePhotoId(), EnmSize.SMALL.getValue());
 										hostUser.setUrl(hostUserUrl);
 										hostUser.setProfileImageUrl(hostProfilePhotoUrl);

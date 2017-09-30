@@ -45,6 +45,7 @@ public class Place extends BaseModel {
 	private Integer cancellationPolicyId;
 	private Long coverPhotoId;
 	private String lgbtFriendly;
+	private String pageUrl;
 	
 	private Location location;
 	private User user;
@@ -238,6 +239,12 @@ public class Place extends BaseModel {
 	}
 	public void setLgbtFriendly(String lgbtFriendly) {
 		this.lgbtFriendly = lgbtFriendly;
+	}
+	public String getPageUrl() {
+		return pageUrl;
+	}
+	public void setPageUrl(String pageUrl) {
+		this.pageUrl = pageUrl;
 	}
 	public Location getLocation() {
 		return location;

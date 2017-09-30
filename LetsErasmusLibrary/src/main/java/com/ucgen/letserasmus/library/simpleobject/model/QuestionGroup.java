@@ -3,6 +3,7 @@ package com.ucgen.letserasmus.library.simpleobject.model;
 public class QuestionGroup {
 
 	private Integer id;
+	private String key;
 	private String groupTitle;
 	private Integer groupOrder;
 	
@@ -11,6 +12,12 @@ public class QuestionGroup {
 	}
 	public void setId(Integer id) {
 		this.id = id;
+	}
+	public String getKey() {
+		return key;
+	}
+	public void setKey(String key) {
+		this.key = key;
 	}
 	public String getGroupTitle() {
 		return groupTitle;

@@ -5,6 +5,17 @@
 	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
 
 	<ui:define name="head">
+	<!-- 
+		<meta property="og:image" content="" />
+	 -->
+		<title>LetsErasmus help page for category '#{helpController.selectedGroupKey}'</title>
+		<meta property="og:url" content="#{helpController.pageUrl}" />
+		<meta property="og:title" content="LetsErasmus help page for category #{helpController.selectedGroupKey}" />
+		<meta property="og:description" content="Help content is provided by LetsErasmus team to answer any question of hosts and erasmus students." />
+	
+		<meta name="description" content="Help content is maintained by LetsErasmus team to answer any question of hosts and erasmus students" />
+		<link rel="canonical" href="#{helpController.pageUrl}"/>
+	
 		<link rel="stylesheet" type="text/css"
 			href="#{webApplication.urlPrefix}/static/css/helpcenter.css?ver=#{webApplication.staticFileVersion}" />
 		<link rel="stylesheet"
@@ -54,15 +65,37 @@
 					<div class="navtree dls-help-center">
 						<ul class="sidenav-list navtree-list" role="navigation"
 							id="navtree-0" style="display: block; left: 0px;">
-							<li ng-repeat="g in ctrl.questionGroupList">
-								<span class="cursor-pointer sidenav-item" ng-click="ctrl.onQuestionGroupSelected(g.groupTitle)">{{g.groupTitle}}</span>
-							</li>
+							 <ui:repeat var="group" value="#{helpController.helpGroupList}"  varStatus="status">
+							 	<li>
+									<a id="lnkHelp_#{group.key}" class="cursor-pointer sidenav-item #{helpController.selectedGroupKey == group.key ? 'clsUnderline' : ' '}" 
+										href="#{webApplication.urlPrefix}/help/#{group.key}"> <span>#{group.groupTitle}</span>
+									</a>
+									<!--
+									<span class="cursor-pointer sidenav-item" ng-click="ctrl.onQuestionGroupSelected('#{group.groupTitle}')">#{group.groupTitle}</span>
+									 -->
+								</li>
+	
+							 </ui:repeat>
 						</ul>
 					</div>
 				</div>
 				<div>
 					<div id="divQuestionList"
 						class="col-sm-12 col-sm-offset-0 col-md-10 col-offset-1 help-content text-copy navtree-content breadcrumbs-content">
+						<ui:repeat var="q" value="#{helpController.questionList}"  varStatus="status">
+							<div>
+								<button id="btnQuestion_#{q.id}" class="accordion icon icon-guide-book"
+									ng-click="ctrl.onQuestionHeaderClick(#{q.id})">#{q.question}</button>
+								<div id="divAnswer_#{q.id}" class="panel-help">
+									<div class="col-padding">
+										 <h:outputText escape="false" value="#{q.answer}" />
+									</div>
+								</div>
+							</div>
+						</ui:repeat>
+					</div>
+					<div id="divQuestionListAngular"
+						class="col-sm-12 col-sm-offset-0 col-md-10 col-offset-1 help-content text-copy navtree-content breadcrumbs-content hidden-force">
 						<div ng-repeat="q in ctrl.questionList">
 							<button id="btnQuestion_{{q.id}}" class="accordion icon icon-guide-book"
 								ng-click="ctrl.onQuestionHeaderClick(q.id)">{{q.question}}</button>

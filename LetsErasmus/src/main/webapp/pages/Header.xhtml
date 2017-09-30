@@ -43,7 +43,7 @@
 					</ui:fragment>
 					 -->
 					<a id="help-button"
-						href="#{webApplication.urlPrefix}/pages/help/help.html"
+						href="#{webApplication.urlPrefix}/help"
 						class="nav-top--right--link hidden-sm-down"> <span>Help</span>
 					</a>
 					<ui:fragment
@@ -64,7 +64,7 @@
 					<ui:fragment
 						rendered="#{webApplication.user != null}">
 						<div id="divHeaderTabUser" class="dropdown--wrapper">
-							<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId=#{webApplication.user.id}" rel=""
+							<a href="#{webApplication.getUrlTemplateProfile(webApplication.user.id)}" rel=""
 								class="nav-top--right--link nav-top--right--link__dropdown">
 								<div class="nav-top--username">#{webApplication.user.firstName}</div>
 								<div id="divUserImagePart" style="margin-left: 15px;" class="nav-top--avatar" title="Go to your dashboard">

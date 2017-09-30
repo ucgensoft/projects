@@ -20,9 +20,9 @@ App.controller('placeDetailCtrl', ['$scope', '$controller', 'placeService', 'res
     		  $('#sendResReqWrapper').removeClass();
     		  $('#sendResReqDiv').removeClass();
     	  }
-    	  var placeId = getUriParam('placeId');
+    	  var placeId = globalPlaceId;//getUriParam('placeId');
     	  if (placeId == null || placeId == "") {
-    		  openWindow(webApplicationUrlPrefix + "/pages/Main.html");
+    		  openWindow(webApplicationUrlPrefix);
     	  } else {
     		  placeService.getPlace(placeId).then(function(operationResult) {
         	  		self.displayPlaceDetails(operationResult.resultValue)

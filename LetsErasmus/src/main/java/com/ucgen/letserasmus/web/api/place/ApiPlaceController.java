@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -134,6 +135,10 @@ public class ApiPlaceController extends BaseApiController {
 							place.setCreatedDate(createdDate);
 							place.setCreatedBy(createdBy);
 							place.setStatus(EnmPlaceStatus.ACTIVE.getValue());
+							
+							String placePageUrl = this.webApplication.getPlaceDetailUrl(place.getLocation().getState().toLowerCase(Locale.ENGLISH), "-1");
+							
+							place.setPageUrl(placePageUrl);
 							
 							place.getLocation().setCreatedDate(createdDate);
 							place.getLocation().setCreatedBy(createdBy);
@@ -499,11 +504,11 @@ public class ApiPlaceController extends BaseApiController {
 				Date startDate = null;
 				Date endDate = null;
 				
-				if (paramStartDate != null) {
+				if (paramStartDate != null && !paramStartDate.trim().isEmpty()) {
 					startDate = DateUtil.valueOf(paramStartDate, DateUtil.SHORT_DATE_FORMAT);
 				}
 				
-				if (paramEndDate != null) {
+				if (paramEndDate != null && !paramEndDate.trim().isEmpty()) {
 					endDate = DateUtil.valueOf(paramEndDate, DateUtil.SHORT_DATE_FORMAT);
 				}
 				

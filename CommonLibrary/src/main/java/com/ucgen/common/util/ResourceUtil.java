@@ -10,7 +10,7 @@ import org.springframework.core.io.support.PropertiesLoaderUtils;
 public class ResourceUtil {
 	
 	public static Properties loadResourceFile(String filePath) throws IOException {
-		System.out.println("Konfigürasyon dosyasý yüklendi. Path:" + filePath);
+		System.out.println("KonfigÃ¼rasyon dosyasÄ± yÃ¼klendi. Path:" + filePath);
 		Resource resource = new FileSystemResource(filePath);
 		return PropertiesLoaderUtils.loadProperties(resource);
 	}

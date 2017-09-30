@@ -5,6 +5,15 @@
 	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
 
 	<ui:define name="head">
+		<title>LetsErasmus user profile page for #{displayUserController.user.firstName}, (#{displayUserController.user.id})</title>
+		<meta property="description" content="#{displayUserController.user.firstName} is an active LetsErasmus user since #{displayUserController.formatDate(displayUserController.user.createdDate, 'dd.MM.yyyy')}" />
+		<link rel="canonical" href="#{webApplication.getUrlTemplateProfile(displayUserController.user.id)}"/>
+		
+		<meta property="og:url" content="#{webApplication.getUrlTemplateProfile(displayUserController.user.id)}" />
+		<meta property="og:title" content="LetsErasmus user profile page for #{displayUserController.user.firstName}, (#{displayUserController.user.id})" />
+		<meta property="og:description" content="#{displayUserController.user.firstName} is an active LetsErasmus user since #{displayUserController.formatDate(displayUserController.user.createdDate, 'dd.MM.yyyy')}" />
+		<meta property="og:image" content="#{webApplication.staticFileUrlPrefix}/#{webApplication.getUserPhotoPath(displayUserController.user.id, displayUserController.user.profilePhotoId, 'medium')}" />
+		
 		<link rel="stylesheet" type="text/css"
 			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css?ver=#{webApplication.staticFileVersion}" />
 			
@@ -55,9 +64,9 @@
 										<ul class="slideshow-images" style="padding-left: 0px; margin-bottom: 0px;">
 											<li class="active media-photo media-photo-block">
 												<img id="imgProfileImage" 
-													alt="{{ctrl.user.firstName}}" 
+													alt="#{displayUserController.user.firstName}" 
 													ng-src="{{ctrl.getUserProfilePhotoUrl()}}"
-													title="{{ctrl.user.firstName}}"/>
+													title="#{displayUserController.user.firstName}"/>
 											</li>
 											<li class="media-photo media-photo-block"></li>
 										</ul>
@@ -68,10 +77,10 @@
 						
 						<div class="panel hidden-md-up">
 							<div class="panel-body">
-								<h3>Hey, I’m {{ctrl.user.firstName}}!</h3>
+								<h3>Hey, I’m #{displayUserController.user.firstName}!</h3>
 								<div class="h5 space-top-2">
-									<span class="text-normal">{{ctrl.user.residenceLocationName}} {{ctrl.user.residenceLocationName ? '.' : ''}} 
-										Joined in {{ctrl.user.createdDate | date:'MMMM dd, yyyy'}}</span>
+									<span class="text-normal">#{displayUserController.user.residenceLocationName} #{displayUserController.user.residenceLocationName == '' ? '.' : ''} 
+										Joined in #{displayUserController.formatDate(displayUserController.user.createdDate, 'MMMM dd, yyyy')}</span>
 								</div>
 								<div class="text-center text-wrap space-top-2" id="verified-id-icon"
 									ng-if="ctrl.isUserVerified()">
@@ -179,7 +188,7 @@
 							<div class="panel-body">
 								<dl>
 									<dt>School</dt>
-									<dd>{{ctrl.user.schoolName}}</dd>
+									<dd>#{displayUserController.user.schoolName}</dd>
 								</dl>
 							</div>
 						</div>
@@ -188,10 +197,10 @@
 					<div class="col-lg-9 col-md-8 col-sm-12">
 						<div class="row space-4 clsWideScreen">
 							<div class="col-sm-8 col-md-12 col-lg-12">
-								<h2>Hey, I’m {{ctrl.user.firstName}}!</h2>
+								<h2>Hey, I’m #{displayUserController.user.firstName}!</h2>
 								<div class="h5 space-top-2">
-									<span class="text-normal">{{ctrl.user.residenceLocationName}} {{ctrl.user.residenceLocationName ? '.' : ''}} 
-										Joined in {{ctrl.user.createdDate | date:'MMMM dd, yyyy'}}</span>
+									<span class="text-normal">#{displayUserController.user.residenceLocationName} #{displayUserController.user.residenceLocationName != null ? '.' : ''}
+										Joined in #{displayUserController.formatDate(displayUserController.user.createdDate, 'MMMM dd, yyyy')}</span>
 								</div>
 								<div class="text-muted space-top-2">
 									<div>
@@ -267,7 +276,7 @@
 											<div class="row text-center-sm" id="review-76962436">
 												<div class="col-md-2 col-sm-12">
 													<div class="avatar-wrapper">
-														<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId={{r.user.id}}" class="text-muted"
+														<a href="#{webApplication.urlPrefix}/profile/{{r.user.id}}" class="text-muted"
 															rel="nofollow" target="_blank">
 															<div class="media-photo media-round space-1">
 																<img alt="{{r.user.firstName}}" class="lazy"

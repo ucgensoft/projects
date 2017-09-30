@@ -5,6 +5,15 @@
 	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
 
 	<ui:define name="head">
+		<!-- <meta property="og:image" content="#{webApplication.getPlacePhotoUrl(placeDetailController.place.id, placeDetailController.place.coverPhotoId, 'small')}" /> -->
+		<title>Erasmus room search results for #{searchController.searchCriteria.locationName}</title>
+		<meta property="og:url" content="#{searchController.pageUrl}" />
+		<meta property="og:title" content="Erasmus room search results for #{searchController.searchCriteria.locationName}" />
+		<meta property="og:description" content="Erasmus room search results for #{searchController.searchCriteria.locationName}" />
+		
+		<meta name="description" content="Erasmus room search results for #{searchController.searchCriteria.locationName}" />
+		<link rel="canonical" href="#{searchController.pageUrl}"/>
+	
 		<link rel="stylesheet" type="text/css" href="#{webApplication.urlPrefix}/static/css/search_results.css?ver=#{webApplication.staticFileVersion}" />
 		<link rel="stylesheet" type="text/css" href="#{webApplication.urlPrefix}/static/css/app.css?ver=#{webApplication.staticFileVersion}" />
 		<style>
@@ -119,7 +128,13 @@
 				minMapEdgeLength = minMapEdgeLength * 2;
 			} 
 			var map = null; 
-		</script>
+			
+			var searchLocationName = '#{searchController.searchCriteria.locationName}';
+			var searchLocationId = '#{searchController.searchCriteria.locationId}';
+			var searchStartDate = '#{searchController.searchCriteria.startDate}';
+			var searchEndDate = '#{searchController.searchCriteria.endDate}';
+		
+			</script>
 	</ui:define>
 
 	<ui:define name="body">
@@ -313,7 +328,7 @@
 											class="image-gallery-content">
 											<span class="image-gallery-left-nav" ng-click="ctrl.changePhoto(p, -1)"></span>
 											<span class="image-gallery-right-nav" ng-click="ctrl.changePhoto(p, 1)"></span>
-											<a href="{{ctrl.getPlaceDetailUrl(p.id)}}" target="_blank">
+											<a href="{{ctrl.getPlaceDetailUrl(p)}}" target="_blank">
 												<div>
 													<div class="image-gallery-slides">
 														<div class="image-gallery-slide center"

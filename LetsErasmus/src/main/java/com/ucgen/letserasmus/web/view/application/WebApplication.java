@@ -1,6 +1,7 @@
 package com.ucgen.letserasmus.web.view.application;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.net.URLEncoder;
 
 import javax.annotation.PostConstruct;
@@ -13,6 +14,7 @@ import com.ucgen.common.model.Size;
 import com.ucgen.common.util.FileUtil;
 import com.ucgen.common.util.MailUtil;
 import com.ucgen.common.util.SecurityUtil;
+import com.ucgen.common.util.WebUtil;
 import com.ucgen.letserasmus.library.common.enumeration.EnmBoolStatus;
 import com.ucgen.letserasmus.library.common.enumeration.EnmSize;
 import com.ucgen.letserasmus.library.log.enumeration.EnmOperation;
@@ -28,6 +30,10 @@ public class WebApplication extends BaseController {
 	
 	public static final String DEFAULT_PAGE_TITLE = "Let's Erasmus - Safely book your new home online";
 	public static final String DEFAULT_PAGE_DESCRIPTION = "The international student housing platform";
+	
+	public static final String PAGE_URL_TEMPLATE_SEARCH_RESULT = "/room/search/{locationName}/{locationId}";
+	public static final String PAGE_URL_TEMPLATE_PLACE_DETAIL = "/room/{locationName}/{placeId}";
+	public static final String PAGE_URL_TEMPLATE_PROFILE = "/profile/{userId}";
 	
 	private Parameters parameters;
 	
@@ -508,10 +514,61 @@ public class WebApplication extends BaseController {
 	public boolean hasCustomHeader() {
 		String requestUrl = super.getRequest().getRequestURL().toString();
 		requestUrl = requestUrl.toUpperCase();
-		if (requestUrl.contains("PAGES/PLACEDETAIL.HTML")) {
+		if (requestUrl.contains("PAGES/PLACEDETAIL.HTML") 
+				|| requestUrl.contains("PAGES/SEARCHRESULT.HTML")
+				|| requestUrl.contains("DISPLAYUSER.HTML")
+				|| requestUrl.contains("HELP.HTML")) {
 			return true;
 		} else {
 			return false;
+		}
+	}
+	
+	public String getUrlTemplateSearchResult() {
+		return PAGE_URL_TEMPLATE_SEARCH_RESULT;
+	}
+	
+	public String getUrlTemplatePlaceDetail() {
+		return PAGE_URL_TEMPLATE_PLACE_DETAIL;
+	}
+	
+	public String getUrlTemplateProfile() {
+		return PAGE_URL_TEMPLATE_PROFILE;
+	}
+	
+	public String getUrlTemplateProfile(Long userId) {
+		return WebUtil.concatUrl(this.getUrlPrefix(), PAGE_URL_TEMPLATE_PROFILE.replace("{userId}", userId.toString()));
+	}
+	
+	public String getPlaceDetailUrl(String locationName, String placeId) {
+		return WebUtil.concatUrl(this.getUrlPrefix(), PAGE_URL_TEMPLATE_PLACE_DETAIL.replaceAll("{locationName}", locationName).replaceAll("{placeId}", placeId));
+	}
+	
+	public String getPriceText(BigDecimal price, Integer currencyId) {
+		return price.toString() + " " + getCurrencySymbol(currencyId);
+	}
+	
+	public String getCurrencySymbol(Integer currencyId) {
+		if (currencyId.intValue() == 1) {
+			return "₺";
+		} else if (currencyId.intValue() == 2) {
+			return "$";
+		} else if (currencyId.intValue() == 3) {
+			return "€";
+		} else {
+			return "";
+		}
+	}
+	
+	public String getCurrencyShortName(Integer currencyId) {
+		if (currencyId.intValue() == 1) {
+			return "TRY";
+		} else if (currencyId.intValue() == 2) {
+			return "USD";
+		} else if (currencyId.intValue() == 3) {
+			return "EUR";
+		} else {
+			return "";
 		}
 	}
 	

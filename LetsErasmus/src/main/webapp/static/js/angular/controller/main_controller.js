@@ -5,6 +5,7 @@ App.controller('mainCtrl', ['$scope', '$controller', 'userService', function($sc
       var selectedLat = null;
       var selectedLng = null;
       var selectedLocationId = null;
+      var selectedLanguage = null;
 
       self.isSearchValid = false;
 
@@ -44,7 +45,22 @@ App.controller('mainCtrl', ['$scope', '$controller', 'userService', function($sc
       };
       
       self.onPlaceChange = function (event, result) {
-      	selectedPlaceName = result.name;
+    	  var selectedCountry = null;
+    	  var selectedCity = null;
+    	 for (var i = 0; i < result.address_components.length; i++) {
+    		 if(result.address_components[i].types[0] == 'country') {
+    			 selectedCountry = result.address_components[i].long_name;
+    			 selectedLanguage = result.address_components[i].short_name;
+    		 } else if(result.address_components[i].types[0] == 'administrative_area_level_1') {
+            	selectedCity = result.address_components[i].long_name;
+            }
+        }
+    	  
+    	 if (selectedCity != null) {
+    		 selectedPlaceName = selectedCity;
+    	 } else {
+    		 selectedPlaceName = selectedCountry;
+    	 }
       	selectedLat = result.geometry.location.lat();
       	selectedLng = result.geometry.location.lng();
       	//selectedLat = result.geometry.viewport.b.b + ':' + result.geometry.viewport.b.f;
@@ -66,11 +82,8 @@ App.controller('mainCtrl', ['$scope', '$controller', 'userService', function($sc
 		var endDate = $.datepicker.formatDate('dd.mm.yy', $("#txtEndDatePicker")
 					.datepicker("getDate"));
 		
-		openWindow(webApplicationUrlPrefix + '/pages/SearchResult.html' 
-				+ '?' + EnmUriParam.LOCATION + '=' + encodeURIComponent(selectedPlaceName)
-				+ "&" + EnmUriParam.CHECKIN_DATE + "=" + startDate 
-				+ "&" + EnmUriParam.CHECKOUT_DATE + "=" + endDate
-				+ "&" + EnmUriParam.LOCATION_ID + "=" + selectedLocationId, true);
+		openWindow(webApplicationUrlPrefix + globalSearchResultUrlTemplate.replace('{locationName}', selectedPlaceName.toLowerCaseWithLang(selectedLanguage)).replace('{locationId}', selectedLocationId) 
+				+ "?" + EnmUriParam.CHECKIN_DATE + "=" + startDate + "&" + EnmUriParam.CHECKOUT_DATE + "=" + endDate, true);
       };
 
       self.validateSearch = function() {

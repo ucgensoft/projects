@@ -5,13 +5,14 @@
 	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
 
 	<ui:define name="head">
-		<ui:fragment rendered="#{webApplication.hasCustomHeader()}">
-			<meta property="og:image" content="#{webApplication.getPlacePhotoUrl(placeDetailController.place.id, placeDetailController.place.coverPhotoId, 'small')}" />
-			<title>#{placeDetailController.pageTitle}</title>
-			<meta property="og:url" content="#{placeDetailController.placeDetailUrl}" />
-			<meta property="og:title" content="#{placeDetailController.place.title}" />
-			<meta property="og:description" content="#{placeDetailController.pageDescription}" />
-		</ui:fragment>
+		<meta property="og:image" content="#{webApplication.getPlacePhotoUrl(placeDetailController.place.id, placeDetailController.place.coverPhotoId, 'small')}" />
+		<meta property="og:url" content="#{placeDetailController.placeDetailUrl}" />
+		<meta property="og:title" content="#{placeDetailController.place.title}" />
+		<meta property="og:description" content="#{placeDetailController.pageDescription}" />
+		
+		<title>#{placeDetailController.pageTitle}</title>
+		<meta property="description" content="#{placeDetailController.pageDescription}" />
+		<link rel="canonical" href="#{placeDetailController.placeDetailUrl}"/>
 		
 		<link rel="stylesheet" type="text/css"
 			href="#{webApplication.urlPrefix}/static/css/place_detail.css?ver=#{webApplication.staticFileVersion}" />
@@ -78,6 +79,7 @@
 
 		<script>
 			var guestNumberArr = #{placeDetailController.guestNumberArr};
+			var globalPlaceId = #{placeDetailController.place.id};
 		</script>
 
 	</ui:define>
@@ -86,7 +88,7 @@
 		<h:form id="placeForm">
 			<div id="containerPage">
 
-				<div id="room" itemscope="" itemtype="http://schema.org/Product">
+				<div id="room">
 
 					<div>
 						<div>
@@ -99,13 +101,14 @@
 												style="background-size: contain; position: absolute; top: 0; left: 0; bottom: 0; 
 												right: 0; margin: auto; width: 100%; max-width: 1000px; height: 100%; max-height: 600px; 
 												background-position: center;background-repeat: no-repeat;">
-												<input type="hidden" id="hiddenPhotoIndexMainSlider"
-													value="0" /> <span ng-click="ctrl.changePhoto(-1)"
+												<input type="hidden" id="hiddenPhotoIndexMainSlider" value="0" /> 
+												<span ng-click="ctrl.changePhoto(-1)"
 													ng-if="ctrl.place.photoList.length > 1" class="jssora02l"
-													style="top: 50%; left: 8px;"></span> <span
-													ng-click="ctrl.changePhoto(1)"
+													style="top: 50%; left: 8px;"></span> 
+												<span ng-click="ctrl.changePhoto(1)"
 													ng-if="ctrl.place.photoList.length > 1" class="jssora02r"
-													style="top: 50%; right: 8px;"></span>
+													style="top: 50%; right: 8px;">
+												</span>
 											</div>
 										</div>
 								</span>
@@ -134,7 +137,7 @@
 																				<span class="wrapper_p7pvqu"><span
 																					id="spanTabText1" class="selectedTab">Overview</span></span>
 																			</button>
-																		</a> <a href="#divHostPorfile">
+																		</a> <a href="#divHostProfile">
 																			<button id="btnTab2" type="button"
 																				class="text_1aunhvg-o_O-tab_wurtoe"
 																				ng-click="ctrl.onTabChange(2);">
@@ -179,26 +182,24 @@
 															<div class="row">
 																<div class="col-md-3 space-sm-4 text-center space-sm-2">
 																	<div class="media-photo-badge">
-																		<a
-																			href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId={{ctrl.place.hostUserId}}"
-																			rel="nofollow" class="media-photo media-round"> <img
-																			alt="{{ctrl.place.user.firstName}}"
-																			class="host-profile-image" height="90" width="90"
-																			src="#{webApplication.getUserPhotoUrl(placeDetailController.place.hostUserId, placeDetailController.place.user.profilePhotoId,'small')}"
-																			title="{{ctrl.place.user.firstName}}" />
-																		</a> <img src=""
-																			class="superhost-photo-badge superhost-photo-badge"
-																			alt="" />
+																		<a href="#{webApplication.getUrlTemplateProfile(placeDetailController.place.hostUserId)}"
+																			class="media-photo media-round"> 
+																			<img alt="LetsErasmus room host #{placeDetailController.place.user.firstName}"
+																				class="host-profile-image" height="90" width="90"
+																				src="#{webApplication.getUserPhotoUrl(placeDetailController.place.hostUserId, placeDetailController.place.user.profilePhotoId,'small')}"
+																				title="#{placeDetailController.place.user.firstName}" />
+																		</a> 
+																		<img src="" class="superhost-photo-badge superhost-photo-badge" alt="" />
 																	</div>
 																</div>
 																<div class="col-md-9">
 																	<h1 class="overflow h3 space-1 text-center-sm"
-																		id="listing_name">{{ctrl.place.title}}</h1>
+																		id="listing_name">#{placeDetailController.place.title}</h1>
 																	<div id="display-address"
 																		class="space-2 text-muted text-center-sm">
-																		<a href="" class="link-reset">{{
-																			ctrl.getLocationText() }}</a><span> &nbsp; </span><a
-																			href="" class="link-reset show-inline-block hide-sm"></a>
+																		<a href="" class="link-reset">#{placeDetailController.locationText}</a>
+																		<span> &nbsp; </span>
+																		<a href="" class="link-reset show-inline-block hide-sm"></a>
 																	</div>
 																	<div class="row row-condensed text-muted text-center">
 																		<div class="col-sm-3">
@@ -218,18 +219,14 @@
 															</div>
 															<div class="row">
 																<div class="col-md-3 text-muted text-center hide-sm">
-																	<a
-																		href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId={{ctrl.place.hostUserId}}"
-																		class="link-reset text-wrap">{{ctrl.place.user.firstName}}</a>
+																	<a href="#{webApplication.getUrlTemplateProfile(placeDetailController.place.hostUserId)}"
+																		class="link-reset text-wrap">#{placeDetailController.place.user.firstName}</a>
 																</div>
 																<div class="col-md-9">
 																	<div class="row row-condensed text-muted text-center">
-																		<div class="col-sm-3">{{
-																			ctrl.getPlaceTypeDescription() }}</div>
-																		<div class="col-sm-3">{{ ctrl.place.guestNumber
-																			}} Guests</div>
-																		<div class="col-sm-3">{{ ctrl.place.bedNumber }}
-																			Beds</div>
+																		<div class="col-sm-3">#{placeDetailController.placeTypeDescription}</div>
+																		<div class="col-sm-3">#{placeDetailController.place.guestNumber} Guests</div>
+																		<div class="col-sm-3">#{placeDetailController.place.bedNumber} Beds</div>
 																	</div>
 																</div>
 															</div>
@@ -261,8 +258,7 @@
 																	<div class="col-sm-6">
 																		<div class="book-it__price-amount text-special">
 																			<span id="book-it-price-string"> <span
-																				class="h3"> <span>{{
-																						ctrl.getPriceText() }}</span>
+																				class="h3"> <span>#{placeDetailController.priceText}</span>
 																			</span>
 																			</span>
 																		</div>
@@ -379,11 +375,11 @@
 																class="flag-widget {{(ctrl.isPlaceComplainted() || (ctrl.place.hostUserId.toString() == loginUserId)) ? 'hidden-force' : ''}}">
 																<a href="" class="link-reset"
 																	title="Report this listing"
-																	ng-click="ctrl.openComplaintWindow()"> <i
-																	class="icon icon-flag h4"></i> <span> </span> <span>Report
-																		this listing</span>
+																	ng-click="ctrl.openComplaintWindow()"> 
+																	<i class="icon icon-flag h4"></i> 
+																	<span> </span> 
+																	<span>Report this listing</span>
 																</a>
-
 															</div>
 															<div
 																class="flag-widget {{ctrl.isPlaceComplainted() ? '' : 'hidden-force'}}">
@@ -412,7 +408,7 @@
 													</h4>
 													<div>
 														<p>
-															<span>{{ ctrl.place.description }}</span>
+															<span>#{placeDetailController.place.description}</span>
 														</p>
 													</div>
 													<div class="row row-condensed">
@@ -437,7 +433,7 @@
 																<div class="col-md-6">
 																	<div>
 																		<span>Property type: </span><span>
-																		</span><strong>{{ ctrl.getHomeTypeDescription() }}</strong>
+																		</span><strong>#{placeDetailController.homeTypeDescription}</strong>
 																	</div>
 																	<div>
 																		<span>Bathrooms: </span><span> </span><strong>{{
@@ -446,18 +442,17 @@
 																			}} bathroom)</strong>
 																	</div>
 																	<div>
-																		<span>Beds: </span><span> </span><strong>{{ctrl.place.bedNumber}}</strong>
+																		<span>Beds: </span><span> </span><strong>#{placeDetailController.place.bedNumber}</strong>
 																	</div>
 																</div>
 																<div class="col-md-6">
 																	<div>
-																		<span>Place Mate Number: </span><span> </span><strong>{{
-																			ctrl.place.placeMateNumber }}</strong>
+																		<span>Place Mate Number: </span><span> </span>
+																		<strong>#{placeDetailController.place.placeMateNumber}</strong>
 																	</div>
 																	<div>
-																		<span>Place Mate Gender: </span><span> </span><strong>{{
-																			(ctrl.place.placeMateGender == 'M' ? 'Male' : (ctrl.place.placeMateGender == 'F' ? 'Female' : (ctrl.place.placeMateGender == 'B' ? 'Mixed' : 'No Mates')))
-																			}}</strong>
+																		<span>Place Mate Gender: </span><span> </span>
+																		<strong>{{ (ctrl.place.placeMateGender == 'M' ? 'Male' : (ctrl.place.placeMateGender == 'F' ? 'Female' : (ctrl.place.placeMateGender == 'B' ? 'Mixed' : 'No Mates'))) }}</strong>
 																	</div>																	
 																</div>
 															</div>
@@ -474,13 +469,12 @@
 															<div class="row">
 																<div class="col-md-6">
 																	<div>
-																		<span>Guest Number: </span><span> </span><strong>{{
-																			ctrl.place.guestNumber }}</strong>
+																		<span>Guest Number: </span><span> </span>
+																		<strong>#{placeDetailController.place.guestNumber}</strong>
 																	</div>
 																	<div>
-																		<span>Guest Gender: </span><span> </span><strong>{{
-																			(ctrl.place.guestGender == 'A' ? 'No Preference' : (ctrl.place.guestGender == 'F' ? 'Female' : 'Male'))
-																			}}</strong>
+																		<span>Guest Gender: </span><span> </span>
+																		<strong>{{ (ctrl.place.guestGender == 'A' ? 'No Preference' : (ctrl.place.guestGender == 'F' ? 'Female' : 'Male')) }}</strong>
 																	</div>
 																</div>
 																<div class="col-md-6">
@@ -504,25 +498,23 @@
 															<div class="row">
 																<div class="col-md-12">
 																	<div>
-																		<span>Monthly Rent: </span><span> </span><strong>{{
-																			ctrl.place.price}} {{(ctrl.place.currencyId == 1 ? 'TRY' : (ctrl.place.currencyId == 2 ? 'USD' : 'EUR'))}}</strong>
+																		<span>Monthly Rent: </span><span> </span>
+																		<strong>#{placeDetailController.place.price} #{webApplication.getCurrencyShortName(placeDetailController.place.currencyId)}</strong>
 																	</div>
 																	<div>
-																		<span>Bills</span><span> </span><strong>{{
-																			(ctrl.place.billsInclude == 'Y' ? 'are included' : 'are not included') }}</strong>
+																		<span>Bills</span><span> </span><strong>{{ (ctrl.place.billsInclude == 'Y' ? 'are included' : 'are not included') }}</strong>
 																	</div>
 																	<div>
-																		<span>Deposit Price: </span><span> </span><strong>{{
-																			ctrl.place.depositPrice 
-																			}} {{(ctrl.place.currencyId == 1 ? 'TRY' : (ctrl.place.currencyId == 2 ? 'USD' : 'EUR'))}} (Paid to host in cash)</strong>
+																		<span>Deposit Price: </span><span> </span>
+																		<strong>#{placeDetailController.place.depositPrice} #{webApplication.getCurrencyShortName(placeDetailController.place.currencyId)} (Paid to host in cash)</strong>
 																	</div>
 																	<div ng-if="ctrl.place.minimumStay != null">
-																		<span>Minimum Stay: </span><span> </span><strong>{{
-																			ctrl.place.minimumStay }} months</strong>
+																		<span>Minimum Stay: </span><span> </span>
+																		<strong>#{placeDetailController.place.minimumStay} months</strong>
 																	</div>
 																	<div ng-if="ctrl.place.maximumStay != null">
-																		<span>Maximum Stay: </span><span> </span><strong>{{
-																			ctrl.place.maximumStay }} months</strong>
+																		<span>Maximum Stay: </span><span> </span>
+																		<strong>#{placeDetailController.place.maximumStay} months</strong>
 																	</div>																	
 																</div>
 															</div>
@@ -650,7 +642,7 @@
 										</div>
 									</div>
 								</div>
-								<div id="divHostPorfile" class="webkit-render-fix">
+								<div id="divHostProfile" class="webkit-render-fix">
 									<div class="page-container-responsive space-top-2 space-8">
 										<div class="row">
 											<div class="col-lg-8">
@@ -664,9 +656,9 @@
 													<div class="col-md-3 text-center">
 														<div class="media-photo-badge">
 															<a
-																href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId={{ctrl.place.user.id}}"
-																rel="nofollow" class="media-photo media-round"> <img
-																id="imgHostUser" alt="{{ctrl.place.user.firstName}}"
+																href="#{webApplication.getUrlTemplateProfile(placeDetailController.place.hostUserId)}"
+																class="media-photo media-round"> <img
+																id="imgHostUser" alt="LetsErasmus room host #{placeDetailController.place.user.firstName}"
 																class="media-photo media-round" height="90" width="90"
 																src="#{webApplication.getUserPhotoUrl(placeDetailController.place.hostUserId, placeDetailController.place.user.profilePhotoId,'small')}"
 																title="{{ctrl.place.user.firstName}}" />
@@ -676,14 +668,12 @@
 													<div class="col-md-9">
 														<h3 class="space-1">
 															<a id="lnkHostUser" class="link-reset"
-																href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId={{ctrl.place.user.id}}"
-																rel="nofollow">{{ctrl.place.user.firstName}}</a>
+																href="#{webApplication.getUrlTemplateProfile(placeDetailController.place.hostUserId)}">{{ctrl.place.user.firstName}}</a>
 														</h3>
 														<div class="row row-condensed space-2">
 															<div class="col-md-12 text-muted">
-																<span>{{ctrl.place.user.residenceLocationName}}</span><span>
-																	· </span><span>Joined in {{ctrl.place.user.createdDate
-																	| date:'MMMM dd, yyyy'}}</span>
+																<span>#{placeDetailController.place.user.residenceLocationName}</span>
+																<span> · </span><span>Joined in {{ctrl.place.user.createdDate | date:'MMMM dd, yyyy'}}</span>
 															</div>
 														</div>
 														<div class="row row-condensed space-2">
@@ -761,8 +751,8 @@
 														<div class="col-md-3 text-center space-2">
 															<div class="media-photo-badge">
 																<a
-																	href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId={{r.user.id}}"
-																	rel="nofollow" class="media-photo media-round"> <img
+																	href="#{webApplication.getUrlTemplateProfile(placeDetailController.place.hostUserId)}"
+																	class="media-photo media-round"> <img
 																	alt="User Profile Image" height="67" width="67"
 																	data-pin-nopin="true" src="{{r.user.profileImageUrl}}"
 																	title="{{r.user.firstName}}" />
@@ -770,9 +760,8 @@
 															</div>
 															<div class="name">
 																<a
-																	href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId={{r.user.id}}"
-																	class="text-muted link-reset" target="_blank"
-																	rel="nofollow">{{r.user.firstName}}</a>
+																	href="#{webApplication.getUrlTemplateProfile(placeDetailController.place.hostUserId)}"
+																	class="text-muted link-reset" target="_blank">{{r.user.firstName}}</a>
 															</div>
 														</div>
 														<div class="col-md-9">

@@ -38,11 +38,11 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
       
       initialize = function() {
     	  
-    	  	self.selectedPlaceName = getUriParam(EnmUriParam.LOCATION);
-	    	self.selectedStartDate = getUriParam(EnmUriParam.CHECKIN_DATE);
-	    	self.selectedEndDate = getUriParam(EnmUriParam.CHECKOUT_DATE);
-	    	self.selectedLocationId = getUriParam(EnmUriParam.LOCATION_ID);
-		  
+    	  	self.selectedPlaceName = searchLocationName; //getUriParam(EnmUriParam.LOCATION);
+	    	self.selectedStartDate = searchStartDate; //getUriParam(EnmUriParam.CHECKIN_DATE);
+	    	self.selectedEndDate = searchEndDate; //getUriParam(EnmUriParam.CHECKOUT_DATE);
+	    	self.selectedLocationId = searchLocationId; //getUriParam(EnmUriParam.LOCATION_ID);
+		  	    	
 	    	var mapOptions = {
 					//zoom: 14,
 					//center: self.selectedLocation,
@@ -752,15 +752,20 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
     	  var startDate = getUriParam(EnmUriParam.CHECKIN_DATE);
     	  var endDate = getUriParam(EnmUriParam.CHECKOUT_DATE);
     	  
-    	  var placeDetailUrl = webApplicationUrlPrefix + '/pages/PlaceDetail.html' 
-    	  	+ '?' + EnmUriParam.PLACE_ID + '=' + placeId
-    	  	+ '&' + EnmUriParam.CHECKIN_DATE + '=' + startDate
+    	  var placeDetailUrl = getPlaceDetailUrl(place);
+    	  /*
+    	  var placeDetailUrl = webApplicationUrlPrefix + '/room/detail/' + placeId 
+    	  	+ '?' + EnmUriParam.CHECKIN_DATE + '=' + startDate
     	  	+ '&' + EnmUriParam.CHECKOUT_DATE + '=' + endDate;
-    	  
+    	  */
     	  openWindow(placeDetailUrl, false);
       };
       
-      self.getPlaceDetailUrl = function(placeId) {
+      self.getPlaceDetailUrl = function(place) {
+    	  
+    	  return webApplicationUrlPrefix + place.pageUrl;
+    	  
+    	  /*
     	  var startDate = getUriParam(EnmUriParam.CHECKIN_DATE);
     	  var endDate = getUriParam(EnmUriParam.CHECKOUT_DATE);
     	  
@@ -770,6 +775,7 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
     	  	+ '&' + EnmUriParam.CHECKOUT_DATE + '=' + endDate;
     	  
     	  return placeDetailUrl;
+    	  */
       };
       
       self.onFavoriteIconClicked = function(placeId) {
@@ -826,9 +832,9 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
       
   }]);
 
-function openPlaceDetailWindow(placeId) {
+function openPlaceDetailWindow(place) {
 	var scope = angular.element( $('#divBody') ).scope();
-	scope.ctrl.openPlaceDetailWindow(placeId);
+	scope.ctrl.openPlaceDetailWindow(place);
 }
 
 function onFavoriteIconClicked(divId) {

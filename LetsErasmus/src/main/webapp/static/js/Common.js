@@ -449,6 +449,12 @@ if (typeof String.prototype.endsWith !== 'function') {
     };
 }
 
+String.prototype.toLowerCaseWithLang = function(lang) {
+	var string = this;
+	var letters = { "İ": "i", "I": "ı", "Ş": "ş", "Ğ": "ğ", "Ü": "ü", "Ö": "ö", "Ç": "ç" };
+	string = string.replace(/(([İIŞĞÜÇÖ]))/g, function(letter){ return letters[letter]; })
+	return string.toLowerCase();
+}
 
 $.extend({ confirm: function (title, message, yesText, noText, yesCallback) {
     $("<div></div>").dialog( {

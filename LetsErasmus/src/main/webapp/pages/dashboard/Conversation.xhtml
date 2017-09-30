@@ -101,7 +101,7 @@
 											width="70" height="70" />
 									</div>
 									<div  class="text-center" style="width: 70px; display: inline-block;">
-												<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId={{ctrl.getActiveUser().id}}" 
+												<a href="#{webApplication.urlPrefix}/profile/{{ctrl.getActiveUser().id}}/" 
 													class="text-normal">{{ctrl.getActiveUser().firstName}}</a>
 									</div>
 								</div>
@@ -118,7 +118,7 @@
 												For your safety and protection, only
 												communicate and pay directly through Let's Erasmus. Visit our
 												<span>
-													<a class="link-reset link-bold-line" href="#{webApplication.urlPrefix}/pages/help/help.html">
+													<a class="link-reset link-bold-line" href="#{webApplication.urlPrefix}/help/">
 														Help Center
 													</a>
 												</span>
@@ -148,7 +148,7 @@
 														width="70" height="70" />
 												</div>
 												<div  class="text-center" style="width: 70px; display: inline-block;">
-													<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId={{ctrl.getUser(m).id}}" 
+													<a href="#{webApplication.urlPrefix}/profile/{{ctrl.getUser(m).id}}" 
 														class="text-normal">{{ctrl.getUser(m).firstName}}</a>
 												</div>
 											</div>
@@ -212,7 +212,7 @@
 														width="70" height="70" />
 												</div>
 											<div  class="text-center" style="width: 70px; display: inline-block;">
-												<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId={{ctrl.getUser(m).id}}" 
+												<a href="#{webApplication.urlPrefix}/profile/{{ctrl.getUser(m).id}}" 
 													class="text-normal">{{ctrl.getUser(m).firstName}}</a>
 											</div>
 											</div>
@@ -245,7 +245,7 @@
 									<div class="">
 										<div class="panel-image">
 											<div class="verified-badge-aligner-single-host">
-												<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId={{ctrl.getDestinationUser().id}}" target="_blank"
+												<a href="#{webApplication.urlPrefix}/profile/{{ctrl.getDestinationUser().id}}" target="_blank"
 													class="media-photo media-round">
 												<img
 													src="{{ctrl.getDestinationUser().profilePhotoUrlMedium}}"
@@ -266,7 +266,7 @@
 										</div>
 										<div class="space-top-3">
 											<div class="h4">
-												<a href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId={{ctrl.getDestinationUser().id}}"  target="_blank"
+												<a href="#{webApplication.urlPrefix}/profile/{{ctrl.getDestinationUser().id}}"  target="_blank"
 													class="text-normal">{{ctrl.getUserLabel() + ctrl.getDestinationUser().firstName}}</a>
 											</div>
 										</div>
@@ -288,12 +288,12 @@
 												<hr/>									
 													<div class="space-top-2">
 														<div class="row space-2">
-														<a href="#{webApplication.urlPrefix}/pages/PlaceDetail.html?placeId={{ctrl.messageThread.reservation.placeId}}" target="_blank">
+														<a href="#{webApplication.urlPrefix}/room/{{ctrl.messageThread.reservation.placeId}}" target="_blank">
 															<div class="background-cover summary-card__payments-listing-image space-top-2"
 																	style="background-image: url({{ctrl.messageThread.reservation.place.coverPhotoUrl}});">
 															</div>
 														</a>
-														<a href="#{webApplication.urlPrefix}/pages/PlaceDetail.html?placeId={{ctrl.messageThread.reservation.placeId}}" target="_blank">
+														<a href="#{webApplication.urlPrefix}/room/{{ctrl.messageThread.reservation.placeId}}" target="_blank">
 														<h1 class="h4 space-6" style="padding-left: 12px; margin-bottom: 12px;"
 															id="listing_name">{{ctrl.messageThread.threadTitle}}</h1>
 														</a>

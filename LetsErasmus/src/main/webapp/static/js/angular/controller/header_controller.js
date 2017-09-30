@@ -287,15 +287,15 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
 							if (loginType == EnmLoginType.GOOGLE) {
 								$('#frameGoogleLogout').attr('src', 'https://accounts.google.com/logout');
 								setTimeout(function() {
-									location.href = webApplicationUrlPrefix + "/pages/Main.html";
+									location.href = webApplicationUrlPrefix;
 								}, 500);
 							} else if (loginType == EnmLoginType.FACEBOOK) {
 								$('#frameGoogleLogout').attr('src', 'https://www.facebook.com/logout.php?next='+ urlEncodedUrlPrefix + '&access_token=' + facebookTokenId);
 								setTimeout(function() {
-									location.href = webApplicationUrlPrefix + "/pages/Main.html";
+									location.href = webApplicationUrlPrefix;
 								}, 500);
 							} else {
-								location.href = webApplicationUrlPrefix + "/pages/Main.html";
+								location.href = webApplicationUrlPrefix;
 							}
 						} else {
 							DialogUtil.error('Operation could not be completed!');

@@ -7,7 +7,7 @@ App.controller('helpCtrl', ['$scope', 'commonService', '$sce', '$compile',
       self.selectedGroupTitle = null;
       
       self.initialize = function() {
-    	  
+    	  /*
     	  commonService.listQuestionGroup(function(tmpQuestionGroupList) {
 			if (tmpQuestionGroupList) {
 				self.questionGroupList = tmpQuestionGroupList;
@@ -15,7 +15,7 @@ App.controller('helpCtrl', ['$scope', 'commonService', '$sce', '$compile',
 		  });
     	  
     	  self.listQuestion();
-    	      	  
+    	  */  	  
 	 };
 	 
 	 self.listQuestion = function() {
@@ -33,9 +33,15 @@ App.controller('helpCtrl', ['$scope', 'commonService', '$sce', '$compile',
   		  });
 		 
 		 if (searchText != '') {
-			 $('#divQuestionGroup').addClass('hidden-force');
+			 $('#divQuestionGroupList').addClass('hidden-force');
+			 
+			 $('#divQuestionList').addClass('hidden-force');
+			 $('#divQuestionListAngular').removeClass('hidden-force');			 
 		 } else {
-			 $('#divQuestionGroup').removeClass('hidden-force');
+			 $('#divQuestionGroupList').removeClass('hidden-force');
+
+			 $('#divQuestionList').removeClass('hidden-force');
+			 $('#divQuestionListAngular').addClass('hidden-force');
 		 }
 	 }
 	  	  	

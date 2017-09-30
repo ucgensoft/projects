@@ -278,7 +278,7 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
 	  		  		userService.deactivateUser(function(isSuccess) {
 	  						  if (isSuccess) {
 	  							  DialogUtil.success('Your profile is deactivated!', function() {
-	  								openWindow(webApplicationUrlPrefix + "/pages/Main.html", true);
+	  								openWindow(webApplicationUrlPrefix, true);
 	  							  });
 	  						  }
 	  			  		  }

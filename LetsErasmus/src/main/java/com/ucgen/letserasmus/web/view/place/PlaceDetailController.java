@@ -85,7 +85,7 @@ public class PlaceDetailController extends BaseController {
 			String urlPrefix = this.parameterService.getParameterValue(EnmParameter.LETSERASMUS_URL_PREFIX.getId());
 			Place tmpPlace = this.getPlace();
 			if (tmpPlace != null) {
-				return WebUtil.concatUrl(urlPrefix, "PlaceDetail.html") + "?placeId=" + tmpPlace.getId();
+				return WebUtil.concatUrl(urlPrefix, "/room/detail/", tmpPlace.getId().toString());
 			} else {
 				return urlPrefix;
 			}
@@ -94,7 +94,7 @@ public class PlaceDetailController extends BaseController {
 			return "https://www.letserasmus.com";
 		}
 	}
-	
+		
 	public String getPageTitle() {
 		try {
 			Place tmpPlace = this.getPlace();
@@ -130,6 +130,75 @@ public class PlaceDetailController extends BaseController {
 			FileLogger.log(Level.ERROR, "PlaceDetailController-getPageTitle- Error: " + CommonUtil.getExceptionMessage(e));
 			return "https://www.letserasmus.com";
 		}
+	}
+	
+	public String getLocationText() {
+		try {
+			Place tmpPlace = this.getPlace();
+			if (tmpPlace != null) {
+				String locationText = tmpPlace.getLocation().getCountry() + ", " + tmpPlace.getLocation().getState();
+				  if (tmpPlace.getLocation().getStreet() != null && tmpPlace.getLocation().getStreet() != "") {
+					  locationText += ", " + tmpPlace.getLocation().getStreet();
+				  }
+				  return locationText;
+			} else {
+				return "";
+			}
+		} catch (Exception e) {
+			FileLogger.log(Level.ERROR, "PlaceDetailController-getLocationText- Error: " + CommonUtil.getExceptionMessage(e));
+			return "";
+		}
+	}
+	
+	public String getPlaceTypeDescription() {
+		String placeTypeDesc = "";
+		try {
+			Place tmpPlace = this.getPlace();
+			if (tmpPlace != null) {
+				if (tmpPlace.getPlaceTypeId().intValue() == 1) {
+					placeTypeDesc = "Entire Place";
+				} else if (tmpPlace.getPlaceTypeId().intValue() == 2) {
+					placeTypeDesc = "Private Room";
+				} else if (tmpPlace.getPlaceTypeId().intValue() == 3) {
+					placeTypeDesc = "Shared Room";
+				}
+			}
+		} catch (Exception e) {
+			FileLogger.log(Level.ERROR, "PlaceDetailController-getPlaceTypeDescription- Error: " + CommonUtil.getExceptionMessage(e));
+		}
+		return placeTypeDesc;
+	}
+	
+	public String getHomeTypeDescription() {
+		String homeTypeDesc = "";
+		try {
+			Place tmpPlace = this.getPlace();
+			if (tmpPlace != null) {
+				if (tmpPlace.getHomeTypeId().intValue() == 1) {
+					homeTypeDesc = "House";
+				} else if (tmpPlace.getHomeTypeId().intValue() == 2) {
+					homeTypeDesc = "Apartment";
+				} else if (tmpPlace.getHomeTypeId().intValue() == 3) {
+					homeTypeDesc = "Hostel";
+				}
+			}
+		} catch (Exception e) {
+			FileLogger.log(Level.ERROR, "PlaceDetailController-getHomeTypeDescription- Error: " + CommonUtil.getExceptionMessage(e));
+		}
+		return homeTypeDesc;
+	}
+	
+	public String getPriceText() {
+		String priceText = "";
+		try {
+			Place tmpPlace = this.getPlace();
+			if (tmpPlace != null) {
+				priceText = this.getWebApplication().getPriceText(tmpPlace.getPrice(), tmpPlace.getCurrencyId());
+			}
+		} catch (Exception e) {
+			FileLogger.log(Level.ERROR, "PlaceDetailController-getPriceText- Error: " + CommonUtil.getExceptionMessage(e));
+		}
+		return priceText;
 	}
 	
 }

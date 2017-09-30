@@ -111,6 +111,10 @@ public class PlaceDao extends JdbcDaoSupport implements IPlaceDao{
 		
 		place.setId(this.utilityDao.getLastIncrementId());
 		
+		place.setPageUrl(place.getPageUrl().replace("-1", place.getId().toString()));
+		
+		this.updatePlace(place);
+		
 		operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 						
 		return operationResult;

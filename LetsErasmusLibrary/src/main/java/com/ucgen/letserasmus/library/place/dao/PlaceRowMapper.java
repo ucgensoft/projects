@@ -48,6 +48,7 @@ public class PlaceRowMapper extends BaseRowMapper<Place> {
 	public static final String COL_CANCELLATION_POLICY_ID = "CANCELLATION_POLICY_ID";	
 	public static final String COL_COVER_PHOTO_ID = "COVER_PHOTO_ID";
 	public static final String COL_LGBT_FRIENDLY = "LGBT_FRIENDLY";
+	public static final String COL_PAGE_URL = "PAGE_URL";
 	public static final String COL_CREATED_BY = "CREATED_BY";
 	public static final String COL_CREATED_DATE = "CREATED_DATE";
 	public static final String COL_CREATED_DATE_GMT = "CREATED_DATE_GMT";
@@ -123,6 +124,7 @@ public class PlaceRowMapper extends BaseRowMapper<Place> {
 		place.setEndDate(super.getTimestamp(rs, COL_END_DATE));
 		place.setCoverPhotoId(super.getLong(rs, COL_COVER_PHOTO_ID));
 		place.setLgbtFriendly(super.getString(rs, COL_LGBT_FRIENDLY));
+		place.setPageUrl(super.getString(rs, COL_PAGE_URL));
 		place.setCancellationPolicyId(super.getInteger(rs, COL_CANCELLATION_POLICY_ID));
 		
 		place.setCreatedBy(super.getString(rs, COL_CREATED_BY));		
@@ -210,6 +212,7 @@ public class PlaceRowMapper extends BaseRowMapper<Place> {
 		super.addColumn(COL_TITLE);
 		super.addColumn(COL_COVER_PHOTO_ID);
 		super.addColumn(COL_LGBT_FRIENDLY);
+		super.addColumn(COL_PAGE_URL);
 	}	
 
 }

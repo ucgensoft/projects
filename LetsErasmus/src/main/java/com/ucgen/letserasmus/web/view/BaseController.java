@@ -4,11 +4,13 @@ import java.util.Date;
 import java.util.Map;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.ucgen.common.util.DateUtil;
+import com.ucgen.letserasmus.web.view.application.WebApplication;
 
 
 public abstract class BaseController {
@@ -20,6 +22,17 @@ public abstract class BaseController {
 	public static final String UI_SHORT_DATE_FORMAT = "dd.MM.yyyy";
 	public static final String UI_DATE_TIME_FORMAT = "dd.MM.yyyy HH:mm:ss";
 	public static final String UI_DECIMAL_LOCALE = "tr-TR";
+
+	@ManagedProperty(value="#{webApplication}")
+	private WebApplication webApplication;
+	
+	public WebApplication getWebApplication() {
+		return webApplication;
+	}
+	
+	public void setWebApplication(WebApplication webApplication) {
+		this.webApplication = webApplication;
+	}
 
 	public HttpSession getSession() {
 		Object session = FacesContext.getCurrentInstance().getExternalContext().getSession(true);

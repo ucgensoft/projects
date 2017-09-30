@@ -61,13 +61,13 @@
 												<td data-label="Dates">{{r.startDate |
 													date:'MMM dd, yyyy'}} - {{r.endDate | date:'MMM dd, yyyy'}}
 													<br /> <a
-													href="#{webApplication.urlPrefix}/pages/PlaceDetail.html?placeId={{r.placeId}}&amp;checkinDate={{r.startDate | date:'dd.MM.yyyy'}}&amp;checkoutDate={{r.endDate | date:'dd.MM.yyyy'}}"
+													href="#{webApplication.urlPrefix}/room/{{r.placeId}}&amp;checkinDate={{r.startDate | date:'dd.MM.yyyy'}}&amp;checkoutDate={{r.endDate | date:'dd.MM.yyyy'}}"
 													locale="en" target="_blank">{{r.place.title}}</a>
 												</td>
 												<td data-label="Host">
 													<div class="media va-container">
 														<a
-															href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId={{r.hostUserId}}"
+															href="#{webApplication.urlPrefix}/profile/{{r.hostUserId}}"
 															class="pull-left media-photo media-round" target="_blank">
 															<img alt="{{r.hostUser.firstName}}" height="50"
 															src="{{ctrl.generateUserProfilePhotoUrl(r.hostUserId, r.hostUser.profilePhotoId, 'small')}}"
@@ -76,7 +76,7 @@
 													</div>
 													<ul class="list-unstyled">
 														<li><a
-															href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId={{r.hostUserId}}"
+															href="#{webApplication.urlPrefix}/profile/{{r.hostUserId}}"
 															class="text-normal" style="padding-left: 15px;"
 															target="_blank">{{r.hostUser.firstName}}</a> <br /></li>
 													</ul>
@@ -135,14 +135,14 @@
 												<td data-label="Dates">{{r.startDate |
 													date:'MMM dd, yyyy'}} - {{r.endDate | date:'MMM dd, yyyy'}}
 													<br /> <a
-													href="#{webApplication.urlPrefix}/pages/PlaceDetail.html?placeId={{r.placeId}}&amp;checkinDate={{r.startDate | date:'dd.MM.yyyy'}}&amp;checkoutDate={{r.endDate | date:'dd.MM.yyyy'}}"
+													href="#{webApplication.urlPrefix}/room/{{r.placeId}}&amp;checkinDate={{r.startDate | date:'dd.MM.yyyy'}}&amp;checkoutDate={{r.endDate | date:'dd.MM.yyyy'}}"
 													locale="en" target="_blank">{{r.place.title}}</a>
 												</td>
 												<td data-label="Host">
 
 													<div class="media va-container">
 														<a
-															href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId={{r.hostUserId}}"
+															href="#{webApplication.urlPrefix}/profile/{{r.hostUserId}}"
 															class="pull-left media-photo media-round" target="_blank">
 															<img alt="{{r.hostUser.firstName}}" height="50"
 															src="{{ctrl.generateUserProfilePhotoUrl(r.hostUserId, r.hostUser.profilePhotoId, 'small')}}"
@@ -151,7 +151,7 @@
 													</div>
 													<ul class="list-unstyled">
 														<li><a
-															href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId={{r.hostUserId}}"
+															href="#{webApplication.urlPrefix}/profile/{{r.hostUserId}}"
 															class="text-normal" style="padding-left: 15px;"
 															target="_blank">{{r.hostUser.firstName}}</a> <br /></li>
 													</ul>
@@ -210,13 +210,13 @@
 												<td data-label="Dates">{{r.startDate |
 													date:'MMM dd, yyyy'}} - {{r.endDate | date:'MMM dd, yyyy'}}
 													<br /> <a
-													href="#{webApplication.urlPrefix}/pages/PlaceDetail.html?placeId={{r.placeId}}&amp;checkinDate={{r.startDate | date:'dd.MM.yyyy'}}&amp;checkoutDate={{r.endDate | date:'dd.MM.yyyy'}}"
+													href="#{webApplication.urlPrefix}/room/{{r.placeId}}&amp;checkinDate={{r.startDate | date:'dd.MM.yyyy'}}&amp;checkoutDate={{r.endDate | date:'dd.MM.yyyy'}}"
 													locale="en" target="_blank">{{r.place.title}}</a>
 												</td>
 												<td data-label="Host">
 													<div class="media va-container">
 														<a
-															href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId={{r.hostUserId}}"
+															href="#{webApplication.urlPrefix}/profile/{{r.hostUserId}}"
 															class="pull-left media-photo media-round" target="_blank">
 															<img alt="{{r.hostUser.firstName}}" height="50"
 															src="{{ctrl.generateUserProfilePhotoUrl(r.hostUserId, r.hostUser.profilePhotoId, 'small')}}"
@@ -225,7 +225,7 @@
 													</div>
 													<ul class="list-unstyled">
 														<li><a
-															href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.html?userId={{r.hostUserId}}"
+															href="#{webApplication.urlPrefix}/profile/{{r.hostUserId}}"
 															class="text-normal" style="padding-left: 15px;"
 															target="_blank">{{r.hostUser.firstName}}</a> <br /></li>
 													</ul>
