@@ -8,13 +8,13 @@ App.controller('displayUserCtrl', ['$scope', '$controller', 'placeService', 'rev
       var complaintList = null;
       
       self.initialize = function() {
-    	  self.userId = getUriParam('userId');
+    	  self.userId = paramUserId;//getUriParam('userId');
     	  
     	  if (loginType != '') {
     		  listComplaint(EnmEntityType.USER);
     	  }
     	  
-    	  if (self.userId != null && StringUtil.trim(self.userId) != '') {
+    	  if (self.userId != null) {
     		  userService.getUser(self.userId,
         			  function(tmpUser) {
     			  			if (tmpUser != null) {

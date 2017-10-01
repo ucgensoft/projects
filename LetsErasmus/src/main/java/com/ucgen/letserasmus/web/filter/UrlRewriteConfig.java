@@ -25,7 +25,13 @@ public class UrlRewriteConfig extends HttpConfigurationProvider {
 				.addRule(Join.path("/help").to("/pages/help/help.html"))
 				.addRule(Join.path("/help/").to("/pages/help/help.html"))
 				.addRule(Join.path("/help/{groupKey}").to("/pages/help/help.html?groupKey={groupKey}"))
-				.addRule(Join.path("/help/{groupKey}/").to("/pages/help/help.html?groupKey={groupKey}"));
+				.addRule(Join.path("/help/{groupKey}/").to("/pages/help/help.html?groupKey={groupKey}"))
+				.addRule(Join.path("/about-us").to("/pages/AboutUs.html"))
+				.addRule(Join.path("/about-us/").to("/pages/AboutUs.html"))
+				.addRule(Join.path("/policies").to("/pages/Policies.html"))
+				.addRule(Join.path("/policies/").to("/pages/Policies.html"))
+				.addRule(Join.path("/contact-us").to("/pages/ContactUs.html"))
+				.addRule(Join.path("/contact-us/").to("/pages/ContactUs.html"));
 		
 				/*
 				// Using parameters to return physical resources

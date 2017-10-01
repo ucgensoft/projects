@@ -37,6 +37,7 @@ public class SpringMVCConfiguration extends WebMvcConfigurerAdapter{
 	
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		// Definitions here should also be added to UrlRewriteFilter
 		registry.addResourceHandler("/static/**").addResourceLocations("/static/");
 		registry.addResourceHandler("/place/**").addResourceLocations("/place/");
 		registry.addResourceHandler("/user/**").addResourceLocations("/user/");

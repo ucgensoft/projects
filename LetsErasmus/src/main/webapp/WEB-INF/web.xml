@@ -20,15 +20,12 @@
 	
 	<filter>
 	   <filter-name>OCPsoft Rewrite Filter</filter-name>
-	   <filter-class>org.ocpsoft.rewrite.servlet.RewriteFilter</filter-class>
+	   <filter-class>com.ucgen.letserasmus.web.filter.UrlRewriteFilter</filter-class>
 	   <async-supported>true</async-supported>
 	</filter>
 	<filter-mapping>
 	   <filter-name>OCPsoft Rewrite Filter</filter-name>
-	   <url-pattern>/search/*</url-pattern>
-	   <url-pattern>/room/*</url-pattern>
-	   <url-pattern>/help/*</url-pattern>
-	    <url-pattern>/profile/*</url-pattern>
+	   <url-pattern>/*</url-pattern>
 	   <dispatcher>FORWARD</dispatcher>
 	   <dispatcher>REQUEST</dispatcher>
 	   <dispatcher>INCLUDE</dispatcher>
