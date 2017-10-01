@@ -1,10 +1,11 @@
 App.controller('mainCtrl', ['$scope', '$controller', 'userService', function($scope, $controller, userService) {
       var self = this;
       
+      var selectedCountry = null;
       var selectedPlaceName = null;
+      var selectedPlaceId = null;
       var selectedLat = null;
       var selectedLng = null;
-      var selectedLocationId = null;
       var selectedLanguage = null;
 
       self.isSearchValid = false;
@@ -45,27 +46,25 @@ App.controller('mainCtrl', ['$scope', '$controller', 'userService', function($sc
       };
       
       self.onPlaceChange = function (event, result) {
-    	  var selectedCountry = null;
-    	  var selectedCity = null;
-    	 for (var i = 0; i < result.address_components.length; i++) {
-    		 if(result.address_components[i].types[0] == 'country') {
-    			 selectedCountry = result.address_components[i].long_name;
-    			 selectedLanguage = result.address_components[i].short_name;
-    		 } else if(result.address_components[i].types[0] == 'administrative_area_level_1') {
-            	selectedCity = result.address_components[i].long_name;
-            }
-        }
+    	  selectedCountry = null;
+    	  selectedPlaceName = null;
     	  
-    	 if (selectedCity != null) {
-    		 selectedPlaceName = selectedCity;
-    	 } else {
-    		 selectedPlaceName = selectedCountry;
-    	 }
+    	  for (var i = 0; i < result.address_components.length; i++) {
+      		 if(result.address_components[i].types[0] == 'country') {
+      			 selectedCountry = result.address_components[i].long_name;
+      			 selectedLanguage = result.address_components[i].short_name;
+      		 } else if(result.address_components[i].types[0] == 'administrative_area_level_1') {
+              	//selectedCity = result.address_components[i].long_name;
+              }
+            }
+
+     	selectedPlaceName = result.name;
+    	  
       	selectedLat = result.geometry.location.lat();
       	selectedLng = result.geometry.location.lng();
       	//selectedLat = result.geometry.viewport.b.b + ':' + result.geometry.viewport.b.f;
       	//selectedLng = result.geometry.viewport.f.b + ':' + result.geometry.viewport.f.f;
-      	selectedLocationId = result.place_id;
+      	selectedPlaceId = result.place_id;
       	
       	setTimeout(function() {
 	      		if ($("#txtStartDatePicker").datepicker("getDate") == null) {
@@ -82,8 +81,16 @@ App.controller('mainCtrl', ['$scope', '$controller', 'userService', function($sc
 		var endDate = $.datepicker.formatDate('dd.mm.yy', $("#txtEndDatePicker")
 					.datepicker("getDate"));
 		
-		openWindow(webApplicationUrlPrefix + globalSearchResultUrlTemplate.replace('{locationName}', selectedPlaceName.toLowerCaseWithLang(selectedLanguage)).replace('{locationId}', selectedLocationId) 
-				+ "?" + EnmUriParam.CHECKIN_DATE + "=" + startDate + "&" + EnmUriParam.CHECKOUT_DATE + "=" + endDate, true);
+		var locationName = selectedCountry.toLowerCaseWithLang(selectedLanguage);
+		
+		if (selectedPlaceName != null) {
+			locationName = locationName + '--' + selectedPlaceName.replaceAll(' ', '-').replaceAll(',', '-').replaceAll('/', '-').replaceAll('\\.', '');
+		}
+		
+		var url = globalSearchResultUrlTemplate.replace('{locationName}', locationName).replace('{locationId}', selectedPlaceId);
+		
+		url = WebUtil.addParameter(url, [{name: EnmUriParam.CHECKIN_DATE, value: startDate}, {name: EnmUriParam.CHECKOUT_DATE, value: endDate}])
+		openWindow(url, true);
       };
 
       self.validateSearch = function() {
@@ -91,10 +98,13 @@ App.controller('mainCtrl', ['$scope', '$controller', 'userService', function($sc
       			.datepicker("getDate"));
       	var endDate = $.datepicker.formatDate('dd.mm.yy', $("#txtEndDatePicker")
       			.datepicker("getDate"));
-
+      	
+      	/*
       	if (selectedPlaceName == null || selectedPlaceName == ''
       			|| startDate == null || startDate == '' || endDate == null
       			|| endDate == '') {
+      	*/
+      	if (selectedPlaceName == null || selectedPlaceName == '') {
       		$("#btnSearch").attr("disabled", true);
       		isSearchValid = false;
       		return false;

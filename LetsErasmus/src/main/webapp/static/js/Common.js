@@ -439,9 +439,24 @@ var StringUtil = {
 	},
 	
 	replaceAll : function(text, oldValue, newValue) {
-		return eval('text.replace(/' + oldValue + '/g, newValue)');
+		var regExp = new RegExp(oldValue, 'g');
+    	return text.replace(regExp, newValue);
 	}
 };
+
+if (typeof String.prototype.replaceAll !== 'function') {
+    String.prototype.replaceAll = function(oldValue, newValue) {
+    	var text = this;
+    	var regExp = new RegExp(oldValue, 'g');
+    	return text.replace(regExp, newValue);
+    };
+}
+
+if (typeof String.prototype.startsWith !== 'function') {
+    String.prototype.startsWith = function(suffix) {
+        return (this.indexOf(suffix) == 0);
+    };
+}
 
 if (typeof String.prototype.endsWith !== 'function') {
     String.prototype.endsWith = function(suffix) {
@@ -451,8 +466,10 @@ if (typeof String.prototype.endsWith !== 'function') {
 
 String.prototype.toLowerCaseWithLang = function(lang) {
 	var string = this;
+	/*
 	var letters = { "İ": "i", "I": "ı", "Ş": "ş", "Ğ": "ğ", "Ü": "ü", "Ö": "ö", "Ç": "ç" };
 	string = string.replace(/(([İIŞĞÜÇÖ]))/g, function(letter){ return letters[letter]; })
+	*/
 	return string.toLowerCase();
 }
 
@@ -721,4 +738,47 @@ ImageUtil = {
   		}
   		return defaultAngle;
   	}
+};
+
+WebUtil = {
+	
+	concatUrl : function(urlPartArr) {
+		url = '';
+		var URL_SEPERATOR = '/';
+		for (var i = 0; i < urlPartArr.length; i++) {
+			var urlPart = urlPartArr[i];
+			
+			if (url.endsWith(URL_SEPERATOR) && urlPart.startsWith(URL_SEPERATOR)) {
+				subPath = urlPart.replace(URL_SEPERATOR, '');
+			} else if (!urlPart.startsWith(URL_SEPERATOR) && !url.endsWith(URL_SEPERATOR)) {
+				url += URL_SEPERATOR;
+			}
+			url = url + urlPart;
+		}
+		return url;
+	},
+	
+	addParameter : function(url, paramArr) {
+		var parameters = '';
+		for (var i = 0; i < paramArr.length; i++) {
+			var parameter = paramArr[i];
+			if (parameter != null && parameter.value != null && parameter.value.length > 0) {
+				if (parameters != '') {
+					parameters = parameters + '&';
+				}
+				if (typeof parameter.value == 'string') {
+					parameter.value = parameter.value.trim();
+				}
+				parameters = parameters + parameter.name + "=" + encodeURIComponent(parameter.value);
+			}
+		}
+		if (parameters != null && parameters.trim().length > 0) {
+			if (url.indexOf('?') == -1) {
+				url = url + '?';
+			}
+			url = url + parameters;
+		}
+		return url;
+	}
+	
 };

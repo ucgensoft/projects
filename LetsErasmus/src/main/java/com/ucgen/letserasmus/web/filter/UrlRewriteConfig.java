@@ -16,12 +16,12 @@ public class UrlRewriteConfig extends HttpConfigurationProvider {
 		return ConfigurationBuilder.begin()
 		
 				// A basic join
-				.addRule(Join.path("/room/search/{loc}/{locationId}").to("/pages/SearchResult.html?loc={loc}&locationId={locationId}"))
-				.addRule(Join.path("/room/search/{loc}/{locationId}/").to("/pages/SearchResult.html?loc={loc}&locationId={locationId}"))
-				.addRule(Join.path("/room/{cityName}/{placeId}").to("/pages/PlaceDetail.html?placeId={placeId}"))
-				.addRule(Join.path("/room/{cityName}/{placeId}/").to("/pages/PlaceDetail.html?placeId={placeId}"))
 				.addRule(Join.path("/profile/{userId}").to("/pages/dashboard/DisplayUser.html?userId={userId}"))
 				.addRule(Join.path("/profile/{userId}/").to("/pages/dashboard/DisplayUser.html?userId={userId}"))
+				.addRule(Join.path("/room/search/{loc}/{locationId}").to("/pages/SearchResult.html?loc={loc}&locationId={locationId}"))
+				.addRule(Join.path("/room/search/{loc}/{locationId}/").to("/pages/SearchResult.html?loc={loc}&locationId={locationId}"))
+				.addRule(Join.path("/room/{placeId}").to("/pages/PlaceDetail.html?placeId={placeId}"))
+				.addRule(Join.path("/room/{placeId}/").to("/pages/PlaceDetail.html?placeId={placeId}"))
 				.addRule(Join.path("/help").to("/pages/help/help.html"))
 				.addRule(Join.path("/help/").to("/pages/help/help.html"))
 				.addRule(Join.path("/help/{groupKey}").to("/pages/help/help.html?groupKey={groupKey}"))

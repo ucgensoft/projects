@@ -37,13 +37,15 @@ public class WebUtil {
 	
 	public static String concatUrl(String url, String... subUrlArr) {
 		for (String subPath : subUrlArr) {
-			if (!subPath.startsWith(URL_SEPERATOR) && !url.endsWith(URL_SEPERATOR)) {
+			if (url.endsWith(URL_SEPERATOR) && subPath.startsWith(URL_SEPERATOR)) {
+				subPath = subPath.replace(URL_SEPERATOR, "");
+			} else if (!subPath.startsWith(URL_SEPERATOR) && !url.endsWith(URL_SEPERATOR)) {
 				url += URL_SEPERATOR;
 			}
 			url += subPath;
 		}
 		
-		return url.replace("//", "/");
+		return url;
 	}
 	
 	public static String getClientIp(HttpServletRequest request) {

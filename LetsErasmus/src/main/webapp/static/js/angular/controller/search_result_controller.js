@@ -6,6 +6,8 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
       self.selectedLocation = null;
       self.selectedLat = null;
       self.selectedLng = null;
+      self.selectedCountry = null;
+      self.selectedLanguage = null;
       self.selectedPlaceName = null;
       self.selectedLocationId = null;
       self.locSearchCriteria = null;
@@ -38,7 +40,14 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
       
       initialize = function() {
     	  
-    	  	self.selectedPlaceName = searchLocationName; //getUriParam(EnmUriParam.LOCATION);
+    	  if (searchLocationName.indexOf('--') > -1) {
+    		  self.selectedPlaceName = searchLocationName.split('--')[1];
+    	  } else {
+    		  self.selectedPlaceName = searchLocationName
+    	  }
+    	  
+    	  self.selectedPlaceName = self.selectedPlaceName.replaceAll('-', ' ');
+    	  
 	    	self.selectedStartDate = searchStartDate; //getUriParam(EnmUriParam.CHECKIN_DATE);
 	    	self.selectedEndDate = searchEndDate; //getUriParam(EnmUriParam.CHECKOUT_DATE);
 	    	self.selectedLocationId = searchLocationId; //getUriParam(EnmUriParam.LOCATION_ID);
@@ -354,11 +363,16 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
     	
 		var endDate = $.datepicker.formatDate('dd.mm.yy', $("#txtEndDatePicker").datepicker("getDate"));
 		
-		openWindow(webApplicationUrlPrefix + '/pages/SearchResult.html' 
-				+ '?' + EnmUriParam.LOCATION + '=' + self.selectedPlaceName
-				+ "&" + EnmUriParam.CHECKIN_DATE + "=" + startDate 
-				+ "&" + EnmUriParam.CHECKOUT_DATE + "=" + endDate
-				+ "&" + EnmUriParam.LOCATION_ID + "=" + self.selectedLocationId, true);
+		var locationName = self.selectedCountry.toLowerCaseWithLang(self.selectedLanguage);
+		
+		if (self.selectedPlaceName != null) {
+			locationName = locationName + '--' + self.selectedPlaceName.replaceAll(' ', '-').replaceAll(',', '-').replaceAll('/', '-').replaceAll('\\.', '');;
+		}
+		
+		var url = globalSearchResultUrlTemplate.replace('{locationName}', locationName).replace('{locationId}', self.selectedLocationId);
+		
+		url = WebUtil.addParameter(url, [{name: EnmUriParam.CHECKIN_DATE, value: startDate}, {name: EnmUriParam.CHECKOUT_DATE, value: endDate}])
+		openWindow(url, true);
 		
       };
       
@@ -495,9 +509,12 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
 	      	var startDate = $.datepicker.formatDate('dd.mm.yy', $("#txtStartDatePicker").datepicker("getDate"));
 	      	var endDate = $.datepicker.formatDate('dd.mm.yy', $("#txtEndDatePicker").datepicker("getDate"));
 
+	      	/*
 	      	if (self.selectedPlaceName == null || self.selectedPlaceName == ''
 	      			|| startDate == null || startDate == '' || endDate == null
 	      			|| endDate == '') {
+	      	*/
+	      	if (self.selectedPlaceName == null || self.selectedPlaceName == '') {
 	      		$("#btnSearch").attr("disabled", true);
 	      		isSearchValid = false;
 	      		return false;
@@ -509,7 +526,28 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
 	      };
       
       self.onPlaceChange = function (event, result) {
-	    	self.selectedPlaceName = result.name;
+    	  self.selectedCountry = null;
+    	  self.selectedPlaceName = null;
+    	  
+    	  //var addressArrLength = result.address_components.length;
+    	  
+    	  for (var i = 0; i < result.address_components.length; i++) {
+     		 if(result.address_components[i].types[0] == 'country') {
+     			 self.selectedCountry = result.address_components[i].long_name;
+     			 self.selectedLanguage = result.address_components[i].short_name;
+     		 } else if(result.address_components[i].types[0] == 'administrative_area_level_1') {
+             	//selectedCity = result.address_components[i].long_name;
+             }
+           }
+
+    	  self.selectedPlaceName = result.name;
+    	  
+    	  /*
+    	  if (addressArrLength > 1) {
+    		  self.selectedPlaceName = result.address_components[0].long_name;
+    	  }
+    	  */
+	    	//self.selectedPlaceName = result.name;
 	    	self.selectedLat = result.geometry.location.lat();
 	    	self.selectedLng = result.geometry.location.lng();
 	    	self.selectedLocationId = result.place_id;
@@ -765,17 +803,6 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
     	  
     	  return webApplicationUrlPrefix + place.pageUrl;
     	  
-    	  /*
-    	  var startDate = getUriParam(EnmUriParam.CHECKIN_DATE);
-    	  var endDate = getUriParam(EnmUriParam.CHECKOUT_DATE);
-    	  
-    	  var placeDetailUrl = webApplicationUrlPrefix + '/pages/PlaceDetail.html' 
-    	  	+ '?' + EnmUriParam.PLACE_ID + '=' + placeId
-    	  	+ '&' + EnmUriParam.CHECKIN_DATE + '=' + startDate
-    	  	+ '&' + EnmUriParam.CHECKOUT_DATE + '=' + endDate;
-    	  
-    	  return placeDetailUrl;
-    	  */
       };
       
       self.onFavoriteIconClicked = function(placeId) {
