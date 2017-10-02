@@ -28,7 +28,7 @@ import com.ucgen.letserasmus.library.place.model.Place;
 @Repository
 public class PlaceDao extends JdbcDaoSupport implements IPlaceDao{
 	
-	private static final String INSERT_PLACE_SQL = " INSERT INTO PLACE(HOST_USER_ID, PLACE_TYPE_ID, HOME_TYPE_ID, TITLE, DESCRIPTION, STATUS, LOCATION_ID, PRICE, BILLS_INCLUDE, DEPOSIT_PRICE, CURRENCY_ID, BED_NUMBER, BED_TYPE_ID, BATHROOM_NUMBER, BATHROOM_TYPE, PLACE_MATE_NUMBER, PLACE_MATE_GENDER, GUEST_NUMBER, GUEST_GENDER, RULES, AMENTIES, SAFETY_AMENTIES, MINIMUM_STAY, MAXIMUM_STAY, START_DATE, END_DATE, CANCELLATION_POLICY_ID, LGBT_FRIENDLY, CREATED_BY, CREATED_DATE, CREATED_DATE_GMT, MODIFIED_BY, MODIFIED_DATE, MODIFIED_DATE_GMT) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+	private static final String INSERT_PLACE_SQL = " INSERT INTO PLACE(HOST_USER_ID, PLACE_TYPE_ID, HOME_TYPE_ID, TITLE, DESCRIPTION, STATUS, LOCATION_ID, PRICE, BILLS_INCLUDE, DEPOSIT_PRICE, CURRENCY_ID, BED_NUMBER, BED_TYPE_ID, BATHROOM_NUMBER, BATHROOM_TYPE, PLACE_MATE_NUMBER, PLACE_MATE_GENDER, GUEST_NUMBER, GUEST_GENDER, RULES, AMENTIES, SAFETY_AMENTIES, MINIMUM_STAY, MAXIMUM_STAY, START_DATE, END_DATE, CANCELLATION_POLICY_ID, LGBT_FRIENDLY, CREATED_BY, CREATED_DATE, CREATED_DATE_GMT, MODIFIED_BY, MODIFIED_DATE, MODIFIED_DATE_GMT, PAGE_URL) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?, ?) ";
 	
 	private static final String UPDATE_PLACE_SQL = " UPDATE PLACE SET $1 WHERE ID=? ";
 	
@@ -106,6 +106,7 @@ public class PlaceDao extends JdbcDaoSupport implements IPlaceDao{
 		argList.add(place.getModifiedBy());
 		argList.add(place.getModifiedDate());
 		argList.add(place.getModifiedDateGmt());
+		argList.add(place.getPageUrl());
 		
 		this.getJdbcTemplate().update(INSERT_PLACE_SQL, argList.toArray());
 		
