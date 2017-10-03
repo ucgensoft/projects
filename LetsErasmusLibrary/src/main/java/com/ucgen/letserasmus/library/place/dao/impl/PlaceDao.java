@@ -275,6 +275,11 @@ public class PlaceDao extends JdbcDaoSupport implements IPlaceDao{
 			argList.add(place.getModifiedDate());
 		}
 		
+		if (place.getPageUrl() != null) {
+			StringUtil.append(updateFields, "PAGE_URL = ?", ",");
+			argList.add(place.getPageUrl());
+		}
+		
 		argList.add(place.getId());
 
 		updateSql = updateSql.replace("$1", updateFields);
