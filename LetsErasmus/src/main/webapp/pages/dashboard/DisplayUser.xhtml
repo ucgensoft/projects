@@ -5,13 +5,13 @@
 	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
 
 	<ui:define name="head">
-		<title>LetsErasmus user profile page for #{displayUserController.user.firstName}, (#{displayUserController.user.id})</title>
-		<meta property="description" content="#{displayUserController.user.firstName} is an active LetsErasmus user since #{displayUserController.formatDate(displayUserController.user.createdDate, 'dd.MM.yyyy')}" />
+		<title>#{displayUserController.user.firstName}'s profile - Let's Erasmus</title>
+		<meta property="description" content="#{displayUserController.user.firstName} is an active Let's Erasmus user since #{displayUserController.formatDate(displayUserController.user.createdDate, 'dd.MM.yyyy')}" />
 		<link rel="canonical" href="#{webApplication.getUrlTemplateProfile(displayUserController.user.id)}"/>
 		
 		<meta property="og:url" content="#{webApplication.getUrlTemplateProfile(displayUserController.user.id)}" />
-		<meta property="og:title" content="LetsErasmus user profile page for #{displayUserController.user.firstName}, (#{displayUserController.user.id})" />
-		<meta property="og:description" content="#{displayUserController.user.firstName} is an active LetsErasmus user since #{displayUserController.formatDate(displayUserController.user.createdDate, 'dd.MM.yyyy')}" />
+		<meta property="og:title" content="Let's Erasmus user profile page for #{displayUserController.user.firstName}, (#{displayUserController.user.id})" />
+		<meta property="og:description" content="#{displayUserController.user.firstName} is an active Let's Erasmus user since #{displayUserController.formatDate(displayUserController.user.createdDate, 'dd.MM.yyyy')}" />
 		<meta property="og:image" content="#{webApplication.staticFileUrlPrefix}/#{webApplication.getUserPhotoPath(displayUserController.user.id, displayUserController.user.profilePhotoId, 'medium')}" />
 		
 		<link rel="stylesheet" type="text/css"
@@ -112,7 +112,7 @@
 									</div>
 								</div>
 								<div class="edit_profile_container space-3 {{ctrl.isActiveUser() ? '' : 'hidden-force'}}">
-									<a href="#{webApplication.urlPrefix}/pages/dashboard/EditUser.html">Edit Profile</a>
+									<a href="#{webApplication.urlPrefix}/dashboard/edit-profile">Edit Profile</a>
 								</div>
 							</div>
 						</div>
@@ -223,7 +223,7 @@
 									</div>
 								</div>
 								<div class="edit_profile_container space-3 {{ctrl.isActiveUser() ? '' : 'hidden-force'}}">
-									<a href="#{webApplication.urlPrefix}/pages/dashboard/EditUser.html">Edit Profile</a>
+									<a href="#{webApplication.urlPrefix}/dashboard/edit-profile">Edit Profile</a>
 								</div>
 							</div>
 						</div>

@@ -545,7 +545,7 @@ public class WebApplication extends BaseController {
 	}
 	
 	public String getPlaceDetailSubUrl(String placeId) {
-		return PAGE_URL_TEMPLATE_PLACE_DETAIL.replaceAll("{placeId}", placeId);
+		return PAGE_URL_TEMPLATE_PLACE_DETAIL.replaceAll("\\{placeId\\}", placeId);
 	}
 	
 	public String getPriceText(BigDecimal price, Integer currencyId) {
@@ -558,7 +558,7 @@ public class WebApplication extends BaseController {
 		} else if (currencyId.intValue() == 2) {
 			return "$";
 		} else if (currencyId.intValue() == 3) {
-			return "â‚¬";
+			return "€";
 		} else {
 			return "";
 		}

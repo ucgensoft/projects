@@ -517,7 +517,7 @@ public class ApiReservationController extends BaseApiController {
 										hostUser.setUrl(hostUserUrl);
 										hostUser.setProfileImageUrl(hostProfilePhotoUrl);
 										
-										String conversationUrl = WebUtil.concatUrl(this.webApplication.getUrlPrefix(), "pages/dashboard/Conversation.html?threadId=" + reservation.getMessageThreadId());
+										String conversationUrl = WebUtil.concatUrl(this.webApplication.getUrlPrefix(), "dashboard/conversation?threadId=" + reservation.getMessageThreadId());
 										MessageThread messageThread = new MessageThread();
 										messageThread.setUrl(conversationUrl);
 										reservation.setMessageThread(messageThread);
@@ -777,7 +777,7 @@ public class ApiReservationController extends BaseApiController {
 						operationResult.setResultCode(EnmResultCode.WARNING.getValue());
 						operationResult.setErrorCode(EnmErrorCode.ALREADY_CONTACTED.getId());
 						operationResult.setResultDesc(AppConstants.MESSAGE_DOUBLE);
-						String conversationPageUrl = AppUtil.concatPath(this.webApplication.getUrlPrefix(), "/pages/dashboard/Conversation.html?threadId="+ dbReservationList.get(0).getMessageThreadId());
+						String conversationPageUrl = AppUtil.concatPath(this.webApplication.getUrlPrefix(), "/dashboard/conversation?threadId="+ dbReservationList.get(0).getMessageThreadId());
 						operationResult.setResultValue(conversationPageUrl);
 					}
 				} else {

@@ -76,9 +76,12 @@ public class HelpController extends BaseController {
 			this.selectedGroupKey = paramGroupKey;
 			
 			if (this.selectedGroupKey == null) {
-				this.selectedGroupKey = "faq";
+				this.selectedGroupKey = "FAQ";
 			}
 			
+			this.selectedGroupKey = this.selectedGroupKey.replace("-", " ");
+			this.selectedGroupKey = this.selectedGroupKey.toLowerCase();
+			this.selectedGroupKey = Character.toString(this.selectedGroupKey.charAt(0)).toUpperCase()+this.selectedGroupKey.substring(1);
 			String groupTitle = this.selectedGroupKey.replace("-", " ");
 
 			questionList = this.simpleObjectService.listQuestion(groupTitle, null);

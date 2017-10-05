@@ -5,15 +5,20 @@
 	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
 
 	<ui:define name="head">
-		<meta property="og:image" content="#{webApplication.getPlacePhotoUrl(placeDetailController.place.id, placeDetailController.place.coverPhotoId, 'small')}" />
-		<meta property="og:url" content="#{placeDetailController.placeDetailUrl}" />
-		<meta property="og:title" content="#{placeDetailController.place.title}" />
-		<meta property="og:description" content="#{placeDetailController.pageDescription}" />
-		
+		<meta property="og:image"
+			content="#{webApplication.getPlacePhotoUrl(placeDetailController.place.id, placeDetailController.place.coverPhotoId, 'small')}" />
+		<meta property="og:url"
+			content="#{placeDetailController.placeDetailUrl}" />
+		<meta property="og:title"
+			content="#{placeDetailController.place.title}" />
+		<meta property="og:description"
+			content="#{placeDetailController.pageDescription}" />
+
 		<title>#{placeDetailController.pageTitle}</title>
-		<meta property="description" content="#{placeDetailController.pageDescription}" />
-		<link rel="canonical" href="#{placeDetailController.placeDetailUrl}"/>
-		
+		<meta property="description"
+			content="#{placeDetailController.pageDescription}" />
+		<link rel="canonical" href="#{placeDetailController.placeDetailUrl}" />
+
 		<link rel="stylesheet" type="text/css"
 			href="#{webApplication.urlPrefix}/static/css/place_detail.css?ver=#{webApplication.staticFileVersion}" />
 		<link rel="stylesheet" type="text/css"
@@ -98,17 +103,14 @@
 									class="cover-img-container">
 										<div class="cover-img">
 											<div id="divPhotoSlider"
-												style="background-size: contain; position: absolute; top: 0; left: 0; bottom: 0; 
-												right: 0; margin: auto; width: 100%; max-width: 1000px; height: 100%; max-height: 600px; 
-												background-position: center;background-repeat: no-repeat;">
-												<input type="hidden" id="hiddenPhotoIndexMainSlider" value="0" /> 
-												<span ng-click="ctrl.changePhoto(-1)"
+												style="background-size: contain; position: absolute; top: 0; left: 0; bottom: 0; right: 0; margin: auto; width: 100%; max-width: 1000px; height: 100%; max-height: 600px; background-position: center; background-repeat: no-repeat;">
+												<input type="hidden" id="hiddenPhotoIndexMainSlider"
+													value="0" /> <span ng-click="ctrl.changePhoto(-1)"
 													ng-if="ctrl.place.photoList.length > 1" class="jssora02l"
-													style="top: 50%; left: 8px;"></span> 
-												<span ng-click="ctrl.changePhoto(1)"
+													style="top: 50%; left: 8px;"></span> <span
+													ng-click="ctrl.changePhoto(1)"
 													ng-if="ctrl.place.photoList.length > 1" class="jssora02r"
-													style="top: 50%; right: 8px;">
-												</span>
+													style="top: 50%; right: 8px;"> </span>
 											</div>
 										</div>
 								</span>
@@ -137,7 +139,9 @@
 																				<span class="wrapper_p7pvqu"><span
 																					id="spanTabText1" class="selectedTab">Overview</span></span>
 																			</button>
-																		</a> <a href="#divHostProfile">
+																		</a>
+																		<!-- HOST AREA IS MOVED
+																		<a href="#divHostProfile">
 																			<button id="btnTab2" type="button"
 																				class="text_1aunhvg-o_O-tab_wurtoe"
 																				ng-click="ctrl.onTabChange(2);">
@@ -145,7 +149,9 @@
 																					id="spanTabText2">The Host</span>
 																				</span>
 																			</button>
-																		</a> <a href="#divLocation">
+																		</a> 
+																		 -->
+																		<a href="#divLocation">
 																			<button id="btnTab2" type="button"
 																				class="text_1aunhvg-o_O-tab_wurtoe"
 																				ng-click="ctrl.onTabChange(3)">
@@ -153,7 +159,9 @@
 																					id="spanTabText3">Location</span>
 																				</span>
 																			</button>
-																		</a> <a href="#divReviews">
+																		</a>
+																		<!-- REVIEW WILL BE REMOVED UNTIL IT IS COMPELETED
+																		<a href="#divReviews">
 																			<button id="btnTab2" type="button"
 																				class="text_1aunhvg-o_O-tab_wurtoe"
 																				ng-click="ctrl.onTabChange(4)">
@@ -162,6 +170,7 @@
 																				</span>
 																			</button>
 																		</a>
+																		 -->
 																	</div>
 																	<div></div>
 																</div>
@@ -180,6 +189,7 @@
 													<div class="summary-component">
 														<div class="space-4 space-top-4">
 															<div class="row">
+																<!-- HOST AREA IS MOVED
 																<div class="col-md-3 space-sm-4 text-center space-sm-2">
 																	<div class="media-photo-badge">
 																		<a href="#{webApplication.getUrlTemplateProfile(placeDetailController.place.hostUserId)}"
@@ -192,25 +202,27 @@
 																		<img src="" class="superhost-photo-badge superhost-photo-badge" alt="" />
 																	</div>
 																</div>
-																<div class="col-md-9">
-																	<h1 class="overflow h3 space-1 text-center-sm"
+																 -->
+																<div class="col-md-12">
+																	<h1
+																		class="overflow h3 space-1 text-center-sm text-center"
 																		id="listing_name">#{placeDetailController.place.title}</h1>
 																	<div id="display-address"
-																		class="space-2 text-muted text-center-sm">
+																		class="space-2 text-muted text-center">
 																		<a href="" class="link-reset">#{placeDetailController.locationText}</a>
-																		<span> &nbsp; </span>
-																		<a href="" class="link-reset show-inline-block hide-sm"></a>
+																		<span> &nbsp; </span> <a href=""
+																			class="link-reset show-inline-block hide-sm"></a>
 																	</div>
 																	<div class="row row-condensed text-muted text-center">
-																		<div class="col-sm-3">
+																		<div class="col-sm-4">
 																			<i class="icon icon-private-room icon-size-2"
 																				aria-hidden="true"></i>
 																		</div>
-																		<div class="col-sm-3">
+																		<div class="col-sm-4">
 																			<i class="icon icon-group icon-size-2"
 																				aria-hidden="true"></i>
 																		</div>
-																		<div class="col-sm-3">
+																		<div class="col-sm-4">
 																			<i class="icon icon-double-bed icon-size-2"
 																				aria-hidden="true"></i>
 																		</div>
@@ -218,15 +230,19 @@
 																</div>
 															</div>
 															<div class="row">
+																<!-- HOST AREA IS MOVED
 																<div class="col-md-3 text-muted text-center hide-sm">
 																	<a href="#{webApplication.getUrlTemplateProfile(placeDetailController.place.hostUserId)}"
 																		class="link-reset text-wrap">#{placeDetailController.place.user.firstName}</a>
 																</div>
-																<div class="col-md-9">
+																 -->
+																<div class="col-md-12">
 																	<div class="row row-condensed text-muted text-center">
-																		<div class="col-sm-3">#{placeDetailController.placeTypeDescription}</div>
-																		<div class="col-sm-3">#{placeDetailController.place.guestNumber} Guests</div>
-																		<div class="col-sm-3">#{placeDetailController.place.bedNumber} Beds</div>
+																		<div class="col-sm-4">#{placeDetailController.placeTypeDescription}</div>
+																		<div class="col-sm-4">#{placeDetailController.place.guestNumber}
+																			Guests</div>
+																		<div class="col-sm-4">#{placeDetailController.place.bedNumber}
+																			Beds</div>
 																	</div>
 																</div>
 															</div>
@@ -274,7 +290,8 @@
 																	</div>
 																</div>
 															</div>
-															<div class="panel book-it-panel">
+															<div class="panel book-it-panel"
+																style="box-shadow: 0 0 5px 0 hsla(0, 0%, 51%, .4);">
 																<div class="panel-body panel-light">
 																	<div class="row row-condensed space-3">
 																		<div class="col-md-12">
@@ -325,8 +342,9 @@
 																			<span>Request to Book</span>
 																		</button>
 																		<div
-																			 class="bookit-message__container text-center text-muted">
-																			<small><span>You won’t be charged until host accepts request.</span></small>
+																			class="bookit-message__container text-center text-muted">
+																			<small><span>You won’t be charged
+																					until host accepts request.</span></small>
 																		</div>
 																	</div>
 																</div>
@@ -334,8 +352,63 @@
 														</div>
 													</div>
 												</div>
+
+												<!-- HOST -->
+												<div class="panel wishlist-panel space-top-6 space-md-3"
+													style="margin-top: 10px; box-shadow: 0 0 5px 0 hsla(0, 0%, 51%, .4);">
+													<div class="panel-body panel-light">
+														<div class="media-photo-badge text-center">
+															<a
+																href="#{webApplication.getUrlTemplateProfile(placeDetailController.place.hostUserId)}"
+																class="media-photo media-round"> <img
+																alt="Let's Erasmus host #{placeDetailController.place.user.firstName}"
+																class="host-profile-image" height="90" width="90"
+																src="#{webApplication.getUserPhotoUrl(placeDetailController.place.hostUserId, placeDetailController.place.user.profilePhotoId,'small')}"
+																title="#{placeDetailController.place.user.firstName}" />
+															</a> <img src=""
+																class="superhost-photo-badge superhost-photo-badge"
+																alt="" />
+														</div>
+														<h3 class="space-1 text-center">
+															<a id="lnkHostUser" class="link-reset"
+																href="#{webApplication.getUrlTemplateProfile(placeDetailController.place.hostUserId)}">{{ctrl.place.user.firstName}}</a>
+														</h3>
+														<div class="col-md-12 text-muted text-center">
+															<span>#{placeDetailController.place.user.residenceLocationName}</span>
+															<span> · </span><span>Joined in
+																{{ctrl.place.user.createdDate | date:'MMMM dd, yyyy'}}</span>
+														</div>
+														<div class="col-md-12 text-muted" style="float: none;">
+															<span><i
+																class="icon {{ctrl.place.user.emailVerified == 'Y' ? 'icon-ok-fill' : 'icon-sad-face'}} h3"></i></span>
+															<strong><span>Email
+																	{{ctrl.place.user.emailVerified == 'Y' ? 'is' : 'is
+																	not'}} verified</span></strong>
+														</div>
+														<div class="col-md-12 text-muted" style="float: none;">
+															<span><i
+																class="icon {{ctrl.place.user.msisdnVerified == 'Y' ? 'icon-ok-fill' : 'icon-sad-face'}} h3"></i></span>
+															<strong><span>Phone number
+																	{{ctrl.place.user.msisdnVerified == 'Y' ? 'is' : 'is
+																	not'}} verified</span></strong>
+														</div>
+														
+														<div class="text-center" style = "padding-top:10px;">
+															<button type="button" class="btn btn-primary btn-small"
+																 ng-click="ctrl.onContactHostBtnClicked()">
+																<span>Contact host</span>
+															</button>
+														</div>
+														
+														
+													</div>
+												</div>
+												<!-- HOST -->
+
+
 												<div
-													class="panel wishlist-panel space-top-6 space-md-3 hide-sm">
+													class="panel wishlist-panel space-top-6 space-md-3 hide-sm"
+													style="margin-top: 10px; box-shadow: 0 0 5px 0 hsla(0, 0%, 51%, .4);">
 													<div class="panel-body panel-light">
 														<div class="wishlist-wrapper hide-sm">
 															<div class="rich-toggle wish_list_button not_saved"
@@ -361,7 +434,8 @@
 															</div>
 														</div>
 													</div>
-													<div class="panel-body panel-light" style="text-align: center;">
+													<div class="panel-body panel-light"
+														style="text-align: center;">
 														<a href="https://twitter.com/share"
 															class="twitter-share-button" data-text="Love this one!"
 															data-via="letserasmus" data-hashtags="letsErasmus"
@@ -375,10 +449,9 @@
 																class="flag-widget {{(ctrl.isPlaceComplainted() || (ctrl.place.hostUserId.toString() == loginUserId)) ? 'hidden-force' : ''}}">
 																<a href="" class="link-reset"
 																	title="Report this listing"
-																	ng-click="ctrl.openComplaintWindow()"> 
-																	<i class="icon icon-flag h4"></i> 
-																	<span> </span> 
-																	<span>Report this listing</span>
+																	ng-click="ctrl.openComplaintWindow()"> <i
+																	class="icon icon-flag h4"></i> <span> </span> <span>Report
+																		this listing</span>
 																</a>
 															</div>
 															<div
@@ -402,197 +475,175 @@
 										<div class="row">
 											<div class="col-lg-8 js-details-column">
 
-												<div class="space-top-8 space-8">
-													<h4 class="space-4 text-center-sm">
-														<span>About this listing</span>
-													</h4>
-													<div>
-														<p>
-															<span>#{placeDetailController.place.description}</span>
-														</p>
-													</div>
-													<div class="row row-condensed">
-														<div class="contact-host-div col-12">
-															<div>
-																<button ng-click="ctrl.onContactHostBtnClicked()" 
-																	class="btn-link btn-link--bold" type="button">
-																	<span>Contact Host</span>
-																</button>
-															</div>
-														</div>
-													</div>
-													<hr />
-													<div class="row">
-														<div class="col-md-3 text-muted">
-															<div>
-																<span>The space</span>
-															</div>
-														</div>
-														<div class="col-md-9">
-															<div class="row">
-																<div class="col-md-6">
-																	<div>
-																		<span>Property type: </span><span>
-																		</span><strong>#{placeDetailController.homeTypeDescription}</strong>
-																	</div>
-																	<div>
-																		<span>Bathrooms: </span><span> </span><strong>{{
-																			ctrl.place.bathRoomNumber }}</strong><span> </span><strong>({{
-																			(ctrl.place.bathRoomType == 1 ? 'Private' : 'Shared')
-																			}} bathroom)</strong>
-																	</div>
-																	<div>
-																		<span>Beds: </span><span> </span><strong>#{placeDetailController.place.bedNumber}</strong>
-																	</div>
-																</div>
-																<div class="col-md-6">
-																	<div>
-																		<span>Place Mate Number: </span><span> </span>
-																		<strong>#{placeDetailController.place.placeMateNumber}</strong>
-																	</div>
-																	<div>
-																		<span>Place Mate Gender: </span><span> </span>
-																		<strong>{{ (ctrl.place.placeMateGender == 'M' ? 'Male' : (ctrl.place.placeMateGender == 'F' ? 'Female' : (ctrl.place.placeMateGender == 'B' ? 'Mixed' : 'No Mates'))) }}</strong>
-																	</div>																	
-																</div>
-															</div>
-														</div>
-													</div>
-													<hr class="" />
-													<div class="row">
-														<div class="col-md-3 text-muted">
-															<div>
-																<span>Preferred Tenant</span>
-															</div>
-														</div>
-														<div class="col-md-9">
-															<div class="row">
-																<div class="col-md-6">
-																	<div>
-																		<span>Guest Number: </span><span> </span>
-																		<strong>#{placeDetailController.place.guestNumber}</strong>
-																	</div>
-																	<div>
-																		<span>Guest Gender: </span><span> </span>
-																		<strong>{{ (ctrl.place.guestGender == 'A' ? 'No Preference' : (ctrl.place.guestGender == 'F' ? 'Female' : 'Male')) }}</strong>
-																	</div>
-																</div>
-																<div class="col-md-6">
-																	<div>
-																		<span>LGBT Friendly: </span><span>
-																		</span><strong>{{ (ctrl.place.lgbtFriendly == 'Y' ? 'Yes' : 'No') }}</strong>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</div>
-
-													<hr class="" />
-													<div class="row">
-														<div class="col-md-3 text-muted">
-															<div>
-																<span>Rental Conditions</span>
-															</div>
-														</div>
-														<div class="col-md-9">
-															<div class="row">
-																<div class="col-md-12">
-																	<div>
-																		<span>Monthly Rent: </span><span> </span>
-																		<strong>#{placeDetailController.place.price} #{webApplication.getCurrencyShortName(placeDetailController.place.currencyId)}</strong>
-																	</div>
-																	<div>
-																		<span>Bills</span><span> </span><strong>{{ (ctrl.place.billsInclude == 'Y' ? 'are included' : 'are not included') }}</strong>
-																	</div>
-																	<div>
-																		<span>Deposit Price: </span><span> </span>
-																		<strong>#{placeDetailController.place.depositPrice} #{webApplication.getCurrencyShortName(placeDetailController.place.currencyId)} (Paid to host in cash)</strong>
-																	</div>
-																	<div ng-if="ctrl.place.minimumStay != null">
-																		<span>Minimum Stay: </span><span> </span>
-																		<strong>#{placeDetailController.place.minimumStay} months</strong>
-																	</div>
-																	<div ng-if="ctrl.place.maximumStay != null">
-																		<span>Maximum Stay: </span><span> </span>
-																		<strong>#{placeDetailController.place.maximumStay} months</strong>
-																	</div>																	
-																</div>
-															</div>
-														</div>
-													</div>													
-													<hr class="" />
-													<div class="row">
-														<div class="col-md-3 text-muted">
-															<div style="margin-bottom: 16px;">
-																<span>Cancellations</span>
-															</div>
-														</div>
-														<div class="col-md-9">
+												<div class="space-top-8 space-8" style="margin-top: 0px;">
+													<div class="details-box">
+														<h4 class="space-4 text-center-sm">
+															<span>About this listing</span>
+														</h4>
+														<div>
 															<p>
-																<span> </span><span><span>This host has a
-																</span><span><strong class=""><span>{{(ctrl.place.cancellationPolicyId == 1 ? 'Flexible' : (ctrl.place.cancellationPolicyId == 2 ? 'Moderate' : 'Strict'))}}
-																				Cancellation Policy</span></strong></span></span><span> </span>
+																<span>#{placeDetailController.place.description}</span>
 															</p>
-															<div>
-																<a
-																	href="#{webApplication.urlPrefix}/pages/Policies.html"
-																	target="_blank" rel="noopener"><strong><span>
-																	</span><span>View details</span><span> </span></strong></a>
-															</div>
 														</div>
-													</div>													
-													<hr class="" />
-													<div class="row amenities">
-														<div class="col-md-3 text-muted">
-															<div>
-																<span>Amenties</span>
+													</div>
+
+
+
+													<div class="details-box">
+														<div class="row">
+															<div class="col-md-3" style="font-weight: bold;">
+																<div>
+																	<span>The space</span>
+																</div>
 															</div>
-														</div>
-														<div class="col-md-9 expandable">
-															<div class="expandable-content-summary">
+															<div class="col-md-9">
 																<div class="row">
-																	<div ng-repeat="a in ctrl.amentiesList"
-																		class="col-sm-6">
+																	<div class="col-md-6" style="width: auto;">
 																		<div>
-																			<div ng-if="ctrl.hasAmenty(a.enumKey) == true"
-																				class="space-1">
-																				<span aria-hidden="true"> <i
-																					class="icon {{ a.iconStyle }}"></i>
-																				</span> <span>{{ a.uiLabel }}</span>
-																			</div>
-																			<div ng-if="ctrl.hasAmenty(a.enumKey) == false"
-																				class="space-1 text-muted">
-																				<span> <del aria-hidden="true">{{
-																						a.uiLabel }}</del>
-																				</span>
-																			</div>
+																			<span>Property type: </span><span> </span><strong>#{placeDetailController.homeTypeDescription}</strong>
+																		</div>
+																		<div>
+																			<span>Bathrooms: </span><span> </span><strong>{{
+																				ctrl.place.bathRoomNumber }}</strong><span> </span><strong>({{
+																				(ctrl.place.bathRoomType == 1 ? 'Private' :
+																				'Shared') }} bathroom)</strong>
+																		</div>
+																		<div>
+																			<span>Beds: </span><span> </span><strong>#{placeDetailController.place.bedNumber}</strong>
+																		</div>
+																	</div>
+																	<div class="col-md-6" style="width: auto;">
+																		<div>
+																			<span>Place Mate Number: </span><span> </span> <strong>#{placeDetailController.place.placeMateNumber}</strong>
+																		</div>
+																		<div>
+																			<span>Place Mate Gender: </span><span> </span> <strong>{{
+																				(ctrl.place.placeMateGender == 'M' ? 'Male' :
+																				(ctrl.place.placeMateGender == 'F' ? 'Female' :
+																				(ctrl.place.placeMateGender == 'B' ? 'Mixed' : 'No
+																				Mates'))) }}</strong>
 																		</div>
 																	</div>
 																</div>
 															</div>
 														</div>
 													</div>
-													<hr class="" />
 
-													<div class="row">
-														<div class="col-md-3 text-muted">
-															<div>
-																<span>House Rules</span>
+													<div class="details-box">
+														<div class="row">
+															<div class="col-md-3" style="font-weight: bold;">
+																<div>
+																	<span>Preferred Tenant</span>
+																</div>
+															</div>
+															<div class="col-md-9">
+																<div class="row">
+																	<div class="col-md-6">
+																		<div>
+																			<span>Guest Number: </span><span> </span> <strong>#{placeDetailController.place.guestNumber}</strong>
+																		</div>
+																		<div>
+																			<span>Guest Gender: </span><span> </span> <strong>{{
+																				(ctrl.place.guestGender == 'A' ? 'No Preference' :
+																				(ctrl.place.guestGender == 'F' ? 'Female' : 'Male'))
+																				}}</strong>
+																		</div>
+																	</div>
+																	<div class="col-md-6">
+																		<div>
+																			<span>LGBT Friendly: </span><span> </span><strong>{{
+																				(ctrl.place.lgbtFriendly == 'Y' ? 'Yes' : 'No') }}</strong>
+																		</div>
+																	</div>
+																</div>
 															</div>
 														</div>
+													</div>
 
-														<div class="col-md-9">
-															<div>
+													<div class="details-box">
+														<div class="row">
+															<div class="col-md-3" style="font-weight: bold;">
+																<div>
+																	<span>Rental Conditions</span>
+																</div>
+															</div>
+															<div class="col-md-9">
 																<div class="row">
-																	<div ng-repeat="a in ctrl.ruleList"
-																		class="col-md-6 col-sm-6">
+																	<div class="col-md-12">
 																		<div>
+																			<span>Monthly Rent: </span><span> </span> <strong>#{placeDetailController.place.price}
+																				#{webApplication.getCurrencyShortName(placeDetailController.place.currencyId)}</strong>
+																		</div>
+																		<div>
+																			<span>Bills</span><span> </span><strong>{{
+																				(ctrl.place.billsInclude == 'Y' ? 'are included' :
+																				'are not included') }}</strong>
+																		</div>
+																		<div>
+																			<span>Deposit Price: </span><span> </span> <strong>#{placeDetailController.place.depositPrice}
+																				#{webApplication.getCurrencyShortName(placeDetailController.place.currencyId)}
+																				(Paid to host in cash)</strong>
+																		</div>
+																		<div ng-if="ctrl.place.minimumStay != null">
+																			<span>Minimum Stay: </span><span> </span> <strong>#{placeDetailController.place.minimumStay}
+																				months</strong>
+																		</div>
+																		<div ng-if="ctrl.place.maximumStay != null">
+																			<span>Maximum Stay: </span><span> </span> <strong>#{placeDetailController.place.maximumStay}
+																				months</strong>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+
+
+													<div class="details-box">
+														<div class="row">
+															<div class="col-md-3" style="font-weight: bold;">
+																<div style="margin-bottom: 16px;">
+																	<span>Cancellations</span>
+																</div>
+															</div>
+															<div class="col-md-9">
+																<p>
+																	<span> </span><span><span>This host has a
+																	</span><span><strong class=""><span>{{(ctrl.place.cancellationPolicyId
+																					== 1 ? 'Flexible' :
+																					(ctrl.place.cancellationPolicyId == 2 ? 'Moderate'
+																					: 'Strict'))}} Cancellation Policy</span></strong></span></span><span> </span>
+																</p>
+																<div>
+																	<a href="#{webApplication.urlPrefix}/policies"
+																		target="_blank" rel="noopener"><strong><span>
+																		</span><span>View details</span><span> </span></strong></a>
+																</div>
+															</div>
+														</div>
+													</div>
+
+
+													<div class="details-box">
+														<div class="row amenities">
+															<div class="col-md-3" style="font-weight: bold;">
+																<div>
+																	<span>Amenties</span>
+																</div>
+															</div>
+															<div class="col-md-9 expandable">
+																<div class="expandable-content-summary">
+																	<div class="row">
+																		<div ng-repeat="a in ctrl.amentiesList"
+																			class="col-sm-6">
 																			<div>
-																				<div ng-if="ctrl.hasRule(a.enumKey) == true"
+																				<div ng-if="ctrl.hasAmenty(a.enumKey) == true"
 																					class="space-1">
-																					<span>{{ a.uiLabel }}</span>
+																					<span aria-hidden="true"> <i
+																						class="icon {{ a.iconStyle }}"></i>
+																					</span> <span>{{ a.uiLabel }}</span>
 																				</div>
-																				<div ng-if="ctrl.hasRule(a.enumKey) == false"
+																				<div ng-if="ctrl.hasAmenty(a.enumKey) == false"
 																					class="space-1 text-muted">
 																					<span> <del aria-hidden="true">{{
 																							a.uiLabel }}</del>
@@ -605,30 +656,33 @@
 															</div>
 														</div>
 													</div>
-													<hr class="" />
-													<div class="row">
-														<div class="col-md-3 text-muted">
-															<div>
-																<span>Safety features</span>
+
+
+													<div class="details-box">
+														<div class="row">
+															<div class="col-md-3" style="font-weight: bold;">
+																<div>
+																	<span>House Rules</span>
+																</div>
 															</div>
-														</div>
-														<div class="col-md-9">
-															<div>
-																<div class="row">
-																	<div ng-repeat="a in ctrl.safetyAmentiesList"
-																		class="col-md-6 col-sm-6">
-																		<div>
+
+															<div class="col-md-9">
+																<div>
+																	<div class="row">
+																		<div ng-repeat="a in ctrl.ruleList"
+																			class="col-md-6 col-sm-6">
 																			<div>
-																				<div ng-if="ctrl.hasSafetyAmenty(a.enumKey) == true"
-																					class="space-1">
-																					<span>{{ a.uiLabel }}</span>
-																				</div>
-																				<div
-																					ng-if="ctrl.hasSafetyAmenty(a.enumKey) == false"
-																					class="space-1 text-muted">
-																					<span> <del aria-hidden="true">{{
-																							a.uiLabel }}</del>
-																					</span>
+																				<div>
+																					<div ng-if="ctrl.hasRule(a.enumKey) == true"
+																						class="space-1">
+																						<span>{{ a.uiLabel }}</span>
+																					</div>
+																					<div ng-if="ctrl.hasRule(a.enumKey) == false"
+																						class="space-1 text-muted">
+																						<span> <del aria-hidden="true">{{
+																								a.uiLabel }}</del>
+																						</span>
+																					</div>
 																				</div>
 																			</div>
 																		</div>
@@ -637,92 +691,56 @@
 															</div>
 														</div>
 													</div>
+
+													<div class="details-box">
+														<div class="row">
+															<div class="col-md-3" style="font-weight: bold;">
+																<div>
+																	<span>Safety features</span>
+																</div>
+															</div>
+															<div class="col-md-9">
+																<div>
+																	<div class="row">
+																		<div ng-repeat="a in ctrl.safetyAmentiesList"
+																			class="col-md-6 col-sm-6">
+																			<div>
+																				<div>
+																					<div
+																						ng-if="ctrl.hasSafetyAmenty(a.enumKey) == true"
+																						class="space-1">
+																						<span>{{ a.uiLabel }}</span>
+																					</div>
+																					<div
+																						ng-if="ctrl.hasSafetyAmenty(a.enumKey) == false"
+																						class="space-1 text-muted">
+																						<span> <del aria-hidden="true">{{
+																								a.uiLabel }}</del>
+																						</span>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+
+
 												</div>
 											</div>
 										</div>
 									</div>
 								</div>
-								<div id="divHostProfile" class="webkit-render-fix">
-									<div class="page-container-responsive space-top-2 space-8">
-										<div class="row">
-											<div class="col-lg-8">
-												<div>
-													<h4 class="space-2 text-center-sm">
-														<span>Your Host</span>
-													</h4>
-													<hr class="space-4 space-top-2" />
-												</div>
-												<div class="row">
-													<div class="col-md-3 text-center">
-														<div class="media-photo-badge">
-															<a
-																href="#{webApplication.getUrlTemplateProfile(placeDetailController.place.hostUserId)}"
-																class="media-photo media-round"> <img
-																id="imgHostUser" alt="LetsErasmus room host #{placeDetailController.place.user.firstName}"
-																class="media-photo media-round" height="90" width="90"
-																src="#{webApplication.getUserPhotoUrl(placeDetailController.place.hostUserId, placeDetailController.place.user.profilePhotoId,'small')}"
-																title="{{ctrl.place.user.firstName}}" />
-															</a> <img src="" class="superhost-photo-badge" alt="" />
-														</div>
-													</div>
-													<div class="col-md-9">
-														<h3 class="space-1">
-															<a id="lnkHostUser" class="link-reset"
-																href="#{webApplication.getUrlTemplateProfile(placeDetailController.place.hostUserId)}">{{ctrl.place.user.firstName}}</a>
-														</h3>
-														<div class="row row-condensed space-2">
-															<div class="col-md-12 text-muted">
-																<span>#{placeDetailController.place.user.residenceLocationName}</span>
-																<span> · </span><span>Joined in {{ctrl.place.user.createdDate | date:'MMMM dd, yyyy'}}</span>
-															</div>
-														</div>
-														<div class="row row-condensed space-2">
-															<div class="col-md-12 text-muted">
-																<span><i class="icon {{ctrl.place.user.emailVerified == 'Y' ? 'icon-ok-fill' : 'icon-sad-face'}} h3"></i></span>
-																<strong><span>Email {{ctrl.place.user.emailVerified == 'Y' ? 'is' : 'is not'}} verified</span></strong>
-															</div>
-														</div>
-														<div class="row row-condensed space-2">
-															<div class="col-md-12 text-muted">
-																<span><i class="icon {{ctrl.place.user.msisdnVerified == 'Y' ? 'icon-ok-fill' : 'icon-sad-face'}} h3"></i></span>
-																<strong><span>Phone number {{ctrl.place.user.msisdnVerified == 'Y' ? 'is' : 'is not'}} verified</span></strong>
-															</div>
-														</div>		
-														<!-- 	 review part is removed for now 											
-														<div class="space-top-3">
-															<div class="badge-container space-4">
-																<a class="link-reset" target="_blank"
-																	rel="noopener noreferrer nofollow"
-																	href=href="#{webApplication.urlPrefix}/pages/dashboard/DisplayUser.xhtml?userId={{ctrl.place.user.id}}">
-																	<div
-																		class="text-center text-wrap">
-																		<div class="badge-pill h3">
-																			<span class="badge-pill-count">0</span>
-																		</div>
-																		<br class="show-sm" />
-																		<div class="va-middle show-inline-block">
-																			<span class="badge-pill-label">Reviews</span>
-																		</div>
-																	</div></a>
-															</div>
-														</div>
-														 -->
-														<div class="">
-															<button type="button" class="btn btn-primary btn-small"
-																 ng-click="ctrl.onContactHostBtnClicked()">
-																<span>Contact host</span>
-															</button>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
+
+
+
+
 								<div id="divLocation" class="webkit-render-fix">
 									<div class="page-container-responsive space-top-8 space-8">
 										<div class="row">
-											<div class="col-lg-8">
+											<div class="col-lg-12">
 												<div>
 													<h4 class="space-2 text-center-sm">
 														<span>Location</span>
@@ -736,6 +754,8 @@
 										</div>
 									</div>
 								</div>
+
+								<!--  REVIEW WILL BE REMOVED UNTIL IT IS COMPELETED
 								<div id="divReviews" class="webkit-render-fix">
 									<div class="page-container-responsive space-top-8 space-8">
 										<div class="row">
@@ -795,6 +815,9 @@
 										</div>
 									</div>
 								</div>
+								-->
+
+
 							</div>
 						</div>
 					</div>
@@ -813,5 +836,7 @@
 			src="#{webApplication.urlPrefix}/static/js/angular/service/review_service.js?ver=#{webApplication.staticFileVersion}"></script>
 		<script
 			src="#{webApplication.urlPrefix}/static/js/angular/controller/place_detail_controller.js?ver=#{webApplication.staticFileVersion}"></script>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/stickySideBar.js?ver=#{webApplication.staticFileVersion}"></script>
 	</ui:define>
 </ui:composition>

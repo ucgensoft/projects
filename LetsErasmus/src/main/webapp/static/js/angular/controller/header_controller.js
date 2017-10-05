@@ -454,7 +454,7 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
 	  };
 	  
 	  self.onBecomeHostClicked = function() {
-		  var placeUrl = webApplicationUrlPrefix + '/pages/Place.html';
+		  var placeUrl = webApplicationUrlPrefix + '/become-a-host';
 		  if (loginUserId == '') {
 			  globalRedirectUrl = null;
 			  self.openLoginWindow();

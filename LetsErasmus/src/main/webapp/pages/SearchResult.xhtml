@@ -6,121 +6,153 @@
 
 	<ui:define name="head">
 		<!-- <meta property="og:image" content="#{webApplication.getPlacePhotoUrl(placeDetailController.place.id, placeDetailController.place.coverPhotoId, 'small')}" /> -->
-		<title>Erasmus room search results for #{searchController.searchCriteria.locationName}</title>
+		<title>Accommodation Search Results for
+			#{searchController.searchCriteria.locationName} - Let's Erasmus</title>
 		<meta property="og:url" content="#{searchController.pageUrl}" />
-		<meta property="og:title" content="Erasmus room search results for #{searchController.searchCriteria.locationName}" />
-		<meta property="og:description" content="Erasmus room search results for #{searchController.searchCriteria.locationName}" />
-		
-		<meta name="description" content="Erasmus room search results for #{searchController.searchCriteria.locationName}" />
-		<link rel="canonical" href="#{searchController.pageUrl}"/>
-	
-		<link rel="stylesheet" type="text/css" href="#{webApplication.urlPrefix}/static/css/search_results.css?ver=#{webApplication.staticFileVersion}" />
-		<link rel="stylesheet" type="text/css" href="#{webApplication.urlPrefix}/static/css/app.css?ver=#{webApplication.staticFileVersion}" />
+		<meta property="og:title"
+			content="Erasmus room search results for #{searchController.searchCriteria.locationName}" />
+		<meta property="og:description"
+			content="Erasmus housing and accommodation search results for #{searchController.searchCriteria.locationName}" />
+
+		<meta name="description"
+			content="Erasmus housing and accommodation search results for #{searchController.searchCriteria.locationName}" />
+		<link rel="canonical" href="#{searchController.pageUrl}" />
+
+		<link rel="stylesheet" type="text/css"
+			href="#{webApplication.urlPrefix}/static/css/search_results.css?ver=#{webApplication.staticFileVersion}" />
+		<link rel="stylesheet" type="text/css"
+			href="#{webApplication.urlPrefix}/static/css/app.css?ver=#{webApplication.staticFileVersion}" />
 		<style>
-	        .jssora02l, .jssora02r {
-	            display: block;
-	            position: absolute;
-	            /* size of arrow element */
-	            width: 55px;
-	            height: 55px;
-	            cursor: pointer;
-	            background: url('/static/images/image_slider_arrow.png') no-repeat;
-	            overflow: hidden;
-	        }
-	        .jssora02l { background-position: -3px -33px; }
-	        .jssora02r { background-position: -63px -33px; }
-	        .jssora02l:hover { background-position: -123px -33px; }
-	        .jssora02r:hover { background-position: -183px -33px; }
-	        .jssora02l.jssora02ldn { background-position: -3px -33px; }
-	        .jssora02r.jssora02rdn { background-position: -63px -33px; }
-	        .jssora02l.jssora02lds { background-position: -3px -33px; opacity: .3; pointer-events: none; }
-	        .jssora02r.jssora02rds { background-position: -63px -33px; opacity: .3; pointer-events: none; }
-	       
-	       
-	       .clsOpenMapContainer {
-				left: 0px !important;
-				right: 0px !important;
-				position: fixed !important;
-				opacity: 1 !important;
-				text-align: center !important;
-				-webkit-transition-property: opacity !important;
-				-moz-transition-property: opacity !important;
-				transition-property: opacity !important;
-				-webkit-transition-duration: 250ms !important;
-				transition-duration: 250ms !important;
-				-webkit-transition-timing-function: ease-out !important;
-				transition-timing-function: ease-out !important;
-				z-index: 100 !important;
-			}
-			
-			@media ( min-width : 1000px) {
-				.clsOpenMapContainer {
-					opacity: 0 !important;
-					display: none !important;
-				}
-			}
-			
-			.container_zxyhsm {
-				display: inline-block !important;
-			}
-			
-			@media ( min-width : 1000px) {
-				.container_zxyhsm {
-					margin-right: 0px !important;
-				}
-			}
-			
-			.wrapper_1iti0ju {
-				display: inline-block !important;
-				vertical-align: middle !important;
-			}
-			
-			.icon_1cxbk5g {
-				font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto,
-					Helvetica Neue, sans-serif !important;
-				font-size: 14px !important;
-				line-height: 18px !important;
-				letter-spacing: undefined !important;
-				padding-top: undefined !important;
-				padding-bottom: undefined !important;
-				color: #484848 !important;
-			}
-			
-			.button_kg85u1 {
-				font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto,
-					Helvetica Neue, sans-serif !important;
-				font-size: 12px !important;
-				line-height: 16px !important;
-				letter-spacing: 0.4px !important;
-				padding-top: 0px !important;
-				padding-bottom: 0px !important;
-				color: #484848 !important;
-				font-weight: 700 !important;
-				background-color: #ffffff !important;
-				padding: 8px 16px !important;
-				box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.14) !important;
-				border-radius: 80px !important;
-				border: none !important;
-				cursor: pointer !important;
-				text-transform: uppercase !important;
-			}
-			
-			.button_kg85u1::-moz-focus-inner {
-				border: 0px !important;
-				padding: 0px !important;
-				margin: 0px !important;
-			}
-			
-			#filterToolBarId_Extended {
-				z-index : 1000;
-			}
-			
-			#divPagination {
-				z-index : 1000;
-			}
-			
-	    </style>
-	     
+.jssora02l, .jssora02r {
+	display: block;
+	position: absolute;
+	/* size of arrow element */
+	width: 55px;
+	height: 55px;
+	cursor: pointer;
+	background: url('/static/images/image_slider_arrow.png') no-repeat;
+	overflow: hidden;
+}
+
+.jssora02l {
+	background-position: -3px -33px;
+}
+
+.jssora02r {
+	background-position: -63px -33px;
+}
+
+.jssora02l:hover {
+	background-position: -123px -33px;
+}
+
+.jssora02r:hover {
+	background-position: -183px -33px;
+}
+
+.jssora02l.jssora02ldn {
+	background-position: -3px -33px;
+}
+
+.jssora02r.jssora02rdn {
+	background-position: -63px -33px;
+}
+
+.jssora02l.jssora02lds {
+	background-position: -3px -33px;
+	opacity: .3;
+	pointer-events: none;
+}
+
+.jssora02r.jssora02rds {
+	background-position: -63px -33px;
+	opacity: .3;
+	pointer-events: none;
+}
+
+.clsOpenMapContainer {
+	left: 0px !important;
+	right: 0px !important;
+	position: fixed !important;
+	opacity: 1 !important;
+	text-align: center !important;
+	-webkit-transition-property: opacity !important;
+	-moz-transition-property: opacity !important;
+	transition-property: opacity !important;
+	-webkit-transition-duration: 250ms !important;
+	transition-duration: 250ms !important;
+	-webkit-transition-timing-function: ease-out !important;
+	transition-timing-function: ease-out !important;
+	z-index: 100 !important;
+}
+
+@media ( min-width : 1000px) {
+	.clsOpenMapContainer {
+		opacity: 0 !important;
+		display: none !important;
+	}
+}
+
+.container_zxyhsm {
+	display: inline-block !important;
+}
+
+@media ( min-width : 1000px) {
+	.container_zxyhsm {
+		margin-right: 0px !important;
+	}
+}
+
+.wrapper_1iti0ju {
+	display: inline-block !important;
+	vertical-align: middle !important;
+}
+
+.icon_1cxbk5g {
+	font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto,
+		Helvetica Neue, sans-serif !important;
+	font-size: 14px !important;
+	line-height: 18px !important;
+	letter-spacing: undefined !important;
+	padding-top: undefined !important;
+	padding-bottom: undefined !important;
+	color: #484848 !important;
+}
+
+.button_kg85u1 {
+	font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto,
+		Helvetica Neue, sans-serif !important;
+	font-size: 12px !important;
+	line-height: 16px !important;
+	letter-spacing: 0.4px !important;
+	padding-top: 0px !important;
+	padding-bottom: 0px !important;
+	color: #484848 !important;
+	font-weight: 700 !important;
+	background-color: #ffffff !important;
+	padding: 8px 16px !important;
+	box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.14) !important;
+	border-radius: 80px !important;
+	border: none !important;
+	cursor: pointer !important;
+	text-transform: uppercase !important;
+}
+
+.button_kg85u1::-moz-focus-inner {
+	border: 0px !important;
+	padding: 0px !important;
+	margin: 0px !important;
+}
+
+#filterToolBarId_Extended {
+	z-index: 1000;
+}
+
+#divPagination {
+	z-index: 1000;
+}
+</style>
+
 		<script>
 			var searchResultPageSize = #{webApplication.getParameterValue("PLACE_SEARCH_PAGE_SIZE")};
 			var minMapEdgeLength = #{webApplication.getParameterValue("MAP_MIN_DISPLAY_DISTANCE")}
@@ -138,76 +170,81 @@
 	</ui:define>
 
 	<ui:define name="body">
-		
+
 		<div id="containerPage">
 			<div class="SearchApp">
 				<div id="filterResultId" class="FilterResult">
 					<section class="ListFilters">
-						<div class="SearchTitle">
-							<h1>Housing Results in '{{ctrl.selectedPlaceName}}'</h1>
-						</div>
-						<div class="MainFilter">
-							<p class="MainFilter-title u-filterLabel">Destination</p>
-							<div class="SearchPlaceBox">
-								<div class="SearchPlaceBox-container">
-									<div class="SearchPlaceBoxLabelInside SearchPlaceBox-labelInside">
-										<icon class="icon-location SearchPlaceBox-labelInside-icon"></icon>
-										<div class="SearchPlaceBoxLabelInside-label" title="{{ctrl.selectedPlaceName}}">{{ctrl.selectedPlaceName}}</div>
-									</div>
-									<input id="txtSearchPlace" class="SearchPlaceBox-input" value=""
-										placeholder="Search by university or city"/>
-									<div class="SearchPlaceBox-close CloseButton"
-											style="cursor: pointer;">×</div>
+					<div class="SearchTitle">
+						<h1>Housing Results in '{{ctrl.selectedPlaceName}}'</h1>
+					</div>
+					<div class="MainFilter">
+						<p class="MainFilter-title u-filterLabel">Destination</p>
+						<div class="SearchPlaceBox">
+							<div class="SearchPlaceBox-container">
+								<div
+									class="SearchPlaceBoxLabelInside SearchPlaceBox-labelInside">
+									<icon class="icon-location SearchPlaceBox-labelInside-icon"></icon>
+									<div class="SearchPlaceBoxLabelInside-label"
+										title="{{ctrl.selectedPlaceName}}">{{ctrl.selectedPlaceName}}</div>
 								</div>
-							</div>
-							<div id="searchDateDiv">
-								<div id="startDateDiv" class="DateInput" style="height: 30px;">
-									<input type="text" id="txtStartDatePicker" class="DateInput__input"
-										placeholder="Start date" readonly="true"/> 
-								</div>
-								
-								<div id="endDateDiv" class="DateInput" style="height: 30px;">
-									<input type="text" id="txtEndDatePicker" class="DateInput__input"
-										placeholder="End date" readonly="true"/> 
-								</div>
-							</div>
-							<input type="button" class="FilterToolBar-showExtended u-button" id="btnSearch"
-								value="Search" ng-click="ctrl.search();" style="height: 30px;">
-							</input>
-	
-						</div>
-						<div class="AccomodationFilter u-borderTop">
-							<p class="AccomodationFilter-title u-filterLabel"
-								data-reactid="499">Housing Type</p>
-							<div class="AccomodationFilter-element">
-								<div class="IconFilter u-textCenter">
-									<icon id="iconPlaceTypeId_1" class="IconFilter-icon icon-entire-place"
-										ng-click="ctrl.onFilterElementClick($event, 'IconFilter-icon--enabled'); ctrl.basicSearch();"></icon>
-									<p >Entire Place</p>
-								</div>
-								<div class="IconFilter u-textCenter">
-									<icon id="iconPlaceTypeId_2" class="IconFilter-icon icon-private-room"
-										ng-click="ctrl.onFilterElementClick($event, 'IconFilter-icon--enabled'); ctrl.basicSearch();"></icon>
-									<p>Private Room</p>
-								</div>
-								<div class="IconFilter u-textCenter">
-									<icon id="iconPlaceTypeId_3" class="IconFilter-icon icon-shared-room"
-										ng-click="ctrl.onFilterElementClick($event, 'IconFilter-icon--enabled'); ctrl.basicSearch();"></icon>
-									<p>Shared Room</p>
-								</div>
+								<input id="txtSearchPlace" class="SearchPlaceBox-input" value=""
+									placeholder="Search by university or city" />
+								<div class="SearchPlaceBox-close CloseButton"
+									style="cursor: pointer;">×</div>
 							</div>
 						</div>
-						<div id="PriceFilterId" class="PriceFilter u-borderTop">
-							<div class="PriceFilter-title u-filterLabel">Budget</div>
-							<div class="PriceFilter-box">
-								<span id="spanMinPrice" class="PriceFilter-minValue">0</span>
-								<div id="divPriceSlider" class="PriceFilter-boxSlider">
-									
-								</div>
-								<span id="spanMaxPrice" class="PriceFilter-maxValue">500</span>
+						<div id="searchDateDiv">
+							<div id="startDateDiv" class="DateInput" style="height: 30px;">
+								<input type="text" id="txtStartDatePicker"
+									class="DateInput__input" placeholder="Start date"
+									readonly="true" />
+							</div>
+
+							<div id="endDateDiv" class="DateInput" style="height: 30px;">
+								<input type="text" id="txtEndDatePicker"
+									class="DateInput__input" placeholder="End date" readonly="true" />
 							</div>
 						</div>
-						<div id="divExtendedSearchFields" style="width: 100%;" class="hidden-force">
+						<input type="button" class="FilterToolBar-showExtended u-button"
+							id="btnSearch" value="Search" ng-click="ctrl.search();"
+							style="height: 30px;"> </input>
+
+					</div>
+					<div class="AccomodationFilter u-borderTop">
+						<p class="AccomodationFilter-title u-filterLabel"
+							data-reactid="499">Housing Type</p>
+						<div class="AccomodationFilter-element">
+							<div class="IconFilter u-textCenter">
+								<icon id="iconPlaceTypeId_1"
+									class="IconFilter-icon icon-entire-place"
+									ng-click="ctrl.onFilterElementClick($event, 'IconFilter-icon--enabled'); ctrl.basicSearch();"></icon>
+								<p>Entire Place</p>
+							</div>
+							<div class="IconFilter u-textCenter">
+								<icon id="iconPlaceTypeId_2"
+									class="IconFilter-icon icon-private-room"
+									ng-click="ctrl.onFilterElementClick($event, 'IconFilter-icon--enabled'); ctrl.basicSearch();"></icon>
+								<p>Private Room</p>
+							</div>
+							<div class="IconFilter u-textCenter">
+								<icon id="iconPlaceTypeId_3"
+									class="IconFilter-icon icon-shared-room"
+									ng-click="ctrl.onFilterElementClick($event, 'IconFilter-icon--enabled'); ctrl.basicSearch();"></icon>
+								<p>Shared Room</p>
+							</div>
+						</div>
+					</div>
+					<div id="PriceFilterId" class="PriceFilter u-borderTop">
+						<div class="PriceFilter-title u-filterLabel">Budget</div>
+						<div class="PriceFilter-box">
+							<span id="spanMinPrice" class="PriceFilter-minValue">0</span>
+							<div id="divPriceSlider" class="PriceFilter-boxSlider"></div>
+							<span id="spanMaxPrice" class="PriceFilter-maxValue">500</span>
+						</div>
+					</div>
+					<div id="divExtendedSearchFields" style="width: 100%;"
+						class="hidden-force">
 						<div class="RoomFilters u-borderTop">
 							<p class="RoomFilters-title u-filterLabel">Guest</p>
 							<div class="filter-element-4 full-width">
@@ -215,7 +252,8 @@
 									<span>Number</span>
 								</div>
 								<div class="top-2 clsInlineMobile">
-									<input id="txtGuestNumber" type="number" min="0" class="form-input" placeholder="Guest Number" />
+									<input id="txtGuestNumber" type="number" min="0"
+										class="form-input" placeholder="Guest Number" />
 								</div>
 							</div>
 							<div class="filter-element-4 full-width">
@@ -233,19 +271,20 @@
 							</div>
 							<div class="filter-element-4 full-width">
 								<div class="clsInlineMobile clsFilterLabel">
-									<span style="visibility:hidden">Dummy</span>
+									<span style="visibility: hidden">Dummy</span>
 								</div>
 								<div class="top-2 clsInlineMobile clsFilterLabel">
 									<input type="checkbox" id="chbLgbtFriendly"
-										class="AmenityFilterItem-checkbox u-checkbox form-input" />
-									<span class="AmenityFilterItem-text">LGBT Friendly</span>
+										class="AmenityFilterItem-checkbox u-checkbox form-input" /> <span
+										class="AmenityFilterItem-text">LGBT Friendly</span>
 								</div>
 							</div>
 						</div>
 						<div class="RoomFilters u-borderTop">
 							<p class="RoomFilters-title u-filterLabel">Room</p>
 							<div class="filter-element-4 full-width">
-								<label class="h4 text-gray text-normal clsFilterLabel clsInlineMobile">
+								<label
+									class="h4 text-gray text-normal clsFilterLabel clsInlineMobile">
 									<span>Bathroom Type</span>
 								</label>
 								<div class="u-select-wrapper top-2 clsInlineMobile">
@@ -261,14 +300,16 @@
 									<span>Number Of Beds</span>
 								</div>
 								<div class="top-2 clsInlineMobile">
-									<input id="txtBedNumber" type="number" min="0" class="form-input" placeholder="Bed Number" />
+									<input id="txtBedNumber" type="number" min="0"
+										class="form-input" placeholder="Bed Number" />
 								</div>
 							</div>
 						</div>
 						<div class="FeaturesFilters  u-borderTop">
 							<p class="FeaturesFilters-title u-filterLabel">Amenties</p>
 							<div class="FeaturesFilters-element">
-								<div ng-repeat="a in ctrl.amentiesList" class="AmenityFilterItem top-2 filter-element-4">
+								<div ng-repeat="a in ctrl.amentiesList"
+									class="AmenityFilterItem top-2 filter-element-4">
 									<input type="checkbox" id="chb_{{a.enumKey}}"
 										class="AmenityFilterItem-checkbox u-checkbox" value="on" /><span
 										class="AmenityFilterItem-text">{{a.uiLabel}}</span>
@@ -277,9 +318,11 @@
 							</div>
 						</div>
 						<div class="FeaturesFilters  u-borderTop">
-							<p class="FeaturesFilters-title u-filterLabel">Safety Amenties</p>
+							<p class="FeaturesFilters-title u-filterLabel">Safety
+								Amenties</p>
 							<div class="FeaturesFilters-element">
-								<div ng-repeat="r in ctrl.safetyAmentiesList" class="AmenityFilterItem top-2 filter-element-4">
+								<div ng-repeat="r in ctrl.safetyAmentiesList"
+									class="AmenityFilterItem top-2 filter-element-4">
 									<input type="checkbox" id="chb_{{r.enumKey}}"
 										class="AmenityFilterItem-checkbox u-checkbox" value="on" /><span
 										class="AmenityFilterItem-text">{{r.uiLabel}}</span>
@@ -287,10 +330,12 @@
 								</div>
 							</div>
 						</div>
-						<div class="FeaturesFilters  u-borderTop" style="margin-bottom: 80px;">
+						<div class="FeaturesFilters  u-borderTop"
+							style="margin-bottom: 80px;">
 							<p class="FeaturesFilters-title u-filterLabel">Rules</p>
 							<div class="FeaturesFilters-element">
-								<div ng-repeat="r in ctrl.ruleList" class="AmenityFilterItem top-2 filter-element-4">
+								<div ng-repeat="r in ctrl.ruleList"
+									class="AmenityFilterItem top-2 filter-element-4">
 									<input type="checkbox" id="chb_{{r.enumKey}}"
 										class="AmenityFilterItem-checkbox u-checkbox" value="on" /><span
 										class="AmenityFilterItem-text">{{r.uiLabel}}</span>
@@ -303,101 +348,111 @@
 					<div id="filterToolBarId_Extended"
 						class="FilterToolBar u-borderTop FilterToolBar--expanded hidden-force">
 						<input type="button" class="FilterToolBar-cancel u-button"
-							ng-click="ctrl.hideExtendedSearchFields();" value="Cancel" />
-						<input type="button" class="FilterToolBar-apply u-button" value="Apply" ng-click="ctrl.basicSearch()"/>
+							ng-click="ctrl.hideExtendedSearchFields();" value="Cancel" /> <input
+							type="button" class="FilterToolBar-apply u-button" value="Apply"
+							ng-click="ctrl.basicSearch()" />
 					</div>
 					<div id="filterToolBarId" class="FilterToolBar u-borderTop">
-						<button class="FilterToolBar-showExtended u-button icon icon-filter"
-							ng-click="ctrl.showExtendedSearchFields();">More
-							filters</button>
+						<button
+							class="FilterToolBar-showExtended u-button icon icon-filter"
+							ng-click="ctrl.showExtendedSearchFields();">More filters</button>
 						<div class="SearchCounter">
 							<h2 ng-if="ctrl.searchList == null">
-								Show <b>{{ctrl.placeList.length}}</b> of <b>{{ctrl.getOriginalPlaceList().length}}</b> rooms available in <strong>{{ctrl.selectedPlaceName}}</strong>
+								Show <b>{{ctrl.placeList.length}}</b> of <b>{{ctrl.getOriginalPlaceList().length}}</b>
+								rooms available in <strong>{{ctrl.selectedPlaceName}}</strong>
 							</h2>
 							<h2 data-reactid="535" ng-if="ctrl.searchList != null">
-								Show <b>{{ctrl.placeList.length}}</b> of <b>{{ctrl.getOriginalPlaceList().length}}</b> rooms available
+								Show <b>{{ctrl.placeList.length}}</b> of <b>{{ctrl.getOriginalPlaceList().length}}</b>
+								rooms available
 							</h2>
 						</div>
 					</div>
-					<section id="searchResultsId" class="SearchResults"> 
-						<article ng-repeat="p in ctrl.placeList" id="articleProduct_{{p.id}}" class="ProductCard"
-							ng-mouseover="ctrl.animateMarker(p.id, true)" ng-mouseleave="ctrl.animateMarker(p.id, false)">
-							<div class="ProductCard-picture">
-								<section class="image-gallery"> 
-										<div id="divImageGalleryContent_{{p.id}}"
-											class="image-gallery-content">
-											<span class="image-gallery-left-nav" ng-click="ctrl.changePhoto(p, -1)"></span>
-											<span class="image-gallery-right-nav" ng-click="ctrl.changePhoto(p, 1)"></span>
-											<a href="{{ctrl.getPlaceDetailUrl(p)}}" target="_blank">
-												<div>
-													<div class="image-gallery-slides">
-														<div class="image-gallery-slide center"
-															style="">
-															<img id="imgPlaceSlider_{{p.id}}" ng-src="{{ctrl.generatePlacePhotoUrl(p.id, p.coverPhoto.id, 'small')}}" 
-																role="presentation" itemprop="image" />
-															<input type="hidden" id="hiddenPlaceSliderPhotoIndex_{{p.id}}" value="0" />
-															<!-- 
+					<section id="searchResultsId" class="SearchResults"> <article
+						ng-repeat="p in ctrl.placeList" id="articleProduct_{{p.id}}"
+						class="ProductCard" ng-mouseover="ctrl.animateMarker(p.id, true)"
+						ng-mouseleave="ctrl.animateMarker(p.id, false)">
+					<div class="ProductCard-picture">
+						<section class="image-gallery">
+						<div id="divImageGalleryContent_{{p.id}}"
+							class="image-gallery-content">
+							<span class="image-gallery-left-nav"
+								ng-click="ctrl.changePhoto(p, -1)"></span> <span
+								class="image-gallery-right-nav"
+								ng-click="ctrl.changePhoto(p, 1)"></span> <a
+								href="{{ctrl.getPlaceDetailUrl(p)}}" target="_blank">
+								<div>
+									<div class="image-gallery-slides">
+										<div class="image-gallery-slide center" style="">
+											<img id="imgPlaceSlider_{{p.id}}"
+												ng-src="{{ctrl.generatePlacePhotoUrl(p.id, p.coverPhoto.id, 'small')}}"
+												role="presentation" itemprop="image" /> <input
+												type="hidden" id="hiddenPlaceSliderPhotoIndex_{{p.id}}"
+												value="0" />
+											<!-- 
 															<span ng-click="ctrl.changePhoto(p, -1)" class="jssora02l" style="top:45%;left:8px;"></span>
 			       											<span ng-click="ctrl.changePhoto(p, 1)" class="jssora02r" style="top:45%;right:8px;"></span>
 			       											 -->
-														</div>
-													</div>
-												</div>
-											</a>
-											<div class="ProductCardMainProperties">
-												<div class="ProductCardMainProperties-type">
-													<icon class="ProductCardMainProperties-type-icon center {{ctrl.getPlaceTypeCss(p)}}">
-													</icon>
-													<span>{{ctrl.getPlaceTypeDescription(p)}}</span>
-												</div>
-												<div class="ProductCardMainProperties-info">
-													<span class="ProductCardMainProperties-info-title">{{p.title}}</span>
-												</div>
-											</div>
-											<div class="FavouriteItem">
-												<div id="favouriteIcon_{{p.id}}"
-													class="FavouriteItem-icon beicon-heart {{(ctrl.isPlaceFavorite(p.id) ? 'FavouriteItem-icon--active' : '')}}"
-													onclick="onFavoriteIconClicked(this.id)">
-												</div>
-											</div>
 										</div>
-								</section>
-								<div class="BoxPrice" itemscope=""
-									itemtype="http://schema.org/Offer">
-									<div class="BoxPrice-container">
-										<span class="BoxPrice-price">{{ctrl.getPriceText(p)}}</span>
-										<span class="BoxPrice-separator">/</span>
-										<div class="BoxPrice-period">Month</div>
-									</div>
-									<div class="BoxPrice-billsIncluded">
-										<span class="BoxPrice-billsIncluded-label">{{ctrl.getBillsDescription(p)}}</span>
 									</div>
 								</div>
-							</div>
-							<div class="ProductCardExtraInfoLine">
-								<div class="ProductCardExtraInfoLine-distance">
-									<icon class="beicon-pin"></icon>
-									<span id="spanPlaceDistance_{{p.id}}" class="ProductCardExtraInfoLine-distance--km">{{p.distance}}</span>
+							</a>
+							<div class="ProductCardMainProperties">
+								<div class="ProductCardMainProperties-type">
+									<icon
+										class="ProductCardMainProperties-type-icon center {{ctrl.getPlaceTypeCss(p)}}">
+									</icon>
+									<span>{{ctrl.getPlaceTypeDescription(p)}}</span>
 								</div>
-								<div class="ProductCardExtraInfoLine-time">
+								<div class="ProductCardMainProperties-info">
+									<span class="ProductCardMainProperties-info-title">{{p.title}}</span>
 								</div>
 							</div>
-						</article> 
-					</section>
-					<div id="divPagination" class="Pagination" data-reactid="817" ng-if="ctrl.totalPageNumber > 1">
-						<button class="Pagination-element Pagination-element--specialButton {{ctrl.currentPageIndex == 1 ? 'clsDisabledGrey' : ''}}" 
+							<div class="FavouriteItem">
+								<div id="favouriteIcon_{{p.id}}"
+									class="FavouriteItem-icon beicon-heart {{(ctrl.isPlaceFavorite(p.id) ? 'FavouriteItem-icon--active' : '')}}"
+									onclick="onFavoriteIconClicked(this.id)"></div>
+							</div>
+						</div>
+						</section>
+						<div class="BoxPrice" itemscope=""
+							itemtype="http://schema.org/Offer">
+							<div class="BoxPrice-container">
+								<span class="BoxPrice-price">{{ctrl.getPriceText(p)}}</span> <span
+									class="BoxPrice-separator">/</span>
+								<div class="BoxPrice-period">Month</div>
+							</div>
+							<div class="BoxPrice-billsIncluded">
+								<span class="BoxPrice-billsIncluded-label">{{ctrl.getBillsDescription(p)}}</span>
+							</div>
+						</div>
+					</div>
+					<div class="ProductCardExtraInfoLine">
+						<div class="ProductCardExtraInfoLine-distance">
+							<icon class="beicon-pin"></icon>
+							<span id="spanPlaceDistance_{{p.id}}"
+								class="ProductCardExtraInfoLine-distance--km">{{p.distance}}</span>
+						</div>
+						<div class="ProductCardExtraInfoLine-time"></div>
+					</div>
+					</article> </section>
+					<div id="divPagination" class="Pagination" data-reactid="817"
+						ng-if="ctrl.totalPageNumber > 1">
+						<button
+							class="Pagination-element Pagination-element--specialButton {{ctrl.currentPageIndex == 1 ? 'clsDisabledGrey' : ''}}"
 							ng-click="ctrl.setCurrentPage(1)">«</button>
-						<button class="Pagination-element Pagination-element--specialButton {{ctrl.currentPageIndex == 1 ? 'clsDisabledGrey' : ''}}"
+						<button
+							class="Pagination-element Pagination-element--specialButton {{ctrl.currentPageIndex == 1 ? 'clsDisabledGrey' : ''}}"
 							ng-click="ctrl.changeCurrentPage(-1)">‹</button>
 						<button class="Pagination-element Pagination-element--selected">{{ctrl.currentPageIndex}}</button>
-						<button class="Pagination-element Pagination-element--specialButton {{ctrl.currentPageIndex == ctrl.totalPageNumber ? 'clsDisabledGrey' : ''}}" 
+						<button
+							class="Pagination-element Pagination-element--specialButton {{ctrl.currentPageIndex == ctrl.totalPageNumber ? 'clsDisabledGrey' : ''}}"
 							ng-click="ctrl.changeCurrentPage(1)">›</button>
-						<button class="Pagination-element Pagination-element--specialButton {{ctrl.currentPageIndex == ctrl.totalPageNumber ? 'clsDisabledGrey' : ''}}" 
+						<button
+							class="Pagination-element Pagination-element--specialButton {{ctrl.currentPageIndex == ctrl.totalPageNumber ? 'clsDisabledGrey' : ''}}"
 							ng-click="ctrl.setCurrentPage(ctrl.totalPageNumber)">»</button>
 					</div>
 					<div id="divOpenMapIcon" class="clsOpenMapContainer"
-						aria-hidden="false"
-						style="bottom: 16px;">
+						aria-hidden="false" style="bottom: 16px;">
 						<div class="container_zxyhsm">
 							<!-- 
 							<img src="#{webApplication.urlPrefix}/static/images/map_mini.jpg" 
@@ -421,63 +476,66 @@
 												</div>
 											</div>
 										</div>
-									</div>
-								</span>
+									</div> </span>
 							</button>
 						</div>
 					</div>
 				</div>
 				<section id="searchMapId" class="SearchMap">
-					<div id="mapa" class="mapa" itemscope=""
-						itemtype="http://schema.org/Map" style="position: relative; overflow: hidden;">
-						<div
-							style="height: 100%; width: 100%; position: absolute; background-color: rgb(229, 227, 223);">
-							<div class="gm-style" style="height: 100%; width: 100%;">
-								<div id="divMap" style="height: 100%; width: 100%;"></div>
-							</div>
+				<div id="mapa" class="mapa" itemscope=""
+					itemtype="http://schema.org/Map"
+					style="position: relative; overflow: hidden;">
+					<div
+						style="height: 100%; width: 100%; position: absolute; background-color: rgb(229, 227, 223);">
+						<div class="gm-style" style="height: 100%; width: 100%;">
+							<div id="divMap" style="height: 100%; width: 100%;"></div>
 						</div>
 					</div>
-					<div id="divCloseMapIcon" class="clsOpenMapContainer"
-						aria-hidden="false"
-						style="bottom: 16px;">
-						<div class="container_zxyhsm">
-							<button type="button" class="button_kg85u1"
-								ng-click="ctrl.onCloseMapClick()">
-								<span class="wrapper_1iti0ju"><div
-										class="container_qtix31">
-										<div class="child_17u98ky">
-											<span>Back To List</span>
-										</div>
+				</div>
+				<div id="divCloseMapIcon" class="clsOpenMapContainer"
+					aria-hidden="false" style="bottom: 16px;">
+					<div class="container_zxyhsm">
+						<button type="button" class="button_kg85u1"
+							ng-click="ctrl.onCloseMapClick()">
+							<span class="wrapper_1iti0ju"><div
+									class="container_qtix31">
+									<div class="child_17u98ky">
+										<span>Back To List</span>
 									</div>
-								</span>
-							</button>
-						</div>
+								</div> </span>
+						</button>
 					</div>
+				</div>
 				</section>
 				<div style="display: none">
-					<div ng-repeat="p in ctrl.placeList" id="divMapMarker_{{p.id}}" style="position: absolute; z-index: 1;">
+					<div ng-repeat="p in ctrl.placeList" id="divMapMarker_{{p.id}}"
+						style="position: absolute; z-index: 1;">
 						<div class="SearchMapMarker">
-							<div class="SearchMapMarker-price">{{p.price}} {{ctrl.getCurrencySymbol(p.currencyId)}}</div>
+							<div class="SearchMapMarker-price">{{p.price}}
+								{{ctrl.getCurrencySymbol(p.currencyId)}}</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div id="divPlaceInfoWindow">
-				
-			</div>
-			<div id="divMapCheckbox" class="map-refresh-controls google hidden-force" style="margin-top: 10px;">
+			<div id="divPlaceInfoWindow"></div>
+			<div id="divMapCheckbox"
+				class="map-refresh-controls google hidden-force"
+				style="margin-top: 10px;">
 				<div class="map-auto-refresh panel" style="padding: 8px;">
-					<label class="checkbox" for="">
-						<input type="checkbox" class="" 
-							id="chbSearchOnMove" checked="true"/>
-						<small><span style="font-size: 14px">Search as I move the map</span></small>
+					<label class="checkbox" for=""> <input type="checkbox"
+						class="" id="chbSearchOnMove" checked="true" /> <small><span
+							style="font-size: 14px">Search as I move the map</span></small>
 					</label>
 				</div>
 			</div>
 		</div>
-		<script src="#{webApplication.urlPrefix}/static/js/angular/service/enumeration_service.js?ver=#{webApplication.staticFileVersion}"></script>
-		<script src="#{webApplication.urlPrefix}/static/js/angular/service/place_service.js?ver=#{webApplication.staticFileVersion}"></script>
-		<script src="#{webApplication.urlPrefix}/static/js/geocode/custom_marker.js?ver=#{webApplication.staticFileVersion}"></script>
-		<script src="#{webApplication.urlPrefix}/static/js/angular/controller/search_result_controller.js?ver=#{webApplication.staticFileVersion}"></script>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/angular/service/enumeration_service.js?ver=#{webApplication.staticFileVersion}"></script>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/angular/service/place_service.js?ver=#{webApplication.staticFileVersion}"></script>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/geocode/custom_marker.js?ver=#{webApplication.staticFileVersion}"></script>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/angular/controller/search_result_controller.js?ver=#{webApplication.staticFileVersion}"></script>
 	</ui:define>
 </ui:composition>

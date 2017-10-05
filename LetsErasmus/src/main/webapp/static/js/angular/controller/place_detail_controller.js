@@ -202,11 +202,23 @@ App.controller('placeDetailCtrl', ['$scope', '$controller', 'placeService', 'res
 
 			map.setCenter(placeLocation);
 
-	        marker = new google.maps.Marker({
-		        map: map,
-				draggable: false,
-		        position: placeLocation
-		    });
+	        var cityCircle = new google.maps.Circle({
+	            strokeColor: '#03a9f4',
+	            strokeOpacity: 0.8,
+	            strokeWeight: 2,
+	            fillColor: '#03a9f4',
+	            fillOpacity: 0.35,
+	            map: map,
+	            center: placeLocation,
+	            radius: 500
+	          });
+
+			
+	       // marker = new google.maps.Marker({
+		     //   map: map,
+				//draggable: false,
+		       // position: placeLocation
+		   // });
         		        
 	        //marker.setPosition(placeLocation);
 	        //marker.setVisible(true);

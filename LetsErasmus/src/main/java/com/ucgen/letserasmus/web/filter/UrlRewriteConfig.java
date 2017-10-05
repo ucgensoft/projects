@@ -31,7 +31,27 @@ public class UrlRewriteConfig extends HttpConfigurationProvider {
 				.addRule(Join.path("/policies").to("/pages/Policies.html"))
 				.addRule(Join.path("/policies/").to("/pages/Policies.html"))
 				.addRule(Join.path("/contact-us").to("/pages/ContactUs.html"))
-				.addRule(Join.path("/contact-us/").to("/pages/ContactUs.html"));
+				.addRule(Join.path("/contact-us/").to("/pages/ContactUs.html"))
+				.addRule(Join.path("/become-a-host").to("/pages/Place.html"))
+				.addRule(Join.path("/become-a-host/").to("/pages/Place.html"))
+				.addRule(Join.path("/dashboard/edit-profile").to("/pages/dashboard/EditUser.html"))
+				.addRule(Join.path("/dashboard/edit-profile/").to("/pages/dashboard/EditUser.html"))
+				.addRule(Join.path("/dashboard/trust-and-verification").to("/pages/dashboard/TrustAndVerification.html"))
+				.addRule(Join.path("/dashboard/trust-and-verification/").to("/pages/dashboard/TrustAndVerification.html"))
+				.addRule(Join.path("/dashboard/payout-methods").to("/pages/dashboard/PayoutMethods.html"))
+				.addRule(Join.path("/dashboard/payout-methods/").to("/pages/dashboard/PayoutMethods.html"))				
+				.addRule(Join.path("/dashboard/messages").to("/pages/dashboard/MessageList.html"))
+				.addRule(Join.path("/dashboard/messages/").to("/pages/dashboard/MessageList.html"))
+				.addRule(Join.path("/dashboard/conversation").to("/pages/dashboard/Conversation.html"))
+				.addRule(Join.path("/dashboard/conversation/").to("/pages/dashboard/Conversation.html"))
+				.addRule(Join.path("/dashboard/your-listings").to("/pages/dashboard/Listings.html"))
+				.addRule(Join.path("/dashboard/your-listings/").to("/pages/dashboard/Listings.html"))
+				.addRule(Join.path("/dashboard/reservation-list").to("/pages/dashboard/ReservationList.html"))
+				.addRule(Join.path("/dashboard/reservation-list/").to("/pages/dashboard/ReservationList.html"))
+				.addRule(Join.path("/dashboard/trip-list").to("/pages/dashboard/TripList.html"))
+				.addRule(Join.path("/dashboard/trip-list/").to("/pages/dashboard/TripList.html"))
+				.addRule(Join.path("/dashboard/wish-list").to("/pages/dashboard/WishList.html"))
+				.addRule(Join.path("/dashboard/wish-list/").to("/pages/dashboard/WishList.html"));
 		
 				/*
 				// Using parameters to return physical resources

@@ -750,7 +750,7 @@ WebUtil = {
 			
 			if (url.endsWith(URL_SEPERATOR) && urlPart.startsWith(URL_SEPERATOR)) {
 				subPath = urlPart.replace(URL_SEPERATOR, '');
-			} else if (!urlPart.startsWith(URL_SEPERATOR) && !url.endsWith(URL_SEPERATOR)) {
+			} else if (!urlPart.startsWith(URL_SEPERATOR) && url != '' && !url.endsWith(URL_SEPERATOR)) {
 				url += URL_SEPERATOR;
 			}
 			url = url + urlPart;
