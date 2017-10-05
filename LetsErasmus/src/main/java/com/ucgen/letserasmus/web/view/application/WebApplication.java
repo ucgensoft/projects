@@ -544,6 +544,10 @@ public class WebApplication extends BaseController {
 		return WebUtil.concatUrl(this.getUrlPrefix(), PAGE_URL_TEMPLATE_PLACE_DETAIL.replaceAll("{locationName}", locationName).replaceAll("{placeId}", placeId));
 	}
 	
+	public String getPlaceDetailSubUrl(String placeId) {
+		return PAGE_URL_TEMPLATE_PLACE_DETAIL.replaceAll("{placeId}", placeId);
+	}
+	
 	public String getPriceText(BigDecimal price, Integer currencyId) {
 		return price.toString() + " " + getCurrencySymbol(currencyId);
 	}

@@ -136,7 +136,7 @@ public class ApiPlaceController extends BaseApiController {
 							place.setCreatedBy(createdBy);
 							place.setStatus(EnmPlaceStatus.ACTIVE.getValue());
 							
-							String placePageUrl = this.webApplication.getPlaceDetailUrl(place.getLocation().getState().toLowerCase(Locale.ENGLISH), "-1");
+							String placePageUrl = this.webApplication.getPlaceDetailSubUrl("-1");
 							
 							place.setPageUrl(placePageUrl);
 							

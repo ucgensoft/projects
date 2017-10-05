@@ -801,7 +801,7 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
       
       self.getPlaceDetailUrl = function(place) {
     	  
-    	  return webApplicationUrlPrefix + place.pageUrl;
+    	  return WebUtil.concatUrl(webApplicationUrlPrefix, place.pageUrl);
     	  
       };
       
