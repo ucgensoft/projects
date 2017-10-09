@@ -558,7 +558,7 @@ public class WebApplication extends BaseController {
 		} else if (currencyId.intValue() == 2) {
 			return "$";
 		} else if (currencyId.intValue() == 3) {
-			return "�";
+			return "€";
 		} else {
 			return "";
 		}
