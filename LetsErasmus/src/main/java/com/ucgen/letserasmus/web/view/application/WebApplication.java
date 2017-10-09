@@ -540,8 +540,8 @@ public class WebApplication extends BaseController {
 		return WebUtil.concatUrl(this.getUrlPrefix(), PAGE_URL_TEMPLATE_PROFILE.replace("{userId}", userId.toString()));
 	}
 	
-	public String getPlaceDetailUrl(String locationName, String placeId) {
-		return WebUtil.concatUrl(this.getUrlPrefix(), PAGE_URL_TEMPLATE_PLACE_DETAIL.replaceAll("{locationName}", locationName).replaceAll("{placeId}", placeId));
+	public String getPlaceDetailUrl(String placeId) {
+		return WebUtil.concatUrl(this.getUrlPrefix(), this.getPlaceDetailSubUrl(placeId));
 	}
 	
 	public String getPlaceDetailSubUrl(String placeId) {
@@ -558,7 +558,7 @@ public class WebApplication extends BaseController {
 		} else if (currencyId.intValue() == 2) {
 			return "$";
 		} else if (currencyId.intValue() == 3) {
-			return "€";
+			return "ï¿½";
 		} else {
 			return "";
 		}

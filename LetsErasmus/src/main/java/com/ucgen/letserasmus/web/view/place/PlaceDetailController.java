@@ -12,7 +12,6 @@ import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.common.operationresult.ValueOperationResult;
 import com.ucgen.common.util.CommonUtil;
 import com.ucgen.common.util.FileLogger;
-import com.ucgen.common.util.WebUtil;
 import com.ucgen.letserasmus.library.parameter.enumeration.EnmParameter;
 import com.ucgen.letserasmus.library.parameter.service.IParameterService;
 import com.ucgen.letserasmus.library.place.enumeration.EnmPlaceType;
@@ -85,7 +84,7 @@ public class PlaceDetailController extends BaseController {
 			String urlPrefix = this.parameterService.getParameterValue(EnmParameter.LETSERASMUS_URL_PREFIX.getId());
 			Place tmpPlace = this.getPlace();
 			if (tmpPlace != null) {
-				return WebUtil.concatUrl(urlPrefix, "/room/detail/", tmpPlace.getId().toString());
+				return this.getWebApplication().getPlaceDetailUrl(tmpPlace.getId().toString());
 			} else {
 				return urlPrefix;
 			}
