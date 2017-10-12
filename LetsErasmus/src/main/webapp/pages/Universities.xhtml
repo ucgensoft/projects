@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
+
+	<ui:define name="head">
+		<link rel="canonical" href="https://www.letserasmus.com/universities" />
+		<link rel="stylesheet" type="text/css"
+			href="#{webApplication.urlPrefix}/static/css/universities.css?ver=#{webApplication.staticFileVersion}" />
+
+	</ui:define>
+
+	<ui:define name="body">
+
+		<div
+			class="page-container page-container-responsive space-4 space-top-6">
+			<div class="row">
+				<div class="col-12">
+					<div class="sitemap">
+						<div class="page-container-responsive">
+							<h2 style="margin-top: 0.83em; margin-bottom: 0.83em">Universities
+								by Country</h2>
+
+
+							<h3>Spain</h3>
+							<div class="row">
+								<div class="col-sm-6">
+									<ul class="list-unstyled-new">
+										<li><a
+											href="/universities/universidad-autonoma-de-madrid">Universidad
+												Autónoma de Madrid</a></li>
+										<li><a
+											href="/universities/universitat-autonoma-de-barcelona">Universitat
+												Autònoma de Barcelona</a></li>
+									</ul>
+								</div>
+								<div class="col-sm-6">
+									<ul class="list-unstyled-new">
+										<li><a href="/universities/universitat-de-barcelona">Universitat
+												de Barcelona</a></li>
+										<li><a href="/universities/university-complutense-madrid">University
+												Complutense Madrid</a></li>
+
+									</ul>
+								</div>
+							</div>
+
+							<h3>United Kingdom</h3>
+							<div class="row">
+								<div class="col-sm-6">
+									<ul class="list-unstyled-new">
+										<li><a href="/universities/imperial-college-london">Imperial
+												College London</a></li>
+										<li><a href="/universities/ucl-university-college-london">UCL
+												(University College London)</a></li>
+									</ul>
+								</div>
+								<div class="col-sm-6">
+									<ul class="list-unstyled-new">
+										<li><a href="/universities/university-cambridge">University
+												of Cambridge</a></li>
+										<li><a href="/universities/university-oxford">University
+												of Oxford</a></li>
+
+									</ul>
+								</div>
+							</div>
+
+							<h3>Turkey</h3>
+							<div class="row">
+								<div class="col-sm-6">
+									<ul class="list-unstyled-new">
+										<li><a href="/universities/bilkent-university">Bilkent
+												University</a></li>
+										<li><a href="/universities/bogazici-university">Bogazici
+												University</a></li>
+										<li><a href="/universities/hacettepe-university">Hacettepe
+												University</a></li>
+										<li><a href="/universities/istanbul-technical-university">Istanbul
+												Technical University</a></li>
+									</ul>
+								</div>
+								<div class="col-sm-6">
+									<ul class="list-unstyled-new">
+										<li><a href="/universities/istanbul-university">Istanbul
+												University</a></li>
+										<li><a href="/universities/koc-university">Koc
+												University</a></li>
+										<li><a
+											href="/universities/middle-east-technical-university">Middle
+												East Technical University</a></li>
+										<li><a href="/universities/sabanci-university">Sabanci
+												University</a></li>
+									</ul>
+								</div>
+							</div>
+
+
+
+
+						</div>
+
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+
+	</ui:define>
+</ui:composition>
