@@ -39,6 +39,15 @@ public class UrlRewriteFilter extends RewriteFilter {
 				//httpServletResponse.setHeader("Location", newUrl);
 				//((HttpServletResponse)response).sendRedirect(newUrl);
 			}
+		} else if (url.contains("DisplayUser.html") && httpServletRequest.getDispatcherType() != DispatcherType.FORWARD) {
+			String userId = ((HttpServletRequest) request).getParameter("userId");			
+			if (userId != null && !userId.trim().isEmpty()) {
+				String newUrl = WebUtil.concatUrl(WebApplication.getInstance().getUrlPrefix(), "/profile/" + userId);
+				httpServletResponse.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+				httpServletResponse.setHeader("Location", newUrl);				
+			} else {
+				httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
+			}
 		} else {
 			super.doFilter(request, response, chain);
 		}
