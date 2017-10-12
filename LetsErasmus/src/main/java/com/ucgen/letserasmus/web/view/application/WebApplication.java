@@ -459,10 +459,10 @@ public class WebApplication extends BaseController {
 		if (photoId != null && photoId > 0) {
 			photoPath = this.userPhotoPath.replaceAll("#userId#", userId.toString());
 			photoPath = photoPath.replaceAll("#photoId#", photoId.toString());
-			photoPath = photoPath.replaceAll("#size#", EnmSize.getSize(size).getValue());
 		} else {
 			photoPath = this.defaultUserPhotoUrl;
 		}
+		photoPath = photoPath.replaceAll("#size#", EnmSize.getSize(size).getValue());
 		return photoPath.replace("\\", "/");
 	}
 	
