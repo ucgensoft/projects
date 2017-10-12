@@ -77,6 +77,8 @@ public class WebApplication extends BaseController {
 		
 	private IParameterService parameterService;
 	
+	private static WebApplication webApplication;
+	
 	@Autowired
 	public void setParameterService(IParameterService parameterService) {
 		this.parameterService = parameterService;
@@ -86,7 +88,11 @@ public class WebApplication extends BaseController {
 	public void setMailUtil(MailUtil mailUtil) {
 		this.mailUtil = mailUtil;
 	}
-
+	
+	public static WebApplication getInstance() {
+		return webApplication;
+	}
+	
 	@PostConstruct
 	public void initialize() {
 		try {
@@ -262,7 +268,7 @@ public class WebApplication extends BaseController {
 	}
 
 	public WebApplication() {
-		
+		webApplication = this;
 	}
 	
 	public String getNgController() {
@@ -449,9 +455,14 @@ public class WebApplication extends BaseController {
 	}
 	
 	public String getUserPhotoPath(Long userId, Long photoId, String size) {
-		String photoPath = this.userPhotoPath.replaceAll("#userId#", userId.toString());
-		photoPath = photoPath.replaceAll("#photoId#", photoId.toString());
-		photoPath = photoPath.replaceAll("#size#", EnmSize.getSize(size).getValue());
+		String photoPath = null;
+		if (photoId != null && photoId > 0) {
+			photoPath = this.userPhotoPath.replaceAll("#userId#", userId.toString());
+			photoPath = photoPath.replaceAll("#photoId#", photoId.toString());
+			photoPath = photoPath.replaceAll("#size#", EnmSize.getSize(size).getValue());
+		} else {
+			photoPath = this.defaultUserPhotoUrl;
+		}
 		return photoPath.replace("\\", "/");
 	}
 	

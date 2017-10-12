@@ -14,7 +14,6 @@ public class UrlRewriteConfig extends HttpConfigurationProvider {
 	@Override
 	public Configuration getConfiguration(ServletContext context) {
 		return ConfigurationBuilder.begin()
-		
 				// A basic join
 				.addRule(Join.path("/profile/{userId}").to("/pages/dashboard/DisplayUser.html?userId={userId}"))
 				.addRule(Join.path("/profile/{userId}/").to("/pages/dashboard/DisplayUser.html?userId={userId}"))
@@ -52,50 +51,8 @@ public class UrlRewriteConfig extends HttpConfigurationProvider {
 				.addRule(Join.path("/dashboard/trip-list/").to("/pages/dashboard/TripList.html"))
 				.addRule(Join.path("/dashboard/wish-list").to("/pages/dashboard/WishList.html"))
 				.addRule(Join.path("/dashboard/wish-list/").to("/pages/dashboard/WishList.html"))
-				.addRule(Join.path("/universities/bilkent-university").to("/pages/universities/bilkent-university.html"))
-				.addRule(Join.path("/universities/bilkent-university/").to("/pages/universities/bilkent-university.html"))
-				.addRule(Join.path("/universities/bogazici-university").to("/pages/universities/bogazici-university.html"))
-				.addRule(Join.path("/universities/bogazici-university/").to("/pages/universities/bogazici-university.html"))
-				.addRule(Join.path("/universities/hacettepe-university").to("/pages/universities/hacettepe-university.html"))
-				.addRule(Join.path("/universities/hacettepe-university/").to("/pages/universities/hacettepe-university.html"))
-				.addRule(Join.path("/universities/imperial-college-london").to("/pages/universities/imperial-college-london.html"))
-				.addRule(Join.path("/universities/imperial-college-london/").to("/pages/universities/imperial-college-london.html"))
-				.addRule(Join.path("/universities/istanbul-technical-university").to("/pages/universities/istanbul-technical-university.html"))
-				.addRule(Join.path("/universities/istanbul-technical-university/").to("/pages/universities/istanbul-technical-university.html"))	
-				.addRule(Join.path("/universities/istanbul-university").to("/pages/universities/istanbul-university.html"))
-				.addRule(Join.path("/universities/istanbul-university/").to("/pages/universities/istanbul-university.html"))
-				.addRule(Join.path("/universities/koc-university").to("/pages/universities/koc-university.html"))
-				.addRule(Join.path("/universities/koc-university/").to("/pages/universities/koc-university.html"))
-				.addRule(Join.path("/universities/middle-east-technical-university").to("/pages/universities/middle-east-technical-university.html"))
-				.addRule(Join.path("/universities/middle-east-technical-university/").to("/pages/universities/middle-east-technical-university.html"))
-				.addRule(Join.path("/universities/sabanci-university").to("/pages/universities/sabanci-university.html"))
-				.addRule(Join.path("/universities/sabanci-university/").to("/pages/universities/sabanci-university.html"))
-				.addRule(Join.path("/universities/ucl-university-college-london").to("/pages/universities/ucl-university-college-london.html"))
-				.addRule(Join.path("/universities/ucl-university-college-london/").to("/pages/universities/ucl-university-college-london.html"))
-				.addRule(Join.path("/universities/universidad-autonoma-de-madrid").to("/pages/universities/universidad-autonoma-de-madrid.html"))
-				.addRule(Join.path("/universities/universidad-autonoma-de-madrid/").to("/pages/universities/universidad-autonoma-de-madrid.html"))
-				.addRule(Join.path("/universities/universitat-autonoma-de-barcelona").to("/pages/universities/universitat-autonoma-de-barcelona.html"))
-				.addRule(Join.path("/universities/universitat-autonoma-de-barcelona/").to("/pages/universities/universitat-autonoma-de-barcelona.html"))
-				.addRule(Join.path("/universities/universitat-de-barcelona").to("/pages/universities/universitat-de-barcelona.html"))
-				.addRule(Join.path("/universities/universitat-de-barcelona/").to("/pages/universities/universitat-de-barcelona.html"))
-				.addRule(Join.path("/universities/university-cambridge").to("/pages/universities/university-cambridge.html"))
-				.addRule(Join.path("/universities/university-cambridge/").to("/pages/universities/university-cambridge.html"))
-				.addRule(Join.path("/universities/university-complutense-madrid").to("/pages/universities/university-complutense-madrid.html"))
-				.addRule(Join.path("/universities/university-complutense-madrid/").to("/pages/universities/university-complutense-madrid.html"))
-				.addRule(Join.path("/universities/university-oxford").to("/pages/universities/university-oxford.html"))
-				.addRule(Join.path("/universities/university-oxford/").to("/pages/universities/university-oxford.html"));
-				/*
-				// Using parameters to return physical resources
-				.addRule(Join.path("/{param}").to("/pages/{param}.html"))
-
-				// Using parameterization (the value of 'p' is converted to a
-				// request parameter)
-				.addRule(Join.path("/project/{p}").to("/pages/project/create.xhtml"))
-
-				// Redirect requests to the server-side resource to the correct
-				// location
-				.addRule(Join.path("/signup").to("/pages/signup.xhtml").withInboundCorrection());
-				*/
+				.addRule(Join.path("/universities/{uniName}").to("/pages/universities/{uniName}.html"))
+				.addRule(Join.path("/universities/{uniName}/").to("/pages/universities/{uniName}.html"));
 	}
 
 	@Override
