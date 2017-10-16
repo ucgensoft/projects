@@ -572,6 +572,11 @@ ul ul:last-child, ul ol:last-child, ol ul:last-child, ol ol:last-child {
 	list-style: none
 }
 
+.list-unstyled-new {
+	padding-left: 0;
+	list-style: square;
+}
+
 .list-layout, .subnav-list, .sidenav-list {
 	margin-bottom: 0
 }
@@ -9903,4 +9908,10 @@ ul {
 
 .bluebtn:hover {
   background-color: #0275a8;
+}
+
+
+
+.details-box {
+	box-shadow: 0 0 5px 0 hsla(0, 0%, 51%, .4);
 }

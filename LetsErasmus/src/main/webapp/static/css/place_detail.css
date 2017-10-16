@@ -601,8 +601,7 @@ div.lwlb_lightbox2 {
 
 .book-it__container.bottom {
 	position: absolute;
-	padding-top: 40px
-}
+	}
 
 .book-it__container sup {
 	margin-left: 3px
@@ -6704,3 +6703,17 @@ transform
 .modal-content.listing-email-share-modal {
 	max-width: 575px
 }
+
+/*TEST DESIGN*/
+
+.details-section {
+	background-color: #f9f9f9;
+}
+
+.details-box {
+	background-color: #fff;
+	box-shadow: 0 0 5px 0 hsla(0, 0%, 51%, .4);
+	padding: 15px;
+	margin-top: 20px;
+}
+

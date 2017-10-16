@@ -5,6 +5,16 @@
 	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
 
 	<ui:define name="head">
+		<title>Bilkent University - Let's Erasmus</title>
+		<meta property="og:url" content="https://www.letserasmus.com/universities/bilkent-university" />
+		<meta property="og:title"
+			content="Bilkent University - Let's Erasmus" />
+		<meta property="og:description"
+			content="Read the Bilkent University profile on Let's Erasmus to get information and find accommodation near Bilkent University" />
+		<meta name="description"
+			content="Read the Bilkent University profile on Let's Erasmus to get information and find accommodation near Bilkent University" />
+		<link rel="canonical" href="https://www.letserasmus.com/universities/bilkent-university" />
+
 		<link rel="stylesheet" type="text/css"
 			href="#{webApplication.urlPrefix}/static/css/universities.css?ver=#{webApplication.staticFileVersion}" />
 		<style>
@@ -41,7 +51,7 @@
 			class="page-container page-container-responsive space-top-4 space-8">
 			<div class="row">
 				<div class="col-lg-3 col-md-4">
-					<div id="user" class="panel space-4">
+					<div id="user" class="panel space-4 details-box">
 						<div>
 							<div class="space-2" id="user-media-container"
 								style="margin-bottom: 0px">
@@ -60,7 +70,7 @@
 						</div>
 					</div>
 
-					<div class="panel space-4">
+					<div class="panel space-4 details-box">
 						<div class="panel-header">Location</div>
 						<div class="panel-body">
 							<ul class="list-unstyled space-3">
@@ -80,7 +90,7 @@
 						</div>
 					</div>
 
-					<div class="panel space-4" style=" margin-bottom: 0px">
+					<div class="panel space-4 details-box" style="margin-bottom: 0px">
 
 						<div class="circle-block">
 							<div class="circle">
@@ -96,7 +106,7 @@
 					<div class="panel space-4" style="border: 0;">
 						<div id="buttons">
 							<a
-								href="https://www.letserasmus.com/pages/SearchResult.html?loc=Bilkent%20Kamp%C3%BCs%C3%BC&amp;locationId=ChIJffSddgFH0xQRUUqiRA-g-Mg"
+								href="#{webApplication.urlPrefix}/room/search/turkey--Bilkent-Kampüsü/ChIJffSddgFH0xQRUUqiRA-g-Mg"
 								target="_blank" class="btnhousing bluebtn">FIND HOMES NEAR
 								BILKENT UNIVERSITY</a>
 						</div>

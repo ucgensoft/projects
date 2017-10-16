@@ -52,7 +52,9 @@ public class UrlRewriteConfig extends HttpConfigurationProvider {
 				.addRule(Join.path("/dashboard/wish-list").to("/pages/dashboard/WishList.html"))
 				.addRule(Join.path("/dashboard/wish-list/").to("/pages/dashboard/WishList.html"))
 				.addRule(Join.path("/universities/{uniName}").to("/pages/universities/{uniName}.html"))
-				.addRule(Join.path("/universities/{uniName}/").to("/pages/universities/{uniName}.html"));
+				.addRule(Join.path("/universities/{uniName}/").to("/pages/universities/{uniName}.html"))
+				.addRule(Join.path("/universities").to("/pages/Universities.html"))
+				.addRule(Join.path("/universities").to("/pages/Universities.html"));
 	}
 
 	@Override

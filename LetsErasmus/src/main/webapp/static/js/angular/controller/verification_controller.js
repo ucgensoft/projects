@@ -129,7 +129,7 @@ App.controller('verificationCtrl', ['$scope', 'userService', 'commonService',
   		var url = null;
   		var parameters = document.location.href.substring(document.location.href.indexOf('?'));
   		if (activeOperation == EnmOperation.CREATE_PLACE) {
-  			url = webApplicationUrlPrefix + '/pages/Place.html' + parameters;
+  			url = webApplicationUrlPrefix + '/become-a-host' + parameters;
   		} else if (activeOperation == EnmOperation.CREATE_RESERVATION) {
   			url = webApplicationUrlPrefix + '/pages/Payment.html' + parameters;
   		}

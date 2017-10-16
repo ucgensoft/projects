@@ -115,7 +115,7 @@ App.controller('paymentCtrl', ['$scope', 'reservationService', 'commonService', 
 				function(isSuccess) {
 					if (isSuccess) {
 						DialogUtil.success( 'Congratulations! Your request is sent to host.', function() {
-							var url = webApplicationUrlPrefix + '/pages/dashboard/MessageList.html';
+							var url = webApplicationUrlPrefix + '/dashboard/messages';
 							openWindow(url, true);
 						});
 					}
@@ -147,7 +147,7 @@ App.controller('paymentCtrl', ['$scope', 'reservationService', 'commonService', 
 					function(isSuccess) {
 						if (isSuccess) {
 							DialogUtil.success( 'Congratulations! Your request is sent to host.', function() {
-								var url = webApplicationUrlPrefix + '/pages/dashboard/MessageList.html';
+								var url = webApplicationUrlPrefix + '/dashboard/messages';
 								openWindow(url, true);
 							});
 						}
