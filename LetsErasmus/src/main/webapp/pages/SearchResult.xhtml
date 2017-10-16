@@ -116,7 +116,7 @@
 	letter-spacing: undefined !important;
 	padding-top: undefined !important;
 	padding-bottom: undefined !important;
-	color: #484848 !important;
+	color: #ffffff !important;
 }
 
 .button_kg85u1 {
@@ -127,9 +127,9 @@
 	letter-spacing: 0.4px !important;
 	padding-top: 0px !important;
 	padding-bottom: 0px !important;
-	color: #484848 !important;
+	color: #ffffff !important;
 	font-weight: 700 !important;
-	background-color: #ffffff !important;
+	background-color: #03a9f4 !important;
 	padding: 8px 16px !important;
 	box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.14) !important;
 	border-radius: 80px !important;
@@ -451,8 +451,19 @@
 							class="Pagination-element Pagination-element--specialButton {{ctrl.currentPageIndex == ctrl.totalPageNumber ? 'clsDisabledGrey' : ''}}"
 							ng-click="ctrl.setCurrentPage(ctrl.totalPageNumber)">»</button>
 					</div>
+					<div class="SearchCounter">
+						<h2 ng-if="ctrl.searchList == null" style="text-align: center;">
+							Shows <b>1 - {{ctrl.placeList.length}}</b> of <b>{{ctrl.getOriginalPlaceList().length}}
+								Rooms</b>
+						</h2>
+						<h2 data-reactid="535" ng-if="ctrl.searchList != null" style="text-align: center;">
+							Shows <b>1 - {{ctrl.placeList.length}}</b> of <b>{{ctrl.getOriginalPlaceList().length}}
+								Rooms</b>
+						</h2>
+					</div>
 					<div id="divOpenMapIcon" class="clsOpenMapContainer"
-						aria-hidden="false" style="bottom: 16px;">
+						aria-hidden="false"
+						style="bottom: 16px; text-align: right !important; margin-right: 16px !important;">
 						<div class="container_zxyhsm">
 							<!-- 
 							<img src="#{webApplication.urlPrefix}/static/images/map_mini.jpg" 
