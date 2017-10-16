@@ -205,7 +205,6 @@ public class WebApplication extends BaseController {
 	public String getEmailVerificationUrl() {
 		return emailVerificationUrl;
 	}
-
 	public void setEmailVerificationUrl(String emailVerificationUrl) {
 		this.emailVerificationUrl = emailVerificationUrl;
 	}
@@ -528,7 +527,8 @@ public class WebApplication extends BaseController {
 		if (requestUrl.contains("PAGES/PLACEDETAIL.HTML") 
 				|| requestUrl.contains("PAGES/SEARCHRESULT.HTML")
 				|| requestUrl.contains("DISPLAYUSER.HTML")
-				|| requestUrl.contains("HELP.HTML")) {
+				|| requestUrl.contains("HELP.HTML")
+				|| requestUrl.contains("PAGES/UNIVERSITIES")) {
 			return true;
 		} else {
 			return false;
