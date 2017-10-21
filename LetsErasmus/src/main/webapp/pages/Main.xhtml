@@ -11,81 +11,95 @@
 			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 	</ui:define>
 
-	<style>
-.flex-vertical-middle, .separator-vertical {
-	-webkit-box-orient: vertical;
-	-webkit-box-direction: normal;
-	-webkit-flex-direction: column;
-	-ms-flex-direction: column;
-	flex-direction: column;
-	-webkit-box-pack: center;
-	-webkit-justify-content: center;
-	-ms-flex-pack: center;
-	justify-content: center
-}
 
-.flex-space-between-middle, .flex-vertical-middle, .separator-vertical {
-	display: -webkit-box;
-	display: -webkit-flex;
-	display: -ms-flexbox;
-	display: flex
-}
-
-@media ( max-width :47.9em) {
-	#HomeSearchDates {
-		
-	}
-}
-</style>
 
 	<ui:define name="body">
 		<h:form id="mainSearchForm">
-			<div id="homeFirstScreenDiv" class="home-first-screen">
-				<div class="flex-grow-1 flex-vertical-middle">
-					<div class="mainGreyDiv"
-						style="margin: auto; background-color: rgba(0, 0, 0, 0.5); border-radius: 10px; padding: 10px;">
-						<h1 class="landing-h1">Everything you need for next semester</h1>
-						<h3 class="landing-h2">Safely book your new home online</h3>
-						<div class="staticForm home--search">
-							<div class="formErrors" style="display: none;"></div>
-							<input id="txtSearchPlace" readonly=""
-								class="home--search--input form-control" type="text" name="city"
-								placeholder="Where will you go?"
-								data-event="Selected search field" autocomplete="off"
-								ng-blur="ctrl.validateSearch()" />
+			<div id="letserasmus">
+				<span></span> <span></span> <span></span> <span></span> <span></span>
+			</div>
 
-							<div id="HomeSearchDates" style="margin-left: 4px">
-								<div id="divDates" class="home-search--dates">
-									<input type="text" id="txtStartDatePicker" class="form-control"
-										placeholder="Start date" value="" readonly="true" /> <input
-										type="text" id="txtEndDatePicker" class="form-control"
-										placeholder="End date" value="" readonly="true" />
-								</div>
-							</div>
+			<div class="flex-grow-1 flex-vertical-middle" style="z-index: 10">
 
-							<input type="button" class="btn-brand home--search--btn"
-								id="btnSearch" value="search &amp; book" disabled="disabled"
-								ng-click="ctrl.search();" />
-						</div>
+				<h1 class="landing-h1 text-center" style="z-index: 1">The new
+					way in international student housing</h1>
+				<a class="announcement" href="#learn-how-it-works"> <span
+					class="new-pill">LEARN MORE</span> <span class="message">
+						Click to see advantages of housing with Let's Erasmus!</span>
+				</a>
 
-						<div class="popular-search">
-							<span class="highlighted">Popular Cities:</span> <span class=""><a
-								href="#{webApplication.urlPrefix}/room/search/istanbul/ChIJawhoAASnyhQR0LABvJj-zOE">Istanbul</a>
-								/</span> <span class=""><a
-								href="#{webApplication.urlPrefix}/room/search/barcelona/ChIJ5TCOcRaYpBIRCmZHTz37sEQ">Barcelona</a>
-								/</span> <span class=""><a
-								href="#{webApplication.urlPrefix}/room/search/london/ChIJdd4hrwug2EcRmSrV3Vo6llI">London</a>
-								/</span>
+				<div class="staticForm home--search">
+					<div class="formErrors" style="display: none;"></div>
+					<input id="txtSearchPlace" readonly=""
+						class="home--search--input form-control" type="text" name="city"
+						placeholder="Search by city or university"
+						data-event="Selected search field" autocomplete="off"
+						ng-blur="ctrl.validateSearch()" />
+
+					<div id="HomeSearchDates" style="margin-left: 4px">
+						<div id="divDates" class="home-search--dates">
+							<input type="text" id="txtStartDatePicker" class="form-control"
+								placeholder="Move in" value="" readonly="true" /> <input
+								type="text" id="txtEndDatePicker" class="form-control"
+								placeholder="Move out" value="" readonly="true" />
 						</div>
 					</div>
+
+					<input type="button" class="btn-brand-search home--search--btn"
+						id="btnSearch" value="search &amp; book" disabled="disabled"
+						ng-click="ctrl.search();" />
 				</div>
+
+				<h2 class="landing-h2 text-center"
+					style='margin-bottom: 10px; z-index: 1'>Explore Popular Cities</h2>
+
+				<div class="container" style="margin-bottom: 10px; z-index: 1;">
+
+					<ul class="img-list">
+						<div class="holder">
+							<li><a
+								href="#{webApplication.urlPrefix}/room/search/london/ChIJdd4hrwug2EcRmSrV3Vo6llI">
+									<img class="popular-city-image" src="/static/images/london.jpg"
+									width="100%" height="100%" /> <span class="text-content"><span>London</span></span>
+							</a></li>
+						</div>
+						<div class="holder">
+							<li><a
+								href="#{webApplication.urlPrefix}/room/search/barcelona/ChIJ5TCOcRaYpBIRCmZHTz37sEQ">
+									<img class="popular-city-image"
+									src="/static/images/barcelona.jpg" width="100%" height="100%" />
+									<span class="text-content"><span>Barcelona</span></span>
+							</a></li>
+						</div>
+						<div class="holder">
+							<li><a
+								href="#{webApplication.urlPrefix}/room/search/istanbul/ChIJawhoAASnyhQR0LABvJj-zOE">
+									<img class="popular-city-image"
+									src="/static/images/istanbul.jpg" width="100%" height="100%" />
+									<span class="text-content"><span>Istanbul</span></span>
+							</a></li>
+						</div>
+					</ul>
+
+
+
+				</div>
+
+
+
 			</div>
+
+
 		</h:form>
 
 
-		<h2 class="text-center" style='margin-bottom: 10px; font-size: 2em;'>Discover
+		<h2 class="landing-h3 text-center"
+			style='margin-bottom: 10px; z-index: 1'>Discover
 			your university</h2>
-		<a href="#{webApplication.urlPrefix}/universities"><h5 class="text-center" style="margin-top:5px; margin-bottom:5px;">Click to see all</h5></a>
+		<a href="#{webApplication.urlPrefix}/universities"><h5
+				class="text-center"
+				style="margin-top: 5px; margin-bottom: 5px; z-index: 1">Click
+				to see all</h5></a>
 		<div class="container" style="margin-bottom: 10px;">
 			<section class="customer-logos slider">
 			<div class="slide">
@@ -204,12 +218,9 @@
 
 
 
-
-		<section class="how-it-works">
-
+		<section id="learn-how-it-works" class="how-it-works">
 		<div class="page-container-responsive-main panel-contrast">
-			<!-- <h1 class="text-center" style='margin-bottom: 0px; font-size: 2em;'>See How it Works</h1> SEO OPTIMIZATION-->
-			<h2 class="text-center" style='margin-bottom: 0px; font-size: 2em;'>See
+			<h2 class="landing-h3 text-center" style='margin-bottom: 0px;'>See
 				How it Works</h2>
 			<div class="row space-top-8 text-center" style="margin-top: 0px;">
 
@@ -217,8 +228,8 @@
 					<div class="panel-body-how">
 						<div class="how-it-works__image"></div>
 						<h3>Discover Amazing Places</h3>
-						<p>Find accommodations like private rooms and entire homes
-							from locals and students in Erasmus cities.</p>
+						<p style="text-shadow: 2px 2px 5px rgba(0, 0, 0, .2);">Find private rooms and entire homes from locals and
+							students in Erasmus cities.</p>
 					</div>
 				</div>
 
@@ -226,8 +237,9 @@
 					<div class="panel-body-how">
 						<div class="how-it-works__image"></div>
 						<h3>Book a Stay</h3>
-						<p>Connect with hosts, request to book and receive an answer
-							in 2 days, and pay all through Let's Erasmus’ trusted services.</p>
+						<p style="text-shadow: 2px 2px 5px rgba(0, 0, 0, .2);">Receive confirmation from hosts in less than 48 hours. If
+							the property you have rented is different from the one
+							represented in the listing you can be entitled to a full refund.</p>
 					</div>
 				</div>
 
@@ -235,50 +247,19 @@
 					<div class="panel-body-how">
 						<div class="how-it-works__image"></div>
 						<h3>Enjoy</h3>
-						<p>Feel at home, anywhere you go in the world and enjoy the
-							moment.</p>
+						<p style="text-shadow: 2px 2px 5px rgba(0, 0, 0, .2);">We do not transfer the rent before you move-in. Enjoy the
+							moment more securely.</p>
 					</div>
 				</div>
 			</div>
 		</div>
+
 		</section>
 
-		<section class="community">
-		<div class="page-container-responsive">
-			<div class="row space-top-8">
-				<div class="col-12-cm">
-					<h2 class="text-center">A Community Built on Trust</h2>
-				</div>
-			</div>
-			<div class="row space-8">
-				<div class="col-4-cm text-center ">
-					<div class="panel-body-how">
-						<span class="icon-size-cm icon-rausch fa fa-star-o"></span>
-						<h4>Profiles and Reviews</h4>
-						<p>Hosts and guests get to know each other through detailed
-							profiles, personal reviews, and confirmed verifications.</p>
-					</div>
-				</div>
-				<div class="col-4-cm text-center ">
-					<div class="panel-body-how">
-						<span class="icon-size-cm icon-rausch fa fa-shield"></span>
-						<h4>Trusted Services</h4>
-						<p>Let's Erasmus verifies personal profiles, maintains a smart
-							messaging system so hosts and guests can talk with confidence,
-							and collects and transfers payments securely.</p>
-					</div>
-				</div>
-				<div class="col-4-cm text-center ">
-					<div class="panel-body-how">
-						<span class="icon-size-cm icon-rausch fa fa-check-circle-o"></span>
-						<h4>Customer Support</h4>
-						<p>We are ready to help you around the clock, anywhere in the
-							world.</p>
-					</div>
-				</div>
-			</div>
-		</div>
-		</section>
+
+
+
+
 		<script
 			src="#{webApplication.urlPrefix}/static/js/angular/controller/main_controller.js?ver=#{webApplication.staticFileVersion}"></script>
 		<script
