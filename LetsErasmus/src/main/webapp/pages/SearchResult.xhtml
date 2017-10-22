@@ -373,7 +373,8 @@
 								<div id="divPlaceDraftInfo_#{place.id}">
 									<label id="lblPlaceDraftInfo_Title_#{place.id}">#{place.title}</label>
 									<label id="lblPlaceDraftInfo_Desc_#{place.id}">#{place.description}</label>
-									<a id="lnkPlaceDraftInfo_#{place.id}" href="#{webApplication.getPlaceDetailUrl(place.id)}">Click for place detail</a>
+									<a id="lnkPlaceDraftInfo_#{place.id}" href="#{webApplication.getPlaceDetailUrl(place.id)}">Click here for place detail</a>
+									<a id="lnkUserDraftInfo_#{place.id}" href="#{webApplication.getUrlTemplateProfile(place.hostUserId)}">Click here for Host profile page</a>
 								</div>
 							</ui:repeat>
 						</div> 
