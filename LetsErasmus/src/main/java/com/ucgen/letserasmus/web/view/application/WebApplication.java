@@ -28,8 +28,8 @@ import com.ucgen.letserasmus.web.view.BaseController;
 @Scope("singleton")
 public class WebApplication extends BaseController {
 	
-	public static final String DEFAULT_PAGE_TITLE = "Let's Erasmus - Safely book your new home online";
-	public static final String DEFAULT_PAGE_DESCRIPTION = "The international student housing platform";
+	public static final String DEFAULT_PAGE_TITLE = "Let's Erasmus - The international student housing and accommodation platform";
+	public static final String DEFAULT_PAGE_DESCRIPTION = "The international student housing and accommodation platform";
 	
 	public static final String PAGE_URL_TEMPLATE_SEARCH_RESULT = "/room/search/{locationName}/{locationId}";
 	public static final String PAGE_URL_TEMPLATE_PLACE_DETAIL = "/room/{placeId}";
