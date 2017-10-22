@@ -5,6 +5,7 @@
 	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
 
 	<ui:define name="head">
+		<meta name="robots" content="noindex" />
 		<link rel="stylesheet" type="text/css"
 			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css?ver=#{webApplication.staticFileVersion}" />
 	</ui:define>
@@ -23,8 +24,7 @@
 						action="/users/update_reservation_requirements/54995441"
 						method="post">
 						<div style="margin: 0; padding: 0; display: inline">
-							<input name="utf8" type="hidden" value="✓" />
-							<input
+							<input name="utf8" type="hidden" value="✓" /> <input
 								name="authenticity_token" type="hidden"
 								value="V4$.airbnb.com$1C3OXH12jYc$f1vNHCrCgx7MHVrY9hoCqlHI6_WR-HweNnIDpbK1DPw=" />
 						</div>
@@ -35,18 +35,18 @@
 								<input id="id" name="id" type="hidden" value="54995441" />
 
 
-									<p>
-										Your guests will need to verify their ID before booking with
-										you. <a href="/help/article/450" target="_blank"> Learn
-											More </a>
-									</p> <label for="user_preference_require_guest_checkpoint">
-										<input name="user_preference[require_guest_checkpoint]"
-										type="hidden" value="0" />
-										<input
-											id="user_preference_require_guest_checkpoint"
-											name="user_preference[require_guest_checkpoint]"
-											type="checkbox" value="1" /> Require guests to go
-												through verification 
+								<p>
+									Your guests will need to verify their ID before booking with
+									you. <a href="/help/article/450" target="_blank"> Learn
+										More </a>
+								</p>
+								<label for="user_preference_require_guest_checkpoint"> <input
+									name="user_preference[require_guest_checkpoint]" type="hidden"
+									value="0" /> <input
+									id="user_preference_require_guest_checkpoint"
+									name="user_preference[require_guest_checkpoint]"
+									type="checkbox" value="1" /> Require guests to go through
+									verification
 								</label>
 							</div>
 							<div class="panel-body">
