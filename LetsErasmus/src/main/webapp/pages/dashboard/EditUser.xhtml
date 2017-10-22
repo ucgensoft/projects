@@ -2,20 +2,19 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html" 
-	template="/pages/Template.xhtml">
+	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
 
 	<ui:define name="head">
+		<meta name="robots" content="noindex">
 		<link rel="stylesheet" type="text/css"
 			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css?ver=#{webApplication.staticFileVersion}" />
 		<link rel="stylesheet" type="text/css"
 			href="#{webApplication.urlPrefix}/static/css/edit_profile.css?ver=#{webApplication.staticFileVersion}" />
-		
+
 		<script>
 			var activeDashboardTab = 1;
 			var activeLeftMenuLink = 1;
 			var userProfilePhotoId = '#{webApplication.user.profilePhotoId}';
-	
 		</script>
 	</ui:define>
 
@@ -31,21 +30,24 @@
 						<div class="panel space-4">
 							<div class="panel-header">
 								<span>Required</span>
-								<button style="float: right; margin-top: -6px;" type="button" class="btn btn-primary btn-medium" ng-click="ctrl.saveChanges()">Save</button>
+								<button style="float: right; margin-top: -6px;" type="button"
+									class="btn btn-primary btn-medium"
+									ng-click="ctrl.saveChanges()">Save</button>
 							</div>
 							<div class="panel-body">
 								<div class="row row-condensed space-4">
 									<label class="text-right col-sm-3">Profile Photo </label>
 									<div class="col-sm-9">
 										<input class="input-file" type="file" id="filePhoto"
-											accept="image/jpg, image/jpeg, image/png"
-											multiple="false" />
-										<div id="photoHolder" class="padding-level1 va-container va-container-h va-container-v #{webApplication.user.profilePhotoId != null ? 'hidden-force' : ''}">
-											<div id="divPhotoContainer" class="va-middle text-center text-gray img__upload-photos-ghosts">
+											accept="image/jpg, image/jpeg, image/png" multiple="false" />
+										<div id="photoHolder"
+											class="padding-level1 va-container va-container-h va-container-v #{webApplication.user.profilePhotoId != null ? 'hidden-force' : ''}">
+											<div id="divPhotoContainer"
+												class="va-middle text-center text-gray img__upload-photos-ghosts">
 												<div id="divPhotoUpload">
-													<div class="btn btn-primary btn-large" onclick="$('#filePhoto').click();">
-														<i class="icon icon-upload"></i>
-														<span>Upload Photo</span>
+													<div class="btn btn-primary btn-large"
+														onclick="$('#filePhoto').click();">
+														<i class="icon icon-upload"></i> <span>Upload Photo</span>
 													</div>
 													<div class="h4 text-normal">
 														<span>or drag it in the dashed area</span>
@@ -53,69 +55,76 @@
 												</div>
 											</div>
 										</div>
-										<div id="divPhotoPreview" class="col-sm-12 photos-item__preview-card #{webApplication.user.profilePhotoId == null ? 'hidden-force' : ''}">
+										<div id="divPhotoPreview"
+											class="col-sm-12 photos-item__preview-card #{webApplication.user.profilePhotoId == null ? 'hidden-force' : ''}">
 											<div class="photos-list__item">
 												<div class="panel-image">
-													<div class="photo-preview__btns not-always-show" ng-click="ctrl.removePhoto()">
-														<div class="btn photo-preview__btn photo-preview__delete-btn">
-															<div class="img__icon-trash-large img__icon-large pull-left"></div>
+													<div class="photo-preview__btns not-always-show"
+														ng-click="ctrl.removePhoto()">
+														<div
+															class="btn photo-preview__btn photo-preview__delete-btn">
+															<div
+																class="img__icon-trash-large img__icon-large pull-left"></div>
 														</div>
 													</div>
-													<img id="btnRotate" src ="#{webApplication.urlPrefix}/static/images/rotate_blue.png" 
-															ng-show="ctrl.photo != null" ng-click="ctrl.rotatePhoto()"
-															class="photo-preview__title-badge not-always-show" 
-															style="position:absolute; z-index:2; padding-left: 5px; padding-right: 5px;"></img>
+													<img id="btnRotate"
+														src="#{webApplication.urlPrefix}/static/images/rotate_blue.png"
+														ng-show="ctrl.photo != null" ng-click="ctrl.rotatePhoto()"
+														class="photo-preview__title-badge not-always-show"
+														style="position: absolute; z-index: 2; padding-left: 5px; padding-right: 5px;"></img>
 													<div
 														class="media-photo media-photo-block photos-list__canvas"
 														style="height: 179.33333333333334px;">
 														<div class="media-cover text-center img-with-border">
-															<img id="imgProfilePhoto" class="img-responsive-height img-preview-1483265761528"
+															<img id="imgProfilePhoto"
+																class="img-responsive-height img-preview-1483265761528"
 																src="#{webApplication.getActiveUserPhotoUrl('small')}" />
 														</div>
 													</div>
 												</div>
 											</div>
-											<div>
-												
-											</div>
+											<div></div>
 										</div>
 									</div>
 								</div>
-								
+
 								<div class="row row-condensed space-4">
-									<label class="text-right col-sm-3">
-										First Name </label>
+									<label class="text-right col-sm-3"> First Name </label>
 									<div class="col-sm-9">
-										<input id="txtFirstName" size="30" type="text" value="#{webApplication.user.firstName}" />
+										<input id="txtFirstName" size="30" type="text"
+											value="#{webApplication.user.firstName}" />
 									</div>
 								</div>
 
 								<div class="row row-condensed space-4">
 									<label class="text-right col-sm-3">Last Name </label>
 									<div class="col-sm-9">
-										<input id="txtLastName" size="30" type="text" value="#{webApplication.user.lastName}"/>
+										<input id="txtLastName" size="30" type="text"
+											value="#{webApplication.user.lastName}" />
 										<div class="text-muted space-top-1">Your public profile
 											only shows your first name. When you request a booking, your
 											host will see your first and last name.</div>
 									</div>
 								</div>
-								
+
 								<div class="row row-condensed space-4">
 									<label class="text-right col-sm-3">Password</label>
 									<div class="col-sm-9">
 										<input id="txtPassword" size="30" type="password"
-											placeholder="Create a password" 
-											value="#{webApplication.user.password != null ? 'xxxxxx' : ''}"/>
-										<div class="text-muted space-top-1">Prefer a complex password, that contain upper case, lower case and number characters.</div>
+											placeholder="Create a password"
+											value="#{webApplication.user.password != null ? 'xxxxxx' : ''}" />
+										<div class="text-muted space-top-1">Prefer a complex
+											password, that contain upper case, lower case and number
+											characters.</div>
 									</div>
 								</div>
-								
+
 								<div class="row row-condensed space-4">
 									<label class="text-right col-sm-3">Confirm Password</label>
 									<div class="col-sm-9">
-										<input id="txtPasswordConfirm" size="30" type="password" 
-											placeholder="Confirm your password" 
-											value="#{webApplication.user.password != null ? 'xxxxxx' : ''}"/>
+										<input id="txtPasswordConfirm" size="30" type="password"
+											placeholder="Confirm your password"
+											value="#{webApplication.user.password != null ? 'xxxxxx' : ''}" />
 									</div>
 								</div>
 
@@ -127,10 +136,16 @@
 
 										<div class="select">
 											<select id="cmbGender" value="#{webApplication.user.gender}">
-												<option value="-1" selected="#{webApplication.user.gender == null ? 'selected' : ''}">- Gender -</option>
-												<option value="M" selected="#{webApplication.user.gender == 'M' ? 'selected' : ''}">Male</option>
-												<option value="F" selected="#{webApplication.user.gender == 'F' ? 'selected' : ''}">Female</option>
-												<option value="O" selected="#{webApplication.user.gender == 'O' ? 'selected' : ''}">Other</option></select>
+												<option value="-1"
+													selected="#{webApplication.user.gender == null ? 'selected' : ''}">-
+													Gender -</option>
+												<option value="M"
+													selected="#{webApplication.user.gender == 'M' ? 'selected' : ''}">Male</option>
+												<option value="F"
+													selected="#{webApplication.user.gender == 'F' ? 'selected' : ''}">Female</option>
+												<option value="O"
+													selected="#{webApplication.user.gender == 'O' ? 'selected' : ''}">Other</option>
+											</select>
 										</div>
 
 										<div class="text-muted space-top-1">We use this data for
@@ -139,11 +154,12 @@
 								</div>
 
 								<div id="divBirthDate" class="row row-condensed space-4">
-									<label class="text-right col-sm-3">
-										Birth Date <i class="icon icon-lock icon-ebisu" aria-label="Private"></i>
+									<label class="text-right col-sm-3"> Birth Date <i
+										class="icon icon-lock icon-ebisu" aria-label="Private"></i>
 									</label>
 									<div class="col-sm-9">
-										<input id="hiddenBirthDate" type="hidden" value="#{webApplication.formatDate(webApplication.user.birthDate, 'dd.MM.yyyy')}"/>
+										<input id="hiddenBirthDate" type="hidden"
+											value="#{webApplication.formatDate(webApplication.user.birthDate, 'dd.MM.yyyy')}" />
 										<input id="txtBirthDatePicker" size="15" type="text" />
 										<div class="text-muted space-top-1">We use this data for
 											analysis and never share it with other users.</div>
@@ -152,75 +168,91 @@
 
 								<div class="row row-condensed space-4">
 									<label class="text-right col-sm-3" for="user_email">
-										Email Address <i class="icon icon-lock icon-ebisu" data-behavior="tooltip" aria-label="Private"></i>
+										Email Address <i class="icon icon-lock icon-ebisu"
+										data-behavior="tooltip" aria-label="Private"></i>
 									</label>
 									<div class="col-sm-9">
 
-										<input id="txtEmail" size="30" type="text" value="#{webApplication.user.email}" />
+										<input id="txtEmail" size="30" type="text"
+											value="#{webApplication.user.email}" />
 
 										<div class="text-muted space-top-1">
-											We won’t share your private email address with other Let's Erasmus
-											users.<br/>When you change your email, a confirmation mail will be sent.
+											We won’t share your private email address with other Let's
+											Erasmus users.<br />When you change your email, a
+											confirmation mail will be sent.
 										</div>
 									</div>
 								</div>
 
 								<div class="row row-condensed space-4">
 									<label class="text-right col-sm-3" for="user_phone">
-										Phone Number <i class="icon icon-lock icon-ebisu" aria-label="Private"></i>
+										Phone Number <i class="icon icon-lock icon-ebisu"
+										aria-label="Private"></i>
 									</label>
 									<div class="col-sm-9">
 										<div class="clearfix" id="phone-number">
-											<div id="divPhoneNumberContainer" class="phone-numbers-container">
-												<ui:fragment rendered="#{webApplication.user.msisdn == null}">
-													<div id="divNoPhoneNumber" class="phone-numbers-hide-during-verify">
+											<div id="divPhoneNumberContainer"
+												class="phone-numbers-container">
+												<ui:fragment
+													rendered="#{webApplication.user.msisdn == null}">
+													<div id="divNoPhoneNumber"
+														class="phone-numbers-hide-during-verify">
 														<div id="divNoMsisdn" class="no-phone-numbers">
 															<p>No phone number entered</p>
 														</div>
-														<a id="linkAddMsisdn" class="add link-icon" href="" ng-click="ctrl.openAddMsisdnPart()"> 
-															<i class="icon icon-add"></i> 
-															<span class="link-icon__text">Add a phone number </span>
+														<a id="linkAddMsisdn" class="add link-icon" href=""
+															ng-click="ctrl.openAddMsisdnPart()"> <i
+															class="icon icon-add"></i> <span class="link-icon__text">Add
+																a phone number </span>
 														</a>
 													</div>
 												</ui:fragment>
-												<ui:fragment rendered="#{webApplication.user.msisdn != null}">
-													<div id="divDisplayMsisdn" class="phone-numbers-hide-during-verify">
+												<ui:fragment
+													rendered="#{webApplication.user.msisdn != null}">
+													<div id="divDisplayMsisdn"
+														class="phone-numbers-hide-during-verify">
 														<table class="phone-numbers-table" cellspacing="0"
 															cellpadding="0">
 															<tbody>
 																<tr class="unverified">
 																	<th class="edit-profile-confirmable-field__label">#{webApplication.user.maskedMsisdn}</th>
-																	<td>
-																		<ui:fragment rendered="#{webApplication.user.msisdnVerified == 'Y'}">
-																			<span class="verified"> 
-																				<i class="icon icon-ok"></i> Confirmed
+																	<td><ui:fragment
+																			rendered="#{webApplication.user.msisdnVerified == 'Y'}">
+																			<span class="verified"> <i
+																				class="icon icon-ok"></i> Confirmed
 																			</span>
-																		</ui:fragment>
-																		<ui:fragment rendered="#{webApplication.user.msisdnVerified == 'N'}">
-																			<span class="unverified">
-																				<a class="verify button-steel btn gray" href="#divBirthDate" rel="sms" ng-click="ctrl.sendMsisdnVerificationCode()"> Confirm via SMS </a>
+																		</ui:fragment> <ui:fragment
+																			rendered="#{webApplication.user.msisdnVerified == 'N'}">
+																			<span class="unverified"> <a
+																				class="verify button-steel btn gray"
+																				href="#divBirthDate" rel="sms"
+																				ng-click="ctrl.sendMsisdnVerificationCode()">
+																					Confirm via SMS </a>
 																			</span>
-																		</ui:fragment>
-																	</td>
-																	<td class="remove-container">
-																		<a class="remove" title="Remove" href="#divBirthDate" rel="sms" ng-click="ctrl.removeMsisdn()">
-																			<i class="icon icon-remove"></i>
-																		</a>
-																	</td>
+																		</ui:fragment></td>
+																	<td class="remove-container"><a class="remove"
+																		title="Remove" href="#divBirthDate" rel="sms"
+																		ng-click="ctrl.removeMsisdn()"> <i
+																			class="icon icon-remove"></i>
+																	</a></td>
 																</tr>
 															</tbody>
 														</table>
 													</div>
 												</ui:fragment>
-												
-												<div id="divVerificationContainer" class="phone-number-verify-widget">
+
+												<div id="divVerificationContainer"
+													class="phone-number-verify-widget">
 													<div id="divAddMsisdn" class="pnaw-step1">
 														<div class="phone-number-input-widget"
 															id="phone-number-input-widget-572762dc">
 															<label for="phone_country">Choose a country:</label>
 															<div class="select">
-																<select id="cmbCountry" name="phone_country" ng-model="ctrl.dummyModel" ng-change="ctrl.onCountryChange()">
-																	<option ng-repeat="c in ctrl.countryList" value="+{{c.code}}">{{c.name}}</option>
+																<select id="cmbCountry" name="phone_country"
+																	ng-model="ctrl.dummyModel"
+																	ng-change="ctrl.onCountryChange()">
+																	<option ng-repeat="c in ctrl.countryList"
+																		value="+{{c.code}}">{{c.name}}</option>
 																</select>
 															</div>
 
@@ -231,51 +263,58 @@
 															</div>
 														</div>
 														<div class="pnaw-verify-container">
-															<a class="btn btn-primary" href="#divBirthDate" rel="sms" ng-click="ctrl.sendMsisdnVerificationCode()">Verify via SMS</a>
-															<a class="cancel" rel="cancel" href="#divBirthDate" ng-click="ctrl.cancelAddMsisdn()">Cancel</a>
+															<a class="btn btn-primary" href="#divBirthDate" rel="sms"
+																ng-click="ctrl.sendMsisdnVerificationCode()">Verify
+																via SMS</a> <a class="cancel" rel="cancel"
+																href="#divBirthDate" ng-click="ctrl.cancelAddMsisdn()">Cancel</a>
 														</div>
 													</div>
 													<div id="divVerifyMsisdn" class="pnaw-step2">
-														<label for="phone_number_verification">Please enter the 4-digit code:</label> 
-														<input id="txtVerificationCode" type="text" pattern="[0-9]*" />
-															<div class="pnaw-verify-container">
-																<a class="btn btn-primary" href="#divBirthDate" rel="verify" ng-click="ctrl.verifyMsisdnCode()">Verify</a>
-																<a class="cancel" rel="cancel" href="#divBirthDate" ng-click="ctrl.cancelVerifyMsisdn()">Cancel </a>
-															</div>
+														<label for="phone_number_verification">Please
+															enter the 4-digit code:</label> <input id="txtVerificationCode"
+															type="text" pattern="[0-9]*" />
+														<div class="pnaw-verify-container">
+															<a class="btn btn-primary" href="#divBirthDate"
+																rel="verify" ng-click="ctrl.verifyMsisdnCode()">Verify</a>
+															<a class="cancel" rel="cancel" href="#divBirthDate"
+																ng-click="ctrl.cancelVerifyMsisdn()">Cancel </a>
+														</div>
 													</div>
 												</div>
 											</div>
 										</div>
 										<div class="text-muted space-top-1">This is only shared
-											once you have a confirmed booking with another Let's Erasmus user.
-											This is how we can all get in touch.</div>
+											once you have a confirmed booking with another Let's Erasmus
+											user. This is how we can all get in touch.</div>
 									</div>
 								</div>
 
 								<div class="row row-condensed space-4">
-									<label class="text-right col-sm-3" for="user_profile_info_current_city"> Where You Live </label>
+									<label class="text-right col-sm-3"
+										for="user_profile_info_current_city"> Where You Live </label>
 									<div class="col-sm-9">
-										<input id="txtResidenceLocationName" 
-											placeholder="e.g. Istanbul, Barcelona, Rome etc" size="30" type="text" 
+										<input id="txtResidenceLocationName"
+											placeholder="e.g. Istanbul, Barcelona, Rome etc" size="30"
+											type="text"
 											value="#{webApplication.user.residenceLocationName}" />
 									</div>
 								</div>
 
 								<div class="row row-condensed space-4">
-									<label class="text-right col-sm-3" for="user_profile_info_about"> Describe Yourself </label>
+									<label class="text-right col-sm-3"
+										for="user_profile_info_about"> Describe Yourself </label>
 									<div class="col-sm-9">
 
-										<textarea cols="40" id="txtDescription"
-											rows="5">#{webApplication.user.description}</textarea>
+										<textarea cols="40" id="txtDescription" rows="5">#{webApplication.user.description}</textarea>
 
 										<div class="text-muted space-top-1">
-											Let's Erasmus is built on relationships. Help other people get to
-											know you.<br/> <br/>Tell them about the things you like:
-											What are 5 things you can’t live without? Share your favorite
-											travel destinations, books, movies, shows, music, food.<br/>
-											<br/>Tell them what it’s like to have you as a guest or
-											host: What’s your style of traveling?<br/>
-											<br/>Tell them about you: Do you have a life motto?
+											Let's Erasmus is built on relationships. Help other people
+											get to know you.<br /> <br />Tell them about the things you
+											like: What are 5 things you can’t live without? Share your
+											favorite travel destinations, books, movies, shows, music,
+											food.<br /> <br />Tell them what it’s like to have you as a
+											guest or host: What’s your style of traveling?<br /> <br />Tell
+											them about you: Do you have a life motto?
 										</div>
 									</div>
 								</div>
@@ -289,7 +328,8 @@
 									<label class="text-right col-sm-3"
 										for="user_profile_info_university"> School </label>
 									<div class="col-sm-9">
-										<input id="txtSchoolName" placeholder="Your school name" size="30" type="text" 
+										<input id="txtSchoolName" placeholder="Your school name"
+											size="30" type="text"
 											value="#{webApplication.user.schoolName}" />
 									</div>
 								</div>
@@ -304,31 +344,34 @@
 								</div>
 
 								<div class="row row-condensed space-4">
-									<label class="text-right col-sm-3">
-										Languages </label>
+									<label class="text-right col-sm-3"> Languages </label>
 									<div class="col-sm-9">
 										<div class="space-top-1"></div>
 										<input id="txtLanguages"
-											placeholder="Which languages can you speak" size="30" type="text"
-											value="#{webApplication.user.languages}" />
-										<div class="text-muted space-top-1">
-											This information would help your guests in communication with you
-										</div>
+											placeholder="Which languages can you speak" size="30"
+											type="text" value="#{webApplication.user.languages}" />
+										<div class="text-muted space-top-1">This information
+											would help your guests in communication with you</div>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div>
-							<button type="button" class="btn btn-primary-deactive btn-large" ng-click="ctrl.deactivateUser()">Deactivate</button>
-							<button style="float: right;" type="button" class="btn btn-primary btn-large" ng-click="ctrl.saveChanges()">Save</button>
+							<button type="button" class="btn btn-primary-deactive btn-large"
+								ng-click="ctrl.deactivateUser()">Deactivate</button>
+							<button style="float: right;" type="button"
+								class="btn btn-primary btn-large" ng-click="ctrl.saveChanges()">Save</button>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 		</main>
-		<script src="#{webApplication.urlPrefix}/static/js/dashboard.js?ver=#{webApplication.staticFileVersion}"></script>
-		<script src="#{webApplication.urlPrefix}/static/js/angular/controller/edituser_controller.js?ver=#{webApplication.staticFileVersion}"></script>
-		<script src="#{webApplication.urlPrefix}/static/js/exif.js?ver=#{webApplication.staticFileVersion}"></script>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/dashboard.js?ver=#{webApplication.staticFileVersion}"></script>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/angular/controller/edituser_controller.js?ver=#{webApplication.staticFileVersion}"></script>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/exif.js?ver=#{webApplication.staticFileVersion}"></script>
 	</ui:define>
 </ui:composition>

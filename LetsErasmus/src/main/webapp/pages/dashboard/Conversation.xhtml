@@ -5,47 +5,47 @@
 	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
 
 	<ui:define name="head">
+		<meta name="robots" content="noindex">
 		<link rel="stylesheet" type="text/css"
 			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css?ver=#{webApplication.staticFileVersion}" />
 		<link rel="stylesheet" type="text/css"
 			href="#{webApplication.urlPrefix}/static/css/conversation.css?ver=#{webApplication.staticFileVersion}" />
-			
+
 		<script>
 			var activeDashboardTab = 2;
 		</script>
 	</ui:define>
 
 	<ui:define name="body">
-		<main id="site-content" role="main"> 
-			<ui:include src="DashboardHeader.html" />
-		<div class="page-container page-container-responsive space-top-4" ng-show="ctrl.messageThread != null">
+		<main id="site-content" role="main"> <ui:include
+			src="DashboardHeader.html" />
+		<div class="page-container page-container-responsive space-top-4"
+			ng-show="ctrl.messageThread != null">
 			<div class="row">
 				<div class="col-md-7 col-md-push-5 messaging-thread-main">
-					<div class="js-messaging-react-container messaging-thread-container">
+					<div
+						class="js-messaging-react-container messaging-thread-container">
 						<div>
 							<div ng-if="ctrl.showReservationBox()" class="space-6">
 								<div class="panel action-status contextual-padding">
 									<div class="panel-body">
 										<div class="h4 space-1">
-											<strong>
-												<span>{{ctrl.messageThread.clientUserFirstName}} requested to book your listing</span>
+											<strong> <span>{{ctrl.messageThread.clientUserFirstName}}
+													requested to book your listing</span>
 											</strong>
 										</div>
 										<div class="space-top-md-1 space-top-lg-2">
 											<div class="space-top-1">
 												<div
 													class="messaging-response-timer va-container non-response-at">
-													<span class="va-middle">
-														<i class="icon icon-time h4 show-lg"></i>
-													</span>
-													<span class="va-middle">
-														<span> Respond within
-															<span>
-																<span class="countdown hasCountdown">
-																	<span id="spanRemainingTime" class="countdown_row countdown_amount"></span>
-																</span>
+													<span class="va-middle"> <i
+														class="icon icon-time h4 show-lg"></i>
+													</span> <span class="va-middle"> <span> Respond
+															within <span> <span class="countdown hasCountdown">
+																	<span id="spanRemainingTime"
+																	class="countdown_row countdown_amount"></span>
 															</span>
-														to maintain your response rate.
+														</span> to maintain your response rate.
 													</span></span>
 												</div>
 											</div>
@@ -74,16 +74,16 @@
 								id="post_message_box">
 								<div class="col-sm-12 col-md-9 col-lg-10">
 									<!-- bozuk göründüğü için panel class kaldırıldu <div class="panel panel-quote panel-quote-flush panel-quote-right panel-quote-right__white"> -->
-									<div style="border: 1px solid #dce0e0;" class="panel-quote panel-quote-flush panel-quote-right panel-quote-right__white">
+									<div style="border: 1px solid #dce0e0;"
+										class="panel-quote panel-quote-flush panel-quote-right panel-quote-right__white">
 										<div class="panel-body text-left text-medium-gray">
-											<textarea id="txtMessage" class="send-message-textarea" placeholder=""
-												rows="3" style="height: 80px;" />
+											<textarea id="txtMessage" class="send-message-textarea"
+												placeholder="" rows="3" style="height: 80px;" />
 										</div>
 										<div class="panel-body panel-dark">
 											<div class="va-container va-container-v va-container-h">
 												<div class="va-middle">
-													<span>
-													</span>
+													<span> </span>
 												</div>
 												<div class="text-right">
 													<button class="btn" ng-click="ctrl.sendMessage()">
@@ -96,13 +96,14 @@
 								</div>
 								<div class="col-md-3 col-lg-2 hide-sm text-right">
 									<div class="media-photo media-round">
-										<img
-											src="{{ctrl.getActiveUser().profilePhotoUrlSmall}}"
+										<img src="{{ctrl.getActiveUser().profilePhotoUrlSmall}}"
 											width="70" height="70" />
 									</div>
-									<div  class="text-center" style="width: 70px; display: inline-block;">
-												<a href="#{webApplication.urlPrefix}/profile/{{ctrl.getActiveUser().id}}/" 
-													class="text-normal">{{ctrl.getActiveUser().firstName}}</a>
+									<div class="text-center"
+										style="width: 70px; display: inline-block;">
+										<a
+											href="#{webApplication.urlPrefix}/profile/{{ctrl.getActiveUser().id}}/"
+											class="text-normal">{{ctrl.getActiveUser().firstName}}</a>
 									</div>
 								</div>
 							</div>
@@ -114,16 +115,12 @@
 												class="icon icon-flag h4"></i><span>Safety Tip</span></span>
 										</div>
 										<p class="text-center text-muted">
-											<span>
-												For your safety and protection, only
-												communicate and pay directly through Let's Erasmus. Visit our
-												<span>
-													<a class="link-reset link-bold-line" href="#{webApplication.urlPrefix}/help/">
-														Help Center
-													</a>
-												</span>
-												to learn more about the benefits of
-												booking through Let's Erasmus.
+											<span> For your safety and protection, only
+												communicate and pay directly through Let's Erasmus. Visit
+												our <span> <a class="link-reset link-bold-line"
+													href="#{webApplication.urlPrefix}/help/"> Help Center </a>
+											</span> to learn more about the benefits of booking through Let's
+												Erasmus.
 											</span>
 										</p>
 									</div>
@@ -133,22 +130,25 @@
 										<div class="inline-status text-branding space-6">
 											<div class="horizontal-rule-text">
 												<span class="horizontal-rule-wrapper"><span>
-														{{m.messageText}}
-														<span>{{m.createdDate | date:'MMMM dd, yyyy hh:mm:ss'}}</span>
+														{{m.messageText}} <span>{{m.createdDate |
+															date:'MMMM dd, yyyy hh:mm:ss'}}</span>
 												</span></span>
 											</div>
 										</div>
 									</div>
-									<div ng-if="m.messageType == 1 &amp;&amp; m.senderUserId != ctrl.messageThread.activeUserId">
+									<div
+										ng-if="m.messageType == 1 &amp;&amp; m.senderUserId != ctrl.messageThread.activeUserId">
 										<div class="row row-condensed space-6 post">
 											<div class="col-sm-2 col-md-3 col-lg-2 text-left">
 												<div class="media-photo media-round">
 													<img class="user-profile-photo"
-														src="{{ctrl.getUser(m).profilePhotoUrlSmall}}"
-														width="70" height="70" />
+														src="{{ctrl.getUser(m).profilePhotoUrlSmall}}" width="70"
+														height="70" />
 												</div>
-												<div  class="text-center" style="width: 70px; display: inline-block;">
-													<a href="#{webApplication.urlPrefix}/profile/{{ctrl.getUser(m).id}}" 
+												<div class="text-center"
+													style="width: 70px; display: inline-block;">
+													<a
+														href="#{webApplication.urlPrefix}/profile/{{ctrl.getUser(m).id}}"
 														class="text-normal">{{ctrl.getUser(m).firstName}}</a>
 												</div>
 											</div>
@@ -159,12 +159,12 @@
 														<div>
 															<div>
 																<div class="pull-right">
-																	<div class="flag-widget {{ctrl.isMessageComplainted(m.id) ? 'hidden-force' : ''}}">
-																		<a href="#" ng-click="ctrl.openComplaintWindow(m.id)" class="link-reset"
-																			title="Report this message"
+																	<div
+																		class="flag-widget {{ctrl.isMessageComplainted(m.id) ? 'hidden-force' : ''}}">
+																		<a href="#" ng-click="ctrl.openComplaintWindow(m.id)"
+																			class="link-reset" title="Report this message"
 																			data-prevent-default="true"><i
-																			class="icon icon-flag h4"></i>
-																		</a>
+																			class="icon icon-flag h4"></i> </a>
 																	</div>
 																	<div
 																		class="flag-widget {{ctrl.isMessageComplainted(m.id) ? '' : 'hidden-force'}}">
@@ -178,7 +178,8 @@
 														</div>
 														<div class="space-top-2 text-muted row row-condensed">
 															<div class="col-sm-8">
-																<span class="time">{{m.createdDate | date:'MMMM dd, yyyy hh:mm:ss'}}</span>
+																<span class="time">{{m.createdDate | date:'MMMM
+																	dd, yyyy hh:mm:ss'}}</span>
 															</div>
 															<div class="col-sm-4"></div>
 														</div>
@@ -187,7 +188,8 @@
 											</div>
 										</div>
 									</div>
-									<div ng-if="m.messageType == 1 &amp;&amp; m.senderUserId == ctrl.messageThread.activeUserId">
+									<div
+										ng-if="m.messageType == 1 &amp;&amp; m.senderUserId == ctrl.messageThread.activeUserId">
 										<div class="row row-condensed space-6 post">
 											<div class="col-sm-10 col-md-9 col-lg-10">
 												<div
@@ -198,7 +200,8 @@
 														</div>
 														<div class="space-top-2 text-muted row row-condensed">
 															<div class="col-sm-8">
-																<span class="time">{{m.createdDate | date:'MMMM dd, yyyy hh:mm:ss'}}</span>
+																<span class="time">{{m.createdDate | date:'MMMM
+																	dd, yyyy hh:mm:ss'}}</span>
 															</div>
 															<div class="col-sm-4"></div>
 														</div>
@@ -208,13 +211,15 @@
 											<div class="col-sm-2 col-md-3 col-lg-2 text-right">
 												<div class="media-photo media-round">
 													<img class="user-profile-photo"
-														src="{{ctrl.getUser(m).profilePhotoUrlSmall}}"
-														width="70" height="70" />
+														src="{{ctrl.getUser(m).profilePhotoUrlSmall}}" width="70"
+														height="70" />
 												</div>
-											<div  class="text-center" style="width: 70px; display: inline-block;">
-												<a href="#{webApplication.urlPrefix}/profile/{{ctrl.getUser(m).id}}" 
-													class="text-normal">{{ctrl.getUser(m).firstName}}</a>
-											</div>
+												<div class="text-center"
+													style="width: 70px; display: inline-block;">
+													<a
+														href="#{webApplication.urlPrefix}/profile/{{ctrl.getUser(m).id}}"
+														class="text-normal">{{ctrl.getUser(m).firstName}}</a>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -224,7 +229,8 @@
 					</div>
 				</div>
 
-				<div class="col-md-4 col-md-pull-7 bg-white qt-sidebar-redesign space-4 ">
+				<div
+					class="col-md-4 col-md-pull-7 bg-white qt-sidebar-redesign space-4 ">
 					<form accept-charset="UTF-8"
 						action="/messaging/qt_reply_v2/203385476" method="post">
 						<div class="js-sidebar-mini-profile-react-container">
@@ -236,8 +242,8 @@
 									<div class="panel-header panel-header-gray">Verified ID</div>
 									<div class="panel-padding panel-body">
 										<p>
-											<a href="/help/article/450">
-											<span>Learn more &amp;raquo;</span></a>
+											<a href="/help/article/450"> <span>Learn more
+													&amp;raquo;</span></a>
 										</p>
 									</div>
 								</div>
@@ -245,20 +251,20 @@
 									<div class="">
 										<div class="panel-image">
 											<div class="verified-badge-aligner-single-host">
-												<a href="#{webApplication.urlPrefix}/profile/{{ctrl.getDestinationUser().id}}" target="_blank"
-													class="media-photo media-round">
-												<img
+												<a
+													href="#{webApplication.urlPrefix}/profile/{{ctrl.getDestinationUser().id}}"
+													target="_blank" class="media-photo media-round"> <img
 													src="{{ctrl.getDestinationUser().profilePhotoUrlMedium}}"
-													width="150" height="150" alt="{{ctrl.getDestinationUser().firstName}}" /></a>
+													width="150" height="150"
+													alt="{{ctrl.getDestinationUser().firstName}}" /></a>
 												<div
 													class="va-container verified-overlay-bottom-right-single-host">
 													<span
 														class="va-middle media-photo media-round verified-badge-large">
-														<img src="#{webApplication.urlPrefix}/static/images/verified.png" 
-															width="27" height="27" />
-													</span>
-														&nbsp;
-													<span class="va-middle text-emphasis-gray">
+														<img
+														src="#{webApplication.urlPrefix}/static/images/verified.png"
+														width="27" height="27" />
+													</span> &nbsp; <span class="va-middle text-emphasis-gray">
 														<span>Verified</span>
 													</span>
 												</div>
@@ -266,8 +272,10 @@
 										</div>
 										<div class="space-top-3">
 											<div class="h4">
-												<a href="#{webApplication.urlPrefix}/profile/{{ctrl.getDestinationUser().id}}"  target="_blank"
-													class="text-normal">{{ctrl.getUserLabel() + ctrl.getDestinationUser().firstName}}</a>
+												<a
+													href="#{webApplication.urlPrefix}/profile/{{ctrl.getDestinationUser().id}}"
+													target="_blank" class="text-normal">{{ctrl.getUserLabel()
+													+ ctrl.getDestinationUser().firstName}}</a>
 											</div>
 										</div>
 									</div>
@@ -285,50 +293,62 @@
 												<div class="h4 space-4">
 													<span>Trip details</span>
 												</div>
-												<hr/>									
-													<div class="space-top-2">
-														<div class="row space-2">
-														<a href="#{webApplication.urlPrefix}/room/{{ctrl.messageThread.reservation.placeId}}" target="_blank">
-															<div class="background-cover summary-card__payments-listing-image space-top-2"
-																	style="background-image: url({{ctrl.messageThread.reservation.place.coverPhotoUrl}});">
+												<hr />
+												<div class="space-top-2">
+													<div class="row space-2">
+														<a
+															href="#{webApplication.urlPrefix}/room/{{ctrl.messageThread.reservation.placeId}}"
+															target="_blank">
+															<div
+																class="background-cover summary-card__payments-listing-image space-top-2"
+																style="background-image: url({{ctrl.messageThread.reservation.place.coverPhotoUrl}});">
 															</div>
+														</a> <a
+															href="#{webApplication.urlPrefix}/room/{{ctrl.messageThread.reservation.placeId}}"
+															target="_blank">
+															<h1 class="h4 space-6"
+																style="padding-left: 12px; margin-bottom: 12px;"
+																id="listing_name">{{ctrl.messageThread.threadTitle}}</h1>
 														</a>
-														<a href="#{webApplication.urlPrefix}/room/{{ctrl.messageThread.reservation.placeId}}" target="_blank">
-														<h1 class="h4 space-6" style="padding-left: 12px; margin-bottom: 12px;"
-															id="listing_name">{{ctrl.messageThread.threadTitle}}</h1>
-														</a>
-															<div class="space-2" style="padding-left: 12px;">
-																<div
-																	class="guest_details__title text-medium-gray space-1">
-																	<span>{{ctrl.messageThread.reservation.guestNumber}} Guest{{ctrl.messageThread.reservation.guestNumber > 1 ? 's' : ''}}</span>
-																</div>
-															</div>	
-															<div class="col-sm-5">
-																<div
-																	class="checkin-details__checkin-title text-medium-gray space-1">
-																	<span>Check in</span>
-																</div>
-																<div class="checkin-details__checkin-date" style="font-size: 14px;">{{ctrl.messageThread.reservation.startDate | date:'MMM dd, yyyy'}}</div>
-															</div>
-															<div class="col-sm-1">
-																<i
-																	class="icon icon-size-1 icon-chevron-right text-medium-gray checkin-details__chevron"></i>
-															</div>
-															<div class="col-sm-5 pull-right text-left">
-																<div
-																	class="checkin-details__checkout-title text-medium-gray space-1">
-																	<span>Check out</span>
-																</div>
-																<div class="checkin-details__checkout-date" style="font-size: 14px;">{{ctrl.messageThread.reservation.endDate | date:'MMM dd, yyyy'}}</div>
+														<div class="space-2" style="padding-left: 12px;">
+															<div
+																class="guest_details__title text-medium-gray space-1">
+																<span>{{ctrl.messageThread.reservation.guestNumber}}
+																	Guest{{ctrl.messageThread.reservation.guestNumber > 1 ?
+																	's' : ''}}</span>
 															</div>
 														</div>
-														<hr/>
-
+														<div class="col-sm-5">
+															<div
+																class="checkin-details__checkin-title text-medium-gray space-1">
+																<span>Check in</span>
+															</div>
+															<div class="checkin-details__checkin-date"
+																style="font-size: 14px;">{{ctrl.messageThread.reservation.startDate
+																| date:'MMM dd, yyyy'}}</div>
+														</div>
+														<div class="col-sm-1">
+															<i
+																class="icon icon-size-1 icon-chevron-right text-medium-gray checkin-details__chevron"></i>
+														</div>
+														<div class="col-sm-5 pull-right text-left">
+															<div
+																class="checkin-details__checkout-title text-medium-gray space-1">
+																<span>Check out</span>
+															</div>
+															<div class="checkin-details__checkout-date"
+																style="font-size: 14px;">{{ctrl.messageThread.reservation.endDate
+																| date:'MMM dd, yyyy'}}</div>
+														</div>
 													</div>
+													<hr />
+
+												</div>
 											</div>
 										</div>
 									</div>
-									<div class="space-top-6 qt-payment-info" style="margin-top: 12px;">
+									<div class="space-top-6 qt-payment-info"
+										style="margin-top: 12px;">
 										<div class="h4 space-6">
 											<span>Payment</span>
 										</div>
@@ -336,11 +356,12 @@
 											<div>
 												<div class="row text-emphasis-gray">
 													<div class="col-sm-8 text-left">
-														<span><span><span>{{ctrl.messageThread.entityPrice}} {{ctrl.getCurrencySymbol()}}</span>
-														</span>x 1 month</span>
+														<span><span><span>{{ctrl.messageThread.entityPrice}}
+																	{{ctrl.getCurrencySymbol()}}</span> </span>x 1 month</span>
 													</div>
 													<div class="col-sm-4 text-right">
-														<span>{{ctrl.messageThread.entityPrice}} {{ctrl.getCurrencySymbol()}}</span>
+														<span>{{ctrl.messageThread.entityPrice}}
+															{{ctrl.getCurrencySymbol()}}</span>
 													</div>
 												</div>
 											</div>
@@ -349,7 +370,8 @@
 													<strong><span>Subtotal</span></strong>
 												</div>
 												<div class="col-sm-4 text-right">
-													<strong><span>{{ctrl.messageThread.entityPrice}} {{ctrl.getCurrencySymbol()}}</span></strong>
+													<strong><span>{{ctrl.messageThread.entityPrice}}
+															{{ctrl.getCurrencySymbol()}}</span></strong>
 												</div>
 											</div>
 											<div class="row text-emphasis-gray space-2 space-top-2">
@@ -357,22 +379,25 @@
 													<span>{{ctrl.getFeeLabel()}}</span>
 												</div>
 												<div class="col-sm-4 text-right">
-													<span>{{ctrl.messageThread.serviceFee}} {{ctrl.getCurrencySymbol()}}</span>
+													<span>{{ctrl.messageThread.serviceFee}}
+														{{ctrl.getCurrencySymbol()}}</span>
 												</div>
 											</div>
-											<hr/>
-												<div class="row space-3 space-top-2">
-													<div class="col-sm-8 text-left">
-														<strong><span>{{ctrl.getTotalLabel()}}</span></strong>
-													</div>
-													<div class="col-sm-4 text-right">
-														<strong><span>{{ctrl.messageThread.entityPrice + ctrl.messageThread.serviceFee}} {{ctrl.getCurrencySymbol()}}</span></strong>
-													</div>
+											<hr />
+											<div class="row space-3 space-top-2">
+												<div class="col-sm-8 text-left">
+													<strong><span>{{ctrl.getTotalLabel()}}</span></strong>
 												</div>
+												<div class="col-sm-4 text-right">
+													<strong><span>{{ctrl.messageThread.entityPrice
+															+ ctrl.messageThread.serviceFee}}
+															{{ctrl.getCurrencySymbol()}}</span></strong>
+												</div>
+											</div>
 										</div>
 										<div class="space-6 space-top-4 text-gray">
-											<span>Protect your payments.</span>
-											<span>Never pay for a reservation outside the Let's Erasmus website.</span>
+											<span>Protect your payments.</span> <span>Never pay
+												for a reservation outside the Let's Erasmus website.</span>
 										</div>
 									</div>
 								</div>
@@ -383,9 +408,13 @@
 			</div>
 		</div>
 		</main>
-		<script src="#{webApplication.urlPrefix}/static/js/dashboard.js?ver=#{webApplication.staticFileVersion}"></script>
-		<script src="#{webApplication.urlPrefix}/static/js/angular/service/message_service.js?ver=#{webApplication.staticFileVersion}"></script>
-		<script src="#{webApplication.urlPrefix}/static/js/angular/service/reservation_service.js?ver=#{webApplication.staticFileVersion}"></script>
-		<script src="#{webApplication.urlPrefix}/static/js/angular/controller/conversation_controller.js?ver=#{webApplication.staticFileVersion}"></script>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/dashboard.js?ver=#{webApplication.staticFileVersion}"></script>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/angular/service/message_service.js?ver=#{webApplication.staticFileVersion}"></script>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/angular/service/reservation_service.js?ver=#{webApplication.staticFileVersion}"></script>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/angular/controller/conversation_controller.js?ver=#{webApplication.staticFileVersion}"></script>
 	</ui:define>
 </ui:composition>

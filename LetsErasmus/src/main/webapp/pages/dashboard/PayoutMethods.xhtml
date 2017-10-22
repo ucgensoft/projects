@@ -5,6 +5,7 @@
 	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
 
 	<ui:define name="head">
+		<meta name="robots" content="noindex">
 		<link rel="stylesheet" type="text/css"
 			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css?ver=#{webApplication.staticFileVersion}" />
 		<link rel="stylesheet" type="text/css"
@@ -18,41 +19,42 @@
 	</ui:define>
 
 	<ui:define name="body">
-		<main id="site-content" role="main">				 
-		<ui:include src="DashboardHeader.html" />
-		<div class="page-container-responsive page-container-inbox space-top-2">
+		<main id="site-content" role="main"> <ui:include
+			src="DashboardHeader.html" />
+		<div
+			class="page-container-responsive page-container-inbox space-top-2">
 			<div class="row">
 				<ui:include src="ProfileLeftMenu.html" />
 				<div id="divFormContainer" class="col-sm-9">
 					<div id="divWarningMessage" class="row">
 						<div class="panel panel-primary">
 							<div class="panel-body">
-								<span class="clsRed">Please make sure you have filled all mandatory fields (*)</span>
+								<span class="clsRed">Please make sure you have filled all
+									mandatory fields (*)</span>
 							</div>
 						</div>
 					</div>
-					
+
 					<div class="row" style="margin-top: 5px;">
 						<div class="col-sm-10">
 							<ul id="listFieldGroup" class="tabs tabs--inbox">
-								<li id="tabPersonalInfo" class="form-tab">
-									<a id="lnkPersonalInfo" href="#" class="tab-item inbox-filter-form__tab"
-										ng-click="ctrl.displayTab('divPersonalInfo', 'lnkPersonalInfo')">
+								<li id="tabPersonalInfo" class="form-tab"><a
+									id="lnkPersonalInfo" href="#"
+									class="tab-item inbox-filter-form__tab"
+									ng-click="ctrl.displayTab('divPersonalInfo', 'lnkPersonalInfo')">
 										<span>Personal Info</span>
-									</a>
-								</li>
-								<li id="tabAddress" class="form-tab">
-									<a id="lnkAddressInfo" href="#" class="tab-item inbox-filter-form__tab"
-										ng-click="ctrl.displayTab('divAddressInfo', 'lnkAddressInfo')">
+								</a></li>
+								<li id="tabAddress" class="form-tab"><a id="lnkAddressInfo"
+									href="#" class="tab-item inbox-filter-form__tab"
+									ng-click="ctrl.displayTab('divAddressInfo', 'lnkAddressInfo')">
 										<span>Address Info</span>
-									</a>
-								</li>
-								<li id="tabBankAccount" class="form-tab">
-									<a id="lnkBankAccountInfo" href="#" class="tab-item inbox-filter-form__tab"
-										aria-selected="true" ng-click="ctrl.displayTab('divBankAccountInfo', 'lnkBankAccountInfo')">
+								</a></li>
+								<li id="tabBankAccount" class="form-tab"><a
+									id="lnkBankAccountInfo" href="#"
+									class="tab-item inbox-filter-form__tab" aria-selected="true"
+									ng-click="ctrl.displayTab('divBankAccountInfo', 'lnkBankAccountInfo')">
 										<span>Bank Account Info</span>
-									</a>
-								</li>
+								</a></li>
 							</ul>
 						</div>
 						<div class="col-sm-2" ng-if="ctrl.payoutMethod != null">
@@ -62,146 +64,159 @@
 					</div>
 					<div class="row panel">
 						<div id="divPersonalInfo" class="panel panel-primary">
-			 				<div class="panel-body">
-			 					<div class="row">
-			 						<div class="form-group col-md-6">
-			 							<label for="">First Name<span class="clsRed"> (*)</span></label>
-			 							<input id="txtFirstName" type="text" class="form-control" 
-			 								maxlength="100"/>
-			 						</div>
-			 						<div class="form-group col-md-6">
-			 							<label for="">Last Name<span class="clsRed"> (*)</span></label> 
-			 							<input id="txtLastName" type="text" class="form-control" 
-			 								maxlength="100"/>
-			 						</div>
-			 						<div class="form-group col-md-6">
-			 							<label for="">Birth Date<span class="clsRed"> (*)</span></label> 
-			 							<input id="txtBirthDatePicker" type="text" class="form-control" 
-			 								placeholder="dd.mm.yyyy"/>
-			 						</div>
-			 						<div class="form-group col-md-6">
-			 							<label for="">Identification Number<span class="clsRed"> (*)</span></label> 
-			 							<input id="txtNationalId" type="number" class="form-control" 
-			 								placeholder="Your national identity"
-			 								maxlength="25"/>
-			 						</div>
-			 					</div>
-			 					<div class="row space-top-4">
-			 						<button class="btn btn-large pull-right" id="btnNext2"
-			 							ng-click="ctrl.displayTab('divAddressInfo', 'lnkAddressInfo')">Next -></button>
-			 					</div>
-			 				</div>
-			 			</div>
-			 			<div id="divAddressInfo" class="panel panel-primary">
-			 				<div class="panel-body">
-			 					<div class="row">
-			 						<div class="form-group col-md-6">
-			 							<label for="">Country<span class="clsRed"> (*)</span></label>
-			 							<div class="select select-block select-jumbo">
-			 								<select style="max-width: 100%; font-size: inherit;"
+							<div class="panel-body">
+								<div class="row">
+									<div class="form-group col-md-6">
+										<label for="">First Name<span class="clsRed">
+												(*)</span></label> <input id="txtFirstName" type="text"
+											class="form-control" maxlength="100" />
+									</div>
+									<div class="form-group col-md-6">
+										<label for="">Last Name<span class="clsRed">
+												(*)</span></label> <input id="txtLastName" type="text" class="form-control"
+											maxlength="100" />
+									</div>
+									<div class="form-group col-md-6">
+										<label for="">Birth Date<span class="clsRed">
+												(*)</span></label> <input id="txtBirthDatePicker" type="text"
+											class="form-control" placeholder="dd.mm.yyyy" />
+									</div>
+									<div class="form-group col-md-6">
+										<label for="">Identification Number<span
+											class="clsRed"> (*)</span></label> <input id="txtNationalId"
+											type="number" class="form-control"
+											placeholder="Your national identity" maxlength="25" />
+									</div>
+								</div>
+								<div class="row space-top-4">
+									<button class="btn btn-large pull-right" id="btnNext2"
+										ng-click="ctrl.displayTab('divAddressInfo', 'lnkAddressInfo')">Next
+										-></button>
+								</div>
+							</div>
+						</div>
+						<div id="divAddressInfo" class="panel panel-primary">
+							<div class="panel-body">
+								<div class="row">
+									<div class="form-group col-md-6">
+										<label for="">Country<span class="clsRed"> (*)</span></label>
+										<div class="select select-block select-jumbo">
+											<select style="max-width: 100%; font-size: inherit;"
 												id="cmbCountry">
 												<option selected="" value="" disabled="">Select One</option>
 												<option ng-repeat="c in ctrl.countryList"
 													value="{{c.isoCodeTwoDigit}}">{{c.name}}</option>
 											</select>
-			 							</div> 
-			 						</div>
-			 						<div class="form-group col-md-6">
-			 							<label for="">City<span class="clsRed"> (*)</span></label> 
-			 							<input id="txtCity" type="text" class="form-control" 
-			 								maxlength="100"/>
-			 						</div>
-			 						<div class="form-group col-md-12">
-			 							<label for="">Address 1<span class="clsRed"> (*)</span></label> 
-			 							<input id="txtAddress" type="text" class="form-control" />
-			 						</div>
-			 						<div class="form-group col-md-12">
-			 							<label for="">Address 2</label> 
-			 							<input id="txtAddress2" type="text" class="form-control" />
-			 						</div>
-			 						<div class="form-group col-md-6">
-			 							<label for="cardholder-name">Postal Code<span class="clsRed"> (*)</span></label> 
-			 							<input id="txtPostalCode" type="text" class="form-control" /> 
-			 						</div>
-			 					</div>
-			 					<div class="row space-top-4">
-			 						<button class="btn btn-large pull-left" id="btnBack1"
-			 							ng-click="ctrl.displayTab('divPersonalInfo', 'lnkPersonalInfo')">&lt;- Back</button>
-			 						<button class="btn btn-large pull-right" id="btnNext2"
-			 							ng-click="ctrl.displayTab('divBankAccountInfo', 'lnkBankAccountInfo')">Next -></button>
-			 					</div>
-			 				</div>
-			 			</div>
-			 			<div id="divBankAccountInfo" class="panel panel-primary">
-			 				<div class="panel-body">
-			 					<div class="row">
-			 						<div class="form-group col-md-12">
-			 							<label for="">Bank Account Class<span class="clsRed"> (*)</span></label>
-			 							<div class="clsBox" style="display: inline-block;">
-											<input id="rdAccountClassPersonal" name="bankAccountClass" type="radio" 
-												value="personal" class="pointer-input" 
+										</div>
+									</div>
+									<div class="form-group col-md-6">
+										<label for="">City<span class="clsRed"> (*)</span></label> <input
+											id="txtCity" type="text" class="form-control" maxlength="100" />
+									</div>
+									<div class="form-group col-md-12">
+										<label for="">Address 1<span class="clsRed">
+												(*)</span></label> <input id="txtAddress" type="text" class="form-control" />
+									</div>
+									<div class="form-group col-md-12">
+										<label for="">Address 2</label> <input id="txtAddress2"
+											type="text" class="form-control" />
+									</div>
+									<div class="form-group col-md-6">
+										<label for="cardholder-name">Postal Code<span
+											class="clsRed"> (*)</span></label> <input id="txtPostalCode"
+											type="text" class="form-control" />
+									</div>
+								</div>
+								<div class="row space-top-4">
+									<button class="btn btn-large pull-left" id="btnBack1"
+										ng-click="ctrl.displayTab('divPersonalInfo', 'lnkPersonalInfo')">&lt;-
+										Back</button>
+									<button class="btn btn-large pull-right" id="btnNext2"
+										ng-click="ctrl.displayTab('divBankAccountInfo', 'lnkBankAccountInfo')">Next
+										-></button>
+								</div>
+							</div>
+						</div>
+						<div id="divBankAccountInfo" class="panel panel-primary">
+							<div class="panel-body">
+								<div class="row">
+									<div class="form-group col-md-12">
+										<label for="">Bank Account Class<span class="clsRed">
+												(*)</span></label>
+										<div class="clsBox" style="display: inline-block;">
+											<input id="rdAccountClassPersonal" name="bankAccountClass"
+												type="radio" value="personal" class="pointer-input"
 												ng-model="dummy" ng-change="ctrl.onBankAccountTypeChange()" />
 											<span>Personal</span>
 										</div>
-										<div class="clsBox" style="display: inline-block; margin-left: 10px;">
-											<input id="rdAccountClassBusiness" name="bankAccountClass" type="radio" 
-												value="business" class="pointer-input" 
+										<div class="clsBox"
+											style="display: inline-block; margin-left: 10px;">
+											<input id="rdAccountClassBusiness" name="bankAccountClass"
+												type="radio" value="business" class="pointer-input"
 												ng-model="dummy" ng-change="ctrl.onBankAccountTypeChange()" />
 											<span>Business</span>
 										</div>
-			 						</div>
-			 						<div class="form-group col-md-12">
-			 							<label for="">Bank Account Holder Name<span class="clsRed"> (*)</span></label> 
-			 							<input id="txtBankAccountHolderName" type="text" class="form-control" 
-			 								maxlength="100"/>
-			 						</div>
-			 						<div class="form-group col-md-12">
-			 							<label for="">Bank Account Country<span class="clsRed"> (*)</span></label>
-			 							<div class="select select-block select-jumbo">
-			 								<select style="max-width: 100%; font-size: inherit;"
-												id="cmbBankAccountCountry" 
-												ng-model="dummyBankCountryModel" ng-change="ctrl.onBankCountryChange()">
+									</div>
+									<div class="form-group col-md-12">
+										<label for="">Bank Account Holder Name<span
+											class="clsRed"> (*)</span></label> <input
+											id="txtBankAccountHolderName" type="text"
+											class="form-control" maxlength="100" />
+									</div>
+									<div class="form-group col-md-12">
+										<label for="">Bank Account Country<span class="clsRed">
+												(*)</span></label>
+										<div class="select select-block select-jumbo">
+											<select style="max-width: 100%; font-size: inherit;"
+												id="cmbBankAccountCountry" ng-model="dummyBankCountryModel"
+												ng-change="ctrl.onBankCountryChange()">
 												<option selected="" value="" disabled="">Select One</option>
 												<option ng-repeat="c in ctrl.countryList"
 													value="{{c.isoCodeTwoDigit}}">{{c.name}}</option>
 											</select>
-			 							</div> 
-			 						</div>
-			 						<div class="form-group col-md-12">
-			 							<label for="">Iban<span class="clsRed"> (*)</span></label> 
-			 							<input id="txtIbanCountryCode" type="text" class="form-control" disabled="true"
-			 								style="width: 40px; display:inline-block;" value="" />
-			 							<input id="txtIban" class="form-control" 
-			 								maxlength="32" type="number"
-			 								style="display:inline-block; width: 80%; margin-left: -3px;"/>
-			 						</div>
-			 						<div class="form-group col-md-12">
-			 							<label for="">BIC/Bank Branch or SWIFT Code<span class="clsRed"> (*)</span></label> 
-			 							<input id="txtSwiftCode" type="text" class="form-control" 
-			 								maxlength="50"/>
-			 						</div>
-			 						<div id="divTaxId" class="form-group col-md-6">
-			 							<label for="">TaxId / VatId<span class="clsRed"> (*)</span></label> 
-			 							<input id="txtTaxVatId" type="number" class="form-control" 
-			 								maxlength="100" />
-			 						</div>
-			 					</div>
-			 					<div class="row space-top-4">
-			 						<button class="btn btn-large pull-left" id="btnBack2"
-			 							ng-click="ctrl.displayTab('divAddressInfo', 'lnkAddressInfo')">&lt;- Back</button>
-			 						<button class="btn btn-primary pull-right" id="btnSave"
-			 							ng-click="ctrl.onSaveBtnClick()" ng-if="ctrl.payoutMethod == null">Save</button>
-			 					</div>
-			 				</div>
-			 			</div>
+										</div>
+									</div>
+									<div class="form-group col-md-12">
+										<label for="">Iban<span class="clsRed"> (*)</span></label> <input
+											id="txtIbanCountryCode" type="text" class="form-control"
+											disabled="true" style="width: 40px; display: inline-block;"
+											value="" /> <input id="txtIban" class="form-control"
+											maxlength="32" type="number"
+											style="display: inline-block; width: 80%; margin-left: -3px;" />
+									</div>
+									<div class="form-group col-md-12">
+										<label for="">BIC/Bank Branch or SWIFT Code<span
+											class="clsRed"> (*)</span></label> <input id="txtSwiftCode"
+											type="text" class="form-control" maxlength="50" />
+									</div>
+									<div id="divTaxId" class="form-group col-md-6">
+										<label for="">TaxId / VatId<span class="clsRed">
+												(*)</span></label> <input id="txtTaxVatId" type="number"
+											class="form-control" maxlength="100" />
+									</div>
+								</div>
+								<div class="row space-top-4">
+									<button class="btn btn-large pull-left" id="btnBack2"
+										ng-click="ctrl.displayTab('divAddressInfo', 'lnkAddressInfo')">&lt;-
+										Back</button>
+									<button class="btn btn-primary pull-right" id="btnSave"
+										ng-click="ctrl.onSaveBtnClick()"
+										ng-if="ctrl.payoutMethod == null">Save</button>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 		</main>
-		<script src="#{webApplication.urlPrefix}/static/js/angular/service/common_service.js?ver=#{webApplication.staticFileVersion}"></script>
-		<script src="#{webApplication.urlPrefix}/static/js/angular/service/payment_service.js?ver=#{webApplication.staticFileVersion}"></script>
-		<script src="#{webApplication.urlPrefix}/static/js/angular/controller/payout_method_controller.js?ver=#{webApplication.staticFileVersion}"></script>
-		<script src="#{webApplication.urlPrefix}/static/js/dashboard.js?ver=#{webApplication.staticFileVersion}"></script>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/angular/service/common_service.js?ver=#{webApplication.staticFileVersion}"></script>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/angular/service/payment_service.js?ver=#{webApplication.staticFileVersion}"></script>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/angular/controller/payout_method_controller.js?ver=#{webApplication.staticFileVersion}"></script>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/dashboard.js?ver=#{webApplication.staticFileVersion}"></script>
 	</ui:define>
 </ui:composition>

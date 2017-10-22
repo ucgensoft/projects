@@ -5,6 +5,7 @@
 	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
 
 	<ui:define name="head">
+		<meta name="robots" content="noindex">
 		<link rel="stylesheet" type="text/css"
 			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css?ver=#{webApplication.staticFileVersion}" />
 		<link rel="stylesheet" type="text/css"
@@ -58,9 +59,8 @@
 														ng-if="r.status == 1"
 														ng-click="ctrl.openRecallReservationWindow(r.id)">Recall</button>
 												</td>
-												<td data-label="Dates">{{r.startDate |
-													date:'MMM dd, yyyy'}} - {{r.endDate | date:'MMM dd, yyyy'}}
-													<br /> <a
+												<td data-label="Dates">{{r.startDate | date:'MMM dd,
+													yyyy'}} - {{r.endDate | date:'MMM dd, yyyy'}} <br /> <a
 													href="#{webApplication.urlPrefix}/room/{{r.placeId}}&amp;checkinDate={{r.startDate | date:'dd.MM.yyyy'}}&amp;checkoutDate={{r.endDate | date:'dd.MM.yyyy'}}"
 													locale="en" target="_blank">{{r.place.title}}</a>
 												</td>
@@ -132,9 +132,8 @@
 														ng-if="r.status == 2"
 														ng-click="ctrl.openCancelReservationWindow(r.id)">Cancel</button>
 												</td>
-												<td data-label="Dates">{{r.startDate |
-													date:'MMM dd, yyyy'}} - {{r.endDate | date:'MMM dd, yyyy'}}
-													<br /> <a
+												<td data-label="Dates">{{r.startDate | date:'MMM dd,
+													yyyy'}} - {{r.endDate | date:'MMM dd, yyyy'}} <br /> <a
 													href="#{webApplication.urlPrefix}/room/{{r.placeId}}&amp;checkinDate={{r.startDate | date:'dd.MM.yyyy'}}&amp;checkoutDate={{r.endDate | date:'dd.MM.yyyy'}}"
 													locale="en" target="_blank">{{r.place.title}}</a>
 												</td>
@@ -207,9 +206,8 @@
 														ng-if="ctrl.isReviewed(r) == false"
 														ng-click="ctrl.openReviewWindow(r)">Review Place
 														and Host</button></td>
-												<td data-label="Dates">{{r.startDate |
-													date:'MMM dd, yyyy'}} - {{r.endDate | date:'MMM dd, yyyy'}}
-													<br /> <a
+												<td data-label="Dates">{{r.startDate | date:'MMM dd,
+													yyyy'}} - {{r.endDate | date:'MMM dd, yyyy'}} <br /> <a
 													href="#{webApplication.urlPrefix}/room/{{r.placeId}}&amp;checkinDate={{r.startDate | date:'dd.MM.yyyy'}}&amp;checkoutDate={{r.endDate | date:'dd.MM.yyyy'}}"
 													locale="en" target="_blank">{{r.place.title}}</a>
 												</td>
