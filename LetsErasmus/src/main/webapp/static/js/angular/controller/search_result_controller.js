@@ -39,7 +39,7 @@ App.controller('searchResultCtrl', ['$scope', '$controller', '$http', 'placeServ
       };
       
       initialize = function() {
-    	  
+    	  $('#divPlaceListAll').css('display', 'none');
     	  if (searchLocationName.indexOf('--') > -1) {
     		  self.selectedPlaceName = searchLocationName.split('--')[1];
     	  } else {

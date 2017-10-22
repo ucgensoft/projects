@@ -367,7 +367,17 @@
 							</h2>
 						</div>
 					</div>
-					<section id="searchResultsId" class="SearchResults"> <article
+					<section id="searchResultsId" class="SearchResults">
+						<div id="divPlaceListAll">
+							<ui:repeat var="place" value="#{searchController.placeList}" varStatus="status">
+								<div id="divPlaceDraftInfo_#{place.id}">
+									<label id="lblPlaceDraftInfo_Title_#{place.id}">#{place.title}</label>
+									<label id="lblPlaceDraftInfo_Desc_#{place.id}">#{place.description}</label>
+									<a id="lnkPlaceDraftInfo_#{place.id}" href="#{webApplication.getPlaceDetailUrl(place.id)}">Click for place detail</a>
+								</div>
+							</ui:repeat>
+						</div> 
+					<article
 						ng-repeat="p in ctrl.placeList" id="articleProduct_{{p.id}}"
 						class="ProductCard" ng-mouseover="ctrl.animateMarker(p.id, true)"
 						ng-mouseleave="ctrl.animateMarker(p.id, false)">

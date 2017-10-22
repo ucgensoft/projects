@@ -398,6 +398,9 @@ public class PlaceDao extends JdbcDaoSupport implements IPlaceDao{
 		if (pageSize != null && pageNumber != null) {
 			int start = ((pageNumber - 1) * pageSize);
 			int end = start + pageSize;
+			if (end > totalRowCount) {
+				end = totalRowCount;
+			}
 			List<Place> placeListPage = new ArrayList<Place>();
 			for (int i = start; i < end; i++) {
 				placeListPage.add(placeList.get(i));
