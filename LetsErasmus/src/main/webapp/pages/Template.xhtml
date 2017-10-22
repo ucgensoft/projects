@@ -131,7 +131,7 @@
 			<div ng-app="myApp">
 				<div id="divPageHeader" class="clsHeader" ng-controller="headerCtrl as ctrl">
 					<ui:include src="Header.xhtml"   />
-					<div id="divModal" class="modalWrapper login-form overlay animate">
+					<div id="divModal" class="modalWrapper login-form overlay animate" style="display: none">
 						<div id="divModalContent" class="modalWindow clsLoginModal">
 							
 						</div>
@@ -153,6 +153,8 @@
 					var modal = document.getElementById('divModal');
 					if(document.getElementById('divModalContent').children.length == 0) {
 						modal.style.display = 'none';
+					} else {
+						modal.style.display = '';
 					}
 					
 					function closeModal() {
