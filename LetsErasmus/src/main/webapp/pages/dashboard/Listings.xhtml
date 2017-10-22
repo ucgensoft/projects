@@ -5,11 +5,12 @@
 	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
 
 	<ui:define name="head">
+		<meta name="robots" content="noindex">
 		<link rel="stylesheet" type="text/css"
 			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css?ver=#{webApplication.staticFileVersion}" />
 		<link rel="stylesheet" type="text/css"
 			href="#{webApplication.urlPrefix}/static/css/place/your_listings.css?ver=#{webApplication.staticFileVersion}" />
-			
+
 		<script>
 			var activeDashboardTab = 3;
 			var activeLeftMenuLink = 1;
@@ -18,119 +19,142 @@
 
 	<ui:define name="body">
 		<input type="hidden" value="#{webApplication.setActiveOperation(3)}" />
-		<main id="site-content" role="main"> 
-			<ui:include src="DashboardHeader.html" />
-			<div class="page-container-responsive space-top-4 space-4">
-				<div class="row">
-					<ui:include src="ListingLeftMenu.html" />
-					<div class="col-md-9">
-						<div class="your-listings-flash-container"></div>
-						<div id="listings-container">
-							<div>
-								<div class="suspension-container">
-									<div class="panel space-4">
-										<div class="panel-header active-panel-header">
-											<div class="active-panel-padding">Active Listings</div>
-										</div>
-										<div class="listing-left space-2 space-top-2 {{ (ctrl.activePlaceList.length != 0 ? 'hidden' : '') }}">You have no active listing.</div>
-										<ul class="list-unstyled list-layout">
-											<li ng-repeat="p in ctrl.activePlaceList" class="listing panel-body">
-												<div class="row row-table">
-													<div class="col-middle space-sm-2 space-top-sm-4 col-md-5 listing-photo">
-														<div class="media-photo media-photo-block-lg">
-															<div class="media-cover text-center">
-																<img class="img-responsive-height" src="{{ctrl.generatePlacePhotoUrl(p.id, p.coverPhoto.id, 'small')}}">
-																</img>
-															</div>
+		<main id="site-content" role="main"> <ui:include
+			src="DashboardHeader.html" />
+		<div class="page-container-responsive space-top-4 space-4">
+			<div class="row">
+				<ui:include src="ListingLeftMenu.html" />
+				<div class="col-md-9">
+					<div class="your-listings-flash-container"></div>
+					<div id="listings-container">
+						<div>
+							<div class="suspension-container">
+								<div class="panel space-4">
+									<div class="panel-header active-panel-header">
+										<div class="active-panel-padding">Active Listings</div>
+									</div>
+									<div
+										class="listing-left space-2 space-top-2 {{ (ctrl.activePlaceList.length != 0 ? 'hidden' : '') }}">You
+										have no active listing.</div>
+									<ul class="list-unstyled list-layout">
+										<li ng-repeat="p in ctrl.activePlaceList"
+											class="listing panel-body">
+											<div class="row row-table">
+												<div
+													class="col-middle space-sm-2 space-top-sm-4 col-md-5 listing-photo">
+													<div class="media-photo media-photo-block-lg">
+														<div class="media-cover text-center">
+															<img class="img-responsive-height"
+																src="{{ctrl.generatePlacePhotoUrl(p.id, p.coverPhoto.id, 'small')}}">
+															</img>
 														</div>
-													</div>
-													<div class="col-sm-10 col-lg-7 col-middle">
-														<div class="h4">{{p.title}}</div>
-														<div class="text-normal space-top-2">{{p.location.state}}, {{p.location.country}}</div>
-														<div class="text-muted text-grey space-top-1 last-modified-date {{(p.modifiedDate != null ? 'hidden' : '')}}">
-															<span>Created on {{p.createdDate | date:'MMMM dd, yyyy'}}</span>
-														</div>
-														<div class="text-muted text-grey space-top-1 last-modified-date {{(p.modifiedDate == null ? 'hidden' : '')}}">
-															<span>Last updated on {{p.modifiedDate | date:'MMMM dd, yyyy'}}</span>
-														</div>
-														<div class="space-top-4">
-															<a class="btn btn__first-btn btn-primary" style="margin-right:0px"
-																href="#{webApplication.urlPrefix}/become-a-host?placeId={{p.id}}" target="_blank">
-																<span>Edit</span>
-															</a>
-															<a class="btn btn__second-btn" style="margin-right:0px" 
-																href="#{webApplication.urlPrefix}/room/{{p.id}}" target="_blnak">
-																<span>Preview</span>
-															</a>
-															<a class="btn btn__second-btn" style="margin-right:0px" ng-click="ctrl.updatePlaceStatus(p.id, ctrl.DEACTIVE)">
-																<span>Deactivate</span>
-															</a>
-															<a class="btn btn__second-btn" style="margin-right:0px" ng-click="ctrl.updatePlaceStatus(p.id, ctrl.DELETED)">
-																<span>Delete</span>
-															</a>
-														</div>
-														<noscript></noscript>
 													</div>
 												</div>
-											</li>
-										</ul>
-									</div>
-									<div class="panel space-4">
-										<div class="panel-header active-panel-header">
-											<div class="active-panel-padding">Deactive Listings</div>
-										</div>
-										<div class="listing-left space-2 space-top-2 {{ (ctrl.deactivePlaceList.length != 0 ? 'hidden' : '') }}">You have no deactive listing.</div>
-										<ul class="list-unstyled list-layout">
-											<li ng-repeat="p in ctrl.deactivePlaceList" class="listing panel-body">
-												<div class="row row-table">
-													<div class="col-middle space-sm-2 space-top-sm-4 col-md-5 listing-photo">
-														<div class="media-photo media-photo-block-lg">
-															<div class="media-cover text-center">
-																<img class="img-responsive-height" src="{{ctrl.generatePlacePhotoUrl(p.id, p.coverPhoto.id, 'small')}}">
-																</img>
-															</div>
-														</div>
+												<div class="col-sm-10 col-lg-7 col-middle">
+													<div class="h4">{{p.title}}</div>
+													<div class="text-normal space-top-2">{{p.location.state}},
+														{{p.location.country}}</div>
+													<div
+														class="text-muted text-grey space-top-1 last-modified-date {{(p.modifiedDate != null ? 'hidden' : '')}}">
+														<span>Created on {{p.createdDate | date:'MMMM dd,
+															yyyy'}}</span>
 													</div>
-													<div class="col-sm-10 col-lg-7 col-middle">
-														<div class="h4">{{p.title}}</div>
-														<div class="text-normal space-top-2">{{p.location.state}}, {{p.location.country}}</div>
-														<div class="text-muted text-grey space-top-1 last-modified-date {{(p.modifiedDate != null ? 'hidden' : '')}}">
-															<span>Created on {{p.createdDate | date:'MMMM dd, yyyy'}}</span>
+													<div
+														class="text-muted text-grey space-top-1 last-modified-date {{(p.modifiedDate == null ? 'hidden' : '')}}">
+														<span>Last updated on {{p.modifiedDate | date:'MMMM
+															dd, yyyy'}}</span>
+													</div>
+													<div class="space-top-4">
+														<a class="btn btn__first-btn btn-primary"
+															style="margin-right: 0px"
+															href="#{webApplication.urlPrefix}/become-a-host?placeId={{p.id}}"
+															target="_blank"> <span>Edit</span>
+														</a> <a class="btn btn__second-btn" style="margin-right: 0px"
+															href="#{webApplication.urlPrefix}/room/{{p.id}}"
+															target="_blnak"> <span>Preview</span>
+														</a> <a class="btn btn__second-btn" style="margin-right: 0px"
+															ng-click="ctrl.updatePlaceStatus(p.id, ctrl.DEACTIVE)">
+															<span>Deactivate</span>
+														</a> <a class="btn btn__second-btn" style="margin-right: 0px"
+															ng-click="ctrl.updatePlaceStatus(p.id, ctrl.DELETED)">
+															<span>Delete</span>
+														</a>
+													</div>
+													<noscript></noscript>
+												</div>
+											</div>
+										</li>
+									</ul>
+								</div>
+								<div class="panel space-4">
+									<div class="panel-header active-panel-header">
+										<div class="active-panel-padding">Deactive Listings</div>
+									</div>
+									<div
+										class="listing-left space-2 space-top-2 {{ (ctrl.deactivePlaceList.length != 0 ? 'hidden' : '') }}">You
+										have no deactive listing.</div>
+									<ul class="list-unstyled list-layout">
+										<li ng-repeat="p in ctrl.deactivePlaceList"
+											class="listing panel-body">
+											<div class="row row-table">
+												<div
+													class="col-middle space-sm-2 space-top-sm-4 col-md-5 listing-photo">
+													<div class="media-photo media-photo-block-lg">
+														<div class="media-cover text-center">
+															<img class="img-responsive-height"
+																src="{{ctrl.generatePlacePhotoUrl(p.id, p.coverPhoto.id, 'small')}}">
+															</img>
 														</div>
-														<div class="text-muted text-grey space-top-1 last-modified-date {{(p.modifiedDate == null ? 'hidden' : '')}}">
-															<span>Last updated on {{p.modifiedDate | date:'MMMM dd, yyyy'}}</span>
-														</div>
-														<div class="space-top-4">
-															<a class="btn btn__first-btn btn-primary" style="margin-right:0px"
-																href="#{webApplication.urlPrefix}/become-a-host/{{p.id}}" target="_blank">
-																<span>Edit</span>
-															</a>
-															<a class="btn btn__second-btn" style="margin-right:0px" 
-																href="#{webApplication.urlPrefix}/room/{{p.id}}" target="_blnak">
-																<span>Preview</span>
-															</a>
-															<a class="btn btn__second-btn" style="margin-right:0px" ng-click="ctrl.updatePlaceStatus(p.id, ctrl.ACTIVE)">
-																<span>Activate</span>
-															</a>
-															<a class="btn btn__second-btn" style="margin-right:0px" ng-click="ctrl.updatePlaceStatus(p.id, ctrl.DELETED)">
-																<span>Delete</span>
-															</a>
-														</div>
-														<noscript></noscript>
 													</div>
 												</div>
-											</li>
-										</ul>
-									</div>
+												<div class="col-sm-10 col-lg-7 col-middle">
+													<div class="h4">{{p.title}}</div>
+													<div class="text-normal space-top-2">{{p.location.state}},
+														{{p.location.country}}</div>
+													<div
+														class="text-muted text-grey space-top-1 last-modified-date {{(p.modifiedDate != null ? 'hidden' : '')}}">
+														<span>Created on {{p.createdDate | date:'MMMM dd,
+															yyyy'}}</span>
+													</div>
+													<div
+														class="text-muted text-grey space-top-1 last-modified-date {{(p.modifiedDate == null ? 'hidden' : '')}}">
+														<span>Last updated on {{p.modifiedDate | date:'MMMM
+															dd, yyyy'}}</span>
+													</div>
+													<div class="space-top-4">
+														<a class="btn btn__first-btn btn-primary"
+															style="margin-right: 0px"
+															href="#{webApplication.urlPrefix}/become-a-host/{{p.id}}"
+															target="_blank"> <span>Edit</span>
+														</a> <a class="btn btn__second-btn" style="margin-right: 0px"
+															href="#{webApplication.urlPrefix}/room/{{p.id}}"
+															target="_blnak"> <span>Preview</span>
+														</a> <a class="btn btn__second-btn" style="margin-right: 0px"
+															ng-click="ctrl.updatePlaceStatus(p.id, ctrl.ACTIVE)">
+															<span>Activate</span>
+														</a> <a class="btn btn__second-btn" style="margin-right: 0px"
+															ng-click="ctrl.updatePlaceStatus(p.id, ctrl.DELETED)">
+															<span>Delete</span>
+														</a>
+													</div>
+													<noscript></noscript>
+												</div>
+											</div>
+										</li>
+									</ul>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+		</div>
 		</main>
-		<script src="#{webApplication.urlPrefix}/static/js/dashboard.js?ver=#{webApplication.staticFileVersion}"></script>
-		<script src="#{webApplication.urlPrefix}/static/js/angular/service/place_service.js?ver=#{webApplication.staticFileVersion}"></script>
-		<script src="#{webApplication.urlPrefix}/static/js/angular/controller/listings_controller.js?ver=#{webApplication.staticFileVersion}"></script>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/dashboard.js?ver=#{webApplication.staticFileVersion}"></script>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/angular/service/place_service.js?ver=#{webApplication.staticFileVersion}"></script>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/angular/controller/listings_controller.js?ver=#{webApplication.staticFileVersion}"></script>
 	</ui:define>
 </ui:composition>

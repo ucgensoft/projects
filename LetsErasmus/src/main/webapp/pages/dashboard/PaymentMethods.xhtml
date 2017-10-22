@@ -5,6 +5,7 @@
 	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
 
 	<ui:define name="head">
+		<meta name="robots" content="noindex">
 		<link rel="stylesheet" type="text/css"
 			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css?ver=#{webApplication.staticFileVersion}" />
 		<link rel="stylesheet" type="text/css"
@@ -17,69 +18,78 @@
 	</ui:define>
 
 	<ui:define name="body">
-		<main id="site-content" role="main"> 
-			<ui:include src="DashboardHeader.html" />
-			<div class="page-container-responsive space-top-4 space-4">
-				<div class="row">
-					<ui:include src="ProfileLeftMenu.html" />
+		<main id="site-content" role="main"> <ui:include
+			src="DashboardHeader.html" />
+		<div class="page-container-responsive space-top-4 space-4">
+			<div class="row">
+				<ui:include src="ProfileLeftMenu.html" />
 				<div class="col-md-9">
 					<section id="sectionPaymentMethodList" class="panel">
-						<div class="panel-header">Payment Methods</div>
-						<div id="icons-panel" class="panel-body">
-							<div class="row space-3">
-								<div ng-repeat="p in ctrl.paymentMethodList"
-									class="col-4 space-2 space-top-2">
-									<div class="panel panel-image payment-image">
-										<div>
-											<div class="panel-overlay-top-left text-lead">
-												XXXXXXXXXXXX{{p.cardNumber}}
-												<div>{{p.expDate}}</div>
-											</div>
-											<div class="panel-overlay-bottom-left text-lead">
-												Default Card <i class="icon icon-question" title="Default payment method cannot be removed."></i>
-											</div>
-											<div class="panel-overlay-bottom-right">
-												<img class="payment-logo" src="{{ctrl.getPaymentMethodImage(p.cardType)}}"></img>
-											</div>
+					<div class="panel-header">Payment Methods</div>
+					<div id="icons-panel" class="panel-body">
+						<div class="row space-3">
+							<div ng-repeat="p in ctrl.paymentMethodList"
+								class="col-4 space-2 space-top-2">
+								<div class="panel panel-image payment-image">
+									<div>
+										<div class="panel-overlay-top-left text-lead">
+											XXXXXXXXXXXX{{p.cardNumber}}
+											<div>{{p.expDate}}</div>
 										</div>
-									</div>
-								</div>
-								<div class="col-4 space-2 space-top-2">
-									<div id="modal-trigger-add" class="panel payment-image">
-										<div class="row row-table row-full-height">
-											<div class="col-12 col-middle text-center text-lead">
-												<div class="space-3 space-top-3">
-													<i class="icon icon-add icon-size-2"> </i>
-												</div>
-												<div class="btn btn-primary" ng-click="ctrl.onNewPaymentBtnClick()">Add Payment Method</div>
-											</div>
+										<div class="panel-overlay-bottom-left text-lead">
+											Default Card <i class="icon icon-question"
+												title="Default payment method cannot be removed."></i>
+										</div>
+										<div class="panel-overlay-bottom-right">
+											<img class="payment-logo"
+												src="{{ctrl.getPaymentMethodImage(p.cardType)}}"></img>
 										</div>
 									</div>
 								</div>
 							</div>
-							<div class="row">
-								<div class="col-12">
-									Remember: LetsErasmus will never ask you to wire money. <a
-										href="/help/article/209" target="_blank">Learn more</a>.
+							<div class="col-4 space-2 space-top-2">
+								<div id="modal-trigger-add" class="panel payment-image">
+									<div class="row row-table row-full-height">
+										<div class="col-12 col-middle text-center text-lead">
+											<div class="space-3 space-top-3">
+												<i class="icon icon-add icon-size-2"> </i>
+											</div>
+											<div class="btn btn-primary"
+												ng-click="ctrl.onNewPaymentBtnClick()">Add Payment
+												Method</div>
+										</div>
+									</div>
 								</div>
 							</div>
-	
 						</div>
+						<div class="row">
+							<div class="col-12">
+								Remember: LetsErasmus will never ask you to wire money. <a
+									href="/help/article/209" target="_blank">Learn more</a>.
+							</div>
+						</div>
+
+					</div>
 					</section>
 					<div id="divNewPayment" class="hidden-force">
-						<form method="POST" action="https://sandbox.bluesnap.com/services/2/payment-fields-tokens">
+						<form method="POST"
+							action="https://sandbox.bluesnap.com/services/2/payment-fields-tokens">
 							<button type="submit">Submit</button>
 						</form>
-						<iframe id="frameNewPayment" src="#{webApplication.urlPrefix}/static/html/NewPayment.htm" 
-							style="width: 440px; height: 500px; border-width:0px; padding: 0px;">	
+						<iframe id="frameNewPayment"
+							src="#{webApplication.urlPrefix}/static/html/NewPayment.htm"
+							style="width: 440px; height: 500px; border-width:0px; padding: 0px;">
 						</iframe>
 					</div>
 				</div>
 			</div>
-			</div>
+		</div>
 		</main>
-		<script src="#{webApplication.urlPrefix}/static/js/dashboard.js?ver=#{webApplication.staticFileVersion}"></script>
-		<script src="#{webApplication.urlPrefix}/static/js/angular/service/payment_service.js?ver=#{webApplication.staticFileVersion}"></script>
-		<script src="#{webApplication.urlPrefix}/static/js/angular/controller/payment_method_controller.js?ver=#{webApplication.staticFileVersion}"></script>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/dashboard.js?ver=#{webApplication.staticFileVersion}"></script>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/angular/service/payment_service.js?ver=#{webApplication.staticFileVersion}"></script>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/angular/controller/payment_method_controller.js?ver=#{webApplication.staticFileVersion}"></script>
 	</ui:define>
 </ui:composition>

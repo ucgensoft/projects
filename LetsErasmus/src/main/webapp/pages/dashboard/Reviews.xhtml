@@ -5,9 +5,10 @@
 	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
 
 	<ui:define name="head">
+		<meta name="robots" content="noindex">
 		<link rel="stylesheet" type="text/css"
 			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css?ver=#{webApplication.staticFileVersion}" />
-			
+
 		<script>
 			var activeDashboardTab = 1;
 			var activeLeftMenuLink = 5;
@@ -15,8 +16,8 @@
 	</ui:define>
 
 	<ui:define name="body">
-		<main id="site-content" role="main">
-			 <ui:include src="DashboardHeader.html" />
+		<main id="site-content" role="main"> <ui:include
+			src="DashboardHeader.html" />
 		<div class="page-container-responsive space-top-4 space-4">
 			<div class="row">
 				<ui:include src="ProfileLeftMenu.html" />
@@ -49,16 +50,14 @@
 											<li class="media reviews-list-item space-top-2">
 												<div class="pull-left text-center">
 													<a href="https://www.airbnb.com/users/show/49647695"
-														class="media-photo media-round"> 
-														<img alt="Paul"
-															height="68"
-															src="./Reviews_files/23125c1e-389c-4e70-b13f-93c198e89ac9.jpg"
-															title="Paul" width="68" />
+														class="media-photo media-round"> <img alt="Paul"
+														height="68"
+														src="./Reviews_files/23125c1e-389c-4e70-b13f-93c198e89ac9.jpg"
+														title="Paul" width="68" />
 													</a>
 													<div class="name">
 														<a href="https://www.airbnb.com/users/show/49647695"
-															class="text-muted">Paul Davis
-														</a>
+															class="text-muted">Paul Davis </a>
 													</div>
 												</div>
 												<div class="media-body response">
@@ -95,13 +94,13 @@
 									<div class="panel-header">Past Reviews You’ve Written</div>
 									<div class="panel-body">
 										<ul class="list-layout reviews-list">
-											<li class="reviews-list-item media space-top-2">
-												<a href="https://www.airbnb.com/users/show/49647695"
-													class="media-photo media-round pull-left space-top-0"> 
-													<img alt="Paul" height="50"
-														src="./Reviews_files/23125c1e-389c-4e70-b13f-93c198e89ac9(1).jpg"
-														title="Paul" width="50" />
-												</a>
+											<li class="reviews-list-item media space-top-2"><a
+												href="https://www.airbnb.com/users/show/49647695"
+												class="media-photo media-round pull-left space-top-0"> <img
+													alt="Paul" height="50"
+													src="./Reviews_files/23125c1e-389c-4e70-b13f-93c198e89ac9(1).jpg"
+													title="Paul" width="50" />
+											</a>
 												<div class="media-body">
 													<h5>
 														Review for <a
@@ -111,8 +110,7 @@
 													<p>Great location, very close to seaside and
 														restaurants. Everything as it is described.</p>
 													<p class="clearfix text-muted">May 2016</p>
-												</div>
-											</li>
+												</div></li>
 										</ul>
 									</div>
 								</div>
@@ -125,6 +123,7 @@
 			</div>
 		</div>
 		</main>
-		<script src="#{webApplication.urlPrefix}/static/js/dashboard.js?ver=#{webApplication.staticFileVersion}"></script>
+		<script
+			src="#{webApplication.urlPrefix}/static/js/dashboard.js?ver=#{webApplication.staticFileVersion}"></script>
 	</ui:define>
 </ui:composition>
