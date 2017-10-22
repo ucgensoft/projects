@@ -543,16 +543,16 @@ public class ApiUserController extends BaseApiController {
 					if (uiUser.getPassword() != null && uiUser.getPassword().trim().length() > 0) {
 						user.setPassword(uiUser.getPassword());
 					}
-					if (user.getGoogleId() != null || user.getFacebookId() != null) {
-						user.setEmail(uiUser.getEmail());
+					
+					user.setEmail(uiUser.getEmail());
+					
+					if (sessionUser.getEmail() == null || !sessionUser.getEmail().equals(user.getEmail())) {
+						String verificationCode = SecurityUtil.generateUUID();
 						
-						if (sessionUser.getEmail() == null || !sessionUser.getEmail().equals(user.getEmail())) {
-							String verificationCode = SecurityUtil.generateUUID();
-							
-							user.setEmailVerified(EnmBoolStatus.NO.getId());
-							user.setUserActivationKeyEmail(verificationCode);
-						}
+						user.setEmailVerified(EnmBoolStatus.NO.getId());
+						user.setUserActivationKeyEmail(verificationCode);
 					}
+					
 					user.setResidenceLocationName(uiUser.getResidenceLocationName());
 					user.setDescription(uiUser.getDescription());
 					user.setJobTitle(uiUser.getJobTitle());
@@ -850,7 +850,7 @@ public class ApiUserController extends BaseApiController {
 				if (OperationResult.isResultSucces(updateResult)) {
 					user.setEmailVerified(updatedUser.getEmailVerified());
 					user.setUserActivationKeyEmail(updatedUser.getUserActivationKeyEmail());
-					this.mailService.sendEmailVerificationMail(user, user.getLoginEmail());
+					this.mailService.sendEmailVerificationMail(user, user.getEmail());
 					
 					operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 				} else {

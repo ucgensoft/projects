@@ -383,7 +383,7 @@ public class User extends BaseModel {
 				tmpEmail = this.email;
 			} else if (this.loginType.equals(EnmLoginType.GOOGLE.getId())) {
 				tmpEmail = this.googleEmail;
-			} else if (this.loginType.equals(EnmLoginType.GOOGLE.getId())) {
+			} else if (this.loginType.equals(EnmLoginType.FACEBOOK.getId())) {
 				tmpEmail = this.facebookEmail;
 			}
 		}
