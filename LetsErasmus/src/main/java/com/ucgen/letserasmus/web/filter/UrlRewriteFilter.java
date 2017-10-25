@@ -10,8 +10,11 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Level;
 import org.ocpsoft.rewrite.servlet.RewriteFilter;
 
+import com.ucgen.common.util.CommonUtil;
+import com.ucgen.common.util.FileLogger;
 import com.ucgen.common.util.WebUtil;
 import com.ucgen.letserasmus.web.view.application.WebApplication;
 
@@ -49,7 +52,12 @@ public class UrlRewriteFilter extends RewriteFilter {
 				httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
 			}
 		} else {
-			super.doFilter(request, response, chain);
+			try {
+				super.doFilter(request, response, chain);
+			} catch (Throwable e) {
+				FileLogger.log(Level.ERROR, "UrlRewriteFilter - " + CommonUtil.getExceptionMessage(e));
+				httpServletResponse.sendRedirect("/pages/Notfound.html");
+			}
 		}
 	}
 	
