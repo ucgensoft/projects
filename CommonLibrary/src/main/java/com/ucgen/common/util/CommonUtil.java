@@ -18,7 +18,7 @@ public class CommonUtil {
 		}
 	}
 	
-	public static String getExceptionMessage(Exception e) {
+	public static String getExceptionMessage(Throwable e) {
 		return "Hata Mesajı:" + e.getMessage() + ", Hata Yeri:" + ExceptionUtils.getStackTrace(e); 
 	}
 	
