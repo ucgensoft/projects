@@ -466,10 +466,14 @@ public class WebApplication extends BaseController {
 	}
 	
 	public String getPlacePhotoUrl(Long placeId, Long photoId, String size) {
-		String photoPath = this.placePhotoUrlTemplate.replaceAll("#placeId#", placeId.toString());
-		photoPath = photoPath.replaceAll("#photoId#", photoId.toString());
-		photoPath = photoPath.replaceAll("#size#", EnmSize.getSize(size).getValue());
-		return photoPath;
+		if (placeId != null) {
+			String photoPath = this.placePhotoUrlTemplate.replaceAll("#placeId#", placeId.toString());
+			photoPath = photoPath.replaceAll("#photoId#", photoId.toString());
+			photoPath = photoPath.replaceAll("#size#", EnmSize.getSize(size).getValue());
+			return photoPath;
+		} else {
+			return "";
+		}
 	}
 	
 	public String getPlacePhotoPath(Long placeId, Long photoId, String size) {
