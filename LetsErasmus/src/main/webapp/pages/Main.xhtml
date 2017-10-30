@@ -15,87 +15,87 @@
 
 	<ui:define name="body">
 		<h:form id="mainSearchForm">
-			<div id="letserasmus">
-				<span></span> <span></span> <span></span> <span></span> <span></span>
-			</div>
+			<div id="homeFirstScreenDiv" class="home-first-screen">
 
-			<div class="flex-grow-1 flex-vertical-middle" style="z-index: 10">
+				<div class="flex-grow-1 flex-vertical-middle" style="z-index: 10">
 
-				<h1 class="landing-h1 text-center" style="z-index: 1">The new
-					way in international student housing</h1>
-				<a class="announcement" href="#learn-how-it-works"> <span
-					class="new-pill">LEARN MORE</span> <span class="message">
-						Click to see advantages of housing with Let's Erasmus!</span>
-				</a>
+					<h1 class="landing-h1 text-center" style="z-index: 1">The new
+						way in international student housing</h1>
+					<a class="announcement" href="#learn-how-it-works"> <span
+						class="new-pill">LEARN MORE</span> <span class="message">
+							Click to see advantages of housing with Let's Erasmus!</span>
+					</a>
 
-				<div class="staticForm home--search">
-					<div class="formErrors" style="display: none;"></div>
-					<input id="txtSearchPlace" readonly=""
-						class="home--search--input form-control" type="text" name="city"
-						placeholder="Search by city or university"
-						data-event="Selected search field" autocomplete="off"
-						ng-blur="ctrl.validateSearch()" />
+					<div class="staticForm home--search">
+						<div class="formErrors" style="display: none;"></div>
+						<input id="txtSearchPlace" readonly=""
+							class="home--search--input form-control" type="text" name="city"
+							placeholder="Search by city or university"
+							data-event="Selected search field" autocomplete="off"
+							ng-blur="ctrl.validateSearch()" />
 
-					<div id="HomeSearchDates" style="margin-left: 4px">
-						<div id="divDates" class="home-search--dates">
-							<input type="text" id="txtStartDatePicker" class="form-control"
-								placeholder="Move in" value="" readonly="true" /> <input
-								type="text" id="txtEndDatePicker" class="form-control"
-								placeholder="Move out" value="" readonly="true" />
+						<div id="HomeSearchDates" style="margin-left: 4px">
+							<div id="divDates" class="home-search--dates">
+								<input type="text" id="txtStartDatePicker" class="form-control"
+									placeholder="Move in" value="" readonly="true" /> <input
+									type="text" id="txtEndDatePicker" class="form-control"
+									placeholder="Move out" value="" readonly="true" />
+							</div>
 						</div>
+
+						<input type="button" class="btn-brand-search home--search--btn"
+							id="btnSearch" value="search &amp; book" disabled="disabled"
+							ng-click="ctrl.search();" />
 					</div>
 
-					<input type="button" class="btn-brand-search home--search--btn"
-						id="btnSearch" value="search &amp; book" disabled="disabled"
-						ng-click="ctrl.search();" />
+					<h2 class="landing-h2 text-center"
+						style='margin-bottom: 10px; z-index: 1'>Explore Popular
+						Cities</h2>
+
+					<div class="container" style="margin-bottom: 10px; z-index: 1;">
+
+						<ul class="img-list">
+							<div class="holder">
+								<li><a
+									href="#{webApplication.urlPrefix}/room/search/london/ChIJdd4hrwug2EcRmSrV3Vo6llI">
+										<img class="popular-city-image"
+										src="/static/images/london.jpg" width="100%" height="100%" />
+										<span class="text-content"><span>London</span></span>
+								</a></li>
+							</div>
+							<div class="holder">
+								<li><a
+									href="#{webApplication.urlPrefix}/room/search/barcelona/ChIJ5TCOcRaYpBIRCmZHTz37sEQ">
+										<img class="popular-city-image"
+										src="/static/images/barcelona.jpg" width="100%" height="100%" />
+										<span class="text-content"><span>Barcelona</span></span>
+								</a></li>
+							</div>
+							<div class="holder">
+								<li><a
+									href="#{webApplication.urlPrefix}/room/search/istanbul/ChIJawhoAASnyhQR0LABvJj-zOE">
+										<img class="popular-city-image"
+										src="/static/images/istanbul.jpg" width="100%" height="100%" />
+										<span class="text-content"><span>Istanbul</span></span>
+								</a></li>
+							</div>
+						</ul>
+
+
+
+					</div>
+
+
+
 				</div>
-
-				<h2 class="landing-h2 text-center"
-					style='margin-bottom: 10px; z-index: 1'>Explore Popular Cities</h2>
-
-				<div class="container" style="margin-bottom: 10px; z-index: 1;">
-
-					<ul class="img-list">
-						<div class="holder">
-							<li><a
-								href="#{webApplication.urlPrefix}/room/search/london/ChIJdd4hrwug2EcRmSrV3Vo6llI">
-									<img class="popular-city-image" src="/static/images/london.jpg"
-									width="100%" height="100%" /> <span class="text-content"><span>London</span></span>
-							</a></li>
-						</div>
-						<div class="holder">
-							<li><a
-								href="#{webApplication.urlPrefix}/room/search/barcelona/ChIJ5TCOcRaYpBIRCmZHTz37sEQ">
-									<img class="popular-city-image"
-									src="/static/images/barcelona.jpg" width="100%" height="100%" />
-									<span class="text-content"><span>Barcelona</span></span>
-							</a></li>
-						</div>
-						<div class="holder">
-							<li><a
-								href="#{webApplication.urlPrefix}/room/search/istanbul/ChIJawhoAASnyhQR0LABvJj-zOE">
-									<img class="popular-city-image"
-									src="/static/images/istanbul.jpg" width="100%" height="100%" />
-									<span class="text-content"><span>Istanbul</span></span>
-							</a></li>
-						</div>
-					</ul>
-
-
-
-				</div>
-
-
 
 			</div>
-
 
 		</h:form>
 
 
 		<h2 class="landing-h3 text-center"
-			style='margin-bottom: 10px; z-index: 1'>Discover
-			your university</h2>
+			style='margin-bottom: 10px; z-index: 1'>Discover your university</h2>
 		<a href="#{webApplication.urlPrefix}/universities"><h5
 				class="text-center"
 				style="margin-top: 5px; margin-bottom: 5px; z-index: 1">Click
@@ -228,8 +228,9 @@
 					<div class="panel-body-how">
 						<div class="how-it-works__image"></div>
 						<h3>Discover Amazing Places</h3>
-						<p style="text-shadow: 2px 2px 5px rgba(0, 0, 0, .2);">Find private rooms and entire homes from locals and
-							students in Erasmus cities.</p>
+						<p style="text-shadow: 2px 2px 5px rgba(0, 0, 0, .2);">Find
+							private rooms and entire homes from locals and students in
+							Erasmus cities.</p>
 					</div>
 				</div>
 
@@ -237,9 +238,10 @@
 					<div class="panel-body-how">
 						<div class="how-it-works__image"></div>
 						<h3>Book a Stay</h3>
-						<p style="text-shadow: 2px 2px 5px rgba(0, 0, 0, .2);">Receive confirmation from hosts in less than 48 hours. If
-							the property you have rented is different from the one
-							represented in the listing you can be entitled to a full refund.</p>
+						<p style="text-shadow: 2px 2px 5px rgba(0, 0, 0, .2);">Receive
+							confirmation from hosts in less than 48 hours. If the property
+							you have rented is different from the one represented in the
+							listing you can be entitled to a full refund.</p>
 					</div>
 				</div>
 
@@ -247,8 +249,9 @@
 					<div class="panel-body-how">
 						<div class="how-it-works__image"></div>
 						<h3>Enjoy</h3>
-						<p style="text-shadow: 2px 2px 5px rgba(0, 0, 0, .2);">We do not transfer the rent before you move-in. Enjoy the
-							moment more securely.</p>
+						<p style="text-shadow: 2px 2px 5px rgba(0, 0, 0, .2);">We do
+							not transfer the rent before you move-in. Enjoy the moment more
+							securely.</p>
 					</div>
 				</div>
 			</div>
