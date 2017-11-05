@@ -12,6 +12,7 @@
 		<meta property="og:url" content="#{webApplication.getUrlTemplateProfile(displayUserController.user.id)}" />
 		<meta property="og:title" content="Let's Erasmus user profile page for #{displayUserController.user.firstName}, (#{displayUserController.user.id})" />
 		<meta property="og:description" content="#{displayUserController.user.firstName} is an active Let's Erasmus user since #{displayUserController.formatDate(displayUserController.user.createdDate, 'dd.MM.yyyy')}" />
+		<meta name="description" content="#{displayUserController.user.firstName} is an active Let's Erasmus user since #{displayUserController.formatDate(displayUserController.user.createdDate, 'dd.MM.yyyy')}" />
 		<meta property="og:image" content="#{webApplication.staticFileUrlPrefix}/#{webApplication.getUserPhotoPath(displayUserController.user.id, displayUserController.user.profilePhotoId, 'medium')}" />
 		
 		<link rel="stylesheet" type="text/css"
