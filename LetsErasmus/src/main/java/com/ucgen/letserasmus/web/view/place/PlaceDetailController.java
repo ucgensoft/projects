@@ -100,9 +100,9 @@ public class PlaceDetailController extends BaseController {
 			if (tmpPlace != null) {
 				if (tmpPlace.getLocation() != null) {
 					return tmpPlace.getTitle() + " - " + EnmPlaceType.getPlaceType(tmpPlace.getPlaceTypeId()).getText() 
-						+ " for rent in " + tmpPlace.getLocation().getState() + ", " + tmpPlace.getLocation().getCountry() + " - Let's Erasmus";
+						+ " for rent in " + tmpPlace.getLocation().getState() + ", " + tmpPlace.getLocation().getCountry() + " - Let's Erasmus Student Housing Platform";
 				} else {
-					return tmpPlace.getTitle() + " - " + EnmPlaceType.getPlaceType(tmpPlace.getPlaceTypeId()).getText() + " for rent" + " - Let's Erasmus";
+					return tmpPlace.getTitle() + " - " + EnmPlaceType.getPlaceType(tmpPlace.getPlaceTypeId()).getText() + " for rent" + " - Let's Erasmus Student Housing Platform";
 				}
 			} else {
 				return WebApplication.DEFAULT_PAGE_TITLE;
