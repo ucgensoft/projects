@@ -116,10 +116,10 @@
 											</div>
 											<div id="divPlacePhotoList">
 												<ui:repeat var="photo" value="#{placeDetailController.place.photoList}" varStatus="status">
-													<img alt="#{placeDetailController.place.title}"
+													<img alt="Available room for erasmus student, #{placeDetailController.place.title}"
 														class="host-profile-image" height="90" width="90"
 														src="#{webApplication.getPlacePhotoUrl(placeDetailController.place.id, photo.id,'small')}"
-														title="#{placeDetailController.place.title}" />
+														title="Available room for erasmus student, #{placeDetailController.place.title}" />
 												</ui:repeat>
 											</div> 
 										</div>
@@ -375,9 +375,7 @@
 																class="host-profile-image" height="90" width="90"
 																src="#{webApplication.getUserPhotoUrl(placeDetailController.place.hostUserId, placeDetailController.place.user.profilePhotoId,'small')}"
 																title="#{placeDetailController.place.user.firstName}" />
-															</a> <img src=""
-																class="superhost-photo-badge superhost-photo-badge"
-																alt="Let's Erasmus Host Super Badge" />
+															</a> 
 														</div>
 														<h3 class="space-1 text-center">
 															<a id="lnkHostUser" class="link-reset"
