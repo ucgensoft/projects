@@ -386,6 +386,8 @@ public class PlaceDao extends JdbcDaoSupport implements IPlaceDao{
 			argList.add(lngUpLimit);
 		}
 		
+		sqlBuilder.append(" ORDER BY P.ID DESC ");
+		
 		if (pageSize != null && pageNumber != null) {
 			Integer offset = ((pageNumber - 1) * pageSize);
 			sqlBuilder.append(" LIMIT " + pageSize + " OFFSET " + offset);

@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -105,127 +104,122 @@ public class ApiPlaceController extends BaseApiController {
 		try {
 			User user = super.getSessionUser(session);
 			if (user != null) {
-				if (this.webApplication.isUserVerified(user)) {
-					boolean isValid = true;
-					
-					EnmPlaceCancelPolicy enmPlaceCancelPolicy = EnmPlaceCancelPolicy.getPlaceCancelPolicy(place.getCancellationPolicyId());
-					if (enmPlaceCancelPolicy == null) {
-						isValid = false;
-					}
-					
-					if (place == null || place.getCurrencyId() == null || !place.getCurrencyId().equals(EnmCurrency.EURO.getId())) {
-						isValid = false;
-					}
-					
-					if (isValid) {
-						List<Photo> photoList = (List<Photo>) session.getAttribute(EnmSession.PLACE_PHOTO_LIST.getId());
-						session.removeAttribute(EnmSession.PLACE_PHOTO_LIST.getId());
-						if (photoList != null && photoList.size() > 0) {
-							Date createdDate = new Date();
-							String createdBy = user.getFullName();
-							
-							if (place.getStrStartDate() != null && !place.getStrStartDate().trim().isEmpty()) {
-								place.setStartDate(DateUtil.valueOf(place.getStrStartDate(), DateUtil.SHORT_DATE_FORMAT));
-							}
-							if (place.getStrEndDate() != null && !place.getStrEndDate().trim().isEmpty()) {
-								place.setEndDate(DateUtil.valueOf(place.getStrEndDate(), DateUtil.SHORT_DATE_FORMAT));
-							}
-							
-							place.setHostUserId(super.getSessionUser(session).getId());
-							place.setCreatedDate(createdDate);
-							place.setCreatedBy(createdBy);
-							place.setStatus(EnmPlaceStatus.ACTIVE.getValue());
-							
-							String placePageUrl = this.webApplication.getPlaceDetailSubUrl("-1");
-							
-							place.setPageUrl(placePageUrl);
-							
-							place.getLocation().setCreatedDate(createdDate);
-							place.getLocation().setCreatedBy(createdBy);
-							
-							if (photoList != null && photoList.size() > 0) {
-								for (Photo draftPhoto : photoList) {
-									MultipartFile multipartFile = draftPhoto.getFile(); 
-									String fileSuffix = multipartFile.getContentType().split("/")[1];
-									String fileName = multipartFile.getOriginalFilename().split("\\.")[0];
-									Photo photo = new Photo();
-									photo.setFileName(fileName);
-									photo.setFileSize(multipartFile.getSize());
-									photo.setEntityType(EnmEntityType.PLACE.getId());
-									photo.setCreatedBy(createdBy);
-									photo.setFileType(EnmFileType.getFileTypeWithSuffix(fileSuffix).getValue());
-									photo.setCreatedDate(createdDate);
-									
-									photo.setFile(multipartFile);
-									photo.setRotationDegree(draftPhoto.getRotationDegree());
-									place.addPhoto(photo);
-								}
-							}
-							
-							OperationResult createResult = this.placeService.insertPlace(place);
-							
-							try {
-								// Create place i�leminde SavePhoto ad�m�nda placeId belli olmad��� i�in random de�er olu�turuluyor. 
-								// Olu�turulan random de�er sessiondan okunuyor
-								String tmpPlaceId = session.getAttribute(EnmSession.TMP_PHOTO_PLACE_ID.getId()).toString();
-								String tmpLocalPhotoFolder = this.parameterService.getParameterValue(EnmParameter.TMP_FILE_PATH.getId());
-								String localPlacePhotoFolderPath = FileUtil.concatPath(tmpLocalPhotoFolder, "place", tmpPlaceId);
-								
-								String bucketName = this.parameterService.getParameterValue(EnmParameter.AWS_USER_FILES_BUCKET_NAME.getId());
-								
-								for (int i = 0; i < place.getPhotoList().size(); i++) {
-									Photo photo = (Photo) place.getPhotoList().get(i);
-									MultipartFile multipartFile = photo.getFile();
-									String fileName = multipartFile.getOriginalFilename();
-									
-									String smallFileName = this.webApplication.getPlacePhotoName(place.getId(), photo.getId(), EnmSize.SMALL);
-									String mediumFileName = this.webApplication.getPlacePhotoName(place.getId(), photo.getId(), EnmSize.MEDIUM);
-									
-									String smallFilePath = FileUtil.concatPath(localPlacePhotoFolderPath, smallFileName);
-									String mediumFilePath = FileUtil.concatPath(localPlacePhotoFolderPath, mediumFileName);
-									
-									String originalPhotoPath = FileUtil.concatPath(localPlacePhotoFolderPath, fileName);
-
-									ImageUtil.resizeImage(originalPhotoPath, smallFilePath, this.webApplication.getSmallPlacePhotoSize(), photo.getRotationDegree());
-									ImageUtil.resizeImage(originalPhotoPath, mediumFilePath, this.webApplication.getMediumPlacePhotoSize(), photo.getRotationDegree());
-									
-									String remoteSmallFilePath = this.webApplication.getPlacePhotoPath(place.getId(), photo.getId(), EnmSize.SMALL.getValue());
-									String remoteMediumFilePath = this.webApplication.getPlacePhotoPath(place.getId(), photo.getId(), EnmSize.MEDIUM.getValue());
-									
-									AwsS3Util.getInstance().uploadFile(bucketName, smallFilePath, remoteSmallFilePath.replace("\\", "/"));
-									AwsS3Util.getInstance().uploadFile(bucketName, mediumFilePath, remoteMediumFilePath.replace("\\", "/"));
-																																			
-									FileUtil.deleteFile(originalPhotoPath);
-									FileUtil.deleteFile(smallFilePath);
-									FileUtil.deleteFile(mediumFilePath);
-								}
-								FileUtil.deleteDirectory(localPlacePhotoFolderPath);
-							} catch (Exception e) {
-								FileLogger.log(Level.ERROR, "ApiPlaceController-createPlace()-Exception while resizing place images. Error: " + CommonUtil.getExceptionMessage(e));
-							}
-							
-							operationResult = createResult;
-							if (OperationResult.isResultSucces(operationResult)) {
-								Integer userPlaceCount = user.getPlaceListingCount();
-								if (userPlaceCount == null) {
-									userPlaceCount = 1;
-								} else {
-									userPlaceCount += 1; 
-								}
-								user.setPlaceListingCount(userPlaceCount);
-							}
-							httpStatus = HttpStatus.OK;	
-						} else {
-							operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-							operationResult.setResultDesc("At least one photo should be added!");
+				boolean isValid = true;
+				
+				EnmPlaceCancelPolicy enmPlaceCancelPolicy = EnmPlaceCancelPolicy.getPlaceCancelPolicy(place.getCancellationPolicyId());
+				if (enmPlaceCancelPolicy == null) {
+					isValid = false;
+				}
+				
+				if (place == null || place.getCurrencyId() == null || !place.getCurrencyId().equals(EnmCurrency.EURO.getId())) {
+					isValid = false;
+				}
+				
+				if (isValid) {
+					List<Photo> photoList = (List<Photo>) session.getAttribute(EnmSession.PLACE_PHOTO_LIST.getId());
+					session.removeAttribute(EnmSession.PLACE_PHOTO_LIST.getId());
+					if (photoList != null && photoList.size() > 0) {
+						Date createdDate = new Date();
+						String createdBy = user.getFullName();
+						
+						if (place.getStrStartDate() != null && !place.getStrStartDate().trim().isEmpty()) {
+							place.setStartDate(DateUtil.valueOf(place.getStrStartDate(), DateUtil.SHORT_DATE_FORMAT));
 						}
+						if (place.getStrEndDate() != null && !place.getStrEndDate().trim().isEmpty()) {
+							place.setEndDate(DateUtil.valueOf(place.getStrEndDate(), DateUtil.SHORT_DATE_FORMAT));
+						}
+						
+						place.setHostUserId(super.getSessionUser(session).getId());
+						place.setCreatedDate(createdDate);
+						place.setCreatedBy(createdBy);
+						place.setStatus(EnmPlaceStatus.ACTIVE.getValue());
+						
+						String placePageUrl = this.webApplication.getPlaceDetailSubUrl("-1");
+						
+						place.setPageUrl(placePageUrl);
+						
+						place.getLocation().setCreatedDate(createdDate);
+						place.getLocation().setCreatedBy(createdBy);
+						
+						if (photoList != null && photoList.size() > 0) {
+							for (Photo draftPhoto : photoList) {
+								MultipartFile multipartFile = draftPhoto.getFile(); 
+								String fileSuffix = multipartFile.getContentType().split("/")[1];
+								String fileName = multipartFile.getOriginalFilename().split("\\.")[0];
+								Photo photo = new Photo();
+								photo.setFileName(fileName);
+								photo.setFileSize(multipartFile.getSize());
+								photo.setEntityType(EnmEntityType.PLACE.getId());
+								photo.setCreatedBy(createdBy);
+								photo.setFileType(EnmFileType.getFileTypeWithSuffix(fileSuffix).getValue());
+								photo.setCreatedDate(createdDate);
+								
+								photo.setFile(multipartFile);
+								photo.setRotationDegree(draftPhoto.getRotationDegree());
+								place.addPhoto(photo);
+							}
+						}
+						
+						OperationResult createResult = this.placeService.insertPlace(place);
+						
+						try {
+							// Create place i�leminde SavePhoto ad�m�nda placeId belli olmad��� i�in random de�er olu�turuluyor. 
+							// Olu�turulan random de�er sessiondan okunuyor
+							String tmpPlaceId = session.getAttribute(EnmSession.TMP_PHOTO_PLACE_ID.getId()).toString();
+							String tmpLocalPhotoFolder = this.parameterService.getParameterValue(EnmParameter.TMP_FILE_PATH.getId());
+							String localPlacePhotoFolderPath = FileUtil.concatPath(tmpLocalPhotoFolder, "place", tmpPlaceId);
+							
+							String bucketName = this.parameterService.getParameterValue(EnmParameter.AWS_USER_FILES_BUCKET_NAME.getId());
+							
+							for (int i = 0; i < place.getPhotoList().size(); i++) {
+								Photo photo = (Photo) place.getPhotoList().get(i);
+								MultipartFile multipartFile = photo.getFile();
+								String fileName = multipartFile.getOriginalFilename();
+								
+								String smallFileName = this.webApplication.getPlacePhotoName(place.getId(), photo.getId(), EnmSize.SMALL);
+								String mediumFileName = this.webApplication.getPlacePhotoName(place.getId(), photo.getId(), EnmSize.MEDIUM);
+								
+								String smallFilePath = FileUtil.concatPath(localPlacePhotoFolderPath, smallFileName);
+								String mediumFilePath = FileUtil.concatPath(localPlacePhotoFolderPath, mediumFileName);
+								
+								String originalPhotoPath = FileUtil.concatPath(localPlacePhotoFolderPath, fileName);
+
+								ImageUtil.resizeImage(originalPhotoPath, smallFilePath, this.webApplication.getSmallPlacePhotoSize(), photo.getRotationDegree());
+								ImageUtil.resizeImage(originalPhotoPath, mediumFilePath, this.webApplication.getMediumPlacePhotoSize(), photo.getRotationDegree());
+								
+								String remoteSmallFilePath = this.webApplication.getPlacePhotoPath(place.getId(), photo.getId(), EnmSize.SMALL.getValue());
+								String remoteMediumFilePath = this.webApplication.getPlacePhotoPath(place.getId(), photo.getId(), EnmSize.MEDIUM.getValue());
+								
+								AwsS3Util.getInstance().uploadFile(bucketName, smallFilePath, remoteSmallFilePath.replace("\\", "/"));
+								AwsS3Util.getInstance().uploadFile(bucketName, mediumFilePath, remoteMediumFilePath.replace("\\", "/"));
+																																		
+								FileUtil.deleteFile(originalPhotoPath);
+								FileUtil.deleteFile(smallFilePath);
+								FileUtil.deleteFile(mediumFilePath);
+							}
+							FileUtil.deleteDirectory(localPlacePhotoFolderPath);
+						} catch (Exception e) {
+							FileLogger.log(Level.ERROR, "ApiPlaceController-createPlace()-Exception while resizing place images. Error: " + CommonUtil.getExceptionMessage(e));
+						}
+						
+						operationResult = createResult;
+						if (OperationResult.isResultSucces(operationResult)) {
+							Integer userPlaceCount = user.getPlaceListingCount();
+							if (userPlaceCount == null) {
+								userPlaceCount = 1;
+							} else {
+								userPlaceCount += 1; 
+							}
+							user.setPlaceListingCount(userPlaceCount);
+						}
+						httpStatus = HttpStatus.OK;	
 					} else {
 						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-						operationResult.setResultDesc(AppConstants.MISSING_MANDATORY_PARAM);
+						operationResult.setResultDesc("At least one photo should be added!");
 					}
 				} else {
-					operationResult.setResultCode(EnmResultCode.WARNING.getValue());
-					operationResult.setResultDesc(AppConstants.USER_NOT_VERIFIED);
+					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+					operationResult.setResultDesc(AppConstants.MISSING_MANDATORY_PARAM);
 				}
 			} else {
 				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
@@ -238,6 +232,9 @@ public class ApiPlaceController extends BaseApiController {
 			operationResult.setResultDesc("Create operation could not be completed. Please try again later!");
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 			FileLogger.log(Level.ERROR, "ApiPlaceController-createPlace()-Error: " + CommonUtil.getExceptionMessage(e));
+		}
+		if (!OperationResult.isResultSucces(operationResult)) {
+			FileLogger.log(Level.ERROR, "ApiPlaceController-createPlace()- code:" + operationResult.getResultCode() + ", desc:" + operationResult.getResultDesc());
 		}
 		return new ResponseEntity<OperationResult>(operationResult, httpStatus);
     }
