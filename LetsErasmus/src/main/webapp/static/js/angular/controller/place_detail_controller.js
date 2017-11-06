@@ -2,7 +2,8 @@ App.controller('placeDetailCtrl', ['$scope', '$controller', 'placeService', 'res
                                    'commonService', 'enumerationService', 'reviewService', 
                                    function($scope, $controller, placeService, reservationService, 
                                 		   commonService, enumerationService, reviewService) {
-      var self = this;
+	$('#divPlacePhotoList').css('display', 'none');  
+	var self = this;
       
       var marker = null;
       var map = null;
