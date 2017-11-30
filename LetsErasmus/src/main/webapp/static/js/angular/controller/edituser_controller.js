@@ -8,16 +8,17 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
       var defaultPasswordText = "xxxxxx";
       self.countryList = [];
       self.dummyModel = null;
-      
+      self.isErasmusStudent = (globalProfileTypeId == 1);
+      self.homeCountryId = globalHomeCountryId;
+      self.erasmusCountryId = globalErasmusCountryId;
       
       var acceptedPhotoTypes = {
 	  	'image/png' : true,
 	  	'image/jpeg' : true,
 	  	'image/gif' : true
 	  };
-      
+
       self.initialize = function() {
-    	  
     	  $("#txtResidenceLocationName").geocomplete().bind("geocode:result",
 	      			function(event, result) {
 	      				//self.onPlaceChange(event, result);
@@ -131,6 +132,20 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
   		var languages = StringUtil.trim($("#txtLanguages").val());
   		//var birthDate = $("#txtBirthDatePicker").datepicker("getDate")
   		var birthDate = $("#txtBirthDatePicker").val()
+  		var homeCountryId = $("#cmbHomeCountry").val();
+  		var homeCityId = $("#cmbHomeCity").val();
+  		var homeUniversityId = $("#cmbHomeUniversity").val();
+  		var isErasmusStudent = $('#chbIsErasmusStudent')[0].checked;
+  		var erasmusCountryId = $("#cmbErasmusCountry").val();
+  		var erasmusCityId = $("#cmbErasmusCity").val();
+  		var erasmusUniversityId = $("#cmbErasmusUniversity").val();
+  		var profileTypeId = null;
+  		
+  		if (isErasmusStudent) {
+  			profileTypeId = 1;
+  		} else {
+  			profileTypeId = 2;
+  		}
   		
   		if (gender == '-1') {
   			gender = null;
@@ -151,6 +166,14 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
   		if (userFirstName == '' || userLastName == '' || email == '') {
   			DialogUtil.warn( 'Please fill mandatory fields!');
   		} else {
+  			var homeCountryId = $("#cmbHomeCountry").val();
+  	  		var homeCityId = $("#cmbHomeCity").val();
+  	  		var homeUniversityId = $("#cmbHomeUniversity").val();
+  	  		var isErasmusStudent = $('#chbIsErasmusStudent')[0].checked;
+  	  		var erasmusCountryId = $("#cmbErasmusCountry").val();
+  	  		var erasmusCityId = $("#cmbErasmusCity").val();
+  	  		var erasmusUniversityId = $("#cmbErasmusUniversity").val();
+  			
   			var user = {
   				firstName : userFirstName,
   				lastName : userLastName,
@@ -162,7 +185,14 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
   				schoolName : schoolName,
   				jobTitle : jobTitle,
   				languages : languages,
-  				birthDate : birthDate
+  				birthDate : birthDate,
+  				profileTypeId : profileTypeId,
+  				homeCountryId : homeCountryId,
+  				homeCityId : homeCityId,
+  				homeUniversityId : homeUniversityId,
+  				erasmusCountryId : erasmusCountryId,
+  				erasmusCityId : erasmusCityId,
+  				erasmusUniversityId : erasmusUniversityId
   			};
   			
   			var newUserPhoto = null;
@@ -270,6 +300,57 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
   	
   	self.onCountryChange = function(param1) {
   		$('#divCountryPrefix')[0].innerText= $('#cmbCountry').val();
+  	};
+  	
+  	self.onIsErasmusChange = function(event) {
+  		var isErasmusStudent = $('#chbIsErasmusStudent')[0].checked;
+  		if (isErasmusStudent) {
+  			$('#divErasmusInfo').removeClass('hidden-force');
+  		} else {
+  			$('#divErasmusInfo').addClass('hidden-force');
+  		}
+  	};
+  	
+  	self.onHomeCountryChange = function() {
+  		commonService.listCity(self.homeCountryId, function(cityList) {
+  			$('#cmbHomeCity').find('option:not(:first)').remove();
+  			if (cityList != null && cityList.length > 0) {
+  				for(var i = 0; i < cityList.length; i++) {
+  	  				$('#cmbHomeCity').append('<option value="' + cityList[i].id + '">' + cityList[i].name + '</option>');
+  	  			}
+  			}
+  			$('#cmbHomeCity').val('-1');
+  		});
+  		commonService.listUniversity(self.homeCountryId, function(universityList) {
+  			$('#cmbHomeUniversity').find('option:not(:first)').remove();
+  			if (universityList != null && universityList.length > 0) {
+  				for(var i = 0; i < universityList.length; i++) {
+  	  				$('#cmbHomeUniversity').append('<option value="' + universityList[i].id + '">' + universityList[i].name + '</option>');
+  	  			}
+  			}
+  			$('#cmbHomeUniversity').val('-1');
+  		});
+  	};
+  	
+  	self.onErasmusCountryChange = function() {
+  		commonService.listCity(self.erasmusCountryId, function(cityList) {
+  			$('#cmbErasmusCity').find('option:not(:first)').remove();
+  			if (cityList != null && cityList.length > 0) {
+  				for(var i = 0; i < cityList.length; i++) {
+  	  				$('#cmbErasmusCity').append('<option value="' + cityList[i].id + '">' + cityList[i].name + '</option>');
+  	  			}
+  			}
+  			$('#cmbErasmusCity').val('-1');
+  		});
+  		commonService.listUniversity(self.erasmusCountryId, function(universityList) {
+  			$('#cmbErasmusUniversity').find('option:not(:first)').remove();
+  			if (universityList != null && universityList.length > 0) {
+  				for(var i = 0; i < universityList.length; i++) {
+  	  				$('#cmbErasmusUniversity').append('<option value="' + universityList[i].id + '">' + universityList[i].name + '</option>');
+  	  			}
+  			}
+  			$('#cmbErasmusUniversity').val('-1');
+  		});
   	};
   	
   	self.deactivateUser = function() {

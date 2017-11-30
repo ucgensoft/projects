@@ -118,7 +118,7 @@
 												<ui:repeat var="photo" value="#{placeDetailController.place.photoList}" varStatus="status">
 													<img alt="#{placeDetailController.place.title}"
 														class="host-profile-image" height="90" width="90"
-														src="#{webApplication.getPlacePhotoUrl(placeDetailController.place.id, photo.id,'small')}"
+														src="#{webApplication.getPlacePhotoUrl(placeDetailController.place.id, photo.id,'large')}"
 														title="#{placeDetailController.place.title}" />
 												</ui:repeat>
 											</div> 

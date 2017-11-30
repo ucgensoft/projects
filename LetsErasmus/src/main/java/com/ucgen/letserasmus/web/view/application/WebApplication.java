@@ -309,6 +309,8 @@ public class WebApplication extends BaseController {
 			return "paymentMethodCtrl";
 		} else if (requestUrl.contains("PAGES/DASHBOARD/PAYOUTMETHODS.HTML")) {
 			return "payoutMethodCtrl";
+		} else if (requestUrl.contains("PAGES/COMMUNITYTOPICLIST.HTML")) {
+			return "topicListCtrl";
 		} else {
 			return "mainCtrl";
 		}	

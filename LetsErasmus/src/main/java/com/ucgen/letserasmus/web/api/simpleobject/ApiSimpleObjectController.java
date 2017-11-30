@@ -26,9 +26,11 @@ import com.ucgen.letserasmus.library.common.enumeration.EnmErrorCode;
 import com.ucgen.letserasmus.library.parameter.enumeration.EnmParameter;
 import com.ucgen.letserasmus.library.parameter.service.IParameterService;
 import com.ucgen.letserasmus.library.simpleobject.dao.ISimpleObjectDao;
+import com.ucgen.letserasmus.library.simpleobject.model.City;
 import com.ucgen.letserasmus.library.simpleobject.model.Country;
 import com.ucgen.letserasmus.library.simpleobject.model.Question;
 import com.ucgen.letserasmus.library.simpleobject.model.QuestionGroup;
+import com.ucgen.letserasmus.library.simpleobject.model.University;
 import com.ucgen.letserasmus.library.simpleobject.service.ISimpleObjectService;
 import com.ucgen.letserasmus.library.user.model.User;
 import com.ucgen.letserasmus.web.api.BaseApiController;
@@ -84,6 +86,55 @@ public class ApiSimpleObjectController extends BaseApiController {
 		}
 		
 		return new ResponseEntity<ListOperationResult<Country>>(operationResult, HttpStatus.OK);
+    }
+	
+	@RequestMapping(value = "/api/simpleobject/listcity", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public ResponseEntity<ListOperationResult<City>> listCity(HttpSession session, @RequestParam("countryId") Integer countryId) {
+		ListOperationResult<City> operationResult = new ListOperationResult<City>();
+		try {
+			User sessionUser = super.getSessionUser(session);
+			if (sessionUser != null) {
+				City city = new City();
+				city.setCountryId(countryId);
+				List<City> cityList = this.simpleObjectService.listCity(city);
+				operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+				operationResult.setObjectList(cityList);
+			} else {
+				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
+			}
+		} catch (Exception e) {
+			FileLogger.log(Level.ERROR, "ApiSimpleObjectController-listCity()-Error: " + CommonUtil.getExceptionMessage(e));
+			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+			operationResult.setResultDesc(CommonUtil.getExceptionMessage(e));
+		}
+		
+		return new ResponseEntity<ListOperationResult<City>>(operationResult, HttpStatus.OK);
+    }
+	
+	@RequestMapping(value = "/api/simpleobject/listuniversity", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public ResponseEntity<ListOperationResult<University>> listUniversity(HttpSession session, @RequestParam("countryId") Integer countryId) {
+		ListOperationResult<University> operationResult = new ListOperationResult<University>();
+		try {
+			User sessionUser = super.getSessionUser(session);
+			if (sessionUser != null) {
+				
+				List<University> universityList = this.simpleObjectService.listUniversity(countryId);
+				operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+				operationResult.setObjectList(universityList);
+			} else {
+				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
+			}
+		} catch (Exception e) {
+			FileLogger.log(Level.ERROR, "ApiSimpleObjectController-listUniversity()-Error: " + CommonUtil.getExceptionMessage(e));
+			operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+			operationResult.setResultDesc(CommonUtil.getExceptionMessage(e));
+		}
+		
+		return new ResponseEntity<ListOperationResult<University>>(operationResult, HttpStatus.OK);
     }
 	
 	@RequestMapping(value = "/api/simpleobject/listquestiongroup", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")

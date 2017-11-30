@@ -54,6 +54,7 @@ import com.ucgen.letserasmus.library.place.model.Place;
 import com.ucgen.letserasmus.library.place.service.IPlaceService;
 import com.ucgen.letserasmus.library.sms.service.ISmsService;
 import com.ucgen.letserasmus.library.user.enumeration.EnmLoginType;
+import com.ucgen.letserasmus.library.user.enumeration.EnmProfileType;
 import com.ucgen.letserasmus.library.user.enumeration.EnmUserStatus;
 import com.ucgen.letserasmus.library.user.model.User;
 import com.ucgen.letserasmus.library.user.service.IUserService;
@@ -525,49 +526,71 @@ public class ApiUserController extends BaseApiController {
 					if (profilePhotoDeleted) {
 						deleteProfilePhotoId = oldProfilePhotoId; 
 					}
-					User user = new User();
-					user.setId(sessionUser.getId());
+					User dbUser = new User();
+					dbUser.setId(sessionUser.getId());
 					
-					user = this.userService.getUser(user);
-					user.setProfilePhoto(null);
+					dbUser = this.userService.getUser(dbUser);
+					dbUser.setProfilePhoto(null);
 										
 					if (uiUser.getFirstName() != null && uiUser.getFirstName().trim().length() > 0) {
-						user.setFirstName(uiUser.getFirstName());
+						dbUser.setFirstName(uiUser.getFirstName());
 					}
 					if (uiUser.getLastName() != null && uiUser.getLastName().trim().length() > 0) {
-						user.setLastName(uiUser.getLastName());
+						dbUser.setLastName(uiUser.getLastName());
 					}
 					if (uiUser.getGender() != null && EnmGender.getGender(uiUser.getGender()) != null) {
-						user.setGender(EnmGender.getGender(uiUser.getGender()).getId());
+						dbUser.setGender(EnmGender.getGender(uiUser.getGender()).getId());
 					}
 					if (uiUser.getPassword() != null && uiUser.getPassword().trim().length() > 0) {
-						user.setPassword(uiUser.getPassword());
+						dbUser.setPassword(uiUser.getPassword());
 					}
 					
-					user.setEmail(uiUser.getEmail());
+					dbUser.setEmail(uiUser.getEmail());
 					
-					if (sessionUser.getEmail() == null || !sessionUser.getEmail().equals(user.getEmail())) {
+					if (sessionUser.getEmail() == null || !sessionUser.getEmail().equals(dbUser.getEmail())) {
 						String verificationCode = SecurityUtil.generateUUID();
 						
-						user.setEmailVerified(EnmBoolStatus.NO.getId());
-						user.setUserActivationKeyEmail(verificationCode);
+						dbUser.setEmailVerified(EnmBoolStatus.NO.getId());
+						dbUser.setUserActivationKeyEmail(verificationCode);
 					}
 					
-					user.setResidenceLocationName(uiUser.getResidenceLocationName());
-					user.setDescription(uiUser.getDescription());
-					user.setJobTitle(uiUser.getJobTitle());
-					user.setSchoolName(uiUser.getSchoolName());
-					user.setLanguages(uiUser.getLanguages());
+					dbUser.setResidenceLocationName(uiUser.getResidenceLocationName());
+					dbUser.setDescription(uiUser.getDescription());
+					dbUser.setJobTitle(uiUser.getJobTitle());
+					dbUser.setSchoolName(uiUser.getSchoolName());
+					dbUser.setLanguages(uiUser.getLanguages());
 					//user.setMsisdn(uiUser.getMsisdn());
 					if (uiUser.getBirthDate() != null && !uiUser.getBirthDate().trim().isEmpty()) {
-						user.setBirthDate(DateUtil.valueOf(uiUser.getBirthDate(), DateUtil.SHORT_DATE_FORMAT));
+						dbUser.setBirthDate(DateUtil.valueOf(uiUser.getBirthDate(), DateUtil.SHORT_DATE_FORMAT));
 					}
 										
 					if (profilePhotoDeleted) {
-						user.setProfilePhotoId(null);
+						dbUser.setProfilePhotoId(null);
 					}
-					user.setModifiedDate(operationDate);
-					user.setModifiedBy(modifiedBy);
+					
+					dbUser.setProfileTypeId(uiUser.getProfileTypeId());
+					if (uiUser.getHomeCountryId() != -1) {
+						dbUser.setHomeCountryId(uiUser.getHomeCountryId());
+						dbUser.setHomeCityId(uiUser.getHomeCityId());
+						dbUser.setHomeUniversityId(uiUser.getHomeUniversityId());
+					} else {
+						dbUser.setHomeCountryId(null);
+						dbUser.setHomeCityId(null);
+						dbUser.setHomeUniversityId(null);
+					}
+					if (uiUser.getProfileTypeId() == EnmProfileType.ERASMUS_STUDENT.getId() 
+							&& uiUser.getErasmusCountryId() != -1) {
+						dbUser.setErasmusCountryId(uiUser.getErasmusCountryId());
+						dbUser.setErasmusCityId(uiUser.getErasmusCityId());
+						dbUser.setErasmusUniversityId(uiUser.getErasmusUniversityId());
+					} else {
+						dbUser.setErasmusCountryId(null);
+						dbUser.setErasmusCityId(null);
+						dbUser.setErasmusUniversityId(null);
+					}
+					
+					dbUser.setModifiedDate(operationDate);
+					dbUser.setModifiedBy(modifiedBy);
 					
 					if (profilePhotoChanged) {
 						String fileSuffix = profilePhoto.getFile().getContentType().split("/")[1];
@@ -576,20 +599,20 @@ public class ApiUserController extends BaseApiController {
 						photo.setFileName(fileName);
 						photo.setFileSize(profilePhoto.getFile().getSize());
 						photo.setEntityType(EnmEntityType.USER.getId());
-						photo.setEntityId(user.getId());
+						photo.setEntityId(dbUser.getId());
 						photo.setCreatedBy(modifiedBy);
 						photo.setCreatedDate(operationDate);
 						photo.setFileType(EnmFileType.getFileTypeWithSuffix(fileSuffix).getValue());
 						
-						user.setProfilePhoto(photo);
+						dbUser.setProfilePhoto(photo);
 					}
 					
-					OperationResult updateResult = this.userService.updateUser(user, true, deleteProfilePhotoId);
+					OperationResult updateResult = this.userService.updateUser(dbUser, true, deleteProfilePhotoId);
 					if (OperationResult.isResultSucces(updateResult)) {
-						user = this.userService.getUser(user);
-						this.processLogin(session, user, EnmLoginType.getLoginType(sessionUser.getLoginType()));
-						if (!sessionUser.getEmail().equals(user.getEmail())) {
-							this.mailService.sendEmailVerificationMail(user, user.getEmail());
+						dbUser = this.userService.getUser(dbUser);
+						this.processLogin(session, dbUser, EnmLoginType.getLoginType(sessionUser.getLoginType()));
+						if (!sessionUser.getEmail().equals(dbUser.getEmail())) {
+							this.mailService.sendEmailVerificationMail(dbUser, dbUser.getEmail());
 						}
 						if (profilePhotoDeleted || profilePhotoChanged) {
 							try {
@@ -597,18 +620,18 @@ public class ApiUserController extends BaseApiController {
 								String rootUserPhotoFolder = this.webApplication.getRootUserPhotoPath();
 								String tmpLocalPhotoFolder = this.parameterService.getParameterValue(EnmParameter.TMP_FILE_PATH.getId());
 								
-								String remoteUserPhotoFolder = FileUtil.concatPath(rootUserPhotoFolder, user.getId().toString());
-								String localUserPhotoFolder = FileUtil.concatPath(tmpLocalPhotoFolder, "user", user.getId().toString()); 
+								String remoteUserPhotoFolder = FileUtil.concatPath(rootUserPhotoFolder, dbUser.getId().toString());
+								String localUserPhotoFolder = FileUtil.concatPath(tmpLocalPhotoFolder, "user", dbUser.getId().toString()); 
 								
-								FileModel photo = user.getProfilePhoto();
+								FileModel photo = dbUser.getProfilePhoto();
 								
 								String fileName = profilePhoto.getFile().getOriginalFilename();
 								
 								AwsS3Util.getInstance().deleteFolder(bucketName, remoteUserPhotoFolder.replace("\\", "/"));
 								
 								if (!profilePhotoDeleted) {
-									String smallFileName = this.webApplication.getUserPhotoName(user.getId(), photo.getId(), EnmSize.SMALL);
-									String mediumFileName = this.webApplication.getUserPhotoName(user.getId(), photo.getId(), EnmSize.MEDIUM);
+									String smallFileName = this.webApplication.getUserPhotoName(dbUser.getId(), photo.getId(), EnmSize.SMALL);
+									String mediumFileName = this.webApplication.getUserPhotoName(dbUser.getId(), photo.getId(), EnmSize.MEDIUM);
 									
 									String smallFilePath = FileUtil.concatPath(localUserPhotoFolder, smallFileName);
 									String mediumFilePath = FileUtil.concatPath(localUserPhotoFolder, mediumFileName);
@@ -618,8 +641,8 @@ public class ApiUserController extends BaseApiController {
 									ImageUtil.resizeImage(originalPhotoPath, smallFilePath, this.webApplication.getSmallUserPhotoSize(), profilePhoto.getRotationDegree());
 									ImageUtil.resizeImage(originalPhotoPath, mediumFilePath, this.webApplication.getMediumUserPhotoSize(), profilePhoto.getRotationDegree());
 									
-									String remoteSmallFilePath = this.webApplication.getUserPhotoPath(user.getId(), photo.getId(), EnmSize.SMALL.getValue());
-									String remoteMediumFilePath = this.webApplication.getUserPhotoPath(user.getId(), photo.getId(), EnmSize.MEDIUM.getValue());
+									String remoteSmallFilePath = this.webApplication.getUserPhotoPath(dbUser.getId(), photo.getId(), EnmSize.SMALL.getValue());
+									String remoteMediumFilePath = this.webApplication.getUserPhotoPath(dbUser.getId(), photo.getId(), EnmSize.MEDIUM.getValue());
 									
 									AwsS3Util.getInstance().uploadFile(bucketName, smallFilePath, remoteSmallFilePath.replace("\\", "/"));
 									AwsS3Util.getInstance().uploadFile(bucketName, mediumFilePath, remoteMediumFilePath.replace("\\", "/"));

@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.ucgen.common.util.DateUtil;
+import com.ucgen.letserasmus.library.user.model.User;
+import com.ucgen.letserasmus.web.view.application.EnmSession;
 import com.ucgen.letserasmus.web.view.application.WebApplication;
 
 
@@ -60,6 +62,19 @@ public abstract class BaseController {
 			return true;
 		} else {
 			return false;
+		}
+	}
+	
+	public User getSessionUser() {
+		return this.getSessionUser(this.getSession());
+	}
+	
+	public User getSessionUser(HttpSession session) {
+		Object user = session.getAttribute(EnmSession.USER.getId());
+		if (user != null && user instanceof User) {
+			return (User) user;
+		} else {
+			return null;
 		}
 	}
 

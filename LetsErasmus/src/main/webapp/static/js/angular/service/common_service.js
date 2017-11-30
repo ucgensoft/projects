@@ -34,6 +34,46 @@ App.factory('commonService', ['$http', '$q', function($http, $q){
 					});
 			},
 			
+			listCity : function(countryId, callBack) {
+				var data = {
+					countryId : countryId
+				}
+				
+				var config = {
+					params : data,
+					headers : {
+						'Accept' : 'application/json'
+					}
+				};
+				return $http.get(webApplicationUrlPrefix + '/api/simpleobject/listcity', config).then(function(response) {
+						var result = isResultSuccess(response.data, true, function() {
+							callBack(response.data.objectList);
+						}, false);
+					}, function(errResponse) {
+						DialogUtil.error(errResponse);
+					});
+			},
+			
+			listUniversity : function(countryId, callBack) {
+				var data = {
+					countryId : countryId
+				}
+				
+				var config = {
+					params : data,
+					headers : {
+						'Accept' : 'application/json'
+					}
+				};
+				return $http.get(webApplicationUrlPrefix + '/api/simpleobject/listuniversity', config).then(function(response) {
+						var result = isResultSuccess(response.data, true, function() {
+							callBack(response.data.objectList);
+						}, false);
+					}, function(errResponse) {
+						DialogUtil.error(errResponse);
+					});
+			},
+			
 			listQuestionGroup : function(callBack) {
 	    	  NProgress.start(4000, 5);
 				var data = {

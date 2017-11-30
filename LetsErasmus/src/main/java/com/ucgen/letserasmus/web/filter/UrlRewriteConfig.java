@@ -6,6 +6,8 @@ import org.ocpsoft.rewrite.annotation.RewriteConfiguration;
 import org.ocpsoft.rewrite.config.Configuration;
 import org.ocpsoft.rewrite.config.ConfigurationBuilder;
 import org.ocpsoft.rewrite.servlet.config.HttpConfigurationProvider;
+import org.ocpsoft.rewrite.servlet.config.Path;
+import org.ocpsoft.rewrite.servlet.config.Redirect;
 import org.ocpsoft.rewrite.servlet.config.rule.Join;
 
 @RewriteConfiguration
@@ -54,7 +56,11 @@ public class UrlRewriteConfig extends HttpConfigurationProvider {
 				.addRule(Join.path("/universities/{uniName}").to("/pages/universities/{uniName}.html"))
 				.addRule(Join.path("/universities/{uniName}/").to("/pages/universities/{uniName}.html"))
 				.addRule(Join.path("/universities").to("/pages/Universities.html"))
-				.addRule(Join.path("/universities").to("/pages/Universities.html"));
+				.addRule(Join.path("/universities/").to("/pages/Universities.html"))
+				.addRule(Join.path("/community").to("/pages/CommunityTopicList.html"))
+				.addRule(Join.path("/community/{cityName}").to("/pages/CommunityTopicList.html?cityName={cityName}"));
+				//.addRule().when(Path.matches("*/places/*")).perform(Redirect.permanent("www.letserasmus.com"))
+				//.addRule().when(Path.matches("*/members/*")).perform(Redirect.permanent("www.letserasmus.com"));
 	}
 
 	@Override

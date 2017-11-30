@@ -7,7 +7,8 @@ public enum EnmEntityType {
 	EVENT(3),
 	STAFF(4),
 	RESERVATION(5),
-	MESSAGE(6);
+	MESSAGE(6),
+	COMMUNITYGROUP(7);
 	
 	private Integer id;
 	

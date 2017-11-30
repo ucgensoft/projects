@@ -36,10 +36,14 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
 			    version: 'v2.7'
 			  });
 		 
-		  self.checkUrlOperation();
+		  if(!self.urlOperationExist()) {
+			  ajaxHtml(webApplicationUrlPrefix + '/static/html/CompleteProfileForm.htm', 'divModalContent', function() {
+        		  //openModal();  
+        	  });
+		  }
 	 };
 	 
-	 self.checkUrlOperation = function() {
+	 self.urlOperationExist = function() {
 		 var paramOp = getUriParam("op"); 
 		  
 	   	  if (paramOp != null) {
@@ -83,8 +87,13 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
 							}
 					  );
 	   			  }
+	       	  } else {
+	       		  return false;
 	       	  }
-	   	  } 
+	   	  } else {
+	   		  return false;
+	   	  }
+	   	  return true;
 	 };
       
       self.openSignUpWindow = function(callBack) {

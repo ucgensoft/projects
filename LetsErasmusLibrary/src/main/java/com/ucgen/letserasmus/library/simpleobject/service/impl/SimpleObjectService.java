@@ -15,9 +15,11 @@ import com.ucgen.letserasmus.library.parameter.dao.IParameterDao;
 import com.ucgen.letserasmus.library.parameter.enumeration.EnmParameter;
 import com.ucgen.letserasmus.library.simpleobject.dao.ISimpleObjectDao;
 import com.ucgen.letserasmus.library.simpleobject.model.CancelPolicyRule;
+import com.ucgen.letserasmus.library.simpleobject.model.City;
 import com.ucgen.letserasmus.library.simpleobject.model.Country;
 import com.ucgen.letserasmus.library.simpleobject.model.Question;
 import com.ucgen.letserasmus.library.simpleobject.model.QuestionGroup;
+import com.ucgen.letserasmus.library.simpleobject.model.University;
 import com.ucgen.letserasmus.library.simpleobject.service.ISimpleObjectService;
 
 @Service
@@ -39,6 +41,21 @@ public class SimpleObjectService implements ISimpleObjectService {
 	@Override
 	public List<Country> listCountry() {
 		return this.simpleObjectDao.listCountry();
+	}
+	
+	@Override
+	public List<City> listCity(City city) {
+		return this.simpleObjectDao.listCity(city);
+	}
+
+	@Override
+	public City getCity(City city) {
+		return this.simpleObjectDao.getCity(city);
+	}
+	
+	@Override
+	public List<University> listUniversity(Integer countryId) {
+		return this.simpleObjectDao.listUniversity(countryId);
 	}
 	
 	@Override

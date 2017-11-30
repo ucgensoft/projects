@@ -28,16 +28,16 @@ public class AppConfig implements TransactionManagementConfigurer {
 		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
 		
 		//dataSource.setUrl("jdbc:mysql://localhost:3306/letserasmus_db?useUnicode=true&amp;characterEncoding=UTF-8");
-		/*
+		
 		dataSource.setUrl("jdbc:mysql://localhost:3306/letserasmus_db");
 		dataSource.setUsername("root");
 		dataSource.setPassword("root");
-		*/
 		
+		/*
 		dataSource.setUrl("jdbc:mysql://letserasmusdb.caidndq6n0sz.eu-west-1.rds.amazonaws.com:23101/letserasmus_db");
 		dataSource.setUsername("erasmus_admin");
 		dataSource.setPassword("zUgFA5Ye42U*LNXD");
-		
+		*/
 		return dataSource;
 	}
 	

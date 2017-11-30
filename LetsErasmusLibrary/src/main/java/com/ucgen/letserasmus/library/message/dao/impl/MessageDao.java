@@ -30,7 +30,7 @@ public class MessageDao extends JdbcDaoSupport implements IMessageDao {
 			+ " MESSAGE_TITLE, MESSAGE_TEXT, STATUS, CREATED_BY, CREATED_DATE) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";	
 		
 	private static final String INSERT_MESSAGE_THREAD_SQL = "INSERT INTO MESSAGE_THREAD (ENTITY_TYPE, ENTITY_ID, HOST_USER_ID, CLIENT_USER_ID, " 
-			+ " THREAD_TITLE, CREATED_BY, CREATED_DATE, MODIFIED_BY, MODIFIED_DATE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			+ " THREAD_TITLE, THREAD_DESCRIPTION, CREATED_BY, CREATED_DATE, MODIFIED_BY, MODIFIED_DATE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	
 	private static final String UPDATE_MESSAGE_THREAD_SQL = "UPDATE MESSAGE_THREAD SET $1 WHERE ID = ? ";
 	
@@ -60,6 +60,7 @@ public class MessageDao extends JdbcDaoSupport implements IMessageDao {
 		argList.add(messageThread.getHostUserId());
 		argList.add(messageThread.getClientUserId());
 		argList.add(messageThread.getThreadTitle());
+		argList.add(messageThread.getThreadDescription());
 		argList.add(messageThread.getCreatedBy());
 		argList.add(messageThread.getCreatedDate());
 		argList.add(messageThread.getCreatedBy());
@@ -97,6 +98,11 @@ public class MessageDao extends JdbcDaoSupport implements IMessageDao {
 		if (messageThread.getEntityId() != null) {
 			StringUtil.append(updateFields, MessageThreadRowMapper.COL_ENTITY_ID + " = ?", ",");
 			argList.add(messageThread.getEntityId());
+		}
+		
+		if (messageThread.getThreadDescription() != null) {
+			StringUtil.append(updateFields, MessageThreadRowMapper.COL_THREAD_DESCRIPTION + " = ?", ",");
+			argList.add(messageThread.getThreadDescription());
 		}
 		
 		if (messageThread.getModifiedBy() != null) {

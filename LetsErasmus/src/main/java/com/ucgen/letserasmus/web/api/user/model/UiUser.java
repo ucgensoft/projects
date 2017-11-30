@@ -43,6 +43,13 @@ public class UiUser extends BaseModel {
 	private String googleEmail;
 	private String facebookEmail;
 	private String resetPasswordToken;
+	private Integer profileTypeId;
+	private Integer homeCountryId;
+	private Integer homeCityId;
+	private Integer homeUniversityId;
+	private Integer erasmusCountryId;
+	private Integer erasmusCityId;
+	private Integer erasmusUniversityId;
 	private String adminFlag;
 	
 	private FileModel profilePhoto;
@@ -268,6 +275,62 @@ public class UiUser extends BaseModel {
 
 	public void setPlaceListingCount(Integer placeListingCount) {
 		this.placeListingCount = placeListingCount;
+	}
+
+	public Integer getProfileTypeId() {
+		return profileTypeId;
+	}
+
+	public void setProfileTypeId(Integer profileTypeId) {
+		this.profileTypeId = profileTypeId;
+	}
+
+	public Integer getHomeCountryId() {
+		return homeCountryId;
+	}
+
+	public void setHomeCountryId(Integer homeCountryId) {
+		this.homeCountryId = homeCountryId;
+	}
+
+	public Integer getHomeCityId() {
+		return homeCityId;
+	}
+
+	public void setHomeCityId(Integer homeCityId) {
+		this.homeCityId = homeCityId;
+	}
+
+	public Integer getHomeUniversityId() {
+		return homeUniversityId;
+	}
+
+	public void setHomeUniversityId(Integer homeUniversityId) {
+		this.homeUniversityId = homeUniversityId;
+	}
+
+	public Integer getErasmusCountryId() {
+		return erasmusCountryId;
+	}
+
+	public void setErasmusCountryId(Integer erasmusCountryId) {
+		this.erasmusCountryId = erasmusCountryId;
+	}
+
+	public Integer getErasmusCityId() {
+		return erasmusCityId;
+	}
+
+	public void setErasmusCityId(Integer erasmusCityId) {
+		this.erasmusCityId = erasmusCityId;
+	}
+
+	public Integer getErasmusUniversityId() {
+		return erasmusUniversityId;
+	}
+
+	public void setErasmusUniversityId(Integer erasmusUniversityId) {
+		this.erasmusUniversityId = erasmusUniversityId;
 	}
 
 	public String getAdminFlag() {

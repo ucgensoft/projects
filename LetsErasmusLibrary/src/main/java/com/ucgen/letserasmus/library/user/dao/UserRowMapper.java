@@ -41,6 +41,13 @@ public class UserRowMapper extends BaseRowMapper<User> {
 	public static final String COL_GOOGLE_EMAIL = "GOOGLE_EMAIL";
 	public static final String COL_FACEBOOK_EMAIL = "FACEBOOK_EMAIL";
 	public static final String COL_RESET_PASSWORD_TOKEN = "RESET_PASSWORD_TOKEN";
+	public static final String COL_PROFILE_TYPE_ID = "PROFILE_TYPE_ID";
+	public static final String COL_HOME_COUNTRY_ID = "HOME_COUNTRY_ID";
+	public static final String COL_HOME_CITY_ID = "HOME_CITY_ID";
+	public static final String COL_HOME_UNIVERSITY_ID = "HOME_UNIVERSITY_ID";
+	public static final String COL_ERASMUS_COUNTRY_ID = "ERASMUS_COUNTRY_ID";
+	public static final String COL_ERASMUS_CITY_ID = "ERASMUS_CITY_ID";
+	public static final String COL_ERASMUS_UNIVERSITY_ID = "ERASMUS_UNIVERSITY_ID";	
 	public static final String COL_ADMIN_FLAG = "ADMIN_FLAG";
 	
 	public static final String FKEY_FILE = "FILE";
@@ -91,6 +98,13 @@ public class UserRowMapper extends BaseRowMapper<User> {
 		user.setGoogleEmail(super.getString(rs, COL_GOOGLE_EMAIL));
 		user.setFacebookEmail(super.getString(rs, COL_FACEBOOK_EMAIL));
 		user.setResetPasswordToken(super.getString(rs, COL_RESET_PASSWORD_TOKEN));
+		user.setProfileTypeId(super.getInteger(rs, COL_PROFILE_TYPE_ID));
+		user.setHomeCountryId(super.getInteger(rs, COL_HOME_COUNTRY_ID));
+		user.setHomeCityId(super.getInteger(rs, COL_HOME_CITY_ID));
+		user.setHomeUniversityId(super.getInteger(rs, COL_HOME_UNIVERSITY_ID));
+		user.setErasmusCountryId(super.getInteger(rs, COL_ERASMUS_COUNTRY_ID));
+		user.setErasmusCityId(super.getInteger(rs, COL_ERASMUS_CITY_ID));
+		user.setErasmusUniversityId(super.getInteger(rs, COL_ERASMUS_UNIVERSITY_ID));
 		user.setAdminFlag(super.getString(rs, COL_ADMIN_FLAG));
 		
 		if (user.getProfilePhotoId() != null && 
@@ -150,6 +164,13 @@ public class UserRowMapper extends BaseRowMapper<User> {
 		super.addColumn(COL_GOOGLE_EMAIL);
 		super.addColumn(COL_FACEBOOK_EMAIL);
 		super.addColumn(COL_RESET_PASSWORD_TOKEN);
+		super.addColumn(COL_PROFILE_TYPE_ID);
+		super.addColumn(COL_HOME_COUNTRY_ID);
+		super.addColumn(COL_HOME_CITY_ID);
+		super.addColumn(COL_HOME_UNIVERSITY_ID);
+		super.addColumn(COL_ERASMUS_COUNTRY_ID);
+		super.addColumn(COL_ERASMUS_CITY_ID);
+		super.addColumn(COL_ERASMUS_UNIVERSITY_ID);
 		super.addColumn(COL_ADMIN_FLAG);
 	}
 

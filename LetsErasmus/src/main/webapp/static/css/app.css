@@ -91,6 +91,10 @@ body, #mainWrapper {
 	display : inline
 }
 
+.inline-block {
+	display : inline-block
+}
+
 .clsUnderline {
 	text-decoration : underline;
 }

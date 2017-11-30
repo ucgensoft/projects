@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,21 +17,29 @@ import com.ucgen.common.operationresult.EnmResultCode;
 import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.letserasmus.library.common.enumeration.EnmErrorCode;
 import com.ucgen.letserasmus.library.simpleobject.dao.CancelPolicyRuleRowMapper;
+import com.ucgen.letserasmus.library.simpleobject.dao.CityRowMapper;
 import com.ucgen.letserasmus.library.simpleobject.dao.CountryRowMapper;
 import com.ucgen.letserasmus.library.simpleobject.dao.ISimpleDaoConstants;
 import com.ucgen.letserasmus.library.simpleobject.dao.ISimpleObjectDao;
 import com.ucgen.letserasmus.library.simpleobject.dao.QuestionGroupRowMapper;
 import com.ucgen.letserasmus.library.simpleobject.dao.QuestionRowMapper;
+import com.ucgen.letserasmus.library.simpleobject.dao.UniversityRowMapper;
 import com.ucgen.letserasmus.library.simpleobject.model.CancelPolicyRule;
+import com.ucgen.letserasmus.library.simpleobject.model.City;
 import com.ucgen.letserasmus.library.simpleobject.model.Country;
 import com.ucgen.letserasmus.library.simpleobject.model.Question;
 import com.ucgen.letserasmus.library.simpleobject.model.QuestionGroup;
+import com.ucgen.letserasmus.library.simpleobject.model.University;
 
 @Repository
 public class SimpleObjectDao extends JdbcDaoSupport implements ISimpleObjectDao, ISimpleDaoConstants {
 	
 	private List<Country> countryList;
 	private Map<String, Country> countryMapIso2;
+	private List<City> cityList;
+	private Map<Integer, City> cityMap;
+	private List<City> universityList;
+	private Map<Integer, City> universityMap;
 	private Map<Integer, Map<Integer, TreeMap<Integer, CancelPolicyRule>>> cancelPolicyRuleMap;
 	
 	@Autowired
@@ -39,24 +48,23 @@ public class SimpleObjectDao extends JdbcDaoSupport implements ISimpleObjectDao,
 		super.setDataSource(dataSource);
 	}
 	
-	@Override
-	public synchronized List<Country> listCountry() {
-		if (countryList == null) {
-			this.countryList = this.getJdbcTemplate().query(LIST_COUNTRY_SQL, new CountryRowMapper());
-			countryMapIso2 = new HashMap<String, Country>();
-			for (Country country : countryList) {
-				countryMapIso2.put(country.getIsoCodeTwoDigit().toUpperCase(), country);
-			}
+	@PostConstruct
+	public void initialize() {
+		this.countryList = this.getJdbcTemplate().query(LIST_COUNTRY_SQL, new CountryRowMapper());
+		countryMapIso2 = new HashMap<String, Country>();
+		for (Country country : countryList) {
+			countryMapIso2.put(country.getIsoCodeTwoDigit().toUpperCase(), country);
 		}
+	}
+	
+	@Override
+	public List<Country> listCountry() {
 		return this.countryList;
 	}
 	
 	@Override
 	public Country getCountryWithIsoCode2(String isoCode2) {
 		if (isoCode2 != null) {
-			if (this.countryList == null) {
-				this.listCountry();
-			}
 			return this.countryMapIso2.get(isoCode2.toUpperCase());
 		} else {
 			return null;
@@ -146,6 +154,32 @@ public class SimpleObjectDao extends JdbcDaoSupport implements ISimpleObjectDao,
 				this.cancelPolicyRuleMap.get(cancelPolicyRule.getEntityType()).get(cancelPolicyRule.getPolicyId()).put(cancelPolicyRule.getRemainingDays(), cancelPolicyRule);
 			}
 		}
+	}
+
+	@Override
+	public List<City> listCity(City city) {
+		StringBuilder sqlBuilder = new StringBuilder(LIST_CITY_SQL);
+		List<Object> argList = new ArrayList<Object>();
+		argList.add(city.getCountryId());		
+		return this.getJdbcTemplate().query(sqlBuilder.toString(), argList.toArray(), new CityRowMapper());
+	}
+	
+	@Override
+	public City getCity(City city) {
+		List<City> cityList = this.listCity(city);
+		if (cityList != null && cityList.size() > 0) {
+			return cityList.get(0);
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public List<University> listUniversity(Integer countryId) {
+		StringBuilder sqlBuilder = new StringBuilder(LIST_UNIVERSITY_SQL);
+		List<Object> argList = new ArrayList<Object>();
+		argList.add(countryId);		
+		return this.getJdbcTemplate().query(sqlBuilder.toString(), argList.toArray(), new UniversityRowMapper());
 	}
 
 }
