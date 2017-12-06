@@ -6,18 +6,18 @@
 
 	<ui:define name="head">
 		<!-- <meta property="og:image" content="" /> -->
-		<title>Accommodation Search Results for
-			#{searchController.searchCriteria.locationName} - Let's Erasmus</title>
+		<title>Accommodation Search Results for	#{searchController.searchCriteria.locationName} - Let's Erasmus</title>
+		<meta name="description" content="Erasmus housing and accommodation search results for #{searchController.searchCriteria.locationName}" />
+				
+		<meta property="og:title" content="Let's Erasmus - Student housing search results for #{searchController.searchCriteria.locationName}" />
+		<meta property="og:description" content="Erasmus housing and accommodation search results for #{searchController.searchCriteria.locationName}" />
 		<meta property="og:url" content="#{searchController.pageUrl}" />
-		<meta property="og:title"
-			content="Erasmus room search results for #{searchController.searchCriteria.locationName}" />
-		<meta property="og:description"
-			content="Erasmus housing and accommodation search results for #{searchController.searchCriteria.locationName}" />
-
-		<meta name="description"
-			content="Erasmus housing and accommodation search results for #{searchController.searchCriteria.locationName}" />
+		
+		<meta name="twitter:title" content="Let's Erasmus - Student housing search results for #{searchController.searchCriteria.locationName}"/>
+		<meta name="twitter:description" content="Erasmus housing and accommodation search results for #{searchController.searchCriteria.locationName}"/>
+		<meta name="twitter:card" content="summary_large_image"/>		
+		
 		<link rel="canonical" href="#{searchController.pageUrl}" />
-
 		<link rel="stylesheet" type="text/css"
 			href="#{webApplication.urlPrefix}/static/css/search_results.css?ver=#{webApplication.staticFileVersion}" />
 		<link rel="stylesheet" type="text/css"

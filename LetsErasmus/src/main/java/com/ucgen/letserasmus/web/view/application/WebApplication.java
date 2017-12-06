@@ -534,7 +534,7 @@ public class WebApplication extends BaseController {
 				|| requestUrl.contains("PAGES/SEARCHRESULT.HTML")
 				|| requestUrl.contains("DISPLAYUSER.HTML")
 				|| requestUrl.contains("HELP.HTML")
-				|| requestUrl.contains("BLOG.HTML")
+				|| requestUrl.contains("BLOGMAIN.HTML")
 				|| requestUrl.contains("PAGES/ARTICLES")
 				|| requestUrl.contains("PAGES/UNIVERSITIES")) {
 			return true;

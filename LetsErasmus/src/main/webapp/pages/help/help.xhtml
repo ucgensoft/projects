@@ -5,15 +5,18 @@
 	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
 
 	<ui:define name="head">
-	<!-- 
-		<meta property="og:image" content="" />
-	 -->
+
 		<title>#{helpController.selectedGroupKey} - Let's Erasmus Help Center</title>
+		<meta name="description" content="Do you have questions? Then, this is the right place to learn how Let's Erasmus housing and community platform is working!" />
+		
+		<meta property="og:title" content="#{helpController.selectedGroupKey} - Let's Erasmus Help Center" />
+		<meta property="og:description" content="Do you have questions? Then, this is the right place to learn how Let's Erasmus housing and community platform is working!" />
 		<meta property="og:url" content="#{helpController.pageUrl}" />
-		<meta property="og:title" content="Let's Erasmus help page for category #{helpController.selectedGroupKey}" />
-		<meta property="og:description" content="Help content is provided by Let's Erasmus team to answer any question of hosts and Erasmus students." />
-	
-		<meta name="description" content="Help content is maintained by Let's Erasmus team to answer any question of hosts and Erasmus students" />
+		
+		<meta name="twitter:title" content="#{helpController.selectedGroupKey} - Let's Erasmus Help Center"/>
+		<meta name="twitter:description" content="Do you have questions? Then, this is the right place to learn how Let's Erasmus housing and community platform is working!"/>
+		<meta name="twitter:card" content="summary_large_image"/>
+			
 		<link rel="canonical" href="#{helpController.pageUrl}"/>
 	
 		<link rel="stylesheet" type="text/css"

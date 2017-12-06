@@ -5,12 +5,21 @@
 	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
 
 	<ui:define name="head">
+		<title>Let's Erasmus Blog</title>
+		<meta name="description" content="Learn latest Erasmus news, best practices, incredible experiences, popular attractions, and local's life style at your destionation!"/>
+				
+		<meta property="og:title" content="Let's Erasmus Blog" />
+		<meta property="og:description" content="Learn latest Erasmus news, best practices, incredible experiences, popular attractions, and local's life style at your destionation!" />
+		<meta property="og:url" content="#{webApplication.urlPrefix}/blog"/>
+
+		<meta name="twitter:title" content="Let's Erasmus Blog"/>
+		<meta name="twitter:description" content="Learn latest Erasmus news, best practices, incredible experiences, popular attractions, and local's life style at your destionation!"/>
+		<meta name="twitter:card" content="summary_large_image"/>
+	
 		<link rel="stylesheet" type="text/css"
 			href="#{webApplication.urlPrefix}/static/css/blog.css?ver=#{webApplication.staticFileVersion}" />
 		<link rel="stylesheet"
 			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-		<script type="text/javascript"
-			src="//platform-api.sharethis.com/js/sharethis.js#property=5a26e13f07047400115ab0d9&quot;product=inline-share-buttons"></script>
 	</ui:define>
 
 	<ui:define name="body">
@@ -18,7 +27,6 @@
 			<div class="blog-content">
 				<div id="main">
 					<h3 class="_1tizno3o">Latest Articles</h3>		
-					<div class="sharethis-inline-share-buttons"></div>
 					<!-- ARTICLE BOX-->
 					<div class="blog-article">
 						<a href="#{webApplication.urlPrefix}/blog/best-cities-for-the-incredible-erasmus-experience" target="_blank"

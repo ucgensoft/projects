@@ -6,15 +6,21 @@
 
 	<ui:define name="head">
 		<title>#{displayUserController.user.firstName}'s profile - Let's Erasmus</title>
-		<meta property="description" content="#{displayUserController.user.firstName} is an active Let's Erasmus user since #{displayUserController.formatDate(displayUserController.user.createdDate, 'dd.MM.yyyy')}" />
-		<link rel="canonical" href="#{webApplication.getUrlTemplateProfile(displayUserController.user.id)}"/>
-		
-		<meta property="og:url" content="#{webApplication.getUrlTemplateProfile(displayUserController.user.id)}" />
-		<meta property="og:title" content="Let's Erasmus user profile page for #{displayUserController.user.firstName}, (#{displayUserController.user.id})" />
-		<meta property="og:description" content="#{displayUserController.user.firstName} is an active Let's Erasmus user since #{displayUserController.formatDate(displayUserController.user.createdDate, 'dd.MM.yyyy')}" />
 		<meta name="description" content="#{displayUserController.user.firstName} is an active Let's Erasmus user since #{displayUserController.formatDate(displayUserController.user.createdDate, 'dd.MM.yyyy')}" />
-		<meta property="og:image" content="#{webApplication.staticFileUrlPrefix}/#{webApplication.getUserPhotoPath(displayUserController.user.id, displayUserController.user.profilePhotoId, 'medium')}" />
 		
+		<meta property="og:title" content="#{displayUserController.user.firstName}'s profile - Let's Erasmus" />
+		<meta property="og:description" content="#{displayUserController.user.firstName} is an active Let's Erasmus user since #{displayUserController.formatDate(displayUserController.user.createdDate, 'dd.MM.yyyy')}" />
+		<meta property="og:image" content="#{webApplication.staticFileUrlPrefix}/#{webApplication.getUserPhotoPath(displayUserController.user.id, displayUserController.user.profilePhotoId, 'medium')}" />
+		<meta property="og:url" content="#{webApplication.getUrlTemplateProfile(displayUserController.user.id)}" />
+		
+		<meta name="twitter:title" content="#{displayUserController.user.firstName}'s profile - Let's Erasmus"/>
+		<meta name="twitter:description" content="#{displayUserController.user.firstName} is an active Let's Erasmus user since #{displayUserController.formatDate(displayUserController.user.createdDate, 'dd.MM.yyyy')}"/>
+		<meta name="twitter:image" content="#{webApplication.staticFileUrlPrefix}/#{webApplication.getUserPhotoPath(displayUserController.user.id, displayUserController.user.profilePhotoId, 'medium')}"/>
+		<meta name="twitter:card" content="summary_large_image"/>
+		<meta name="twitter:image:alt" content="#{displayUserController.user.firstName}'s profile photo"/>	
+				
+		<link rel="canonical" href="#{webApplication.getUrlTemplateProfile(displayUserController.user.id)}"/>
+
 		<link rel="stylesheet" type="text/css"
 			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css?ver=#{webApplication.staticFileVersion}" />
 			
