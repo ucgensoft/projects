@@ -5,20 +5,20 @@
 	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
 
 	<ui:define name="head">
-		<meta property="og:image"
-			content="#{webApplication.getPlacePhotoUrl(placeDetailController.place.id, placeDetailController.place.coverPhotoId, 'small')}" />
-		<meta property="og:url"
-			content="#{placeDetailController.placeDetailUrl}" />
-		<meta property="og:title"
-			content="#{placeDetailController.place.title}" />
-		<meta property="og:description"
-			content="#{placeDetailController.pageDescription}" />
-		<meta name="description"
-			content="#{placeDetailController.pageDescription}" />
-
-		<title>#{placeDetailController.pageTitle}</title>
-		<meta property="description"
-			content="#{placeDetailController.pageDescription}" />
+	<title>#{placeDetailController.pageTitle}</title>
+	<meta name="description" content="#{placeDetailController.pageDescription}" />
+	
+	<meta property="og:title" content="#{placeDetailController.place.title}" />
+	<meta property="og:description"	content="#{placeDetailController.pageDescription}" />
+	<meta property="og:image" content="#{webApplication.getPlacePhotoUrl(placeDetailController.place.id, placeDetailController.place.coverPhotoId, 'small')}" />
+	<meta property="og:url"	content="#{placeDetailController.placeDetailUrl}" />
+		
+	<meta name="twitter:title" content="#{placeDetailController.place.title}"/>
+	<meta name="twitter:description" content="#{placeDetailController.pageDescription}"/>
+	<meta name="twitter:image" content="##{webApplication.getPlacePhotoUrl(placeDetailController.place.id, placeDetailController.place.coverPhotoId, 'small')}"/>
+	<meta name="twitter:card" content="summary_large_image"/>
+	<meta name="twitter:image:alt" content="#{placeDetailController.place.title}"/>		
+			
 		<link rel="canonical" href="#{placeDetailController.placeDetailUrl}" />
 
 		<link rel="stylesheet" type="text/css"
@@ -115,18 +115,16 @@
 													style="top: 50%; right: 8px;"> </span>
 											</div>
 											<div id="divPlacePhotoList">
-												<ui:repeat var="photo" value="#{placeDetailController.place.photoList}" varStatus="status">
-													<img alt="Available room for erasmus student, #{placeDetailController.place.title}"
+												<ui:repeat var="photo"
+													value="#{placeDetailController.place.photoList}"
+													varStatus="status">
+													<img
+														alt="Available room for erasmus student, #{placeDetailController.place.title}"
 														class="host-profile-image" height="90" width="90"
-<<<<<<< HEAD
-														src="#{webApplication.getPlacePhotoUrl(placeDetailController.place.id, photo.id,'large')}"
-														title="#{placeDetailController.place.title}" />
-=======
 														src="#{webApplication.getPlacePhotoUrl(placeDetailController.place.id, photo.id,'small')}"
 														title="Available room for erasmus student, #{placeDetailController.place.title}" />
->>>>>>> branch 'master' of https://github.com/ucgensoft/projects.git
 												</ui:repeat>
-											</div> 
+											</div>
 										</div>
 								</span>
 								</span>
@@ -380,7 +378,7 @@
 																class="host-profile-image" height="90" width="90"
 																src="#{webApplication.getUserPhotoUrl(placeDetailController.place.hostUserId, placeDetailController.place.user.profilePhotoId,'small')}"
 																title="#{placeDetailController.place.user.firstName}" />
-															</a> 
+															</a>
 														</div>
 														<h3 class="space-1 text-center">
 															<a id="lnkHostUser" class="link-reset"
@@ -405,15 +403,15 @@
 																	{{ctrl.place.user.msisdnVerified == 'Y' ? 'is' : 'is
 																	not'}} verified</span></strong>
 														</div>
-														
-														<div class="text-center" style = "padding-top:10px;">
+
+														<div class="text-center" style="padding-top: 10px;">
 															<button type="button" class="btn btn-primary btn-small"
-																 ng-click="ctrl.onContactHostBtnClicked()">
+																ng-click="ctrl.onContactHostBtnClicked()">
 																<span>Contact host</span>
 															</button>
 														</div>
-														
-														
+
+
 													</div>
 												</div>
 												<!-- HOST -->

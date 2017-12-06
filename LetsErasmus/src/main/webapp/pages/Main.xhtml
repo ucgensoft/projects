@@ -11,265 +11,715 @@
 			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 	</ui:define>
 
-
-
 	<ui:define name="body">
-		<h:form id="mainSearchForm">
-			<div id="homeFirstScreenDiv" class="home-first-screen">
+		<div class="site-content">
+			<div class="body-upper-section">
+				<div class="upper-title">
+					<div>
+						<div class="title-itself">
+							<h1 class="_28rra8">
+								<span style="font-weight: 700; color: #03a9f4;">The new
+									way of international students!</span>
+								<div>
+									Book <strong>rooms</strong>, join <strong>groups</strong>,
+									discover <strong>universities</strong>: One platform for
+									eveything you need!
+								</div>
+							</h1>
+						</div>
+					</div>
+				</div>
+				<div class="body-upper-search">
+					<h:form id="mainSearchForm">
+						<div class="staticForm home--search">
+							<div class="formErrors" style="display: none;"></div>
+							<input id="txtSearchPlace" readonly=""
+								class="home--search--input form-control" type="text" name="city"
+								placeholder="Search by city or university"
+								data-event="Selected search field" autocomplete="off"
+								ng-blur="ctrl.validateSearch()" />
 
-				<div class="flex-grow-1 flex-vertical-middle">
+							<div id="HomeSearchDates" style="margin-left: 4px">
+								<div id="divDates" class="home-search--dates">
+									<input type="text" id="txtStartDatePicker" class="form-control"
+										placeholder="Move in" value="" readonly="true" /> <input
+										type="text" id="txtEndDatePicker" class="form-control"
+										placeholder="Move out" value="" readonly="true" />
+								</div>
+							</div>
 
-					<h1 class="landing-h1 text-center" style="z-index: 1">The new
-						way in Erasmus student housing</h1>
-					<a class="announcement" href="#learn-how-it-works"> <span
-						class="new-pill">LEARN MORE</span> <span class="message">
-							Click to see advantages of housing with Let's Erasmus!</span>
-					</a>
+							<input type="button" class="btn-brand-search home--search--btn"
+								id="btnSearch" value="search &amp; book" disabled="disabled"
+								ng-click="ctrl.search();" />
+						</div>
+					</h:form>
+				</div>
+			</div>
 
-					<div class="staticForm home--search">
-						<div class="formErrors" style="display: none;"></div>
-						<input id="txtSearchPlace" readonly=""
-							class="home--search--input form-control" type="text" name="city"
-							placeholder="Search by city or university"
-							data-event="Selected search field" autocomplete="off"
-							ng-blur="ctrl.validateSearch()" />
+			<div class="body-bottom-section">
 
-						<div id="HomeSearchDates" style="margin-left: 4px">
-							<div id="divDates" class="home-search--dates">
-								<input type="text" id="txtStartDatePicker" class="form-control"
-									placeholder="Move in" value="" readonly="true" /> <input
-									type="text" id="txtEndDatePicker" class="form-control"
-									placeholder="Move out" value="" readonly="true" />
+
+				<!-- ANOTHER CITY -->
+				<div>
+					<div>
+						<div>
+							<div class="_1ghxasr">
+								<div class="_xqimtp">
+									<div class="_1mtjcg0">
+										<div class="_5851ap">
+											<h3 class="_1tizno3o">Popular Rooms in London</h3>
+										</div>
+									</div>
+									<div class="_1r70z6s">
+										<a class="_1wwav84m"
+											href="#{webApplication.urlPrefix}/room/search/london/ChIJdd4hrwug2EcRmSrV3Vo6llI"
+											target="_blank"> <span class="_13lu1ne"><span>See
+													all ></span></span>
+										</a>
+									</div>
+								</div>
+
+								<div class="_e296pg">
+									<div class="_5vk1jx3">
+										<div class="_ovop6f8">
+
+											<!-- 1st piece of box-->
+											<div class="_1uhn2sww">
+												<div class="_qgh1p4">
+													<div>
+														<div class="_e296pg">
+															<a href="https://www.letserasmus.com/room/72"
+																target="_blank" rel="noopener noreferrer"
+																class="_j1qvyg" aria-busy="false"><div
+																	class="_q8me0tf"
+																	style="padding-top: 66.6667%; background-image: url(&quot;https://s3-eu-west-1.amazonaws.com/static.letserasmus.com/place/images/72/place_72_858_small.jpg&quot;); background-size: 100% 100%;">
+																	<div class="_1szwzht">
+																		<div style="width: 100%; height: 100%;">
+																			<div class="_e296pg"
+																				style="width: 100%; height: 100%;">
+																				<div class="_6ikqekk" role="img"
+																					aria-label="Erasmus student housing"
+																					style="width: 100%; height: 100%; background-image: url(&quot;https://s3-eu-west-1.amazonaws.com/static.letserasmus.com/place/images/72/place_72_858_small.jpg&quot;);"></div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																<div class="_1qzsxyn">
+																	<div class="_1s2bxmn">
+																		<span style="color: rgb(213, 47, 14);">Private
+																			Room · London</span>
+																	</div>
+																	<div class="_1iddsry">2 ROOMS in SAME Flat</div>
+																	<div class="_16ykjci">980 € per month</div>
+																</div> </a>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- 2nd piece of box -->
+											<div class="_1uhn2sww">
+												<div class="_qgh1p4">
+													<div>
+														<div class="_e296pg">
+															<a href="https://www.letserasmus.com/room/73"
+																target="_blank" rel="noopener noreferrer"
+																class="_j1qvyg" aria-busy="false"><div
+																	class="_q8me0tf"
+																	style="padding-top: 66.6667%; background-image: url(&quot;https://s3-eu-west-1.amazonaws.com/static.letserasmus.com/place/images/73/place_73_867_small.jpg&quot;); background-size: 100% 100%;">
+																	<div class="_1szwzht">
+																		<div style="width: 100%; height: 100%;">
+																			<div class="_e296pg"
+																				style="width: 100%; height: 100%;">
+																				<div class="_6ikqekk" role="img"
+																					aria-label="Erasmus student housing"
+																					style="width: 100%; height: 100%; background-image: url(&quot;https://s3-eu-west-1.amazonaws.com/static.letserasmus.com/place/images/73/place_73_867_small.jpg&quot;);"></div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																<div class="_1qzsxyn">
+																	<div class="_1s2bxmn">
+																		<span style="color: rgb(213, 47, 14);">Private
+																			Room · London</span>
+																	</div>
+																	<div class="_1iddsry">Double Room in
+																		Shadwell/Limehouse DLR</div>
+																	<div class="_16ykjci">800 € per month</div>
+																</div> </a>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- 3rd piece of box -->
+											<div class="_1uhn2sww">
+												<div class="_qgh1p4">
+													<div>
+														<div class="_e296pg">
+															<a href="https://www.letserasmus.com/room/70"
+																target="_blank" rel="noopener noreferrer"
+																class="_j1qvyg" aria-busy="false"><div
+																	class="_q8me0tf"
+																	style="padding-top: 66.6667%; background-image: url(&quot;https://s3-eu-west-1.amazonaws.com/static.letserasmus.com/place/images/70/place_70_840_small.jpg&quot;); background-size: 100% 100%;">
+																	<div class="_1szwzht">
+																		<div style="width: 100%; height: 100%;">
+																			<div class="_e296pg"
+																				style="width: 100%; height: 100%;">
+																				<div class="_6ikqekk" role="img"
+																					aria-label="Erasmus student housing"
+																					style="width: 100%; height: 100%; background-image: url(&quot;https://s3-eu-west-1.amazonaws.com/static.letserasmus.com/place/images/70/place_70_840_small.jpg&quot;);"></div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																<div class="_1qzsxyn">
+																	<div class="_1s2bxmn">
+																		<span style="color: rgb(213, 47, 14);">Private
+																			Room · London</span>
+																	</div>
+																	<div class="_1iddsry">Big Doubleroom in Queens
+																		Way</div>
+																	<div class="_16ykjci">780 € per month</div>
+																</div> </a>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- 4. piece of box -->
+											<div class="_1uhn2sww">
+												<div class="_qgh1p4">
+													<div>
+														<div class="_e296pg">
+															<a href="https://www.letserasmus.com/room/49"
+																target="_blank" rel="noopener noreferrer"
+																class="_j1qvyg" aria-busy="false"><div
+																	class="_q8me0tf"
+																	style="padding-top: 66.6667%; background-image: url(&quot;https://s3-eu-west-1.amazonaws.com/static.letserasmus.com/place/images/49/place_49_678_small.jpg&quot;); background-size: 100% 100%;">
+																	<div class="_1szwzht">
+																		<div style="width: 100%; height: 100%;">
+																			<div class="_e296pg"
+																				style="width: 100%; height: 100%;">
+																				<div class="_6ikqekk" role="img"
+																					aria-label="Erasmus student housing"
+																					style="width: 100%; height: 100%; background-image: url(&quot;https://s3-eu-west-1.amazonaws.com/static.letserasmus.com/place/images/49/place_49_678_small.jpg&quot;);"></div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																<div class="_1qzsxyn">
+																	<div class="_1s2bxmn">
+																		<span style="color: rgb(213, 47, 14);">Private
+																			Room · London</span>
+																	</div>
+																	<div class="_1iddsry">Amazing Double Room In
+																		Edgware Road</div>
+																	<div class="_16ykjci">1023.79 € per month</div>
+																</div> </a>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
-
-						<input type="button" class="btn-brand-search home--search--btn"
-							id="btnSearch" value="search &amp; book" disabled="disabled"
-							ng-click="ctrl.search();" />
 					</div>
+				</div>
 
-					<h2 class="landing-h2 text-center"
-						style='margin-bottom: 10px; z-index: 1'>Explore Popular
-						Cities</h2>
+				<!-- ANOTHER CITY -->
+				<div>
+					<div>
+						<div>
+							<div class="_1ghxasr">
+								<div class="_xqimtp">
+									<div class="_1mtjcg0">
+										<div class="_5851ap">
+											<h3 class="_1tizno3o">Popular Rooms in Istanbul</h3>
+										</div>
+									</div>
+									<div class="_1r70z6s">
+										<a class="_1wwav84m"
+											href="#{webApplication.urlPrefix}/room/search/istanbul/ChIJawhoAASnyhQR0LABvJj-zOE"
+											target="_blank"> <span class="_13lu1ne"><span>See
+													all ></span></span>
+										</a>
+									</div>
+								</div>
 
-					<div class="container" style="margin-bottom: 10px; z-index: 1;">
+								<div class="_e296pg">
+									<div class="_5vk1jx3">
+										<div class="_ovop6f8">
 
-						<ul class="img-list">
-							<div class="holder">
-								<li><a
-									href="#{webApplication.urlPrefix}/room/search/london/ChIJdd4hrwug2EcRmSrV3Vo6llI">
-										<img class="popular-city-image"
-										src="/static/images/london.jpg" alt="Erasmus Housing in London" width="100%" height="100%" />
-										<span class="text-content"><span>London</span></span>
-								</a></li>
+											<!-- 1st piece of box-->
+											<div class="_1uhn2sww">
+												<div class="_qgh1p4">
+													<div>
+														<div class="_e296pg">
+															<a href="https://www.letserasmus.com/room/55"
+																target="_blank" rel="noopener noreferrer"
+																class="_j1qvyg" aria-busy="false"><div
+																	class="_q8me0tf"
+																	style="padding-top: 66.6667%; background-image: url(&quot;https://s3-eu-west-1.amazonaws.com/static.letserasmus.com/place/images/55/place_55_712_small.jpg&quot;); background-size: 100% 100%;">
+																	<div class="_1szwzht">
+																		<div style="width: 100%; height: 100%;">
+																			<div class="_e296pg"
+																				style="width: 100%; height: 100%;">
+																				<div class="_6ikqekk" role="img"
+																					aria-label="Erasmus student housing in Istanbul"
+																					style="width: 100%; height: 100%; background-image: url(&quot;https://s3-eu-west-1.amazonaws.com/static.letserasmus.com/place/images/55/place_55_712_small.jpg&quot;);"></div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																<div class="_1qzsxyn">
+																	<div class="_1s2bxmn">
+																		<span style="color: rgb(213, 47, 14);">Private
+																			Room · Istanbul</span>
+																	</div>
+																	<div class="_1iddsry">Room in Etiler / Besiktas,
+																		very close to Bogazici University</div>
+																	<div class="_16ykjci">380 € per month</div>
+																</div> </a>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- 2nd piece of box -->
+											<div class="_1uhn2sww">
+												<div class="_qgh1p4">
+													<div>
+														<div class="_e296pg">
+															<a href="https://www.letserasmus.com/room/42"
+																target="_blank" rel="noopener noreferrer"
+																class="_j1qvyg" aria-busy="false"><div
+																	class="_q8me0tf"
+																	style="padding-top: 66.6667%; background-image: url(&quot;https://s3-eu-west-1.amazonaws.com/static.letserasmus.com/place/images/42/place_42_610_small.jpg&quot;); background-size: 100% 100%;">
+																	<div class="_1szwzht">
+																		<div style="width: 100%; height: 100%;">
+																			<div class="_e296pg"
+																				style="width: 100%; height: 100%;">
+																				<div class="_6ikqekk" role="img"
+																					aria-label="Erasmus student housing in Istanbul"
+																					style="width: 100%; height: 100%; background-image: url(&quot;https://s3-eu-west-1.amazonaws.com/static.letserasmus.com/place/images/42/place_42_610_small.jpg&quot;);"></div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																<div class="_1qzsxyn">
+																	<div class="_1s2bxmn">
+																		<span style="color: rgb(213, 47, 14);">Private
+																			Room · Istanbul</span>
+																	</div>
+																	<div class="_1iddsry">Stylish Central Safe Rooms
+																		With The Best View Terrace</div>
+																	<div class="_16ykjci">500 € per month</div>
+																</div> </a>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- 3rd piece of box -->
+											<div class="_1uhn2sww">
+												<div class="_qgh1p4">
+													<div>
+														<div class="_e296pg">
+															<a href="https://www.letserasmus.com/room/26"
+																target="_blank" rel="noopener noreferrer"
+																class="_j1qvyg" aria-busy="false"><div
+																	class="_q8me0tf"
+																	style="padding-top: 66.6667%; background-image: url(&quot;https://s3-eu-west-1.amazonaws.com/static.letserasmus.com/place/images/26/place_26_482_small.jpg&quot;); background-size: 100% 100%;">
+																	<div class="_1szwzht">
+																		<div style="width: 100%; height: 100%;">
+																			<div class="_e296pg"
+																				style="width: 100%; height: 100%;">
+																				<div class="_6ikqekk" role="img"
+																					aria-label="Erasmus student housing in Istanbul"
+																					style="width: 100%; height: 100%; background-image: url(&quot;https://s3-eu-west-1.amazonaws.com/static.letserasmus.com/place/images/26/place_26_482_small.jpg&quot;);"></div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																<div class="_1qzsxyn">
+																	<div class="_1s2bxmn">
+																		<span style="color: rgb(213, 47, 14);">Private
+																			Room · Istanbul</span>
+																	</div>
+																	<div class="_1iddsry">Best house you can find :)</div>
+																	<div class="_16ykjci">275 € per month</div>
+																</div> </a>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- 4. piece of box -->
+											<div class="_1uhn2sww">
+												<div class="_qgh1p4">
+													<div>
+														<div class="_e296pg">
+															<a href="https://www.letserasmus.com/room/20"
+																target="_blank" rel="noopener noreferrer"
+																class="_j1qvyg" aria-busy="false"><div
+																	class="_q8me0tf"
+																	style="padding-top: 66.6667%; background-image: url(&quot;https://s3-eu-west-1.amazonaws.com/static.letserasmus.com/place/images/20/place_20_352_small.jpg&quot;); background-size: 100% 100%;">
+																	<div class="_1szwzht">
+																		<div style="width: 100%; height: 100%;">
+																			<div class="_e296pg"
+																				style="width: 100%; height: 100%;">
+																				<div class="_6ikqekk" role="img"
+																					aria-label="Erasmus student housing in Istanbul"
+																					style="width: 100%; height: 100%; background-image: url(&quot;https://s3-eu-west-1.amazonaws.com/static.letserasmus.com/place/images/20/place_20_352_small.jpg&quot;);"></div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																<div class="_1qzsxyn">
+																	<div class="_1s2bxmn">
+																		<span style="color: rgb(213, 47, 14);">Private
+																			Room · Istanbul</span>
+																	</div>
+																	<div class="_1iddsry">Wonderful Erasmus Rooms
+																		@Taksim</div>
+																	<div class="_16ykjci">299 € per month</div>
+																</div> </a>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
-							<div class="holder">
-								<li><a
-									href="#{webApplication.urlPrefix}/room/search/barcelona/ChIJ5TCOcRaYpBIRCmZHTz37sEQ">
-										<img class="popular-city-image"
-										src="/static/images/barcelona.jpg" alt="Erasmus Housing in Barcelona" width="100%" height="100%" />
-										<span class="text-content"><span>Barcelona</span></span>
-								</a></li>
-							</div>
-							<div class="holder">
-								<li><a
-									href="#{webApplication.urlPrefix}/room/search/istanbul/ChIJawhoAASnyhQR0LABvJj-zOE">
-										<img class="popular-city-image"
-										src="/static/images/istanbul.jpg" alt="Erasmus Housing in Istanbul" width="100%" height="100%" />
-										<span class="text-content"><span>Istanbul</span></span>
-								</a></li>
-							</div>
-						</ul>
-
-
-
+						</div>
 					</div>
+				</div>
 
+				<!-- ANOTHER CITY -->
+				<div>
+					<div>
+						<div>
+							<div class="_1ghxasr">
+								<div class="_xqimtp">
+									<div class="_1mtjcg0">
+										<div class="_5851ap">
+											<h3 class="_1tizno3o">Popular Rooms in Barcelona</h3>
+										</div>
+									</div>
+									<div class="_1r70z6s">
+										<a class="_1wwav84m"
+											href="#{webApplication.urlPrefix}/room/search/barcelona/ChIJ5TCOcRaYpBIRCmZHTz37sEQ"
+											target="_blank"> <span class="_13lu1ne"><span>See
+													all ></span></span>
+										</a>
+									</div>
+								</div>
 
+								<div class="_e296pg">
+									<div class="_5vk1jx3">
+										<div class="_ovop6f8">
 
+											<!-- 1st piece of box-->
+											<div class="_1uhn2sww">
+												<div class="_qgh1p4">
+													<div>
+														<div class="_e296pg">
+															<a href="https://www.letserasmus.com/room/78"
+																target="_blank" rel="noopener noreferrer"
+																class="_j1qvyg" aria-busy="false"><div
+																	class="_q8me0tf"
+																	style="padding-top: 66.6667%; background-image: url(&quot;https://s3-eu-west-1.amazonaws.com/static.letserasmus.com/place/images/78/place_78_899_small.jpg&quot;); background-size: 100% 100%;">
+																	<div class="_1szwzht">
+																		<div style="width: 100%; height: 100%;">
+																			<div class="_e296pg"
+																				style="width: 100%; height: 100%;">
+																				<div class="_6ikqekk" role="img"
+																					aria-label="Erasmus student housing in Barcelona"
+																					style="width: 100%; height: 100%; background-image: url(&quot;https://s3-eu-west-1.amazonaws.com/static.letserasmus.com/place/images/78/place_78_899_small.jpg&quot;);"></div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																<div class="_1qzsxyn">
+																	<div class="_1s2bxmn">
+																		<span style="color: rgb(213, 47, 14);">Private
+																			Room · Barcelona</span>
+																	</div>
+																	<div class="_1iddsry">Nice single room 20 min
+																		away from the center</div>
+																	<div class="_16ykjci">370 € per month</div>
+																</div> </a>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- 2nd piece of box -->
+											<div class="_1uhn2sww">
+												<div class="_qgh1p4">
+													<div>
+														<div class="_e296pg">
+															<a href="https://www.letserasmus.com/room/77"
+																target="_blank" rel="noopener noreferrer"
+																class="_j1qvyg" aria-busy="false"><div
+																	class="_q8me0tf"
+																	style="padding-top: 66.6667%; background-image: url(&quot;https://s3-eu-west-1.amazonaws.com/static.letserasmus.com/place/images/77/place_77_893_small.jpg&quot;); background-size: 100% 100%;">
+																	<div class="_1szwzht">
+																		<div style="width: 100%; height: 100%;">
+																			<div class="_e296pg"
+																				style="width: 100%; height: 100%;">
+																				<div class="_6ikqekk" role="img"
+																					aria-label="Erasmus student rooms in Barcelona"
+																					style="width: 100%; height: 100%; background-image: url(&quot;https://s3-eu-west-1.amazonaws.com/static.letserasmus.com/place/images/77/place_77_893_small.jpg&quot;);"></div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																<div class="_1qzsxyn">
+																	<div class="_1s2bxmn">
+																		<span style="color: rgb(213, 47, 14);">Private
+																			Room · Barcelona</span>
+																	</div>
+																	<div class="_1iddsry">Double Room with Double bed
+																		and private terrace</div>
+																	<div class="_16ykjci">712 € per month</div>
+																</div> </a>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- 3rd piece of box -->
+											<div class="_1uhn2sww">
+												<div class="_qgh1p4">
+													<div>
+														<div class="_e296pg">
+															<a href="https://www.letserasmus.com/room/76"
+																target="_blank" rel="noopener noreferrer"
+																class="_j1qvyg" aria-busy="false"><div
+																	class="_q8me0tf"
+																	style="padding-top: 66.6667%; background-image: url(&quot;https://s3-eu-west-1.amazonaws.com/static.letserasmus.com/place/images/76/place_76_886_small.jpg&quot;); background-size: 100% 100%;">
+																	<div class="_1szwzht">
+																		<div style="width: 100%; height: 100%;">
+																			<div class="_e296pg"
+																				style="width: 100%; height: 100%;">
+																				<div class="_6ikqekk" role="img"
+																					aria-label="Erasmus student apartments in Barcelona"
+																					style="width: 100%; height: 100%; background-image: url(&quot;https://s3-eu-west-1.amazonaws.com/static.letserasmus.com/place/images/76/place_76_886_small.jpg&quot;);"></div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																<div class="_1qzsxyn">
+																	<div class="_1s2bxmn">
+																		<span style="color: rgb(213, 47, 14);">Private
+																			Room · Barcelona</span>
+																	</div>
+																	<div class="_1iddsry">Great Room #2 Downtown
+																		Barcelona - Piso 10 Bruc</div>
+																	<div class="_16ykjci">550 € per month</div>
+																</div> </a>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- 4. piece of box -->
+											<div class="_1uhn2sww">
+												<div class="_qgh1p4">
+													<div>
+														<div class="_e296pg">
+															<a href="https://www.letserasmus.com/room/44"
+																target="_blank" rel="noopener noreferrer"
+																class="_j1qvyg" aria-busy="false"><div
+																	class="_q8me0tf"
+																	style="padding-top: 66.6667%; background-image: url(&quot;https://s3-eu-west-1.amazonaws.com/static.letserasmus.com/place/images/44/place_44_625_small.jpg&quot;); background-size: 100% 100%;">
+																	<div class="_1szwzht">
+																		<div style="width: 100%; height: 100%;">
+																			<div class="_e296pg"
+																				style="width: 100%; height: 100%;">
+																				<div class="_6ikqekk" role="img"
+																					aria-label="Erasmus student rooms in Barcelona"
+																					style="width: 100%; height: 100%; background-image: url(&quot;https://s3-eu-west-1.amazonaws.com/static.letserasmus.com/place/images/44/place_44_625_small.jpg&quot;);"></div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																<div class="_1qzsxyn">
+																	<div class="_1s2bxmn">
+																		<span style="color: rgb(213, 47, 14);">Private
+																			Room · Barcelona</span>
+																	</div>
+																	<div class="_1iddsry">Double bedroom to rent</div>
+																	<div class="_16ykjci">450 € per month</div>
+																</div> </a>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- POPULAR UNIVERSITIES -->
+				<div>
+					<div>
+						<div>
+							<div class="_1ghxasr">
+								<div class="_xqimtp">
+									<div class="_1mtjcg0">
+										<div class="_5851ap">
+											<h3 class="_1tizno3o">Popular University Profiles</h3>
+										</div>
+									</div>
+									<div class="_1r70z6s">
+										<a class="_1wwav84m"
+											href="#{webApplication.urlPrefix}/universities"
+											target="_blank"> <span class="_13lu1ne"><span>See
+													all ></span></span>
+										</a>
+									</div>
+								</div>
+
+								<div class="_e296pg">
+									<div class="_5vk1jx3">
+										<div class="_ovop6f8">
+
+											<!-- 1st piece of box-->
+											<div class="_1uhn2sww">
+												<div class="_qgh1p4">
+													<div>
+														<div class="_e296pg">
+															<a href="#{webApplication.urlPrefix}/universities/universitat-de-barcelona"
+																target="_blank" rel="noopener noreferrer"
+																class="_j1qvyg" aria-busy="false"><div
+																	class="_q8me0tf"
+																	style="padding-top: 100%; background-image: url(&quot;#{webApplication.urlPrefix}/static/images/universities/universitat-de-barcelona.png&quot;); background-size: 100% 100%;">
+																	<div class="_1szwzht">
+																		<div style="width: 100%; height: 100%;">
+																			<div class="_e296pg"
+																				style="width: 100%; height: 100%;">
+																				<div class="_6ikqekk" role="img"
+																					aria-label="Erasmus in Universitat De Barcelona"
+																					style="width: 100%; height: 100%; background-image: url(&quot;#{webApplication.urlPrefix}/static/images/universities/universitat-de-barcelona.png&quot;);"></div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																<div class="_1qzsxyn">
+																	<div class="_1s2bxmn">
+																		<span style="color: rgb(3, 169, 244);">Universitat De Barcelona</span>
+																	</div>
+																	<div class="_1iddsry">BARCELONA · SPAIN</div>
+																</div> </a>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- 2nd piece of box -->
+											<div class="_1uhn2sww">
+												<div class="_qgh1p4">
+													<div>
+														<div class="_e296pg">
+															<a href="#{webApplication.urlPrefix}/universities/ucl-university-college-london"
+																target="_blank" rel="noopener noreferrer"
+																class="_j1qvyg" aria-busy="false"><div
+																	class="_q8me0tf"
+																	style="padding-top: 100%; background-image: url(&quot;#{webApplication.urlPrefix}/static/images/universities/ucl-university-college-london.png&quot;); background-size: 100% 100%;">
+																	<div class="_1szwzht">
+																		<div style="width: 100%; height: 100%;">
+																			<div class="_e296pg"
+																				style="width: 100%; height: 100%;">
+																				<div class="_6ikqekk" role="img"
+																					aria-label="Erasmus in UCL University College London"
+																					style="width: 100%; height: 100%; background-image: url(&quot;#{webApplication.urlPrefix}/static/images/universities/ucl-university-college-london.png&quot;);"></div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																<div class="_1qzsxyn">
+																	<div class="_1s2bxmn">
+																		<span style="color: rgb(3, 169, 244);">University College London</span>
+																	</div>
+																	<div class="_1iddsry">LONDON · UK</div>
+																</div> </a>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- 3rd piece of box -->
+											<div class="_1uhn2sww">
+												<div class="_qgh1p4">
+													<div>
+														<div class="_e296pg">
+															<a href="#{webApplication.urlPrefix}/universities/university-cambridge"
+																target="_blank" rel="noopener noreferrer"
+																class="_j1qvyg" aria-busy="false"><div
+																	class="_q8me0tf"
+																	style="padding-top: 100%; background-image: url(&quot;#{webApplication.urlPrefix}/static/images/universities/university-cambridge.png&quot;); background-size: 100% 100%;">
+																	<div class="_1szwzht">
+																		<div style="width: 100%; height: 100%;">
+																			<div class="_e296pg"
+																				style="width: 100%; height: 100%;">
+																				<div class="_6ikqekk" role="img"
+																					aria-label="Erasmus in University of Cambridge"
+																					style="width: 100%; height: 100%; background-image: url(&quot;#{webApplication.urlPrefix}/static/images/universities/university-cambridge.png&quot;);"></div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																<div class="_1qzsxyn">
+																	<div class="_1s2bxmn">
+																		<span style="color: rgb(3, 169, 244);">University of Cambridge</span>
+																	</div>
+																	<div class="_1iddsry">OXFORD · UK</div>
+																</div> </a>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- 4. piece of box -->
+											<div class="_1uhn2sww">
+												<div class="_qgh1p4">
+													<div>
+														<div class="_e296pg">
+															<a href="#{webApplication.urlPrefix}/universities/bogazici-university"
+																target="_blank" rel="noopener noreferrer"
+																class="_j1qvyg" aria-busy="false"><div
+																	class="_q8me0tf"
+																	style="padding-top: 100%; background-image: url(&quot;#{webApplication.urlPrefix}/static/images/universities/bogazici-university.png&quot;); background-size: 100% 100%;">
+																	<div class="_1szwzht">
+																		<div style="width: 100%; height: 100%;">
+																			<div class="_e296pg"
+																				style="width: 100%; height: 100%;">
+																				<div class="_6ikqekk" role="img"
+																					aria-label="Erasmus in Bogazici University"
+																					style="width: 100%; height: 100%; background-image: url(&quot;#{webApplication.urlPrefix}/static/images/universities/bogazici-university.png&quot;);"></div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																<div class="_1qzsxyn">
+																	<div class="_1s2bxmn">
+																		<span style="color: rgb(3, 169, 244);">Bogazici University</span>
+																	</div>
+																	<div class="_1iddsry">ISTANBUL · TURKEY</div>
+																</div> </a>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 
 			</div>
 
-		</h:form>
-
-
-		<h2 class="landing-h3 text-center"
-			style='margin-bottom: 10px; z-index: 1'>Discover your university</h2>
-		<a href="#{webApplication.urlPrefix}/universities"><h5
-				class="text-center"
-				style="margin-top: 5px; margin-bottom: 5px; z-index: 1">Click
-				to see all</h5></a>
-		<div class="container" style="margin-bottom: 10px;">
-			<section class="customer-logos slider">
-			<div class="slide">
-				<a
-					href="#{webApplication.urlPrefix}/universities/universitat-de-barcelona"
-					target="_blank"> <img
-					src="#{webApplication.urlPrefix}/static/images/universities/universitat-de-barcelona.png" alt="Erasmus in Universitat De Barcelona" />
-				</a>
-			</div>
-			<div class="slide">
-				<a
-					href="#{webApplication.urlPrefix}/universities/bogazici-university"
-					target="_blank"> <img
-					src="#{webApplication.urlPrefix}/static/images/universities/bogazici-university.png" alt="Erasmus in Bogazici University"/>
-				</a>
-			</div>
-			<div class="slide">
-				<a
-					href="#{webApplication.urlPrefix}/universities/university-cambridge"
-					target="_blank"> <img
-					src="#{webApplication.urlPrefix}/static/images/universities/university-cambridge.png" alt="Erasmus in University of Cambridge"/>
-				</a>
-			</div>
-			<div class="slide">
-				<a
-					href="#{webApplication.urlPrefix}/universities/hacettepe-university"
-					target="_blank"> <img
-					src="#{webApplication.urlPrefix}/static/images/universities/hacettepe-university.png" alt="Erasmus in Hacettepe University"/>
-				</a>
-			</div>
-			<div class="slide">
-				<a
-					href="#{webApplication.urlPrefix}/universities/imperial-college-london"
-					target="_blank"> <img
-					src="#{webApplication.urlPrefix}/static/images/universities/imperial-college-london.png" alt="Erasmus in Imperial College London"/>
-				</a>
-			</div>
-			<div class="slide">
-				<a
-					href="#{webApplication.urlPrefix}/universities/istanbul-technical-university"
-					target="_blank"> <img
-					src="#{webApplication.urlPrefix}/static/images/universities/istanbul-technical-university.png" alt="Erasmus in Istanbul Technical University"/>
-				</a>
-			</div>
-			<div class="slide">
-				<a href="#{webApplication.urlPrefix}/universities/koc-university"
-					target="_blank"> <img
-					src="#{webApplication.urlPrefix}/static/images/universities/koc.png" alt="Erasmus in Koc University"/>
-				</a>
-			</div>
-
-			<div class="slide">
-				<a
-					href="#{webApplication.urlPrefix}/universities/sabanci-university"
-					target="_blank"> <img
-					src="#{webApplication.urlPrefix}/static/images/universities/sabanci.png" alt="Erasmus in Sabanci University"/>
-				</a>
-			</div>
-			<div class="slide">
-				<a
-					href="#{webApplication.urlPrefix}/universities/ucl-university-college-london"
-					target="_blank"> <img
-					src="#{webApplication.urlPrefix}/static/images/universities/ucl-university-college-london.png" alt="Erasmus in UCL University College London"/>
-				</a>
-			</div>
-			<div class="slide">
-				<a
-					href="#{webApplication.urlPrefix}/universities/middle-east-technical-university"
-					target="_blank"> <img
-					src="#{webApplication.urlPrefix}/static/images/universities/middle-east-technical-university.png" alt="Erasmus in Middle East Technical University"/>
-				</a>
-			</div>
-			<div class="slide">
-				<a
-					href="#{webApplication.urlPrefix}/universities/universidad-autonoma-de-madrid"
-					target="_blank"> <img
-					src="#{webApplication.urlPrefix}/static/images/universities/universidad-autonoma-de-madrid.jpg" alt="Erasmus in Universidad Autonoma de Madrid"/>
-				</a>
-			</div>
-			<div class="slide">
-				<a
-					href="#{webApplication.urlPrefix}/universities/bilkent-university"
-					target="_blank"> <img
-					src="#{webApplication.urlPrefix}/static/images/universities/bilkent.png" alt="Erasmus in Bilkent University"/>
-				</a>
-			</div>
-			<div class="slide">
-				<a
-					href="#{webApplication.urlPrefix}/universities/universitat-autonoma-de-barcelona"
-					target="_blank"> <img
-					src="#{webApplication.urlPrefix}/static/images/universities/universitat-autonoma-de-barcelona.png" alt="Erasmus in Universitat Autonoma de Barcelona"/>
-				</a>
-			</div>
-			<div class="slide">
-				<a
-					href="#{webApplication.urlPrefix}/universities/istanbul-university"
-					target="_blank"> <img
-					src="#{webApplication.urlPrefix}/static/images/universities/istanbul-university.png" alt="Erasmus in Istanbul University"/>
-				</a>
-			</div>
-			<div class="slide">
-				<a
-					href="#{webApplication.urlPrefix}/universities/university-complutense-madrid"
-					target="_blank"> <img
-					src="#{webApplication.urlPrefix}/static/images/universities/university-complutense-madrid.png" alt="Erasmus in University Complutense Madrid"/>
-				</a>
-			</div>
-			<div class="slide">
-				<a href="#{webApplication.urlPrefix}/universities/university-oxford"
-					target="_blank"> <img
-					src="#{webApplication.urlPrefix}/static/images/universities/university-oxford.jpg" alt="Erasmus in University of Oxford"/>
-				</a>
-			</div>
-			</section>
 		</div>
-
-
-
-		<section id="learn-how-it-works" class="how-it-works">
-		<div class="page-container-responsive-main panel-contrast">
-			<h2 class="landing-h3 text-center" style='margin-bottom: 0px;'>See
-				How it Works</h2>
-			<div class="row space-top-8 text-center" style="margin-top: 0px;">
-
-				<div class="how-it-works__step how-it-works__step-one col-md-a">
-					<div class="panel-body-how">
-						<div class="how-it-works__image"></div>
-						<h3>Discover Amazing Places</h3>
-						<p style="text-shadow: 2px 2px 5px rgba(0, 0, 0, .2);">Find
-							private rooms and entire homes from locals and students in
-							Erasmus cities.</p>
-					</div>
-				</div>
-
-				<div class="how-it-works__step how-it-works__step-two col-md-a">
-					<div class="panel-body-how">
-						<div class="how-it-works__image"></div>
-						<h3>Book a Stay</h3>
-						<p style="text-shadow: 2px 2px 5px rgba(0, 0, 0, .2);">Receive
-							confirmation from hosts in less than 48 hours. If the property
-							you have rented is different from the one represented in the
-							listing you can be entitled to a full refund.</p>
-					</div>
-				</div>
-
-				<div class="how-it-works__step how-it-works__step-three col-md-a">
-					<div class="panel-body-how">
-						<div class="how-it-works__image"></div>
-						<h3>Enjoy</h3>
-						<p style="text-shadow: 2px 2px 5px rgba(0, 0, 0, .2);">We do
-							not transfer the rent before you move-in. Enjoy the moment more
-							securely.</p>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		</section>
-
-
-
-
-
 		<script
 			src="#{webApplication.urlPrefix}/static/js/angular/controller/main_controller.js?ver=#{webApplication.staticFileVersion}"></script>
-		<script
-			src="#{webApplication.urlPrefix}/static/js/carousel.js?ver=#{webApplication.staticFileVersion}"></script>
-		<script
-			src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.js"></script>
-		<script
-			src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	</ui:define>
 </ui:composition>

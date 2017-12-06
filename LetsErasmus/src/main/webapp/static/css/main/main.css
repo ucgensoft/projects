@@ -1,77 +1,395 @@
-@media only screen and (min-width:1921px) and (max-width:2412px) {
-	.home-first-screen {
-		background-image: url("/static/images/home/2412_home_annie.jpg");
-		height: 85vh !important;
+body {
+    font-family: Circular,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 1.43;
+    color: #484848;
+    background-color: #fff;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+}
+
+.site-content {
+	position: relative !important;
+}
+
+.body-upper-section {
+	position: relative !important;
+    display: block !important;
+    height: 100% !important;
+    width: 100% !important;
+    vertical-align: middle !important;
+}
+
+@media ( min-width : 744px) {
+	.upper-title {
+		padding-top: 48px !important;
 	}
 }
 
-@media only screen and (min-width:1338px) and (max-width:1920px) {
-	.home-first-screen {
-		background-image: url("/static/images/home/1920_home_annie.jpg");
-		height: 85vh !important;
+@media ( min-width : 1128px) {
+	.upper-title {
+		margin: 0 auto !important;
+		position: relative !important;
 	}
 }
 
-@media only screen and (min-width:1269px) and (max-width:1337px) {
-	.home-first-screen {
-		background-image: url("/static/images/home/1337_home_annie.jpg");
-		height: 85vh !important;
+.upper-title {
+	background-color: transparent;
+	padding-left: 24px !important;
+	padding-right: 24px !important;
+	max-width: 1080px !important;
+	padding-top: 24px !important;
+}
+
+/*.title-itself {
+	margin-top: 64px !important;
+}*/
+
+@media (min-width: 1128px){
+	.title-itself {
+    width: 100% !important;
 	}
 }
 
-@media only screen and (min-width:975px) and (max-width:1268px) {
-	.home-first-screen {
-		background-image: url("/static/images/home/ipad.jpg")
+._28rra8 {
+    font-family: inherit !important;
+    font-size: 22px !important;
+    line-height: 32px !important;
+    letter-spacing: -0.6px !important;
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+    color: #484848 !important;
+    font-weight: 300 !important;
+    text-align: center;
+}
+
+@media (min-width: 744px){
+	._28rra8 {
+    font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif !important;
+    font-size: 48px !important;
+    line-height: 56px !important;
+    letter-spacing: -0.8px !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    color: #484848 !important;
+    font-weight: 300 !important;
+    text-align: left;
 	}
 }
 
-@media only screen and (min-width:975px) and (max-width:1268px) and
-		(-webkit-min-device-pixel-ratio:1.3) , only screen and
-		(min-width:975px) and (max-width:1268px) and
-		(-webkit-min-device-pixel-ratio:1.3020833333333333) , only screen and
-	(min-width:975px) and (max-width:1268px) and (min-resolution:125dpi) {
-	.home-first-screen {
-		background-image: url("/static/images/home/1337_home_annie.jpg")
+
+.body-upper-search {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+    max-width: 1080px !important;
+}
+
+@media (min-width: 1128px) {
+	.body-upper-search {
+    margin: 0 auto !important;
+    position: relative !important;
 	}
 }
 
-@media only screen and (min-width:708px) and (max-width:974px) {
-	.home-first-screen {
-		background-image: url("/static/images/home/iphone6.jpg")
+.body-bottom-section {
+	background-color: transparent;
+    min-height: 400px;
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+    max-width: 1080px !important;
+}
+
+
+@media (min-width: 1128px){
+	.body-bottom-section {
+    margin: 0 auto !important;
+    position: relative !important;
 	}
 }
 
-@media only screen and (min-width:708px) and (max-width:974px) and
-		(-webkit-min-device-pixel-ratio:1.3) , only screen and
-		(min-width:708px) and (max-width:974px) and
-		(-webkit-min-device-pixel-ratio:1.3020833333333333) , only screen and
-	(min-width:708px) and (max-width:974px) and (min-resolution:125dpi) {
-	.home-first-screen {
-		background-image: url("/static/images/home/ipad.jpg")
+._1ghxasr {
+    margin-top: 48px !important;
+    margin-bottom: 48px !important;
+}
+
+._xqimtp {
+    display: table !important;
+    table-layout: fixed !important;
+}
+
+._1mtjcg0 {
+    display: table-cell !important;
+    width: 100% !important;
+    vertical-align: baseline !important;
+}
+
+._5851ap {
+    margin-bottom: 14px !important;
+}
+
+@media (min-width: 744px) {
+	._5851ap {
+    margin-bottom: 24px !important;
 	}
 }
 
-@media only screen and (min-width:415px) and (max-width:707px) {
-	.home-first-screen {
-		background-image: url("/static/images/home/iphone5.jpg")
+._1tizno3o {
+    font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif !important;
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+    color: #484848 !important;
+    font-weight: 700 !important;
+    margin-bottom: 0px !important;
+    font-size: 22px !important;
+    line-height: 32px !important;
+    letter-spacing: -0.6px !important;
+}
+
+@media (min-width: 744px) {
+	._1tizno3o {
+    font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif !important;
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+    color: #484848 !important;
+    font-weight: 700 !important;
+    margin-bottom: 0px !important;
+    font-size: 32px !important;
+    line-height: 40px !important;
+    letter-spacing: -0.6px !important;
+}
+}
+
+._1r70z6s {
+    display: table-cell !important;
+    vertical-align: baseline !important;
+}
+
+
+._1wwav84m {
+    border: none !important;
+    cursor: pointer !important;
+    background: transparent !important;
+    padding-left: 10px !important;
+    white-space: nowrap !important;
+    font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif !important;
+    font-size: 14px !important;
+    line-height: 18px !important;
+    letter-spacing: undefined !important;
+    padding-top: undefined !important;
+    padding-bottom: undefined !important;
+    color: #484848 !important;
+    margin-right: 0px !important;
+    padding-right: 0px !important;
+}
+
+._13lu1ne {
+    font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif !important;
+    font-size: 14px !important;
+    line-height: 18px !important;
+    letter-spacing: undefined !important;
+    padding-top: undefined !important;
+    padding-bottom: undefined !important;
+    color: #484848 !important;
+    margin-right: 6px !important;
+}
+
+
+._e296pg {
+    position: relative !important;
+}
+
+
+._5vk1jx3 {
+    margin-top: 0px !important;
+    margin-left: -24px !important;
+    margin-right: -24px !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+}
+
+
+@media (min-width: 1128px) {
+	._5vk1jx3 {
+    margin-left: -8px !important;
+    margin-right: -8px !important;
+    overflow: hidden !important;
+    overflow-y: hidden !important;
 	}
 }
 
-@media only screen and (min-width:415px) and (max-width:707px) and
-		(-webkit-min-device-pixel-ratio:1.3) , only screen and
-		(min-width:415px) and (max-width:707px) and
-		(-webkit-min-device-pixel-ratio:1.3020833333333333) , only screen and
-	(min-width:415px) and (max-width:707px) and (min-resolution:125dpi) {
-	.home-first-screen {
-		background-image: url("/static/images/home/iphone5.jpg")
+
+._ovop6f8 {
+    -webkit-transition: -webkit-transform 0.5s,transform 0.5s !important;
+    -moz-transition: transform 0.5s !important;
+    transition: -ms-transform 0.5s,-webkit-transform 0.5s,transform 0.5s !important;
+    white-space: nowrap !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    padding: 0 18px !important;
+    margin-bottom: -30px !important;
+    transform: translateX(0%);
+}
+
+
+@media (min-width: 744px) {
+	._ovop6f8 {
+    padding: 0 16px !important;
 	}
 }
 
-@media only screen and (min-width:0px) and (max-width:414px) {
-	.home-first-screen {
-		background-image: url("/static/images/home/iphone4.jpg")
+@media (min-width: 1128px) {
+	._ovop6f8 {
+    margin-bottom: 0px !important;
+    padding: 0px !important;
+    overflow: visible !important;
 	}
 }
+
+
+._1uhn2sww {
+    display: inline-block !important;
+    vertical-align: top !important;
+    white-space: normal !important;
+    width: 50% !important;
+}
+
+@media (min-width: 744px) {
+	._1uhn2sww {
+    width: 25% !important;
+	}
+}
+
+@media (min-width: 1128px) {
+	._1uhn2sww {
+    width: 25% !important;
+	}
+}
+
+._qgh1p4 {
+    width: 100% !important;
+    height: 100% !important;
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+    padding-bottom: 30px !important;
+}
+
+@media (min-width: 744px) {
+	._qgh1p4 {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+	}
+}
+
+@media (min-width: 1128px) {
+	._qgh1p4 {
+    padding-bottom: 0px !important;
+	}
+}
+
+._e296pg {
+    position: relative !important;
+}
+
+
+._j1qvyg {
+    text-decoration: none !important;
+    color: #484848 !important;
+}
+
+
+._q8me0tf {
+    position: relative !important;
+    width: 100% !important;
+    z-index: 0 !important;
+    border-radius: 3px !important;
+    overflow: hidden !important;
+}
+
+
+._1szwzht {
+    position: absolute !important;
+    top: 0px !important;
+    bottom: 0px !important;
+    left: 0px !important;
+    right: 0px !important;
+    height: 100% !important;
+    width: 100% !important;
+}
+
+
+._e296pg {
+    position: relative !important;
+}
+
+._6ikqekk {
+    position: absolute !important;
+    background-position: 50% 50% !important;
+    background-repeat: no-repeat !important;
+    -webkit-animation-name: keyframe_18jn58a !important;
+    animation-name: keyframe_18jn58a !important;
+    -webkit-animation-duration: 300ms !important;
+    animation-duration: 300ms !important;
+    -webkit-animation-timing-function: ease-out !important;
+    animation-timing-function: ease-out !important;
+    background-size: cover !important;
+}
+
+
+._1qzsxyn {
+    width: 100% !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+}
+
+
+._1s2bxmn {
+    font-weight: 700 !important;
+    font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif !important;
+    font-size: 12px !important;
+    line-height: 16px !important;
+    letter-spacing: 0.4px !important;
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+    color: #484848 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    text-transform: uppercase !important;
+    white-space: nowrap !important;
+    margin-bottom: 2px !important;
+}
+
+
+._1iddsry {
+    font-weight: 700 !important;
+    font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif !important;
+    font-size: 19px !important;
+    line-height: 22px !important;
+    letter-spacing: undefined !important;
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+    color: #484848 !important;
+    max-height: 44px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    margin-bottom: 4px !important;
+}
+
+
+._16ykjci {
+    font-weight: 300 !important;
+    font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif !important;
+    font-size: 15px !important;
+    line-height: 18px !important;
+    letter-spacing: 0.2px !important;
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+    color: #484848 !important;
+}
+
+
 
 /*SEARCH*/
 .flex-grow-1 {
@@ -143,7 +461,7 @@
 .home--search {
 	width: 96%;
 	max-width: 60rem;
-	margin: 0 auto 2rem;
+	/*margin: 0 auto 2rem;*/
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: -ms-flexbox;

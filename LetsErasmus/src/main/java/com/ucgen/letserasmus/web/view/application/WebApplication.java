@@ -28,8 +28,8 @@ import com.ucgen.letserasmus.web.view.BaseController;
 @Scope("singleton")
 public class WebApplication extends BaseController {
 	
-	public static final String DEFAULT_PAGE_TITLE = "Let's Erasmus - The international student housing and accommodation platform";
-	public static final String DEFAULT_PAGE_DESCRIPTION = "The international student housing and accommodation platform";
+	public static final String DEFAULT_PAGE_TITLE = "Let's Erasmus - Housing and community platform for the international students";
+	public static final String DEFAULT_PAGE_DESCRIPTION = "The international student housing and community platform";
 	
 	public static final String PAGE_URL_TEMPLATE_SEARCH_RESULT = "/room/search/{locationName}/{locationId}";
 	public static final String PAGE_URL_TEMPLATE_PLACE_DETAIL = "/room/{placeId}";
@@ -534,6 +534,8 @@ public class WebApplication extends BaseController {
 				|| requestUrl.contains("PAGES/SEARCHRESULT.HTML")
 				|| requestUrl.contains("DISPLAYUSER.HTML")
 				|| requestUrl.contains("HELP.HTML")
+				|| requestUrl.contains("BLOG.HTML")
+				|| requestUrl.contains("PAGES/ARTICLES")
 				|| requestUrl.contains("PAGES/UNIVERSITIES")) {
 			return true;
 		} else {
