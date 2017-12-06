@@ -58,7 +58,11 @@ public class UrlRewriteConfig extends HttpConfigurationProvider {
 				.addRule(Join.path("/universities").to("/pages/Universities.html"))
 				.addRule(Join.path("/universities/").to("/pages/Universities.html"))
 				.addRule(Join.path("/community").to("/pages/CommunityTopicList.html"))
-				.addRule(Join.path("/community/{cityName}").to("/pages/CommunityTopicList.html?cityName={cityName}"));
+				.addRule(Join.path("/community/{cityName}").to("/pages/CommunityTopicList.html?cityName={cityName}"))
+				.addRule(Join.path("/blog").to("/pages/BlogMain.html"))
+				.addRule(Join.path("/blog/").to("/pages/BlogMain.html"))
+				.addRule(Join.path("/blog/{articleName}").to("/pages/articles/{articleName}.html"))
+				.addRule(Join.path("/blog/{articleName}/").to("/pages/articles/{articleName}.html"));
 				//.addRule().when(Path.matches("*/places/*")).perform(Redirect.permanent("www.letserasmus.com"))
 				//.addRule().when(Path.matches("*/members/*")).perform(Redirect.permanent("www.letserasmus.com"));
 	}

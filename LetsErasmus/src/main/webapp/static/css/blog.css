@@ -1,0 +1,272 @@
+.blog-section {
+	position: relative !important;
+	display: block !important;
+	height: 100% !important;
+	width: 100% !important;
+	vertical-align: middle !important;
+	overflow: hidden;
+}
+
+@media ( min-width : 744px) {
+	.blog-content {
+		padding-top: 48px !important;
+	}
+}
+
+@media ( min-width : 1128px) {
+	.blog-content {
+		margin: 0 auto !important;
+		position: relative !important;
+	}
+}
+
+.blog-content {
+	background-color: transparent;
+	padding-left: 24px !important;
+	padding-right: 24px !important;
+	max-width: 1080px !important;
+	padding-top: 24px !important;
+}
+
+#main {
+	margin-top: 15px;
+}
+
+.blog-mainbar {
+		width: 100%;
+		overflow: hidden;
+		float: left;
+	}
+
+@media ( min-width : 744px) {
+	.blog-mainbar {
+		width: 70%;
+		overflow: hidden;
+		border-right: 1px solid #ccc;
+		float: left;
+	}
+}
+
+.blog-sidebar {
+	display: none;
+}
+
+@media ( min-width : 744px) {
+	.blog-sidebar {
+		width: 30%;
+		float: left;
+		padding-left:10px;
+			display: inline;
+	}
+}
+
+._1tizno3o {
+	font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto,
+		Helvetica Neue, sans-serif !important;
+	padding-top: 0px !important;
+	padding-bottom: 0px !important;
+	color: #484848 !important;
+	font-weight: 700 !important;
+	margin-bottom: 10px !important;
+	margin-top: 10px !important;
+	font-size: 22px !important;
+	line-height: 32px !important;
+	letter-spacing: -0.6px !important;
+	margin-top: 10px !important;
+}
+
+@media ( min-width : 744px) {
+	._1tizno3o {
+		font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto,
+			Helvetica Neue, sans-serif !important;
+		padding-top: 0px !important;
+		padding-bottom: 0px !important;
+		color: #484848 !important;
+		font-weight: 700 !important;
+		margin-bottom: 10px !important;
+		margin-top: 10px !important;
+		font-size: 32px !important;
+		line-height: 40px !important;
+		letter-spacing: -0.6px !important;
+	}
+}
+
+.blog-article {
+	overflow: hidden;
+	margin-bottom: 20px;
+}
+
+.blog-image {
+	width: 40%;
+	float: left;
+}
+
+@media ( min-width : 744px) {
+	.blog-image {
+		width: 30%;
+		float: left;
+	}
+}
+
+.blog-title {
+	width: 60%;
+	padding-left: 20px;
+	float: left;
+}
+
+@media ( min-width : 744px) {
+	.blog-title {
+		width: 70%;
+		padding-left: 20px;
+		float: left;
+	}
+}
+
+.blog-article a:hover {
+	color: #03a9f4;
+}
+
+._j1qvyg {
+	text-decoration: none !important;
+	color: #484848;
+}
+
+._q8me0tf {
+	position: relative !important;
+	width: 100% !important;
+	z-index: 0 !important;
+	border-radius: 3px !important;
+	overflow: hidden !important;
+	width: 100% !important;
+}
+
+._1szwzht {
+	position: absolute !important;
+	top: 0px !important;
+	bottom: 0px !important;
+	left: 0px !important;
+	right: 0px !important;
+	height: 100% !important;
+	width: 100% !important;
+}
+
+._e296pg {
+	position: relative !important;
+}
+
+._6ikqekk {
+	position: absolute !important;
+	background-position: 50% 50% !important;
+	background-repeat: no-repeat !important;
+	-webkit-animation-name: keyframe_18jn58a !important;
+	animation-name: keyframe_18jn58a !important;
+	-webkit-animation-duration: 300ms !important;
+	animation-duration: 300ms !important;
+	-webkit-animation-timing-function: ease-out !important;
+	animation-timing-function: ease-out !important;
+	background-size: cover !important;
+}
+
+._1qzsxyn {
+	width: 100% !important;
+	padding-bottom: 8px !important;
+}
+
+._1iddsry {
+	font-weight: 700 !important;
+	font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto,
+		Helvetica Neue, sans-serif !important;
+	font-size: 19px !important;
+	line-height: 22px !important;
+	letter-spacing: undefined !important;
+	padding-top: 0px !important;
+	padding-bottom: 0px !important;
+	max-height: 44px !important;
+	overflow: hidden !important;
+	text-overflow: ellipsis !important;
+	display: -webkit-box !important;
+	-webkit-line-clamp: 2 !important;
+	-webkit-box-orient: vertical !important;
+	margin-bottom: 4px !important;
+}
+
+._16ykjci {
+	font-weight: 300 !important;
+	font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto,
+		Helvetica Neue, sans-serif !important;
+	font-size: 15px !important;
+	line-height: 18px !important;
+	letter-spacing: 0.2px !important;
+	padding-top: 0px !important;
+	padding-bottom: 0px !important;
+	color: #484848 !important;
+}
+
+.common-social {
+	margin: 15px 0;
+}
+
+.common-social div.common-social-box {
+	margin: 5px 0;
+}
+
+.common-social div.common-social-box a.facebook-jumbo {
+	background-color: #3b5998;
+}
+
+.common-social div.common-social-box a.twitter-jumbo {
+    background-color: #00aced;
+}
+
+.common-social div.common-social-box a.instagram-jumbo {
+    background-color: #cd486b;
+}
+
+.common-social div.common-social-box a.youtube-jumbo {
+    background-color: #ba0001;
+}
+
+.common-social div.common-social-box a.facebook-jumbo, .common-social div.common-social-box a.vk-jumbo,
+	.common-social div.common-social-box a.twitter-jumbo, .common-social div.common-social-box a.instagram-jumbo,
+	.common-social div.common-social-box a.youtube-jumbo, .common-social div.common-social-box a.linkedin-jumbo,
+	.common-social div.common-social-box a.telegram-jumbo {
+	cursor: pointer;
+	display: block;
+	margin: 5px 0;
+	width: 300px;
+	height: 45px;
+	-webkit-border-radius: 3px;
+	-khtml-border-radius: 3px;
+	-moz-border-radius: 3px;
+	-ms-border-radius: 3px;
+	-o-border-radius: 3px;
+	border-radius: 3px;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+	color: #fff;
+	font-size: 14px;
+	line-height: 45px;
+	text-align: left;
+}
+
+.common-social div.common-social-box a.facebook-jumbo i, .common-social div.common-social-box a.vk-jumbo i,
+	.common-social div.common-social-box a.twitter-jumbo i, .common-social div.common-social-box a.instagram-jumbo i,
+	.common-social div.common-social-box a.youtube-jumbo i, .common-social div.common-social-box a.linkedin-jumbo i,
+	.common-social div.common-social-box a.telegram-jumbo i {
+	display: block;
+	float: left;
+	font-size: 24px;
+	text-align: center;
+	line-height: 48px;
+	color: #fff;
+	padding-left: 10px;
+	width: 40px;
+}
+
+.fa {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
