@@ -21,5 +21,7 @@ public interface ICommunityService {
 	public OperationResult updateCommunityTopic(CommunityTopic communityTopic);
 	
 	public ListOperationResult<CommunityTopicMessage> listCommunityTopicMessage(CommunityTopicMessage communityTopicMessage);
+
+	public OperationResult createCommunityTopicMessage(CommunityTopicMessage communityTopicMessage);
 	
 }

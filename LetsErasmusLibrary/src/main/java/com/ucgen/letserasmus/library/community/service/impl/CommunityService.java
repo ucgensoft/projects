@@ -83,4 +83,9 @@ public class CommunityService implements ICommunityService {
 		return this.communityDao.listCommunityTopicMessage(communityTopicMessage);
 	}
 
+	@Override
+	public OperationResult createCommunityTopicMessage(CommunityTopicMessage communityTopicMessage) {
+		return this.communityDao.createCommunityTopicMessage(communityTopicMessage);
+	}
+
 }

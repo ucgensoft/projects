@@ -144,9 +144,28 @@ public class CommunityDao extends JdbcDaoSupport implements ICommunityDao, IComm
 		
 		ListOperationResult<CommunityTopicMessage> messageListResult = new ListOperationResult<CommunityTopicMessage>();
 		
+		messageListResult.setResultCode(EnmResultCode.SUCCESS.getValue());
 		messageListResult.setObjectList(messageList);
 		
 		return messageListResult;
+	}
+
+	@Override
+	public OperationResult createCommunityTopicMessage(CommunityTopicMessage communityTopicMessage) {
+		List<Object> argList = new ArrayList<Object>();
+		
+		argList.add(communityTopicMessage.getCommunityTopicId());
+		argList.add(communityTopicMessage.getUserId());
+		argList.add(communityTopicMessage.getDescription());
+		argList.add(communityTopicMessage.getCreatedBy());
+		argList.add(communityTopicMessage.getCreatedDate());
+		
+		this.getJdbcTemplate().update(CREATE_COMMUNITY_TOPIC_MESSAGE_SQL, argList.toArray());
+		
+		OperationResult operationResult = new OperationResult();
+		operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+		
+		return operationResult;
 	}
 	
 }

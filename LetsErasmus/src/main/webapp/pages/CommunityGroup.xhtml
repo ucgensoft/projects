@@ -94,7 +94,7 @@
 													<div class="row row-table" style="width:1000px; height: 30px;">
 														<div class="">
 															<div class="inline-block" style="width:200px">
-																<a href="#{webApplication.urlPrefix}/community/topic/#{communityTopic.subUrl}" target="_blank">#{communityTopic.title}</a>
+																<a href="#{webApplication.urlPrefix}/community/#{communityGroupController.communityGroup.subUrl}/#{communityTopic.subUrl}" target="_blank">#{communityTopic.title}</a>
 															</div>
 															<div class="text-muted text-grey space-top-1 last-modified-date inline-block" style="width:200px">
 																#{communityGroupController.formatDate(communityTopic.createdDate, "dd.MM.yyyy hh:mm")}

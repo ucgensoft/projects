@@ -124,7 +124,9 @@ public interface AppConstants {
 	
 	String COMMUNITY_CREATE_TOPIC_NOT_FOUND = "Topic record not found!";
 	
-	String COMMUNITY_CREATE_TOPIC_ = "Topic record not found!";
+	String COMMUNITY_CREATE_TOPIC_MESSAGE_SUCCESS = "Your reply is sent successfully!";
+	
+	String COMMUNITY_CREATE_TOPIC_MESSAGE_FAIL = "Your reply could not be sent!";
 	
 }
 

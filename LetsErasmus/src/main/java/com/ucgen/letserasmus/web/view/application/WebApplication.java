@@ -311,6 +311,8 @@ public class WebApplication extends BaseController {
 			return "payoutMethodCtrl";
 		} else if (requestUrl.contains("PAGES/COMMUNITYGROUP.HTML")) {
 			return "communityGroupCtrl";
+		} else if (requestUrl.contains("PAGES/COMMUNITYTOPIC.HTML")) {
+			return "communityTopicCtrl";
 		} else {
 			return "mainCtrl";
 		}	

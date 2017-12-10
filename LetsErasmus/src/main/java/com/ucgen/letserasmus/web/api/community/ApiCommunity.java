@@ -24,6 +24,7 @@ import com.ucgen.common.util.FileLogger;
 import com.ucgen.letserasmus.library.common.enumeration.EnmErrorCode;
 import com.ucgen.letserasmus.library.community.model.CommunityGroup;
 import com.ucgen.letserasmus.library.community.model.CommunityTopic;
+import com.ucgen.letserasmus.library.community.model.CommunityTopicMessage;
 import com.ucgen.letserasmus.library.community.service.ICommunityService;
 import com.ucgen.letserasmus.library.user.model.User;
 import com.ucgen.letserasmus.web.api.BaseApiController;
@@ -153,6 +154,43 @@ public class ApiCommunity extends BaseApiController {
 			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
 			operationResult.setResultDesc(AppConstants.CREATE_OPERATION_FAIL);
 			FileLogger.log(Level.ERROR, "ApiCommunity-updateCommunityTopic()-Error: " + CommonUtil.getExceptionMessage(e));
+		}
+		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);
+    }
+	
+	@RequestMapping(value = "/api/community/message/create", method = RequestMethod.POST)
+    public ResponseEntity<OperationResult> createCommunityTopicMessage(@RequestBody CommunityTopicMessage communityTopicMessage, HttpSession session) {
+		OperationResult operationResult = new OperationResult();
+		
+		try {
+			User user = super.getSessionUser(session);
+			if (user != null) {
+				if (communityTopicMessage.getCommunityTopicId() != null  
+						&& communityTopicMessage.getDescription() != null && !communityTopicMessage.getDescription().trim().isEmpty()) {
+					communityTopicMessage.setUserId(user.getId());
+					communityTopicMessage.setCreatedBy(user.getFullName());
+					communityTopicMessage.setCreatedDate(new Date());
+					OperationResult createResult = this.communityService.createCommunityTopicMessage(communityTopicMessage);
+					if (OperationResult.isResultSucces(createResult)) {
+						operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+						operationResult.setResultDesc(AppConstants.COMMUNITY_CREATE_TOPIC_MESSAGE_SUCCESS);
+					} else {
+						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+						operationResult.setResultDesc(AppConstants.COMMUNITY_CREATE_TOPIC_MESSAGE_FAIL);
+					}
+				} else {
+					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+					operationResult.setResultDesc(AppConstants.MISSING_MANDATORY_PARAM);
+				}
+			} else {
+				operationResult.setErrorCode(EnmErrorCode.USER_NOT_LOGGED_IN.getId());
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc(AppConstants.USER_NOT_LOGGED_IN);
+			}
+		} catch (Exception e) {
+			operationResult.setResultCode(EnmResultCode.EXCEPTION.getValue());
+			operationResult.setResultDesc(AppConstants.CREATE_OPERATION_FAIL);
+			FileLogger.log(Level.ERROR, "ApiCommunity-createCommunityTopicMessage()-Error: " + CommonUtil.getExceptionMessage(e));
 		}
 		return new ResponseEntity<OperationResult>(operationResult, HttpStatus.OK);
     }

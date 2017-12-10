@@ -78,7 +78,7 @@ App.factory('communityService', ['$http', '$q', function($http, $q){
 			});
 		},
 		
-		sendMessage : function(userId, topicId,messageText, callBack) {
+		sendTopicMessage : function(communityTopicId, description, callBack) {
 			var config = {
 				headers : {
 					'Accept' : 'application/json'
@@ -86,16 +86,15 @@ App.factory('communityService', ['$http', '$q', function($http, $q){
 			};
 			
 			var message = {
-				userId : userId,
-				topicId : topicId,
-				messageText : messageText
+				communityTopicId : communityTopicId,
+				description : description
 			};
 			
 			NProgress.start(3000, 5);
-			return $http.post(webApplicationUrlPrefix + '/api/community/topicmessage/create', message, config).then(function(response) {
+			return $http.post(webApplicationUrlPrefix + '/api/community/message/create', message, config).then(function(response) {
 				NProgress.done(true);
 				var result = isResultSuccess(response.data, true, function() {
-					callBack(response.data.resultValue);
+					callBack(response.data);
 				}, false);
 			}, function(errResponse) {
 				DialogUtil.error(errResponse);

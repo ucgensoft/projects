@@ -18,4 +18,6 @@ public interface ICommunityDao {
 	
 	public ListOperationResult<CommunityTopicMessage> listCommunityTopicMessage(CommunityTopicMessage communityTopicMessage);
 	
+	public OperationResult createCommunityTopicMessage(CommunityTopicMessage communityTopicMessage);
+	
 }
