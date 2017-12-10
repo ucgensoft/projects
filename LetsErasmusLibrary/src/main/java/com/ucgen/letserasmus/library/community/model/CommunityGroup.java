@@ -3,22 +3,26 @@ package com.ucgen.letserasmus.library.community.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ucgen.letserasmus.library.common.model.BaseModel;
 import com.ucgen.letserasmus.library.message.model.MessageThread;
 
-public class CommunityGroup {
+public class CommunityGroup extends BaseModel {
 
-	private Integer id;
+	private static final long serialVersionUID = -5608303002841783657L;
+
+	private Long id;
 	private String name;
 	private Integer countryId;
 	private Integer cityId;
 	private Integer universityId;
+	private String subUrl;
 	
 	private List<MessageThread> topicList;
 	
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -44,6 +48,12 @@ public class CommunityGroup {
 	}
 	public void setUniversityId(Integer universityId) {
 		this.universityId = universityId;
+	}
+	public String getSubUrl() {
+		return subUrl;
+	}
+	public void setSubUrl(String subUrl) {
+		this.subUrl = subUrl;
 	}
 	public List<MessageThread> getTopicList() {
 		return topicList;

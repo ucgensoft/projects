@@ -39,25 +39,32 @@
 							<div>
 								<div class="suspension-container">
 									<div class="panel space-4">
-										<div class="space-top-4 inline-block" style="width:200px">
-											<button style="float: right;" type="button"
-												class="btn btn-primary btn-large" ng-click="ctrl.saveChanges()">Create New Topic</button>
-										</div>
+										<ui:fragment rendered="#{communityTopicListController.communityGroup != null}">
+											<div class="space-top-4 inline-block" style="width:200px">
+												<button style="float: right;" type="button"
+													class="btn btn-primary btn-large" ng-click="ctrl.btnCreateTopicClick()">Create New Topic</button>
+											</div>
+										</ui:fragment>
 										<div class="select inline-block" style="margin-left: 10px">
-											<select id="cmbCity">
+											<select id="cmbCountry" ng-model="ctrl.countryId" ng-change="ctrl.onCountryChange()">
 												<option value="-1"
-													selected="#{webApplication.user.erasmusUniversityId == null ? 'selected' : ''}">-Select City-</option>
-												<ui:repeat var="university" value="#{userController.erasmusUniversityList}" varStatus="status">
-													<option value="#{university.id}" selected="#{webApplication.user.erasmusUniversityId eq university.id ? 'selected' : ''}">#{university.name}</option>
+													selected="#{communityTopicListController.selectedCountryId == null ? 'selected' : ''}">-Select Country-</option>
+												<ui:repeat var="country" value="#{communityTopicListController.countryList}" varStatus="status">
+													<option value="#{country.id}" selected="#{communityTopicListController.selectedCountryId eq country.id ? 'selected' : ''}">#{country.name}</option>
 												</ui:repeat>
 											</select>
 										</div>
-										<select id="cmbCity">
-										    <option value="">Select one...</option>
-										    <ui:repeat var="university" value="#{userController.erasmusUniversityList}" varStatus="status">
-												<option value="#{university.id}" selected="#{webApplication.user.erasmusUniversityId eq university.id ? 'selected' : ''}">#{university.name}</option>
-											</ui:repeat>
-										  </select>
+										<div class="select inline-block" style="margin-left: 10px">
+											<select id="cmbCommunityGroup" ng-model="ctrl.communityGroupSubUrl" ng-change="ctrl.onCommunityGroupChange()">
+												<option value="-1"
+													selected="#{communityTopicListController.communityGroup == null ? 'selected' : ''}">-Select Group-</option>
+												<ui:repeat var="communityGroup" value="#{communityTopicListController.communityGroupList}" varStatus="status">
+													<option value="#{communityGroup.subUrl}" selected="#{communityTopicListController.communityGroup.subUrl eq communityGroup.subUrl ? 'selected' : ''}">
+														<a href="#{webApplication.urlPrefix}/community/#{communityGroup.subUrl}">#{communityGroup.name}</a>
+													</option>
+												</ui:repeat>
+											</select>
+										</div>
 									</div>
 									<div class="panel space-4">
 										<div class="panel-header active-panel-header">
@@ -80,31 +87,31 @@
 													</div>
 												</div>
 											</li>
-											<li ng-repeat="t in ctrl.topicList"
-												class="listing panel-body">
-												<div class="row row-table" style="width:1000px; height: 30px;">
-													<div class="">
-														<div class="inline-block" style="width:200px">{{t.title}}</div>
-														<div class="text-muted text-grey space-top-1 last-modified-date inline-block" style="width:200px">
-															{{t.createdDate | date:'MMMM dd, yyyy'}}
-														</div>
-														<div class="text-muted text-grey space-top-1 last-modified-date inline-block" style="width:200px">
-															{{p.modifiedDate | date:'MMMM dd, yyyy'}}
-														</div>
-														<div class="space-top-4 inline-block" style="width:200px">
-															<a class="btn btn__first-btn btn-primary"
-																style="margin-right: 0px"
-																href="#{webApplication.urlPrefix}/become-a-host?placeId={{t.id}}"
-																target="_blank"> <span>Edit</span>
-															</a> 
-															<a class="btn btn__second-btn" style="margin-right: 0px"
-																href="#{webApplication.urlPrefix}/room/{{t.id}}"
-																target="_blnak"> <span>Preview</span>
-															</a>
+											<ui:repeat var="communityTopic" value="#{communityTopicListController.communityTopicList}" varStatus="status">
+												<li class="listing panel-body">
+													<input type="hidden" id="hiddenTopicTitle_#{communityTopic.id}" value="#{communityTopic.title}" />
+													<input type="hidden" id="hiddenTopicDescription_#{communityTopic.id}" value="#{communityTopic.description}" />
+													<div class="row row-table" style="width:1000px; height: 30px;">
+														<div class="">
+															<div class="inline-block" style="width:200px">
+																<a href="#{webApplication.urlPrefix}/community/topic/#{communityTopic.subUrl}" target="_blank">#{communityTopic.title}</a>
+															</div>
+															<div class="text-muted text-grey space-top-1 last-modified-date inline-block" style="width:200px">
+																#{communityTopicListController.formatDate(communityTopic.createdDate, "dd.MM.yyyy hh:mm")}
+															</div>
+															<div class="text-muted text-grey space-top-1 last-modified-date inline-block" style="width:200px">
+																
+															</div>
+															<ui:fragment rendered="#{webApplication.user != null &amp;&amp; webApplication.user.id == communityTopic.userId}">
+																<div class="space-top-4 inline-block" style="width:200px;">
+																	<input class="btn btn-primary" id="btnEditTopic_#{communityTopic.id}" type="button" value="Edit" 
+																		ng-click="ctrl.btnEditTopicClick(#{communityTopic.id}, #{communityTopic.communityGroupId})"/>
+																</div>
+															</ui:fragment>
 														</div>
 													</div>
-												</div>
-											</li>
+												</li>
+											</ui:repeat>
 										</ul>
 									</div>
 								</div>
@@ -115,7 +122,7 @@
 			</div>
 		</main>
 		<script>
-			var activeUserInfo = #{webApplication.user == null ? 'null' : '{ homeCityId : webApplication.user.homeCityId}'};
+			var globalCommunityGroupId = #{communityTopicListController.communityGroup.id};
 		</script>
 		<script
 			src="#{webApplication.urlPrefix}/static/js/angular/service/community_service.js?ver=#{webApplication.staticFileVersion}"></script>

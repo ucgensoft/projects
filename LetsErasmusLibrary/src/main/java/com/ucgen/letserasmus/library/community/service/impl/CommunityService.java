@@ -9,6 +9,8 @@ import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.common.util.FileLogger;
 import com.ucgen.letserasmus.library.community.dao.ICommunityDao;
 import com.ucgen.letserasmus.library.community.model.CommunityGroup;
+import com.ucgen.letserasmus.library.community.model.CommunityTopic;
+import com.ucgen.letserasmus.library.community.model.CommunityTopicMessage;
 import com.ucgen.letserasmus.library.community.service.ICommunityService;
 
 @Service
@@ -40,6 +42,45 @@ public class CommunityService implements ICommunityService {
 			FileLogger.log(Level.ERROR, "CommunityService-getCommunityGroup- Error: " + OperationResult.getResultDesc(communityGroupResult));
 			return null;
 		}
+	}
+
+	@Override
+	public OperationResult createCommunityTopic(CommunityTopic communityTopic) {
+		return this.communityDao.createCommunityTopic(communityTopic);
+	}
+	
+	@Override
+	public OperationResult updateCommunityTopic(CommunityTopic communityTopic) {
+		return this.communityDao.updateCommunityTopic(communityTopic);
+	}
+	
+	@Override
+	public ListOperationResult<CommunityTopic> listCommunityTopic(CommunityTopic communityTopic) {
+		return this.communityDao.listCommunityTopic(communityTopic);
+	}
+
+	@Override
+	public CommunityTopic getCommunityTopic(Long id) {
+		CommunityTopic communityTopic = new CommunityTopic();
+		communityTopic.setId(id);
+		ListOperationResult<CommunityTopic> communityTopicResult = this.listCommunityTopic(communityTopic);
+		if (OperationResult.isResultSucces(communityTopicResult)) {
+			if (communityTopicResult.getObjectList() != null 
+					&& communityTopicResult.getObjectList().size() > 0) {
+				return communityTopicResult.getObjectList().get(0);
+			} else {
+				return null;
+			}
+		} else {
+			FileLogger.log(Level.ERROR, "CommunityService-getCommunityTopic- Error: " + OperationResult.getResultDesc(communityTopicResult));
+			return null;
+		}
+	}
+	
+	@Override
+	public ListOperationResult<CommunityTopicMessage> listCommunityTopicMessage(
+			CommunityTopicMessage communityTopicMessage) {
+		return this.communityDao.listCommunityTopicMessage(communityTopicMessage);
 	}
 
 }

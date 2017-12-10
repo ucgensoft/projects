@@ -118,5 +118,13 @@ public interface AppConstants {
 	
 	String CREATE_PAYMENT_ACCOUNT_FAILES = "Payment account creation failed!";
 	
+	String COMMUNITY_CREATE_TOPIC_SUCCESS = "Your topic is created successfully!";
+	
+	String COMMUNITY_CREATE_TOPIC_FAIL = "Topic create operation failed!";
+	
+	String COMMUNITY_CREATE_TOPIC_NOT_FOUND = "Topic record not found!";
+	
+	String COMMUNITY_CREATE_TOPIC_ = "Topic record not found!";
+	
 }
 

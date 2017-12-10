@@ -25,4 +25,12 @@ public class City {
 		this.countryId = countryId;
 	}
 	
+	public City() {
+		this(null);
+	}
+	
+	public City(Integer countryId) {
+		this.countryId = countryId;
+	}
+	
 }

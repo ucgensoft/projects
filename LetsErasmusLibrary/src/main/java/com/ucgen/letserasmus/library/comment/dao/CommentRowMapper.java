@@ -14,13 +14,6 @@ public class CommentRowMapper extends BaseRowMapper<Comment> {
 	public static final String COL_AUTHOR_USER_ID = "AUTHOR_USER_ID";
 	public static final String COL_COMMENT_CONTENT = "COMMENT_CONTENT";
 	public static final String COL_STATUS = "STATUS";
-	public static final String COL_CREATED_BY = "CREATED_BY";
-	public static final String COL_CREATED_DATE = "CREATED_DATE";
-	public static final String COL_CREATED_DATE_GMT = "CREATED_DATE_GMT";
-	public static final String COL_MODIFIED_BY = "MODIFIED_BY";
-	public static final String COL_MODIFIED_DATE = "MODIFIED_DATE";
-	public static final String COL_MODIFIED_DATE_GMT = "MODIFIED_DATE_GMT";
-
 	
 	@Override
 	public Comment mapRow(ResultSet rs, int rowNum) throws SQLException {

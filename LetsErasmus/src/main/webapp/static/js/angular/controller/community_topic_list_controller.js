@@ -1,7 +1,8 @@
 App.controller('topicListCtrl', [ '$scope', '$controller', 'communityService',
 		function($scope, $controller, communityService) {
 			var self = this;
-			self.selectedCityId = -1;
+			self.countryId = $('#cmbCountry').val();
+			self.communityGroupSubUrl = $('#cmbCommunityGroup').val();
 			self.topicList = [];
 
 			$( function() {
@@ -153,7 +154,75 @@ App.controller('topicListCtrl', [ '$scope', '$controller', 'communityService',
 				};
 				communityService.listTopic(self.selectedCityId, listCallBack);
 			};
-
+			
+			self.btnCreateTopicClick = function() {
+				if (loginUserId != null && loginUserId != '') {
+					ajaxHtml(webApplicationUrlPrefix + '/static/html/CommunityTopic.htm', 'divCommonModal', function() {
+							$('#hiddenDialogTopicGroupId').val(globalCommunityGroupId);
+							$('#btnDialogSubmitTopic').click(self.submitTopicCallBack);
+						}
+					);
+				} else {
+					openLoginWindow();
+				}
+			};
+			
+			self.btnEditTopicClick = function(id, communityGroupId) {
+				if (loginUserId != null && loginUserId != '') {
+					ajaxHtml(webApplicationUrlPrefix + '/static/html/CommunityTopic.htm', 'divCommonModal', function() {
+							$('#hiddenDialogTopicId').val(id);
+							$('#hiddenDialogTopicGroupId').val(communityGroupId);
+							if (id != null && id != '') {
+								var title = $('#hiddenTopicTitle_' + id).val()
+								var description = $('#hiddenTopicDescription_' + id).val()
+								$("#txtDialogTopicTitle").val(title);
+								$("#txtDialogTopicDescription").val(description);
+								$("#txtDialogTopicTitle").attr('disabled','disabled');
+							}
+							$('#btnDialogSubmitTopic').click(self.submitTopicCallBack);
+						}
+					);
+				} else {
+					openLoginWindow();
+				}
+			};
+			
+			self.submitTopicCallBack = function() {
+				var callBack = function(operationResult) {
+					if (isResultSuccess(operationResult)) {
+						DialogUtil.success(operationResult.resultDesc, function() {
+							 reloadPage()
+						 });
+					} else {
+						hideModal('divCommonModal');
+					}
+				};
+				var topicId = $('#hiddenDialogTopicId').val();
+				var communityGroupId = $('#hiddenDialogTopicGroupId').val();
+				var title = $('#txtDialogTopicTitle').val();
+				var description = $('#txtDialogTopicDescription').val();
+				
+				communityService.createUpdateTopic(topicId, communityGroupId, title, description, callBack);
+				
+			};
+			
+			self.onCountryChange = function() {
+				communityService.listCommunityGroup(self.countryId, function(groupList) {
+		  			$('#cmbCommunityGroup').find('option:not(:first)').remove();
+		  			if (groupList != null && groupList.length > 0) {
+		  				for(var i = 0; i < groupList.length; i++) {
+		  	  				$('#cmbCommunityGroup').append('<option value="' + groupList[i].subUrl + '">' + groupList[i].name + '</option>');
+		  	  			}
+		  			}
+		  			self.communityGroupSubUrl = '-1';
+		  		});
+		  	};
+		  	
+		  	self.onCommunityGroupChange = function(option) {
+		  		var url = WebUtil.concatUrl([webApplicationUrlPrefix, '/community/', self.communityGroupSubUrl]);
+		  		openWindow(url, true);
+		  	};
+		  	
 			self.initialize();
 
 		} ]);

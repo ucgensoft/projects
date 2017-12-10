@@ -1,0 +1,24 @@
+<div class="modal show" role="dialog" aria-hidden="false">
+	<div class="modal-table">
+		<div class="modal-cell">
+			<input type="hidden" id="hiddenDialogTopicId" />
+			<input type="hidden" id="hiddenDialogTopicGroupId" />
+			<div class="modal-content">
+				<div class="panel-header">Community Topic</div>
+				<div class="panel-body">
+					<label>Title</label>
+					<textarea id="txtDialogTopicTitle" rows="2"></textarea>
+				</div>
+				<div class="panel-body">
+					<label>Description</label>
+					<textarea id="txtDialogTopicDescription" rows="6"></textarea>
+				</div>
+				<div class="panel-footer">
+					<input class="btn btn-primary" id="btnDialogSubmitTopic"
+						type="button" value="Create" />
+					<button class="btn" data-behavior="modal-close" onclick="closeModal()">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

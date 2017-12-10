@@ -56,7 +56,7 @@ public class UrlRewriteFilter extends RewriteFilter {
 				super.doFilter(request, response, chain);
 			} catch (Throwable e) {
 				FileLogger.log(Level.ERROR, "UrlRewriteFilter - " + CommonUtil.getExceptionMessage(e));
-				httpServletResponse.sendRedirect("/pages/Notfound.html");
+				//httpServletResponse.sendRedirect("/pages/Notfound.html");
 			}
 		}
 	}

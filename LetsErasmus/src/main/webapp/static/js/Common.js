@@ -198,6 +198,10 @@ function openModal(url, elementId) {
 			});
 }
 
+function hideModal(elementId) {
+	modal.style.display='none';
+}
+
 function openWindow (url, isSelf) {
 	if (isSelf) {
 		if (document.location.href == url) {

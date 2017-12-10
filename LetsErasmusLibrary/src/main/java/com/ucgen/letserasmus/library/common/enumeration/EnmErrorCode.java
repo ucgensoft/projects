@@ -10,7 +10,8 @@ public enum EnmErrorCode {
 	USER_NOT_LOGGED_IN(4),
 	ALREADY_CONTACTED(5),
 	USER_DEACTIVE(6),
-	ALREADY_EXIST(7);
+	ALREADY_EXIST(7),
+	PAGE_NOT_FOUND(8);
 
 	private int id;
 

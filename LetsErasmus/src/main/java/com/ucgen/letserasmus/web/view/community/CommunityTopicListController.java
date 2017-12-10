@@ -6,14 +6,13 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 
-import org.apache.log4j.Level;
-
-import com.ucgen.common.util.CommonUtil;
-import com.ucgen.common.util.FileLogger;
-import com.ucgen.letserasmus.library.common.enumeration.EnmEntityType;
+import com.ucgen.common.operationresult.EnmResultCode;
+import com.ucgen.common.operationresult.ListOperationResult;
+import com.ucgen.common.operationresult.OperationResult;
+import com.ucgen.letserasmus.library.common.enumeration.EnmErrorCode;
 import com.ucgen.letserasmus.library.community.model.CommunityGroup;
+import com.ucgen.letserasmus.library.community.model.CommunityTopic;
 import com.ucgen.letserasmus.library.community.service.ICommunityService;
-import com.ucgen.letserasmus.library.message.model.MessageThread;
 import com.ucgen.letserasmus.library.message.service.IMessageService;
 import com.ucgen.letserasmus.library.simpleobject.model.City;
 import com.ucgen.letserasmus.library.simpleobject.model.Country;
@@ -23,10 +22,11 @@ import com.ucgen.letserasmus.web.view.BaseController;
 @ManagedBean
 public class CommunityTopicListController extends BaseController {
 	
-	private static String PARAM_CITY_NAME = "cityName";
+	private static String PARAM_GROUP_SUB_URL = "communityGroupSubUrl";
 	private List<Country> countryList;
 	private List<City> cityList;
-	private List<MessageThread> messageThreadList;
+	private List<CommunityGroup> communityGroupList;
+	private List<CommunityTopic> communityTopicList;
 	private Integer selectedCountryId;
 	private Integer selectedCityId;
 	private CommunityGroup communityGroup;
@@ -60,16 +60,12 @@ public class CommunityTopicListController extends BaseController {
 		return cityList;
 	}
 
-	public void setCityList(List<City> cityList) {
-		this.cityList = cityList;
+	public List<CommunityGroup> getCommunityGroupList() {
+		return communityGroupList;
 	}
 
-	public void setCountryList(List<Country> countryList) {
-		this.countryList = countryList;
-	}
-
-	public List<MessageThread> getMessageThreadList() {
-		return messageThreadList;
+	public List<CommunityTopic> getCommunityTopicList() {
+		return communityTopicList;
 	}
 
 	public Integer getSelectedCountryId() {
@@ -94,27 +90,33 @@ public class CommunityTopicListController extends BaseController {
 
 	@PostConstruct
 	public void initialize() {
-		try {
-			this.countryList = this.simpleObjectService.listCountry();
+		this.countryList = this.simpleObjectService.listCountry();
+		
+		String communityGroupSubUrl = super.getRequestParameter(PARAM_GROUP_SUB_URL);
+		if (communityGroupSubUrl != null && !communityGroupSubUrl.isEmpty()) {
+			CommunityGroup communityGroup = new CommunityGroup();
+			communityGroup.setSubUrl(communityGroupSubUrl);
 			
-			String cityName = super.getRequestParameter(PARAM_CITY_NAME);
-			if (cityName != null && !cityName.isEmpty()) {
-				City city = new City();
-				city.setName(cityName);
-				city = this.simpleObjectService.getCity(city);
-				if (city != null) {
-					this.selectedCountryId = city.getCountryId();
-					this.selectedCityId = city.getId();
-					CommunityGroup communityGroup = new CommunityGroup();
-					communityGroup.setCityId(this.selectedCityId);
-					this.communityGroup = this.communityService.getCommunityGroup(communityGroup);
-					MessageThread messageThread = new MessageThread();
-					messageThread.setEntityType(EnmEntityType.COMMUNITYGROUP.getId());
-					this.messageThreadList = this.messageService.listMessageThread(messageThread, false, false, false, true);
+			CommunityGroup dbCommunityGroup = this.communityService.getCommunityGroup(communityGroup);
+			if (dbCommunityGroup != null) {
+				this.communityGroup = dbCommunityGroup;
+				this.selectedCountryId = this.communityGroup.getCountryId();
+				this.selectedCityId = this.communityGroup.getCityId();
+				CommunityGroup countryGroup = new CommunityGroup();
+				countryGroup.setCountryId(this.communityGroup.getCountryId());
+				ListOperationResult<CommunityGroup> listCommGroupResult = this.communityService.listCommunityGroup(countryGroup);
+				if (OperationResult.isResultSucces(listCommGroupResult)) {
+					this.communityGroupList = listCommGroupResult.getObjectList();
 				}
+				this.communityTopicList = this.communityService.listCommunityTopic(new CommunityTopic(null, this.communityGroup.getId())).getObjectList();
+				//this.cityList = this.simpleObjectService.listCity(new City(this.communityGroup.getCountryId()));
+			} else {
+				OperationResult operationResult = new OperationResult();
+				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+				operationResult.setResultDesc("Community Group not found for sub url: " + communityGroupSubUrl);;
+				operationResult.setErrorCode(EnmErrorCode.PAGE_NOT_FOUND.getId());
+				//throw new OperationResultException(operationResult);
 			}
-		} catch (Exception e) {
-			FileLogger.log(Level.ERROR, "CommunityTopicListController-initialize()- Error: " + CommonUtil.getExceptionMessage(e));
 		}
 	}
 		

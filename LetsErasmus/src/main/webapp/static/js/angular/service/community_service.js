@@ -3,32 +3,43 @@
 App.factory('communityService', ['$http', '$q', function($http, $q){
 
 	return {
-		listTopic : function(cityId, callBack) {
-			var data = {
-					cityId : cityId
-			};
-			
+		
+		createUpdateTopic : function(id, communityGroupId, title, description, callBack) {
 			var config = {
-				params : data,
 				headers : {
 					'Accept' : 'application/json'
 				}
 			};
 			
+			var communityTopic = {
+				id : id,
+				communityGroupId : communityGroupId,
+				title : title,
+				description : description
+			};
+			
+			var methodName = null;
+			
+			if (id != null && id != '') {
+				methodName = 'update';
+			} else {
+				methodName = 'create';
+			}
+			
 			NProgress.start(3000, 5);
-			return $http.get(webApplicationUrlPrefix + '/api/community/listtopic', config).then(function(response) {
+			return $http.post(webApplicationUrlPrefix + '/api/community/topic/' + methodName, communityTopic, config).then(function(response) {
 				NProgress.done(true);
 				var result = isResultSuccess(response.data, true, function() {
-					callBack(response.data.resultValue);
-				}, false);
+					callBack(response.data);
+				}, true);
 			}, function(errResponse) {
 				DialogUtil.error(errResponse);
 			});
 		},
 		
-		getTopic : function(topicId, callBack) {
+		listCommunityGroup : function(countryId, callBack) {
 			var data = {
-				topicId : topicId
+					countryId : countryId
 			};
 			
 			var config = {
@@ -39,7 +50,7 @@ App.factory('communityService', ['$http', '$q', function($http, $q){
 			};
 			
 			NProgress.start(3000, 5);
-			return $http.get(webApplicationUrlPrefix + '/api/mecommunityssage/getTopic', config).then(function(response) {
+			return $http.get(webApplicationUrlPrefix + '/api/community/group/list', config).then(function(response) {
 				NProgress.done(true);
 				var result = isResultSuccess(response.data, true, function() {
 					callBack(response.data.resultValue);
@@ -81,7 +92,7 @@ App.factory('communityService', ['$http', '$q', function($http, $q){
 			};
 			
 			NProgress.start(3000, 5);
-			return $http.post(webApplicationUrlPrefix + '/api/community/sendmessage', message, config).then(function(response) {
+			return $http.post(webApplicationUrlPrefix + '/api/community/topicmessage/create', message, config).then(function(response) {
 				NProgress.done(true);
 				var result = isResultSuccess(response.data, true, function() {
 					callBack(response.data.resultValue);
