@@ -7,6 +7,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 
 import com.ucgen.common.operationresult.EnmResultCode;
+import com.ucgen.common.operationresult.ListOperationResult;
 import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.letserasmus.library.common.enumeration.EnmErrorCode;
 import com.ucgen.letserasmus.library.community.model.CommunityTopic;
@@ -37,13 +38,14 @@ public class CommunityTopicController extends BaseController {
 			List<CommunityTopic> communityTopicList = this.communityService.listCommunityTopic(communityTopic).getObjectList();
 			if (communityTopicList != null && communityTopicList.size() > 0) {
 				this.communityTopic = communityTopicList.get(0);
-				this.communityService.listCommunityTopicMessage(new CommunityTopicMessage(null, this.communityTopic.getId()));
-				
-				//this.cityList = this.simpleObjectService.listCity(new City(this.communityGroup.getCountryId()));
+				ListOperationResult<CommunityTopicMessage> messageListResult = this.communityService.listCommunityTopicMessage(new CommunityTopicMessage(null, this.communityTopic.getId()));
+				if (OperationResult.isResultSucces(messageListResult)) {
+					this.communityTopic.setMessageList(messageListResult.getObjectList());
+				}
 			} else {
 				OperationResult operationResult = new OperationResult();
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-				operationResult.setResultDesc("Community Group not found for sub url: " + communityTopicSubUrl);;
+				operationResult.setResultDesc("Community Topic not found for sub url: " + communityTopicSubUrl);;
 				operationResult.setErrorCode(EnmErrorCode.PAGE_NOT_FOUND.getId());
 				//throw new OperationResultException(operationResult);
 			}

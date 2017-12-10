@@ -1,4 +1,4 @@
-App.controller('topicListCtrl', [ '$scope', '$controller', 'communityService',
+App.controller('communityGroupCtrl', [ '$scope', '$controller', 'communityService',
 		function($scope, $controller, communityService) {
 			var self = this;
 			self.countryId = $('#cmbCountry').val();

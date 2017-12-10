@@ -39,7 +39,7 @@
 							<div>
 								<div class="suspension-container">
 									<div class="panel space-4">
-										<ui:fragment rendered="#{communityTopicListController.communityGroup != null}">
+										<ui:fragment rendered="#{communityGroupController.communityGroup != null}">
 											<div class="space-top-4 inline-block" style="width:200px">
 												<button style="float: right;" type="button"
 													class="btn btn-primary btn-large" ng-click="ctrl.btnCreateTopicClick()">Create New Topic</button>
@@ -48,18 +48,18 @@
 										<div class="select inline-block" style="margin-left: 10px">
 											<select id="cmbCountry" ng-model="ctrl.countryId" ng-change="ctrl.onCountryChange()">
 												<option value="-1"
-													selected="#{communityTopicListController.selectedCountryId == null ? 'selected' : ''}">-Select Country-</option>
-												<ui:repeat var="country" value="#{communityTopicListController.countryList}" varStatus="status">
-													<option value="#{country.id}" selected="#{communityTopicListController.selectedCountryId eq country.id ? 'selected' : ''}">#{country.name}</option>
+													selected="#{communityGroupController.selectedCountryId == null ? 'selected' : ''}">-Select Country-</option>
+												<ui:repeat var="country" value="#{communityGroupController.countryList}" varStatus="status">
+													<option value="#{country.id}" selected="#{communityGroupController.selectedCountryId eq country.id ? 'selected' : ''}">#{country.name}</option>
 												</ui:repeat>
 											</select>
 										</div>
 										<div class="select inline-block" style="margin-left: 10px">
 											<select id="cmbCommunityGroup" ng-model="ctrl.communityGroupSubUrl" ng-change="ctrl.onCommunityGroupChange()">
 												<option value="-1"
-													selected="#{communityTopicListController.communityGroup == null ? 'selected' : ''}">-Select Group-</option>
-												<ui:repeat var="communityGroup" value="#{communityTopicListController.communityGroupList}" varStatus="status">
-													<option value="#{communityGroup.subUrl}" selected="#{communityTopicListController.communityGroup.subUrl eq communityGroup.subUrl ? 'selected' : ''}">
+													selected="#{communityGroupController.communityGroup == null ? 'selected' : ''}">-Select Group-</option>
+												<ui:repeat var="communityGroup" value="#{communityGroupController.communityGroupList}" varStatus="status">
+													<option value="#{communityGroup.subUrl}" selected="#{communityGroupController.communityGroup.subUrl eq communityGroup.subUrl ? 'selected' : ''}">
 														<a href="#{webApplication.urlPrefix}/community/#{communityGroup.subUrl}">#{communityGroup.name}</a>
 													</option>
 												</ui:repeat>
@@ -87,7 +87,7 @@
 													</div>
 												</div>
 											</li>
-											<ui:repeat var="communityTopic" value="#{communityTopicListController.communityTopicList}" varStatus="status">
+											<ui:repeat var="communityTopic" value="#{communityGroupController.communityTopicList}" varStatus="status">
 												<li class="listing panel-body">
 													<input type="hidden" id="hiddenTopicTitle_#{communityTopic.id}" value="#{communityTopic.title}" />
 													<input type="hidden" id="hiddenTopicDescription_#{communityTopic.id}" value="#{communityTopic.description}" />
@@ -97,7 +97,7 @@
 																<a href="#{webApplication.urlPrefix}/community/topic/#{communityTopic.subUrl}" target="_blank">#{communityTopic.title}</a>
 															</div>
 															<div class="text-muted text-grey space-top-1 last-modified-date inline-block" style="width:200px">
-																#{communityTopicListController.formatDate(communityTopic.createdDate, "dd.MM.yyyy hh:mm")}
+																#{communityGroupController.formatDate(communityTopic.createdDate, "dd.MM.yyyy hh:mm")}
 															</div>
 															<div class="text-muted text-grey space-top-1 last-modified-date inline-block" style="width:200px">
 																
@@ -122,11 +122,11 @@
 			</div>
 		</main>
 		<script>
-			var globalCommunityGroupId = #{communityTopicListController.communityGroup.id};
+			var globalCommunityGroupId = #{communityGroupController.communityGroup.id};
 		</script>
 		<script
 			src="#{webApplication.urlPrefix}/static/js/angular/service/community_service.js?ver=#{webApplication.staticFileVersion}"></script>
 		<script
-			src="#{webApplication.urlPrefix}/static/js/angular/controller/community_topic_list_controller.js?ver=#{webApplication.staticFileVersion}"></script>
+			src="#{webApplication.urlPrefix}/static/js/angular/controller/community_group_controller.js?ver=#{webApplication.staticFileVersion}"></script>
 	</ui:define>
 </ui:composition>

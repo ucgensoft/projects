@@ -20,7 +20,7 @@ import com.ucgen.letserasmus.library.simpleobject.service.ISimpleObjectService;
 import com.ucgen.letserasmus.web.view.BaseController;
 
 @ManagedBean
-public class CommunityTopicListController extends BaseController {
+public class CommunityGroupController extends BaseController {
 	
 	private static String PARAM_GROUP_SUB_URL = "communityGroupSubUrl";
 	private List<Country> countryList;
