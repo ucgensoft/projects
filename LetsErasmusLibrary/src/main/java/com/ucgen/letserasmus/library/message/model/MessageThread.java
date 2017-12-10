@@ -15,7 +15,6 @@ public class MessageThread extends BaseModel {
 	private Long hostUserId;
 	private Long clientUserId;
 	private String threadTitle;
-	private String threadDescription;
 	private Integer entityType;
 	private Long entityId;
 	
@@ -57,12 +56,6 @@ public class MessageThread extends BaseModel {
 	}
 	public void setThreadTitle(String threadTitle) {
 		this.threadTitle = threadTitle;
-	}
-	public String getThreadDescription() {
-		return threadDescription;
-	}
-	public void setThreadDescription(String threadDescription) {
-		this.threadDescription = threadDescription;
 	}
 	public Integer getEntityType() {
 		return entityType;

@@ -24,7 +24,6 @@ public class MessageThreadRowMapper extends BaseRowMapper<MessageThread> {
 	public static final String COL_ENTITY_TYPE = "ENTITY_TYPE";
 	public static final String COL_ENTITY_ID = "ENTITY_ID";
 	public static final String COL_THREAD_TITLE = "THREAD_TITLE";
-	public static final String COL_THREAD_DESCRIPTION = "THREAD_DESCRIPTION";
 	
 	public static final String FKEY_USER_HOST = "USER_HOST";
 	public static final String FKEY_USER_CLIENT = "USER_CLIENT";
@@ -79,7 +78,6 @@ public class MessageThreadRowMapper extends BaseRowMapper<MessageThread> {
 		messageThread.setEntityType(super.getInteger(rs, COL_ENTITY_TYPE));
 		messageThread.setEntityId(super.getLong(rs, COL_ENTITY_ID));
 		messageThread.setThreadTitle(super.getString(rs, COL_THREAD_TITLE));
-		messageThread.setThreadDescription(super.getString(rs, COL_THREAD_DESCRIPTION));
 		
 		messageThread.setCreatedBy(super.getString(rs, COL_CREATED_BY));		
 		messageThread.setCreatedDate(super.getTimestamp(rs, COL_CREATED_DATE));
@@ -125,7 +123,6 @@ public class MessageThreadRowMapper extends BaseRowMapper<MessageThread> {
 	public void initializeColList() {
 		super.addColumn(COL_ID);
 		super.addColumn(COL_THREAD_TITLE);
-		super.addColumn(COL_THREAD_DESCRIPTION);
 		super.addColumn(COL_HOST_USER_ID);
 		super.addColumn(COL_CLIENT_USER_ID);
 		super.addColumn(COL_ENTITY_TYPE);
