@@ -100,7 +100,7 @@
 						<ui:repeat var="communityTopic"
 							value="#{communityGroupController.communityTopicList}"
 							varStatus="status">
-							<li class="listing panel-body" style="padding: 2px 20px;"><input
+							<li class="listing panel-body" style="padding: 2px 20px;     overflow: -webkit-paged-x;border-bottom: 1px solid #dce0e0;"><input
 								type="hidden" id="hiddenTopicTitle_#{communityTopic.id}"
 								value="#{communityTopic.title}" /> <input type="hidden"
 								id="hiddenTopicDescription_#{communityTopic.id}"
