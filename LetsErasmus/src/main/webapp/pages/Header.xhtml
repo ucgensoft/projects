@@ -30,9 +30,14 @@
 		<nav id="n-l-nav" class="nav-top--right-wrapper"> 
 			<nav class="nav-top--right">
 				<div class="nav-top--right">
+				<a id="blog-button"
+						href="#{webApplication.urlPrefix}/community/istanbul-erasmus-community"
+						class="nav-top--right--link hidden-sm-down"> <span>Community</span>
+					</a>
+				
 					<a id="blog-button"
 						href="#{webApplication.urlPrefix}/blog"
-						class="nav-top--right--link"> <span>Blog</span>
+						class="nav-top--right--link hidden-sm-down"> <span>Blog</span>
 					</a>
 				
 					<div style="margin-left: .8rem;">
@@ -72,7 +77,7 @@
 							<a href="#{webApplication.getUrlTemplateProfile(webApplication.user.id)}" rel=""
 								class="nav-top--right--link nav-top--right--link__dropdown">
 								<div class="nav-top--username">#{webApplication.user.firstName}</div>
-								<div id="divUserImagePart" style="margin-left: 15px;" class="nav-top--avatar" title="Go to your dashboard">
+								<div id="divUserImagePart" style="margin-left: 15px;" class="nav-top--avatar">
 									<input id="hiddenActiveUserProfileImageUrl" type="hidden" 
 										value="#{webApplication.getUserPhotoUrl(webApplication.user.id, webApplication.user.profilePhotoId, 'small')}" />
 									<div id="divHeaderUserProfileImage" class="avatar--img"
@@ -106,6 +111,18 @@
 								<a href="" onclick="openWindow('#{webApplication.urlPrefix}/dashboard/trip-list', true)"
 									class="travel-credit-item panel-body link-reset hover-item">
 									<div class="hover-item__content">Your Trips</div>
+								</a>
+								<a href="" onclick="openWindow('#{webApplication.urlPrefix}/community/istanbul-erasmus-community', true)"
+									class="travel-credit-item panel-body link-reset hover-item hidden-md-up">
+									<div class="hover-item__content">Community</div>
+								</a>
+								<a href="" onclick="openWindow('#{webApplication.urlPrefix}/blog', true)"
+									class="travel-credit-item panel-body link-reset hover-item hidden-md-up">
+									<div class="hover-item__content">Blog</div>
+								</a>
+								<a href="" onclick="openWindow('#{webApplication.urlPrefix}/help', true)"
+									class="travel-credit-item panel-body link-reset hover-item hidden-md-up">
+									<div class="hover-item__content">Help</div>
 								</a>
 								<a href="" ng-click="ctrl.logout()"
 									class=" panel-body link-reset hover-item no-crawl">
