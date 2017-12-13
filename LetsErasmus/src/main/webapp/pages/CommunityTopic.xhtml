@@ -5,69 +5,102 @@
 	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
 
 	<ui:define name="head">
-		<meta name="robots" content="noindex"/>
+		<meta name="robots" content="noindex" />
 		<link rel="stylesheet" type="text/css"
 			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css?ver=#{webApplication.staticFileVersion}" />
 		<link rel="stylesheet" type="text/css"
 			href="#{webApplication.urlPrefix}/static/css/conversation.css?ver=#{webApplication.staticFileVersion}" />
+		<link rel="stylesheet" type="text/css"
+			href="#{webApplication.urlPrefix}/static/css/community.css?ver=#{webApplication.staticFileVersion}" />
 
 	</ui:define>
 
 	<ui:define name="body">
 		<main id="site-content" role="main">
-			<div class="page-container page-container-responsive space-top-4">
+		<div class="community-section">
+			<div class="community-content">
 				<div class="row">
-					<div class="col-md-7 col-md-push-5 messaging-thread-main">
-						<div
-							class="js-messaging-react-container messaging-thread-container">
-							<div>
-								<div id="divTopicDetail">
-									<div style="margin-top: 10px;">
-										<h3>Topic Details</h3>
-									</div>
-									<div style="width: 20%">
-										User id: #{communityTopic.userId}
-									</div>
-									<div style="width: 80%">
-										<div>
-											#{communityTopicController.communityTopic.title}	
-										</div>
-										<div>
-											#{communityTopicController.communityTopic.description}
-										</div>
-									</div>
+					<div
+						class="js-messaging-react-container messaging-thread-container">
+						<div>
+							<div id="divTopicDetail">
+								<div style="margin-top: 10px; border-bottom: 3px solid #dce0e0;">
+									<a class="_j1qvyg"
+										href="#{webApplication.urlPrefix}/community/#{communityGroupController.communityGroup.subUrl}/#{communityTopic.subUrl}"
+										target="_blank">
+										<h2 style="margin-bottom: 5px; word-wrap: break-word;">
+											<strong>#{communityTopicController.communityTopic.title}</strong>
+										</h2>
+									</a>
 								</div>
-								<div style="margin-top: 10px;">
-									<h3>Replies</h3>
-								</div>
-								<ui:repeat var="message" value="#{communityTopicController.messageList}" varStatus="status">
-								<div style="margin-top: 10px;">
-									<div style="width: 20%">
-										User id: #{message.userId}
-									</div>
-									<div style="width: 80%">
-										<label>
-											#{message.description}
-										</label>
-									</div>
-								</div>
-								</ui:repeat>
-								<div style="margin-top: 10px;">
-									<ui:fragment rendered="#{webApplication.user != null}">
-										<div>
-											<textarea id="txtReply" rows="6"></textarea>
+								<div style="overflow: hidden; border-bottom: 1px solid #dce0e0; padding-bottom:10px; ">
+										<a href="#" target="_blank">
+											<div class="topic-detail-avatar"
+												style="width: 10%; margin-top: 10px; float: left;">
+												<div id="divUserImagePart" class="nav-top--avatar">
+													<input id="hiddenActiveUserProfileImageUrl" type="hidden"
+														value="https://s3-eu-west-1.amazonaws.com/static.letserasmus.com.test/user/images/default_profile_small.jpg" />
+													<div id="divHeaderUserProfileImage" class="avatar--img"
+														style="background-size: cover; width: 100%; height: 100%; background-image: url(https://s3-eu-west-1.amazonaws.com/static.letserasmus.com.test/user/images/default_profile_small.jpg);">
+													</div>
+												</div>
+											</div>
+										</a> <a class="_j1qvyg" href="#" target="_blank">
+											<div class="topic-creater">
+												<div>USER FIRST NAME:</div>
+											</div>
+										</a>
+										<div style="width: 90%; float: right; margin-top: 10px; word-wrap: break-word;">
+											<div>
+												#{communityTopicController.communityTopic.description}</div>
 										</div>
-									</ui:fragment>
-									<div style="margin-top: 5px;">
-										<input class="btn btn-primary" id="btnReplyBottom" type="button" value="Reply" 
-											ng-click="ctrl.btnReplyClick()"/>
+								</div>
+							</div>
+
+							<ui:repeat var="message"
+								value="#{communityTopicController.messageList}"
+								varStatus="status">
+								
+								<div style="overflow: hidden; border-bottom: 1px solid #dce0e0; padding-bottom:10px;">
+										<a href="#" target="_blank">
+											<div class="topic-detail-avatar"
+												style="width: 10%; margin-top: 10px; float: left;">
+												<div id="divUserImagePart" class="nav-top--avatar">
+													<input id="hiddenActiveUserProfileImageUrl" type="hidden"
+														value="https://s3-eu-west-1.amazonaws.com/static.letserasmus.com.test/user/images/default_profile_small.jpg" />
+													<div id="divHeaderUserProfileImage" class="avatar--img"
+														style="background-size: cover; width: 100%; height: 100%; background-image: url(https://s3-eu-west-1.amazonaws.com/static.letserasmus.com.test/user/images/default_profile_small.jpg);">
+													</div>
+												</div>
+											</div>
+										</a> <a class="_j1qvyg" href="#" target="_blank">
+											<div class="topic-creater">
+												<div>User id: #{message.userId}</div>
+											</div>
+										</a>
+										<div style="width: 90%; float: right; margin-top: 10px; word-wrap: break-word;">
+											<div>
+												#{message.description}</div>
+										</div>
+								</div>
+
+							</ui:repeat>
+							<div style="margin-top: 10px;">
+								<ui:fragment rendered="#{webApplication.user != null}">
+									<div>
+										<textarea id="txtReply" rows="6"></textarea>
 									</div>
+								</ui:fragment>
+								<div style="margin-top: 5px;">
+									<input class="btn btn-primary" id="btnReplyBottom"
+										type="button" value="Reply" ng-click="ctrl.btnReplyClick()" />
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+		</div>
 		</main>
 		<script>
 			var globalCommunityTopicId = #{communityTopicController.communityTopic.id};

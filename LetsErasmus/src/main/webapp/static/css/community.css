@@ -1,0 +1,123 @@
+.community-section {
+	position: relative !important;
+	display: block !important;
+	height: 100% !important;
+	width: 100% !important;
+	vertical-align: middle !important;
+	overflow: hidden;
+}
+
+@media ( min-width : 744px) {
+	.community-content {
+		padding-top: 48px !important;
+	}
+}
+
+@media ( min-width : 1128px) {
+	.community-content {
+		margin: 0 auto !important;
+		position: relative !important;
+	}
+}
+
+.community-content {
+	background-color: transparent;
+	padding-left: 24px !important;
+	padding-right: 24px !important;
+	max-width: 1080px !important;
+	padding-top: 24px !important;
+}
+
+.com-dropdown {
+	font-size: 16px
+}
+
+._1mtjcg0 {
+	display: table-cell !important;
+	width: 100% !important;
+	vertical-align: baseline !important;
+}
+
+.panel-com-header {
+	border-bottom: 1px solid #dce0e0;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-left-width: 0px;
+}
+
+@media ( max-width : 744px) {
+	.select select {
+		padding-right: 0px !important;
+	}
+}
+
+.com-header-row2 {
+	width: 40%;
+	margin-top: 0px;
+}
+
+.com-header-row1 {
+	width: 60%;
+	float: left;
+}
+
+@media ( max-width : 744px) {
+	.com-header-row2 {
+		width: 25%;
+	}
+	.com-header-row1 {
+		width: 75%;
+	}
+	.btn-large {
+		padding-left: 2px !important;
+		padding-right: 2px !important;
+	}
+}
+
+._j1qvyg {
+	text-decoration: none !important;
+	color: #484848;
+}
+
+.inline-block a:hover {
+	color: #03a9f4;
+}
+
+@media ( max-width : 744px) {
+	.hide-mobile {
+		display: none;
+	}
+	.on-mobile-title {
+		width: 88% !important;
+	}
+	.on-mobile-user {
+		width: 10% !important;
+	}
+	.nav-top--avatar {
+		margin-left: 0px !important;
+	}
+	.community-content {
+		padding-left: 2px !important;
+		padding-right: 2px !important;
+	}
+}
+
+.topic-detail-avatar .nav-top--avatar {
+	width: 4rem;
+	height: 4rem;
+	margin-right: .7rem;
+	border: 2px solid #dfe5ea;
+	border-radius: 50%;
+}
+
+.topic-creater {
+	width: 90%;
+	float: right;
+	margin-top: 10px;
+	color: #646464;
+	font-weight: bold;
+	font-size: 0.929em;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}

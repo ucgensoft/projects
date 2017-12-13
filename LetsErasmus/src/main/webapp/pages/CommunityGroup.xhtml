@@ -9,117 +9,150 @@
 			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css?ver=#{webApplication.staticFileVersion}" />
 		<link rel="stylesheet" type="text/css"
 			href="#{webApplication.urlPrefix}/static/css/place/your_listings.css?ver=#{webApplication.staticFileVersion}" />
-
+		<link rel="stylesheet" type="text/css"
+			href="#{webApplication.urlPrefix}/static/css/community.css?ver=#{webApplication.staticFileVersion}" />
 		<style>
-		  .custom-combobox {
-		    position: relative;
-		    display: inline-block;
-		  }
-		  .custom-combobox-toggle {
-		    position: absolute;
-		    top: 0;
-		    bottom: 0;
-		    margin-left: -1px;
-		    padding: 0;
-		  }
-		  .custom-combobox-input {
-		    margin: 0;
-		    padding: 5px 10px;
-		  }
-	  </style>
-		
+.custom-combobox {
+	position: relative;
+	display: inline-block;
+}
+
+.custom-combobox-toggle {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	margin-left: -1px;
+	padding: 0;
+}
+
+.custom-combobox-input {
+	margin: 0;
+	padding: 5px 10px;
+}
+</style>
+
 	</ui:define>
 
 	<ui:define name="body">
 		<main id="site-content" role="main">
-			<div class="page-container-responsive space-top-4 space-4">
-				<div class="row">
-					<div class="col-md-12">
-						<div id="divTopicList">
-							<div>
-								<div class="suspension-container">
-									<div class="panel space-4">
-										<ui:fragment rendered="#{communityGroupController.communityGroup != null}">
-											<div class="space-top-4 inline-block" style="width:200px">
-												<button style="float: right;" type="button"
-													class="btn btn-primary btn-large" ng-click="ctrl.btnCreateTopicClick()">Create New Topic</button>
-											</div>
-										</ui:fragment>
-										<div class="select inline-block" style="margin-left: 10px">
-											<select id="cmbCountry" ng-model="ctrl.countryId" ng-change="ctrl.onCountryChange()">
-												<option value="-1"
-													selected="#{communityGroupController.selectedCountryId == null ? 'selected' : ''}">-Select Country-</option>
-												<ui:repeat var="country" value="#{communityGroupController.countryList}" varStatus="status">
-													<option value="#{country.id}" selected="#{communityGroupController.selectedCountryId eq country.id ? 'selected' : ''}">#{country.name}</option>
-												</ui:repeat>
-											</select>
-										</div>
-										<div class="select inline-block" style="margin-left: 10px">
-											<select id="cmbCommunityGroup" ng-model="ctrl.communityGroupSubUrl" ng-change="ctrl.onCommunityGroupChange()">
-												<option value="-1"
-													selected="#{communityGroupController.communityGroup == null ? 'selected' : ''}">-Select Group-</option>
-												<ui:repeat var="communityGroup" value="#{communityGroupController.communityGroupList}" varStatus="status">
-													<option value="#{communityGroup.subUrl}" selected="#{communityGroupController.communityGroup.subUrl eq communityGroup.subUrl ? 'selected' : ''}">
-														<a href="#{webApplication.urlPrefix}/community/#{communityGroup.subUrl}">#{communityGroup.name}</a>
-													</option>
-												</ui:repeat>
-											</select>
-										</div>
-									</div>
-									<div class="panel space-4">
-										<div class="panel-header active-panel-header">
-											<div class="active-panel-padding">Active Topics</div>
-										</div>
-										<ul class="list-unstyled list-layout">
-											<li class="listing panel-body">
-												<div class="row row-table" style="width:1000px; height: 30px;">
-													<div class="">
-														<div class="h4 inline-block" style="width:200px">TITLE</div>
-														<div class="h4 inline-block" style="width:200px">
-															CREATE DATE
-														</div>
-														<div class="h4 inline-block" style="width:200px">
-															LAST MESSAGE
-														</div>
-														<div class="space-top-4 inline-block" style="width:200px">
-															
-														</div>
-													</div>
-												</div>
-											</li>
-											<ui:repeat var="communityTopic" value="#{communityGroupController.communityTopicList}" varStatus="status">
-												<li class="listing panel-body">
-													<input type="hidden" id="hiddenTopicTitle_#{communityTopic.id}" value="#{communityTopic.title}" />
-													<input type="hidden" id="hiddenTopicDescription_#{communityTopic.id}" value="#{communityTopic.description}" />
-													<div class="row row-table" style="width:1000px; height: 30px;">
-														<div class="">
-															<div class="inline-block" style="width:200px">
-																<a href="#{webApplication.urlPrefix}/community/#{communityGroupController.communityGroup.subUrl}/#{communityTopic.subUrl}" target="_blank">#{communityTopic.title}</a>
-															</div>
-															<div class="text-muted text-grey space-top-1 last-modified-date inline-block" style="width:200px">
-																#{communityGroupController.formatDate(communityTopic.createdDate, "dd.MM.yyyy hh:mm")}
-															</div>
-															<div class="text-muted text-grey space-top-1 last-modified-date inline-block" style="width:200px">
-																
-															</div>
-															<ui:fragment rendered="#{webApplication.user != null &amp;&amp; webApplication.user.id == communityTopic.userId}">
-																<div class="space-top-4 inline-block" style="width:200px;">
-																	<input class="btn btn-primary" id="btnEditTopic_#{communityTopic.id}" type="button" value="Edit" 
-																		ng-click="ctrl.btnEditTopicClick(#{communityTopic.id}, #{communityTopic.communityGroupId})"/>
-																</div>
-															</ui:fragment>
-														</div>
-													</div>
-												</li>
-											</ui:repeat>
-										</ul>
-									</div>
-								</div>
+		<div class="community-section">
+			<div class="community-content">
+				<div class="panel panel-com-header space-4">
+					<ui:fragment
+						rendered="#{communityGroupController.communityGroup != null}">
+						<div class="com-header-row1">
+							<div class="select inline-block com-dropdown">
+								<select id="cmbCountry" ng-model="ctrl.countryId"
+									ng-change="ctrl.onCountryChange()">
+									<option value="-1"
+										selected="#{communityGroupController.selectedCountryId == null ? 'selected' : ''}">-Select
+										Country-</option>
+									<ui:repeat var="country"
+										value="#{communityGroupController.countryList}"
+										varStatus="status">
+										<option value="#{country.id}"
+											selected="#{communityGroupController.selectedCountryId eq country.id ? 'selected' : ''}">#{country.name}</option>
+									</ui:repeat>
+								</select>
+							</div>
+							<div class="select inline-block com-dropdown"
+								style="margin-left: 10px;">
+								<select id="cmbCommunityGroup"
+									ng-model="ctrl.communityGroupSubUrl"
+									ng-change="ctrl.onCommunityGroupChange()">
+									<option value="-1"
+										selected="#{communityGroupController.communityGroup == null ? 'selected' : ''}">-Select
+										Group-</option>
+									<ui:repeat var="communityGroup"
+										value="#{communityGroupController.communityGroupList}"
+										varStatus="status">
+										<option value="#{communityGroup.subUrl}"
+											selected="#{communityGroupController.communityGroup.subUrl eq communityGroup.subUrl ? 'selected' : ''}">
+											<a
+												href="#{webApplication.urlPrefix}/community/#{communityGroup.subUrl}">#{communityGroup.name}</a>
+										</option>
+									</ui:repeat>
+								</select>
 							</div>
 						</div>
-					</div>
+						<div class="com-header-row2 space-top-4 inline-block">
+							<button style="float: right;" type="button"
+								class="btn btn-primary btn-large"
+								ng-click="ctrl.btnCreateTopicClick()">+New Topic</button>
+						</div>
+					</ui:fragment>
+				</div>
+				<div class="panel space-4" style="border: 0px;">
+					<ul class="list-unstyled list-layout">
+						<li class="listing panel-body">
+							<div class="row row-table" style="width: 100%;">
+								<div style="font-size: 14px; line-height: 1.25;">
+									<div class="h4 inline-block on-mobile-title" style="width: 65%">Topic</div>
+									<div class="h4 inline-block on-mobile-user"
+										style="width: 8%; text-align: center;">User</div>
+									<div class="h4 inline-block hide-mobile"
+										style="width: 8%; text-align: center;">Replies</div>
+									<div class="h4 inline-block hide-mobile"
+										style="width: 10%; text-align: center;">Activity</div>
+								</div>
+							</div>
+						</li>
+						<ui:repeat var="communityTopic"
+							value="#{communityGroupController.communityTopicList}"
+							varStatus="status">
+							<li class="listing panel-body" style="padding: 2px 20px;"><input
+								type="hidden" id="hiddenTopicTitle_#{communityTopic.id}"
+								value="#{communityTopic.title}" /> <input type="hidden"
+								id="hiddenTopicDescription_#{communityTopic.id}"
+								value="#{communityTopic.description}" />
+								<div class="row row-table" style="width: 100%; height: 30px;">
+									<div class="">
+										<div class="inline-block on-mobile-title"
+											style="width: 65%; height: 35.19px; vertical-align: bottom; word-wrap: break-word;">
+											<a class="_j1qvyg"
+												href="#{webApplication.urlPrefix}/community/#{communityGroupController.communityGroup.subUrl}/#{communityTopic.subUrl}"
+												target="_blank">#{communityTopic.title}</a>
+										</div>
+										<div
+											class="text-muted text-grey space-top-1 last-modified-date inline-block on-mobile-user"
+											style="width: 8%; text-align: center; vertical-align: text-bottom;">
+											<div id="divUserImagePart" style="margin-left: 15px;"
+												class="nav-top--avatar">
+												<input id="hiddenActiveUserProfileImageUrl" type="hidden"
+													value="https://s3-eu-west-1.amazonaws.com/static.letserasmus.com.test/user/images/default_profile_small.jpg" />
+												<div id="divHeaderUserProfileImage" class="avatar--img"
+													style="background-size: cover; width: 100%; height: 100%; background-image: url(https://s3-eu-west-1.amazonaws.com/static.letserasmus.com.test/user/images/default_profile_small.jpg);">
+												</div>
+											</div>
+										</div>
+										<!-- <div
+											class="text-muted text-grey space-top-1 last-modified-date inline-block"
+											style="width: 8%; text-align:center;">USER1</div> -->
+										<div
+											class="text-muted text-grey space-top-1 last-modified-date inline-block hide-mobile"
+											style="width: 8%; text-align: center; height: 35.19px; vertical-align: bottom;">COUNT</div>
+										<div
+											class="text-muted text-grey space-top-1 last-modified-date inline-block hide-mobile"
+											style="width: 9%; text-align: center; height: 35.19px; vertical-align: bottom;">
+											#{communityGroupController.formatDate(communityTopic.createdDate,
+											"dd MMM")}</div>
+										<ui:fragment
+											rendered="#{webApplication.user != null &amp;&amp; webApplication.user.id == communityTopic.userId}">
+											<div class="space-top-4 inline-block hide-mobile"
+												style="margin-top: 0px">
+												<input class="btn btn-primary"
+													id="btnEditTopic_#{communityTopic.id}" type="button"
+													value="Edit"
+													ng-click="ctrl.btnEditTopicClick(#{communityTopic.id}, #{communityTopic.communityGroupId})" />
+											</div>
+										</ui:fragment>
+									</div>
+								</div></li>
+						</ui:repeat>
+					</ul>
 				</div>
 			</div>
+		</div>
 		</main>
 		<script>
 			var globalCommunityGroupId = #{communityGroupController.communityGroup.id};
