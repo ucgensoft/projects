@@ -27,7 +27,9 @@
 			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css?ver=#{webApplication.staticFileVersion}" />
 		<link rel="stylesheet"
 			href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
-
+		<script type="text/javascript"
+			src="//platform-api.sharethis.com/js/sharethis.js#property=5a26e13f07047400115ab0d9&quot;product=inline-share-buttons"></script>
+			
 		<style>
 .jssora02l, .jssora02r {
 	display: block;
@@ -419,9 +421,9 @@
 
 												<div
 													class="panel wishlist-panel space-top-6 space-md-3 hide-sm"
-													style="margin-top: 10px; box-shadow: 0 0 5px 0 hsla(0, 0%, 51%, .4);">
+													style="margin-top: 10px; box-shadow: 0 0 5px 0 hsla(0, 0%, 51%, .4); display:block !important;">
 													<div class="panel-body panel-light">
-														<div class="wishlist-wrapper hide-sm">
+														<div class="wishlist-wrapper hide-sm" style="display:block !important;">
 															<div class="rich-toggle wish_list_button not_saved"
 																title="Saved 2165 times">
 																<input type="checkbox" name="wishlist-button"
@@ -447,10 +449,12 @@
 													</div>
 													<div class="panel-body panel-light"
 														style="text-align: center;">
-														<a href="https://twitter.com/share"
+														<div class="sharethis-inline-share-buttons"></div>
+														
+														<!--<a href="https://twitter.com/share"
 															class="twitter-share-button" data-text="Love this one!"
 															data-via="letserasmus" data-hashtags="letsErasmus"
-															data-lang="en" data-show-count="false">Tweet</a>
+															data-lang="en" data-show-count="false">Tweet</a>  -->
 													</div>
 												</div>
 												<div class="other-actions text-center space-top-3 space-3">

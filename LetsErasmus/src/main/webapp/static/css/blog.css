@@ -33,11 +33,11 @@
 }
 
 .blog-mainbar {
-		width: 100%;
-		overflow: hidden;
-		float: left;
-		padding-top: 5px;
-	}
+	width: 100%;
+	overflow: hidden;
+	float: left;
+	padding-top: 5px;
+}
 
 @media ( min-width : 744px) {
 	.blog-mainbar {
@@ -58,9 +58,9 @@
 	.blog-sidebar {
 		width: 30%;
 		float: left;
-		padding-left:10px;
+		padding-left: 10px;
 		display: inline;
-		padding-top: 5px;	
+		padding-top: 5px;
 	}
 }
 
@@ -219,15 +219,15 @@
 }
 
 .common-social div.common-social-box a.twitter-jumbo {
-    background-color: #00aced;
+	background-color: #00aced;
 }
 
 .common-social div.common-social-box a.instagram-jumbo {
-    background-color: #cd486b;
+	background-color: #cd486b;
 }
 
 .common-social div.common-social-box a.youtube-jumbo {
-    background-color: #ba0001;
+	background-color: #ba0001;
 }
 
 .common-social div.common-social-box a.facebook-jumbo, .common-social div.common-social-box a.vk-jumbo,
@@ -267,10 +267,23 @@
 }
 
 .fa {
-    display: inline-block;
-    font: normal normal normal 14px/1 FontAwesome;
-    font-size: inherit;
-    text-rendering: auto;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+	display: inline-block;
+	font: normal normal normal 14px/1 FontAwesome;
+	font-size: inherit;
+	text-rendering: auto;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.show-on-mobile {
+	display: none;
+}
+
+@media ( max-width :47.9em) {
+	.hidden-sm-down {
+		display: none !important;
+	}
+	.show-on-mobile {
+		display: inline;
+	}
 }

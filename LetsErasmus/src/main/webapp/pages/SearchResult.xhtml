@@ -6,17 +6,23 @@
 
 	<ui:define name="head">
 		<!-- <meta property="og:image" content="" /> -->
-		<title>Accommodation Search Results for	#{searchController.searchCriteria.locationName} - Let's Erasmus</title>
-		<meta name="description" content="Erasmus housing and accommodation search results for #{searchController.searchCriteria.locationName}" />
-				
-		<meta property="og:title" content="Let's Erasmus - Student housing search results for #{searchController.searchCriteria.locationName}" />
-		<meta property="og:description" content="Erasmus housing and accommodation search results for #{searchController.searchCriteria.locationName}" />
+		<title>Accommodation Search Results for
+			#{searchController.searchCriteria.locationName} - Let's Erasmus</title>
+		<meta name="description"
+			content="Erasmus housing and accommodation search results for #{searchController.searchCriteria.locationName}" />
+
+		<meta property="og:title"
+			content="Let's Erasmus - Student housing search results for #{searchController.searchCriteria.locationName}" />
+		<meta property="og:description"
+			content="Erasmus housing and accommodation search results for #{searchController.searchCriteria.locationName}" />
 		<meta property="og:url" content="#{searchController.pageUrl}" />
-		
-		<meta name="twitter:title" content="Let's Erasmus - Student housing search results for #{searchController.searchCriteria.locationName}"/>
-		<meta name="twitter:description" content="Erasmus housing and accommodation search results for #{searchController.searchCriteria.locationName}"/>
-		<meta name="twitter:card" content="summary_large_image"/>		
-		
+
+		<meta name="twitter:title"
+			content="Let's Erasmus - Student housing search results for #{searchController.searchCriteria.locationName}" />
+		<meta name="twitter:description"
+			content="Erasmus housing and accommodation search results for #{searchController.searchCriteria.locationName}" />
+		<meta name="twitter:card" content="summary_large_image" />
+
 		<link rel="canonical" href="#{searchController.pageUrl}" />
 		<link rel="stylesheet" type="text/css"
 			href="#{webApplication.urlPrefix}/static/css/search_results.css?ver=#{webApplication.staticFileVersion}" />
@@ -189,7 +195,7 @@
 										title="{{ctrl.selectedPlaceName}}">{{ctrl.selectedPlaceName}}</div>
 								</div>
 								<input id="txtSearchPlace" class="SearchPlaceBox-input" value=""
-									placeholder="Search by university or city" />
+									placeholder="Try “London”" />
 								<div class="SearchPlaceBox-close CloseButton"
 									style="cursor: pointer;">×</div>
 							</div>
@@ -368,29 +374,30 @@
 						</div>
 					</div>
 					<section id="searchResultsId" class="SearchResults">
-						<div id="divPlaceListAll">
-							<ui:repeat var="place" value="#{searchController.placeList}" varStatus="status">
-								<div id="divPlaceDraftInfo_#{place.id}">
-									<label id="lblPlaceDraftInfo_Title_#{place.id}">#{place.title}</label>
-									<label id="lblPlaceDraftInfo_Desc_#{place.id}">#{place.description}</label>
-									<a id="lnkPlaceDraftInfo_#{place.id}" href="#{webApplication.getPlaceDetailUrl(place.id)}">Available room for erasmus student, #{place.title}</a>
-									<a id="lnkUserDraftInfo_#{place.id}" href="#{webApplication.getUrlTemplateProfile(place.hostUserId)}">Click here for Host profile page</a>
-								</div>
-							</ui:repeat>
-						</div> 
-					<article
-						ng-repeat="p in ctrl.placeList" id="articleProduct_{{p.id}}"
-						class="ProductCard" ng-mouseover="ctrl.animateMarker(p.id, true)"
+					<div id="divPlaceListAll">
+						<ui:repeat var="place" value="#{searchController.placeList}"
+							varStatus="status">
+							<div id="divPlaceDraftInfo_#{place.id}">
+								<label id="lblPlaceDraftInfo_Title_#{place.id}">#{place.title}</label>
+								<label id="lblPlaceDraftInfo_Desc_#{place.id}">#{place.description}</label>
+								<a id="lnkPlaceDraftInfo_#{place.id}"
+									href="#{webApplication.getPlaceDetailUrl(place.id)}">Available
+									room for erasmus student, #{place.title}</a> <a
+									id="lnkUserDraftInfo_#{place.id}"
+									href="#{webApplication.getUrlTemplateProfile(place.hostUserId)}">Click
+									here for Host profile page</a>
+							</div>
+						</ui:repeat>
+					</div>
+					<article ng-repeat="p in ctrl.placeList"
+						id="articleProduct_{{p.id}}" class="ProductCard"
+						ng-mouseover="ctrl.animateMarker(p.id, true)"
 						ng-mouseleave="ctrl.animateMarker(p.id, false)">
 					<div class="ProductCard-picture">
 						<section class="image-gallery">
 						<div id="divImageGalleryContent_{{p.id}}"
 							class="image-gallery-content">
-							<span class="image-gallery-left-nav"
-								ng-click="ctrl.changePhoto(p, -1)"></span> <span
-								class="image-gallery-right-nav"
-								ng-click="ctrl.changePhoto(p, 1)"></span> <a
-								href="{{ctrl.getPlaceDetailUrl(p)}}" target="_blank">
+							<a href="{{ctrl.getPlaceDetailUrl(p)}}" target="_blank">
 								<div>
 									<div class="image-gallery-slides">
 										<div class="image-gallery-slide center" style="">
@@ -467,7 +474,8 @@
 							Shows <b>1 - {{ctrl.placeList.length}}</b> of <b>{{ctrl.getOriginalPlaceList().length}}
 								Rooms</b>
 						</h2>
-						<h2 data-reactid="535" ng-if="ctrl.searchList != null" style="text-align: center;">
+						<h2 data-reactid="535" ng-if="ctrl.searchList != null"
+							style="text-align: center;">
 							Shows <b>1 - {{ctrl.placeList.length}}</b> of <b>{{ctrl.getOriginalPlaceList().length}}
 								Rooms</b>
 						</h2>
