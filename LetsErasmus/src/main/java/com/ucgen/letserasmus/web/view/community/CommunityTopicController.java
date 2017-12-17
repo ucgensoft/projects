@@ -9,6 +9,7 @@ import javax.faces.bean.ManagedProperty;
 import com.ucgen.common.operationresult.EnmResultCode;
 import com.ucgen.common.operationresult.ListOperationResult;
 import com.ucgen.common.operationresult.OperationResult;
+import com.ucgen.common.util.DateUtil;
 import com.ucgen.letserasmus.library.common.enumeration.EnmErrorCode;
 import com.ucgen.letserasmus.library.community.model.CommunityGroup;
 import com.ucgen.letserasmus.library.community.model.CommunityTopic;
@@ -55,10 +56,10 @@ public class CommunityTopicController extends BaseController {
 				communityTopic.setCommunityGroupId(dbCommunityGroup.getId());
 				communityTopic.setSubUrl(communityTopicSubUrl);
 				
-				List<CommunityTopic> communityTopicList = this.communityService.listCommunityTopic(communityTopic).getObjectList();
+				List<CommunityTopic> communityTopicList = this.communityService.listCommunityTopic(communityTopic, true).getObjectList();
 				if (communityTopicList != null && communityTopicList.size() > 0) {
 					this.communityTopic = communityTopicList.get(0);
-					ListOperationResult<CommunityTopicMessage> messageListResult = this.communityService.listCommunityTopicMessage(new CommunityTopicMessage(null, this.communityTopic.getId()));
+					ListOperationResult<CommunityTopicMessage> messageListResult = this.communityService.listCommunityTopicMessage(new CommunityTopicMessage(null, this.communityTopic.getId()), true);
 					if (OperationResult.isResultSucces(messageListResult)) {
 						this.messageList = messageListResult.getObjectList();
 					}
@@ -79,4 +80,12 @@ public class CommunityTopicController extends BaseController {
 		
 	}
 		
+	public String getLastActivityDate(CommunityTopic communityTopic) {
+		try {
+			return DateUtil.format((communityTopic.getModifiedDate() != null ? communityTopic.getModifiedDate() : communityTopic.getCreatedDate()), "dd MMM, yyyy");
+		} catch (Exception e) {
+			return "";
+		}
+	}
+	
 }

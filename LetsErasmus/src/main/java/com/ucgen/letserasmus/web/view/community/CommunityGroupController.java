@@ -108,7 +108,7 @@ public class CommunityGroupController extends BaseController {
 				if (OperationResult.isResultSucces(listCommGroupResult)) {
 					this.communityGroupList = listCommGroupResult.getObjectList();
 				}
-				this.communityTopicList = this.communityService.listCommunityTopic(new CommunityTopic(null, this.communityGroup.getId())).getObjectList();
+				this.communityTopicList = this.communityService.listCommunityTopic(new CommunityTopic(null, this.communityGroup.getId()), true).getObjectList();
 				//this.cityList = this.simpleObjectService.listCity(new City(this.communityGroup.getCountryId()));
 			} else {
 				OperationResult operationResult = new OperationResult();

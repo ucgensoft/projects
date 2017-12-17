@@ -1,9 +1,11 @@
 package com.ucgen.letserasmus.library.community.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.ucgen.letserasmus.library.common.model.BaseModel;
+import com.ucgen.letserasmus.library.user.model.User;
 
 public class CommunityTopic extends BaseModel {
 
@@ -15,7 +17,9 @@ public class CommunityTopic extends BaseModel {
 	private String title;
 	private String description;
 	private String subUrl;
+	private Date lastActivityDate;
 	
+	private User user;
 	private List<CommunityTopicMessage> messageList;
 	
 	public CommunityTopic() {
@@ -73,6 +77,22 @@ public class CommunityTopic extends BaseModel {
 
 	public void setSubUrl(String subUrl) {
 		this.subUrl = subUrl;
+	}
+
+	public Date getLastActivityDate() {
+		return lastActivityDate;
+	}
+
+	public void setLastActivityDate(Date lastActivityDate) {
+		this.lastActivityDate = lastActivityDate;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public List<CommunityTopicMessage> getMessageList() {

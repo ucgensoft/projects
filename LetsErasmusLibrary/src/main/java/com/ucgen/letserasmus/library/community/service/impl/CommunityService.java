@@ -55,15 +55,15 @@ public class CommunityService implements ICommunityService {
 	}
 	
 	@Override
-	public ListOperationResult<CommunityTopic> listCommunityTopic(CommunityTopic communityTopic) {
-		return this.communityDao.listCommunityTopic(communityTopic);
+	public ListOperationResult<CommunityTopic> listCommunityTopic(CommunityTopic communityTopic, boolean readUser) {
+		return this.communityDao.listCommunityTopic(communityTopic, readUser);
 	}
 
 	@Override
-	public CommunityTopic getCommunityTopic(Long id) {
+	public CommunityTopic getCommunityTopic(Long id, boolean readUser) {
 		CommunityTopic communityTopic = new CommunityTopic();
 		communityTopic.setId(id);
-		ListOperationResult<CommunityTopic> communityTopicResult = this.listCommunityTopic(communityTopic);
+		ListOperationResult<CommunityTopic> communityTopicResult = this.listCommunityTopic(communityTopic, readUser);
 		if (OperationResult.isResultSucces(communityTopicResult)) {
 			if (communityTopicResult.getObjectList() != null 
 					&& communityTopicResult.getObjectList().size() > 0) {
@@ -79,8 +79,8 @@ public class CommunityService implements ICommunityService {
 	
 	@Override
 	public ListOperationResult<CommunityTopicMessage> listCommunityTopicMessage(
-			CommunityTopicMessage communityTopicMessage) {
-		return this.communityDao.listCommunityTopicMessage(communityTopicMessage);
+			CommunityTopicMessage communityTopicMessage, boolean readUser) {
+		return this.communityDao.listCommunityTopicMessage(communityTopicMessage, readUser);
 	}
 
 	@Override

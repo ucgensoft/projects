@@ -1,6 +1,7 @@
 package com.ucgen.letserasmus.library.community.model;
 
 import com.ucgen.letserasmus.library.common.model.BaseModel;
+import com.ucgen.letserasmus.library.user.model.User;
 
 public class CommunityTopicMessage extends BaseModel {
 
@@ -10,6 +11,8 @@ public class CommunityTopicMessage extends BaseModel {
 	private Long communityTopicId;
 	private Long userId;
 	private String description;
+	
+	private User user;
 	
 	public CommunityTopicMessage() {
 		
@@ -43,6 +46,14 @@ public class CommunityTopicMessage extends BaseModel {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 		
 }

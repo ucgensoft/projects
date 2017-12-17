@@ -80,11 +80,14 @@ public class ApiCommunity extends BaseApiController {
 				if (communityTopic.getCommunityGroupId() != null 
 						&& communityTopic.getTitle() != null && !communityTopic.getTitle().trim().isEmpty() 
 						&& communityTopic.getDescription() != null && !communityTopic.getDescription().trim().isEmpty()) {
+					Date operationDate = new Date();
+					
 					String subUrl = communityTopic.getTitle().replaceAll("[^a-zA-Z0-9/]" , "-");
 					communityTopic.setSubUrl(subUrl);
 					communityTopic.setUserId(user.getId());
+					communityTopic.setLastActivityDate(operationDate);
 					communityTopic.setCreatedBy(user.getFullName());
-					communityTopic.setCreatedDate(new Date());
+					communityTopic.setCreatedDate(operationDate);
 					OperationResult createResult = this.communityService.createCommunityTopic(communityTopic);
 					if (OperationResult.isResultSucces(createResult)) {
 						operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
@@ -119,7 +122,7 @@ public class ApiCommunity extends BaseApiController {
 			if (user != null) {
 				if (communityTopic.getId() != null
 						&& communityTopic.getDescription() != null && !communityTopic.getDescription().trim().isEmpty()) {
-					CommunityTopic dbCommunityTopic = this.communityService.getCommunityTopic(communityTopic.getId());
+					CommunityTopic dbCommunityTopic = this.communityService.getCommunityTopic(communityTopic.getId(), false);
 					if (dbCommunityTopic != null) {
 						if (dbCommunityTopic.getUserId().equals(user.getId())) {
 							dbCommunityTopic.setDescription(communityTopic.getDescription());

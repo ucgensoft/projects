@@ -60,26 +60,35 @@ public class CommunityDao extends JdbcDaoSupport implements ICommunityDao, IComm
 	}
 
 	@Override
-	public ListOperationResult<CommunityTopic> listCommunityTopic(CommunityTopic communityTopic) {
-		StringBuilder sqlBuilder = new StringBuilder(LIST_COMMUNITY_TOPIC_SQL);
+	public ListOperationResult<CommunityTopic> listCommunityTopic(CommunityTopic communityTopic, boolean readUser) {
+		StringBuilder sqlBuilder = new StringBuilder();
 		List<Object> argList = new ArrayList<Object>();
 		
+		CommunityTopicRowMapper communityTopicRowMapper = new CommunityTopicRowMapper("CT");
+		if (readUser) {
+			communityTopicRowMapper.addFKey(CommunityTopicRowMapper.FKEY_USER);
+		}
+		
+		sqlBuilder.append(communityTopicRowMapper.getSelectSqlWithForeignKeys());
+		
 		if (communityTopic.getId() != null) {
-			sqlBuilder.append(" AND ID = ?");
+			sqlBuilder.append(" AND CT.ID = ?");
 			argList.add(communityTopic.getId());
 		}
 		
 		if (communityTopic.getSubUrl() != null) {
-			sqlBuilder.append(" AND SUB_URL = ?");
+			sqlBuilder.append(" AND CT.SUB_URL = ?");
 			argList.add(communityTopic.getSubUrl());
 		}
 		
 		if (communityTopic.getCommunityGroupId() != null) {
-			sqlBuilder.append(" AND COMMUNITY_GROUP_ID = ?");
+			sqlBuilder.append(" AND CT.COMMUNITY_GROUP_ID = ?");
 			argList.add(communityTopic.getCommunityGroupId());
 		}
 		
-		List<CommunityTopic> topicList = this.getJdbcTemplate().query(sqlBuilder.toString(), argList.toArray(), new CommunityTopicRowMapper());
+		sqlBuilder.append(" ORDER BY IF(CT.MODIFIED_DATE IS NOT NULL, CT.MODIFIED_DATE, CT.CREATED_DATE) DESC");
+		
+		List<CommunityTopic> topicList = this.getJdbcTemplate().query(sqlBuilder.toString(), argList.toArray(), communityTopicRowMapper);
 		
 		ListOperationResult<CommunityTopic> topicListResult = new ListOperationResult<CommunityTopic>();
 		
@@ -87,6 +96,19 @@ public class CommunityDao extends JdbcDaoSupport implements ICommunityDao, IComm
 		topicListResult.setObjectList(topicList);
 		
 		return topicListResult;
+	}
+	
+	@Override
+	public CommunityTopic getCommunityTopic(Long id, boolean readUser) {
+		CommunityTopic communityTopic = new CommunityTopic();
+		communityTopic.setId(id);
+		
+		List<CommunityTopic> topicList = this.listCommunityTopic(communityTopic, readUser).getObjectList();
+		if (topicList != null && topicList.size() > 0) {
+			return topicList.get(0);
+		} else {
+			return null;
+		}
 	}
 
 	@Override
@@ -98,6 +120,7 @@ public class CommunityDao extends JdbcDaoSupport implements ICommunityDao, IComm
 		argList.add(communityTopic.getTitle());
 		argList.add(communityTopic.getDescription());
 		argList.add(communityTopic.getSubUrl());
+		argList.add(communityTopic.getLastActivityDate());
 		argList.add(communityTopic.getCreatedBy());
 		argList.add(communityTopic.getCreatedDate());
 		
@@ -127,20 +150,30 @@ public class CommunityDao extends JdbcDaoSupport implements ICommunityDao, IComm
 	}
 	
 	@Override
-	public ListOperationResult<CommunityTopicMessage> listCommunityTopicMessage(CommunityTopicMessage communityTopicMessage) {
-		StringBuilder sqlBuilder = new StringBuilder(LIST_COMMUNITY_TOPIC_MESSAGE_SQL);
+	public ListOperationResult<CommunityTopicMessage> listCommunityTopicMessage(CommunityTopicMessage communityTopicMessage, boolean readUser) {
+		StringBuilder sqlBuilder = new StringBuilder();
 		List<Object> argList = new ArrayList<Object>();
+		
+		CommunityTopicMessageRowMapper communityTopicMessageRowMapper = new CommunityTopicMessageRowMapper("CTM");
+		if (readUser) {
+			communityTopicMessageRowMapper.addFKey(CommunityTopicRowMapper.FKEY_USER);
+		}
+		
+		sqlBuilder.append(communityTopicMessageRowMapper.getSelectSqlWithForeignKeys());
+		
 		if (communityTopicMessage.getId() != null) {
-			sqlBuilder.append(" AND ID = ?");
+			sqlBuilder.append(" AND CTM.ID = ?");
 			argList.add(communityTopicMessage.getId());
 		}
 		
 		if (communityTopicMessage.getCommunityTopicId() != null) {
-			sqlBuilder.append(" AND COMMUNITY_TOPIC_ID = ?");
+			sqlBuilder.append(" AND CTM.COMMUNITY_TOPIC_ID = ?");
 			argList.add(communityTopicMessage.getCommunityTopicId());
 		}
 		
-		List<CommunityTopicMessage> messageList = this.getJdbcTemplate().query(sqlBuilder.toString(), argList.toArray(), new CommunityTopicMessageRowMapper());
+		sqlBuilder.append(" ORDER BY CTM.CREATED_DATE");
+		
+		List<CommunityTopicMessage> messageList = this.getJdbcTemplate().query(sqlBuilder.toString(), argList.toArray(), communityTopicMessageRowMapper);
 		
 		ListOperationResult<CommunityTopicMessage> messageListResult = new ListOperationResult<CommunityTopicMessage>();
 		
@@ -161,6 +194,14 @@ public class CommunityDao extends JdbcDaoSupport implements ICommunityDao, IComm
 		argList.add(communityTopicMessage.getCreatedDate());
 		
 		this.getJdbcTemplate().update(CREATE_COMMUNITY_TOPIC_MESSAGE_SQL, argList.toArray());
+		
+		CommunityTopic communityTopic = this.getCommunityTopic(communityTopicMessage.getCommunityTopicId(), false);
+		if (communityTopic != null) {
+			communityTopic.setLastActivityDate(communityTopicMessage.getCreatedDate());
+			communityTopic.setModifiedDate(communityTopicMessage.getCreatedDate());
+			communityTopic.setModifiedBy(communityTopicMessage.getCreatedBy());
+			this.updateCommunityTopic(communityTopic);
+		}
 		
 		OperationResult operationResult = new OperationResult();
 		operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());

@@ -12,15 +12,15 @@ public interface ICommunityService {
 	
 	public CommunityGroup getCommunityGroup(CommunityGroup communityGroup);
 	
-	public ListOperationResult<CommunityTopic> listCommunityTopic(CommunityTopic communityTopic);
+	public ListOperationResult<CommunityTopic> listCommunityTopic(CommunityTopic communityTopic, boolean readUser);
 	
-	public CommunityTopic getCommunityTopic(Long id);
+	public CommunityTopic getCommunityTopic(Long id, boolean readUser);
 	
 	public OperationResult createCommunityTopic(CommunityTopic communityTopic);
 	
 	public OperationResult updateCommunityTopic(CommunityTopic communityTopic);
 	
-	public ListOperationResult<CommunityTopicMessage> listCommunityTopicMessage(CommunityTopicMessage communityTopicMessage);
+	public ListOperationResult<CommunityTopicMessage> listCommunityTopicMessage(CommunityTopicMessage communityTopicMessage, boolean readUser);
 
 	public OperationResult createCommunityTopicMessage(CommunityTopicMessage communityTopicMessage);
 	

@@ -34,25 +34,30 @@
 									</a>
 								</div>
 								<div style="overflow: hidden; border-bottom: 1px solid #dce0e0; padding-bottom:10px; ">
-										<a href="#" target="_blank">
+										<a href="#{webApplication.getUrlTemplateProfile(communityTopicController.communityTopic.userId)}" target="_blank">
 											<div class="topic-detail-avatar"
 												style="width: 10%; margin-top: 10px; float: left;">
 												<div id="divUserImagePart" class="nav-top--avatar">
 													<input id="hiddenActiveUserProfileImageUrl" type="hidden"
-														value="https://s3-eu-west-1.amazonaws.com/static.letserasmus.com.test/user/images/default_profile_small.jpg" />
+														value="#{webApplication.getUserPhotoUrl(communityTopicController.communityTopic.userId, communityTopicController.communityTopic.user.profilePhotoId,'small')}" />
 													<div id="divHeaderUserProfileImage" class="avatar--img"
-														style="background-size: cover; width: 100%; height: 100%; background-image: url(https://s3-eu-west-1.amazonaws.com/static.letserasmus.com.test/user/images/default_profile_small.jpg);">
+														style="background-size: cover; width: 100%; height: 100%; background-image: url(#{webApplication.getUserPhotoUrl(communityTopicController.communityTopic.userId, communityTopicController.communityTopic.user.profilePhotoId,'small')});">
 													</div>
 												</div>
 											</div>
-										</a> <a class="_j1qvyg" href="#" target="_blank">
+										</a> 
+										<a class="_j1qvyg" href="#{webApplication.getUrlTemplateProfile(communityTopicController.communityTopic.userId)}" target="_blank">
 											<div class="topic-creater">
-												<div>USER FIRST NAME:</div>
+												<div>#{communityTopicController.communityTopic.user.firstName}</div>
 											</div>
 										</a>
 										<div style="width: 90%; float: right; margin-top: 10px; word-wrap: break-word;">
-											<div>
-												#{communityTopicController.communityTopic.description}</div>
+											<div style="white-space: pre-line">
+												#{communityTopicController.communityTopic.description}
+											</div>
+											<div style="margin-top: 5px">
+												#{communityTopicController.formatDate(communityTopicController.communityTopic.createdDate , "dd MMM, yyyy")}
+											</div>
 										</div>
 								</div>
 							</div>
@@ -62,25 +67,28 @@
 								varStatus="status">
 								
 								<div style="overflow: hidden; border-bottom: 1px solid #dce0e0; padding-bottom:10px;">
-										<a href="#" target="_blank">
+										<a href="#{webApplication.getUrlTemplateProfile(message.userId)}" target="_blank">
 											<div class="topic-detail-avatar"
 												style="width: 10%; margin-top: 10px; float: left;">
 												<div id="divUserImagePart" class="nav-top--avatar">
 													<input id="hiddenActiveUserProfileImageUrl" type="hidden"
-														value="https://s3-eu-west-1.amazonaws.com/static.letserasmus.com.test/user/images/default_profile_small.jpg" />
+														value="#{webApplication.getUserPhotoUrl(message.userId, message.user.profilePhotoId,'small')}" />
 													<div id="divHeaderUserProfileImage" class="avatar--img"
-														style="background-size: cover; width: 100%; height: 100%; background-image: url(https://s3-eu-west-1.amazonaws.com/static.letserasmus.com.test/user/images/default_profile_small.jpg);">
+														style="background-size: cover; width: 100%; height: 100%; background-image: url(#{webApplication.getUserPhotoUrl(message.userId, message.user.profilePhotoId,'small')});">
 													</div>
 												</div>
 											</div>
-										</a> <a class="_j1qvyg" href="#" target="_blank">
+										</a> 
+										<a class="_j1qvyg" href="#{webApplication.getUrlTemplateProfile(message.userId)}" target="_blank">
 											<div class="topic-creater">
-												<div>User id: #{message.userId}</div>
+												<div>#{message.user.firstName}</div>
 											</div>
 										</a>
-										<div style="width: 90%; float: right; margin-top: 10px; word-wrap: break-word;">
-											<div>
-												#{message.description}</div>
+										<div style="width: 90%; float: right; margin-top: 10px;">
+											<div style="white-space: pre-line">#{message.description}</div>
+											<div style="margin-top: 5px">
+												#{communityTopicController.formatDate(message.createdDate , "dd MMM, yyyy")}
+											</div>
 										</div>
 								</div>
 

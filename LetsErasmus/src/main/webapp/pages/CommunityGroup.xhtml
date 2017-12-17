@@ -91,8 +91,6 @@
 									<div class="h4 inline-block on-mobile-user"
 										style="width: 8%; text-align: center;">User</div>
 									<div class="h4 inline-block hide-mobile"
-										style="width: 8%; text-align: center;">Replies</div>
-									<div class="h4 inline-block hide-mobile"
 										style="width: 10%; text-align: center;">Activity</div>
 								</div>
 							</div>
@@ -113,31 +111,27 @@
 												href="#{webApplication.urlPrefix}/community/#{communityGroupController.communityGroup.subUrl}/#{communityTopic.subUrl}"
 												target="_blank">#{communityTopic.title}</a>
 										</div>
-										<a href="#" target="_blank">
-											<div
-												class="text-muted text-grey space-top-1 last-modified-date inline-block on-mobile-user"
-												style="width: 8%; text-align: center; vertical-align: text-bottom;">
+										<div
+											class="text-muted text-grey space-top-1 last-modified-date inline-block on-mobile-user"
+											style="width: 8%; text-align: center; vertical-align: text-bottom;">
+											<a href="#{webApplication.getUrlTemplateProfile(communityTopic.userId)}" target="_blank">
 												<div id="divUserImagePart" style="margin-left: 15px;"
 													class="nav-top--avatar">
 													<input id="hiddenActiveUserProfileImageUrl" type="hidden"
-														value="https://s3-eu-west-1.amazonaws.com/static.letserasmus.com.test/user/images/default_profile_small.jpg" />
+														value="#{webApplication.getUserPhotoUrl(communityTopic.userId, communityTopic.user.profilePhotoId,'small')}" />
 													<div id="divHeaderUserProfileImage" class="avatar--img"
-														style="background-size: cover; width: 100%; height: 100%; background-image: url(https://s3-eu-west-1.amazonaws.com/static.letserasmus.com.test/user/images/default_profile_small.jpg);">
+														style="background-size: cover; width: 100%; height: 100%; background-image: url(#{webApplication.getUserPhotoUrl(communityTopic.userId, communityTopic.user.profilePhotoId,'small')});">
+													</div>
+													<div>
+														#{communityTopic.user.firstName}
 													</div>
 												</div>
-											</div>
-										</a>
-										<!-- <div
-											class="text-muted text-grey space-top-1 last-modified-date inline-block"
-											style="width: 8%; text-align:center;">USER1</div> -->
-										<div
-											class="text-muted text-grey space-top-1 last-modified-date inline-block hide-mobile"
-											style="width: 8%; text-align: center; height: 35.19px; vertical-align: bottom;">COUNT</div>
+											</a>
+										</div>
 										<div
 											class="text-muted text-grey space-top-1 last-modified-date inline-block hide-mobile"
 											style="width: 9%; text-align: center; height: 35.19px; vertical-align: bottom;">
-											#{communityGroupController.formatDate(communityTopic.createdDate,
-											"dd MMM")}</div>
+											#{communityGroupController.formatDate(communityTopic.lastActivityDate , "dd MMM, yyyy")}</div>
 										<ui:fragment
 											rendered="#{webApplication.user != null &amp;&amp; webApplication.user.id == communityTopic.userId}">
 											<div class="space-top-4 inline-block hide-mobile"
