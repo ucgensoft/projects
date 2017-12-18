@@ -24,7 +24,7 @@
 						class="js-messaging-react-container messaging-thread-container">
 						<div>
 							<div id="divTopicDetail">
-								<div style="margin-top: 10px; border-bottom: 3px solid #dce0e0;">
+								<div style="margin: 20px; border-bottom: 3px solid #dce0e0;">
 									<a class="_j1qvyg"
 										href="#{webApplication.urlPrefix}/community/#{communityGroupController.communityGroup.subUrl}/#{communityTopic.subUrl}"
 										target="_blank">
@@ -33,67 +33,103 @@
 										</h2>
 									</a>
 								</div>
-								<div style="overflow: hidden; border-bottom: 1px solid #dce0e0; padding-bottom:10px; ">
-										<a href="#{webApplication.getUrlTemplateProfile(communityTopicController.communityTopic.userId)}" target="_blank">
-											<div class="topic-detail-avatar"
-												style="width: 10%; margin-top: 10px; float: left;">
-												<div id="divUserImagePart" class="nav-top--avatar">
-													<input id="hiddenActiveUserProfileImageUrl" type="hidden"
-														value="#{webApplication.getUserPhotoUrl(communityTopicController.communityTopic.userId, communityTopicController.communityTopic.user.profilePhotoId,'small')}" />
-													<div id="divHeaderUserProfileImage" class="avatar--img"
-														style="background-size: cover; width: 100%; height: 100%; background-image: url(#{webApplication.getUserPhotoUrl(communityTopicController.communityTopic.userId, communityTopicController.communityTopic.user.profilePhotoId,'small')});">
-													</div>
+								<div style="overflow: hidden; padding-bottom: 10px;">
+									<div style="width: 10%">
+									<a
+										href="#{webApplication.getUrlTemplateProfile(communityTopicController.communityTopic.userId)}"
+										target="_blank">
+										<div class="topic-detail-avatar"
+											style="margin-top: 10px; float: left; margin-left: 10px;">
+											<div id="divUserImagePart" class="nav-top--avatar">
+												<input id="hiddenActiveUserProfileImageUrl" type="hidden"
+													value="#{webApplication.getUserPhotoUrl(communityTopicController.communityTopic.userId, communityTopicController.communityTopic.user.profilePhotoId,'small')}" />
+												<div id="divHeaderUserProfileImage" class="avatar--img"
+													style="background-size: cover; width: 100%; height: 100%; background-image: url(#{ webApplication.getUserPhotoUrl ( communityTopicController.communityTopic.userId, communityTopicController.communityTopic.user.profilePhotoId, 'small')})">
 												</div>
 											</div>
-										</a> 
-										<a class="_j1qvyg" href="#{webApplication.getUrlTemplateProfile(communityTopicController.communityTopic.userId)}" target="_blank">
-											<div class="topic-creater">
-												<div>#{communityTopicController.communityTopic.user.firstName}</div>
-											</div>
-										</a>
-										<div style="width: 90%; float: right; margin-top: 10px; word-wrap: break-word;">
-											<div style="white-space: pre-line">
-												#{communityTopicController.communityTopic.description}
-											</div>
-											<div style="margin-top: 5px">
-												#{communityTopicController.formatDate(communityTopicController.communityTopic.createdDate , "dd MMM, yyyy")}
+										</div>
+									</a> 
+									</div>
+									
+									<div style="margin-top: 10px; padding-left: 0; overflow: auto;     padding-right: 15px;">
+										<div
+											class="panel-quote-flush panel-quote panel panel-quote-left"
+											style="margin-left: 10px;">
+											<div class="panel-body panel-dark" style="padding-top: 10px;">
+
+												<div class="topic-creater">
+													<a class="_j1qvyg"
+														href="#{webApplication.getUrlTemplateProfile(communityTopicController.communityTopic.userId)}"
+														target="_blank"><div>#{communityTopicController.communityTopic.user.firstName}:</div></a>
+												</div>
+
+												<div>
+													<span class="message-text ng-binding">#{communityTopicController.communityTopic.description}</span>
+												</div>
+												<div class="space-top-2 text-muted row row-condensed">
+													<div class="col-sm-8" style="font-size: 12px;">
+														<span class="time ng-binding"><em>#{communityTopicController.formatDate(communityTopicController.communityTopic.createdDate, "dd MMM, yyyy HH:mm")}</em></span>
+													</div>
+													<div class="col-sm-4"></div>
+												</div>
 											</div>
 										</div>
+									</div>
 								</div>
 							</div>
 
 							<ui:repeat var="message"
 								value="#{communityTopicController.messageList}"
 								varStatus="status">
-								
-								<div style="overflow: hidden; border-bottom: 1px solid #dce0e0; padding-bottom:10px;">
-										<a href="#{webApplication.getUrlTemplateProfile(message.userId)}" target="_blank">
+
+								<div style="overflow: hidden; padding-bottom: 10px;">
+									<div style="width: 10%">
+										<a
+											href="#{webApplication.getUrlTemplateProfile(message.userId)}"
+											target="_blank">
 											<div class="topic-detail-avatar"
-												style="width: 10%; margin-top: 10px; float: left;">
+												style="margin-top: 10px; float: left; margin-left: 10px;">
 												<div id="divUserImagePart" class="nav-top--avatar">
 													<input id="hiddenActiveUserProfileImageUrl" type="hidden"
 														value="#{webApplication.getUserPhotoUrl(message.userId, message.user.profilePhotoId,'small')}" />
 													<div id="divHeaderUserProfileImage" class="avatar--img"
-														style="background-size: cover; width: 100%; height: 100%; background-image: url(#{webApplication.getUserPhotoUrl(message.userId, message.user.profilePhotoId,'small')});">
+														style="background-size: cover; width: 100%; height: 100%; background-image: url(#{ webApplication.getUserPhotoUrl ( message.userId, message.user.profilePhotoId, 'small')})">
 													</div>
 												</div>
 											</div>
-										</a> 
-										<a class="_j1qvyg" href="#{webApplication.getUrlTemplateProfile(message.userId)}" target="_blank">
-											<div class="topic-creater">
-												<div>#{message.user.firstName}</div>
-											</div>
 										</a>
-										<div style="width: 90%; float: right; margin-top: 10px;">
-											<div style="white-space: pre-line">#{message.description}</div>
-											<div style="margin-top: 5px">
-												#{communityTopicController.formatDate(message.createdDate , "dd MMM, yyyy")}
+									</div>
+									<div style="margin-top: 10px; padding-left: 0; overflow: auto;     padding-right: 15px;">
+										<div
+											class="panel-quote-flush panel-quote panel panel-quote-left"
+											style="margin-left: 10px;">
+											<div class="panel-body" style="padding-top: 10px;">
+
+												<div class="topic-creater">
+													<a class="_j1qvyg"
+														href="#{webApplication.getUrlTemplateProfile(message.userId)}"
+														target="_blank"><div>#{message.user.firstName}:</div></a>
+												</div>
+
+												<div>
+													<span class="message-text ng-binding">#{message.description}</span>
+												</div>
+												<div class="space-top-2 text-muted row row-condensed">
+													<div class="col-sm-8" style="font-size: 12px;">
+														<span class="time ng-binding"><em>#{communityTopicController.formatDate(message.createdDate
+															, "dd MMM, yyyy HH:mm")}</em></span>
+													</div>
+													<div class="col-sm-4"></div>
+												</div>
 											</div>
 										</div>
+									</div>
+
+
 								</div>
 
 							</ui:repeat>
-							<div style="margin-top: 10px;">
+							<div style="margin: 20px;">
 								<ui:fragment rendered="#{webApplication.user != null}">
 									<div>
 										<textarea id="txtReply" rows="6"></textarea>
