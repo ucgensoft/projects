@@ -8,9 +8,15 @@ App.controller('editUserCtrl', ['$scope', 'userService', 'commonService', '$sce'
       var defaultPasswordText = "xxxxxx";
       self.countryList = [];
       self.dummyModel = null;
-      self.isErasmusStudent = (globalProfileTypeId == 1);
-      self.homeCountryId = globalHomeCountryId;
-      self.erasmusCountryId = globalErasmusCountryId;
+      self.isErasmusStudent = (globalProfileTypeId == '1');
+      self.homeCountryId = '-1';
+      if (globalHomeCountryId != '') {
+    	  self.homeCountryId = globalHomeCountryId;
+      }
+      self.erasmusCountryId = '-1';
+      if (globalErasmusCountryId != '') {
+    	  self.erasmusCountryId = globalErasmusCountryId;
+      }
       
       var acceptedPhotoTypes = {
 	  	'image/png' : true,
