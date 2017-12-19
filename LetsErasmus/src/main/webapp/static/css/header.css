@@ -2099,4 +2099,7 @@ ul.panel-body>li>*:last-child, ol.panel-body>li>*:last-child {
 	.nav-top--right--link {
 		margin-left: 0px;
 	}
+	
+	.padding-on-mobile {
+	padding: 10px;}
 }

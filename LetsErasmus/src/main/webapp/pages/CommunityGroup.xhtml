@@ -37,9 +37,9 @@
 		<main id="site-content" role="main">
 		<div class="community-section">
 			<div class="community-content">
-				<div class="panel panel-com-header space-4">
-					<ui:fragment
+			<ui:fragment
 						rendered="#{communityGroupController.communityGroup != null}">
+					<div class="panel panel-com-header space-4">
 						<div class="com-header-row1">
 							<div class="select inline-block com-dropdown">
 								<select id="cmbCountry" ng-model="ctrl.countryId"
@@ -80,8 +80,7 @@
 								class="btn btn-primary btn-large"
 								ng-click="ctrl.btnCreateTopicClick()">+New Topic</button>
 						</div>
-					</ui:fragment>
-				</div>
+					</div>				
 				<div class="panel space-4" style="border: 0px;">
 					<ul class="list-unstyled list-layout">
 						<li class="listing panel-body">
@@ -147,6 +146,67 @@
 						</ui:repeat>
 					</ul>
 				</div>
+			</ui:fragment>
+				<ui:fragment
+					rendered="#{communityGroupController.communityGroup == null}">
+					<div class="upper-title">
+						<div>
+							<div class="title-itself">
+								<h1 class="_28rra8">
+									<span style="font-weight: 700; color: #03a9f4;">Welcome
+										to Let's Erasmus Community!</span>
+									<div>
+										Join the <strong>community</strong> and <strong>connect</strong>
+										with other international students and locals for the
+										incredible Erasmus experience!
+									</div>
+								</h1>
+							</div>
+						</div>
+					</div>
+					<div class="com-header-row1 upper-title on-mobile-select" style="padding-top: 0 !important;">
+						<h3 class="_1tizno3o">
+							<div>To start, choose a city:</div>
+						</h3>
+						<div class="select inline-block com-dropdown on-mobile-select">
+							<select id="cmbCountry" ng-model="ctrl.countryId"
+								ng-change="ctrl.onCountryChange()">
+								<option value="-1"
+									selected="#{communityGroupController.selectedCountryId == null ? 'selected' : ''}">Select
+									Country</option>
+								<ui:repeat var="country"
+									value="#{communityGroupController.countryList}"
+									varStatus="status">
+									<option value="#{country.id}"
+										selected="#{communityGroupController.selectedCountryId eq country.id ? 'selected' : ''}">#{country.name}</option>
+								</ui:repeat>
+							</select>
+						</div>
+						<div class="select inline-block com-dropdown on-mobile-select"
+							style="margin-left: 10px;">
+							<select id="cmbCommunityGroup"
+								ng-model="ctrl.communityGroupSubUrl"
+								ng-change="ctrl.onCommunityGroupChange()">
+								<option value="-1"
+									selected="#{communityGroupController.communityGroup == null ? 'selected' : ''}">Select
+									City</option>
+								<ui:repeat var="communityGroup"
+									value="#{communityGroupController.communityGroupList}"
+									varStatus="status">
+									<option value="#{communityGroup.subUrl}"
+										selected="#{communityGroupController.communityGroup.subUrl eq communityGroup.subUrl ? 'selected' : ''}">
+										<a
+											href="#{webApplication.urlPrefix}/community/#{communityGroup.subUrl}">#{communityGroup.name}</a>
+									</option>
+								</ui:repeat>
+							</select>
+						</div>
+					</div>
+					<div>
+					<img id="groupimage" src="#{webApplication.urlPrefix}/static/images/community.png" />
+					
+					</div>
+				</ui:fragment>
 			</div>
 		</div>
 		</main>

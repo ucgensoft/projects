@@ -115,9 +115,12 @@
 		border: 2px solid #dfe5ea;
 		border-radius: 50%;
 	}
+	.on-mobile-select {
+		width: 100%;
+		margin-left: 0 !important;
+		margin-bottom: 10px;
+	}
 }
-
-
 
 .topic-creater {
 	padding-bottom: 10px;
@@ -128,4 +131,91 @@
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+
+@media ( min-width : 744px) {
+	.upper-title {
+		padding-top: 48px !important;
+	}
+}
+
+@media ( min-width : 1128px) {
+	.upper-title {
+		margin: 0 auto !important;
+		position: relative !important;
+	}
+}
+
+.upper-title {
+	background-color: transparent;
+	padding-left: 24px !important;
+	padding-right: 24px !important;
+	max-width: 1080px !important;
+	padding-top: 24px !important;
+}
+
+@media ( min-width : 1128px) {
+	.title-itself {
+		width: 100% !important;
+	}
+}
+
+._28rra8 {
+	font-family: inherit !important;
+	font-size: 22px !important;
+	line-height: 32px !important;
+	letter-spacing: -0.6px !important;
+	padding-top: 2px !important;
+	padding-bottom: 2px !important;
+	color: #484848 !important;
+	font-weight: 300 !important;
+	text-align: center;
+}
+
+@media ( min-width : 744px) {
+	._28rra8 {
+		font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto,
+			Helvetica Neue, sans-serif !important;
+		font-size: 48px !important;
+		line-height: 56px !important;
+		letter-spacing: -0.8px !important;
+		padding-top: 8px !important;
+		padding-bottom: 8px !important;
+		color: #484848 !important;
+		font-weight: 300 !important;
+		text-align: left;
+	}
+}
+
+._1tizno3o {
+	font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto,
+		Helvetica Neue, sans-serif !important;
+	padding-top: 0px !important;
+	padding-bottom: 0px !important;
+	color: #484848 !important;
+	font-weight: 700 !important;
+	margin-bottom: 0px !important;
+	font-size: 22px !important;
+	line-height: 32px !important;
+	letter-spacing: -0.6px !important;
+}
+
+@media ( min-width : 744px) {
+	._1tizno3o {
+		font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto,
+			Helvetica Neue, sans-serif !important;
+		padding-top: 0px !important;
+		padding-bottom: 0px !important;
+		color: #484848 !important;
+		font-weight: 700 !important;
+		margin-bottom: 0px !important;
+		font-size: 32px !important;
+		line-height: 40px !important;
+		letter-spacing: -0.6px !important;
+	}
+}
+
+#groupimage {
+	width: 100%;
+	height: auto;
 }
