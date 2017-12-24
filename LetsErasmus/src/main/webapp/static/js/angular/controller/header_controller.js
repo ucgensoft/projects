@@ -35,13 +35,15 @@ App.controller('headerCtrl', ['$scope', 'userService', '$sce', '$compile', 'favo
 			    appId: facebookId,
 			    version: 'v2.7'
 			  });
-		 /*
+		 
 		  if(!self.urlOperationExist()) {
+			  /*
 			  ajaxHtml(webApplicationUrlPrefix + '/static/html/CompleteProfileForm.htm', 'divModalContent', function() {
         		  //openModal();  
         	  });
+        	  */
 		  }
-		 */
+		 
 	 };
 	 
 	 self.urlOperationExist = function() {

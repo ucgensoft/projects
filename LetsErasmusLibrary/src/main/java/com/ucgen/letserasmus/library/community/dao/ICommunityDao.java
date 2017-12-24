@@ -12,6 +12,8 @@ public interface ICommunityDao {
 	
 	public ListOperationResult<CommunityTopic> listCommunityTopic(CommunityTopic communityTopic, boolean readUser);
 	
+	public ListOperationResult<CommunityTopic> listCommonTopic(boolean readUser);
+	
 	public CommunityTopic getCommunityTopic(Long id, boolean readUser);
 	
 	public OperationResult createCommunityTopic(CommunityTopic communityTopic);

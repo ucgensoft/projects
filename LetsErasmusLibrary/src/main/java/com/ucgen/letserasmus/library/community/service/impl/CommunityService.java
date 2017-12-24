@@ -58,6 +58,11 @@ public class CommunityService implements ICommunityService {
 	public ListOperationResult<CommunityTopic> listCommunityTopic(CommunityTopic communityTopic, boolean readUser) {
 		return this.communityDao.listCommunityTopic(communityTopic, readUser);
 	}
+	
+	@Override
+	public ListOperationResult<CommunityTopic> listCommonTopic(boolean readUser) {
+		return this.communityDao.listCommonTopic(readUser);
+	}
 
 	@Override
 	public CommunityTopic getCommunityTopic(Long id, boolean readUser) {

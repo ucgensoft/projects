@@ -27,6 +27,7 @@ public class CommunityGroupController extends BaseController {
 	private List<City> cityList;
 	private List<CommunityGroup> communityGroupList;
 	private List<CommunityTopic> communityTopicList;
+	private List<CommunityTopic> commonTopicList;
 	private Integer selectedCountryId;
 	private Integer selectedCityId;
 	private CommunityGroup communityGroup;
@@ -66,6 +67,10 @@ public class CommunityGroupController extends BaseController {
 
 	public List<CommunityTopic> getCommunityTopicList() {
 		return communityTopicList;
+	}
+	
+	public List<CommunityTopic> getCommonTopicList() {
+		return this.commonTopicList;
 	}
 
 	public Integer getSelectedCountryId() {
@@ -109,7 +114,6 @@ public class CommunityGroupController extends BaseController {
 					this.communityGroupList = listCommGroupResult.getObjectList();
 				}
 				this.communityTopicList = this.communityService.listCommunityTopic(new CommunityTopic(null, this.communityGroup.getId()), true).getObjectList();
-				//this.cityList = this.simpleObjectService.listCity(new City(this.communityGroup.getCountryId()));
 			} else {
 				OperationResult operationResult = new OperationResult();
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
@@ -118,6 +122,7 @@ public class CommunityGroupController extends BaseController {
 				//throw new OperationResultException(operationResult);
 			}
 		}
+		this.commonTopicList = this.communityService.listCommonTopic(true).getObjectList();
 	}
 		
 }

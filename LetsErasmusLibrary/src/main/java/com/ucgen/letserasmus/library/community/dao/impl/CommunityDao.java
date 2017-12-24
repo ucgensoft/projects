@@ -99,6 +99,32 @@ public class CommunityDao extends JdbcDaoSupport implements ICommunityDao, IComm
 	}
 	
 	@Override
+	public ListOperationResult<CommunityTopic> listCommonTopic(boolean readUser) {
+		StringBuilder sqlBuilder = new StringBuilder();
+		List<Object> argList = new ArrayList<Object>();
+		
+		CommunityTopicRowMapper communityTopicRowMapper = new CommunityTopicRowMapper("CT");
+		if (readUser) {
+			communityTopicRowMapper.addFKey(CommunityTopicRowMapper.FKEY_USER);
+		}
+		
+		sqlBuilder.append(communityTopicRowMapper.getSelectSqlWithForeignKeys());
+				
+		sqlBuilder.append(" AND CT.COMMUNITY_GROUP_ID IN (SELECT ID FROM COMMUNITY_GROUP WHERE COUNTRY_ID IS NULL)");
+		
+		sqlBuilder.append(" ORDER BY IF(CT.MODIFIED_DATE IS NOT NULL, CT.MODIFIED_DATE, CT.CREATED_DATE) DESC");
+		
+		List<CommunityTopic> topicList = this.getJdbcTemplate().query(sqlBuilder.toString(), argList.toArray(), communityTopicRowMapper);
+		
+		ListOperationResult<CommunityTopic> topicListResult = new ListOperationResult<CommunityTopic>();
+		
+		topicListResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+		topicListResult.setObjectList(topicList);
+		
+		return topicListResult;
+	}
+	
+	@Override
 	public CommunityTopic getCommunityTopic(Long id, boolean readUser) {
 		CommunityTopic communityTopic = new CommunityTopic();
 		communityTopic.setId(id);
