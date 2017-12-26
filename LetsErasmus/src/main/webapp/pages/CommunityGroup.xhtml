@@ -5,19 +5,35 @@
 	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
 
 	<ui:define name="head">
-		<title>Let's Erasmus International Community Center</title>
-		<meta name="description" content="Join the community and connect with other international students and locals for the incredible Erasmus experience!" />
-
-		<meta property="og:title"
-			content="Let's Erasmus International Community Center" />
-		<meta property="og:description" content="Join the community and connect with other international students and locals for the incredible Erasmus experience!" />
-		<meta property="og:url"
-			content="#{webApplication.urlPrefix}/community" />
-
-		<meta name="twitter:title"
-			content="Let's Erasmus International Community Center" />
-		<meta name="twitter:description" content="Join the community and connect with other international students and locals for the incredible Erasmus experience!" />
-		<meta name="twitter:card" content="summary_large_image" />
+		<ui:fragment rendered="#{communityGroupController.communityGroup != null}">
+			<title>#{communityGroupController.communityGroup.name}</title>
+			<meta name="description" content="Join '#{communityGroupController.communityGroup.name}' community group and connect with other international students and locals for the incredible Erasmus experience!" />
+			<link rel="canonical" href="#{webApplication.urlPrefix}/community/#{communityGroupController.communityGroup.subUrl}" />
+			
+			<meta property="og:image" content="#{webApplication.urlPrefix}/static/images/community/#{communityGroupController.communityGroup.subUrl}.png" />
+			<meta property="og:title" content="#{communityGroupController.communityGroup.name}" />
+			<meta property="og:description" content="Join '#{communityGroupController.communityGroup.name}' community group and connect with other international students and locals for the incredible Erasmus experience!" />
+			<meta property="og:url" content="#{webApplication.urlPrefix}/community/#{communityGroupController.communityGroup.subUrl}" />
+			
+			<meta name="twitter:title" content="#{communityGroupController.communityGroup.name}" />
+			<meta name="twitter:description" content="Join '#{communityGroupController.communityGroup.name}' community group and connect with other international students and locals for the incredible Erasmus experience!" />
+			<meta name="twitter:card" content="summary_large_image" />
+		</ui:fragment>
+		<ui:fragment rendered="#{communityGroupController.communityGroup == null}">
+			<title>Let's Erasmus International Community Center</title>
+			<meta name="description" content="Join the community and connect with other international students and locals for the incredible Erasmus experience!" />
+	
+			<meta property="og:title"
+				content="Let's Erasmus International Community Center" />
+			<meta property="og:description" content="Join the community and connect with other international students and locals for the incredible Erasmus experience!" />
+			<meta property="og:url" content="#{webApplication.urlPrefix}/community" />
+			<link rel="canonical" href="#{webApplication.urlPrefix}/community" />
+	
+			<meta name="twitter:title"
+				content="Let's Erasmus International Community Center" />
+			<meta name="twitter:description" content="Join the community and connect with other international students and locals for the incredible Erasmus experience!" />
+			<meta name="twitter:card" content="summary_large_image" />
+		</ui:fragment>
 		
 		<link rel="stylesheet" type="text/css"
 			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css?ver=#{webApplication.staticFileVersion}" />
@@ -49,6 +65,25 @@
 
 	<ui:define name="body">
 		<main id="site-content" role="main">
+		<div class="hidden">
+			<ui:fragment rendered="#{communityGroupController.allGroupList != null}">
+				<ui:repeat var="communityGroup" value="#{communityGroupController.allGroupList}">
+					<div>
+						<label>#{communityGroup.name}</label>
+						<a href="#{webApplication.urlPrefix}/community/#{communityGroup.subUrl}">#{communityGroup.name}</a>
+					</div>
+				</ui:repeat>
+			</ui:fragment>
+			<ui:fragment rendered="#{communityGroupController.allTopicList != null}">
+				<ui:repeat var="communityTopic" value="#{communityGroupController.allTopicList}">
+					<div>
+						<label>#{communityTopic.title}</label>
+						<label>#{communityTopic.description}</label>
+						<a href="#{webApplication.urlPrefix}/community/#{communityTopic.communityGroup.subUrl}/#{communityTopic.subUrl}">#{communityTopic.title}</a>
+					</div>
+				</ui:repeat>
+			</ui:fragment>
+		</div>
 		<div class="community-section">
 			<div class="community-content">
 			<ui:fragment

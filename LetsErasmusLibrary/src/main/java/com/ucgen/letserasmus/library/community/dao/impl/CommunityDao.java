@@ -34,19 +34,21 @@ public class CommunityDao extends JdbcDaoSupport implements ICommunityDao, IComm
 	public ListOperationResult<CommunityGroup> listCommunityGroup(CommunityGroup communityGroup) {
 		StringBuilder sqlBuilder = new StringBuilder(LIST_COMMUNITY_GROUP_SQL);
 		List<Object> argList = new ArrayList<Object>();
-		if (communityGroup.getId() != null) {
-			sqlBuilder.append(" AND ID = ?");
-			argList.add(communityGroup.getId());
-		}
-		
-		if (communityGroup.getSubUrl() != null) {
-			sqlBuilder.append(" AND SUB_URL = ?");
-			argList.add(communityGroup.getSubUrl());
-		}
-		
-		if (communityGroup.getCountryId() != null) {
-			sqlBuilder.append(" AND COUNTRY_ID = ?");
-			argList.add(communityGroup.getCountryId());
+		if (communityGroup != null) {
+			if (communityGroup.getId() != null) {
+				sqlBuilder.append(" AND ID = ?");
+				argList.add(communityGroup.getId());
+			}
+			
+			if (communityGroup.getSubUrl() != null) {
+				sqlBuilder.append(" AND SUB_URL = ?");
+				argList.add(communityGroup.getSubUrl());
+			}
+			
+			if (communityGroup.getCountryId() != null) {
+				sqlBuilder.append(" AND COUNTRY_ID = ?");
+				argList.add(communityGroup.getCountryId());
+			}
 		}
 		
 		List<CommunityGroup> groupList = this.getJdbcTemplate().query(sqlBuilder.toString(), argList.toArray(), new CommunityGroupRowMapper());
@@ -74,19 +76,21 @@ public class CommunityDao extends JdbcDaoSupport implements ICommunityDao, IComm
 		
 		sqlBuilder.append(communityTopicRowMapper.getSelectSqlWithForeignKeys());
 		
-		if (communityTopic.getId() != null) {
-			sqlBuilder.append(" AND CT.ID = ?");
-			argList.add(communityTopic.getId());
-		}
-		
-		if (communityTopic.getSubUrl() != null) {
-			sqlBuilder.append(" AND CT.SUB_URL = ?");
-			argList.add(communityTopic.getSubUrl());
-		}
-		
-		if (communityTopic.getCommunityGroupId() != null) {
-			sqlBuilder.append(" AND CT.COMMUNITY_GROUP_ID = ?");
-			argList.add(communityTopic.getCommunityGroupId());
+		if (communityTopic != null) {
+			if (communityTopic.getId() != null) {
+				sqlBuilder.append(" AND CT.ID = ?");
+				argList.add(communityTopic.getId());
+			}
+			
+			if (communityTopic.getSubUrl() != null) {
+				sqlBuilder.append(" AND CT.SUB_URL = ?");
+				argList.add(communityTopic.getSubUrl());
+			}
+			
+			if (communityTopic.getCommunityGroupId() != null) {
+				sqlBuilder.append(" AND CT.COMMUNITY_GROUP_ID = ?");
+				argList.add(communityTopic.getCommunityGroupId());
+			}
 		}
 		
 		sqlBuilder.append(" ORDER BY IF(CT.MODIFIED_DATE IS NOT NULL, CT.MODIFIED_DATE, CT.CREATED_DATE) DESC");
