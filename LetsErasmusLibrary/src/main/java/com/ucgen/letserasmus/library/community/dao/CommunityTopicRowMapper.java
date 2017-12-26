@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import com.ucgen.common.dao.BaseRowMapper;
 import com.ucgen.common.dao.EnmJoinType;
 import com.ucgen.common.dao.ForeignKey;
+import com.ucgen.letserasmus.library.community.model.CommunityGroup;
 import com.ucgen.letserasmus.library.community.model.CommunityTopic;
 import com.ucgen.letserasmus.library.file.dao.FileRowMapper;
 import com.ucgen.letserasmus.library.file.model.FileModel;
@@ -28,6 +29,7 @@ public class CommunityTopicRowMapper extends BaseRowMapper<CommunityTopic> {
 	public static final String COL_LAST_ACTIVITY_DATE = "LAST_ACTIVITY_DATE";
 		
 	public static final String FKEY_USER = "USER";
+	public static final String FKEY_GROUP = "GROUP";
 	
 	public CommunityTopicRowMapper() {
 		this("CT");
@@ -43,6 +45,12 @@ public class CommunityTopicRowMapper extends BaseRowMapper<CommunityTopic> {
 			ForeignKey<CommunityTopicRowMapper, UserRowMapper> fKeyUser = new ForeignKey<CommunityTopicRowMapper, UserRowMapper>(this, userRowMapper, EnmJoinType.LEFT);
 			fKeyUser.addFieldPair(COL_USER_ID, LocationRowMapper.COL_ID);
 			this.addFKey(FKEY_USER, fKeyUser);
+		}
+		if (FKEY_GROUP.equals(keyName)) {
+			CommunityGroupRowMapper groupRowMapper = new CommunityGroupRowMapper("G");
+			ForeignKey<CommunityTopicRowMapper, CommunityGroupRowMapper> fKeyGroup = new ForeignKey<CommunityTopicRowMapper, CommunityGroupRowMapper>(this, groupRowMapper, EnmJoinType.LEFT);
+			fKeyGroup.addFieldPair(COL_COMMUNITY_GROUP_ID, LocationRowMapper.COL_ID);
+			this.addFKey(FKEY_GROUP, fKeyGroup);
 		}
 	}
 	
@@ -70,6 +78,14 @@ public class CommunityTopicRowMapper extends BaseRowMapper<CommunityTopic> {
 				ForeignKey<CommunityTopicRowMapper, UserRowMapper> fKey = this.getfKeyMap().get(FKEY_USER);
 				User user = fKey.getDestMapper().mapRow(rs, rowNum);
 				communityTopic.setUser(user);
+			}
+		}
+		
+		if (this.getfKeyMap() != null) {
+			if (this.getfKeyMap().containsKey(FKEY_GROUP)) {
+				ForeignKey<CommunityTopicRowMapper, CommunityGroupRowMapper> fKey = this.getfKeyMap().get(FKEY_GROUP);
+				CommunityGroup group = fKey.getDestMapper().mapRow(rs, rowNum);
+				communityTopic.setCommunityGroup(group);
 			}
 		}
 		

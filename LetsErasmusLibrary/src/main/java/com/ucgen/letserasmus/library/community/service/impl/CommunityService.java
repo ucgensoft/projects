@@ -55,20 +55,20 @@ public class CommunityService implements ICommunityService {
 	}
 	
 	@Override
-	public ListOperationResult<CommunityTopic> listCommunityTopic(CommunityTopic communityTopic, boolean readUser) {
-		return this.communityDao.listCommunityTopic(communityTopic, readUser);
+	public ListOperationResult<CommunityTopic> listCommunityTopic(CommunityTopic communityTopic, boolean readUser, boolean readGroup) {
+		return this.communityDao.listCommunityTopic(communityTopic, readUser, readGroup);
 	}
 	
 	@Override
-	public ListOperationResult<CommunityTopic> listCommonTopic(boolean readUser) {
-		return this.communityDao.listCommonTopic(readUser);
+	public ListOperationResult<CommunityTopic> listCommonTopic(boolean readUser, boolean readGroup) {
+		return this.communityDao.listCommonTopic(readUser, readGroup);
 	}
 
 	@Override
-	public CommunityTopic getCommunityTopic(Long id, boolean readUser) {
+	public CommunityTopic getCommunityTopic(Long id, boolean readUser, boolean readGroup) {
 		CommunityTopic communityTopic = new CommunityTopic();
 		communityTopic.setId(id);
-		ListOperationResult<CommunityTopic> communityTopicResult = this.listCommunityTopic(communityTopic, readUser);
+		ListOperationResult<CommunityTopic> communityTopicResult = this.listCommunityTopic(communityTopic, readUser, readGroup);
 		if (OperationResult.isResultSucces(communityTopicResult)) {
 			if (communityTopicResult.getObjectList() != null 
 					&& communityTopicResult.getObjectList().size() > 0) {

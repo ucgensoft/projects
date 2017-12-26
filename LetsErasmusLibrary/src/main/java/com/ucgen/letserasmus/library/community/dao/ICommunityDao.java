@@ -10,11 +10,11 @@ public interface ICommunityDao {
 
 	public ListOperationResult<CommunityGroup> listCommunityGroup(CommunityGroup communityGroup);
 	
-	public ListOperationResult<CommunityTopic> listCommunityTopic(CommunityTopic communityTopic, boolean readUser);
+	public ListOperationResult<CommunityTopic> listCommunityTopic(CommunityTopic communityTopic, boolean readUser, boolean readGroup);
 	
-	public ListOperationResult<CommunityTopic> listCommonTopic(boolean readUser);
+	public ListOperationResult<CommunityTopic> listCommonTopic(boolean readUser, boolean readGroup);
 	
-	public CommunityTopic getCommunityTopic(Long id, boolean readUser);
+	public CommunityTopic getCommunityTopic(Long id, boolean readUser, boolean readGroup);
 	
 	public OperationResult createCommunityTopic(CommunityTopic communityTopic);
 	

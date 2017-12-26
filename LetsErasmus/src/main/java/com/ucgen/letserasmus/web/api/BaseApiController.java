@@ -17,11 +17,22 @@ import com.ucgen.letserasmus.library.parameter.enumeration.EnmParameter;
 import com.ucgen.letserasmus.library.parameter.service.IParameterService;
 import com.ucgen.letserasmus.library.user.model.User;
 import com.ucgen.letserasmus.web.view.application.EnmSession;
+import com.ucgen.letserasmus.web.view.application.WebApplication;
 
 public abstract class BaseApiController {
 
 	protected IParameterService parameterService;
 	protected IMailService mailService;
+	private WebApplication webApplication;
+	
+	@Autowired
+	public void setWebApplication(WebApplication webApplication) {
+		this.webApplication = webApplication;
+	}
+
+	public WebApplication getWebApplication() {
+		return webApplication;
+	}
 	
 	@Autowired
 	public void setParameterService(IParameterService parameterService) {

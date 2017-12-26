@@ -56,7 +56,7 @@ public class CommunityTopicController extends BaseController {
 				communityTopic.setCommunityGroupId(dbCommunityGroup.getId());
 				communityTopic.setSubUrl(communityTopicSubUrl);
 				
-				List<CommunityTopic> communityTopicList = this.communityService.listCommunityTopic(communityTopic, true).getObjectList();
+				List<CommunityTopic> communityTopicList = this.communityService.listCommunityTopic(communityTopic, true, true).getObjectList();
 				if (communityTopicList != null && communityTopicList.size() > 0) {
 					this.communityTopic = communityTopicList.get(0);
 					ListOperationResult<CommunityTopicMessage> messageListResult = this.communityService.listCommunityTopicMessage(new CommunityTopicMessage(null, this.communityTopic.getId()), true);

@@ -19,6 +19,7 @@ public class CommunityTopic extends BaseModel {
 	private String subUrl;
 	private Date lastActivityDate;
 	
+	private CommunityGroup communityGroup;
 	private User user;
 	private List<CommunityTopicMessage> messageList;
 	
@@ -85,6 +86,14 @@ public class CommunityTopic extends BaseModel {
 
 	public void setLastActivityDate(Date lastActivityDate) {
 		this.lastActivityDate = lastActivityDate;
+	}
+
+	public CommunityGroup getCommunityGroup() {
+		return communityGroup;
+	}
+
+	public void setCommunityGroup(CommunityGroup communityGroup) {
+		this.communityGroup = communityGroup;
 	}
 
 	public User getUser() {

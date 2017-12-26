@@ -21,6 +21,7 @@ import com.ucgen.common.operationresult.OperationResult;
 import com.ucgen.common.operationresult.ValueOperationResult;
 import com.ucgen.common.util.CommonUtil;
 import com.ucgen.common.util.FileLogger;
+import com.ucgen.common.util.WebUtil;
 import com.ucgen.letserasmus.library.common.enumeration.EnmErrorCode;
 import com.ucgen.letserasmus.library.community.model.CommunityGroup;
 import com.ucgen.letserasmus.library.community.model.CommunityTopic;
@@ -83,18 +84,30 @@ public class ApiCommunity extends BaseApiController {
 					Date operationDate = new Date();
 					
 					String subUrl = communityTopic.getTitle().replaceAll("[^a-zA-Z0-9/]" , "-");
+					
 					communityTopic.setSubUrl(subUrl);
-					communityTopic.setUserId(user.getId());
-					communityTopic.setLastActivityDate(operationDate);
-					communityTopic.setCreatedBy(user.getFullName());
-					communityTopic.setCreatedDate(operationDate);
-					OperationResult createResult = this.communityService.createCommunityTopic(communityTopic);
-					if (OperationResult.isResultSucces(createResult)) {
-						operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
-						operationResult.setResultDesc(AppConstants.COMMUNITY_CREATE_TOPIC_SUCCESS);
+					
+					ListOperationResult<CommunityTopic> checkExistingTopicResult = this.communityService.listCommunityTopic(communityTopic, false, true);
+					if (checkExistingTopicResult.getObjectList() == null || checkExistingTopicResult.getObjectList().size() == 0) {
+						communityTopic.setUserId(user.getId());
+						communityTopic.setLastActivityDate(operationDate);
+						communityTopic.setCreatedBy(user.getFullName());
+						communityTopic.setCreatedDate(operationDate);
+						OperationResult createResult = this.communityService.createCommunityTopic(communityTopic);
+						if (OperationResult.isResultSucces(createResult)) {
+							operationResult.setResultCode(EnmResultCode.SUCCESS.getValue());
+							operationResult.setResultDesc(AppConstants.COMMUNITY_CREATE_TOPIC_SUCCESS);
+						} else {
+							operationResult.setResultCode(EnmResultCode.ERROR.getValue());
+							operationResult.setResultDesc(AppConstants.COMMUNITY_CREATE_TOPIC_FAIL);
+						}
 					} else {
-						operationResult.setResultCode(EnmResultCode.ERROR.getValue());
-						operationResult.setResultDesc(AppConstants.COMMUNITY_CREATE_TOPIC_FAIL);
+						CommunityTopic topic = checkExistingTopicResult.getObjectList().get(0);
+						
+						String existingTopicUrl = WebUtil.concatUrl(this.getWebApplication().getUrlPrefix(), "community", topic.getCommunityGroup().getSubUrl(), topic.getSubUrl());
+						
+						operationResult.setResultCode(EnmResultCode.WARNING.getValue());
+						operationResult.setResultDesc(AppConstants.COMMUNITY_CREATE_TOPIC_EXIST.replaceAll("\\{0\\}", existingTopicUrl));
 					}
 				} else {
 					operationResult.setResultCode(EnmResultCode.ERROR.getValue());
@@ -122,7 +135,7 @@ public class ApiCommunity extends BaseApiController {
 			if (user != null) {
 				if (communityTopic.getId() != null
 						&& communityTopic.getDescription() != null && !communityTopic.getDescription().trim().isEmpty()) {
-					CommunityTopic dbCommunityTopic = this.communityService.getCommunityTopic(communityTopic.getId(), false);
+					CommunityTopic dbCommunityTopic = this.communityService.getCommunityTopic(communityTopic.getId(), false, false);
 					if (dbCommunityTopic != null) {
 						if (dbCommunityTopic.getUserId().equals(user.getId())) {
 							dbCommunityTopic.setDescription(communityTopic.getDescription());

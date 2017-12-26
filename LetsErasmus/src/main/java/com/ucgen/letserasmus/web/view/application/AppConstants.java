@@ -128,5 +128,7 @@ public interface AppConstants {
 	
 	String COMMUNITY_CREATE_TOPIC_MESSAGE_FAIL = "Your reply could not be sent!";
 	
+	String COMMUNITY_CREATE_TOPIC_EXIST = "Your question is previously asked, please check existing topic: {0}. If you do not get your answer, create a new topic with different title.";
+	
 }
 

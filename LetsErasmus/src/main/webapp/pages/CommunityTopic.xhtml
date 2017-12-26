@@ -25,13 +25,21 @@
 						<div>
 							<div id="divTopicDetail">
 								<div style="margin: 20px; border-bottom: 3px solid #dce0e0;">
-									<a class="_j1qvyg"
-										href="#{webApplication.urlPrefix}/community/#{communityGroupController.communityGroup.subUrl}/#{communityTopic.subUrl}"
-										target="_blank">
-										<h2 style="margin-bottom: 5px; word-wrap: break-word;">
+									<ui:fragment rendered="#{communityTopicController.communityTopic.communityGroup.countryId != null}">
+										<div>
+											<a class="clsUnderline" style="color: #0275a8; text-decoration : underline"
+												href="#{webApplication.urlPrefix}/community/#{communityTopicController.communityTopic.communityGroup.subUrl}"
+												target="_blank">
+												<strong>#{communityTopicController.communityTopic.communityGroup.name}</strong>
+											</a>
+										</div>
+									</ui:fragment>
+									<div style="margin-top: 10px; padding-bottom: 10px;">
+										<a href="#{webApplication.urlPrefix}/community/#{communityTopicController.communityTopic.communityGroup.subUrl}/#{communityTopicController.communityTopic.subUrl}"
+											target="_self">
 											<strong>#{communityTopicController.communityTopic.title}</strong>
-										</h2>
-									</a>
+										</a>
+									</div>
 								</div>
 								<div style="overflow: hidden; padding-bottom: 10px;">
 									<div style="width: 10%">

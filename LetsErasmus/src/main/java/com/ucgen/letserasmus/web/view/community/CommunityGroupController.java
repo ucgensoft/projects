@@ -113,7 +113,7 @@ public class CommunityGroupController extends BaseController {
 				if (OperationResult.isResultSucces(listCommGroupResult)) {
 					this.communityGroupList = listCommGroupResult.getObjectList();
 				}
-				this.communityTopicList = this.communityService.listCommunityTopic(new CommunityTopic(null, this.communityGroup.getId()), true).getObjectList();
+				this.communityTopicList = this.communityService.listCommunityTopic(new CommunityTopic(null, this.communityGroup.getId()), true, true).getObjectList();
 			} else {
 				OperationResult operationResult = new OperationResult();
 				operationResult.setResultCode(EnmResultCode.ERROR.getValue());
@@ -122,7 +122,7 @@ public class CommunityGroupController extends BaseController {
 				//throw new OperationResultException(operationResult);
 			}
 		}
-		this.commonTopicList = this.communityService.listCommonTopic(true).getObjectList();
+		this.commonTopicList = this.communityService.listCommonTopic(true, true).getObjectList();
 	}
 		
 }

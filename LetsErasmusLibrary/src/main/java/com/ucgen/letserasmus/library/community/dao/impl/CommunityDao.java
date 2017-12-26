@@ -60,13 +60,16 @@ public class CommunityDao extends JdbcDaoSupport implements ICommunityDao, IComm
 	}
 
 	@Override
-	public ListOperationResult<CommunityTopic> listCommunityTopic(CommunityTopic communityTopic, boolean readUser) {
+	public ListOperationResult<CommunityTopic> listCommunityTopic(CommunityTopic communityTopic, boolean readUser, boolean readGroup) {
 		StringBuilder sqlBuilder = new StringBuilder();
 		List<Object> argList = new ArrayList<Object>();
 		
 		CommunityTopicRowMapper communityTopicRowMapper = new CommunityTopicRowMapper("CT");
 		if (readUser) {
 			communityTopicRowMapper.addFKey(CommunityTopicRowMapper.FKEY_USER);
+		}
+		if (readGroup) {
+			communityTopicRowMapper.addFKey(CommunityTopicRowMapper.FKEY_GROUP);
 		}
 		
 		sqlBuilder.append(communityTopicRowMapper.getSelectSqlWithForeignKeys());
@@ -99,13 +102,16 @@ public class CommunityDao extends JdbcDaoSupport implements ICommunityDao, IComm
 	}
 	
 	@Override
-	public ListOperationResult<CommunityTopic> listCommonTopic(boolean readUser) {
+	public ListOperationResult<CommunityTopic> listCommonTopic(boolean readUser, boolean readGroup) {
 		StringBuilder sqlBuilder = new StringBuilder();
 		List<Object> argList = new ArrayList<Object>();
 		
 		CommunityTopicRowMapper communityTopicRowMapper = new CommunityTopicRowMapper("CT");
 		if (readUser) {
 			communityTopicRowMapper.addFKey(CommunityTopicRowMapper.FKEY_USER);
+		}
+		if (readGroup) {
+			communityTopicRowMapper.addFKey(CommunityTopicRowMapper.FKEY_GROUP);
 		}
 		
 		sqlBuilder.append(communityTopicRowMapper.getSelectSqlWithForeignKeys());
@@ -125,11 +131,11 @@ public class CommunityDao extends JdbcDaoSupport implements ICommunityDao, IComm
 	}
 	
 	@Override
-	public CommunityTopic getCommunityTopic(Long id, boolean readUser) {
+	public CommunityTopic getCommunityTopic(Long id, boolean readUser, boolean readGroup) {
 		CommunityTopic communityTopic = new CommunityTopic();
 		communityTopic.setId(id);
 		
-		List<CommunityTopic> topicList = this.listCommunityTopic(communityTopic, readUser).getObjectList();
+		List<CommunityTopic> topicList = this.listCommunityTopic(communityTopic, readUser, readGroup).getObjectList();
 		if (topicList != null && topicList.size() > 0) {
 			return topicList.get(0);
 		} else {
@@ -221,7 +227,7 @@ public class CommunityDao extends JdbcDaoSupport implements ICommunityDao, IComm
 		
 		this.getJdbcTemplate().update(CREATE_COMMUNITY_TOPIC_MESSAGE_SQL, argList.toArray());
 		
-		CommunityTopic communityTopic = this.getCommunityTopic(communityTopicMessage.getCommunityTopicId(), false);
+		CommunityTopic communityTopic = this.getCommunityTopic(communityTopicMessage.getCommunityTopicId(), false, false);
 		if (communityTopic != null) {
 			communityTopic.setLastActivityDate(communityTopicMessage.getCreatedDate());
 			communityTopic.setModifiedDate(communityTopicMessage.getCreatedDate());

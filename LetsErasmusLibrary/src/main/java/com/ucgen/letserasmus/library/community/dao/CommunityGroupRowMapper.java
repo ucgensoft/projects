@@ -8,12 +8,22 @@ import com.ucgen.letserasmus.library.community.model.CommunityGroup;
 
 public class CommunityGroupRowMapper extends BaseRowMapper<CommunityGroup> {
 
+	public static final String TABLE_NAME = "COMMUNITY_GROUP";
+	
 	public static final String COL_ID = "ID";
 	public static final String COL_NAME = "NAME";
 	public static final String COL_COUNTRY_ID = "COUNTRY_ID";
 	public static final String COL_CITY_ID = "CITY_ID";
 	public static final String COL_UNIVERSITY_ID = "UNIVERSITY_ID";
 	public static final String COL_SUB_URL = "SUB_URL";
+	
+	public CommunityGroupRowMapper() {
+		this(null);
+	}
+	
+	public CommunityGroupRowMapper(String tablePrefix) {
+		super(TABLE_NAME, tablePrefix);
+	}
 	
 	@Override
 	public CommunityGroup mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -42,6 +52,12 @@ public class CommunityGroupRowMapper extends BaseRowMapper<CommunityGroup> {
 
 	@Override
 	public void initializeColList() {
+		super.addColumn(COL_ID);
+		super.addColumn(COL_NAME);
+		super.addColumn(COL_COUNTRY_ID);
+		super.addColumn(COL_CITY_ID);
+		super.addColumn(COL_UNIVERSITY_ID);
+		super.addColumn(COL_SUB_URL);
 	}
 
 }
