@@ -6,23 +6,27 @@
 
 	<ui:define name="head">
 		<ui:fragment rendered="#{communityGroupController.communityGroup != null}">
-			<title>#{communityGroupController.communityGroup.name}</title>
+			<title>Let's Erasmus #{communityGroupController.communityGroup.name} Community</title>
 			<meta name="description" content="Join '#{communityGroupController.communityGroup.name}' community group and connect with other international students and locals for the incredible Erasmus experience!" />
 			<link rel="canonical" href="#{webApplication.urlPrefix}/community/#{communityGroupController.communityGroup.subUrl}" />
 			
-			<meta property="og:image" content="#{webApplication.urlPrefix}/static/images/community/#{communityGroupController.communityGroup.subUrl}.png" />
-			<meta property="og:title" content="#{communityGroupController.communityGroup.name}" />
+			<meta property="og:image" content="#{webApplication.urlPrefix}/static/images/community.png" />
+			<meta property="og:title" content="Let's Erasmus #{communityGroupController.communityGroup.name} Community" />
 			<meta property="og:description" content="Join '#{communityGroupController.communityGroup.name}' community group and connect with other international students and locals for the incredible Erasmus experience!" />
 			<meta property="og:url" content="#{webApplication.urlPrefix}/community/#{communityGroupController.communityGroup.subUrl}" />
 			
-			<meta name="twitter:title" content="#{communityGroupController.communityGroup.name}" />
+			<meta name="twitter:title" content="Let's Erasmus #{communityGroupController.communityGroup.name} Community" />
 			<meta name="twitter:description" content="Join '#{communityGroupController.communityGroup.name}' community group and connect with other international students and locals for the incredible Erasmus experience!" />
+			<meta name="twitter:image" content="#{webApplication.urlPrefix}/static/images/community.png" />
 			<meta name="twitter:card" content="summary_large_image" />
+			<meta name="twitter:image:alt"
+			content="'#{communityGroupController.communityGroup.name}' community group" />
 		</ui:fragment>
 		<ui:fragment rendered="#{communityGroupController.communityGroup == null}">
 			<title>Let's Erasmus International Community Center</title>
 			<meta name="description" content="Join the community and connect with other international students and locals for the incredible Erasmus experience!" />
 	
+			<meta property="og:image" content="#{webApplication.urlPrefix}/static/images/community.png" />
 			<meta property="og:title"
 				content="Let's Erasmus International Community Center" />
 			<meta property="og:description" content="Join the community and connect with other international students and locals for the incredible Erasmus experience!" />
@@ -32,7 +36,10 @@
 			<meta name="twitter:title"
 				content="Let's Erasmus International Community Center" />
 			<meta name="twitter:description" content="Join the community and connect with other international students and locals for the incredible Erasmus experience!" />
+			<meta name="twitter:image" content="#{webApplication.urlPrefix}/static/images/community.png" />
 			<meta name="twitter:card" content="summary_large_image" />
+			<meta name="twitter:image:alt"
+			content="'Let's Erasmus International Community" />
 		</ui:fragment>
 		
 		<link rel="stylesheet" type="text/css"
@@ -41,6 +48,8 @@
 			href="#{webApplication.urlPrefix}/static/css/place/your_listings.css?ver=#{webApplication.staticFileVersion}" />
 		<link rel="stylesheet" type="text/css"
 			href="#{webApplication.urlPrefix}/static/css/community.css?ver=#{webApplication.staticFileVersion}" />
+		<link rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 		<style>
 .custom-combobox {
 	position: relative;
@@ -135,7 +144,7 @@
 						<li class="listing panel-body">
 							<div class="row row-table" style="width: 100%;">
 								<div style="font-size: 14px; line-height: 1.25;">
-									<div class="h4 inline-block on-mobile-title" style="width: 70%">Topic</div>
+									<div class="h4 inline-block on-mobile-title" style="width: 71%">Topic</div>
 									<div class="h4 inline-block on-mobile-user"
 										style="width: 8%; text-align: center;">User</div>
 									<div class="h4 inline-block hide-mobile"
@@ -148,9 +157,10 @@
 							varStatus="status">
 							<li class="listing panel-body" style="padding: 2px 20px;     overflow: -webkit-paged-x;border-bottom: 1px solid #dce0e0;">
 								<div class="row row-table" style="width: 100%; height: 30px;">
-									<div class="">
+									<div style="line-height: initial;">
+									<i class="pull-left icon-with-label icon-gray icon-font-size-20 fa fa-thumb-tack icon-on-mobile" aria-hidden="true" style="    margin-top: 7px;"></i>
 										<div class="inline-block on-mobile-title"
-											style="width: 70%; height: 35.19px; vertical-align: bottom; word-wrap: break-word;">
+											style="width: 70%; height: 35.19px; vertical-align: bottom; word-wrap: break-word; padding-left:5px;">
 											<a class="_j1qvyg"
 												href="#{webApplication.urlPrefix}/community/#{communityTopic.communityGroup.subUrl}/#{communityTopic.subUrl}"
 												target="_blank">#{communityTopic.title}</a>
@@ -177,7 +187,8 @@
 											style="width: 9%; text-align: center; height: 35.19px; vertical-align: bottom;">
 											#{communityGroupController.formatDate(communityTopic.lastActivityDate , "dd MMM, yyyy")}</div>
 									</div>
-								</div></li>
+								</div>
+							</li>
 						</ui:repeat>
 						<ui:repeat var="communityTopic"
 							value="#{communityGroupController.communityTopicList}"
@@ -188,9 +199,10 @@
 								id="hiddenTopicDescription_#{communityTopic.id}"
 								value="#{communityTopic.description}" />
 								<div class="row row-table" style="width: 100%; height: 30px;">
-									<div class="">
+									<div style="line-height: initial;">
+									<i class="pull-left icon-with-label icon-gray icon-font-size-20 fa fa-thumb-tack icon-on-mobile" aria-hidden="true" style="visibility: hidden;"></i>
 										<div class="inline-block on-mobile-title"
-											style="width: 70%; height: 35.19px; vertical-align: bottom; word-wrap: break-word;">
+											style="width: 70%; height: 35.19px; vertical-align: bottom; word-wrap: break-word; padding-left:5px;">
 											<a class="_j1qvyg"
 												href="#{webApplication.urlPrefix}/community/#{communityGroupController.communityGroup.subUrl}/#{communityTopic.subUrl}"
 												target="_blank">#{communityTopic.title}</a>

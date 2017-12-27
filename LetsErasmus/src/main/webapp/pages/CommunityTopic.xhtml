@@ -10,14 +10,17 @@
 		<link rel="canonical" href="#{webApplication.urlPrefix}/community/#{communityTopicController.communityTopic.communityGroup.subUrl}/#{communityTopicController.communityTopic.subUrl}" />
 		<meta name="description" content="#{communityTopicController.communityTopic.description}" />
 		
-		<meta property="og:image" content="#{webApplication.urlPrefix}/static/images/community/default_topic.png" />
+		<meta property="og:image" content="#{webApplication.urlPrefix}/static/images/community.png" />
 		<meta property="og:title" content="#{communityTopicController.communityTopic.title}" />
 		<meta property="og:description" content="#{communityTopicController.communityTopic.description}" />
 		<meta property="og:url" content="#{webApplication.urlPrefix}/community/#{communityTopicController.communityTopic.communityGroup.subUrl}/#{communityTopicController.communityTopic.subUrl}" />
 
 		<meta name="twitter:title" content="#{communityTopicController.communityTopic.title}" />
 		<meta name="twitter:description" content="#{communityTopicController.communityTopic.description}" />
+		<meta name="twitter:image" content="#{webApplication.urlPrefix}/static/images/community.png" />
 		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:image:alt"
+			content="'Let's Erasmus International Community" />
 		
 		<link rel="stylesheet" type="text/css"
 			href="#{webApplication.urlPrefix}/static/css/place/common_o2.css?ver=#{webApplication.staticFileVersion}" />
@@ -38,6 +41,7 @@
 						<div>
 							<div id="divTopicDetail">
 								<div style="margin: 20px; border-bottom: 3px solid #dce0e0;">
+									<!-- Just removed for now
 									<ui:fragment rendered="#{communityTopicController.communityTopic.communityGroup.countryId != null}">
 										<div>
 											<a class="clsUnderline" style="color: #0275a8; text-decoration : underline"
@@ -47,10 +51,13 @@
 											</a>
 										</div>
 									</ui:fragment>
+									 -->
 									<div style="margin-top: 10px; padding-bottom: 10px;">
-										<a href="#{webApplication.urlPrefix}/community/#{communityTopicController.communityTopic.communityGroup.subUrl}/#{communityTopicController.communityTopic.subUrl}"
+										<a class="_j1qvyg" href="#{webApplication.urlPrefix}/community/#{communityTopicController.communityTopic.communityGroup.subUrl}/#{communityTopicController.communityTopic.subUrl}"
 											target="_self">
+											<h2 style="margin-bottom: 5px; word-wrap: break-word;">
 											<strong>#{communityTopicController.communityTopic.title}</strong>
+											</h2>
 										</a>
 									</div>
 								</div>
@@ -88,8 +95,8 @@
 													<span class="message-text ng-binding">#{communityTopicController.communityTopic.description}</span>
 												</div>
 												<div class="space-top-2 text-muted row row-condensed">
-													<div class="col-sm-8" style="font-size: 12px;">
-														<span class="time ng-binding"><em>#{communityTopicController.formatDate(communityTopicController.communityTopic.createdDate, "dd MMM, yyyy HH:mm")}</em></span>
+													<div class="col-sm-8" style="font-size: 12px; width:100%;">
+														<span class="time ng-binding" style="float:right;"><em>#{communityTopicController.formatDate(communityTopicController.communityTopic.createdDate, "dd MMM, yyyy HH:mm")}</em></span>
 													</div>
 													<div class="col-sm-4"></div>
 												</div>
@@ -136,8 +143,8 @@
 													<span class="message-text ng-binding">#{message.description}</span>
 												</div>
 												<div class="space-top-2 text-muted row row-condensed">
-													<div class="col-sm-8" style="font-size: 12px;">
-														<span class="time ng-binding"><em>#{communityTopicController.formatDate(message.createdDate
+													<div class="col-sm-8" style="font-size: 12px; width:100%;">
+														<span class="time ng-binding" style="float:right;"><em>#{communityTopicController.formatDate(message.createdDate
 															, "dd MMM, yyyy HH:mm")}</em></span>
 													</div>
 													<div class="col-sm-4"></div>
