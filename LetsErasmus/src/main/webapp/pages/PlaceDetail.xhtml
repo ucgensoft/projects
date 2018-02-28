@@ -8,12 +8,12 @@
 	<title>#{placeDetailController.pageTitle}</title>
 	<meta name="description" content="#{placeDetailController.pageDescription}" />
 	
-	<meta property="og:title" content="#{placeDetailController.place.title}" />
+	<meta property="og:title" content="#{placeDetailController.pageTitle}" />
 	<meta property="og:description"	content="#{placeDetailController.pageDescription}" />
 	<meta property="og:image" content="#{webApplication.getPlacePhotoUrl(placeDetailController.place.id, placeDetailController.place.coverPhotoId, 'small')}" />
 	<meta property="og:url"	content="#{placeDetailController.placeDetailUrl}" />
 		
-	<meta name="twitter:title" content="#{placeDetailController.place.title}"/>
+	<meta name="twitter:title" content="#{placeDetailController.pageTitle}"/>
 	<meta name="twitter:description" content="#{placeDetailController.pageDescription}"/>
 	<meta name="twitter:image" content="#{webApplication.getPlacePhotoUrl(placeDetailController.place.id, placeDetailController.place.coverPhotoId, 'small')}"/>
 	<meta name="twitter:card" content="summary_large_image"/>

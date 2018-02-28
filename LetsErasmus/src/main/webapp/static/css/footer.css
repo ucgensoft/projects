@@ -147,9 +147,26 @@ footer {
 	}
 }
 
+
+@media ( min-width : 744px) {
+	.col-md-3-footer-new {
+		width: 40%;
+		float: left
+	}
+}
+
+
 @media ( max-width : 743px) {
 	.hide-sm-footer {
 		display: none !important
+	}
+}
+
+@media ( max-width : 743px) {
+	.no-hide-sm-footer {
+		width: 33%;
+		float: left;
+		margin-top: 15px;
 	}
 }
 
