@@ -5,19 +5,20 @@
 	xmlns:h="http://java.sun.com/jsf/html" template="/pages/Template.xhtml">
 
 	<ui:define name="head">
-		<title>Let's Erasmus Blog</title>
+		<title>Let's Erasmus Student Blog</title>
 		<meta name="description"
-			content="Learn latest Erasmus news, best practices, incredible experiences, popular attractions, and local's life style at your destionation!" />
+			content="Learn latest Erasmus Student news, best practices, incredible experiences, popular attractions, and local's life style at your destionation!" />
 
-		<meta property="og:title" content="Let's Erasmus Blog" />
+		<meta property="og:title" content="Let's Erasmus Student Blog" />
 		<meta property="og:description"
-			content="Learn latest Erasmus news, best practices, incredible experiences, popular attractions, and local's life style at your destionation!" />
+			content="Learn latest Erasmus Student news, best practices, incredible experiences, popular attractions, and local's life style at your destionation!" />
 		<meta property="og:url" content="#{webApplication.urlPrefix}/blog" />
 
-		<meta name="twitter:title" content="Let's Erasmus Blog" />
+		<meta name="twitter:title" content="Let's Erasmus Student Blog" />
 		<meta name="twitter:description"
-			content="Learn latest Erasmus news, best practices, incredible experiences, popular attractions, and local's life style at your destionation!" />
+			content="Learn latest Erasmus Student news, best practices, incredible experiences, popular attractions, and local's life style at your destionation!" />
 		<meta name="twitter:card" content="summary_large_image" />
+		<link rel="canonical" href="#{webApplication.urlPrefix}/blog"/>
 
 		<link rel="stylesheet" type="text/css"
 			href="#{webApplication.urlPrefix}/static/css/blog.css?ver=#{webApplication.staticFileVersion}" />
@@ -29,7 +30,7 @@
 		<div class="blog-section">
 			<div class="blog-content">
 				<div id="main">
-					<h3 class="_1tizno3o">Latest Articles</h3>
+					<h1 class="_1tizno3o">Latest Articles</h1>
 					<!-- ARTICLE BOX-->
 					<div class="blog-article">
 						<a

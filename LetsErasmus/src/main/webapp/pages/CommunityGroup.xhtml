@@ -7,39 +7,39 @@
 	<ui:define name="head">
 		<ui:fragment rendered="#{communityGroupController.communityGroup != null}">
 			<title>Let's Erasmus #{communityGroupController.communityGroup.name} Community</title>
-			<meta name="description" content="Join '#{communityGroupController.communityGroup.name}' community group and connect with other international students and locals for the incredible Erasmus experience!" />
+			<meta name="description" content="Join '#{communityGroupController.communityGroup.name}' community group and connect with other Erasmus students and locals for the incredible Erasmus experience!" />
 			<link rel="canonical" href="#{webApplication.urlPrefix}/community/#{communityGroupController.communityGroup.subUrl}" />
 			
 			<meta property="og:image" content="#{webApplication.urlPrefix}/static/images/community.png" />
 			<meta property="og:title" content="Let's Erasmus #{communityGroupController.communityGroup.name} Community" />
-			<meta property="og:description" content="Join '#{communityGroupController.communityGroup.name}' community group and connect with other international students and locals for the incredible Erasmus experience!" />
+			<meta property="og:description" content="Join '#{communityGroupController.communityGroup.name}' community group and connect with other Erasmus students and locals for the incredible Erasmus experience!" />
 			<meta property="og:url" content="#{webApplication.urlPrefix}/community/#{communityGroupController.communityGroup.subUrl}" />
 			
 			<meta name="twitter:title" content="Let's Erasmus #{communityGroupController.communityGroup.name} Community" />
-			<meta name="twitter:description" content="Join '#{communityGroupController.communityGroup.name}' community group and connect with other international students and locals for the incredible Erasmus experience!" />
+			<meta name="twitter:description" content="Join '#{communityGroupController.communityGroup.name}' community group and connect with other Erasmus students and locals for the incredible Erasmus experience!" />
 			<meta name="twitter:image" content="#{webApplication.urlPrefix}/static/images/community.png" />
 			<meta name="twitter:card" content="summary_large_image" />
 			<meta name="twitter:image:alt"
 			content="'#{communityGroupController.communityGroup.name}' community group" />
 		</ui:fragment>
 		<ui:fragment rendered="#{communityGroupController.communityGroup == null}">
-			<title>Let's Erasmus International Community Center</title>
-			<meta name="description" content="Join the community and connect with other international students and locals for the incredible Erasmus experience!" />
+			<title>Let's Erasmus Student Community Center</title>
+			<meta name="description" content="Join the community and connect with other Erasmus students and locals for the incredible Erasmus experience!" />
 	
 			<meta property="og:image" content="#{webApplication.urlPrefix}/static/images/community.png" />
 			<meta property="og:title"
-				content="Let's Erasmus International Community Center" />
-			<meta property="og:description" content="Join the community and connect with other international students and locals for the incredible Erasmus experience!" />
+				content="Let's Erasmus Student Community Center" />
+			<meta property="og:description" content="Join the community and connect with other Erasmus students and locals for the incredible Erasmus experience!" />
 			<meta property="og:url" content="#{webApplication.urlPrefix}/community" />
 			<link rel="canonical" href="#{webApplication.urlPrefix}/community" />
 	
 			<meta name="twitter:title"
-				content="Let's Erasmus International Community Center" />
-			<meta name="twitter:description" content="Join the community and connect with other international students and locals for the incredible Erasmus experience!" />
+				content="Let's Erasmus Student Community Center" />
+			<meta name="twitter:description" content="Join the community and connect with other Erasmus students and locals for the incredible Erasmus experience!" />
 			<meta name="twitter:image" content="#{webApplication.urlPrefix}/static/images/community.png" />
 			<meta name="twitter:card" content="summary_large_image" />
 			<meta name="twitter:image:alt"
-			content="'Let's Erasmus International Community" />
+			content="'Let's Erasmus Student Community" />
 		</ui:fragment>
 		
 		<link rel="stylesheet" type="text/css"
@@ -97,6 +97,7 @@
 			<div class="community-content">
 			<ui:fragment
 						rendered="#{communityGroupController.communityGroup != null}">
+						<h1 class="_1tizno3o">Let's Erasmus #{communityGroupController.communityGroup.name} Community</h1>
 					<div class="panel panel-com-header space-4">
 						<div class="com-header-row1">
 							<div class="select inline-block com-dropdown">
@@ -136,7 +137,7 @@
 						<div class="com-header-row2 space-top-4 inline-block">
 							<button style="float: right;" type="button"
 								class="btn btn-primary btn-large"
-								ng-click="ctrl.btnCreateTopicClick()">+New Topic</button>
+								ng-click	="ctrl.btnCreateTopicClick()">+New Topic</button>
 						</div>
 					</div>				
 				<div class="panel space-4" style="border: 0px;">
@@ -249,15 +250,17 @@
 					<div class="upper-title">
 						<div>
 							<div class="title-itself">
-								<h1 class="_28rra8">
+								<h1 class="_28rra8" style="margin-bottom: 0; padding-bottom: 0 !important;">
 									<span style="font-weight: 700; color: #03a9f4;">Welcome
 										to Let's Erasmus Community!</span>
-									<div>
+								</h1>
+								<h2 class="_28rra8" style="margin-top: 0; padding-top: 0 !important;">
+										<div>
 										Join the <strong>community</strong> and <strong>connect</strong>
-										with other international students and locals for the
+										with other Erasmus students and locals for the
 										incredible Erasmus experience!
 									</div>
-								</h1>
+								</h2>
 							</div>
 						</div>
 					</div>

@@ -7,12 +7,11 @@
 	<ui:define name="head">
 		<title>#{displayUserController.user.firstName}'s profile - Let's Erasmus</title>
 		<meta name="description" content="#{displayUserController.user.firstName} is an active Let's Erasmus user since #{displayUserController.formatDate(displayUserController.user.createdDate, 'dd.MM.yyyy')}" />
-		
 		<meta property="og:title" content="#{displayUserController.user.firstName}'s profile - Let's Erasmus" />
 		<meta property="og:description" content="#{displayUserController.user.firstName} is an active Let's Erasmus user since #{displayUserController.formatDate(displayUserController.user.createdDate, 'dd.MM.yyyy')}" />
 		<meta property="og:image" content="#{webApplication.staticFileUrlPrefix}/#{webApplication.getUserPhotoPath(displayUserController.user.id, displayUserController.user.profilePhotoId, 'medium')}" />
 		<meta property="og:url" content="#{webApplication.getUrlTemplateProfile(displayUserController.user.id)}" />
-		
+		<meta name="robots" content="noindex, follow" />
 		<meta name="twitter:title" content="#{displayUserController.user.firstName}'s profile - Let's Erasmus"/>
 		<meta name="twitter:description" content="#{displayUserController.user.firstName} is an active Let's Erasmus user since #{displayUserController.formatDate(displayUserController.user.createdDate, 'dd.MM.yyyy')}"/>
 		<meta name="twitter:image" content="#{webApplication.staticFileUrlPrefix}/#{webApplication.getUserPhotoPath(displayUserController.user.id, displayUserController.user.profilePhotoId, 'medium')}"/>
